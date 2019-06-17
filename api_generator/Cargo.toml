@@ -1,0 +1,12 @@
+[package]
+name = "api_generator"
+version = "0.1.0"
+authors = ["Russ Cam <russ.cam@elastic.co>"]
+edition = "2018"
+
+[dependencies]
+dialoguer = "0.3.0"
+pbr = "1.0.1"
+reqwest = "0.9.14"
+select = "0.4.2"
+serde_json = "1.0"
