@@ -1,40 +1,49 @@
 extern crate pbr;
 extern crate reqwest;
-extern crate select;
 
 use std::io::{copy, stdout, Write};
 use std::fs::{self, File};
 use pbr::ProgressBar;
-use select::document::Document;
-use select::node::Node;
-use select::predicate::{Class};
+use serde::Deserialize;
 
-struct Spec {
+struct GitHubSpec {
     dir: String,
     branch: String,
     url: String
 }
 
-impl Spec {
-    fn download_url(&self, endpoint: &str) -> String {
-        let mut download_url = self.url
-            .replace("github.com", "raw.githubusercontent.com")
-            .replace("tree/", "");
+#[derive(Deserialize, Debug)]
+struct Links {
+    #[serde(rename = "self")]
+    self_link: String,
+    git: String,
+    html: String
+}
 
-        download_url.push_str("/");
-        download_url.push_str(endpoint);
-        return download_url;
-    }
+#[derive(Deserialize, Debug)]
+struct RestApiSpec {
+    name: String,
+    path: String,
+    sha: String,
+    size: i32,
+    url: String,
+    html_url: String,
+    git_url: String,
+    download_url: String,
+    #[serde(rename = "type")]
+    ty: String,
+    #[serde(rename = "_links")]
+    links: Links
 }
 
 pub fn download_specs(branch : &str, download_dir : &str) {
     let spec_urls = [
-        (String::from("core"), String::from("https://github.com/elastic/elasticsearch/tree/{branch}/rest-api-spec/src/main/resources/rest-api-spec/api")),
-        (String::from("xpack"), String::from("https://github.com/elastic/elasticsearch/tree/{branch}/x-pack/plugin/src/test/resources/rest-api-spec/api"))];
+        ("core".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/rest-api-spec/src/main/resources/rest-api-spec/api".to_string()),
+        ("xpack".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/x-pack/plugin/src/test/resources/rest-api-spec/api".to_string())];
 
-    let specs : Vec<Spec> = spec_urls.iter().map(|(dir, template_url)| {
-        let url = template_url.replace("{branch}", branch);
-        Spec {
+    let specs : Vec<GitHubSpec> = spec_urls.iter().map(|(dir, template_url)| {
+        let url = format!("{}?ref={}", template_url, branch);
+        GitHubSpec {
             dir: dir.to_string(),
             branch: branch.to_string(),
             url
@@ -47,33 +56,25 @@ pub fn download_specs(branch : &str, download_dir : &str) {
     }
 }
 
-fn download_endpoints(spec : &Spec, download_dir : &str) {
-    let resp = reqwest::get(&spec.url).unwrap();
-    let document = Document::from_read(resp).unwrap();
-    let nodes: Vec<Node> = document.find(Class("js-navigation-open")).filter(|node| {
-        let text = node.text();
-        return !text.is_empty() && text.ends_with(".json");
-    }).collect();
-
-    let max_name = nodes.iter().fold(nodes[0].text().len(), |acc, &node| {
-        let text = node.text();
-        if text.len() > acc {
-            text.len()
+fn download_endpoints(spec : &GitHubSpec, download_dir : &str) {
+    let mut response = reqwest::get(&spec.url).unwrap();
+    let rest_api_specs : Vec<RestApiSpec> = response.json().unwrap();
+    let max_name = rest_api_specs.iter().fold(rest_api_specs[0].name.len(), |acc, rest_api_spec| {
+        if rest_api_spec.name.len() > acc {
+            rest_api_spec.name.len()
         } else {
             acc
         }
     }) + 1;
 
     writeln!(stdout(), "Downloading {} specs from {}", spec.dir, spec.branch).unwrap();
-    let mut pb = ProgressBar::new(nodes.len() as u64);
+    let mut pb = ProgressBar::new(rest_api_specs.len() as u64);
 
-    for node in nodes {
-        let endpoint_name = node.text();
-        let url = spec.download_url(endpoint_name.as_str());
-        let path = format!("{}/{}/{}", download_dir, spec.dir, endpoint_name);
-        pb.message(right_pad(endpoint_name.as_str(), max_name).as_str());
-        let mut json = reqwest::get(url.as_str()).expect("failed to download endpoint json");
-        let mut file = File::create(path).expect("failed to create file");
+    for rest_api_spec in rest_api_specs {
+        let download_path = format!("{}/{}/{}", download_dir, spec.dir, rest_api_spec.name);
+        pb.message(right_pad(rest_api_spec.name.as_str(), max_name).as_str());
+        let mut json = reqwest::get(rest_api_spec.download_url.as_str()).expect("failed to download endpoint json");
+        let mut file = File::create(download_path).expect("failed to create file");
         copy(&mut json, &mut file).expect("failed to copy response to file");
         pb.inc();
     }
