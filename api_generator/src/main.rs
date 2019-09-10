@@ -9,7 +9,7 @@ mod api_generator;
 mod rest_spec;
 
 fn main() {
-    let download_dir = "rest_specs";
+    let download_dir = "./rest_specs";
     let last_downloaded_version = "last_downloaded_version";
     let mut download_specs = false;
     let mut answer = String::new();

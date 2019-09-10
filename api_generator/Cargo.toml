@@ -13,3 +13,4 @@ serde_json = "~1"
 serde_derive = "~1"
 syn = { version = "1.0.5", features = ["full"] }
 quote = "1.0.2"
+Inflector = "0.11.4"

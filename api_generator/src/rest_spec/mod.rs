@@ -50,8 +50,8 @@ pub fn download_specs(branch : &str, download_dir : &str) {
         }
     }).collect();
 
+    fs::create_dir_all(download_dir).unwrap();
     for spec in specs {
-        fs::create_dir_all(format!("{}/{}", download_dir, spec.dir)).unwrap();
         download_endpoints(&spec, &download_dir);
     }
 }
@@ -71,7 +71,7 @@ fn download_endpoints(spec : &GitHubSpec, download_dir : &str) {
     let mut pb = ProgressBar::new(rest_api_specs.len() as u64);
 
     for rest_api_spec in rest_api_specs {
-        let download_path = format!("{}/{}/{}", download_dir, spec.dir, rest_api_spec.name);
+        let download_path = format!("{}/{}", download_dir, rest_api_spec.name);
         pb.message(right_pad(rest_api_spec.name.as_str(), max_name).as_str());
         let mut json = reqwest::get(rest_api_spec.download_url.as_str()).expect("failed to download endpoint json");
         let mut file = File::create(download_path).expect("failed to create file");
