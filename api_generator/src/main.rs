@@ -1,8 +1,19 @@
 extern crate dialoguer;
-
-use std::io::{Write, Read};
-use std::fs::{File};
-use std::path::Path;
+#[macro_use]
+extern crate quote;
+use std::{
+    io:: {
+        Write,
+        Read
+    },
+    fs::{
+        self,
+        File
+    },
+    path::{
+        Path
+    }
+};
 use dialoguer::Input;
 
 mod api_generator;
@@ -10,6 +21,7 @@ mod rest_spec;
 
 fn main() {
     let download_dir = "./rest_specs";
+    let generated_dir = "./../client/src";
     let last_downloaded_version = "last_downloaded_version";
     let mut download_specs = false;
     let mut answer = String::new();
@@ -44,6 +56,7 @@ fn main() {
             .interact()
             .unwrap();
 
+        fs::remove_dir_all(&download_dir).unwrap();
         rest_spec::download_specs(&branch, &download_dir);
 
         File::create(last_downloaded_version)
@@ -66,6 +79,6 @@ fn main() {
     }
 
     if generate_code {
-        api_generator::generate(&branch, &download_dir);
+        api_generator::generate(&branch, &download_dir, &generated_dir);
     }
 }

@@ -11,12 +11,14 @@ use std::{
         Hasher
     },
     io::{
-        Read
+        Read,
+        prelude::*,
     },
 };
+use inflector::Inflector;
+use quote::Tokens;
 use serde::{
-    Deserialize,
-    Deserializer,
+    Deserialize
 };
 use serde_json::Value;
 
@@ -136,11 +138,12 @@ impl PartialEq for ApiEnum {
 
 impl Eq for ApiEnum {}
 
-pub fn generate(branch: &str, download_dir: &str) {
+pub fn generate(branch: &str, download_dir: &str, generated_dir: &str) {
 
     let api = read_api(branch, download_dir).unwrap();
 
-    generate_namespace_clients(&api);
+    generate_enums(&api, generated_dir);
+    generate_namespace_clients(&api, generated_dir);
 
 }
 
@@ -173,6 +176,7 @@ fn read_api(branch : &str, download_dir : &str) -> Result<Api, String> {
                 });
             }
 
+            // collect api endpoints into namespaces
             if !namespaces.contains_key(&namespace) {
                 let mut api_endpoints = BTreeMap::new();
                 api_endpoints.insert(name, api_endpoint);
@@ -198,8 +202,47 @@ fn endpoint_from_file<R>(name: String, reader: &mut R) -> Result<(String, ApiEnd
     Ok(endpoint.into_iter().next().unwrap())
 }
 
-fn generate_namespace_clients(api: &Api) {
+fn generate_enums(api: &Api, generated_dir: &str) {
+    let mut tokens = quote::Tokens::new();
 
-    dbg!("{}", api.namespaces.keys());
+    let header = quote!(
+        use serde::{
+            Deserialize
+        };
+    );
+
+    tokens.append(header);
+    for e in &api.enums {
+        generate_enum(&mut tokens, &e);
+    }
+
+    let generated_path = format!("{}/enums.rs", generated_dir);
+    let mut file = File::create(generated_path).expect("failed to create enums.rs");
+    file.write_all(tokens.to_string().as_bytes()).unwrap();
+}
+
+fn generate_enum(tokens: &mut Tokens, e: &ApiEnum) {
+    let name = syn::Ident::from(e.name.to_pascal_case());
+    let renames = e.values.iter().filter(|v| !v.is_empty()).collect::<Vec<_>>();
+    let values : Vec<syn::Ident> = renames.iter().map(|v| syn::Ident::from(v.to_pascal_case())).collect();
+
+    let generated_enum_tokens = quote!(
+        #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+        pub enum #name {
+            #(#[serde(rename = #renames)] #values),*
+        }
+    );
+
+    tokens.append(generated_enum_tokens);
+}
+
+fn generate_namespace_clients(api: &Api, generated_dir: &str) {
+
+    for namespace in &api.namespaces {
+        let mut tokens = quote::Tokens::new();
+
+
+    }
+
 
 }
