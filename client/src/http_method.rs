@@ -3,5 +3,5 @@ pub enum HttpMethod {
     Put,
     Post,
     Delete,
-    Head
+    Head,
 }

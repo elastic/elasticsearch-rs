@@ -3,11 +3,7 @@ extern crate reqwest;
 use reqwest::Method;
 use std::boxed::Box;
 
-use crate::{
-    http_method::HttpMethod,
-    es_response::EsResponse,
-    node_pool::NodePool
-};
+use crate::{es_response::EsResponse, http_method::HttpMethod, node_pool::NodePool};
 
 pub trait Connection {
     type Pool: NodePool;
@@ -19,17 +15,17 @@ pub trait Connection {
 
 pub struct ReqwestConnection {
     client: reqwest::Client,
-    pool: Box<NodePool>
+    pool: Box<NodePool>,
 }
 
 impl ReqwestConnection {
     fn method(&self, method: HttpMethod) -> Method {
         match method {
-            Get=> Method::GET,
+            Get => Method::GET,
             Put => Method::PUT,
             Post => Method::POST,
-            Delete=> Method::DELETE,
-            Head => Method::HEAD
+            Delete => Method::DELETE,
+            Head => Method::HEAD,
         }
     }
 }
@@ -38,7 +34,7 @@ impl Connection for ReqwestConnection {
     fn new<T>(pool: T) -> ReqwestConnection<T> {
         ReqwestConnection {
             client: reqwest::Client::new(),
-            pool
+            pool,
         }
     }
 

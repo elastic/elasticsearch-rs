@@ -3,7 +3,7 @@ extern crate url;
 use url::Url;
 
 pub struct Node {
-    pub url: Url
+    pub url: Url,
 }
 
 pub trait NodePool {
@@ -11,16 +11,14 @@ pub trait NodePool {
 }
 
 pub struct SingleNodePool {
-    node: Node
+    node: Node,
 }
 
 impl SingleNodePool {
     pub fn new(url: String) -> SingleNodePool {
         let u = Url::parse(&url).expect("Not a valid URL");
         let node = Node { url: u };
-        SingleNodePool {
-            node
-        }
+        SingleNodePool { node }
     }
 }
 
