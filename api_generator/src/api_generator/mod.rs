@@ -134,7 +134,10 @@ pub fn generate(branch: &str, download_dir: &PathBuf, generated_dir: &PathBuf) {
     let enums = code_gen::enums::generate_enums(&api).unwrap();
     write_file(enums, generated_dir, "enums.rs");
 
-    code_gen::namespace_client::generate_namespace_clients(&api, generated_dir);
+    let namespace_clients = code_gen::namespace_client::generate_namespace_clients(&api).unwrap();
+    for namespace_client in namespace_clients {
+        write_file(namespace_client.1, generated_dir, format!("{}.rs", namespace_client.0).as_str());
+    }
 }
 
 fn write_file(input: String, dir: &PathBuf, file: &str) {
@@ -206,6 +209,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
     })
 }
 
+/// deserializes an ApiEndpoint from a file
 fn endpoint_from_file<R>(name: String, reader: &mut R) -> Result<(String, ApiEndpoint), String>
 where
     R: Read,
@@ -216,6 +220,8 @@ where
     Ok(endpoint.into_iter().next().unwrap())
 }
 
+/// formats tokens using rustfmt
+/// https://github.com/bcmyers/num-format/blob/b7a99480b8087924d291887b13d8c38b7ce43a36/num-format-dev/src/rustfmt.rs
 fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
 where
     S: Into<String>,
@@ -231,6 +237,7 @@ where
     }
 
     // remove stdin: from start of output
+    // TODO: trim leading whitespace afterwards
     let b = "stdin:".as_bytes();
     if output.starts_with(b) {
         output.drain(0..b.len());

@@ -19,9 +19,16 @@ fn main() {
     let download_dir = fs::canonicalize(PathBuf::from("./rest_specs")).unwrap();
     let generated_dir = fs::canonicalize(PathBuf::from("./../client/src")).unwrap();
     let last_downloaded_version = "last_downloaded_version";
+
     let mut download_specs = false;
     let mut answer = String::new();
     let mut branch = String::new();
+    let mut default_branch = if Path::new(last_downloaded_version).exists() {
+        fs::read_to_string(last_downloaded_version).expect("Could not read branch into string")
+    } else {
+        String::from("master")
+    };
+
     while answer != "y" && answer != "n" {
         answer = Input::new()
             .default(String::from("n"))
@@ -32,12 +39,6 @@ fn main() {
             .to_lowercase();
         download_specs = answer == "y";
     }
-
-    let mut default_branch = if Path::new(last_downloaded_version).exists() {
-        fs::read_to_string(last_downloaded_version).expect("Could not read branch into string")
-    } else {
-        String::from("master")
-    };
 
     if download_specs {
         branch = Input::new()

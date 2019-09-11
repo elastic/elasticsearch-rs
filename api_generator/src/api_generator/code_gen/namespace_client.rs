@@ -1,5 +1,4 @@
 use crate::api_generator::*;
-use std::path::PathBuf;
 
 /// A builder to generate a namespaced client
 pub struct Builder {
@@ -14,8 +13,15 @@ impl Builder {
     }
 }
 
-pub fn generate_namespace_clients(api: &Api, generated_dir: &PathBuf) {
+pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
+    let mut output = Vec::new();
+
     for namespace in &api.namespaces {
         let mut tokens = quote::Tokens::new();
+
+        let generated = rust_fmt(tokens.to_string())?;
+        output.push((namespace.0.to_string(), generated));
     }
+
+    Ok(output)
 }
