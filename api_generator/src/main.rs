@@ -4,11 +4,12 @@
 extern crate dialoguer;
 #[macro_use]
 extern crate quote;
+
 use dialoguer::Input;
 use std::path::PathBuf;
 use std::{
     fs::{self, File},
-    io::{Write},
+    io::Write,
     path::Path,
 };
 
