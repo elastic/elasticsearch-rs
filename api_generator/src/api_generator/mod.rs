@@ -135,17 +135,22 @@ pub fn generate(branch: &str, download_dir: &PathBuf, generated_dir: &PathBuf) {
     write_file(enums, generated_dir, "enums.rs");
 
     let namespace_clients = code_gen::namespace_client::generate_namespace_clients(&api).unwrap();
+    let mut namespace_clients_dir = generated_dir.clone();
+    namespace_clients_dir.push("namespace_clients");
+    std::fs::create_dir_all(&namespace_clients_dir).unwrap();
+
     for namespace_client in namespace_clients {
-        write_file(namespace_client.1, generated_dir, format!("{}.rs", namespace_client.0).as_str());
+        write_file(namespace_client.1, &namespace_clients_dir, format!("{}.rs", namespace_client.0).as_str());
     }
 }
 
 fn write_file(input: String, dir: &PathBuf, file: &str) {
     let mut generated_path = dir.clone();
     generated_path.push(file);
+    let path = generated_path.to_string_lossy().into_owned();
 
-    let mut file = File::create(generated_path.to_string_lossy().into_owned())
-        .expect(format!("failed to create {}", file).as_str());
+    let mut file = File::create(&path)
+        .expect(format!("failed to create {}", &path).as_str());
     file.write_all(input.as_bytes()).unwrap();
 }
 
