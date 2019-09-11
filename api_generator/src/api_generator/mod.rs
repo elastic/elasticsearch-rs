@@ -34,6 +34,21 @@ pub enum HttpMethod {
     Delete,
 }
 
+impl quote::ToTokens for HttpMethod {
+    fn to_tokens(&self, tokens: &mut quote::Tokens) {
+        tokens.append("HttpMethod");
+        tokens.append("::");
+        match *self {
+            HttpMethod::Head => tokens.append("Head"),
+            HttpMethod::Get => tokens.append("Get"),
+            HttpMethod::Post => tokens.append("Post"),
+            HttpMethod::Put => tokens.append("Put"),
+            HttpMethod::Patch => tokens.append("Patch"),
+            HttpMethod::Delete => tokens.append("Delete"),
+        }
+    }
+}
+
 /// A type defined in the REST API spec
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Type {
@@ -139,8 +154,19 @@ pub fn generate(branch: &str, download_dir: &PathBuf, generated_dir: &PathBuf) {
     namespace_clients_dir.push("namespace_clients");
     std::fs::create_dir_all(&namespace_clients_dir).unwrap();
 
+    let modules = namespace_clients
+        .iter()
+        .map(|(name, _)| format!("pub mod {};", name))
+        .collect::<Vec<_>>()
+        .join("\n");
+    write_file(modules, &namespace_clients_dir, "mod.rs");
+
     for namespace_client in namespace_clients {
-        write_file(namespace_client.1, &namespace_clients_dir, format!("{}.rs", namespace_client.0).as_str());
+        write_file(
+            namespace_client.1,
+            &namespace_clients_dir,
+            format!("{}.rs", namespace_client.0).as_str(),
+        );
     }
 }
 
@@ -149,8 +175,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) {
     generated_path.push(file);
     let path = generated_path.to_string_lossy().into_owned();
 
-    let mut file = File::create(&path)
-        .expect(format!("failed to create {}", &path).as_str());
+    let mut file = File::create(&path).expect(format!("failed to create {}", &path).as_str());
     file.write_all(input.as_bytes()).unwrap();
 }
 
@@ -169,9 +194,9 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
 
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
-            let namespace = match name_parts.len() {
-                len if len > 1 => name_parts[0].to_string(),
-                _ => "global".to_string(),
+            let (namespace, method_name) = match name_parts.len() {
+                len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
+                _ => ("global".to_string(), name),
             };
 
             // collect unique enum values
@@ -196,13 +221,13 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
             // collect api endpoints into namespaces
             if !namespaces.contains_key(&namespace) {
                 let mut api_endpoints = BTreeMap::new();
-                api_endpoints.insert(name, api_endpoint);
+                api_endpoints.insert(method_name, api_endpoint);
                 namespaces.insert(namespace.to_string(), api_endpoints);
             } else {
                 namespaces
                     .get_mut(&namespace)
                     .unwrap()
-                    .insert(name, api_endpoint);
+                    .insert(method_name, api_endpoint);
             }
         }
     }

@@ -11,7 +11,7 @@ mod http_method;
 
 pub use crate::{
     client::ElasticsearchClient,
-    connection::{Connection},
+    connection::Connection,
     connection_settings::ConnectionSettings,
     es_response::EsResponse,
     http_method::HttpMethod,

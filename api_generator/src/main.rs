@@ -8,7 +8,7 @@ use dialoguer::Input;
 use std::path::PathBuf;
 use std::{
     fs::{self, File},
-    io::{Read, Write},
+    io::{Write},
     path::Path,
 };
 
@@ -23,7 +23,7 @@ fn main() {
     let mut download_specs = false;
     let mut answer = String::new();
     let mut branch = String::new();
-    let mut default_branch = if Path::new(last_downloaded_version).exists() {
+    let default_branch = if Path::new(last_downloaded_version).exists() {
         fs::read_to_string(last_downloaded_version).expect("Could not read branch into string")
     } else {
         String::from("master")

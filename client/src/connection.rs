@@ -1,12 +1,12 @@
 extern crate reqwest;
 
-use reqwest::Method;
 use crate::{es_response::EsResponse, http_method::HttpMethod};
+use reqwest::Method;
 use url::Url;
 
 pub struct Connection {
     client: reqwest::Client,
-    url: Url
+    url: Url,
 }
 
 impl Connection {
@@ -23,7 +23,7 @@ impl Connection {
     pub fn new(url: Url) -> Connection {
         Connection {
             client: reqwest::Client::new(),
-            url
+            url,
         }
     }
 

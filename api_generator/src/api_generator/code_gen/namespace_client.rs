@@ -9,7 +9,7 @@ pub struct Builder {
 }
 
 impl Builder {
-    pub fn new(name: &str) -> Self {
+    fn new(name: &str) -> Self {
         Builder {
             ident: syn::Ident::from(name),
         }
@@ -22,20 +22,35 @@ pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, fa
     for namespace in &api.namespaces {
         let mut tokens = quote::Tokens::new();
 
-        let name = namespace.0;
-        let namespace_client_name = syn::Ident::from(format!("{}NamespaceClient", name.to_pascal_case()));
-
-        let methods = namespace.1;
+        let namespace_client_name =
+            syn::Ident::from(format!("{}NamespaceClient", namespace.0.to_pascal_case()));
 
         let header = quote!(
+            use super::client::ElasticsearchClient;
+            use reqwest;
             use serde::{Deserialize};
         );
 
         tokens.append(header);
 
+        let methods: Vec<Tokens> = namespace
+            .1
+            .iter()
+            .map(|(name, endpoint)| {
+                let method_name = syn::Ident::from(name.to_string());
+                let path = endpoint.url.paths.first().unwrap();
+                let method = endpoint.methods.first().unwrap();
+                quote!(
+                    pub fn #method_name(&self) -> reqwest::Result<reqwest::Response, Error> {
+                        self.client.send(#method, #path)
+                    }
+                )
+            })
+            .collect();
+
         let s = quote!(
-            pub struct #namespace_client_name {
-                client: &ElasticsearchClient
+            pub struct #namespace_client_name<'a> {
+                client: &'a ElasticsearchClient
             }
 
             impl #namespace_client_name {
@@ -44,11 +59,12 @@ pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, fa
                         client
                     }
                 }
+
+                #(#methods)*
             }
         );
 
         tokens.append(s);
-
         let generated = rust_fmt(tokens.to_string())?;
         output.push((namespace.0.to_string(), generated));
     }
