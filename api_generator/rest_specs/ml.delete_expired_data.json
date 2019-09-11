@@ -1,0 +1,11 @@
+{
+  "ml.delete_expired_data": {
+    "stability": "stable",
+    "methods": [ "DELETE" ],
+    "url": {
+      "paths": [ "/_ml/_delete_expired_data" ],
+      "parts": {}
+    },
+    "body": null
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "security.get_privileges": {
+    "documentation": "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html",
+    "stability": "stable",
+    "methods": [ "GET" ],
+    "url": {
+      "paths": [
+        "/_security/privilege",
+        "/_security/privilege/{application}",
+        "/_security/privilege/{application}/{name}"
+      ],
+      "parts": {
+        "application": {
+          "type" : "string",
+          "description" : "Application name",
+          "required" : false
+        },
+        "name": {
+          "type" : "string",
+          "description" : "Privilege name",
+          "required" : false
+        }
+      },
+      "params": {}
+    },
+    "body": null
+  }
+}

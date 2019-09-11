@@ -1,0 +1,27 @@
+{
+  "clear_scroll": {
+    "documentation": "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll",
+    "stability": "stable",
+    "methods": ["DELETE"],
+    "url": {
+      "paths": [ "/_search/scroll"],
+      "deprecated_paths" : [
+        {
+          "version" : "7.0.0",
+          "path" : "/_search/scroll/{scroll_id}",
+          "description" : "A scroll id can be quite large and should be specified as part of the body"
+        }
+      ],
+      "parts": {
+        "scroll_id": {
+          "type" : "list",
+          "description" : "A comma-separated list of scroll IDs to clear"
+        }
+      },
+      "params": {}
+    },
+    "body": {
+      "description": "A comma-separated list of scroll IDs to clear if none was specified via the scroll_id parameter"
+    }
+  }
+}
