@@ -1,21 +1,24 @@
 use crate::{
-    connection::Connection, connection_settings::ConnectionSettings, es_response::EsResponse,
+    connection::Connection,
+    connection_settings::ConnectionSettings,
+    es_response::EsResponse,
     http_method::HttpMethod,
 };
 
-pub struct Client<T> {
-    settings: ConnectionSettings<T>,
+pub struct ElasticsearchClient {
+    settings: ConnectionSettings,
+    connection: Connection
 }
 
-impl<T> Client<T>
-where
-    T: Connection,
-{
-    pub fn new<T>(settings: ConnectionSettings<T>) -> Client<T> {
-        Client { settings }
+impl ElasticsearchClient {
+    pub fn new<T>(settings: ConnectionSettings, connection: Connection) -> Self {
+        ElasticsearchClient {
+            settings,
+            connection
+        }
     }
 
-    pub fn send(&self, method: HttpMethod, path: &str) -> EsResponse {
-        self.settings.connection().send(method, path)
+    pub fn send(&self, method: HttpMethod, path: &str) -> reqwest::Result<reqwest::Response> {
+        self.connection.send(method, path)
     }
 }

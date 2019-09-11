@@ -1,47 +1,35 @@
 extern crate reqwest;
 
 use reqwest::Method;
-use std::boxed::Box;
+use crate::{es_response::EsResponse, http_method::HttpMethod};
+use url::Url;
 
-use crate::{es_response::EsResponse, http_method::HttpMethod, node_pool::NodePool};
-
-pub trait Connection {
-    type Pool: NodePool;
-
-    fn new<T>(pool: &Self::Pool) -> Self;
-
-    fn send(&self, method: HttpMethod, path: &str) -> EsResponse;
-}
-
-pub struct ReqwestConnection {
+pub struct Connection {
     client: reqwest::Client,
-    pool: Box<NodePool>,
+    url: Url
 }
 
-impl ReqwestConnection {
+impl Connection {
     fn method(&self, method: HttpMethod) -> Method {
         match method {
-            Get => Method::GET,
-            Put => Method::PUT,
-            Post => Method::POST,
-            Delete => Method::DELETE,
-            Head => Method::HEAD,
+            HttpMethod::Get => Method::GET,
+            HttpMethod::Put => Method::PUT,
+            HttpMethod::Post => Method::POST,
+            HttpMethod::Delete => Method::DELETE,
+            HttpMethod::Head => Method::HEAD,
         }
     }
-}
 
-impl Connection for ReqwestConnection {
-    fn new<T>(pool: T) -> ReqwestConnection<T> {
-        ReqwestConnection {
+    pub fn new(url: Url) -> Connection {
+        Connection {
             client: reqwest::Client::new(),
-            pool,
+            url
         }
     }
 
-    fn send(&self, method: HttpMethod, path: &str) -> EsResponse {
-        let node = self.pool.next();
-        let url = node.url.join(path).expect("Not a valid URL");
+    pub fn send(&self, method: HttpMethod, path: &str) -> reqwest::Result<reqwest::Response> {
+        let url = self.url.join(path).expect("Not a valid URL");
         let reqwest_method = self.method(method);
-        self.client.request(reqwest_method, url).send();
+        self.client.request(reqwest_method, url).send()
     }
 }
