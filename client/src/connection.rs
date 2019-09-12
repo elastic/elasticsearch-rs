@@ -1,6 +1,6 @@
 extern crate reqwest;
 
-use crate::{es_response::EsResponse, http_method::HttpMethod};
+use crate::{response::EsResponse, http_method::HttpMethod};
 use reqwest::Method;
 use url::Url;
 

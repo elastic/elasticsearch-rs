@@ -1,8 +1,10 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
+use crate::client::Sender;
+use serde::de::DeserializeOwned;
+use reqwest::header::HeaderMap;
+
 pub struct MlCloseJobRequest<'a> {
     allow_no_jobs: Option<&'a bool>,
     force: Option<&'a bool>,
@@ -91,6 +93,7 @@ impl<'a> MlDeleteForecastRequestBuilder<'a> {
         }
     }
 }
+
 pub struct MlDeleteJobRequest<'a> {
     force: Option<&'a bool>,
     wait_for_completion: Option<&'a bool>,

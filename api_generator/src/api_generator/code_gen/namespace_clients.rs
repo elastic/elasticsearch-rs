@@ -3,44 +3,22 @@ use crate::api_generator::*;
 use inflector::Inflector;
 use quote::Tokens;
 
-fn lit<I: Into<String>>(lit: I) -> syn::Lit {
-    syn::Lit::Str(lit.into(), syn::StrStyle::Cooked)
-}
-
-fn ident(name: String) -> syn::Ident {
-    syn::Ident::from(name)
-}
-
-fn doc(comment: String) -> syn::Attribute {
-    syn::Attribute {
-        style: syn::AttrStyle::Outer,
-        value: syn::MetaItem::NameValue(ident("doc".to_string()), lit(comment)),
-        is_sugared_doc: true,
-    }
-}
-
-fn valid_name(s: &str) -> &str {
-    match s {
-        "type" => "ty",
-        s=> s
-    }
-}
-
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
 
-        let namespace_client_name = ident(format!("{}NamespaceClient", namespace.to_pascal_case()));
+        let namespace_client_name =
+            code_gen::ident(format!("{}NamespaceClient", namespace.to_pascal_case()));
 
-        let namespace_doc = doc(format!(
+        let namespace_doc = code_gen::doc(format!(
             "{} APIs",
             namespace.replace("_", " ").to_pascal_case()
         ));
 
-        let namespace_name = ident(namespace.to_string());
-        
+        let namespace_name = code_gen::ident(namespace.to_string());
+
         let header = quote!(
             use super::super::client::ElasticsearchClient;
             use super::super::http_method::HttpMethod;
@@ -52,39 +30,36 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let builders: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let struct_name = format!("{}{}Request", namespace.to_pascal_case(), name.to_pascal_case());
-                let struct_ident = ident(struct_name.to_string());
-                let builder_ident = ident(format!("{}Builder", struct_name.to_string()));
+                let struct_name = format!(
+                    "{}{}Request",
+                    namespace.to_pascal_case(),
+                    name.to_pascal_case()
+                );
+                let struct_ident = code_gen::ident(struct_name.to_string());
+                let builder_ident = code_gen::ident(format!("{}Builder", struct_name.to_string()));
 
-                let params : Vec<Tokens> = endpoint.url.params.iter().map(|(n, t)| {
-                    let param_name = ident(valid_name(n).to_lowercase());
-
-                    let param_ty = match t.ty {
-                        TypeKind::None => syn::parse_type("&'a String").unwrap(),
-                        TypeKind::List => syn::parse_type("&'a Vec<String>").unwrap(),
-                        TypeKind::Enum => syn::parse_type("Option<&'a i32>").unwrap(),
-                        TypeKind::String => syn::parse_type("&'a String").unwrap(),
-                        TypeKind::Text => syn::parse_type("&'a String").unwrap(),
-                        TypeKind::Boolean => syn::parse_type("Option<&'a bool>").unwrap(),
-                        TypeKind::Number => syn::parse_type("Option<&'a i64>").unwrap(),
-                        TypeKind::Float => syn::parse_type("Option<&'a f32>").unwrap(),
-                        TypeKind::Double => syn::parse_type("Option<&'a f64>").unwrap(),
-                        TypeKind::Integer => syn::parse_type("Option<&'a i32>").unwrap(),
-                        TypeKind::Long => syn::parse_type("Option<&'a i64>").unwrap(),
-                        TypeKind::Date => syn::parse_type("&'a String").unwrap(),
-                        TypeKind::Time => syn::parse_type("&'a String").unwrap(),
-                        TypeKind::Duration => syn::parse_type("&'a String").unwrap(),
-                    };
-
-                    quote!(#param_name: #param_ty)
-                }).collect();
+                let params: Vec<Tokens> = endpoint
+                    .url
+                    .params
+                    .iter()
+                    .map(|(n, t)| {
+                        let param_name = code_gen::ident(code_gen::valid_name(n).to_lowercase());
+                        let param_ty = code_gen::ty(&t.ty);
+                        quote!(#param_name: #param_ty)
+                    })
+                    .collect();
 
                 let builder_params = params.clone();
 
-                let assignments : Vec<Tokens> = endpoint.url.params.iter().map(|(n, t)| {
-                    let param_name = ident(valid_name(n).to_lowercase());
-                    quote!(#param_name: self.#param_name)
-                }).collect();
+                let assignments: Vec<Tokens> = endpoint
+                    .url
+                    .params
+                    .iter()
+                    .map(|(n, t)| {
+                        let param_name = code_gen::ident(code_gen::valid_name(n).to_lowercase());
+                        quote!(#param_name: self.#param_name)
+                    })
+                    .collect();
 
                 quote!(
                     pub struct #struct_ident<'a> {
@@ -111,10 +86,14 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let methods: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let struct_name = format!("{}{}Request", namespace.to_pascal_case(), name.to_pascal_case());
-                let struct_ident = ident(struct_name.to_string());
+                let struct_name = format!(
+                    "{}{}Request",
+                    namespace.to_pascal_case(),
+                    name.to_pascal_case()
+                );
+                let struct_ident = code_gen::ident(struct_name.to_string());
 
-                let method_name = ident(name.to_string());
+                let method_name = code_gen::ident(name.to_string());
                 let path = endpoint.url.paths.first().unwrap();
                 let method = endpoint.methods.first().unwrap();
 
@@ -125,7 +104,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     || endpoint.body.is_some();
 
                 let method_doc = match &endpoint.documentation {
-                    Some(docs) => Some(doc(docs.into())),
+                    Some(docs) => Some(code_gen::doc(docs.into())),
                     _ => None,
                 };
 

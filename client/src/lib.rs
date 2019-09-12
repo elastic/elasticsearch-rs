@@ -6,9 +6,9 @@ extern crate serde;
 
 mod client;
 mod connection;
-mod connection_settings;
+mod settings;
 mod enums;
-mod es_response;
+mod response;
 mod http_method;
 mod namespace_clients;
 //mod node_pool;
@@ -16,8 +16,8 @@ mod namespace_clients;
 pub use crate::{
     client::ElasticsearchClient,
     connection::Connection,
-    connection_settings::ConnectionSettings,
-    es_response::EsResponse,
+    settings::ConnectionSettings,
+    response::EsResponse,
     http_method::HttpMethod,
     //node_pool::{Node, NodePool, SingleNodePool},
 };

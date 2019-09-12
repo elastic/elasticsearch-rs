@@ -177,6 +177,9 @@ pub fn generate(
         )?;
     }
 
+    let root = code_gen::root::generate(&api)?;
+    write_file(root, generated_dir, "root.rs")?;
+
     Ok(())
 }
 
