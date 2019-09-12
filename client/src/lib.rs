@@ -2,6 +2,8 @@
 #![allow(unused_imports)]
 #![allow(dead_code)]
 
+extern crate serde;
+
 mod client;
 mod connection;
 mod connection_settings;
@@ -17,6 +19,5 @@ pub use crate::{
     connection_settings::ConnectionSettings,
     es_response::EsResponse,
     http_method::HttpMethod,
-    namespace_clients,
     //node_pool::{Node, NodePool, SingleNodePool},
 };
