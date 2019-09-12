@@ -2,6 +2,24 @@
 
 use serde::Deserialize;
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum SuggestMode {
+    #[serde(rename = "missing")]
+    Missing,
+    #[serde(rename = "popular")]
+    Popular,
+    #[serde(rename = "always")]
+    Always,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum Type {
+    #[serde(rename = "cpu")]
+    Cpu,
+    #[serde(rename = "wait")]
+    Wait,
+    #[serde(rename = "block")]
+    Block,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum Size {
     #[serde(rename = "k")]
     K,
@@ -15,6 +33,22 @@ pub enum Size {
     P,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum DefaultOperator {
+    #[serde(rename = "AND")]
+    And,
+    #[serde(rename = "OR")]
+    Or,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum Level {
+    #[serde(rename = "cluster")]
+    Cluster,
+    #[serde(rename = "indices")]
+    Indices,
+    #[serde(rename = "shards")]
+    Shards,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum GroupBy {
     #[serde(rename = "nodes")]
     Nodes,
@@ -22,6 +56,61 @@ pub enum GroupBy {
     Parents,
     #[serde(rename = "none")]
     None,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum WaitForEvents {
+    #[serde(rename = "immediate")]
+    Immediate,
+    #[serde(rename = "urgent")]
+    Urgent,
+    #[serde(rename = "high")]
+    High,
+    #[serde(rename = "normal")]
+    Normal,
+    #[serde(rename = "low")]
+    Low,
+    #[serde(rename = "languid")]
+    Languid,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum Format {
+    #[serde(rename = "ndjson")]
+    Ndjson,
+    #[serde(rename = "xml")]
+    Xml,
+    #[serde(rename = "delimited")]
+    Delimited,
+    #[serde(rename = "semi_structured_text")]
+    SemiStructuredText,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum Health {
+    #[serde(rename = "green")]
+    Green,
+    #[serde(rename = "yellow")]
+    Yellow,
+    #[serde(rename = "red")]
+    Red,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum ExpandWildcards {
+    #[serde(rename = "open")]
+    Open,
+    #[serde(rename = "closed")]
+    Closed,
+    #[serde(rename = "none")]
+    None,
+    #[serde(rename = "all")]
+    All,
+}
+#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+pub enum Refresh {
+    #[serde(rename = "true")]
+    True,
+    #[serde(rename = "false")]
+    False,
+    #[serde(rename = "wait_for")]
+    WaitFor,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum Bytes {
@@ -49,42 +138,6 @@ pub enum Bytes {
     Pb,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Type {
-    #[serde(rename = "cpu")]
-    Cpu,
-    #[serde(rename = "wait")]
-    Wait,
-    #[serde(rename = "block")]
-    Block,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Refresh {
-    #[serde(rename = "true")]
-    True,
-    #[serde(rename = "false")]
-    False,
-    #[serde(rename = "wait_for")]
-    WaitFor,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Format {
-    #[serde(rename = "ndjson")]
-    Ndjson,
-    #[serde(rename = "xml")]
-    Xml,
-    #[serde(rename = "delimited")]
-    Delimited,
-    #[serde(rename = "semi_structured_text")]
-    SemiStructuredText,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Conflicts {
-    #[serde(rename = "abort")]
-    Abort,
-    #[serde(rename = "proceed")]
-    Proceed,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum WaitForStatus {
     #[serde(rename = "green")]
     Green,
@@ -101,15 +154,6 @@ pub enum OpType {
     Create,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Level {
-    #[serde(rename = "cluster")]
-    Cluster,
-    #[serde(rename = "indices")]
-    Indices,
-    #[serde(rename = "shards")]
-    Shards,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum VersionType {
     #[serde(rename = "internal")]
     Internal,
@@ -121,31 +165,11 @@ pub enum VersionType {
     Force,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum DefaultOperator {
-    #[serde(rename = "AND")]
-    And,
-    #[serde(rename = "OR")]
-    Or,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum Health {
-    #[serde(rename = "green")]
-    Green,
-    #[serde(rename = "yellow")]
-    Yellow,
-    #[serde(rename = "red")]
-    Red,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum ExpandWildcards {
-    #[serde(rename = "open")]
-    Open,
-    #[serde(rename = "closed")]
-    Closed,
-    #[serde(rename = "none")]
-    None,
-    #[serde(rename = "all")]
-    All,
+pub enum Conflicts {
+    #[serde(rename = "abort")]
+    Abort,
+    #[serde(rename = "proceed")]
+    Proceed,
 }
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum SearchType {
@@ -153,28 +177,4 @@ pub enum SearchType {
     QueryThenFetch,
     #[serde(rename = "dfs_query_then_fetch")]
     DfsQueryThenFetch,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum SuggestMode {
-    #[serde(rename = "missing")]
-    Missing,
-    #[serde(rename = "popular")]
-    Popular,
-    #[serde(rename = "always")]
-    Always,
-}
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
-pub enum WaitForEvents {
-    #[serde(rename = "immediate")]
-    Immediate,
-    #[serde(rename = "urgent")]
-    Urgent,
-    #[serde(rename = "high")]
-    High,
-    #[serde(rename = "normal")]
-    Normal,
-    #[serde(rename = "low")]
-    Low,
-    #[serde(rename = "languid")]
-    Languid,
 }

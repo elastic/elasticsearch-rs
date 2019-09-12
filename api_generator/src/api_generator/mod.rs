@@ -14,6 +14,9 @@ mod code_gen;
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
     pub commit: String,
+    /// global methods
+    pub global: BTreeMap<String, ApiEndpoint>,
+    /// namespace client methods
     pub namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>>,
     pub enums: HashSet<ApiEnum>,
 }
@@ -153,7 +156,7 @@ pub fn generate(
     let enums = code_gen::enums::generate(&api)?;
     write_file(enums, generated_dir, "enums.rs")?;
 
-    let namespace_clients = code_gen::namespace_client::generate(&api)?;
+    let namespace_clients = code_gen::namespace_clients::generate(&api)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
     std::fs::create_dir_all(&namespace_clients_dir)?;
@@ -192,6 +195,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
     let paths = read_dir(download_dir).unwrap();
     let mut namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>> = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
+    let global_key = "global";
 
     for path in paths {
         let path = path?.path();
@@ -205,7 +209,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
             let (namespace, method_name) = match name_parts.len() {
                 len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
-                _ => ("global".to_string(), name),
+                _ => (global_key.to_string(), name),
             };
 
             // collect unique enum values
@@ -242,8 +246,11 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
         }
     }
 
+    let global = namespaces.remove(global_key).unwrap();
+
     Ok(Api {
         commit: branch.to_string(),
+        global,
         namespaces,
         enums,
     })

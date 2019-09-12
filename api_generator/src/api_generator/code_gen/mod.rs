@@ -1,2 +1,2 @@
 pub mod enums;
-pub mod namespace_client;
+pub mod namespace_clients;

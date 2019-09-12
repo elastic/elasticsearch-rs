@@ -2,7 +2,6 @@ pub mod cat;
 pub mod ccr;
 pub mod cluster;
 pub mod data_frame;
-pub mod global;
 pub mod graph;
 pub mod ilm;
 pub mod indices;
