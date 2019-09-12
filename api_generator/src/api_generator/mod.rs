@@ -18,7 +18,7 @@ pub struct Api {
     pub global: BTreeMap<String, ApiEndpoint>,
     /// namespace client methods
     pub namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>>,
-    pub enums: HashSet<ApiEnum>,
+    pub enums: Vec<ApiEnum>,
 }
 
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
@@ -247,12 +247,14 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
     }
 
     let global = namespaces.remove(global_key).unwrap();
+    let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
+    sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
 
     Ok(Api {
         commit: branch.to_string(),
         global,
         namespaces,
-        enums,
+        enums: sorted_enums,
     })
 }
 

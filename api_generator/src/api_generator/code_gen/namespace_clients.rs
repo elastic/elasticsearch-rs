@@ -19,7 +19,7 @@ fn doc(comment: String) -> syn::Attribute {
     }
 }
 
-fn sanitize_param_name(s: &str) -> &str {
+fn valid_name(s: &str) -> &str {
     match s {
         "type" => "ty",
         s=> s
@@ -29,17 +29,17 @@ fn sanitize_param_name(s: &str) -> &str {
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
-    for namespace in &api.namespaces {
+    for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
 
-        let namespace_client_name = ident(format!("{}NamespaceClient", namespace.0.to_pascal_case()));
+        let namespace_client_name = ident(format!("{}NamespaceClient", namespace.to_pascal_case()));
 
         let namespace_doc = doc(format!(
             "{} APIs",
-            namespace.0.replace("_", " ").to_pascal_case()
+            namespace.replace("_", " ").to_pascal_case()
         ));
 
-        let namespace_name = ident(namespace.0.to_string());
+        let namespace_name = ident(namespace.to_string());
         
         let header = quote!(
             use super::super::client::ElasticsearchClient;
@@ -49,16 +49,15 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
         tokens.append(header);
 
-        let builders: Vec<Tokens> = namespace
-            .1
+        let builders: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let struct_name = format!("{}{}Request", namespace.0.to_pascal_case(), name.to_pascal_case());
+                let struct_name = format!("{}{}Request", namespace.to_pascal_case(), name.to_pascal_case());
                 let struct_ident = ident(struct_name.to_string());
                 let builder_ident = ident(format!("{}Builder", struct_name.to_string()));
 
                 let params : Vec<Tokens> = endpoint.url.params.iter().map(|(n, t)| {
-                    let param_name = ident(sanitize_param_name(n).to_lowercase());
+                    let param_name = ident(valid_name(n).to_lowercase());
 
                     let param_ty = match t.ty {
                         TypeKind::None => syn::parse_type("&'a String").unwrap(),
@@ -83,7 +82,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 let builder_params = params.clone();
 
                 let assignments : Vec<Tokens> = endpoint.url.params.iter().map(|(n, t)| {
-                    let param_name = ident(sanitize_param_name(n).to_lowercase());
+                    let param_name = ident(valid_name(n).to_lowercase());
                     quote!(#param_name: self.#param_name)
                 }).collect();
 
@@ -109,11 +108,10 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             })
             .collect();
 
-        let methods: Vec<Tokens> = namespace
-            .1
+        let methods: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let struct_name = format!("{}{}Request", namespace.0.to_pascal_case(), name.to_pascal_case());
+                let struct_name = format!("{}{}Request", namespace.to_pascal_case(), name.to_pascal_case());
                 let struct_ident = ident(struct_name.to_string());
 
                 let method_name = ident(name.to_string());
@@ -167,7 +165,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
         tokens.append(implementation);
         let generated = rust_fmt(tokens.to_string())?;
-        output.push((namespace.0.to_string(), generated));
+        output.push((namespace.to_string(), generated));
     }
 
     Ok(output)
