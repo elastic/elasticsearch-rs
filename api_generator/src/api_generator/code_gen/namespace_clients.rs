@@ -22,7 +22,11 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let header = quote!(
             use super::super::client::ElasticsearchClient;
             use super::super::http_method::HttpMethod;
-            use reqwest::{Result, Response, Request, Error};
+            use reqwest::{Result, Response, Request, Error, StatusCode};
+            use crate::client::Sender;
+            use crate::response::ElasticsearchResponse;
+            use serde::de::DeserializeOwned;
+            use reqwest::header::HeaderMap;
         );
 
         tokens.append(header);
@@ -30,13 +34,13 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let builders: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let struct_name = format!(
-                    "{}{}Request",
+                let builder_name = format!(
+                    "{}{}RequestBuilder",
                     namespace.to_pascal_case(),
                     name.to_pascal_case()
                 );
-                let struct_ident = code_gen::ident(struct_name.to_string());
-                let builder_ident = code_gen::ident(format!("{}Builder", struct_name.to_string()));
+
+                let builder_ident = code_gen::ident(builder_name);
 
                 let params: Vec<Tokens> = endpoint
                     .url
@@ -62,21 +66,31 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .collect();
 
                 quote!(
-                    pub struct #struct_ident<'a> {
-                        #(#params),*
-                    }
-
+                    #[Default]
                     pub struct #builder_ident<'a> {
+                        client: &'a ElasticsearchClient,
                         #(#builder_params),*
                     }
 
                     impl<'a> #builder_ident<'a> {
-                        // TODO: add build methods
-
-                        pub fn build(&self) -> #struct_ident<'a> {
-                            #struct_ident {
-                                #(#assignments),*
+                        pub fn new(client: &ElasticsearchClient) -> Self {
+                            #builder_ident {
+                                client,
+                                .. Default::default()
                             }
+                        }
+                        // TODO: add builder methods
+                    }
+
+                    impl<'a> Sender for #builder_ident<'a> {
+                        fn send<T>(self) -> Result<ElasticsearchResponse<T>> where T:DeserializeOwned {
+                              // TODO: build up the url based on parameters passed, and execute request
+                              Ok(ElasticsearchResponse {
+                                   headers: HeaderMap::new(),
+                                   status_code: StatusCode(200),
+                                   body: None
+                              })
+
                         }
                     }
                 )
@@ -92,6 +106,8 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     name.to_pascal_case()
                 );
                 let struct_ident = code_gen::ident(struct_name.to_string());
+
+                let builder_ident = code_gen::ident(format!("{}Builder", struct_name.to_string()));
 
                 let method_name = code_gen::ident(name.to_string());
                 let path = endpoint.url.paths.first().unwrap();
@@ -110,8 +126,8 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
                 quote!(
                     #method_doc
-                    pub fn #method_name(&self, request: &#struct_ident) -> Result<Response> {
-                        self.client.send(#method, #path)
+                    pub fn #method_name(&self) -> #builder_ident {
+                        #builder_ident::default()
                     }
                 )
             })

@@ -1,279 +1,651 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct SecurityAuthenticateRequest<'a> {}
-pub struct SecurityAuthenticateRequestBuilder<'a> {}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
+pub struct SecurityAuthenticateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityAuthenticateRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityAuthenticateRequest<'a> {
-        SecurityAuthenticateRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityAuthenticateRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityChangePasswordRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityAuthenticateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityChangePasswordRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityChangePasswordRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityChangePasswordRequest<'a> {
-        SecurityChangePasswordRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityChangePasswordRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityClearCachedRealmsRequest<'a> {
-    usernames: &'a Vec<String>,
+impl<'a> Sender for SecurityChangePasswordRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityClearCachedRealmsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     usernames: &'a Vec<String>,
 }
 impl<'a> SecurityClearCachedRealmsRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityClearCachedRealmsRequest<'a> {
-        SecurityClearCachedRealmsRequest {
-            usernames: self.usernames,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityClearCachedRealmsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityClearCachedRolesRequest<'a> {}
-pub struct SecurityClearCachedRolesRequestBuilder<'a> {}
-impl<'a> SecurityClearCachedRolesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityClearCachedRolesRequest<'a> {
-        SecurityClearCachedRolesRequest {}
+impl<'a> Sender for SecurityClearCachedRealmsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
-pub struct SecurityCreateApiKeyRequest<'a> {
-    refresh: Option<&'a i32>,
+#[Default]
+pub struct SecurityClearCachedRolesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
 }
+impl<'a> SecurityClearCachedRolesRequestBuilder<'a> {
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityClearCachedRolesRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for SecurityClearCachedRolesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
 pub struct SecurityCreateApiKeyRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityCreateApiKeyRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityCreateApiKeyRequest<'a> {
-        SecurityCreateApiKeyRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityCreateApiKeyRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityDeletePrivilegesRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityCreateApiKeyRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityDeletePrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityDeletePrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityDeletePrivilegesRequest<'a> {
-        SecurityDeletePrivilegesRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityDeletePrivilegesRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityDeleteRoleRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityDeletePrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityDeleteRoleRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityDeleteRoleRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityDeleteRoleRequest<'a> {
-        SecurityDeleteRoleRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityDeleteRoleRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityDeleteRoleMappingRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityDeleteRoleRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityDeleteRoleMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityDeleteRoleMappingRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityDeleteRoleMappingRequest<'a> {
-        SecurityDeleteRoleMappingRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityDeleteRoleMappingRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityDeleteUserRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityDeleteRoleMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityDeleteUserRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityDeleteUserRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityDeleteUserRequest<'a> {
-        SecurityDeleteUserRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityDeleteUserRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityDisableUserRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityDeleteUserRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityDisableUserRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityDisableUserRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityDisableUserRequest<'a> {
-        SecurityDisableUserRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityDisableUserRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityEnableUserRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityDisableUserRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityEnableUserRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityEnableUserRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityEnableUserRequest<'a> {
-        SecurityEnableUserRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityEnableUserRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityGetApiKeyRequest<'a> {
-    id: &'a String,
-    name: &'a String,
-    realm_name: &'a String,
-    username: &'a String,
+impl<'a> Sender for SecurityEnableUserRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityGetApiKeyRequestBuilder<'a> {
-    id: &'a String,
-    name: &'a String,
-    realm_name: &'a String,
-    username: &'a String,
+    client: &'a ElasticsearchClient,
+    id: &'a str,
+    name: &'a str,
+    realm_name: &'a str,
+    username: &'a str,
 }
 impl<'a> SecurityGetApiKeyRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetApiKeyRequest<'a> {
-        SecurityGetApiKeyRequest {
-            id: self.id,
-            name: self.name,
-            realm_name: self.realm_name,
-            username: self.username,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetApiKeyRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityGetBuiltinPrivilegesRequest<'a> {}
-pub struct SecurityGetBuiltinPrivilegesRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetApiKeyRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetBuiltinPrivilegesRequest<'a> {
-        SecurityGetBuiltinPrivilegesRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetBuiltinPrivilegesRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetPrivilegesRequest<'a> {}
-pub struct SecurityGetPrivilegesRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetPrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetPrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetPrivilegesRequest<'a> {
-        SecurityGetPrivilegesRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetPrivilegesRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetRoleRequest<'a> {}
-pub struct SecurityGetRoleRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetPrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetRoleRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetRoleRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetRoleRequest<'a> {
-        SecurityGetRoleRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetRoleRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetRoleMappingRequest<'a> {}
-pub struct SecurityGetRoleMappingRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetRoleRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetRoleMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetRoleMappingRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetRoleMappingRequest<'a> {
-        SecurityGetRoleMappingRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetRoleMappingRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetTokenRequest<'a> {}
-pub struct SecurityGetTokenRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetRoleMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetTokenRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetTokenRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetTokenRequest<'a> {
-        SecurityGetTokenRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetTokenRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetUserRequest<'a> {}
-pub struct SecurityGetUserRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetTokenRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetUserRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetUserRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetUserRequest<'a> {
-        SecurityGetUserRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetUserRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityGetUserPrivilegesRequest<'a> {}
-pub struct SecurityGetUserPrivilegesRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetUserRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityGetUserPrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityGetUserPrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityGetUserPrivilegesRequest<'a> {
-        SecurityGetUserPrivilegesRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityGetUserPrivilegesRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityHasPrivilegesRequest<'a> {}
-pub struct SecurityHasPrivilegesRequestBuilder<'a> {}
+impl<'a> Sender for SecurityGetUserPrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityHasPrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityHasPrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityHasPrivilegesRequest<'a> {
-        SecurityHasPrivilegesRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityHasPrivilegesRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityInvalidateApiKeyRequest<'a> {}
-pub struct SecurityInvalidateApiKeyRequestBuilder<'a> {}
+impl<'a> Sender for SecurityHasPrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityInvalidateApiKeyRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityInvalidateApiKeyRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityInvalidateApiKeyRequest<'a> {
-        SecurityInvalidateApiKeyRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityInvalidateApiKeyRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityInvalidateTokenRequest<'a> {}
-pub struct SecurityInvalidateTokenRequestBuilder<'a> {}
+impl<'a> Sender for SecurityInvalidateApiKeyRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SecurityInvalidateTokenRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SecurityInvalidateTokenRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityInvalidateTokenRequest<'a> {
-        SecurityInvalidateTokenRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityInvalidateTokenRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct SecurityPutPrivilegesRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityInvalidateTokenRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityPutPrivilegesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityPutPrivilegesRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityPutPrivilegesRequest<'a> {
-        SecurityPutPrivilegesRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityPutPrivilegesRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityPutRoleRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityPutPrivilegesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityPutRoleRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityPutRoleRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityPutRoleRequest<'a> {
-        SecurityPutRoleRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityPutRoleRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityPutRoleMappingRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityPutRoleRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityPutRoleMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityPutRoleMappingRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityPutRoleMappingRequest<'a> {
-        SecurityPutRoleMappingRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityPutRoleMappingRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SecurityPutUserRequest<'a> {
-    refresh: Option<&'a i32>,
+impl<'a> Sender for SecurityPutRoleMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SecurityPutUserRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     refresh: Option<&'a i32>,
 }
 impl<'a> SecurityPutUserRequestBuilder<'a> {
-    pub fn build(&self) -> SecurityPutUserRequest<'a> {
-        SecurityPutUserRequest {
-            refresh: self.refresh,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SecurityPutUserRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for SecurityPutUserRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Security APIs"]
@@ -285,147 +657,108 @@ impl<'a> SecurityNamespaceClient<'a> {
         SecurityNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html"]
-    pub fn authenticate(&self, request: &SecurityAuthenticateRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/_authenticate")
+    pub fn authenticate(&self) -> SecurityAuthenticateRequestBuilder {
+        SecurityAuthenticateRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
-    pub fn change_password(&self, request: &SecurityChangePasswordRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_security/user/{username}/_password")
+    pub fn change_password(&self) -> SecurityChangePasswordRequestBuilder {
+        SecurityChangePasswordRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms(
-        &self,
-        request: &SecurityClearCachedRealmsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_security/realm/{realms}/_clear_cache")
+    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealmsRequestBuilder {
+        SecurityClearCachedRealmsRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles(
-        &self,
-        request: &SecurityClearCachedRolesRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_security/role/{name}/_clear_cache")
+    pub fn clear_cached_roles(&self) -> SecurityClearCachedRolesRequestBuilder {
+        SecurityClearCachedRolesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
-    pub fn create_api_key(&self, request: &SecurityCreateApiKeyRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_security/api_key")
+    pub fn create_api_key(&self) -> SecurityCreateApiKeyRequestBuilder {
+        SecurityCreateApiKeyRequestBuilder::default()
     }
     #[doc = "TODO"]
-    pub fn delete_privileges(&self, request: &SecurityDeletePrivilegesRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Delete,
-            "/_security/privilege/{application}/{name}",
-        )
+    pub fn delete_privileges(&self) -> SecurityDeletePrivilegesRequestBuilder {
+        SecurityDeletePrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
-    pub fn delete_role(&self, request: &SecurityDeleteRoleRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_security/role/{name}")
+    pub fn delete_role(&self) -> SecurityDeleteRoleRequestBuilder {
+        SecurityDeleteRoleRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
-    pub fn delete_role_mapping(
-        &self,
-        request: &SecurityDeleteRoleMappingRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_security/role_mapping/{name}")
+    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMappingRequestBuilder {
+        SecurityDeleteRoleMappingRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
-    pub fn delete_user(&self, request: &SecurityDeleteUserRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_security/user/{username}")
+    pub fn delete_user(&self) -> SecurityDeleteUserRequestBuilder {
+        SecurityDeleteUserRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user(&self, request: &SecurityDisableUserRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_security/user/{username}/_disable")
+    pub fn disable_user(&self) -> SecurityDisableUserRequestBuilder {
+        SecurityDisableUserRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user(&self, request: &SecurityEnableUserRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_security/user/{username}/_enable")
+    pub fn enable_user(&self) -> SecurityEnableUserRequestBuilder {
+        SecurityEnableUserRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
-    pub fn get_api_key(&self, request: &SecurityGetApiKeyRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_security/api_key")
+    pub fn get_api_key(&self) -> SecurityGetApiKeyRequestBuilder {
+        SecurityGetApiKeyRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html"]
-    pub fn get_builtin_privileges(
-        &self,
-        request: &SecurityGetBuiltinPrivilegesRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/privilege/_builtin")
+    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivilegesRequestBuilder {
+        SecurityGetBuiltinPrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_privileges(&self, request: &SecurityGetPrivilegesRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_security/privilege")
+    pub fn get_privileges(&self) -> SecurityGetPrivilegesRequestBuilder {
+        SecurityGetPrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html"]
-    pub fn get_role(&self, request: &SecurityGetRoleRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_security/role/{name}")
+    pub fn get_role(&self) -> SecurityGetRoleRequestBuilder {
+        SecurityGetRoleRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html"]
-    pub fn get_role_mapping(&self, request: &SecurityGetRoleMappingRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/role_mapping/{name}")
+    pub fn get_role_mapping(&self) -> SecurityGetRoleMappingRequestBuilder {
+        SecurityGetRoleMappingRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
-    pub fn get_token(&self, request: &SecurityGetTokenRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_security/oauth2/token")
+    pub fn get_token(&self) -> SecurityGetTokenRequestBuilder {
+        SecurityGetTokenRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
-    pub fn get_user(&self, request: &SecurityGetUserRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/user/{username}")
+    pub fn get_user(&self) -> SecurityGetUserRequestBuilder {
+        SecurityGetUserRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_user_privileges(
-        &self,
-        request: &SecurityGetUserPrivilegesRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/user/_privileges")
+    pub fn get_user_privileges(&self) -> SecurityGetUserPrivilegesRequestBuilder {
+        SecurityGetUserPrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
-    pub fn has_privileges(&self, request: &SecurityHasPrivilegesRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_security/user/_has_privileges")
+    pub fn has_privileges(&self) -> SecurityHasPrivilegesRequestBuilder {
+        SecurityHasPrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
-    pub fn invalidate_api_key(
-        &self,
-        request: &SecurityInvalidateApiKeyRequest,
-    ) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/_security/api_key")
+    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKeyRequestBuilder {
+        SecurityInvalidateApiKeyRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
-    pub fn invalidate_token(&self, request: &SecurityInvalidateTokenRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_security/oauth2/token")
+    pub fn invalidate_token(&self) -> SecurityInvalidateTokenRequestBuilder {
+        SecurityInvalidateTokenRequestBuilder::default()
     }
     #[doc = "TODO"]
-    pub fn put_privileges(&self, request: &SecurityPutPrivilegesRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_security/privilege/")
+    pub fn put_privileges(&self) -> SecurityPutPrivilegesRequestBuilder {
+        SecurityPutPrivilegesRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role(&self, request: &SecurityPutRoleRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_security/role/{name}")
+    pub fn put_role(&self) -> SecurityPutRoleRequestBuilder {
+        SecurityPutRoleRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping(&self, request: &SecurityPutRoleMappingRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_security/role_mapping/{name}")
+    pub fn put_role_mapping(&self) -> SecurityPutRoleMappingRequestBuilder {
+        SecurityPutRoleMappingRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user(&self, request: &SecurityPutUserRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_security/user/{username}")
+    pub fn put_user(&self) -> SecurityPutUserRequestBuilder {
+        SecurityPutUserRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

@@ -1,774 +1,1385 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
 use crate::client::Sender;
-use serde::de::DeserializeOwned;
+use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-
-pub struct MlCloseJobRequest<'a> {
-    allow_no_jobs: Option<&'a bool>,
-    force: Option<&'a bool>,
-    timeout: &'a String,
-}
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct MlCloseJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_jobs: Option<&'a bool>,
     force: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> MlCloseJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlCloseJobRequest<'a> {
-        MlCloseJobRequest {
-            allow_no_jobs: self.allow_no_jobs,
-            force: self.force,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlCloseJobRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlDeleteCalendarRequest<'a> {}
-pub struct MlDeleteCalendarRequestBuilder<'a> {}
+impl<'a> Sender for MlCloseJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteCalendarRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlDeleteCalendarRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteCalendarRequest<'a> {
-        MlDeleteCalendarRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteCalendarRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlDeleteCalendarEventRequest<'a> {}
-pub struct MlDeleteCalendarEventRequestBuilder<'a> {}
+impl<'a> Sender for MlDeleteCalendarRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteCalendarEventRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlDeleteCalendarEventRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteCalendarEventRequest<'a> {
-        MlDeleteCalendarEventRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteCalendarEventRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlDeleteCalendarJobRequest<'a> {}
-pub struct MlDeleteCalendarJobRequestBuilder<'a> {}
+impl<'a> Sender for MlDeleteCalendarEventRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteCalendarJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlDeleteCalendarJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteCalendarJobRequest<'a> {
-        MlDeleteCalendarJobRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteCalendarJobRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlDeleteDataFrameAnalyticsRequest<'a> {}
-pub struct MlDeleteDataFrameAnalyticsRequestBuilder<'a> {}
+impl<'a> Sender for MlDeleteCalendarJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteDataFrameAnalyticsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlDeleteDataFrameAnalyticsRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteDataFrameAnalyticsRequest<'a> {
-        MlDeleteDataFrameAnalyticsRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteDataFrameAnalyticsRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlDeleteDatafeedRequest<'a> {
-    force: Option<&'a bool>,
+impl<'a> Sender for MlDeleteDataFrameAnalyticsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlDeleteDatafeedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     force: Option<&'a bool>,
 }
 impl<'a> MlDeleteDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteDatafeedRequest<'a> {
-        MlDeleteDatafeedRequest { force: self.force }
-    }
-}
-pub struct MlDeleteExpiredDataRequest<'a> {}
-pub struct MlDeleteExpiredDataRequestBuilder<'a> {}
-impl<'a> MlDeleteExpiredDataRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteExpiredDataRequest<'a> {
-        MlDeleteExpiredDataRequest {}
-    }
-}
-pub struct MlDeleteFilterRequest<'a> {}
-pub struct MlDeleteFilterRequestBuilder<'a> {}
-impl<'a> MlDeleteFilterRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteFilterRequest<'a> {
-        MlDeleteFilterRequest {}
-    }
-}
-pub struct MlDeleteForecastRequest<'a> {
-    allow_no_forecasts: Option<&'a bool>,
-    timeout: &'a String,
-}
-pub struct MlDeleteForecastRequestBuilder<'a> {
-    allow_no_forecasts: Option<&'a bool>,
-    timeout: &'a String,
-}
-impl<'a> MlDeleteForecastRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteForecastRequest<'a> {
-        MlDeleteForecastRequest {
-            allow_no_forecasts: self.allow_no_forecasts,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteDatafeedRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-
-pub struct MlDeleteJobRequest<'a> {
-    force: Option<&'a bool>,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for MlDeleteDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
+pub struct MlDeleteExpiredDataRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
+impl<'a> MlDeleteExpiredDataRequestBuilder<'a> {
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteExpiredDataRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for MlDeleteExpiredDataRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteFilterRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
+impl<'a> MlDeleteFilterRequestBuilder<'a> {
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteFilterRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for MlDeleteFilterRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteForecastRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+    allow_no_forecasts: Option<&'a bool>,
+    timeout: &'a str,
+}
+impl<'a> MlDeleteForecastRequestBuilder<'a> {
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteForecastRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for MlDeleteForecastRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
 pub struct MlDeleteJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     force: Option<&'a bool>,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> MlDeleteJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteJobRequest<'a> {
-        MlDeleteJobRequest {
-            force: self.force,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteJobRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlDeleteModelSnapshotRequest<'a> {}
-pub struct MlDeleteModelSnapshotRequestBuilder<'a> {}
+impl<'a> Sender for MlDeleteJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlDeleteModelSnapshotRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlDeleteModelSnapshotRequestBuilder<'a> {
-    pub fn build(&self) -> MlDeleteModelSnapshotRequest<'a> {
-        MlDeleteModelSnapshotRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlDeleteModelSnapshotRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlEvaluateDataFrameRequest<'a> {}
-pub struct MlEvaluateDataFrameRequestBuilder<'a> {}
+impl<'a> Sender for MlDeleteModelSnapshotRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlEvaluateDataFrameRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlEvaluateDataFrameRequestBuilder<'a> {
-    pub fn build(&self) -> MlEvaluateDataFrameRequest<'a> {
-        MlEvaluateDataFrameRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlEvaluateDataFrameRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlFindFileStructureRequest<'a> {
-    charset: &'a String,
-    column_names: &'a Vec<String>,
-    delimiter: &'a String,
-    explain: Option<&'a bool>,
-    format: Option<&'a i32>,
-    grok_pattern: &'a String,
-    has_header_row: Option<&'a bool>,
-    line_merge_size_limit: Option<&'a i32>,
-    lines_to_sample: Option<&'a i32>,
-    quote: &'a String,
-    should_trim_fields: Option<&'a bool>,
-    timeout: &'a String,
-    timestamp_field: &'a String,
-    timestamp_format: &'a String,
+impl<'a> Sender for MlEvaluateDataFrameRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlFindFileStructureRequestBuilder<'a> {
-    charset: &'a String,
+    client: &'a ElasticsearchClient,
+    charset: &'a str,
     column_names: &'a Vec<String>,
-    delimiter: &'a String,
+    delimiter: &'a str,
     explain: Option<&'a bool>,
     format: Option<&'a i32>,
-    grok_pattern: &'a String,
+    grok_pattern: &'a str,
     has_header_row: Option<&'a bool>,
     line_merge_size_limit: Option<&'a i32>,
     lines_to_sample: Option<&'a i32>,
-    quote: &'a String,
+    quote: &'a str,
     should_trim_fields: Option<&'a bool>,
-    timeout: &'a String,
-    timestamp_field: &'a String,
-    timestamp_format: &'a String,
+    timeout: &'a str,
+    timestamp_field: &'a str,
+    timestamp_format: &'a str,
 }
 impl<'a> MlFindFileStructureRequestBuilder<'a> {
-    pub fn build(&self) -> MlFindFileStructureRequest<'a> {
-        MlFindFileStructureRequest {
-            charset: self.charset,
-            column_names: self.column_names,
-            delimiter: self.delimiter,
-            explain: self.explain,
-            format: self.format,
-            grok_pattern: self.grok_pattern,
-            has_header_row: self.has_header_row,
-            line_merge_size_limit: self.line_merge_size_limit,
-            lines_to_sample: self.lines_to_sample,
-            quote: self.quote,
-            should_trim_fields: self.should_trim_fields,
-            timeout: self.timeout,
-            timestamp_field: self.timestamp_field,
-            timestamp_format: self.timestamp_format,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlFindFileStructureRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlFlushJobRequest<'a> {
-    advance_time: &'a String,
-    calc_interim: Option<&'a bool>,
-    end: &'a String,
-    skip_time: &'a String,
-    start: &'a String,
+impl<'a> Sender for MlFindFileStructureRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlFlushJobRequestBuilder<'a> {
-    advance_time: &'a String,
+    client: &'a ElasticsearchClient,
+    advance_time: &'a str,
     calc_interim: Option<&'a bool>,
-    end: &'a String,
-    skip_time: &'a String,
-    start: &'a String,
+    end: &'a str,
+    skip_time: &'a str,
+    start: &'a str,
 }
 impl<'a> MlFlushJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlFlushJobRequest<'a> {
-        MlFlushJobRequest {
-            advance_time: self.advance_time,
-            calc_interim: self.calc_interim,
-            end: self.end,
-            skip_time: self.skip_time,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlFlushJobRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlForecastRequest<'a> {
-    duration: &'a String,
-    expires_in: &'a String,
+impl<'a> Sender for MlFlushJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlForecastRequestBuilder<'a> {
-    duration: &'a String,
-    expires_in: &'a String,
+    client: &'a ElasticsearchClient,
+    duration: &'a str,
+    expires_in: &'a str,
 }
 impl<'a> MlForecastRequestBuilder<'a> {
-    pub fn build(&self) -> MlForecastRequest<'a> {
-        MlForecastRequest {
-            duration: self.duration,
-            expires_in: self.expires_in,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlForecastRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetBucketsRequest<'a> {
-    anomaly_score: Option<&'a f64>,
-    desc: Option<&'a bool>,
-    end: &'a String,
-    exclude_interim: Option<&'a bool>,
-    expand: Option<&'a bool>,
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+impl<'a> Sender for MlForecastRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetBucketsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     anomaly_score: Option<&'a f64>,
     desc: Option<&'a bool>,
-    end: &'a String,
+    end: &'a str,
     exclude_interim: Option<&'a bool>,
     expand: Option<&'a bool>,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+    sort: &'a str,
+    start: &'a str,
 }
 impl<'a> MlGetBucketsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetBucketsRequest<'a> {
-        MlGetBucketsRequest {
-            anomaly_score: self.anomaly_score,
-            desc: self.desc,
-            end: self.end,
-            exclude_interim: self.exclude_interim,
-            expand: self.expand,
-            from: self.from,
-            size: self.size,
-            sort: self.sort,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetBucketsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetCalendarEventsRequest<'a> {
-    end: &'a String,
-    from: Option<&'a i32>,
-    job_id: &'a String,
-    size: Option<&'a i32>,
-    start: &'a String,
+impl<'a> Sender for MlGetBucketsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetCalendarEventsRequestBuilder<'a> {
-    end: &'a String,
+    client: &'a ElasticsearchClient,
+    end: &'a str,
     from: Option<&'a i32>,
-    job_id: &'a String,
+    job_id: &'a str,
     size: Option<&'a i32>,
-    start: &'a String,
+    start: &'a str,
 }
 impl<'a> MlGetCalendarEventsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetCalendarEventsRequest<'a> {
-        MlGetCalendarEventsRequest {
-            end: self.end,
-            from: self.from,
-            job_id: self.job_id,
-            size: self.size,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetCalendarEventsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetCalendarsRequest<'a> {
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for MlGetCalendarEventsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetCalendarsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> MlGetCalendarsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetCalendarsRequest<'a> {
-        MlGetCalendarsRequest {
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetCalendarsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetCategoriesRequest<'a> {
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for MlGetCalendarsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetCategoriesRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> MlGetCategoriesRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetCategoriesRequest<'a> {
-        MlGetCategoriesRequest {
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetCategoriesRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetDataFrameAnalyticsRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for MlGetCategoriesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetDataFrameAnalyticsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> MlGetDataFrameAnalyticsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetDataFrameAnalyticsRequest<'a> {
-        MlGetDataFrameAnalyticsRequest {
-            allow_no_match: self.allow_no_match,
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetDataFrameAnalyticsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetDataFrameAnalyticsStatsRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for MlGetDataFrameAnalyticsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetDataFrameAnalyticsStatsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> MlGetDataFrameAnalyticsStatsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetDataFrameAnalyticsStatsRequest<'a> {
-        MlGetDataFrameAnalyticsStatsRequest {
-            allow_no_match: self.allow_no_match,
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetDataFrameAnalyticsStatsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetDatafeedStatsRequest<'a> {
-    allow_no_datafeeds: Option<&'a bool>,
+impl<'a> Sender for MlGetDataFrameAnalyticsStatsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetDatafeedStatsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_datafeeds: Option<&'a bool>,
 }
 impl<'a> MlGetDatafeedStatsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetDatafeedStatsRequest<'a> {
-        MlGetDatafeedStatsRequest {
-            allow_no_datafeeds: self.allow_no_datafeeds,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetDatafeedStatsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetDatafeedsRequest<'a> {
-    allow_no_datafeeds: Option<&'a bool>,
+impl<'a> Sender for MlGetDatafeedStatsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetDatafeedsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_datafeeds: Option<&'a bool>,
 }
 impl<'a> MlGetDatafeedsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetDatafeedsRequest<'a> {
-        MlGetDatafeedsRequest {
-            allow_no_datafeeds: self.allow_no_datafeeds,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetDatafeedsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetFiltersRequest<'a> {
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for MlGetDatafeedsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetFiltersRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> MlGetFiltersRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetFiltersRequest<'a> {
-        MlGetFiltersRequest {
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetFiltersRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetInfluencersRequest<'a> {
-    desc: Option<&'a bool>,
-    end: &'a String,
-    exclude_interim: Option<&'a bool>,
-    from: Option<&'a i32>,
-    influencer_score: Option<&'a f64>,
-    size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+impl<'a> Sender for MlGetFiltersRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetInfluencersRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     desc: Option<&'a bool>,
-    end: &'a String,
+    end: &'a str,
     exclude_interim: Option<&'a bool>,
     from: Option<&'a i32>,
     influencer_score: Option<&'a f64>,
     size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+    sort: &'a str,
+    start: &'a str,
 }
 impl<'a> MlGetInfluencersRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetInfluencersRequest<'a> {
-        MlGetInfluencersRequest {
-            desc: self.desc,
-            end: self.end,
-            exclude_interim: self.exclude_interim,
-            from: self.from,
-            influencer_score: self.influencer_score,
-            size: self.size,
-            sort: self.sort,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetInfluencersRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetJobStatsRequest<'a> {
-    allow_no_jobs: Option<&'a bool>,
+impl<'a> Sender for MlGetInfluencersRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetJobStatsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_jobs: Option<&'a bool>,
 }
 impl<'a> MlGetJobStatsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetJobStatsRequest<'a> {
-        MlGetJobStatsRequest {
-            allow_no_jobs: self.allow_no_jobs,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetJobStatsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetJobsRequest<'a> {
-    allow_no_jobs: Option<&'a bool>,
+impl<'a> Sender for MlGetJobStatsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetJobsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_jobs: Option<&'a bool>,
 }
 impl<'a> MlGetJobsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetJobsRequest<'a> {
-        MlGetJobsRequest {
-            allow_no_jobs: self.allow_no_jobs,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetJobsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetModelSnapshotsRequest<'a> {
-    desc: Option<&'a bool>,
-    end: &'a String,
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+impl<'a> Sender for MlGetJobsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetModelSnapshotsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     desc: Option<&'a bool>,
-    end: &'a String,
+    end: &'a str,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+    sort: &'a str,
+    start: &'a str,
 }
 impl<'a> MlGetModelSnapshotsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetModelSnapshotsRequest<'a> {
-        MlGetModelSnapshotsRequest {
-            desc: self.desc,
-            end: self.end,
-            from: self.from,
-            size: self.size,
-            sort: self.sort,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetModelSnapshotsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetOverallBucketsRequest<'a> {
-    allow_no_jobs: Option<&'a bool>,
-    bucket_span: &'a String,
-    end: &'a String,
-    exclude_interim: Option<&'a bool>,
-    overall_score: Option<&'a f64>,
-    start: &'a String,
-    top_n: Option<&'a i32>,
+impl<'a> Sender for MlGetModelSnapshotsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetOverallBucketsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_jobs: Option<&'a bool>,
-    bucket_span: &'a String,
-    end: &'a String,
+    bucket_span: &'a str,
+    end: &'a str,
     exclude_interim: Option<&'a bool>,
     overall_score: Option<&'a f64>,
-    start: &'a String,
+    start: &'a str,
     top_n: Option<&'a i32>,
 }
 impl<'a> MlGetOverallBucketsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetOverallBucketsRequest<'a> {
-        MlGetOverallBucketsRequest {
-            allow_no_jobs: self.allow_no_jobs,
-            bucket_span: self.bucket_span,
-            end: self.end,
-            exclude_interim: self.exclude_interim,
-            overall_score: self.overall_score,
-            start: self.start,
-            top_n: self.top_n,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetOverallBucketsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlGetRecordsRequest<'a> {
-    desc: Option<&'a bool>,
-    end: &'a String,
-    exclude_interim: Option<&'a bool>,
-    from: Option<&'a i32>,
-    record_score: Option<&'a f64>,
-    size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+impl<'a> Sender for MlGetOverallBucketsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlGetRecordsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     desc: Option<&'a bool>,
-    end: &'a String,
+    end: &'a str,
     exclude_interim: Option<&'a bool>,
     from: Option<&'a i32>,
     record_score: Option<&'a f64>,
     size: Option<&'a i32>,
-    sort: &'a String,
-    start: &'a String,
+    sort: &'a str,
+    start: &'a str,
 }
 impl<'a> MlGetRecordsRequestBuilder<'a> {
-    pub fn build(&self) -> MlGetRecordsRequest<'a> {
-        MlGetRecordsRequest {
-            desc: self.desc,
-            end: self.end,
-            exclude_interim: self.exclude_interim,
-            from: self.from,
-            record_score: self.record_score,
-            size: self.size,
-            sort: self.sort,
-            start: self.start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlGetRecordsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlInfoRequest<'a> {}
-pub struct MlInfoRequestBuilder<'a> {}
+impl<'a> Sender for MlGetRecordsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlInfoRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlInfoRequestBuilder<'a> {
-    pub fn build(&self) -> MlInfoRequest<'a> {
-        MlInfoRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlInfoRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlOpenJobRequest<'a> {}
-pub struct MlOpenJobRequestBuilder<'a> {}
+impl<'a> Sender for MlInfoRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlOpenJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlOpenJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlOpenJobRequest<'a> {
-        MlOpenJobRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlOpenJobRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPostCalendarEventsRequest<'a> {}
-pub struct MlPostCalendarEventsRequestBuilder<'a> {}
+impl<'a> Sender for MlOpenJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPostCalendarEventsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPostCalendarEventsRequestBuilder<'a> {
-    pub fn build(&self) -> MlPostCalendarEventsRequest<'a> {
-        MlPostCalendarEventsRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPostCalendarEventsRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPostDataRequest<'a> {
-    reset_end: &'a String,
-    reset_start: &'a String,
+impl<'a> Sender for MlPostCalendarEventsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlPostDataRequestBuilder<'a> {
-    reset_end: &'a String,
-    reset_start: &'a String,
+    client: &'a ElasticsearchClient,
+    reset_end: &'a str,
+    reset_start: &'a str,
 }
 impl<'a> MlPostDataRequestBuilder<'a> {
-    pub fn build(&self) -> MlPostDataRequest<'a> {
-        MlPostDataRequest {
-            reset_end: self.reset_end,
-            reset_start: self.reset_start,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPostDataRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlPreviewDatafeedRequest<'a> {}
-pub struct MlPreviewDatafeedRequestBuilder<'a> {}
+impl<'a> Sender for MlPostDataRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPreviewDatafeedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPreviewDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlPreviewDatafeedRequest<'a> {
-        MlPreviewDatafeedRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPreviewDatafeedRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutCalendarRequest<'a> {}
-pub struct MlPutCalendarRequestBuilder<'a> {}
+impl<'a> Sender for MlPreviewDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutCalendarRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutCalendarRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutCalendarRequest<'a> {
-        MlPutCalendarRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutCalendarRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutCalendarJobRequest<'a> {}
-pub struct MlPutCalendarJobRequestBuilder<'a> {}
+impl<'a> Sender for MlPutCalendarRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutCalendarJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutCalendarJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutCalendarJobRequest<'a> {
-        MlPutCalendarJobRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutCalendarJobRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutDataFrameAnalyticsRequest<'a> {}
-pub struct MlPutDataFrameAnalyticsRequestBuilder<'a> {}
+impl<'a> Sender for MlPutCalendarJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutDataFrameAnalyticsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutDataFrameAnalyticsRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutDataFrameAnalyticsRequest<'a> {
-        MlPutDataFrameAnalyticsRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutDataFrameAnalyticsRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutDatafeedRequest<'a> {}
-pub struct MlPutDatafeedRequestBuilder<'a> {}
+impl<'a> Sender for MlPutDataFrameAnalyticsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutDatafeedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutDatafeedRequest<'a> {
-        MlPutDatafeedRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutDatafeedRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutFilterRequest<'a> {}
-pub struct MlPutFilterRequestBuilder<'a> {}
+impl<'a> Sender for MlPutDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutFilterRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutFilterRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutFilterRequest<'a> {
-        MlPutFilterRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutFilterRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlPutJobRequest<'a> {}
-pub struct MlPutJobRequestBuilder<'a> {}
+impl<'a> Sender for MlPutFilterRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlPutJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlPutJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlPutJobRequest<'a> {
-        MlPutJobRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlPutJobRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlRevertModelSnapshotRequest<'a> {
-    delete_intervening_results: Option<&'a bool>,
+impl<'a> Sender for MlPutJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlRevertModelSnapshotRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     delete_intervening_results: Option<&'a bool>,
 }
 impl<'a> MlRevertModelSnapshotRequestBuilder<'a> {
-    pub fn build(&self) -> MlRevertModelSnapshotRequest<'a> {
-        MlRevertModelSnapshotRequest {
-            delete_intervening_results: self.delete_intervening_results,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlRevertModelSnapshotRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlSetUpgradeModeRequest<'a> {
-    enabled: Option<&'a bool>,
-    timeout: &'a String,
+impl<'a> Sender for MlRevertModelSnapshotRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlSetUpgradeModeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     enabled: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> MlSetUpgradeModeRequestBuilder<'a> {
-    pub fn build(&self) -> MlSetUpgradeModeRequest<'a> {
-        MlSetUpgradeModeRequest {
-            enabled: self.enabled,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlSetUpgradeModeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlStartDataFrameAnalyticsRequest<'a> {
-    timeout: &'a String,
+impl<'a> Sender for MlSetUpgradeModeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlStartDataFrameAnalyticsRequestBuilder<'a> {
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    timeout: &'a str,
 }
 impl<'a> MlStartDataFrameAnalyticsRequestBuilder<'a> {
-    pub fn build(&self) -> MlStartDataFrameAnalyticsRequest<'a> {
-        MlStartDataFrameAnalyticsRequest {
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlStartDataFrameAnalyticsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlStartDatafeedRequest<'a> {
-    end: &'a String,
-    start: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for MlStartDataFrameAnalyticsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlStartDatafeedRequestBuilder<'a> {
-    end: &'a String,
-    start: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    end: &'a str,
+    start: &'a str,
+    timeout: &'a str,
 }
 impl<'a> MlStartDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlStartDatafeedRequest<'a> {
-        MlStartDatafeedRequest {
-            end: self.end,
-            start: self.start,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlStartDatafeedRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlStopDataFrameAnalyticsRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    force: Option<&'a bool>,
-    timeout: &'a String,
+impl<'a> Sender for MlStartDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlStopDataFrameAnalyticsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
     force: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> MlStopDataFrameAnalyticsRequestBuilder<'a> {
-    pub fn build(&self) -> MlStopDataFrameAnalyticsRequest<'a> {
-        MlStopDataFrameAnalyticsRequest {
-            allow_no_match: self.allow_no_match,
-            force: self.force,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlStopDataFrameAnalyticsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlStopDatafeedRequest<'a> {
-    allow_no_datafeeds: Option<&'a bool>,
-    force: Option<&'a bool>,
-    timeout: &'a String,
+impl<'a> Sender for MlStopDataFrameAnalyticsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct MlStopDatafeedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_datafeeds: Option<&'a bool>,
     force: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> MlStopDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlStopDatafeedRequest<'a> {
-        MlStopDatafeedRequest {
-            allow_no_datafeeds: self.allow_no_datafeeds,
-            force: self.force,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlStopDatafeedRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct MlUpdateDatafeedRequest<'a> {}
-pub struct MlUpdateDatafeedRequestBuilder<'a> {}
+impl<'a> Sender for MlStopDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlUpdateDatafeedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlUpdateDatafeedRequestBuilder<'a> {
-    pub fn build(&self) -> MlUpdateDatafeedRequest<'a> {
-        MlUpdateDatafeedRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlUpdateDatafeedRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlUpdateFilterRequest<'a> {}
-pub struct MlUpdateFilterRequestBuilder<'a> {}
+impl<'a> Sender for MlUpdateDatafeedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlUpdateFilterRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlUpdateFilterRequestBuilder<'a> {
-    pub fn build(&self) -> MlUpdateFilterRequest<'a> {
-        MlUpdateFilterRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlUpdateFilterRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlUpdateJobRequest<'a> {}
-pub struct MlUpdateJobRequestBuilder<'a> {}
+impl<'a> Sender for MlUpdateFilterRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlUpdateJobRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlUpdateJobRequestBuilder<'a> {
-    pub fn build(&self) -> MlUpdateJobRequest<'a> {
-        MlUpdateJobRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlUpdateJobRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlUpdateModelSnapshotRequest<'a> {}
-pub struct MlUpdateModelSnapshotRequestBuilder<'a> {}
+impl<'a> Sender for MlUpdateJobRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlUpdateModelSnapshotRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlUpdateModelSnapshotRequestBuilder<'a> {
-    pub fn build(&self) -> MlUpdateModelSnapshotRequest<'a> {
-        MlUpdateModelSnapshotRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlUpdateModelSnapshotRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlValidateRequest<'a> {}
-pub struct MlValidateRequestBuilder<'a> {}
+impl<'a> Sender for MlUpdateModelSnapshotRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlValidateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlValidateRequestBuilder<'a> {
-    pub fn build(&self) -> MlValidateRequest<'a> {
-        MlValidateRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlValidateRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct MlValidateDetectorRequest<'a> {}
-pub struct MlValidateDetectorRequestBuilder<'a> {}
+impl<'a> Sender for MlValidateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct MlValidateDetectorRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MlValidateDetectorRequestBuilder<'a> {
-    pub fn build(&self) -> MlValidateDetectorRequest<'a> {
-        MlValidateDetectorRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MlValidateDetectorRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for MlValidateDetectorRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Ml APIs"]
@@ -780,308 +1391,199 @@ impl<'a> MlNamespaceClient<'a> {
         MlNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
-    pub fn close_job(&self, request: &MlCloseJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/{job_id}/_close")
+    pub fn close_job(&self) -> MlCloseJobRequestBuilder {
+        MlCloseJobRequestBuilder::default()
     }
-    pub fn delete_calendar(&self, request: &MlDeleteCalendarRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/calendars/{calendar_id}")
+    pub fn delete_calendar(&self) -> MlDeleteCalendarRequestBuilder {
+        MlDeleteCalendarRequestBuilder::default()
     }
-    pub fn delete_calendar_event(
-        &self,
-        request: &MlDeleteCalendarEventRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Delete,
-            "/_ml/calendars/{calendar_id}/events/{event_id}",
-        )
+    pub fn delete_calendar_event(&self) -> MlDeleteCalendarEventRequestBuilder {
+        MlDeleteCalendarEventRequestBuilder::default()
     }
-    pub fn delete_calendar_job(&self, request: &MlDeleteCalendarJobRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Delete,
-            "/_ml/calendars/{calendar_id}/jobs/{job_id}",
-        )
+    pub fn delete_calendar_job(&self) -> MlDeleteCalendarJobRequestBuilder {
+        MlDeleteCalendarJobRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html"]
-    pub fn delete_data_frame_analytics(
-        &self,
-        request: &MlDeleteDataFrameAnalyticsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/data_frame/analytics/{id}")
+    pub fn delete_data_frame_analytics(&self) -> MlDeleteDataFrameAnalyticsRequestBuilder {
+        MlDeleteDataFrameAnalyticsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html"]
-    pub fn delete_datafeed(&self, request: &MlDeleteDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/datafeeds/{datafeed_id}")
+    pub fn delete_datafeed(&self) -> MlDeleteDatafeedRequestBuilder {
+        MlDeleteDatafeedRequestBuilder::default()
     }
-    pub fn delete_expired_data(&self, request: &MlDeleteExpiredDataRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/_delete_expired_data")
+    pub fn delete_expired_data(&self) -> MlDeleteExpiredDataRequestBuilder {
+        MlDeleteExpiredDataRequestBuilder::default()
     }
-    pub fn delete_filter(&self, request: &MlDeleteFilterRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/filters/{filter_id}")
+    pub fn delete_filter(&self) -> MlDeleteFilterRequestBuilder {
+        MlDeleteFilterRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html"]
-    pub fn delete_forecast(&self, request: &MlDeleteForecastRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Delete,
-            "/_ml/anomaly_detectors/{job_id}/_forecast",
-        )
+    pub fn delete_forecast(&self) -> MlDeleteForecastRequestBuilder {
+        MlDeleteForecastRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html"]
-    pub fn delete_job(&self, request: &MlDeleteJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_ml/anomaly_detectors/{job_id}")
+    pub fn delete_job(&self) -> MlDeleteJobRequestBuilder {
+        MlDeleteJobRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html"]
-    pub fn delete_model_snapshot(
-        &self,
-        request: &MlDeleteModelSnapshotRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Delete,
-            "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}",
-        )
+    pub fn delete_model_snapshot(&self) -> MlDeleteModelSnapshotRequestBuilder {
+        MlDeleteModelSnapshotRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
-    pub fn evaluate_data_frame(&self, request: &MlEvaluateDataFrameRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/data_frame/_evaluate")
+    pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrameRequestBuilder {
+        MlEvaluateDataFrameRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html"]
-    pub fn find_file_structure(&self, request: &MlFindFileStructureRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/find_file_structure")
+    pub fn find_file_structure(&self) -> MlFindFileStructureRequestBuilder {
+        MlFindFileStructureRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
-    pub fn flush_job(&self, request: &MlFlushJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/{job_id}/_flush")
+    pub fn flush_job(&self) -> MlFlushJobRequestBuilder {
+        MlFlushJobRequestBuilder::default()
     }
-    pub fn forecast(&self, request: &MlForecastRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_ml/anomaly_detectors/{job_id}/_forecast",
-        )
+    pub fn forecast(&self) -> MlForecastRequestBuilder {
+        MlForecastRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
-    pub fn get_buckets(&self, request: &MlGetBucketsRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/results/buckets/{timestamp}",
-        )
+    pub fn get_buckets(&self) -> MlGetBucketsRequestBuilder {
+        MlGetBucketsRequestBuilder::default()
     }
-    pub fn get_calendar_events(&self, request: &MlGetCalendarEventsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/calendars/{calendar_id}/events")
+    pub fn get_calendar_events(&self) -> MlGetCalendarEventsRequestBuilder {
+        MlGetCalendarEventsRequestBuilder::default()
     }
-    pub fn get_calendars(&self, request: &MlGetCalendarsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_ml/calendars")
+    pub fn get_calendars(&self) -> MlGetCalendarsRequestBuilder {
+        MlGetCalendarsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
-    pub fn get_categories(&self, request: &MlGetCategoriesRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/results/categories/{category_id}",
-        )
+    pub fn get_categories(&self) -> MlGetCategoriesRequestBuilder {
+        MlGetCategoriesRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
-    pub fn get_data_frame_analytics(
-        &self,
-        request: &MlGetDataFrameAnalyticsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/data_frame/analytics/{id}")
+    pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalyticsRequestBuilder {
+        MlGetDataFrameAnalyticsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html"]
-    pub fn get_data_frame_analytics_stats(
-        &self,
-        request: &MlGetDataFrameAnalyticsStatsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/data_frame/analytics/_stats")
+    pub fn get_data_frame_analytics_stats(&self) -> MlGetDataFrameAnalyticsStatsRequestBuilder {
+        MlGetDataFrameAnalyticsStatsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html"]
-    pub fn get_datafeed_stats(&self, request: &MlGetDatafeedStatsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/datafeeds/{datafeed_id}/_stats")
+    pub fn get_datafeed_stats(&self) -> MlGetDatafeedStatsRequestBuilder {
+        MlGetDatafeedStatsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html"]
-    pub fn get_datafeeds(&self, request: &MlGetDatafeedsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/datafeeds/{datafeed_id}")
+    pub fn get_datafeeds(&self) -> MlGetDatafeedsRequestBuilder {
+        MlGetDatafeedsRequestBuilder::default()
     }
-    pub fn get_filters(&self, request: &MlGetFiltersRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_ml/filters")
+    pub fn get_filters(&self) -> MlGetFiltersRequestBuilder {
+        MlGetFiltersRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
-    pub fn get_influencers(&self, request: &MlGetInfluencersRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/results/influencers",
-        )
+    pub fn get_influencers(&self) -> MlGetInfluencersRequestBuilder {
+        MlGetInfluencersRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
-    pub fn get_job_stats(&self, request: &MlGetJobStatsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/anomaly_detectors/_stats")
+    pub fn get_job_stats(&self) -> MlGetJobStatsRequestBuilder {
+        MlGetJobStatsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html"]
-    pub fn get_jobs(&self, request: &MlGetJobsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/anomaly_detectors/{job_id}")
+    pub fn get_jobs(&self) -> MlGetJobsRequestBuilder {
+        MlGetJobsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
-    pub fn get_model_snapshots(&self, request: &MlGetModelSnapshotsRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}",
-        )
+    pub fn get_model_snapshots(&self) -> MlGetModelSnapshotsRequestBuilder {
+        MlGetModelSnapshotsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
-    pub fn get_overall_buckets(&self, request: &MlGetOverallBucketsRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/results/overall_buckets",
-        )
+    pub fn get_overall_buckets(&self) -> MlGetOverallBucketsRequestBuilder {
+        MlGetOverallBucketsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
-    pub fn get_records(&self, request: &MlGetRecordsRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_ml/anomaly_detectors/{job_id}/results/records",
-        )
+    pub fn get_records(&self) -> MlGetRecordsRequestBuilder {
+        MlGetRecordsRequestBuilder::default()
     }
-    pub fn info(&self, request: &MlInfoRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_ml/info")
+    pub fn info(&self) -> MlInfoRequestBuilder {
+        MlInfoRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
-    pub fn open_job(&self, request: &MlOpenJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/{job_id}/_open")
+    pub fn open_job(&self) -> MlOpenJobRequestBuilder {
+        MlOpenJobRequestBuilder::default()
     }
-    pub fn post_calendar_events(&self, request: &MlPostCalendarEventsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/calendars/{calendar_id}/events")
+    pub fn post_calendar_events(&self) -> MlPostCalendarEventsRequestBuilder {
+        MlPostCalendarEventsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
-    pub fn post_data(&self, request: &MlPostDataRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/{job_id}/_data")
+    pub fn post_data(&self) -> MlPostDataRequestBuilder {
+        MlPostDataRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
-    pub fn preview_datafeed(&self, request: &MlPreviewDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_ml/datafeeds/{datafeed_id}/_preview")
+    pub fn preview_datafeed(&self) -> MlPreviewDatafeedRequestBuilder {
+        MlPreviewDatafeedRequestBuilder::default()
     }
-    pub fn put_calendar(&self, request: &MlPutCalendarRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_ml/calendars/{calendar_id}")
+    pub fn put_calendar(&self) -> MlPutCalendarRequestBuilder {
+        MlPutCalendarRequestBuilder::default()
     }
-    pub fn put_calendar_job(&self, request: &MlPutCalendarJobRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Put,
-            "/_ml/calendars/{calendar_id}/jobs/{job_id}",
-        )
+    pub fn put_calendar_job(&self) -> MlPutCalendarJobRequestBuilder {
+        MlPutCalendarJobRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
-    pub fn put_data_frame_analytics(
-        &self,
-        request: &MlPutDataFrameAnalyticsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_ml/data_frame/analytics/{id}")
+    pub fn put_data_frame_analytics(&self) -> MlPutDataFrameAnalyticsRequestBuilder {
+        MlPutDataFrameAnalyticsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
-    pub fn put_datafeed(&self, request: &MlPutDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_ml/datafeeds/{datafeed_id}")
+    pub fn put_datafeed(&self) -> MlPutDatafeedRequestBuilder {
+        MlPutDatafeedRequestBuilder::default()
     }
-    pub fn put_filter(&self, request: &MlPutFilterRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_ml/filters/{filter_id}")
+    pub fn put_filter(&self) -> MlPutFilterRequestBuilder {
+        MlPutFilterRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
-    pub fn put_job(&self, request: &MlPutJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_ml/anomaly_detectors/{job_id}")
+    pub fn put_job(&self) -> MlPutJobRequestBuilder {
+        MlPutJobRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
-    pub fn revert_model_snapshot(
-        &self,
-        request: &MlRevertModelSnapshotRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_revert",
-        )
+    pub fn revert_model_snapshot(&self) -> MlRevertModelSnapshotRequestBuilder {
+        MlRevertModelSnapshotRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
-    pub fn set_upgrade_mode(&self, request: &MlSetUpgradeModeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_ml/set_upgrade_mode")
+    pub fn set_upgrade_mode(&self) -> MlSetUpgradeModeRequestBuilder {
+        MlSetUpgradeModeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
-    pub fn start_data_frame_analytics(
-        &self,
-        request: &MlStartDataFrameAnalyticsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/data_frame/analytics/{id}/_start")
+    pub fn start_data_frame_analytics(&self) -> MlStartDataFrameAnalyticsRequestBuilder {
+        MlStartDataFrameAnalyticsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
-    pub fn start_datafeed(&self, request: &MlStartDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/datafeeds/{datafeed_id}/_start")
+    pub fn start_datafeed(&self) -> MlStartDatafeedRequestBuilder {
+        MlStartDatafeedRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
-    pub fn stop_data_frame_analytics(
-        &self,
-        request: &MlStopDataFrameAnalyticsRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/data_frame/analytics/{id}/_stop")
+    pub fn stop_data_frame_analytics(&self) -> MlStopDataFrameAnalyticsRequestBuilder {
+        MlStopDataFrameAnalyticsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
-    pub fn stop_datafeed(&self, request: &MlStopDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/datafeeds/{datafeed_id}/_stop")
+    pub fn stop_datafeed(&self) -> MlStopDatafeedRequestBuilder {
+        MlStopDatafeedRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
-    pub fn update_datafeed(&self, request: &MlUpdateDatafeedRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/datafeeds/{datafeed_id}/_update")
+    pub fn update_datafeed(&self) -> MlUpdateDatafeedRequestBuilder {
+        MlUpdateDatafeedRequestBuilder::default()
     }
-    pub fn update_filter(&self, request: &MlUpdateFilterRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/filters/{filter_id}/_update")
+    pub fn update_filter(&self) -> MlUpdateFilterRequestBuilder {
+        MlUpdateFilterRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
-    pub fn update_job(&self, request: &MlUpdateJobRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/{job_id}/_update")
+    pub fn update_job(&self) -> MlUpdateJobRequestBuilder {
+        MlUpdateJobRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
-    pub fn update_model_snapshot(
-        &self,
-        request: &MlUpdateModelSnapshotRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_update",
-        )
+    pub fn update_model_snapshot(&self) -> MlUpdateModelSnapshotRequestBuilder {
+        MlUpdateModelSnapshotRequestBuilder::default()
     }
-    pub fn validate(&self, request: &MlValidateRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_ml/anomaly_detectors/_validate")
+    pub fn validate(&self) -> MlValidateRequestBuilder {
+        MlValidateRequestBuilder::default()
     }
-    pub fn validate_detector(&self, request: &MlValidateDetectorRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_ml/anomaly_detectors/_validate/detector",
-        )
+    pub fn validate_detector(&self) -> MlValidateDetectorRequestBuilder {
+        MlValidateDetectorRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

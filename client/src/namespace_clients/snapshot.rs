@@ -1,151 +1,245 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct SnapshotCreateRequest<'a> {
-    master_timeout: &'a String,
-    wait_for_completion: Option<&'a bool>,
-}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct SnapshotCreateRequestBuilder<'a> {
-    master_timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> SnapshotCreateRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotCreateRequest<'a> {
-        SnapshotCreateRequest {
-            master_timeout: self.master_timeout,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotCreateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotCreateRepositoryRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
-    verify: Option<&'a bool>,
+impl<'a> Sender for SnapshotCreateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotCreateRepositoryRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
     verify: Option<&'a bool>,
 }
 impl<'a> SnapshotCreateRepositoryRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotCreateRepositoryRequest<'a> {
-        SnapshotCreateRepositoryRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            verify: self.verify,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotCreateRepositoryRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotDeleteRequest<'a> {
-    master_timeout: &'a String,
+impl<'a> Sender for SnapshotCreateRepositoryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotDeleteRequestBuilder<'a> {
-    master_timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
 }
 impl<'a> SnapshotDeleteRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotDeleteRequest<'a> {
-        SnapshotDeleteRequest {
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotDeleteRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotDeleteRepositoryRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for SnapshotDeleteRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotDeleteRepositoryRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> SnapshotDeleteRepositoryRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotDeleteRepositoryRequest<'a> {
-        SnapshotDeleteRepositoryRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotDeleteRepositoryRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotGetRequest<'a> {
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    verbose: Option<&'a bool>,
+impl<'a> Sender for SnapshotDeleteRepositoryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotGetRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
     verbose: Option<&'a bool>,
 }
 impl<'a> SnapshotGetRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotGetRequest<'a> {
-        SnapshotGetRequest {
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            verbose: self.verbose,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotGetRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotGetRepositoryRequest<'a> {
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for SnapshotGetRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotGetRepositoryRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> SnapshotGetRepositoryRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotGetRepositoryRequest<'a> {
-        SnapshotGetRepositoryRequest {
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotGetRepositoryRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotRestoreRequest<'a> {
-    master_timeout: &'a String,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for SnapshotGetRepositoryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotRestoreRequestBuilder<'a> {
-    master_timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> SnapshotRestoreRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotRestoreRequest<'a> {
-        SnapshotRestoreRequest {
-            master_timeout: self.master_timeout,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotRestoreRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotStatusRequest<'a> {
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for SnapshotRestoreRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotStatusRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> SnapshotStatusRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotStatusRequest<'a> {
-        SnapshotStatusRequest {
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotStatusRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SnapshotVerifyRepositoryRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for SnapshotStatusRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct SnapshotVerifyRepositoryRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> SnapshotVerifyRepositoryRequestBuilder<'a> {
-    pub fn build(&self) -> SnapshotVerifyRepositoryRequest<'a> {
-        SnapshotVerifyRepositoryRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SnapshotVerifyRepositoryRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for SnapshotVerifyRepositoryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Snapshot APIs"]
@@ -157,48 +251,40 @@ impl<'a> SnapshotNamespaceClient<'a> {
         SnapshotNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create(&self, request: &SnapshotCreateRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_snapshot/{repository}/{snapshot}")
+    pub fn create(&self) -> SnapshotCreateRequestBuilder {
+        SnapshotCreateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create_repository(&self, request: &SnapshotCreateRepositoryRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_snapshot/{repository}")
+    pub fn create_repository(&self) -> SnapshotCreateRepositoryRequestBuilder {
+        SnapshotCreateRepositoryRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete(&self, request: &SnapshotDeleteRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_snapshot/{repository}/{snapshot}")
+    pub fn delete(&self) -> SnapshotDeleteRequestBuilder {
+        SnapshotDeleteRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete_repository(&self, request: &SnapshotDeleteRepositoryRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_snapshot/{repository}")
+    pub fn delete_repository(&self) -> SnapshotDeleteRepositoryRequestBuilder {
+        SnapshotDeleteRepositoryRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn get(&self, request: &SnapshotGetRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_snapshot/{repository}/{snapshot}")
+    pub fn get(&self) -> SnapshotGetRequestBuilder {
+        SnapshotGetRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn get_repository(&self, request: &SnapshotGetRepositoryRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_snapshot")
+    pub fn get_repository(&self) -> SnapshotGetRepositoryRequestBuilder {
+        SnapshotGetRepositoryRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn restore(&self, request: &SnapshotRestoreRequest) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_snapshot/{repository}/{snapshot}/_restore",
-        )
+    pub fn restore(&self) -> SnapshotRestoreRequestBuilder {
+        SnapshotRestoreRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn status(&self, request: &SnapshotStatusRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_snapshot/_status")
+    pub fn status(&self) -> SnapshotStatusRequestBuilder {
+        SnapshotStatusRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn verify_repository(&self, request: &SnapshotVerifyRepositoryRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_snapshot/{repository}/_verify")
+    pub fn verify_repository(&self) -> SnapshotVerifyRepositoryRequestBuilder {
+        SnapshotVerifyRepositoryRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

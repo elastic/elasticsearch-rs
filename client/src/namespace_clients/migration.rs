@@ -1,11 +1,34 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct MigrationDeprecationsRequest<'a> {}
-pub struct MigrationDeprecationsRequestBuilder<'a> {}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
+pub struct MigrationDeprecationsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> MigrationDeprecationsRequestBuilder<'a> {
-    pub fn build(&self) -> MigrationDeprecationsRequest<'a> {
-        MigrationDeprecationsRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MigrationDeprecationsRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for MigrationDeprecationsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Migration APIs"]
@@ -17,9 +40,8 @@ impl<'a> MigrationNamespaceClient<'a> {
         MigrationNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html"]
-    pub fn deprecations(&self, request: &MigrationDeprecationsRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_migration/deprecations")
+    pub fn deprecations(&self) -> MigrationDeprecationsRequestBuilder {
+        MigrationDeprecationsRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

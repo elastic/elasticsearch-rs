@@ -1,78 +1,183 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct LicenseDeleteRequest<'a> {}
-pub struct LicenseDeleteRequestBuilder<'a> {}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
+pub struct LicenseDeleteRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> LicenseDeleteRequestBuilder<'a> {
-    pub fn build(&self) -> LicenseDeleteRequest<'a> {
-        LicenseDeleteRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicenseDeleteRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct LicenseGetRequest<'a> {
-    local: Option<&'a bool>,
+impl<'a> Sender for LicenseDeleteRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct LicenseGetRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     local: Option<&'a bool>,
 }
 impl<'a> LicenseGetRequestBuilder<'a> {
-    pub fn build(&self) -> LicenseGetRequest<'a> {
-        LicenseGetRequest { local: self.local }
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicenseGetRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct LicenseGetBasicStatusRequest<'a> {}
-pub struct LicenseGetBasicStatusRequestBuilder<'a> {}
+impl<'a> Sender for LicenseGetRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct LicenseGetBasicStatusRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> LicenseGetBasicStatusRequestBuilder<'a> {
-    pub fn build(&self) -> LicenseGetBasicStatusRequest<'a> {
-        LicenseGetBasicStatusRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicenseGetBasicStatusRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct LicenseGetTrialStatusRequest<'a> {}
-pub struct LicenseGetTrialStatusRequestBuilder<'a> {}
+impl<'a> Sender for LicenseGetBasicStatusRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct LicenseGetTrialStatusRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> LicenseGetTrialStatusRequestBuilder<'a> {
-    pub fn build(&self) -> LicenseGetTrialStatusRequest<'a> {
-        LicenseGetTrialStatusRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicenseGetTrialStatusRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct LicensePostRequest<'a> {
-    acknowledge: Option<&'a bool>,
+impl<'a> Sender for LicenseGetTrialStatusRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct LicensePostRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     acknowledge: Option<&'a bool>,
 }
 impl<'a> LicensePostRequestBuilder<'a> {
-    pub fn build(&self) -> LicensePostRequest<'a> {
-        LicensePostRequest {
-            acknowledge: self.acknowledge,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicensePostRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct LicensePostStartBasicRequest<'a> {
-    acknowledge: Option<&'a bool>,
+impl<'a> Sender for LicensePostRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct LicensePostStartBasicRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     acknowledge: Option<&'a bool>,
 }
 impl<'a> LicensePostStartBasicRequestBuilder<'a> {
-    pub fn build(&self) -> LicensePostStartBasicRequest<'a> {
-        LicensePostStartBasicRequest {
-            acknowledge: self.acknowledge,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicensePostStartBasicRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct LicensePostStartTrialRequest<'a> {
-    acknowledge: Option<&'a bool>,
-    ty: &'a String,
+impl<'a> Sender for LicensePostStartBasicRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct LicensePostStartTrialRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     acknowledge: Option<&'a bool>,
-    ty: &'a String,
+    ty: &'a str,
 }
 impl<'a> LicensePostStartTrialRequestBuilder<'a> {
-    pub fn build(&self) -> LicensePostStartTrialRequest<'a> {
-        LicensePostStartTrialRequest {
-            acknowledge: self.acknowledge,
-            ty: self.ty,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        LicensePostStartTrialRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for LicensePostStartTrialRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "License APIs"]
@@ -84,32 +189,32 @@ impl<'a> LicenseNamespaceClient<'a> {
         LicenseNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html"]
-    pub fn delete(&self, request: &LicenseDeleteRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/_license")
+    pub fn delete(&self) -> LicenseDeleteRequestBuilder {
+        LicenseDeleteRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html"]
-    pub fn get(&self, request: &LicenseGetRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_license")
+    pub fn get(&self) -> LicenseGetRequestBuilder {
+        LicenseGetRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html"]
-    pub fn get_basic_status(&self, request: &LicenseGetBasicStatusRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_license/basic_status")
+    pub fn get_basic_status(&self) -> LicenseGetBasicStatusRequestBuilder {
+        LicenseGetBasicStatusRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html"]
-    pub fn get_trial_status(&self, request: &LicenseGetTrialStatusRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_license/trial_status")
+    pub fn get_trial_status(&self) -> LicenseGetTrialStatusRequestBuilder {
+        LicenseGetTrialStatusRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html"]
-    pub fn post(&self, request: &LicensePostRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_license")
+    pub fn post(&self) -> LicensePostRequestBuilder {
+        LicensePostRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html"]
-    pub fn post_start_basic(&self, request: &LicensePostStartBasicRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_license/start_basic")
+    pub fn post_start_basic(&self) -> LicensePostStartBasicRequestBuilder {
+        LicensePostStartBasicRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html"]
-    pub fn post_start_trial(&self, request: &LicensePostStartTrialRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_license/start_trial")
+    pub fn post_start_trial(&self) -> LicensePostStartTrialRequestBuilder {
+        LicensePostStartTrialRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

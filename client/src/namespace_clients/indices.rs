@@ -1,28 +1,40 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct IndicesAnalyzeRequest<'a> {
-    index: &'a String,
-}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct IndicesAnalyzeRequestBuilder<'a> {
-    index: &'a String,
+    client: &'a ElasticsearchClient,
+    index: &'a str,
 }
 impl<'a> IndicesAnalyzeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesAnalyzeRequest<'a> {
-        IndicesAnalyzeRequest { index: self.index }
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesAnalyzeRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct IndicesClearCacheRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    fielddata: Option<&'a bool>,
-    fields: &'a Vec<String>,
-    ignore_unavailable: Option<&'a bool>,
-    index: &'a Vec<String>,
-    query: Option<&'a bool>,
-    request: Option<&'a bool>,
+impl<'a> Sender for IndicesAnalyzeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesClearCacheRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     fielddata: Option<&'a bool>,
@@ -33,135 +45,167 @@ pub struct IndicesClearCacheRequestBuilder<'a> {
     request: Option<&'a bool>,
 }
 impl<'a> IndicesClearCacheRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesClearCacheRequest<'a> {
-        IndicesClearCacheRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            fielddata: self.fielddata,
-            fields: self.fields,
-            ignore_unavailable: self.ignore_unavailable,
-            index: self.index,
-            query: self.query,
-            request: self.request,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesClearCacheRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesCloseRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesClearCacheRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesCloseRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesCloseRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesCloseRequest<'a> {
-        IndicesCloseRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesCloseRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesCreateRequest<'a> {
-    include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesCloseRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesCreateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesCreateRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesCreateRequest<'a> {
-        IndicesCreateRequest {
-            include_type_name: self.include_type_name,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesCreateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesDeleteRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesCreateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesDeleteRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesDeleteRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesDeleteRequest<'a> {
-        IndicesDeleteRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesDeleteRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesDeleteAliasRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesDeleteRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesDeleteAliasRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesDeleteAliasRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesDeleteAliasRequest<'a> {
-        IndicesDeleteAliasRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesDeleteAliasRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesDeleteTemplateRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesDeleteAliasRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesDeleteTemplateRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesDeleteTemplateRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesDeleteTemplateRequest<'a> {
-        IndicesDeleteTemplateRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesDeleteTemplateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesExistsRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    flat_settings: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    include_defaults: Option<&'a bool>,
-    local: Option<&'a bool>,
+impl<'a> Sender for IndicesDeleteTemplateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesExistsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -170,88 +214,111 @@ pub struct IndicesExistsRequestBuilder<'a> {
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesExistsRequest<'a> {
-        IndicesExistsRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            flat_settings: self.flat_settings,
-            ignore_unavailable: self.ignore_unavailable,
-            include_defaults: self.include_defaults,
-            local: self.local,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesExistsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesExistsAliasRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    local: Option<&'a bool>,
+impl<'a> Sender for IndicesExistsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesExistsAliasRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsAliasRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesExistsAliasRequest<'a> {
-        IndicesExistsAliasRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            local: self.local,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesExistsAliasRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesExistsTemplateRequest<'a> {
-    flat_settings: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for IndicesExistsAliasRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesExistsTemplateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     flat_settings: Option<&'a bool>,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> IndicesExistsTemplateRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesExistsTemplateRequest<'a> {
-        IndicesExistsTemplateRequest {
-            flat_settings: self.flat_settings,
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesExistsTemplateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesExistsTypeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    local: Option<&'a bool>,
+impl<'a> Sender for IndicesExistsTemplateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesExistsTypeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsTypeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesExistsTypeRequest<'a> {
-        IndicesExistsTypeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            local: self.local,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesExistsTypeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesFlushRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    force: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    wait_if_ongoing: Option<&'a bool>,
+impl<'a> Sender for IndicesExistsTypeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesFlushRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     force: Option<&'a bool>,
@@ -259,44 +326,55 @@ pub struct IndicesFlushRequestBuilder<'a> {
     wait_if_ongoing: Option<&'a bool>,
 }
 impl<'a> IndicesFlushRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesFlushRequest<'a> {
-        IndicesFlushRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            force: self.force,
-            ignore_unavailable: self.ignore_unavailable,
-            wait_if_ongoing: self.wait_if_ongoing,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesFlushRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesFlushSyncedRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
+impl<'a> Sender for IndicesFlushRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesFlushSyncedRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesFlushSyncedRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesFlushSyncedRequest<'a> {
-        IndicesFlushSyncedRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesFlushSyncedRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesForcemergeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    flush: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    max_num_segments: Option<&'a i64>,
-    only_expunge_deletes: Option<&'a bool>,
+impl<'a> Sender for IndicesFlushSyncedRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesForcemergeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flush: Option<&'a bool>,
@@ -305,56 +383,58 @@ pub struct IndicesForcemergeRequestBuilder<'a> {
     only_expunge_deletes: Option<&'a bool>,
 }
 impl<'a> IndicesForcemergeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesForcemergeRequest<'a> {
-        IndicesForcemergeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            flush: self.flush,
-            ignore_unavailable: self.ignore_unavailable,
-            max_num_segments: self.max_num_segments,
-            only_expunge_deletes: self.only_expunge_deletes,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesForcemergeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesFreezeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesForcemergeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesFreezeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesFreezeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesFreezeRequest<'a> {
-        IndicesFreezeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesFreezeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    flat_settings: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    include_defaults: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for IndicesFreezeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -362,53 +442,59 @@ pub struct IndicesGetRequestBuilder<'a> {
     include_defaults: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> IndicesGetRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetRequest<'a> {
-        IndicesGetRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            flat_settings: self.flat_settings,
-            ignore_unavailable: self.ignore_unavailable,
-            include_defaults: self.include_defaults,
-            include_type_name: self.include_type_name,
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetAliasRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    local: Option<&'a bool>,
+impl<'a> Sender for IndicesGetRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetAliasRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesGetAliasRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetAliasRequest<'a> {
-        IndicesGetAliasRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            local: self.local,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetAliasRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetFieldMappingRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    include_defaults: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    local: Option<&'a bool>,
+impl<'a> Sender for IndicesGetAliasRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetFieldMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -417,428 +503,512 @@ pub struct IndicesGetFieldMappingRequestBuilder<'a> {
     local: Option<&'a bool>,
 }
 impl<'a> IndicesGetFieldMappingRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetFieldMappingRequest<'a> {
-        IndicesGetFieldMappingRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            include_defaults: self.include_defaults,
-            include_type_name: self.include_type_name,
-            local: self.local,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetFieldMappingRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetMappingRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for IndicesGetFieldMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> IndicesGetMappingRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetMappingRequest<'a> {
-        IndicesGetMappingRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            include_type_name: self.include_type_name,
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetMappingRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetSettingsRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    flat_settings: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    include_defaults: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for IndicesGetMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetSettingsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
     ignore_unavailable: Option<&'a bool>,
     include_defaults: Option<&'a bool>,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> IndicesGetSettingsRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetSettingsRequest<'a> {
-        IndicesGetSettingsRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            flat_settings: self.flat_settings,
-            ignore_unavailable: self.ignore_unavailable,
-            include_defaults: self.include_defaults,
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetSettingsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetTemplateRequest<'a> {
-    flat_settings: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a String,
+impl<'a> Sender for IndicesGetSettingsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetTemplateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     flat_settings: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
     local: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
 }
 impl<'a> IndicesGetTemplateRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetTemplateRequest<'a> {
-        IndicesGetTemplateRequest {
-            flat_settings: self.flat_settings,
-            include_type_name: self.include_type_name,
-            local: self.local,
-            master_timeout: self.master_timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetTemplateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesGetUpgradeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
+impl<'a> Sender for IndicesGetTemplateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesGetUpgradeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesGetUpgradeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesGetUpgradeRequest<'a> {
-        IndicesGetUpgradeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesGetUpgradeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesOpenRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesGetUpgradeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesOpenRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesOpenRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesOpenRequest<'a> {
-        IndicesOpenRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesOpenRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesPutAliasRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesOpenRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesPutAliasRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesPutAliasRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesPutAliasRequest<'a> {
-        IndicesPutAliasRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesPutAliasRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesPutMappingRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesPutAliasRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesPutMappingRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesPutMappingRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesPutMappingRequest<'a> {
-        IndicesPutMappingRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            include_type_name: self.include_type_name,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesPutMappingRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesPutSettingsRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    flat_settings: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    preserve_existing: Option<&'a bool>,
-    timeout: &'a String,
+impl<'a> Sender for IndicesPutMappingRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesPutSettingsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
     preserve_existing: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> IndicesPutSettingsRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesPutSettingsRequest<'a> {
-        IndicesPutSettingsRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            flat_settings: self.flat_settings,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            preserve_existing: self.preserve_existing,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesPutSettingsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesPutTemplateRequest<'a> {
-    create: Option<&'a bool>,
-    flat_settings: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    order: Option<&'a i64>,
-    timeout: &'a String,
+impl<'a> Sender for IndicesPutSettingsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesPutTemplateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     create: Option<&'a bool>,
     flat_settings: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
+    master_timeout: &'a str,
     order: Option<&'a i64>,
-    timeout: &'a String,
+    timeout: &'a str,
 }
 impl<'a> IndicesPutTemplateRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesPutTemplateRequest<'a> {
-        IndicesPutTemplateRequest {
-            create: self.create,
-            flat_settings: self.flat_settings,
-            include_type_name: self.include_type_name,
-            master_timeout: self.master_timeout,
-            order: self.order,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesPutTemplateRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesRecoveryRequest<'a> {
-    active_only: Option<&'a bool>,
-    detailed: Option<&'a bool>,
+impl<'a> Sender for IndicesPutTemplateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesRecoveryRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     active_only: Option<&'a bool>,
     detailed: Option<&'a bool>,
 }
 impl<'a> IndicesRecoveryRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesRecoveryRequest<'a> {
-        IndicesRecoveryRequest {
-            active_only: self.active_only,
-            detailed: self.detailed,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesRecoveryRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesRefreshRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
+impl<'a> Sender for IndicesRecoveryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesRefreshRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesRefreshRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesRefreshRequest<'a> {
-        IndicesRefreshRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesRefreshRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesReloadSearchAnalyzersRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
+impl<'a> Sender for IndicesRefreshRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesReloadSearchAnalyzersRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesReloadSearchAnalyzersRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesReloadSearchAnalyzersRequest<'a> {
-        IndicesReloadSearchAnalyzersRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesReloadSearchAnalyzersRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesRolloverRequest<'a> {
-    dry_run: Option<&'a bool>,
-    include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesReloadSearchAnalyzersRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesRolloverRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     dry_run: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesRolloverRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesRolloverRequest<'a> {
-        IndicesRolloverRequest {
-            dry_run: self.dry_run,
-            include_type_name: self.include_type_name,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesRolloverRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesSegmentsRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    verbose: Option<&'a bool>,
+impl<'a> Sender for IndicesRolloverRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesSegmentsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     verbose: Option<&'a bool>,
 }
 impl<'a> IndicesSegmentsRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesSegmentsRequest<'a> {
-        IndicesSegmentsRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            verbose: self.verbose,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesSegmentsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesShardStoresRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    status: &'a Vec<String>,
+impl<'a> Sender for IndicesSegmentsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesShardStoresRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     status: &'a Vec<String>,
 }
 impl<'a> IndicesShardStoresRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesShardStoresRequest<'a> {
-        IndicesShardStoresRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            status: self.status,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesShardStoresRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesShrinkRequest<'a> {
-    copy_settings: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesShardStoresRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesShrinkRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     copy_settings: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesShrinkRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesShrinkRequest<'a> {
-        IndicesShrinkRequest {
-            copy_settings: self.copy_settings,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesShrinkRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesSplitRequest<'a> {
-    copy_settings: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesShrinkRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesSplitRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     copy_settings: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesSplitRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesSplitRequest<'a> {
-        IndicesSplitRequest {
-            copy_settings: self.copy_settings,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesSplitRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesStatsRequest<'a> {
-    completion_fields: &'a Vec<String>,
-    expand_wildcards: Option<&'a i32>,
-    fielddata_fields: &'a Vec<String>,
-    fields: &'a Vec<String>,
-    forbid_closed_indices: Option<&'a bool>,
-    groups: &'a Vec<String>,
-    include_segment_file_sizes: Option<&'a bool>,
-    include_unloaded_segments: Option<&'a bool>,
-    level: Option<&'a i32>,
-    types: &'a Vec<String>,
+impl<'a> Sender for IndicesSplitRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesStatsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     completion_fields: &'a Vec<String>,
     expand_wildcards: Option<&'a i32>,
     fielddata_fields: &'a Vec<String>,
@@ -851,73 +1021,84 @@ pub struct IndicesStatsRequestBuilder<'a> {
     types: &'a Vec<String>,
 }
 impl<'a> IndicesStatsRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesStatsRequest<'a> {
-        IndicesStatsRequest {
-            completion_fields: self.completion_fields,
-            expand_wildcards: self.expand_wildcards,
-            fielddata_fields: self.fielddata_fields,
-            fields: self.fields,
-            forbid_closed_indices: self.forbid_closed_indices,
-            groups: self.groups,
-            include_segment_file_sizes: self.include_segment_file_sizes,
-            include_unloaded_segments: self.include_unloaded_segments,
-            level: self.level,
-            types: self.types,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesStatsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesUnfreezeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+impl<'a> Sender for IndicesStatsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesUnfreezeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a String,
-    timeout: &'a String,
-    wait_for_active_shards: &'a String,
+    master_timeout: &'a str,
+    timeout: &'a str,
+    wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesUnfreezeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesUnfreezeRequest<'a> {
-        IndicesUnfreezeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
-            wait_for_active_shards: self.wait_for_active_shards,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesUnfreezeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesUpdateAliasesRequest<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+impl<'a> Sender for IndicesUnfreezeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesUpdateAliasesRequestBuilder<'a> {
-    master_timeout: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    master_timeout: &'a str,
+    timeout: &'a str,
 }
 impl<'a> IndicesUpdateAliasesRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesUpdateAliasesRequest<'a> {
-        IndicesUpdateAliasesRequest {
-            master_timeout: self.master_timeout,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesUpdateAliasesRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesUpgradeRequest<'a> {
-    allow_no_indices: Option<&'a bool>,
-    expand_wildcards: Option<&'a i32>,
-    ignore_unavailable: Option<&'a bool>,
-    only_ancient_segments: Option<&'a bool>,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for IndicesUpdateAliasesRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesUpgradeRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -925,60 +1106,59 @@ pub struct IndicesUpgradeRequestBuilder<'a> {
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> IndicesUpgradeRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesUpgradeRequest<'a> {
-        IndicesUpgradeRequest {
-            allow_no_indices: self.allow_no_indices,
-            expand_wildcards: self.expand_wildcards,
-            ignore_unavailable: self.ignore_unavailable,
-            only_ancient_segments: self.only_ancient_segments,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesUpgradeRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct IndicesValidateQueryRequest<'a> {
-    all_shards: Option<&'a bool>,
-    allow_no_indices: Option<&'a bool>,
-    analyze_wildcard: Option<&'a bool>,
-    analyzer: &'a String,
-    default_operator: Option<&'a i32>,
-    df: &'a String,
-    expand_wildcards: Option<&'a i32>,
-    explain: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    lenient: Option<&'a bool>,
-    q: &'a String,
-    rewrite: Option<&'a bool>,
+impl<'a> Sender for IndicesUpgradeRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct IndicesValidateQueryRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     all_shards: Option<&'a bool>,
     allow_no_indices: Option<&'a bool>,
     analyze_wildcard: Option<&'a bool>,
-    analyzer: &'a String,
+    analyzer: &'a str,
     default_operator: Option<&'a i32>,
-    df: &'a String,
+    df: &'a str,
     expand_wildcards: Option<&'a i32>,
     explain: Option<&'a bool>,
     ignore_unavailable: Option<&'a bool>,
     lenient: Option<&'a bool>,
-    q: &'a String,
+    q: &'a str,
     rewrite: Option<&'a bool>,
 }
 impl<'a> IndicesValidateQueryRequestBuilder<'a> {
-    pub fn build(&self) -> IndicesValidateQueryRequest<'a> {
-        IndicesValidateQueryRequest {
-            all_shards: self.all_shards,
-            allow_no_indices: self.allow_no_indices,
-            analyze_wildcard: self.analyze_wildcard,
-            analyzer: self.analyzer,
-            default_operator: self.default_operator,
-            df: self.df,
-            expand_wildcards: self.expand_wildcards,
-            explain: self.explain,
-            ignore_unavailable: self.ignore_unavailable,
-            lenient: self.lenient,
-            q: self.q,
-            rewrite: self.rewrite,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        IndicesValidateQueryRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for IndicesValidateQueryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Indices APIs"]
@@ -990,173 +1170,164 @@ impl<'a> IndicesNamespaceClient<'a> {
         IndicesNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html"]
-    pub fn analyze(&self, request: &IndicesAnalyzeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_analyze")
+    pub fn analyze(&self) -> IndicesAnalyzeRequestBuilder {
+        IndicesAnalyzeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html"]
-    pub fn clear_cache(&self, request: &IndicesClearCacheRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_cache/clear")
+    pub fn clear_cache(&self) -> IndicesClearCacheRequestBuilder {
+        IndicesClearCacheRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn close(&self, request: &IndicesCloseRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_close")
+    pub fn close(&self) -> IndicesCloseRequestBuilder {
+        IndicesCloseRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html"]
-    pub fn create(&self, request: &IndicesCreateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/{index}")
+    pub fn create(&self) -> IndicesCreateRequestBuilder {
+        IndicesCreateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html"]
-    pub fn delete(&self, request: &IndicesDeleteRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/{index}")
+    pub fn delete(&self) -> IndicesDeleteRequestBuilder {
+        IndicesDeleteRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn delete_alias(&self, request: &IndicesDeleteAliasRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/{index}/_alias/{name}")
+    pub fn delete_alias(&self) -> IndicesDeleteAliasRequestBuilder {
+        IndicesDeleteAliasRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn delete_template(&self, request: &IndicesDeleteTemplateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/_template/{name}")
+    pub fn delete_template(&self) -> IndicesDeleteTemplateRequestBuilder {
+        IndicesDeleteTemplateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html"]
-    pub fn exists(&self, request: &IndicesExistsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/{index}")
+    pub fn exists(&self) -> IndicesExistsRequestBuilder {
+        IndicesExistsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn exists_alias(&self, request: &IndicesExistsAliasRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/_alias/{name}")
+    pub fn exists_alias(&self) -> IndicesExistsAliasRequestBuilder {
+        IndicesExistsAliasRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn exists_template(&self, request: &IndicesExistsTemplateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/_template/{name}")
+    pub fn exists_template(&self) -> IndicesExistsTemplateRequestBuilder {
+        IndicesExistsTemplateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html"]
-    pub fn exists_type(&self, request: &IndicesExistsTypeRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Head, "/{index}/_mapping/{type}")
+    pub fn exists_type(&self) -> IndicesExistsTypeRequestBuilder {
+        IndicesExistsTypeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html"]
-    pub fn flush(&self, request: &IndicesFlushRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_flush")
+    pub fn flush(&self) -> IndicesFlushRequestBuilder {
+        IndicesFlushRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html#synced-flush-api"]
-    pub fn flush_synced(&self, request: &IndicesFlushSyncedRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_flush/synced")
+    pub fn flush_synced(&self) -> IndicesFlushSyncedRequestBuilder {
+        IndicesFlushSyncedRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html"]
-    pub fn forcemerge(&self, request: &IndicesForcemergeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_forcemerge")
+    pub fn forcemerge(&self) -> IndicesForcemergeRequestBuilder {
+        IndicesForcemergeRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn freeze(&self, request: &IndicesFreezeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_freeze")
+    pub fn freeze(&self) -> IndicesFreezeRequestBuilder {
+        IndicesFreezeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html"]
-    pub fn get(&self, request: &IndicesGetRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/{index}")
+    pub fn get(&self) -> IndicesGetRequestBuilder {
+        IndicesGetRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn get_alias(&self, request: &IndicesGetAliasRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_alias")
+    pub fn get_alias(&self) -> IndicesGetAliasRequestBuilder {
+        IndicesGetAliasRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html"]
-    pub fn get_field_mapping(&self, request: &IndicesGetFieldMappingRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_mapping/field/{fields}")
+    pub fn get_field_mapping(&self) -> IndicesGetFieldMappingRequestBuilder {
+        IndicesGetFieldMappingRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html"]
-    pub fn get_mapping(&self, request: &IndicesGetMappingRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_mapping")
+    pub fn get_mapping(&self) -> IndicesGetMappingRequestBuilder {
+        IndicesGetMappingRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html"]
-    pub fn get_settings(&self, request: &IndicesGetSettingsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_settings")
+    pub fn get_settings(&self) -> IndicesGetSettingsRequestBuilder {
+        IndicesGetSettingsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn get_template(&self, request: &IndicesGetTemplateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_template")
+    pub fn get_template(&self) -> IndicesGetTemplateRequestBuilder {
+        IndicesGetTemplateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
-    pub fn get_upgrade(&self, request: &IndicesGetUpgradeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_upgrade")
+    pub fn get_upgrade(&self) -> IndicesGetUpgradeRequestBuilder {
+        IndicesGetUpgradeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn open(&self, request: &IndicesOpenRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_open")
+    pub fn open(&self) -> IndicesOpenRequestBuilder {
+        IndicesOpenRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn put_alias(&self, request: &IndicesPutAliasRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/{index}/_alias/{name}")
+    pub fn put_alias(&self) -> IndicesPutAliasRequestBuilder {
+        IndicesPutAliasRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
-    pub fn put_mapping(&self, request: &IndicesPutMappingRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "{index}/_mapping")
+    pub fn put_mapping(&self) -> IndicesPutMappingRequestBuilder {
+        IndicesPutMappingRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
-    pub fn put_settings(&self, request: &IndicesPutSettingsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_settings")
+    pub fn put_settings(&self) -> IndicesPutSettingsRequestBuilder {
+        IndicesPutSettingsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn put_template(&self, request: &IndicesPutTemplateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_template/{name}")
+    pub fn put_template(&self) -> IndicesPutTemplateRequestBuilder {
+        IndicesPutTemplateRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html"]
-    pub fn recovery(&self, request: &IndicesRecoveryRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_recovery")
+    pub fn recovery(&self) -> IndicesRecoveryRequestBuilder {
+        IndicesRecoveryRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html"]
-    pub fn refresh(&self, request: &IndicesRefreshRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_refresh")
+    pub fn refresh(&self) -> IndicesRefreshRequestBuilder {
+        IndicesRefreshRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html"]
-    pub fn reload_search_analyzers(
-        &self,
-        request: &IndicesReloadSearchAnalyzersRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/{index}/_reload_search_analyzers")
+    pub fn reload_search_analyzers(&self) -> IndicesReloadSearchAnalyzersRequestBuilder {
+        IndicesReloadSearchAnalyzersRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html"]
-    pub fn rollover(&self, request: &IndicesRolloverRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{alias}/_rollover")
+    pub fn rollover(&self) -> IndicesRolloverRequestBuilder {
+        IndicesRolloverRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html"]
-    pub fn segments(&self, request: &IndicesSegmentsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_segments")
+    pub fn segments(&self) -> IndicesSegmentsRequestBuilder {
+        IndicesSegmentsRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html"]
-    pub fn shard_stores(&self, request: &IndicesShardStoresRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_shard_stores")
+    pub fn shard_stores(&self) -> IndicesShardStoresRequestBuilder {
+        IndicesShardStoresRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html"]
-    pub fn shrink(&self, request: &IndicesShrinkRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/{index}/_shrink/{target}")
+    pub fn shrink(&self) -> IndicesShrinkRequestBuilder {
+        IndicesShrinkRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html"]
-    pub fn split(&self, request: &IndicesSplitRequest) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/{index}/_split/{target}")
+    pub fn split(&self) -> IndicesSplitRequestBuilder {
+        IndicesSplitRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html"]
-    pub fn stats(&self, request: &IndicesStatsRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_stats")
+    pub fn stats(&self) -> IndicesStatsRequestBuilder {
+        IndicesStatsRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn unfreeze(&self, request: &IndicesUnfreezeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_unfreeze")
+    pub fn unfreeze(&self) -> IndicesUnfreezeRequestBuilder {
+        IndicesUnfreezeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn update_aliases(&self, request: &IndicesUpdateAliasesRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_aliases")
+    pub fn update_aliases(&self) -> IndicesUpdateAliasesRequestBuilder {
+        IndicesUpdateAliasesRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
-    pub fn upgrade(&self, request: &IndicesUpgradeRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_upgrade")
+    pub fn upgrade(&self) -> IndicesUpgradeRequestBuilder {
+        IndicesUpgradeRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html"]
-    pub fn validate_query(&self, request: &IndicesValidateQueryRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_validate/query")
+    pub fn validate_query(&self) -> IndicesValidateQueryRequestBuilder {
+        IndicesValidateQueryRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

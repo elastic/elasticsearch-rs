@@ -1,95 +1,188 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct DataFrameDeleteDataFrameTransformRequest<'a> {}
-pub struct DataFrameDeleteDataFrameTransformRequestBuilder<'a> {}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
+pub struct DataFrameDeleteDataFrameTransformRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> DataFrameDeleteDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFrameDeleteDataFrameTransformRequest<'a> {
-        DataFrameDeleteDataFrameTransformRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFrameDeleteDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct DataFrameGetDataFrameTransformRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    from: Option<&'a i32>,
-    size: Option<&'a i32>,
+impl<'a> Sender for DataFrameDeleteDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct DataFrameGetDataFrameTransformRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
     from: Option<&'a i32>,
     size: Option<&'a i32>,
 }
 impl<'a> DataFrameGetDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFrameGetDataFrameTransformRequest<'a> {
-        DataFrameGetDataFrameTransformRequest {
-            allow_no_match: self.allow_no_match,
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFrameGetDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct DataFrameGetDataFrameTransformStatsRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    from: Option<&'a i64>,
-    size: Option<&'a i64>,
+impl<'a> Sender for DataFrameGetDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct DataFrameGetDataFrameTransformStatsRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
     from: Option<&'a i64>,
     size: Option<&'a i64>,
 }
 impl<'a> DataFrameGetDataFrameTransformStatsRequestBuilder<'a> {
-    pub fn build(&self) -> DataFrameGetDataFrameTransformStatsRequest<'a> {
-        DataFrameGetDataFrameTransformStatsRequest {
-            allow_no_match: self.allow_no_match,
-            from: self.from,
-            size: self.size,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFrameGetDataFrameTransformStatsRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct DataFramePreviewDataFrameTransformRequest<'a> {}
-pub struct DataFramePreviewDataFrameTransformRequestBuilder<'a> {}
+impl<'a> Sender for DataFrameGetDataFrameTransformStatsRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct DataFramePreviewDataFrameTransformRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> DataFramePreviewDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFramePreviewDataFrameTransformRequest<'a> {
-        DataFramePreviewDataFrameTransformRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFramePreviewDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct DataFramePutDataFrameTransformRequest<'a> {}
-pub struct DataFramePutDataFrameTransformRequestBuilder<'a> {}
+impl<'a> Sender for DataFramePreviewDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct DataFramePutDataFrameTransformRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> DataFramePutDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFramePutDataFrameTransformRequest<'a> {
-        DataFramePutDataFrameTransformRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFramePutDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
+        }
     }
 }
-pub struct DataFrameStartDataFrameTransformRequest<'a> {
-    timeout: &'a String,
+impl<'a> Sender for DataFramePutDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct DataFrameStartDataFrameTransformRequestBuilder<'a> {
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    timeout: &'a str,
 }
 impl<'a> DataFrameStartDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFrameStartDataFrameTransformRequest<'a> {
-        DataFrameStartDataFrameTransformRequest {
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFrameStartDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct DataFrameStopDataFrameTransformRequest<'a> {
-    allow_no_match: Option<&'a bool>,
-    timeout: &'a String,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for DataFrameStartDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct DataFrameStopDataFrameTransformRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     allow_no_match: Option<&'a bool>,
-    timeout: &'a String,
+    timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> DataFrameStopDataFrameTransformRequestBuilder<'a> {
-    pub fn build(&self) -> DataFrameStopDataFrameTransformRequest<'a> {
-        DataFrameStopDataFrameTransformRequest {
-            allow_no_match: self.allow_no_match,
-            timeout: self.timeout,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        DataFrameStopDataFrameTransformRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for DataFrameStopDataFrameTransformRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "DataFrame APIs"]
@@ -101,66 +194,34 @@ impl<'a> DataFrameNamespaceClient<'a> {
         DataFrameNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-data-frame-transform.html"]
-    pub fn delete_data_frame_transform(
-        &self,
-        request: &DataFrameDeleteDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Delete, "/_data_frame/transforms/{transform_id}")
+    pub fn delete_data_frame_transform(&self) -> DataFrameDeleteDataFrameTransformRequestBuilder {
+        DataFrameDeleteDataFrameTransformRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform.html"]
-    pub fn get_data_frame_transform(
-        &self,
-        request: &DataFrameGetDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_data_frame/transforms/{transform_id}")
+    pub fn get_data_frame_transform(&self) -> DataFrameGetDataFrameTransformRequestBuilder {
+        DataFrameGetDataFrameTransformRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform-stats.html"]
     pub fn get_data_frame_transform_stats(
         &self,
-        request: &DataFrameGetDataFrameTransformStatsRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Get,
-            "/_data_frame/transforms/{transform_id}/_stats",
-        )
+    ) -> DataFrameGetDataFrameTransformStatsRequestBuilder {
+        DataFrameGetDataFrameTransformStatsRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-data-frame-transform.html"]
-    pub fn preview_data_frame_transform(
-        &self,
-        request: &DataFramePreviewDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_data_frame/transforms/_preview")
+    pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransformRequestBuilder {
+        DataFramePreviewDataFrameTransformRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/put-data-frame-transform.html"]
-    pub fn put_data_frame_transform(
-        &self,
-        request: &DataFramePutDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Put, "/_data_frame/transforms/{transform_id}")
+    pub fn put_data_frame_transform(&self) -> DataFramePutDataFrameTransformRequestBuilder {
+        DataFramePutDataFrameTransformRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/start-data-frame-transform.html"]
-    pub fn start_data_frame_transform(
-        &self,
-        request: &DataFrameStartDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_data_frame/transforms/{transform_id}/_start",
-        )
+    pub fn start_data_frame_transform(&self) -> DataFrameStartDataFrameTransformRequestBuilder {
+        DataFrameStartDataFrameTransformRequestBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/stop-data-frame-transform.html"]
-    pub fn stop_data_frame_transform(
-        &self,
-        request: &DataFrameStopDataFrameTransformRequest,
-    ) -> Result<Response> {
-        self.client.send(
-            HttpMethod::Post,
-            "/_data_frame/transforms/{transform_id}/_stop",
-        )
+    pub fn stop_data_frame_transform(&self) -> DataFrameStopDataFrameTransformRequestBuilder {
+        DataFrameStopDataFrameTransformRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

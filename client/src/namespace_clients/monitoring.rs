@@ -1,23 +1,37 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct MonitoringBulkRequest<'a> {
-    interval: &'a String,
-    system_api_version: &'a String,
-    system_id: &'a String,
-}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct MonitoringBulkRequestBuilder<'a> {
-    interval: &'a String,
-    system_api_version: &'a String,
-    system_id: &'a String,
+    client: &'a ElasticsearchClient,
+    interval: &'a str,
+    system_api_version: &'a str,
+    system_id: &'a str,
 }
 impl<'a> MonitoringBulkRequestBuilder<'a> {
-    pub fn build(&self) -> MonitoringBulkRequest<'a> {
-        MonitoringBulkRequest {
-            interval: self.interval,
-            system_api_version: self.system_api_version,
-            system_id: self.system_id,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        MonitoringBulkRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for MonitoringBulkRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Monitoring APIs"]
@@ -29,8 +43,8 @@ impl<'a> MonitoringNamespaceClient<'a> {
         MonitoringNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
-    pub fn bulk(&self, request: &MonitoringBulkRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_monitoring/bulk")
+    pub fn bulk(&self) -> MonitoringBulkRequestBuilder {
+        MonitoringBulkRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

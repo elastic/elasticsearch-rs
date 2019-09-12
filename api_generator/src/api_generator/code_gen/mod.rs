@@ -30,19 +30,19 @@ fn valid_name(s: &str) -> &str {
 
 fn ty(type_kind: &TypeKind) -> syn::Ty {
     match type_kind {
-        TypeKind::None => syn::parse_type("&'a String").unwrap(),
+        TypeKind::None => syn::parse_type("&'a str").unwrap(),
         TypeKind::List => syn::parse_type("&'a Vec<String>").unwrap(),
         TypeKind::Enum => syn::parse_type("Option<&'a i32>").unwrap(),
-        TypeKind::String => syn::parse_type("&'a String").unwrap(),
-        TypeKind::Text => syn::parse_type("&'a String").unwrap(),
+        TypeKind::String => syn::parse_type("&'a str").unwrap(),
+        TypeKind::Text => syn::parse_type("&'a str").unwrap(),
         TypeKind::Boolean => syn::parse_type("Option<&'a bool>").unwrap(),
         TypeKind::Number => syn::parse_type("Option<&'a i64>").unwrap(),
         TypeKind::Float => syn::parse_type("Option<&'a f32>").unwrap(),
         TypeKind::Double => syn::parse_type("Option<&'a f64>").unwrap(),
         TypeKind::Integer => syn::parse_type("Option<&'a i32>").unwrap(),
         TypeKind::Long => syn::parse_type("Option<&'a i64>").unwrap(),
-        TypeKind::Date => syn::parse_type("&'a String").unwrap(),
-        TypeKind::Time => syn::parse_type("&'a String").unwrap(),
-        TypeKind::Duration => syn::parse_type("&'a String").unwrap(),
+        TypeKind::Date => syn::parse_type("&'a str").unwrap(),
+        TypeKind::Time => syn::parse_type("&'a str").unwrap(),
+        TypeKind::Duration => syn::parse_type("&'a str").unwrap(),
     }
 }

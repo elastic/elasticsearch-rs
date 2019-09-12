@@ -1,20 +1,36 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct GraphExploreRequest<'a> {
-    routing: &'a String,
-    timeout: &'a String,
-}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct GraphExploreRequestBuilder<'a> {
-    routing: &'a String,
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    routing: &'a str,
+    timeout: &'a str,
 }
 impl<'a> GraphExploreRequestBuilder<'a> {
-    pub fn build(&self) -> GraphExploreRequest<'a> {
-        GraphExploreRequest {
-            routing: self.routing,
-            timeout: self.timeout,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        GraphExploreRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for GraphExploreRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Graph APIs"]
@@ -26,8 +42,8 @@ impl<'a> GraphNamespaceClient<'a> {
         GraphNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
-    pub fn explore(&self, request: &GraphExploreRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/{index}/_graph/explore")
+    pub fn explore(&self) -> GraphExploreRequestBuilder {
+        GraphExploreRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

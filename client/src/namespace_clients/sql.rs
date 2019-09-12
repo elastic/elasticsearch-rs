@@ -1,31 +1,83 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct SqlClearCursorRequest<'a> {}
-pub struct SqlClearCursorRequestBuilder<'a> {}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
+pub struct SqlClearCursorRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SqlClearCursorRequestBuilder<'a> {
-    pub fn build(&self) -> SqlClearCursorRequest<'a> {
-        SqlClearCursorRequest {}
-    }
-}
-pub struct SqlQueryRequest<'a> {
-    format: &'a String,
-}
-pub struct SqlQueryRequestBuilder<'a> {
-    format: &'a String,
-}
-impl<'a> SqlQueryRequestBuilder<'a> {
-    pub fn build(&self) -> SqlQueryRequest<'a> {
-        SqlQueryRequest {
-            format: self.format,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SqlClearCursorRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct SqlTranslateRequest<'a> {}
-pub struct SqlTranslateRequestBuilder<'a> {}
+impl<'a> Sender for SqlClearCursorRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SqlQueryRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+    format: &'a str,
+}
+impl<'a> SqlQueryRequestBuilder<'a> {
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SqlQueryRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for SqlQueryRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
+}
+#[Default]
+pub struct SqlTranslateRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
+}
 impl<'a> SqlTranslateRequestBuilder<'a> {
-    pub fn build(&self) -> SqlTranslateRequest<'a> {
-        SqlTranslateRequest {}
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        SqlTranslateRequestBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+}
+impl<'a> Sender for SqlTranslateRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Sql APIs"]
@@ -37,16 +89,16 @@ impl<'a> SqlNamespaceClient<'a> {
         SqlNamespaceClient { client }
     }
     #[doc = "Clear SQL cursor"]
-    pub fn clear_cursor(&self, request: &SqlClearCursorRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_sql/close")
+    pub fn clear_cursor(&self) -> SqlClearCursorRequestBuilder {
+        SqlClearCursorRequestBuilder::default()
     }
     #[doc = "Execute SQL"]
-    pub fn query(&self, request: &SqlQueryRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_sql")
+    pub fn query(&self) -> SqlQueryRequestBuilder {
+        SqlQueryRequestBuilder::default()
     }
     #[doc = "Translate SQL into Elasticsearch queries"]
-    pub fn translate(&self, request: &SqlTranslateRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_sql/translate")
+    pub fn translate(&self) -> SqlTranslateRequestBuilder {
+        SqlTranslateRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {

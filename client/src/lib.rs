@@ -17,7 +17,7 @@ pub use crate::{
     client::ElasticsearchClient,
     connection::Connection,
     settings::ConnectionSettings,
-    response::EsResponse,
+    response::ElasticsearchResponse,
     http_method::HttpMethod,
     //node_pool::{Node, NodePool, SingleNodePool},
 };

@@ -1,70 +1,94 @@
+
+
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
-use reqwest::{Error, Request, Response, Result};
-pub struct TasksCancelRequest<'a> {
-    actions: &'a Vec<String>,
-    nodes: &'a Vec<String>,
-    parent_task_id: &'a String,
-}
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
+use reqwest::{Error, Request, Response, Result, StatusCode};
+use serde::de::DeserializeOwned;
+#[Default]
 pub struct TasksCancelRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     actions: &'a Vec<String>,
     nodes: &'a Vec<String>,
-    parent_task_id: &'a String,
+    parent_task_id: &'a str,
 }
 impl<'a> TasksCancelRequestBuilder<'a> {
-    pub fn build(&self) -> TasksCancelRequest<'a> {
-        TasksCancelRequest {
-            actions: self.actions,
-            nodes: self.nodes,
-            parent_task_id: self.parent_task_id,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        TasksCancelRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct TasksGetRequest<'a> {
-    timeout: &'a String,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for TasksCancelRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct TasksGetRequestBuilder<'a> {
-    timeout: &'a String,
+    client: &'a ElasticsearchClient,
+    timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> TasksGetRequestBuilder<'a> {
-    pub fn build(&self) -> TasksGetRequest<'a> {
-        TasksGetRequest {
-            timeout: self.timeout,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        TasksGetRequestBuilder {
+            client,
+            ..Default::default()
         }
     }
 }
-pub struct TasksListRequest<'a> {
-    actions: &'a Vec<String>,
-    detailed: Option<&'a bool>,
-    group_by: Option<&'a i32>,
-    nodes: &'a Vec<String>,
-    parent_task_id: &'a String,
-    timeout: &'a String,
-    wait_for_completion: Option<&'a bool>,
+impl<'a> Sender for TasksGetRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
+    }
 }
+#[Default]
 pub struct TasksListRequestBuilder<'a> {
+    client: &'a ElasticsearchClient,
     actions: &'a Vec<String>,
     detailed: Option<&'a bool>,
     group_by: Option<&'a i32>,
     nodes: &'a Vec<String>,
-    parent_task_id: &'a String,
-    timeout: &'a String,
+    parent_task_id: &'a str,
+    timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> TasksListRequestBuilder<'a> {
-    pub fn build(&self) -> TasksListRequest<'a> {
-        TasksListRequest {
-            actions: self.actions,
-            detailed: self.detailed,
-            group_by: self.group_by,
-            nodes: self.nodes,
-            parent_task_id: self.parent_task_id,
-            timeout: self.timeout,
-            wait_for_completion: self.wait_for_completion,
+    pub fn new(client: &ElasticsearchClient) -> Self {
+        TasksListRequestBuilder {
+            client,
+            ..Default::default()
         }
+    }
+}
+impl<'a> Sender for TasksListRequestBuilder<'a> {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode(200),
+            body: None,
+        })
     }
 }
 #[doc = "Tasks APIs"]
@@ -76,16 +100,16 @@ impl<'a> TasksNamespaceClient<'a> {
         TasksNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn cancel(&self, request: &TasksCancelRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_tasks/_cancel")
+    pub fn cancel(&self) -> TasksCancelRequestBuilder {
+        TasksCancelRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn get(&self, request: &TasksGetRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_tasks/{task_id}")
+    pub fn get(&self) -> TasksGetRequestBuilder {
+        TasksGetRequestBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn list(&self, request: &TasksListRequest) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_tasks")
+    pub fn list(&self) -> TasksListRequestBuilder {
+        TasksListRequestBuilder::default()
     }
 }
 impl ElasticsearchClient {
