@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Ingest APIs"]
 pub struct IngestNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -35,6 +34,7 @@ impl IngestNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Ingest APIs"]
     pub fn ingest(&self) -> IngestNamespaceClient {
         IngestNamespaceClient::new(self)
     }

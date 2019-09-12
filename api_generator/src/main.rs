@@ -14,6 +14,7 @@ use std::{
 };
 
 mod api_generator;
+mod error;
 mod rest_spec;
 
 fn main() {
@@ -90,7 +91,7 @@ fn main() {
         }
 
         if generate_code {
-            api_generator::generate(&branch, &download_dir, &generated_dir);
+            api_generator::generate(&branch, &download_dir, &generated_dir).unwrap();
         }
     }
 }

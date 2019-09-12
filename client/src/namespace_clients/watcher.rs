@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Watcher APIs"]
 pub struct WatcherNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -57,6 +56,7 @@ impl WatcherNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Watcher APIs"]
     pub fn watcher(&self) -> WatcherNamespaceClient {
         WatcherNamespaceClient::new(self)
     }

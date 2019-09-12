@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Sql APIs"]
 pub struct SqlNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -25,6 +24,7 @@ impl SqlNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Sql APIs"]
     pub fn sql(&self) -> SqlNamespaceClient {
         SqlNamespaceClient::new(self)
     }

@@ -143,54 +143,63 @@ impl PartialEq for ApiEnum {
 
 impl Eq for ApiEnum {}
 
-pub fn generate(branch: &str, download_dir: &PathBuf, generated_dir: &PathBuf) {
-    let api = read_api(branch, download_dir).unwrap();
+pub fn generate(
+    branch: &str,
+    download_dir: &PathBuf,
+    generated_dir: &PathBuf,
+) -> Result<(), failure::Error> {
+    let api = read_api(branch, download_dir)?;
 
-    let enums = code_gen::enums::generate_enums(&api).unwrap();
-    write_file(enums, generated_dir, "enums.rs");
+    let enums = code_gen::enums::generate(&api)?;
+    write_file(enums, generated_dir, "enums.rs")?;
 
-    let namespace_clients = code_gen::namespace_client::generate_namespace_clients(&api).unwrap();
+    let namespace_clients = code_gen::namespace_client::generate(&api)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
-    std::fs::create_dir_all(&namespace_clients_dir).unwrap();
+    std::fs::create_dir_all(&namespace_clients_dir)?;
 
     let modules = namespace_clients
         .iter()
         .map(|(name, _)| format!("pub mod {};", name))
         .collect::<Vec<_>>()
         .join("\n");
-    write_file(modules, &namespace_clients_dir, "mod.rs");
+
+    write_file(modules, &namespace_clients_dir, "mod.rs")?;
 
     for namespace_client in namespace_clients {
         write_file(
             namespace_client.1,
             &namespace_clients_dir,
             format!("{}.rs", namespace_client.0).as_str(),
-        );
+        )?;
     }
+
+    Ok(())
 }
 
-fn write_file(input: String, dir: &PathBuf, file: &str) {
+fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::Error> {
     let mut generated_path = dir.clone();
     generated_path.push(file);
     let path = generated_path.to_string_lossy().into_owned();
 
-    let mut file = File::create(&path).expect(format!("failed to create {}", &path).as_str());
-    file.write_all(input.as_bytes()).unwrap();
+    let mut file = File::create(&path)?;
+    file.write_all(input.as_bytes())?;
+
+    Ok(())
 }
 
-fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
+fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
     let paths = read_dir(download_dir).unwrap();
     let mut namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>> = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
 
     for path in paths {
-        let path = path.unwrap().path();
+        let path = path?.path();
         let name = path.file_name().map(|path| path.to_string_lossy());
         let display = path.to_string_lossy().into_owned();
 
         if name.map(|name| !name.starts_with("_")).unwrap_or(true) {
-            let mut file = File::open(&path).unwrap();
+            let mut file = File::open(&path)?;
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
 
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
@@ -212,6 +221,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
                     .iter()
                     .map(|v| v.as_str().unwrap().to_string())
                     .collect();
+
                 enums.insert(ApiEnum {
                     name: param.0.to_string(),
                     values: options,
@@ -240,13 +250,19 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, String> {
 }
 
 /// deserializes an ApiEndpoint from a file
-fn endpoint_from_file<R>(name: String, reader: &mut R) -> Result<(String, ApiEndpoint), String>
+fn endpoint_from_file<R>(
+    name: String,
+    reader: &mut R,
+) -> Result<(String, ApiEndpoint), failure::Error>
 where
     R: Read,
 {
-    let endpoint: BTreeMap<String, ApiEndpoint> = serde_json::from_reader(reader)
-        .map_err(|e| format!("Failed to parse {} because: {}", name, e))?;
+    let endpoint: BTreeMap<String, ApiEndpoint> =
+        serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
+            message: format!("Failed to parse {} because: {}", name, e),
+        })?;
 
+    // get the first (and only) endpoint name and endpoint body
     Ok(endpoint.into_iter().next().unwrap())
 }
 

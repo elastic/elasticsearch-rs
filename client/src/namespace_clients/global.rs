@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Global APIs"]
 pub struct GlobalNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -164,6 +163,7 @@ impl GlobalNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Global APIs"]
     pub fn global(&self) -> GlobalNamespaceClient {
         GlobalNamespaceClient::new(self)
     }

@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Cat APIs"]
 pub struct CatNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -93,6 +92,7 @@ impl CatNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Cat APIs"]
     pub fn cat(&self) -> CatNamespaceClient {
         CatNamespaceClient::new(self)
     }

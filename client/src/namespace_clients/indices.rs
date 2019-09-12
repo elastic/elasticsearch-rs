@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Indices APIs"]
 pub struct IndicesNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -179,6 +178,7 @@ impl IndicesNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Indices APIs"]
     pub fn indices(&self) -> IndicesNamespaceClient {
         IndicesNamespaceClient::new(self)
     }

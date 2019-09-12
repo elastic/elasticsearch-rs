@@ -15,7 +15,7 @@ fn doc(comment: String) -> syn::Attribute {
     }
 }
 
-pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
+pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
     for namespace in &api.namespaces {
@@ -30,6 +30,7 @@ pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, fa
         ));
 
         let namespace_name = syn::Ident::from(namespace.0.to_string());
+        let commit = &api.commit;
 
         let header = quote!(
             use super::super::client::ElasticsearchClient;
@@ -49,7 +50,7 @@ pub fn generate_namespace_clients(api: &Api) -> Result<Vec<(String, String)>, fa
                 let method = endpoint.methods.first().unwrap();
                 let method_doc = match &endpoint.documentation {
                     Some(docs) => Some(doc(docs.into())),
-                    _ => None
+                    _ => None,
                 };
 
                 quote!(

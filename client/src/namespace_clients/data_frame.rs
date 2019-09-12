@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "DataFrame APIs"]
 pub struct DataFrameNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -54,6 +53,7 @@ impl DataFrameNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "DataFrame APIs"]
     pub fn data_frame(&self) -> DataFrameNamespaceClient {
         DataFrameNamespaceClient::new(self)
     }

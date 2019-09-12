@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Monitoring APIs"]
 pub struct MonitoringNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -17,6 +16,7 @@ impl MonitoringNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Monitoring APIs"]
     pub fn monitoring(&self) -> MonitoringNamespaceClient {
         MonitoringNamespaceClient::new(self)
     }

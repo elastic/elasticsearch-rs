@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "License APIs"]
 pub struct LicenseNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -41,6 +40,7 @@ impl LicenseNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "License APIs"]
     pub fn license(&self) -> LicenseNamespaceClient {
         LicenseNamespaceClient::new(self)
     }

@@ -3,6 +3,8 @@ use crate::{
     http_method::HttpMethod,
 };
 
+use reqwest::{Response, Result};
+
 pub struct ElasticsearchClient {
     settings: ConnectionSettings,
     connection: Connection,
@@ -16,7 +18,7 @@ impl ElasticsearchClient {
         }
     }
 
-    pub fn send(&self, method: HttpMethod, path: &str) -> reqwest::Result<reqwest::Response> {
+    pub fn send(&self, method: HttpMethod, path: &str) -> Result<Response> {
         self.connection.send(method, path)
     }
 }

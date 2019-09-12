@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Cluster APIs"]
 pub struct ClusterNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -50,6 +49,7 @@ impl ClusterNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Cluster APIs"]
     pub fn cluster(&self) -> ClusterNamespaceClient {
         ClusterNamespaceClient::new(self)
     }

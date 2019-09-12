@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Snapshot APIs"]
 pub struct SnapshotNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -57,6 +56,7 @@ impl SnapshotNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Snapshot APIs"]
     pub fn snapshot(&self) -> SnapshotNamespaceClient {
         SnapshotNamespaceClient::new(self)
     }

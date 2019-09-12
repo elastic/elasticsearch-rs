@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Ilm APIs"]
 pub struct IlmNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -54,6 +53,7 @@ impl IlmNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Ilm APIs"]
     pub fn ilm(&self) -> IlmNamespaceClient {
         IlmNamespaceClient::new(self)
     }

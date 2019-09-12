@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Security APIs"]
 pub struct SecurityNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -138,6 +137,7 @@ impl SecurityNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Security APIs"]
     pub fn security(&self) -> SecurityNamespaceClient {
         SecurityNamespaceClient::new(self)
     }

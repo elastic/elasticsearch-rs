@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Xpack APIs"]
 pub struct XpackNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -21,6 +20,7 @@ impl XpackNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Xpack APIs"]
     pub fn xpack(&self) -> XpackNamespaceClient {
         XpackNamespaceClient::new(self)
     }

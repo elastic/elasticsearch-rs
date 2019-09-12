@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Rollup APIs"]
 pub struct RollupNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -47,6 +46,7 @@ impl RollupNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Rollup APIs"]
     pub fn rollup(&self) -> RollupNamespaceClient {
         RollupNamespaceClient::new(self)
     }

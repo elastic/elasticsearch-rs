@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Graph APIs"]
 pub struct GraphNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -17,6 +16,7 @@ impl GraphNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Graph APIs"]
     pub fn graph(&self) -> GraphNamespaceClient {
         GraphNamespaceClient::new(self)
     }

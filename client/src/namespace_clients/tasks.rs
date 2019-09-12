@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Tasks APIs"]
 pub struct TasksNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -25,6 +24,7 @@ impl TasksNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Tasks APIs"]
     pub fn tasks(&self) -> TasksNamespaceClient {
         TasksNamespaceClient::new(self)
     }

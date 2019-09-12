@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Migration APIs"]
 pub struct MigrationNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -18,6 +17,7 @@ impl MigrationNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Migration APIs"]
     pub fn migration(&self) -> MigrationNamespaceClient {
         MigrationNamespaceClient::new(self)
     }

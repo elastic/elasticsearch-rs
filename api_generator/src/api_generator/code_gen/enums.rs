@@ -3,7 +3,7 @@ use crate::api_generator::*;
 use inflector::Inflector;
 use quote::Tokens;
 
-pub fn generate_enums(api: &Api) -> Result<String, failure::Error> {
+pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
     let header = quote!(
         use serde::{Deserialize};

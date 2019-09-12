@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Ccr APIs"]
 pub struct CcrNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -62,6 +61,7 @@ impl CcrNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Ccr APIs"]
     pub fn ccr(&self) -> CcrNamespaceClient {
         CcrNamespaceClient::new(self)
     }

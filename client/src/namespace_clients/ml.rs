@@ -1,9 +1,8 @@
-
-
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
 use reqwest::{Error, Request, Response, Result};
 use serde::Deserialize;
+#[doc = "Ml APIs"]
 pub struct MlNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
@@ -287,6 +286,7 @@ impl MlNamespaceClient {
     }
 }
 impl ElasticsearchClient {
+    #[doc = "Ml APIs"]
     pub fn ml(&self) -> MlNamespaceClient {
         MlNamespaceClient::new(self)
     }
