@@ -7,14 +7,19 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct ClusterAllocationExplainRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     include_disk_info: Option<&'a bool>,
     include_yes_decisions: Option<&'a bool>,
 }
 impl<'a> ClusterAllocationExplainRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterAllocationExplainRequestBuilder {
             client,
             ..Default::default()
@@ -28,21 +33,26 @@ impl<'a> Sender for ClusterAllocationExplainRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterGetSettingsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     flat_settings: Option<&'a bool>,
     include_defaults: Option<&'a bool>,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> ClusterGetSettingsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterGetSettingsRequestBuilder {
             client,
             ..Default::default()
@@ -56,14 +66,19 @@ impl<'a> Sender for ClusterGetSettingsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterHealthRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     expand_wildcards: Option<&'a i32>,
     level: Option<&'a i32>,
     local: Option<&'a bool>,
@@ -77,7 +92,7 @@ pub struct ClusterHealthRequestBuilder<'a> {
     wait_for_status: Option<&'a i32>,
 }
 impl<'a> ClusterHealthRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterHealthRequestBuilder {
             client,
             ..Default::default()
@@ -91,19 +106,24 @@ impl<'a> Sender for ClusterHealthRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterPendingTasksRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     local: Option<&'a bool>,
     master_timeout: &'a str,
 }
 impl<'a> ClusterPendingTasksRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterPendingTasksRequestBuilder {
             client,
             ..Default::default()
@@ -117,20 +137,25 @@ impl<'a> Sender for ClusterPendingTasksRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterPutSettingsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     flat_settings: Option<&'a bool>,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> ClusterPutSettingsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterPutSettingsRequestBuilder {
             client,
             ..Default::default()
@@ -144,17 +169,22 @@ impl<'a> Sender for ClusterPutSettingsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterRemoteInfoRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> ClusterRemoteInfoRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterRemoteInfoRequestBuilder {
             client,
             ..Default::default()
@@ -168,23 +198,28 @@ impl<'a> Sender for ClusterRemoteInfoRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterRerouteRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     dry_run: Option<&'a bool>,
     explain: Option<&'a bool>,
     master_timeout: &'a str,
-    metric: &'a Vec<String>,
+    metric: Option<&'a Vec<String>>,
     retry_failed: Option<&'a bool>,
     timeout: &'a str,
 }
 impl<'a> ClusterRerouteRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterRerouteRequestBuilder {
             client,
             ..Default::default()
@@ -198,14 +233,19 @@ impl<'a> Sender for ClusterRerouteRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterStateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -216,7 +256,7 @@ pub struct ClusterStateRequestBuilder<'a> {
     wait_for_timeout: &'a str,
 }
 impl<'a> ClusterStateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterStateRequestBuilder {
             client,
             ..Default::default()
@@ -230,19 +270,24 @@ impl<'a> Sender for ClusterStateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct ClusterStatsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     flat_settings: Option<&'a bool>,
     timeout: &'a str,
 }
 impl<'a> ClusterStatsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterStatsRequestBuilder {
             client,
             ..Default::default()
@@ -256,7 +301,7 @@ impl<'a> Sender for ClusterStatsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -266,7 +311,7 @@ pub struct ClusterNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> ClusterNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         ClusterNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html"]

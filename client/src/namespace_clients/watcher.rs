@@ -7,12 +7,17 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct WatcherAckWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherAckWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherAckWatchRequestBuilder {
             client,
             ..Default::default()
@@ -26,17 +31,22 @@ impl<'a> Sender for WatcherAckWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherActivateWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherActivateWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherActivateWatchRequestBuilder {
             client,
             ..Default::default()
@@ -50,17 +60,22 @@ impl<'a> Sender for WatcherActivateWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherDeactivateWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherDeactivateWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherDeactivateWatchRequestBuilder {
             client,
             ..Default::default()
@@ -74,17 +89,22 @@ impl<'a> Sender for WatcherDeactivateWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherDeleteWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherDeleteWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherDeleteWatchRequestBuilder {
             client,
             ..Default::default()
@@ -98,18 +118,23 @@ impl<'a> Sender for WatcherDeleteWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherExecuteWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     debug: Option<&'a bool>,
 }
 impl<'a> WatcherExecuteWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherExecuteWatchRequestBuilder {
             client,
             ..Default::default()
@@ -123,17 +148,22 @@ impl<'a> Sender for WatcherExecuteWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherGetWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherGetWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherGetWatchRequestBuilder {
             client,
             ..Default::default()
@@ -147,21 +177,26 @@ impl<'a> Sender for WatcherGetWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherPutWatchRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     active: Option<&'a bool>,
     if_primary_term: Option<&'a i64>,
     if_seq_no: Option<&'a i64>,
     version: Option<&'a i64>,
 }
 impl<'a> WatcherPutWatchRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherPutWatchRequestBuilder {
             client,
             ..Default::default()
@@ -175,17 +210,22 @@ impl<'a> Sender for WatcherPutWatchRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherStartRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherStartRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherStartRequestBuilder {
             client,
             ..Default::default()
@@ -199,19 +239,24 @@ impl<'a> Sender for WatcherStartRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherStatsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     emit_stacktraces: Option<&'a bool>,
-    metric: &'a Vec<String>,
+    metric: Option<&'a Vec<String>>,
 }
 impl<'a> WatcherStatsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherStatsRequestBuilder {
             client,
             ..Default::default()
@@ -225,17 +270,22 @@ impl<'a> Sender for WatcherStatsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct WatcherStopRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
 }
 impl<'a> WatcherStopRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherStopRequestBuilder {
             client,
             ..Default::default()
@@ -249,7 +299,7 @@ impl<'a> Sender for WatcherStopRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -259,7 +309,7 @@ pub struct WatcherNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> WatcherNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         WatcherNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html"]

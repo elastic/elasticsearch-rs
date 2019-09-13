@@ -7,13 +7,18 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct XpackInfoRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
-    categories: &'a Vec<String>,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
+    categories: Option<&'a Vec<String>>,
 }
 impl<'a> XpackInfoRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         XpackInfoRequestBuilder {
             client,
             ..Default::default()
@@ -27,18 +32,23 @@ impl<'a> Sender for XpackInfoRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct XpackUsageRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
 }
 impl<'a> XpackUsageRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         XpackUsageRequestBuilder {
             client,
             ..Default::default()
@@ -52,7 +62,7 @@ impl<'a> Sender for XpackUsageRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -62,7 +72,7 @@ pub struct XpackNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> XpackNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         XpackNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html"]

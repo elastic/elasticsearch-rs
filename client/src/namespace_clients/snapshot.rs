@@ -7,14 +7,19 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct SnapshotCreateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> SnapshotCreateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotCreateRequestBuilder {
             client,
             ..Default::default()
@@ -28,20 +33,25 @@ impl<'a> Sender for SnapshotCreateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotCreateRepositoryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
     verify: Option<&'a bool>,
 }
 impl<'a> SnapshotCreateRepositoryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotCreateRepositoryRequestBuilder {
             client,
             ..Default::default()
@@ -55,18 +65,23 @@ impl<'a> Sender for SnapshotCreateRepositoryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotDeleteRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
 }
 impl<'a> SnapshotDeleteRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotDeleteRequestBuilder {
             client,
             ..Default::default()
@@ -80,19 +95,24 @@ impl<'a> Sender for SnapshotDeleteRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotDeleteRepositoryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> SnapshotDeleteRepositoryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotDeleteRepositoryRequestBuilder {
             client,
             ..Default::default()
@@ -106,20 +126,25 @@ impl<'a> Sender for SnapshotDeleteRepositoryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotGetRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     ignore_unavailable: Option<&'a bool>,
     master_timeout: &'a str,
     verbose: Option<&'a bool>,
 }
 impl<'a> SnapshotGetRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotGetRequestBuilder {
             client,
             ..Default::default()
@@ -133,19 +158,24 @@ impl<'a> Sender for SnapshotGetRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotGetRepositoryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     local: Option<&'a bool>,
     master_timeout: &'a str,
 }
 impl<'a> SnapshotGetRepositoryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotGetRepositoryRequestBuilder {
             client,
             ..Default::default()
@@ -159,19 +189,24 @@ impl<'a> Sender for SnapshotGetRepositoryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotRestoreRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> SnapshotRestoreRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotRestoreRequestBuilder {
             client,
             ..Default::default()
@@ -185,19 +220,24 @@ impl<'a> Sender for SnapshotRestoreRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotStatusRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     ignore_unavailable: Option<&'a bool>,
     master_timeout: &'a str,
 }
 impl<'a> SnapshotStatusRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotStatusRequestBuilder {
             client,
             ..Default::default()
@@ -211,19 +251,24 @@ impl<'a> Sender for SnapshotStatusRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct SnapshotVerifyRepositoryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> SnapshotVerifyRepositoryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotVerifyRepositoryRequestBuilder {
             client,
             ..Default::default()
@@ -237,7 +282,7 @@ impl<'a> Sender for SnapshotVerifyRepositoryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -247,7 +292,7 @@ pub struct SnapshotNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> SnapshotNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         SnapshotNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]

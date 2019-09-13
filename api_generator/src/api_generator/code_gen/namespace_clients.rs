@@ -2,9 +2,20 @@ use crate::api_generator::*;
 
 use inflector::Inflector;
 use quote::Tokens;
+use syn::{Field,FieldValue};
 
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
+
+    let common_fields : Vec<Field> = api.common_params
+        .iter()
+        .map(|(n, t)| { syn::Field{
+            ident: Some(code_gen::ident(code_gen::valid_name(n).to_lowercase())),
+            vis: syn::Visibility::Inherited,
+            attrs: vec![],
+            ty: code_gen::ty(&t.ty)
+        } })
+        .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
@@ -42,38 +53,45 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
                 let builder_ident = code_gen::ident(builder_name);
 
-                let params: Vec<Tokens> = endpoint
+                let fields: Vec<syn::Field> = endpoint
                     .url
                     .params
                     .iter()
-                    .map(|(n, t)| {
-                        let param_name = code_gen::ident(code_gen::valid_name(n).to_lowercase());
-                        let param_ty = code_gen::ty(&t.ty);
-                        quote!(#param_name: #param_ty)
-                    })
+                    .map(|(n, t)| { syn::Field{
+                        ident: Some(code_gen::ident(code_gen::valid_name(n).to_lowercase())),
+                        vis: syn::Visibility::Inherited,
+                        attrs: vec![],
+                        ty: code_gen::ty(&t.ty)
+                    } })
                     .collect();
 
-                let builder_params = params.clone();
+//                let assignments: Vec<syn::FieldValue> = endpoint
+//                    .url
+//                    .params
+//                    .iter()
+//                    .map(|(n, t)|
+//                        syn::FieldValue {
+//                            attrs: vec![],
+//                            ident: code_gen::ident(code_gen::valid_name(n).to_lowercase()),
+//                            expr: syn::ExprKind::Path(None, code_gen::ty(&t.ty)).into(),
+//                            is_shorthand: false,
+//                        }
+//                    )
+//                    .collect();
 
-                let assignments: Vec<Tokens> = endpoint
-                    .url
-                    .params
-                    .iter()
-                    .map(|(n, t)| {
-                        let param_name = code_gen::ident(code_gen::valid_name(n).to_lowercase());
-                        quote!(#param_name: self.#param_name)
-                    })
-                    .collect();
+                // clone is required as quote! consumes the Vec<Field>
+                let common_fields_clone = common_fields.clone();
 
                 quote!(
-                    #[Default]
+                    #[derive(Default)]
                     pub struct #builder_ident<'a> {
                         client: &'a ElasticsearchClient,
-                        #(#builder_params),*
+                        #(#common_fields_clone),*,
+                        #(#fields),*
                     }
 
                     impl<'a> #builder_ident<'a> {
-                        pub fn new(client: &ElasticsearchClient) -> Self {
+                        pub fn new(client: &'a ElasticsearchClient) -> Self {
                             #builder_ident {
                                 client,
                                 .. Default::default()
@@ -87,7 +105,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                               // TODO: build up the url based on parameters passed, and execute request
                               Ok(ElasticsearchResponse {
                                    headers: HeaderMap::new(),
-                                   status_code: StatusCode(200),
+                                   status_code: StatusCode::OK,
                                    body: None
                               })
 
@@ -142,7 +160,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             }
 
             impl<'a> #namespace_client_name<'a> {
-                pub fn new(client: &ElasticsearchClient) -> Self {
+                pub fn new(client: &'a ElasticsearchClient) -> Self {
                     #namespace_client_name {
                         client
                     }

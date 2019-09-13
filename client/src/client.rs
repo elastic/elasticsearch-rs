@@ -5,10 +5,11 @@ use crate::{
 
 use reqwest::{header::HeaderMap, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
+use url::Url;
 
 /// Sender trait for terminal method to send the request to Elasticsearch
 pub trait Sender {
-    fn send<T>(self) -> Result<(HeaderMap, StatusCode, Option<T>)>
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned;
 }
@@ -28,5 +29,14 @@ impl ElasticsearchClient {
 
     pub fn send(&self, method: HttpMethod, path: &str) -> Result<Response> {
         self.connection.send(method, path)
+    }
+}
+
+impl Default for ElasticsearchClient {
+    fn default() -> Self {
+        ElasticsearchClient {
+            settings: ConnectionSettings::new(),
+            connection: Connection::new(Url::parse("http://localhost:9200").unwrap()),
+        }
     }
 }

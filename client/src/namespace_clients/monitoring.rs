@@ -7,15 +7,20 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct MonitoringBulkRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     interval: &'a str,
     system_api_version: &'a str,
     system_id: &'a str,
 }
 impl<'a> MonitoringBulkRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         MonitoringBulkRequestBuilder {
             client,
             ..Default::default()
@@ -29,7 +34,7 @@ impl<'a> Sender for MonitoringBulkRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -39,7 +44,7 @@ pub struct MonitoringNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> MonitoringNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         MonitoringNamespaceClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]

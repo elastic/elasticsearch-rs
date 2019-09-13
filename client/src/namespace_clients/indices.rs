@@ -7,13 +7,18 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
-#[Default]
+#[derive(Default)]
 pub struct IndicesAnalyzeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     index: &'a str,
 }
 impl<'a> IndicesAnalyzeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesAnalyzeRequestBuilder {
             client,
             ..Default::default()
@@ -27,25 +32,30 @@ impl<'a> Sender for IndicesAnalyzeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesClearCacheRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     fielddata: Option<&'a bool>,
-    fields: &'a Vec<String>,
+    fields: Option<&'a Vec<String>>,
     ignore_unavailable: Option<&'a bool>,
-    index: &'a Vec<String>,
+    index: Option<&'a Vec<String>>,
     query: Option<&'a bool>,
     request: Option<&'a bool>,
 }
 impl<'a> IndicesClearCacheRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesClearCacheRequestBuilder {
             client,
             ..Default::default()
@@ -59,14 +69,19 @@ impl<'a> Sender for IndicesClearCacheRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesCloseRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -75,7 +90,7 @@ pub struct IndicesCloseRequestBuilder<'a> {
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesCloseRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesCloseRequestBuilder {
             client,
             ..Default::default()
@@ -89,21 +104,26 @@ impl<'a> Sender for IndicesCloseRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesCreateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     include_type_name: Option<&'a bool>,
     master_timeout: &'a str,
     timeout: &'a str,
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesCreateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesCreateRequestBuilder {
             client,
             ..Default::default()
@@ -117,14 +137,19 @@ impl<'a> Sender for IndicesCreateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesDeleteRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -132,7 +157,7 @@ pub struct IndicesDeleteRequestBuilder<'a> {
     timeout: &'a str,
 }
 impl<'a> IndicesDeleteRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesDeleteRequestBuilder {
             client,
             ..Default::default()
@@ -146,19 +171,24 @@ impl<'a> Sender for IndicesDeleteRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesDeleteAliasRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> IndicesDeleteAliasRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesDeleteAliasRequestBuilder {
             client,
             ..Default::default()
@@ -172,19 +202,24 @@ impl<'a> Sender for IndicesDeleteAliasRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesDeleteTemplateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> IndicesDeleteTemplateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesDeleteTemplateRequestBuilder {
             client,
             ..Default::default()
@@ -198,14 +233,19 @@ impl<'a> Sender for IndicesDeleteTemplateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesExistsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -214,7 +254,7 @@ pub struct IndicesExistsRequestBuilder<'a> {
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesExistsRequestBuilder {
             client,
             ..Default::default()
@@ -228,21 +268,26 @@ impl<'a> Sender for IndicesExistsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesExistsAliasRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsAliasRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesExistsAliasRequestBuilder {
             client,
             ..Default::default()
@@ -256,20 +301,25 @@ impl<'a> Sender for IndicesExistsAliasRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesExistsTemplateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     flat_settings: Option<&'a bool>,
     local: Option<&'a bool>,
     master_timeout: &'a str,
 }
 impl<'a> IndicesExistsTemplateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesExistsTemplateRequestBuilder {
             client,
             ..Default::default()
@@ -283,21 +333,26 @@ impl<'a> Sender for IndicesExistsTemplateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesExistsTypeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesExistsTypeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesExistsTypeRequestBuilder {
             client,
             ..Default::default()
@@ -311,14 +366,19 @@ impl<'a> Sender for IndicesExistsTypeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesFlushRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     force: Option<&'a bool>,
@@ -326,7 +386,7 @@ pub struct IndicesFlushRequestBuilder<'a> {
     wait_if_ongoing: Option<&'a bool>,
 }
 impl<'a> IndicesFlushRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesFlushRequestBuilder {
             client,
             ..Default::default()
@@ -340,20 +400,25 @@ impl<'a> Sender for IndicesFlushRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesFlushSyncedRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesFlushSyncedRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesFlushSyncedRequestBuilder {
             client,
             ..Default::default()
@@ -367,14 +432,19 @@ impl<'a> Sender for IndicesFlushSyncedRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesForcemergeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flush: Option<&'a bool>,
@@ -383,7 +453,7 @@ pub struct IndicesForcemergeRequestBuilder<'a> {
     only_expunge_deletes: Option<&'a bool>,
 }
 impl<'a> IndicesForcemergeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesForcemergeRequestBuilder {
             client,
             ..Default::default()
@@ -397,14 +467,19 @@ impl<'a> Sender for IndicesForcemergeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesFreezeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -413,7 +488,7 @@ pub struct IndicesFreezeRequestBuilder<'a> {
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesFreezeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesFreezeRequestBuilder {
             client,
             ..Default::default()
@@ -427,14 +502,19 @@ impl<'a> Sender for IndicesFreezeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -445,7 +525,7 @@ pub struct IndicesGetRequestBuilder<'a> {
     master_timeout: &'a str,
 }
 impl<'a> IndicesGetRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetRequestBuilder {
             client,
             ..Default::default()
@@ -459,21 +539,26 @@ impl<'a> Sender for IndicesGetRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetAliasRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     local: Option<&'a bool>,
 }
 impl<'a> IndicesGetAliasRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetAliasRequestBuilder {
             client,
             ..Default::default()
@@ -487,14 +572,19 @@ impl<'a> Sender for IndicesGetAliasRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetFieldMappingRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -503,7 +593,7 @@ pub struct IndicesGetFieldMappingRequestBuilder<'a> {
     local: Option<&'a bool>,
 }
 impl<'a> IndicesGetFieldMappingRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetFieldMappingRequestBuilder {
             client,
             ..Default::default()
@@ -517,14 +607,19 @@ impl<'a> Sender for IndicesGetFieldMappingRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetMappingRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -533,7 +628,7 @@ pub struct IndicesGetMappingRequestBuilder<'a> {
     master_timeout: &'a str,
 }
 impl<'a> IndicesGetMappingRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetMappingRequestBuilder {
             client,
             ..Default::default()
@@ -547,14 +642,19 @@ impl<'a> Sender for IndicesGetMappingRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetSettingsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -564,7 +664,7 @@ pub struct IndicesGetSettingsRequestBuilder<'a> {
     master_timeout: &'a str,
 }
 impl<'a> IndicesGetSettingsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetSettingsRequestBuilder {
             client,
             ..Default::default()
@@ -578,21 +678,26 @@ impl<'a> Sender for IndicesGetSettingsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetTemplateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     flat_settings: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
     local: Option<&'a bool>,
     master_timeout: &'a str,
 }
 impl<'a> IndicesGetTemplateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetTemplateRequestBuilder {
             client,
             ..Default::default()
@@ -606,20 +711,25 @@ impl<'a> Sender for IndicesGetTemplateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesGetUpgradeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesGetUpgradeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesGetUpgradeRequestBuilder {
             client,
             ..Default::default()
@@ -633,14 +743,19 @@ impl<'a> Sender for IndicesGetUpgradeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesOpenRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -649,7 +764,7 @@ pub struct IndicesOpenRequestBuilder<'a> {
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesOpenRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesOpenRequestBuilder {
             client,
             ..Default::default()
@@ -663,19 +778,24 @@ impl<'a> Sender for IndicesOpenRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesPutAliasRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> IndicesPutAliasRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesPutAliasRequestBuilder {
             client,
             ..Default::default()
@@ -689,14 +809,19 @@ impl<'a> Sender for IndicesPutAliasRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesPutMappingRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -705,7 +830,7 @@ pub struct IndicesPutMappingRequestBuilder<'a> {
     timeout: &'a str,
 }
 impl<'a> IndicesPutMappingRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesPutMappingRequestBuilder {
             client,
             ..Default::default()
@@ -719,14 +844,19 @@ impl<'a> Sender for IndicesPutMappingRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesPutSettingsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     flat_settings: Option<&'a bool>,
@@ -736,7 +866,7 @@ pub struct IndicesPutSettingsRequestBuilder<'a> {
     timeout: &'a str,
 }
 impl<'a> IndicesPutSettingsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesPutSettingsRequestBuilder {
             client,
             ..Default::default()
@@ -750,14 +880,19 @@ impl<'a> Sender for IndicesPutSettingsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesPutTemplateRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     create: Option<&'a bool>,
     flat_settings: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
@@ -766,7 +901,7 @@ pub struct IndicesPutTemplateRequestBuilder<'a> {
     timeout: &'a str,
 }
 impl<'a> IndicesPutTemplateRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesPutTemplateRequestBuilder {
             client,
             ..Default::default()
@@ -780,19 +915,24 @@ impl<'a> Sender for IndicesPutTemplateRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesRecoveryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     active_only: Option<&'a bool>,
     detailed: Option<&'a bool>,
 }
 impl<'a> IndicesRecoveryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesRecoveryRequestBuilder {
             client,
             ..Default::default()
@@ -806,20 +946,25 @@ impl<'a> Sender for IndicesRecoveryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesRefreshRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesRefreshRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesRefreshRequestBuilder {
             client,
             ..Default::default()
@@ -833,20 +978,25 @@ impl<'a> Sender for IndicesRefreshRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesReloadSearchAnalyzersRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
 }
 impl<'a> IndicesReloadSearchAnalyzersRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesReloadSearchAnalyzersRequestBuilder {
             client,
             ..Default::default()
@@ -860,14 +1010,19 @@ impl<'a> Sender for IndicesReloadSearchAnalyzersRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesRolloverRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     dry_run: Option<&'a bool>,
     include_type_name: Option<&'a bool>,
     master_timeout: &'a str,
@@ -875,7 +1030,7 @@ pub struct IndicesRolloverRequestBuilder<'a> {
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesRolloverRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesRolloverRequestBuilder {
             client,
             ..Default::default()
@@ -889,21 +1044,26 @@ impl<'a> Sender for IndicesRolloverRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesSegmentsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
     verbose: Option<&'a bool>,
 }
 impl<'a> IndicesSegmentsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesSegmentsRequestBuilder {
             client,
             ..Default::default()
@@ -917,21 +1077,26 @@ impl<'a> Sender for IndicesSegmentsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesShardStoresRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
-    status: &'a Vec<String>,
+    status: Option<&'a Vec<String>>,
 }
 impl<'a> IndicesShardStoresRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesShardStoresRequestBuilder {
             client,
             ..Default::default()
@@ -945,21 +1110,26 @@ impl<'a> Sender for IndicesShardStoresRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesShrinkRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     copy_settings: Option<&'a bool>,
     master_timeout: &'a str,
     timeout: &'a str,
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesShrinkRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesShrinkRequestBuilder {
             client,
             ..Default::default()
@@ -973,21 +1143,26 @@ impl<'a> Sender for IndicesShrinkRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesSplitRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     copy_settings: Option<&'a bool>,
     master_timeout: &'a str,
     timeout: &'a str,
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesSplitRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesSplitRequestBuilder {
             client,
             ..Default::default()
@@ -1001,27 +1176,32 @@ impl<'a> Sender for IndicesSplitRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesStatsRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
-    completion_fields: &'a Vec<String>,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
+    completion_fields: Option<&'a Vec<String>>,
     expand_wildcards: Option<&'a i32>,
-    fielddata_fields: &'a Vec<String>,
-    fields: &'a Vec<String>,
+    fielddata_fields: Option<&'a Vec<String>>,
+    fields: Option<&'a Vec<String>>,
     forbid_closed_indices: Option<&'a bool>,
-    groups: &'a Vec<String>,
+    groups: Option<&'a Vec<String>>,
     include_segment_file_sizes: Option<&'a bool>,
     include_unloaded_segments: Option<&'a bool>,
     level: Option<&'a i32>,
-    types: &'a Vec<String>,
+    types: Option<&'a Vec<String>>,
 }
 impl<'a> IndicesStatsRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesStatsRequestBuilder {
             client,
             ..Default::default()
@@ -1035,14 +1215,19 @@ impl<'a> Sender for IndicesStatsRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesUnfreezeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -1051,7 +1236,7 @@ pub struct IndicesUnfreezeRequestBuilder<'a> {
     wait_for_active_shards: &'a str,
 }
 impl<'a> IndicesUnfreezeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesUnfreezeRequestBuilder {
             client,
             ..Default::default()
@@ -1065,19 +1250,24 @@ impl<'a> Sender for IndicesUnfreezeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesUpdateAliasesRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     master_timeout: &'a str,
     timeout: &'a str,
 }
 impl<'a> IndicesUpdateAliasesRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesUpdateAliasesRequestBuilder {
             client,
             ..Default::default()
@@ -1091,14 +1281,19 @@ impl<'a> Sender for IndicesUpdateAliasesRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesUpgradeRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     allow_no_indices: Option<&'a bool>,
     expand_wildcards: Option<&'a i32>,
     ignore_unavailable: Option<&'a bool>,
@@ -1106,7 +1301,7 @@ pub struct IndicesUpgradeRequestBuilder<'a> {
     wait_for_completion: Option<&'a bool>,
 }
 impl<'a> IndicesUpgradeRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesUpgradeRequestBuilder {
             client,
             ..Default::default()
@@ -1120,14 +1315,19 @@ impl<'a> Sender for IndicesUpgradeRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
 }
-#[Default]
+#[derive(Default)]
 pub struct IndicesValidateQueryRequestBuilder<'a> {
     client: &'a ElasticsearchClient,
+    error_trace: Option<&'a bool>,
+    filter_path: Option<&'a Vec<String>>,
+    human: Option<&'a bool>,
+    pretty: Option<&'a bool>,
+    source: &'a str,
     all_shards: Option<&'a bool>,
     allow_no_indices: Option<&'a bool>,
     analyze_wildcard: Option<&'a bool>,
@@ -1142,7 +1342,7 @@ pub struct IndicesValidateQueryRequestBuilder<'a> {
     rewrite: Option<&'a bool>,
 }
 impl<'a> IndicesValidateQueryRequestBuilder<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesValidateQueryRequestBuilder {
             client,
             ..Default::default()
@@ -1156,7 +1356,7 @@ impl<'a> Sender for IndicesValidateQueryRequestBuilder<'a> {
     {
         Ok(ElasticsearchResponse {
             headers: HeaderMap::new(),
-            status_code: StatusCode(200),
+            status_code: StatusCode::OK,
             body: None,
         })
     }
@@ -1166,7 +1366,7 @@ pub struct IndicesNamespaceClient<'a> {
     client: &'a ElasticsearchClient,
 }
 impl<'a> IndicesNamespaceClient<'a> {
-    pub fn new(client: &ElasticsearchClient) -> Self {
+    pub fn new(client: &'a ElasticsearchClient) -> Self {
         IndicesNamespaceClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html"]
