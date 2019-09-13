@@ -14,10 +14,13 @@ mod code_gen;
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
     pub commit: String,
-    /// global methods
-    pub global: BTreeMap<String, ApiEndpoint>,
+    /// parameters that are common to all API methods
+    pub common_params: BTreeMap<String, Type>,
+    /// root API methods
+    pub root: BTreeMap<String, ApiEndpoint>,
     /// namespace client methods
     pub namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>>,
+    /// enums in parameters
     pub enums: Vec<ApiEnum>,
 }
 
@@ -126,6 +129,14 @@ pub struct ApiEndpoint {
     body: Option<Body>,
 }
 
+/// Common parameters accepted by all API endpoints
+#[derive(Debug, PartialEq, Deserialize, Clone)]
+pub struct Common {
+    description: String,
+    documentation: String,
+    params: BTreeMap<String, Type>,
+}
+
 /// An enum defined in the REST API specs
 pub struct ApiEnum {
     pub name: String,
@@ -198,14 +209,15 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
     let paths = read_dir(download_dir).unwrap();
     let mut namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>> = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
+    let mut common_params = BTreeMap::new();
     let global_key = "global";
 
     for path in paths {
         let path = path?.path();
-        let name = path.file_name().map(|path| path.to_string_lossy());
+        let name = path.file_name().map(|path| path.to_str());
         let display = path.to_string_lossy().into_owned();
 
-        if name.map(|name| !name.starts_with("_")).unwrap_or(true) {
+        if name.unwrap().map(|name| !name.starts_with("_")).unwrap_or(true) {
             let mut file = File::open(&path)?;
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
 
@@ -246,16 +258,23 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
                     .unwrap()
                     .insert(method_name, api_endpoint);
             }
+        } else if name.map(|name| name == Some("_common.json")).unwrap_or(true) {
+            let mut file = File::open(&path)?;
+            let common = common_params_from_file(display, &mut file)?;
+            common_params = common.params;
         }
     }
 
-    let global = namespaces.remove(global_key).unwrap();
+    /// extract the root methods
+    let root = namespaces.remove(global_key).unwrap();
+
     let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
     sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
 
     Ok(Api {
         commit: branch.to_string(),
-        global,
+        common_params,
+        root,
         namespaces,
         enums: sorted_enums,
     })
@@ -276,6 +295,22 @@ where
 
     // get the first (and only) endpoint name and endpoint body
     Ok(endpoint.into_iter().next().unwrap())
+}
+
+/// deserializes a Common from a file
+fn common_params_from_file<R>(
+    name: String,
+    reader: &mut R,
+) -> Result<Common, failure::Error>
+    where
+        R: Read,
+{
+    let common: Common =
+        serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
+            message: format!("Failed to parse {} because: {}", name, e),
+        })?;
+
+    Ok(common)
 }
 
 /// formats tokens using rustfmt

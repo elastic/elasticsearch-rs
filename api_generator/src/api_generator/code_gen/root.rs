@@ -7,7 +7,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
 
     let methods: Vec<Tokens> = api
-        .global
+        .root
         .iter()
         .map(|(name, endpoint)| {
             let method_name = code_gen::ident(name.to_string());
