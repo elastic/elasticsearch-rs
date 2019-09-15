@@ -13,7 +13,9 @@ The general usage of the client is envisioned as:
 let settings = ConnectionSettings::new();
 let connection = Connection::new(Url::parse("http://localhost:9200").unwrap());
 let client = ElasticsearchClient::new(settings, connection);
-let response = client.cat().indices();
+let response = client.cat()
+                     .indices()
+                     .send();
 ```
 
 ### Running MSVC debugger in VS Code
