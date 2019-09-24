@@ -744,83 +744,83 @@ impl CatClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html"]
     pub fn aliases(&self) -> CatAliasesBuilder {
-        CatAliasesBuilder::default()
+        CatAliasesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html"]
     pub fn allocation(&self) -> CatAllocationBuilder {
-        CatAllocationBuilder::default()
+        CatAllocationBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html"]
     pub fn count(&self) -> CatCountBuilder {
-        CatCountBuilder::default()
+        CatCountBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html"]
     pub fn fielddata(&self) -> CatFielddataBuilder {
-        CatFielddataBuilder::default()
+        CatFielddataBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html"]
     pub fn health(&self) -> CatHealthBuilder {
-        CatHealthBuilder::default()
+        CatHealthBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html"]
     pub fn help(&self) -> CatHelpBuilder {
-        CatHelpBuilder::default()
+        CatHelpBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html"]
     pub fn indices(&self) -> CatIndicesBuilder {
-        CatIndicesBuilder::default()
+        CatIndicesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html"]
     pub fn master(&self) -> CatMasterBuilder {
-        CatMasterBuilder::default()
+        CatMasterBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html"]
     pub fn nodeattrs(&self) -> CatNodeattrsBuilder {
-        CatNodeattrsBuilder::default()
+        CatNodeattrsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html"]
     pub fn nodes(&self) -> CatNodesBuilder {
-        CatNodesBuilder::default()
+        CatNodesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html"]
     pub fn pending_tasks(&self) -> CatPendingTasksBuilder {
-        CatPendingTasksBuilder::default()
+        CatPendingTasksBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html"]
     pub fn plugins(&self) -> CatPluginsBuilder {
-        CatPluginsBuilder::default()
+        CatPluginsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html"]
     pub fn recovery(&self) -> CatRecoveryBuilder {
-        CatRecoveryBuilder::default()
+        CatRecoveryBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html"]
     pub fn repositories(&self) -> CatRepositoriesBuilder {
-        CatRepositoriesBuilder::default()
+        CatRepositoriesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html"]
     pub fn segments(&self) -> CatSegmentsBuilder {
-        CatSegmentsBuilder::default()
+        CatSegmentsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html"]
     pub fn shards(&self) -> CatShardsBuilder {
-        CatShardsBuilder::default()
+        CatShardsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html"]
     pub fn snapshots(&self) -> CatSnapshotsBuilder {
-        CatSnapshotsBuilder::default()
+        CatSnapshotsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
     pub fn tasks(&self) -> CatTasksBuilder {
-        CatTasksBuilder::default()
+        CatTasksBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html"]
     pub fn templates(&self) -> CatTemplatesBuilder {
-        CatTemplatesBuilder::default()
+        CatTemplatesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html"]
     pub fn thread_pool(&self) -> CatThreadPoolBuilder {
-        CatThreadPoolBuilder::default()
+        CatThreadPoolBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

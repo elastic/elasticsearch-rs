@@ -225,31 +225,31 @@ impl LicenseClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html"]
     pub fn delete(&self) -> LicenseDeleteBuilder {
-        LicenseDeleteBuilder::default()
+        LicenseDeleteBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html"]
     pub fn get(&self) -> LicenseGetBuilder {
-        LicenseGetBuilder::default()
+        LicenseGetBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html"]
     pub fn get_basic_status(&self) -> LicenseGetBasicStatusBuilder {
-        LicenseGetBasicStatusBuilder::default()
+        LicenseGetBasicStatusBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html"]
     pub fn get_trial_status(&self) -> LicenseGetTrialStatusBuilder {
-        LicenseGetTrialStatusBuilder::default()
+        LicenseGetTrialStatusBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html"]
     pub fn post(&self) -> LicensePostBuilder {
-        LicensePostBuilder::default()
+        LicensePostBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html"]
     pub fn post_start_basic(&self) -> LicensePostStartBasicBuilder {
-        LicensePostStartBasicBuilder::default()
+        LicensePostStartBasicBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html"]
     pub fn post_start_trial(&self) -> LicensePostStartTrialBuilder {
-        LicensePostStartTrialBuilder::default()
+        LicensePostStartTrialBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

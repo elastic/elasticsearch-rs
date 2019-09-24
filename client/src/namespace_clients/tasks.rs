@@ -116,15 +116,15 @@ impl TasksClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
     pub fn cancel(&self) -> TasksCancelBuilder {
-        TasksCancelBuilder::default()
+        TasksCancelBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
     pub fn get(&self) -> TasksGetBuilder {
-        TasksGetBuilder::default()
+        TasksGetBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
     pub fn list(&self) -> TasksListBuilder {
-        TasksListBuilder::default()
+        TasksListBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

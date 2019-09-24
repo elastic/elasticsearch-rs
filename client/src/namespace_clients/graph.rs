@@ -48,7 +48,7 @@ impl GraphClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
     pub fn explore(&self) -> GraphExploreBuilder {
-        GraphExploreBuilder::default()
+        GraphExploreBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

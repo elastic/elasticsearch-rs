@@ -49,7 +49,7 @@ impl MonitoringClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
     pub fn bulk(&self) -> MonitoringBulkBuilder {
-        MonitoringBulkBuilder::default()
+        MonitoringBulkBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

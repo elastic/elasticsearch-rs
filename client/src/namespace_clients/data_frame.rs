@@ -230,31 +230,31 @@ impl DataFrameClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-data-frame-transform.html"]
     pub fn delete_data_frame_transform(&self) -> DataFrameDeleteDataFrameTransformBuilder {
-        DataFrameDeleteDataFrameTransformBuilder::default()
+        DataFrameDeleteDataFrameTransformBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform.html"]
     pub fn get_data_frame_transform(&self) -> DataFrameGetDataFrameTransformBuilder {
-        DataFrameGetDataFrameTransformBuilder::default()
+        DataFrameGetDataFrameTransformBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform-stats.html"]
     pub fn get_data_frame_transform_stats(&self) -> DataFrameGetDataFrameTransformStatsBuilder {
-        DataFrameGetDataFrameTransformStatsBuilder::default()
+        DataFrameGetDataFrameTransformStatsBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-data-frame-transform.html"]
     pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransformBuilder {
-        DataFramePreviewDataFrameTransformBuilder::default()
+        DataFramePreviewDataFrameTransformBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/put-data-frame-transform.html"]
     pub fn put_data_frame_transform(&self) -> DataFramePutDataFrameTransformBuilder {
-        DataFramePutDataFrameTransformBuilder::default()
+        DataFramePutDataFrameTransformBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/start-data-frame-transform.html"]
     pub fn start_data_frame_transform(&self) -> DataFrameStartDataFrameTransformBuilder {
-        DataFrameStartDataFrameTransformBuilder::default()
+        DataFrameStartDataFrameTransformBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/stop-data-frame-transform.html"]
     pub fn stop_data_frame_transform(&self) -> DataFrameStopDataFrameTransformBuilder {
-        DataFrameStopDataFrameTransformBuilder::default()
+        DataFrameStopDataFrameTransformBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

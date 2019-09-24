@@ -253,35 +253,35 @@ impl RollupClient {
     }
     #[doc = ""]
     pub fn delete_job(&self) -> RollupDeleteJobBuilder {
-        RollupDeleteJobBuilder::default()
+        RollupDeleteJobBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn get_jobs(&self) -> RollupGetJobsBuilder {
-        RollupGetJobsBuilder::default()
+        RollupGetJobsBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn get_rollup_caps(&self) -> RollupGetRollupCapsBuilder {
-        RollupGetRollupCapsBuilder::default()
+        RollupGetRollupCapsBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn get_rollup_index_caps(&self) -> RollupGetRollupIndexCapsBuilder {
-        RollupGetRollupIndexCapsBuilder::default()
+        RollupGetRollupIndexCapsBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn put_job(&self) -> RollupPutJobBuilder {
-        RollupPutJobBuilder::default()
+        RollupPutJobBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn rollup_search(&self) -> RollupRollupSearchBuilder {
-        RollupRollupSearchBuilder::default()
+        RollupRollupSearchBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn start_job(&self) -> RollupStartJobBuilder {
-        RollupStartJobBuilder::default()
+        RollupStartJobBuilder::new(self.client.clone())
     }
     #[doc = ""]
     pub fn stop_job(&self) -> RollupStopJobBuilder {
-        RollupStopJobBuilder::default()
+        RollupStopJobBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

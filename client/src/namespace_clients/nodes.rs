@@ -180,23 +180,23 @@ impl NodesClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-hot-threads.html"]
     pub fn hot_threads(&self) -> NodesHotThreadsBuilder {
-        NodesHotThreadsBuilder::default()
+        NodesHotThreadsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-info.html"]
     pub fn info(&self) -> NodesInfoBuilder {
-        NodesInfoBuilder::default()
+        NodesInfoBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings"]
     pub fn reload_secure_settings(&self) -> NodesReloadSecureSettingsBuilder {
-        NodesReloadSecureSettingsBuilder::default()
+        NodesReloadSecureSettingsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html"]
     pub fn stats(&self) -> NodesStatsBuilder {
-        NodesStatsBuilder::default()
+        NodesStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-usage.html"]
     pub fn usage(&self) -> NodesUsageBuilder {
-        NodesUsageBuilder::default()
+        NodesUsageBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

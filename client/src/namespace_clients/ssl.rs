@@ -46,7 +46,7 @@ impl SslClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html"]
     pub fn certificates(&self) -> SslCertificatesBuilder {
-        SslCertificatesBuilder::default()
+        SslCertificatesBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

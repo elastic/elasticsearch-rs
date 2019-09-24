@@ -337,47 +337,47 @@ impl CcrClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-delete-auto-follow-pattern.html"]
     pub fn delete_auto_follow_pattern(&self) -> CcrDeleteAutoFollowPatternBuilder {
-        CcrDeleteAutoFollowPatternBuilder::default()
+        CcrDeleteAutoFollowPatternBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html"]
     pub fn follow(&self) -> CcrFollowBuilder {
-        CcrFollowBuilder::default()
+        CcrFollowBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html"]
     pub fn follow_info(&self) -> CcrFollowInfoBuilder {
-        CcrFollowInfoBuilder::default()
+        CcrFollowInfoBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-stats.html"]
     pub fn follow_stats(&self) -> CcrFollowStatsBuilder {
-        CcrFollowStatsBuilder::default()
+        CcrFollowStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
     pub fn forget_follower(&self) -> CcrForgetFollowerBuilder {
-        CcrForgetFollowerBuilder::default()
+        CcrForgetFollowerBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html"]
     pub fn get_auto_follow_pattern(&self) -> CcrGetAutoFollowPatternBuilder {
-        CcrGetAutoFollowPatternBuilder::default()
+        CcrGetAutoFollowPatternBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html"]
     pub fn pause_follow(&self) -> CcrPauseFollowBuilder {
-        CcrPauseFollowBuilder::default()
+        CcrPauseFollowBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html"]
     pub fn put_auto_follow_pattern(&self) -> CcrPutAutoFollowPatternBuilder {
-        CcrPutAutoFollowPatternBuilder::default()
+        CcrPutAutoFollowPatternBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html"]
     pub fn resume_follow(&self) -> CcrResumeFollowBuilder {
-        CcrResumeFollowBuilder::default()
+        CcrResumeFollowBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html"]
     pub fn stats(&self) -> CcrStatsBuilder {
-        CcrStatsBuilder::default()
+        CcrStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
     pub fn unfollow(&self) -> CcrUnfollowBuilder {
-        CcrUnfollowBuilder::default()
+        CcrUnfollowBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

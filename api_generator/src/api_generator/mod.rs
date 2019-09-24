@@ -265,7 +265,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
         }
     }
 
-    /// extract the root methods
+    // extract the root methods
     let root = namespaces.remove(global_key).unwrap();
 
     let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
@@ -297,7 +297,7 @@ where
     Ok(endpoint.into_iter().next().unwrap())
 }
 
-/// deserializes a Common from a file
+/// deserializes Common from a file
 fn common_params_from_file<R>(
     name: String,
     reader: &mut R,

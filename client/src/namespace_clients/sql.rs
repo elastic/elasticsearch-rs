@@ -105,15 +105,15 @@ impl SqlClient {
     }
     #[doc = "Clear SQL cursor"]
     pub fn clear_cursor(&self) -> SqlClearCursorBuilder {
-        SqlClearCursorBuilder::default()
+        SqlClearCursorBuilder::new(self.client.clone())
     }
     #[doc = "Execute SQL"]
     pub fn query(&self) -> SqlQueryBuilder {
-        SqlQueryBuilder::default()
+        SqlQueryBuilder::new(self.client.clone())
     }
     #[doc = "Translate SQL into Elasticsearch queries"]
     pub fn translate(&self) -> SqlTranslateBuilder {
-        SqlTranslateBuilder::default()
+        SqlTranslateBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

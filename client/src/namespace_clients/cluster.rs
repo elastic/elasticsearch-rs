@@ -316,39 +316,39 @@ impl ClusterClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html"]
     pub fn allocation_explain(&self) -> ClusterAllocationExplainBuilder {
-        ClusterAllocationExplainBuilder::default()
+        ClusterAllocationExplainBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
     pub fn get_settings(&self) -> ClusterGetSettingsBuilder {
-        ClusterGetSettingsBuilder::default()
+        ClusterGetSettingsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html"]
     pub fn health(&self) -> ClusterHealthBuilder {
-        ClusterHealthBuilder::default()
+        ClusterHealthBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html"]
     pub fn pending_tasks(&self) -> ClusterPendingTasksBuilder {
-        ClusterPendingTasksBuilder::default()
+        ClusterPendingTasksBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
     pub fn put_settings(&self) -> ClusterPutSettingsBuilder {
-        ClusterPutSettingsBuilder::default()
+        ClusterPutSettingsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html"]
     pub fn remote_info(&self) -> ClusterRemoteInfoBuilder {
-        ClusterRemoteInfoBuilder::default()
+        ClusterRemoteInfoBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html"]
     pub fn reroute(&self) -> ClusterRerouteBuilder {
-        ClusterRerouteBuilder::default()
+        ClusterRerouteBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html"]
     pub fn state(&self) -> ClusterStateBuilder {
-        ClusterStateBuilder::default()
+        ClusterStateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html"]
     pub fn stats(&self) -> ClusterStatsBuilder {
-        ClusterStatsBuilder::default()
+        ClusterStatsBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

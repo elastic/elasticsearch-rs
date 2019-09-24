@@ -4,17 +4,22 @@ use inflector::Inflector;
 use quote::Tokens;
 use syn::{Field,FieldValue};
 
+fn create_field(f: (&String, &Type)) -> syn::Field {
+    syn::Field {
+        ident: Some(code_gen::ident(code_gen::valid_name(f.0).to_lowercase())),
+        vis: syn::Visibility::Inherited,
+        attrs: vec![],
+        ty: code_gen::ty(&f.1.ty)
+    }
+}
+
+/// Generates the AST for a namespace
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
     let common_fields : Vec<Field> = api.common_params
         .iter()
-        .map(|(n, t)| { syn::Field{
-            ident: Some(code_gen::ident(code_gen::valid_name(n).to_lowercase())),
-            vis: syn::Visibility::Inherited,
-            attrs: vec![],
-            ty: code_gen::ty(&t.ty)
-        } })
+        .map(create_field)
         .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
@@ -42,6 +47,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
         tokens.append(header);
 
+        // AST for builder types
         let builders: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
@@ -57,12 +63,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .url
                     .params
                     .iter()
-                    .map(|(n, t)| { syn::Field{
-                        ident: Some(code_gen::ident(code_gen::valid_name(n).to_lowercase())),
-                        vis: syn::Visibility::Inherited,
-                        attrs: vec![],
-                        ty: code_gen::ty(&t.ty)
-                    } })
+                    .map(create_field)
                     .collect();
 
 //                let assignments: Vec<syn::FieldValue> = endpoint
@@ -115,6 +116,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             })
             .collect();
 
+        // AST for methods on namespace client that return builder types
         let methods: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
@@ -143,12 +145,13 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 quote!(
                     #method_doc
                     pub fn #method_name(&self) -> #builder_ident {
-                        #builder_ident::default()
+                        #builder_ident::new(self.client.clone())
                     }
                 )
             })
             .collect();
 
+        // namespace client method on ElasticsearchClient
         let implementation = quote!(
             #(#builders)*
 

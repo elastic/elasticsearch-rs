@@ -168,23 +168,23 @@ impl IngestClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html"]
     pub fn delete_pipeline(&self) -> IngestDeletePipelineBuilder {
-        IngestDeletePipelineBuilder::default()
+        IngestDeletePipelineBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html"]
     pub fn get_pipeline(&self) -> IngestGetPipelineBuilder {
-        IngestGetPipelineBuilder::default()
+        IngestGetPipelineBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get"]
     pub fn processor_grok(&self) -> IngestProcessorGrokBuilder {
-        IngestProcessorGrokBuilder::default()
+        IngestProcessorGrokBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html"]
     pub fn put_pipeline(&self) -> IngestPutPipelineBuilder {
-        IngestPutPipelineBuilder::default()
+        IngestPutPipelineBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html"]
     pub fn simulate(&self) -> IngestSimulateBuilder {
-        IngestSimulateBuilder::default()
+        IngestSimulateBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

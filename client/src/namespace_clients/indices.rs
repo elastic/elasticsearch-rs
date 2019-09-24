@@ -1371,163 +1371,163 @@ impl IndicesClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html"]
     pub fn analyze(&self) -> IndicesAnalyzeBuilder {
-        IndicesAnalyzeBuilder::default()
+        IndicesAnalyzeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html"]
     pub fn clear_cache(&self) -> IndicesClearCacheBuilder {
-        IndicesClearCacheBuilder::default()
+        IndicesClearCacheBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
     pub fn close(&self) -> IndicesCloseBuilder {
-        IndicesCloseBuilder::default()
+        IndicesCloseBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html"]
     pub fn create(&self) -> IndicesCreateBuilder {
-        IndicesCreateBuilder::default()
+        IndicesCreateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html"]
     pub fn delete(&self) -> IndicesDeleteBuilder {
-        IndicesDeleteBuilder::default()
+        IndicesDeleteBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn delete_alias(&self) -> IndicesDeleteAliasBuilder {
-        IndicesDeleteAliasBuilder::default()
+        IndicesDeleteAliasBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
     pub fn delete_template(&self) -> IndicesDeleteTemplateBuilder {
-        IndicesDeleteTemplateBuilder::default()
+        IndicesDeleteTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html"]
     pub fn exists(&self) -> IndicesExistsBuilder {
-        IndicesExistsBuilder::default()
+        IndicesExistsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn exists_alias(&self) -> IndicesExistsAliasBuilder {
-        IndicesExistsAliasBuilder::default()
+        IndicesExistsAliasBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
     pub fn exists_template(&self) -> IndicesExistsTemplateBuilder {
-        IndicesExistsTemplateBuilder::default()
+        IndicesExistsTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html"]
     pub fn exists_type(&self) -> IndicesExistsTypeBuilder {
-        IndicesExistsTypeBuilder::default()
+        IndicesExistsTypeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html"]
     pub fn flush(&self) -> IndicesFlushBuilder {
-        IndicesFlushBuilder::default()
+        IndicesFlushBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html#synced-flush-api"]
     pub fn flush_synced(&self) -> IndicesFlushSyncedBuilder {
-        IndicesFlushSyncedBuilder::default()
+        IndicesFlushSyncedBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html"]
     pub fn forcemerge(&self) -> IndicesForcemergeBuilder {
-        IndicesForcemergeBuilder::default()
+        IndicesForcemergeBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
     pub fn freeze(&self) -> IndicesFreezeBuilder {
-        IndicesFreezeBuilder::default()
+        IndicesFreezeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html"]
     pub fn get(&self) -> IndicesGetBuilder {
-        IndicesGetBuilder::default()
+        IndicesGetBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn get_alias(&self) -> IndicesGetAliasBuilder {
-        IndicesGetAliasBuilder::default()
+        IndicesGetAliasBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html"]
     pub fn get_field_mapping(&self) -> IndicesGetFieldMappingBuilder {
-        IndicesGetFieldMappingBuilder::default()
+        IndicesGetFieldMappingBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html"]
     pub fn get_mapping(&self) -> IndicesGetMappingBuilder {
-        IndicesGetMappingBuilder::default()
+        IndicesGetMappingBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html"]
     pub fn get_settings(&self) -> IndicesGetSettingsBuilder {
-        IndicesGetSettingsBuilder::default()
+        IndicesGetSettingsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
     pub fn get_template(&self) -> IndicesGetTemplateBuilder {
-        IndicesGetTemplateBuilder::default()
+        IndicesGetTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
     pub fn get_upgrade(&self) -> IndicesGetUpgradeBuilder {
-        IndicesGetUpgradeBuilder::default()
+        IndicesGetUpgradeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
     pub fn open(&self) -> IndicesOpenBuilder {
-        IndicesOpenBuilder::default()
+        IndicesOpenBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn put_alias(&self) -> IndicesPutAliasBuilder {
-        IndicesPutAliasBuilder::default()
+        IndicesPutAliasBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
     pub fn put_mapping(&self) -> IndicesPutMappingBuilder {
-        IndicesPutMappingBuilder::default()
+        IndicesPutMappingBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
     pub fn put_settings(&self) -> IndicesPutSettingsBuilder {
-        IndicesPutSettingsBuilder::default()
+        IndicesPutSettingsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
     pub fn put_template(&self) -> IndicesPutTemplateBuilder {
-        IndicesPutTemplateBuilder::default()
+        IndicesPutTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html"]
     pub fn recovery(&self) -> IndicesRecoveryBuilder {
-        IndicesRecoveryBuilder::default()
+        IndicesRecoveryBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html"]
     pub fn refresh(&self) -> IndicesRefreshBuilder {
-        IndicesRefreshBuilder::default()
+        IndicesRefreshBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html"]
     pub fn reload_search_analyzers(&self) -> IndicesReloadSearchAnalyzersBuilder {
-        IndicesReloadSearchAnalyzersBuilder::default()
+        IndicesReloadSearchAnalyzersBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html"]
     pub fn rollover(&self) -> IndicesRolloverBuilder {
-        IndicesRolloverBuilder::default()
+        IndicesRolloverBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html"]
     pub fn segments(&self) -> IndicesSegmentsBuilder {
-        IndicesSegmentsBuilder::default()
+        IndicesSegmentsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html"]
     pub fn shard_stores(&self) -> IndicesShardStoresBuilder {
-        IndicesShardStoresBuilder::default()
+        IndicesShardStoresBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html"]
     pub fn shrink(&self) -> IndicesShrinkBuilder {
-        IndicesShrinkBuilder::default()
+        IndicesShrinkBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html"]
     pub fn split(&self) -> IndicesSplitBuilder {
-        IndicesSplitBuilder::default()
+        IndicesSplitBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html"]
     pub fn stats(&self) -> IndicesStatsBuilder {
-        IndicesStatsBuilder::default()
+        IndicesStatsBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
     pub fn unfreeze(&self) -> IndicesUnfreezeBuilder {
-        IndicesUnfreezeBuilder::default()
+        IndicesUnfreezeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn update_aliases(&self) -> IndicesUpdateAliasesBuilder {
-        IndicesUpdateAliasesBuilder::default()
+        IndicesUpdateAliasesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
     pub fn upgrade(&self) -> IndicesUpgradeBuilder {
-        IndicesUpgradeBuilder::default()
+        IndicesUpgradeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html"]
     pub fn validate_query(&self) -> IndicesValidateQueryBuilder {
-        IndicesValidateQueryBuilder::default()
+        IndicesValidateQueryBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

@@ -788,107 +788,107 @@ impl SecurityClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html"]
     pub fn authenticate(&self) -> SecurityAuthenticateBuilder {
-        SecurityAuthenticateBuilder::default()
+        SecurityAuthenticateBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
     pub fn change_password(&self) -> SecurityChangePasswordBuilder {
-        SecurityChangePasswordBuilder::default()
+        SecurityChangePasswordBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
     pub fn clear_cached_realms(&self) -> SecurityClearCachedRealmsBuilder {
-        SecurityClearCachedRealmsBuilder::default()
+        SecurityClearCachedRealmsBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
     pub fn clear_cached_roles(&self) -> SecurityClearCachedRolesBuilder {
-        SecurityClearCachedRolesBuilder::default()
+        SecurityClearCachedRolesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
     pub fn create_api_key(&self) -> SecurityCreateApiKeyBuilder {
-        SecurityCreateApiKeyBuilder::default()
+        SecurityCreateApiKeyBuilder::new(self.client.clone())
     }
     #[doc = "TODO"]
     pub fn delete_privileges(&self) -> SecurityDeletePrivilegesBuilder {
-        SecurityDeletePrivilegesBuilder::default()
+        SecurityDeletePrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
     pub fn delete_role(&self) -> SecurityDeleteRoleBuilder {
-        SecurityDeleteRoleBuilder::default()
+        SecurityDeleteRoleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
     pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMappingBuilder {
-        SecurityDeleteRoleMappingBuilder::default()
+        SecurityDeleteRoleMappingBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
     pub fn delete_user(&self) -> SecurityDeleteUserBuilder {
-        SecurityDeleteUserBuilder::default()
+        SecurityDeleteUserBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
     pub fn disable_user(&self) -> SecurityDisableUserBuilder {
-        SecurityDisableUserBuilder::default()
+        SecurityDisableUserBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
     pub fn enable_user(&self) -> SecurityEnableUserBuilder {
-        SecurityEnableUserBuilder::default()
+        SecurityEnableUserBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
     pub fn get_api_key(&self) -> SecurityGetApiKeyBuilder {
-        SecurityGetApiKeyBuilder::default()
+        SecurityGetApiKeyBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html"]
     pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivilegesBuilder {
-        SecurityGetBuiltinPrivilegesBuilder::default()
+        SecurityGetBuiltinPrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
     pub fn get_privileges(&self) -> SecurityGetPrivilegesBuilder {
-        SecurityGetPrivilegesBuilder::default()
+        SecurityGetPrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html"]
     pub fn get_role(&self) -> SecurityGetRoleBuilder {
-        SecurityGetRoleBuilder::default()
+        SecurityGetRoleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html"]
     pub fn get_role_mapping(&self) -> SecurityGetRoleMappingBuilder {
-        SecurityGetRoleMappingBuilder::default()
+        SecurityGetRoleMappingBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
     pub fn get_token(&self) -> SecurityGetTokenBuilder {
-        SecurityGetTokenBuilder::default()
+        SecurityGetTokenBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
     pub fn get_user(&self) -> SecurityGetUserBuilder {
-        SecurityGetUserBuilder::default()
+        SecurityGetUserBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
     pub fn get_user_privileges(&self) -> SecurityGetUserPrivilegesBuilder {
-        SecurityGetUserPrivilegesBuilder::default()
+        SecurityGetUserPrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
     pub fn has_privileges(&self) -> SecurityHasPrivilegesBuilder {
-        SecurityHasPrivilegesBuilder::default()
+        SecurityHasPrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
     pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKeyBuilder {
-        SecurityInvalidateApiKeyBuilder::default()
+        SecurityInvalidateApiKeyBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
     pub fn invalidate_token(&self) -> SecurityInvalidateTokenBuilder {
-        SecurityInvalidateTokenBuilder::default()
+        SecurityInvalidateTokenBuilder::new(self.client.clone())
     }
     #[doc = "TODO"]
     pub fn put_privileges(&self) -> SecurityPutPrivilegesBuilder {
-        SecurityPutPrivilegesBuilder::default()
+        SecurityPutPrivilegesBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
     pub fn put_role(&self) -> SecurityPutRoleBuilder {
-        SecurityPutRoleBuilder::default()
+        SecurityPutRoleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
     pub fn put_role_mapping(&self) -> SecurityPutRoleMappingBuilder {
-        SecurityPutRoleMappingBuilder::default()
+        SecurityPutRoleMappingBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
     pub fn put_user(&self) -> SecurityPutUserBuilder {
-        SecurityPutUserBuilder::default()
+        SecurityPutUserBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

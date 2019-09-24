@@ -297,39 +297,39 @@ impl SnapshotClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn create(&self) -> SnapshotCreateBuilder {
-        SnapshotCreateBuilder::default()
+        SnapshotCreateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn create_repository(&self) -> SnapshotCreateRepositoryBuilder {
-        SnapshotCreateRepositoryBuilder::default()
+        SnapshotCreateRepositoryBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn delete(&self) -> SnapshotDeleteBuilder {
-        SnapshotDeleteBuilder::default()
+        SnapshotDeleteBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn delete_repository(&self) -> SnapshotDeleteRepositoryBuilder {
-        SnapshotDeleteRepositoryBuilder::default()
+        SnapshotDeleteRepositoryBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn get(&self) -> SnapshotGetBuilder {
-        SnapshotGetBuilder::default()
+        SnapshotGetBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn get_repository(&self) -> SnapshotGetRepositoryBuilder {
-        SnapshotGetRepositoryBuilder::default()
+        SnapshotGetRepositoryBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn restore(&self) -> SnapshotRestoreBuilder {
-        SnapshotRestoreBuilder::default()
+        SnapshotRestoreBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn status(&self) -> SnapshotStatusBuilder {
-        SnapshotStatusBuilder::default()
+        SnapshotStatusBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn verify_repository(&self) -> SnapshotVerifyRepositoryBuilder {
-        SnapshotVerifyRepositoryBuilder::default()
+        SnapshotVerifyRepositoryBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

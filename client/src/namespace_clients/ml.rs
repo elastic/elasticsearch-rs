@@ -1657,198 +1657,198 @@ impl MlClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
     pub fn close_job(&self) -> MlCloseJobBuilder {
-        MlCloseJobBuilder::default()
+        MlCloseJobBuilder::new(self.client.clone())
     }
     pub fn delete_calendar(&self) -> MlDeleteCalendarBuilder {
-        MlDeleteCalendarBuilder::default()
+        MlDeleteCalendarBuilder::new(self.client.clone())
     }
     pub fn delete_calendar_event(&self) -> MlDeleteCalendarEventBuilder {
-        MlDeleteCalendarEventBuilder::default()
+        MlDeleteCalendarEventBuilder::new(self.client.clone())
     }
     pub fn delete_calendar_job(&self) -> MlDeleteCalendarJobBuilder {
-        MlDeleteCalendarJobBuilder::default()
+        MlDeleteCalendarJobBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html"]
     pub fn delete_data_frame_analytics(&self) -> MlDeleteDataFrameAnalyticsBuilder {
-        MlDeleteDataFrameAnalyticsBuilder::default()
+        MlDeleteDataFrameAnalyticsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html"]
     pub fn delete_datafeed(&self) -> MlDeleteDatafeedBuilder {
-        MlDeleteDatafeedBuilder::default()
+        MlDeleteDatafeedBuilder::new(self.client.clone())
     }
     pub fn delete_expired_data(&self) -> MlDeleteExpiredDataBuilder {
-        MlDeleteExpiredDataBuilder::default()
+        MlDeleteExpiredDataBuilder::new(self.client.clone())
     }
     pub fn delete_filter(&self) -> MlDeleteFilterBuilder {
-        MlDeleteFilterBuilder::default()
+        MlDeleteFilterBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html"]
     pub fn delete_forecast(&self) -> MlDeleteForecastBuilder {
-        MlDeleteForecastBuilder::default()
+        MlDeleteForecastBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html"]
     pub fn delete_job(&self) -> MlDeleteJobBuilder {
-        MlDeleteJobBuilder::default()
+        MlDeleteJobBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html"]
     pub fn delete_model_snapshot(&self) -> MlDeleteModelSnapshotBuilder {
-        MlDeleteModelSnapshotBuilder::default()
+        MlDeleteModelSnapshotBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
     pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrameBuilder {
-        MlEvaluateDataFrameBuilder::default()
+        MlEvaluateDataFrameBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html"]
     pub fn find_file_structure(&self) -> MlFindFileStructureBuilder {
-        MlFindFileStructureBuilder::default()
+        MlFindFileStructureBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
     pub fn flush_job(&self) -> MlFlushJobBuilder {
-        MlFlushJobBuilder::default()
+        MlFlushJobBuilder::new(self.client.clone())
     }
     pub fn forecast(&self) -> MlForecastBuilder {
-        MlForecastBuilder::default()
+        MlForecastBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
     pub fn get_buckets(&self) -> MlGetBucketsBuilder {
-        MlGetBucketsBuilder::default()
+        MlGetBucketsBuilder::new(self.client.clone())
     }
     pub fn get_calendar_events(&self) -> MlGetCalendarEventsBuilder {
-        MlGetCalendarEventsBuilder::default()
+        MlGetCalendarEventsBuilder::new(self.client.clone())
     }
     pub fn get_calendars(&self) -> MlGetCalendarsBuilder {
-        MlGetCalendarsBuilder::default()
+        MlGetCalendarsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
     pub fn get_categories(&self) -> MlGetCategoriesBuilder {
-        MlGetCategoriesBuilder::default()
+        MlGetCategoriesBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
     pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalyticsBuilder {
-        MlGetDataFrameAnalyticsBuilder::default()
+        MlGetDataFrameAnalyticsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html"]
     pub fn get_data_frame_analytics_stats(&self) -> MlGetDataFrameAnalyticsStatsBuilder {
-        MlGetDataFrameAnalyticsStatsBuilder::default()
+        MlGetDataFrameAnalyticsStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html"]
     pub fn get_datafeed_stats(&self) -> MlGetDatafeedStatsBuilder {
-        MlGetDatafeedStatsBuilder::default()
+        MlGetDatafeedStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html"]
     pub fn get_datafeeds(&self) -> MlGetDatafeedsBuilder {
-        MlGetDatafeedsBuilder::default()
+        MlGetDatafeedsBuilder::new(self.client.clone())
     }
     pub fn get_filters(&self) -> MlGetFiltersBuilder {
-        MlGetFiltersBuilder::default()
+        MlGetFiltersBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
     pub fn get_influencers(&self) -> MlGetInfluencersBuilder {
-        MlGetInfluencersBuilder::default()
+        MlGetInfluencersBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
     pub fn get_job_stats(&self) -> MlGetJobStatsBuilder {
-        MlGetJobStatsBuilder::default()
+        MlGetJobStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html"]
     pub fn get_jobs(&self) -> MlGetJobsBuilder {
-        MlGetJobsBuilder::default()
+        MlGetJobsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
     pub fn get_model_snapshots(&self) -> MlGetModelSnapshotsBuilder {
-        MlGetModelSnapshotsBuilder::default()
+        MlGetModelSnapshotsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
     pub fn get_overall_buckets(&self) -> MlGetOverallBucketsBuilder {
-        MlGetOverallBucketsBuilder::default()
+        MlGetOverallBucketsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
     pub fn get_records(&self) -> MlGetRecordsBuilder {
-        MlGetRecordsBuilder::default()
+        MlGetRecordsBuilder::new(self.client.clone())
     }
     pub fn info(&self) -> MlInfoBuilder {
-        MlInfoBuilder::default()
+        MlInfoBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
     pub fn open_job(&self) -> MlOpenJobBuilder {
-        MlOpenJobBuilder::default()
+        MlOpenJobBuilder::new(self.client.clone())
     }
     pub fn post_calendar_events(&self) -> MlPostCalendarEventsBuilder {
-        MlPostCalendarEventsBuilder::default()
+        MlPostCalendarEventsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
     pub fn post_data(&self) -> MlPostDataBuilder {
-        MlPostDataBuilder::default()
+        MlPostDataBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
     pub fn preview_datafeed(&self) -> MlPreviewDatafeedBuilder {
-        MlPreviewDatafeedBuilder::default()
+        MlPreviewDatafeedBuilder::new(self.client.clone())
     }
     pub fn put_calendar(&self) -> MlPutCalendarBuilder {
-        MlPutCalendarBuilder::default()
+        MlPutCalendarBuilder::new(self.client.clone())
     }
     pub fn put_calendar_job(&self) -> MlPutCalendarJobBuilder {
-        MlPutCalendarJobBuilder::default()
+        MlPutCalendarJobBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
     pub fn put_data_frame_analytics(&self) -> MlPutDataFrameAnalyticsBuilder {
-        MlPutDataFrameAnalyticsBuilder::default()
+        MlPutDataFrameAnalyticsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
     pub fn put_datafeed(&self) -> MlPutDatafeedBuilder {
-        MlPutDatafeedBuilder::default()
+        MlPutDatafeedBuilder::new(self.client.clone())
     }
     pub fn put_filter(&self) -> MlPutFilterBuilder {
-        MlPutFilterBuilder::default()
+        MlPutFilterBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
     pub fn put_job(&self) -> MlPutJobBuilder {
-        MlPutJobBuilder::default()
+        MlPutJobBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
     pub fn revert_model_snapshot(&self) -> MlRevertModelSnapshotBuilder {
-        MlRevertModelSnapshotBuilder::default()
+        MlRevertModelSnapshotBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
     pub fn set_upgrade_mode(&self) -> MlSetUpgradeModeBuilder {
-        MlSetUpgradeModeBuilder::default()
+        MlSetUpgradeModeBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
     pub fn start_data_frame_analytics(&self) -> MlStartDataFrameAnalyticsBuilder {
-        MlStartDataFrameAnalyticsBuilder::default()
+        MlStartDataFrameAnalyticsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
     pub fn start_datafeed(&self) -> MlStartDatafeedBuilder {
-        MlStartDatafeedBuilder::default()
+        MlStartDatafeedBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
     pub fn stop_data_frame_analytics(&self) -> MlStopDataFrameAnalyticsBuilder {
-        MlStopDataFrameAnalyticsBuilder::default()
+        MlStopDataFrameAnalyticsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
     pub fn stop_datafeed(&self) -> MlStopDatafeedBuilder {
-        MlStopDatafeedBuilder::default()
+        MlStopDatafeedBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
     pub fn update_datafeed(&self) -> MlUpdateDatafeedBuilder {
-        MlUpdateDatafeedBuilder::default()
+        MlUpdateDatafeedBuilder::new(self.client.clone())
     }
     pub fn update_filter(&self) -> MlUpdateFilterBuilder {
-        MlUpdateFilterBuilder::default()
+        MlUpdateFilterBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
     pub fn update_job(&self) -> MlUpdateJobBuilder {
-        MlUpdateJobBuilder::default()
+        MlUpdateJobBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
     pub fn update_model_snapshot(&self) -> MlUpdateModelSnapshotBuilder {
-        MlUpdateModelSnapshotBuilder::default()
+        MlUpdateModelSnapshotBuilder::new(self.client.clone())
     }
     pub fn validate(&self) -> MlValidateBuilder {
-        MlValidateBuilder::default()
+        MlValidateBuilder::new(self.client.clone())
     }
     pub fn validate_detector(&self) -> MlValidateDetectorBuilder {
-        MlValidateDetectorBuilder::default()
+        MlValidateDetectorBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

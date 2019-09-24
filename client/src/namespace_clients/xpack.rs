@@ -77,11 +77,11 @@ impl XpackClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html"]
     pub fn info(&self) -> XpackInfoBuilder {
-        XpackInfoBuilder::default()
+        XpackInfoBuilder::new(self.client.clone())
     }
     #[doc = "Retrieve information about xpack features usage"]
     pub fn usage(&self) -> XpackUsageBuilder {
-        XpackUsageBuilder::default()
+        XpackUsageBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

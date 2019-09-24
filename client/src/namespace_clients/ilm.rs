@@ -307,43 +307,43 @@ impl IlmClient {
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html"]
     pub fn delete_lifecycle(&self) -> IlmDeleteLifecycleBuilder {
-        IlmDeleteLifecycleBuilder::default()
+        IlmDeleteLifecycleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html"]
     pub fn explain_lifecycle(&self) -> IlmExplainLifecycleBuilder {
-        IlmExplainLifecycleBuilder::default()
+        IlmExplainLifecycleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html"]
     pub fn get_lifecycle(&self) -> IlmGetLifecycleBuilder {
-        IlmGetLifecycleBuilder::default()
+        IlmGetLifecycleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-status.html"]
     pub fn get_status(&self) -> IlmGetStatusBuilder {
-        IlmGetStatusBuilder::default()
+        IlmGetStatusBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html"]
     pub fn move_to_step(&self) -> IlmMoveToStepBuilder {
-        IlmMoveToStepBuilder::default()
+        IlmMoveToStepBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html"]
     pub fn put_lifecycle(&self) -> IlmPutLifecycleBuilder {
-        IlmPutLifecycleBuilder::default()
+        IlmPutLifecycleBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html"]
     pub fn remove_policy(&self) -> IlmRemovePolicyBuilder {
-        IlmRemovePolicyBuilder::default()
+        IlmRemovePolicyBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html"]
     pub fn retry(&self) -> IlmRetryBuilder {
-        IlmRetryBuilder::default()
+        IlmRetryBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html"]
     pub fn start(&self) -> IlmStartBuilder {
-        IlmStartBuilder::default()
+        IlmStartBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html"]
     pub fn stop(&self) -> IlmStopBuilder {
-        IlmStopBuilder::default()
+        IlmStopBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

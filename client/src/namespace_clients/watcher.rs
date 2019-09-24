@@ -314,43 +314,43 @@ impl WatcherClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html"]
     pub fn ack_watch(&self) -> WatcherAckWatchBuilder {
-        WatcherAckWatchBuilder::default()
+        WatcherAckWatchBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html"]
     pub fn activate_watch(&self) -> WatcherActivateWatchBuilder {
-        WatcherActivateWatchBuilder::default()
+        WatcherActivateWatchBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html"]
     pub fn deactivate_watch(&self) -> WatcherDeactivateWatchBuilder {
-        WatcherDeactivateWatchBuilder::default()
+        WatcherDeactivateWatchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html"]
     pub fn delete_watch(&self) -> WatcherDeleteWatchBuilder {
-        WatcherDeleteWatchBuilder::default()
+        WatcherDeleteWatchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html"]
     pub fn execute_watch(&self) -> WatcherExecuteWatchBuilder {
-        WatcherExecuteWatchBuilder::default()
+        WatcherExecuteWatchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html"]
     pub fn get_watch(&self) -> WatcherGetWatchBuilder {
-        WatcherGetWatchBuilder::default()
+        WatcherGetWatchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html"]
     pub fn put_watch(&self) -> WatcherPutWatchBuilder {
-        WatcherPutWatchBuilder::default()
+        WatcherPutWatchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html"]
     pub fn start(&self) -> WatcherStartBuilder {
-        WatcherStartBuilder::default()
+        WatcherStartBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html"]
     pub fn stats(&self) -> WatcherStatsBuilder {
-        WatcherStatsBuilder::default()
+        WatcherStatsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html"]
     pub fn stop(&self) -> WatcherStopBuilder {
-        WatcherStopBuilder::default()
+        WatcherStopBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {

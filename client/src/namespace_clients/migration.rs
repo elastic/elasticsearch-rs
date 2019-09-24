@@ -46,7 +46,7 @@ impl MigrationClient {
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html"]
     pub fn deprecations(&self) -> MigrationDeprecationsBuilder {
-        MigrationDeprecationsBuilder::default()
+        MigrationDeprecationsBuilder::new(self.client.clone())
     }
 }
 impl ElasticsearchClient {
