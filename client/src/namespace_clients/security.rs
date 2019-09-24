@@ -8,23 +8,23 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SecurityAuthenticateRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityAuthenticateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityAuthenticateRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityAuthenticateRequestBuilder {
+impl SecurityAuthenticateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityAuthenticateBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityAuthenticateRequestBuilder<'a> {
+impl Sender for SecurityAuthenticateBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -37,24 +37,24 @@ impl<'a> Sender for SecurityAuthenticateRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityChangePasswordRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityChangePasswordBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityChangePasswordRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityChangePasswordRequestBuilder {
+impl SecurityChangePasswordBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityChangePasswordBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityChangePasswordRequestBuilder<'a> {
+impl Sender for SecurityChangePasswordBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -67,24 +67,24 @@ impl<'a> Sender for SecurityChangePasswordRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityClearCachedRealmsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    usernames: Option<&'a Vec<String>>,
+pub struct SecurityClearCachedRealmsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    usernames: Option<Vec<String>>,
 }
-impl<'a> SecurityClearCachedRealmsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityClearCachedRealmsRequestBuilder {
+impl SecurityClearCachedRealmsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityClearCachedRealmsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityClearCachedRealmsRequestBuilder<'a> {
+impl Sender for SecurityClearCachedRealmsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -97,23 +97,23 @@ impl<'a> Sender for SecurityClearCachedRealmsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityClearCachedRolesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityClearCachedRolesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityClearCachedRolesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityClearCachedRolesRequestBuilder {
+impl SecurityClearCachedRolesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityClearCachedRolesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityClearCachedRolesRequestBuilder<'a> {
+impl Sender for SecurityClearCachedRolesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -126,24 +126,24 @@ impl<'a> Sender for SecurityClearCachedRolesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityCreateApiKeyRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityCreateApiKeyBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityCreateApiKeyRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityCreateApiKeyRequestBuilder {
+impl SecurityCreateApiKeyBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityCreateApiKeyBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityCreateApiKeyRequestBuilder<'a> {
+impl Sender for SecurityCreateApiKeyBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -156,24 +156,24 @@ impl<'a> Sender for SecurityCreateApiKeyRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeletePrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityDeletePrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityDeletePrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityDeletePrivilegesRequestBuilder {
+impl SecurityDeletePrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityDeletePrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityDeletePrivilegesRequestBuilder<'a> {
+impl Sender for SecurityDeletePrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -186,24 +186,24 @@ impl<'a> Sender for SecurityDeletePrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteRoleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityDeleteRoleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityDeleteRoleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityDeleteRoleRequestBuilder {
+impl SecurityDeleteRoleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityDeleteRoleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityDeleteRoleRequestBuilder<'a> {
+impl Sender for SecurityDeleteRoleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -216,24 +216,24 @@ impl<'a> Sender for SecurityDeleteRoleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteRoleMappingRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityDeleteRoleMappingBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityDeleteRoleMappingRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityDeleteRoleMappingRequestBuilder {
+impl SecurityDeleteRoleMappingBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityDeleteRoleMappingBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityDeleteRoleMappingRequestBuilder<'a> {
+impl Sender for SecurityDeleteRoleMappingBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -246,24 +246,24 @@ impl<'a> Sender for SecurityDeleteRoleMappingRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteUserRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityDeleteUserBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityDeleteUserRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityDeleteUserRequestBuilder {
+impl SecurityDeleteUserBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityDeleteUserBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityDeleteUserRequestBuilder<'a> {
+impl Sender for SecurityDeleteUserBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -276,24 +276,24 @@ impl<'a> Sender for SecurityDeleteUserRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityDisableUserRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityDisableUserBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityDisableUserRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityDisableUserRequestBuilder {
+impl SecurityDisableUserBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityDisableUserBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityDisableUserRequestBuilder<'a> {
+impl Sender for SecurityDisableUserBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -306,24 +306,24 @@ impl<'a> Sender for SecurityDisableUserRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityEnableUserRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityEnableUserBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityEnableUserRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityEnableUserRequestBuilder {
+impl SecurityEnableUserBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityEnableUserBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityEnableUserRequestBuilder<'a> {
+impl Sender for SecurityEnableUserBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -336,27 +336,27 @@ impl<'a> Sender for SecurityEnableUserRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetApiKeyRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    id: &'a str,
-    name: &'a str,
-    realm_name: &'a str,
-    username: &'a str,
+pub struct SecurityGetApiKeyBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    id: Option<String>,
+    name: Option<String>,
+    realm_name: Option<String>,
+    username: Option<String>,
 }
-impl<'a> SecurityGetApiKeyRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetApiKeyRequestBuilder {
+impl SecurityGetApiKeyBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetApiKeyBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetApiKeyRequestBuilder<'a> {
+impl Sender for SecurityGetApiKeyBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -369,23 +369,23 @@ impl<'a> Sender for SecurityGetApiKeyRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetBuiltinPrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetBuiltinPrivilegesRequestBuilder {
+impl SecurityGetBuiltinPrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetBuiltinPrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
+impl Sender for SecurityGetBuiltinPrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -398,23 +398,23 @@ impl<'a> Sender for SecurityGetBuiltinPrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetPrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetPrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetPrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetPrivilegesRequestBuilder {
+impl SecurityGetPrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetPrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetPrivilegesRequestBuilder<'a> {
+impl Sender for SecurityGetPrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -427,23 +427,23 @@ impl<'a> Sender for SecurityGetPrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetRoleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetRoleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetRoleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetRoleRequestBuilder {
+impl SecurityGetRoleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetRoleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetRoleRequestBuilder<'a> {
+impl Sender for SecurityGetRoleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -456,23 +456,23 @@ impl<'a> Sender for SecurityGetRoleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetRoleMappingRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetRoleMappingBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetRoleMappingRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetRoleMappingRequestBuilder {
+impl SecurityGetRoleMappingBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetRoleMappingBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetRoleMappingRequestBuilder<'a> {
+impl Sender for SecurityGetRoleMappingBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -485,23 +485,23 @@ impl<'a> Sender for SecurityGetRoleMappingRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetTokenRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetTokenBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetTokenRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetTokenRequestBuilder {
+impl SecurityGetTokenBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetTokenBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetTokenRequestBuilder<'a> {
+impl Sender for SecurityGetTokenBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -514,23 +514,23 @@ impl<'a> Sender for SecurityGetTokenRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetUserRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetUserBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetUserRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetUserRequestBuilder {
+impl SecurityGetUserBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetUserBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetUserRequestBuilder<'a> {
+impl Sender for SecurityGetUserBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -543,23 +543,23 @@ impl<'a> Sender for SecurityGetUserRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetUserPrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityGetUserPrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityGetUserPrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityGetUserPrivilegesRequestBuilder {
+impl SecurityGetUserPrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityGetUserPrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityGetUserPrivilegesRequestBuilder<'a> {
+impl Sender for SecurityGetUserPrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -572,23 +572,23 @@ impl<'a> Sender for SecurityGetUserPrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityHasPrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityHasPrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityHasPrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityHasPrivilegesRequestBuilder {
+impl SecurityHasPrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityHasPrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityHasPrivilegesRequestBuilder<'a> {
+impl Sender for SecurityHasPrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -601,23 +601,23 @@ impl<'a> Sender for SecurityHasPrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityInvalidateApiKeyRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityInvalidateApiKeyBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityInvalidateApiKeyRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityInvalidateApiKeyRequestBuilder {
+impl SecurityInvalidateApiKeyBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityInvalidateApiKeyBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityInvalidateApiKeyRequestBuilder<'a> {
+impl Sender for SecurityInvalidateApiKeyBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -630,23 +630,23 @@ impl<'a> Sender for SecurityInvalidateApiKeyRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityInvalidateTokenRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SecurityInvalidateTokenBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SecurityInvalidateTokenRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityInvalidateTokenRequestBuilder {
+impl SecurityInvalidateTokenBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityInvalidateTokenBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityInvalidateTokenRequestBuilder<'a> {
+impl Sender for SecurityInvalidateTokenBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -659,24 +659,24 @@ impl<'a> Sender for SecurityInvalidateTokenRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutPrivilegesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityPutPrivilegesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityPutPrivilegesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityPutPrivilegesRequestBuilder {
+impl SecurityPutPrivilegesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityPutPrivilegesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityPutPrivilegesRequestBuilder<'a> {
+impl Sender for SecurityPutPrivilegesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -689,24 +689,24 @@ impl<'a> Sender for SecurityPutPrivilegesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutRoleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityPutRoleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityPutRoleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityPutRoleRequestBuilder {
+impl SecurityPutRoleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityPutRoleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityPutRoleRequestBuilder<'a> {
+impl Sender for SecurityPutRoleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -719,24 +719,24 @@ impl<'a> Sender for SecurityPutRoleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutRoleMappingRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityPutRoleMappingBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityPutRoleMappingRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityPutRoleMappingRequestBuilder {
+impl SecurityPutRoleMappingBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityPutRoleMappingBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityPutRoleMappingRequestBuilder<'a> {
+impl Sender for SecurityPutRoleMappingBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -749,24 +749,24 @@ impl<'a> Sender for SecurityPutRoleMappingRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutUserRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    refresh: Option<&'a i32>,
+pub struct SecurityPutUserBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    refresh: Option<i32>,
 }
-impl<'a> SecurityPutUserRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityPutUserRequestBuilder {
+impl SecurityPutUserBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityPutUserBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SecurityPutUserRequestBuilder<'a> {
+impl Sender for SecurityPutUserBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -779,121 +779,121 @@ impl<'a> Sender for SecurityPutUserRequestBuilder<'a> {
     }
 }
 #[doc = "Security APIs"]
-pub struct SecurityNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct SecurityClient {
+    client: ElasticsearchClient,
 }
-impl<'a> SecurityNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SecurityNamespaceClient { client }
+impl SecurityClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SecurityClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html"]
-    pub fn authenticate(&self) -> SecurityAuthenticateRequestBuilder {
-        SecurityAuthenticateRequestBuilder::default()
+    pub fn authenticate(&self) -> SecurityAuthenticateBuilder {
+        SecurityAuthenticateBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
-    pub fn change_password(&self) -> SecurityChangePasswordRequestBuilder {
-        SecurityChangePasswordRequestBuilder::default()
+    pub fn change_password(&self) -> SecurityChangePasswordBuilder {
+        SecurityChangePasswordBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealmsRequestBuilder {
-        SecurityClearCachedRealmsRequestBuilder::default()
+    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealmsBuilder {
+        SecurityClearCachedRealmsBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles(&self) -> SecurityClearCachedRolesRequestBuilder {
-        SecurityClearCachedRolesRequestBuilder::default()
+    pub fn clear_cached_roles(&self) -> SecurityClearCachedRolesBuilder {
+        SecurityClearCachedRolesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
-    pub fn create_api_key(&self) -> SecurityCreateApiKeyRequestBuilder {
-        SecurityCreateApiKeyRequestBuilder::default()
+    pub fn create_api_key(&self) -> SecurityCreateApiKeyBuilder {
+        SecurityCreateApiKeyBuilder::default()
     }
     #[doc = "TODO"]
-    pub fn delete_privileges(&self) -> SecurityDeletePrivilegesRequestBuilder {
-        SecurityDeletePrivilegesRequestBuilder::default()
+    pub fn delete_privileges(&self) -> SecurityDeletePrivilegesBuilder {
+        SecurityDeletePrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
-    pub fn delete_role(&self) -> SecurityDeleteRoleRequestBuilder {
-        SecurityDeleteRoleRequestBuilder::default()
+    pub fn delete_role(&self) -> SecurityDeleteRoleBuilder {
+        SecurityDeleteRoleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
-    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMappingRequestBuilder {
-        SecurityDeleteRoleMappingRequestBuilder::default()
+    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMappingBuilder {
+        SecurityDeleteRoleMappingBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
-    pub fn delete_user(&self) -> SecurityDeleteUserRequestBuilder {
-        SecurityDeleteUserRequestBuilder::default()
+    pub fn delete_user(&self) -> SecurityDeleteUserBuilder {
+        SecurityDeleteUserBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user(&self) -> SecurityDisableUserRequestBuilder {
-        SecurityDisableUserRequestBuilder::default()
+    pub fn disable_user(&self) -> SecurityDisableUserBuilder {
+        SecurityDisableUserBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user(&self) -> SecurityEnableUserRequestBuilder {
-        SecurityEnableUserRequestBuilder::default()
+    pub fn enable_user(&self) -> SecurityEnableUserBuilder {
+        SecurityEnableUserBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
-    pub fn get_api_key(&self) -> SecurityGetApiKeyRequestBuilder {
-        SecurityGetApiKeyRequestBuilder::default()
+    pub fn get_api_key(&self) -> SecurityGetApiKeyBuilder {
+        SecurityGetApiKeyBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html"]
-    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivilegesRequestBuilder {
-        SecurityGetBuiltinPrivilegesRequestBuilder::default()
+    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivilegesBuilder {
+        SecurityGetBuiltinPrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_privileges(&self) -> SecurityGetPrivilegesRequestBuilder {
-        SecurityGetPrivilegesRequestBuilder::default()
+    pub fn get_privileges(&self) -> SecurityGetPrivilegesBuilder {
+        SecurityGetPrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html"]
-    pub fn get_role(&self) -> SecurityGetRoleRequestBuilder {
-        SecurityGetRoleRequestBuilder::default()
+    pub fn get_role(&self) -> SecurityGetRoleBuilder {
+        SecurityGetRoleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html"]
-    pub fn get_role_mapping(&self) -> SecurityGetRoleMappingRequestBuilder {
-        SecurityGetRoleMappingRequestBuilder::default()
+    pub fn get_role_mapping(&self) -> SecurityGetRoleMappingBuilder {
+        SecurityGetRoleMappingBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
-    pub fn get_token(&self) -> SecurityGetTokenRequestBuilder {
-        SecurityGetTokenRequestBuilder::default()
+    pub fn get_token(&self) -> SecurityGetTokenBuilder {
+        SecurityGetTokenBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
-    pub fn get_user(&self) -> SecurityGetUserRequestBuilder {
-        SecurityGetUserRequestBuilder::default()
+    pub fn get_user(&self) -> SecurityGetUserBuilder {
+        SecurityGetUserBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_user_privileges(&self) -> SecurityGetUserPrivilegesRequestBuilder {
-        SecurityGetUserPrivilegesRequestBuilder::default()
+    pub fn get_user_privileges(&self) -> SecurityGetUserPrivilegesBuilder {
+        SecurityGetUserPrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
-    pub fn has_privileges(&self) -> SecurityHasPrivilegesRequestBuilder {
-        SecurityHasPrivilegesRequestBuilder::default()
+    pub fn has_privileges(&self) -> SecurityHasPrivilegesBuilder {
+        SecurityHasPrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
-    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKeyRequestBuilder {
-        SecurityInvalidateApiKeyRequestBuilder::default()
+    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKeyBuilder {
+        SecurityInvalidateApiKeyBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
-    pub fn invalidate_token(&self) -> SecurityInvalidateTokenRequestBuilder {
-        SecurityInvalidateTokenRequestBuilder::default()
+    pub fn invalidate_token(&self) -> SecurityInvalidateTokenBuilder {
+        SecurityInvalidateTokenBuilder::default()
     }
     #[doc = "TODO"]
-    pub fn put_privileges(&self) -> SecurityPutPrivilegesRequestBuilder {
-        SecurityPutPrivilegesRequestBuilder::default()
+    pub fn put_privileges(&self) -> SecurityPutPrivilegesBuilder {
+        SecurityPutPrivilegesBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role(&self) -> SecurityPutRoleRequestBuilder {
-        SecurityPutRoleRequestBuilder::default()
+    pub fn put_role(&self) -> SecurityPutRoleBuilder {
+        SecurityPutRoleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping(&self) -> SecurityPutRoleMappingRequestBuilder {
-        SecurityPutRoleMappingRequestBuilder::default()
+    pub fn put_role_mapping(&self) -> SecurityPutRoleMappingBuilder {
+        SecurityPutRoleMappingBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user(&self) -> SecurityPutUserRequestBuilder {
-        SecurityPutUserRequestBuilder::default()
+    pub fn put_user(&self) -> SecurityPutUserBuilder {
+        SecurityPutUserBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Security APIs"]
-    pub fn security(&self) -> SecurityNamespaceClient {
-        SecurityNamespaceClient::new(self)
+    pub fn security(&self) -> SecurityClient {
+        SecurityClient::new(self.clone())
     }
 }

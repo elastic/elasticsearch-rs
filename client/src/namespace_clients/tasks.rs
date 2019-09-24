@@ -8,26 +8,26 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct TasksCancelRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    actions: Option<&'a Vec<String>>,
-    nodes: Option<&'a Vec<String>>,
-    parent_task_id: &'a str,
+pub struct TasksCancelBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    actions: Option<Vec<String>>,
+    nodes: Option<Vec<String>>,
+    parent_task_id: Option<String>,
 }
-impl<'a> TasksCancelRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        TasksCancelRequestBuilder {
+impl TasksCancelBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        TasksCancelBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for TasksCancelRequestBuilder<'a> {
+impl Sender for TasksCancelBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -40,25 +40,25 @@ impl<'a> Sender for TasksCancelRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct TasksGetRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    timeout: &'a str,
-    wait_for_completion: Option<&'a bool>,
+pub struct TasksGetBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_completion: Option<bool>,
 }
-impl<'a> TasksGetRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        TasksGetRequestBuilder {
+impl TasksGetBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        TasksGetBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for TasksGetRequestBuilder<'a> {
+impl Sender for TasksGetBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -71,30 +71,30 @@ impl<'a> Sender for TasksGetRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct TasksListRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    actions: Option<&'a Vec<String>>,
-    detailed: Option<&'a bool>,
-    group_by: Option<&'a i32>,
-    nodes: Option<&'a Vec<String>>,
-    parent_task_id: &'a str,
-    timeout: &'a str,
-    wait_for_completion: Option<&'a bool>,
+pub struct TasksListBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    actions: Option<Vec<String>>,
+    detailed: Option<bool>,
+    group_by: Option<i32>,
+    nodes: Option<Vec<String>>,
+    parent_task_id: Option<String>,
+    timeout: Option<String>,
+    wait_for_completion: Option<bool>,
 }
-impl<'a> TasksListRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        TasksListRequestBuilder {
+impl TasksListBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        TasksListBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for TasksListRequestBuilder<'a> {
+impl Sender for TasksListBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -107,29 +107,29 @@ impl<'a> Sender for TasksListRequestBuilder<'a> {
     }
 }
 #[doc = "Tasks APIs"]
-pub struct TasksNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct TasksClient {
+    client: ElasticsearchClient,
 }
-impl<'a> TasksNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        TasksNamespaceClient { client }
+impl TasksClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        TasksClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn cancel(&self) -> TasksCancelRequestBuilder {
-        TasksCancelRequestBuilder::default()
+    pub fn cancel(&self) -> TasksCancelBuilder {
+        TasksCancelBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn get(&self) -> TasksGetRequestBuilder {
-        TasksGetRequestBuilder::default()
+    pub fn get(&self) -> TasksGetBuilder {
+        TasksGetBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn list(&self) -> TasksListRequestBuilder {
-        TasksListRequestBuilder::default()
+    pub fn list(&self) -> TasksListBuilder {
+        TasksListBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Tasks APIs"]
-    pub fn tasks(&self) -> TasksNamespaceClient {
-        TasksNamespaceClient::new(self)
+    pub fn tasks(&self) -> TasksClient {
+        TasksClient::new(self.clone())
     }
 }

@@ -21,7 +21,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let mut tokens = quote::Tokens::new();
 
         let namespace_client_name =
-            code_gen::ident(format!("{}NamespaceClient", namespace.to_pascal_case()));
+            code_gen::ident(format!("{}Client", namespace.to_pascal_case()));
 
         let namespace_doc = code_gen::doc(format!(
             "{} APIs",
@@ -46,7 +46,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             .iter()
             .map(|(name, endpoint)| {
                 let builder_name = format!(
-                    "{}{}RequestBuilder",
+                    "{}{}Builder",
                     namespace.to_pascal_case(),
                     name.to_pascal_case()
                 );
@@ -84,23 +84,23 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
                 quote!(
                     #[derive(Default)]
-                    pub struct #builder_ident<'a> {
-                        client: &'a ElasticsearchClient,
+                    pub struct #builder_ident {
+                        client: ElasticsearchClient,
                         #(#common_fields_clone),*,
                         #(#fields),*
                     }
 
-                    impl<'a> #builder_ident<'a> {
-                        pub fn new(client: &'a ElasticsearchClient) -> Self {
+                    impl #builder_ident {
+                        pub fn new(client: ElasticsearchClient) -> Self {
                             #builder_ident {
                                 client,
-                                .. Default::default()
+                                ..Default::default()
                             }
                         }
                         // TODO: add builder methods
                     }
 
-                    impl<'a> Sender for #builder_ident<'a> {
+                    impl Sender for #builder_ident {
                         fn send<T>(self) -> Result<ElasticsearchResponse<T>> where T:DeserializeOwned {
                               // TODO: build up the url based on parameters passed, and execute request
                               Ok(ElasticsearchResponse {
@@ -119,14 +119,12 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             .iter()
             .map(|(name, endpoint)| {
                 let struct_name = format!(
-                    "{}{}Request",
+                    "{}{}",
                     namespace.to_pascal_case(),
                     name.to_pascal_case()
                 );
                 let struct_ident = code_gen::ident(struct_name.to_string());
-
                 let builder_ident = code_gen::ident(format!("{}Builder", struct_name.to_string()));
-
                 let method_name = code_gen::ident(name.to_string());
                 let path = endpoint.url.paths.first().unwrap();
                 let method = endpoint.methods.first().unwrap();
@@ -155,12 +153,12 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             #(#builders)*
 
             #namespace_doc
-            pub struct #namespace_client_name<'a> {
-                client: &'a ElasticsearchClient
+            pub struct #namespace_client_name {
+                client: ElasticsearchClient
             }
 
-            impl<'a> #namespace_client_name<'a> {
-                pub fn new(client: &'a ElasticsearchClient) -> Self {
+            impl #namespace_client_name {
+                pub fn new(client: ElasticsearchClient) -> Self {
                     #namespace_client_name {
                         client
                     }
@@ -171,7 +169,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             impl ElasticsearchClient {
                 #namespace_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
-                    #namespace_client_name::new(self)
+                    #namespace_client_name::new(self.clone())
                 }
             }
         );

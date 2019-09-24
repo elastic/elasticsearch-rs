@@ -8,24 +8,24 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct XpackInfoRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    categories: Option<&'a Vec<String>>,
+pub struct XpackInfoBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    categories: Option<Vec<String>>,
 }
-impl<'a> XpackInfoRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        XpackInfoRequestBuilder {
+impl XpackInfoBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        XpackInfoBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for XpackInfoRequestBuilder<'a> {
+impl Sender for XpackInfoBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -38,24 +38,24 @@ impl<'a> Sender for XpackInfoRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct XpackUsageRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    master_timeout: &'a str,
+pub struct XpackUsageBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    master_timeout: Option<String>,
 }
-impl<'a> XpackUsageRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        XpackUsageRequestBuilder {
+impl XpackUsageBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        XpackUsageBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for XpackUsageRequestBuilder<'a> {
+impl Sender for XpackUsageBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -68,25 +68,25 @@ impl<'a> Sender for XpackUsageRequestBuilder<'a> {
     }
 }
 #[doc = "Xpack APIs"]
-pub struct XpackNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct XpackClient {
+    client: ElasticsearchClient,
 }
-impl<'a> XpackNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        XpackNamespaceClient { client }
+impl XpackClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        XpackClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html"]
-    pub fn info(&self) -> XpackInfoRequestBuilder {
-        XpackInfoRequestBuilder::default()
+    pub fn info(&self) -> XpackInfoBuilder {
+        XpackInfoBuilder::default()
     }
     #[doc = "Retrieve information about xpack features usage"]
-    pub fn usage(&self) -> XpackUsageRequestBuilder {
-        XpackUsageRequestBuilder::default()
+    pub fn usage(&self) -> XpackUsageBuilder {
+        XpackUsageBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Xpack APIs"]
-    pub fn xpack(&self) -> XpackNamespaceClient {
-        XpackNamespaceClient::new(self)
+    pub fn xpack(&self) -> XpackClient {
+        XpackClient::new(self.clone())
     }
 }

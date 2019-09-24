@@ -1,3 +1,4 @@
+#[derive(Default,Debug,Clone)]
 pub struct ConnectionSettings;
 
 impl ConnectionSettings {

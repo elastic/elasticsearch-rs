@@ -8,23 +8,23 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct WatcherAckWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherAckWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherAckWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherAckWatchRequestBuilder {
+impl WatcherAckWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherAckWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherAckWatchRequestBuilder<'a> {
+impl Sender for WatcherAckWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -37,23 +37,23 @@ impl<'a> Sender for WatcherAckWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherActivateWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherActivateWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherActivateWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherActivateWatchRequestBuilder {
+impl WatcherActivateWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherActivateWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherActivateWatchRequestBuilder<'a> {
+impl Sender for WatcherActivateWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -66,23 +66,23 @@ impl<'a> Sender for WatcherActivateWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherDeactivateWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherDeactivateWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherDeactivateWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherDeactivateWatchRequestBuilder {
+impl WatcherDeactivateWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherDeactivateWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherDeactivateWatchRequestBuilder<'a> {
+impl Sender for WatcherDeactivateWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -95,23 +95,23 @@ impl<'a> Sender for WatcherDeactivateWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherDeleteWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherDeleteWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherDeleteWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherDeleteWatchRequestBuilder {
+impl WatcherDeleteWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherDeleteWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherDeleteWatchRequestBuilder<'a> {
+impl Sender for WatcherDeleteWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -124,24 +124,24 @@ impl<'a> Sender for WatcherDeleteWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherExecuteWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    debug: Option<&'a bool>,
+pub struct WatcherExecuteWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    debug: Option<bool>,
 }
-impl<'a> WatcherExecuteWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherExecuteWatchRequestBuilder {
+impl WatcherExecuteWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherExecuteWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherExecuteWatchRequestBuilder<'a> {
+impl Sender for WatcherExecuteWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -154,23 +154,23 @@ impl<'a> Sender for WatcherExecuteWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherGetWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherGetWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherGetWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherGetWatchRequestBuilder {
+impl WatcherGetWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherGetWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherGetWatchRequestBuilder<'a> {
+impl Sender for WatcherGetWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -183,27 +183,27 @@ impl<'a> Sender for WatcherGetWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherPutWatchRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    active: Option<&'a bool>,
-    if_primary_term: Option<&'a i64>,
-    if_seq_no: Option<&'a i64>,
-    version: Option<&'a i64>,
+pub struct WatcherPutWatchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    active: Option<bool>,
+    if_primary_term: Option<i64>,
+    if_seq_no: Option<i64>,
+    version: Option<i64>,
 }
-impl<'a> WatcherPutWatchRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherPutWatchRequestBuilder {
+impl WatcherPutWatchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherPutWatchBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherPutWatchRequestBuilder<'a> {
+impl Sender for WatcherPutWatchBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -216,23 +216,23 @@ impl<'a> Sender for WatcherPutWatchRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherStartRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherStartBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherStartRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherStartRequestBuilder {
+impl WatcherStartBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherStartBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherStartRequestBuilder<'a> {
+impl Sender for WatcherStartBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -245,25 +245,25 @@ impl<'a> Sender for WatcherStartRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherStatsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    emit_stacktraces: Option<&'a bool>,
-    metric: Option<&'a Vec<String>>,
+pub struct WatcherStatsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    emit_stacktraces: Option<bool>,
+    metric: Option<Vec<String>>,
 }
-impl<'a> WatcherStatsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherStatsRequestBuilder {
+impl WatcherStatsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherStatsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherStatsRequestBuilder<'a> {
+impl Sender for WatcherStatsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -276,23 +276,23 @@ impl<'a> Sender for WatcherStatsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct WatcherStopRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct WatcherStopBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> WatcherStopRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherStopRequestBuilder {
+impl WatcherStopBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherStopBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for WatcherStopRequestBuilder<'a> {
+impl Sender for WatcherStopBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -305,57 +305,57 @@ impl<'a> Sender for WatcherStopRequestBuilder<'a> {
     }
 }
 #[doc = "Watcher APIs"]
-pub struct WatcherNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct WatcherClient {
+    client: ElasticsearchClient,
 }
-impl<'a> WatcherNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        WatcherNamespaceClient { client }
+impl WatcherClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        WatcherClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html"]
-    pub fn ack_watch(&self) -> WatcherAckWatchRequestBuilder {
-        WatcherAckWatchRequestBuilder::default()
+    pub fn ack_watch(&self) -> WatcherAckWatchBuilder {
+        WatcherAckWatchBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html"]
-    pub fn activate_watch(&self) -> WatcherActivateWatchRequestBuilder {
-        WatcherActivateWatchRequestBuilder::default()
+    pub fn activate_watch(&self) -> WatcherActivateWatchBuilder {
+        WatcherActivateWatchBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html"]
-    pub fn deactivate_watch(&self) -> WatcherDeactivateWatchRequestBuilder {
-        WatcherDeactivateWatchRequestBuilder::default()
+    pub fn deactivate_watch(&self) -> WatcherDeactivateWatchBuilder {
+        WatcherDeactivateWatchBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html"]
-    pub fn delete_watch(&self) -> WatcherDeleteWatchRequestBuilder {
-        WatcherDeleteWatchRequestBuilder::default()
+    pub fn delete_watch(&self) -> WatcherDeleteWatchBuilder {
+        WatcherDeleteWatchBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html"]
-    pub fn execute_watch(&self) -> WatcherExecuteWatchRequestBuilder {
-        WatcherExecuteWatchRequestBuilder::default()
+    pub fn execute_watch(&self) -> WatcherExecuteWatchBuilder {
+        WatcherExecuteWatchBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html"]
-    pub fn get_watch(&self) -> WatcherGetWatchRequestBuilder {
-        WatcherGetWatchRequestBuilder::default()
+    pub fn get_watch(&self) -> WatcherGetWatchBuilder {
+        WatcherGetWatchBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html"]
-    pub fn put_watch(&self) -> WatcherPutWatchRequestBuilder {
-        WatcherPutWatchRequestBuilder::default()
+    pub fn put_watch(&self) -> WatcherPutWatchBuilder {
+        WatcherPutWatchBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html"]
-    pub fn start(&self) -> WatcherStartRequestBuilder {
-        WatcherStartRequestBuilder::default()
+    pub fn start(&self) -> WatcherStartBuilder {
+        WatcherStartBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html"]
-    pub fn stats(&self) -> WatcherStatsRequestBuilder {
-        WatcherStatsRequestBuilder::default()
+    pub fn stats(&self) -> WatcherStatsBuilder {
+        WatcherStatsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html"]
-    pub fn stop(&self) -> WatcherStopRequestBuilder {
-        WatcherStopRequestBuilder::default()
+    pub fn stop(&self) -> WatcherStopBuilder {
+        WatcherStopBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Watcher APIs"]
-    pub fn watcher(&self) -> WatcherNamespaceClient {
-        WatcherNamespaceClient::new(self)
+    pub fn watcher(&self) -> WatcherClient {
+        WatcherClient::new(self.clone())
     }
 }

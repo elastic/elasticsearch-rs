@@ -6,7 +6,7 @@ use serde::de::DeserializeOwned;
 
 /// A response from Elasticsearch
 pub struct ElasticsearchResponse<T: DeserializeOwned> {
-    headers: HeaderMap,
-    status_code: StatusCode,
-    body: Option<T>
+    pub headers: HeaderMap,
+    pub status_code: StatusCode,
+    pub body: Option<T>
 }

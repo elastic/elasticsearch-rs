@@ -8,23 +8,23 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct IlmDeleteLifecycleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmDeleteLifecycleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmDeleteLifecycleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmDeleteLifecycleRequestBuilder {
+impl IlmDeleteLifecycleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmDeleteLifecycleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmDeleteLifecycleRequestBuilder<'a> {
+impl Sender for IlmDeleteLifecycleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -37,23 +37,23 @@ impl<'a> Sender for IlmDeleteLifecycleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmExplainLifecycleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmExplainLifecycleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmExplainLifecycleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmExplainLifecycleRequestBuilder {
+impl IlmExplainLifecycleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmExplainLifecycleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmExplainLifecycleRequestBuilder<'a> {
+impl Sender for IlmExplainLifecycleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -66,23 +66,23 @@ impl<'a> Sender for IlmExplainLifecycleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmGetLifecycleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmGetLifecycleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmGetLifecycleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmGetLifecycleRequestBuilder {
+impl IlmGetLifecycleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmGetLifecycleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmGetLifecycleRequestBuilder<'a> {
+impl Sender for IlmGetLifecycleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -95,23 +95,23 @@ impl<'a> Sender for IlmGetLifecycleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmGetStatusRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmGetStatusBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmGetStatusRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmGetStatusRequestBuilder {
+impl IlmGetStatusBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmGetStatusBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmGetStatusRequestBuilder<'a> {
+impl Sender for IlmGetStatusBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -124,23 +124,23 @@ impl<'a> Sender for IlmGetStatusRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmMoveToStepRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmMoveToStepBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmMoveToStepRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmMoveToStepRequestBuilder {
+impl IlmMoveToStepBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmMoveToStepBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmMoveToStepRequestBuilder<'a> {
+impl Sender for IlmMoveToStepBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -153,23 +153,23 @@ impl<'a> Sender for IlmMoveToStepRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmPutLifecycleRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmPutLifecycleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmPutLifecycleRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmPutLifecycleRequestBuilder {
+impl IlmPutLifecycleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmPutLifecycleBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmPutLifecycleRequestBuilder<'a> {
+impl Sender for IlmPutLifecycleBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -182,23 +182,23 @@ impl<'a> Sender for IlmPutLifecycleRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmRemovePolicyRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmRemovePolicyBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmRemovePolicyRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmRemovePolicyRequestBuilder {
+impl IlmRemovePolicyBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmRemovePolicyBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmRemovePolicyRequestBuilder<'a> {
+impl Sender for IlmRemovePolicyBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -211,23 +211,23 @@ impl<'a> Sender for IlmRemovePolicyRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmRetryRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmRetryBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmRetryRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmRetryRequestBuilder {
+impl IlmRetryBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmRetryBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmRetryRequestBuilder<'a> {
+impl Sender for IlmRetryBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -240,23 +240,23 @@ impl<'a> Sender for IlmRetryRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmStartRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmStartBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmStartRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmStartRequestBuilder {
+impl IlmStartBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmStartBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmStartRequestBuilder<'a> {
+impl Sender for IlmStartBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -269,23 +269,23 @@ impl<'a> Sender for IlmStartRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct IlmStopRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct IlmStopBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> IlmStopRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmStopRequestBuilder {
+impl IlmStopBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmStopBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for IlmStopRequestBuilder<'a> {
+impl Sender for IlmStopBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -298,57 +298,57 @@ impl<'a> Sender for IlmStopRequestBuilder<'a> {
     }
 }
 #[doc = "Ilm APIs"]
-pub struct IlmNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct IlmClient {
+    client: ElasticsearchClient,
 }
-impl<'a> IlmNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        IlmNamespaceClient { client }
+impl IlmClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IlmClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html"]
-    pub fn delete_lifecycle(&self) -> IlmDeleteLifecycleRequestBuilder {
-        IlmDeleteLifecycleRequestBuilder::default()
+    pub fn delete_lifecycle(&self) -> IlmDeleteLifecycleBuilder {
+        IlmDeleteLifecycleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html"]
-    pub fn explain_lifecycle(&self) -> IlmExplainLifecycleRequestBuilder {
-        IlmExplainLifecycleRequestBuilder::default()
+    pub fn explain_lifecycle(&self) -> IlmExplainLifecycleBuilder {
+        IlmExplainLifecycleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html"]
-    pub fn get_lifecycle(&self) -> IlmGetLifecycleRequestBuilder {
-        IlmGetLifecycleRequestBuilder::default()
+    pub fn get_lifecycle(&self) -> IlmGetLifecycleBuilder {
+        IlmGetLifecycleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-status.html"]
-    pub fn get_status(&self) -> IlmGetStatusRequestBuilder {
-        IlmGetStatusRequestBuilder::default()
+    pub fn get_status(&self) -> IlmGetStatusBuilder {
+        IlmGetStatusBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html"]
-    pub fn move_to_step(&self) -> IlmMoveToStepRequestBuilder {
-        IlmMoveToStepRequestBuilder::default()
+    pub fn move_to_step(&self) -> IlmMoveToStepBuilder {
+        IlmMoveToStepBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html"]
-    pub fn put_lifecycle(&self) -> IlmPutLifecycleRequestBuilder {
-        IlmPutLifecycleRequestBuilder::default()
+    pub fn put_lifecycle(&self) -> IlmPutLifecycleBuilder {
+        IlmPutLifecycleBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html"]
-    pub fn remove_policy(&self) -> IlmRemovePolicyRequestBuilder {
-        IlmRemovePolicyRequestBuilder::default()
+    pub fn remove_policy(&self) -> IlmRemovePolicyBuilder {
+        IlmRemovePolicyBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html"]
-    pub fn retry(&self) -> IlmRetryRequestBuilder {
-        IlmRetryRequestBuilder::default()
+    pub fn retry(&self) -> IlmRetryBuilder {
+        IlmRetryBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html"]
-    pub fn start(&self) -> IlmStartRequestBuilder {
-        IlmStartRequestBuilder::default()
+    pub fn start(&self) -> IlmStartBuilder {
+        IlmStartBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html"]
-    pub fn stop(&self) -> IlmStopRequestBuilder {
-        IlmStopRequestBuilder::default()
+    pub fn stop(&self) -> IlmStopBuilder {
+        IlmStopBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Ilm APIs"]
-    pub fn ilm(&self) -> IlmNamespaceClient {
-        IlmNamespaceClient::new(self)
+    pub fn ilm(&self) -> IlmClient {
+        IlmClient::new(self.clone())
     }
 }

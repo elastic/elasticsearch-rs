@@ -8,29 +8,29 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct NodesHotThreadsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    ignore_idle_threads: Option<&'a bool>,
-    interval: &'a str,
-    snapshots: Option<&'a i64>,
-    threads: Option<&'a i64>,
-    timeout: &'a str,
-    ty: Option<&'a i32>,
+pub struct NodesHotThreadsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    ignore_idle_threads: Option<bool>,
+    interval: Option<String>,
+    snapshots: Option<i64>,
+    threads: Option<i64>,
+    timeout: Option<String>,
+    ty: Option<i32>,
 }
-impl<'a> NodesHotThreadsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesHotThreadsRequestBuilder {
+impl NodesHotThreadsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesHotThreadsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for NodesHotThreadsRequestBuilder<'a> {
+impl Sender for NodesHotThreadsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -43,25 +43,25 @@ impl<'a> Sender for NodesHotThreadsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct NodesInfoRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    flat_settings: Option<&'a bool>,
-    timeout: &'a str,
+pub struct NodesInfoBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    flat_settings: Option<bool>,
+    timeout: Option<String>,
 }
-impl<'a> NodesInfoRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesInfoRequestBuilder {
+impl NodesInfoBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesInfoBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for NodesInfoRequestBuilder<'a> {
+impl Sender for NodesInfoBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -74,24 +74,24 @@ impl<'a> Sender for NodesInfoRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct NodesReloadSecureSettingsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    timeout: &'a str,
+pub struct NodesReloadSecureSettingsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
 }
-impl<'a> NodesReloadSecureSettingsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesReloadSecureSettingsRequestBuilder {
+impl NodesReloadSecureSettingsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesReloadSecureSettingsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for NodesReloadSecureSettingsRequestBuilder<'a> {
+impl Sender for NodesReloadSecureSettingsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -104,31 +104,31 @@ impl<'a> Sender for NodesReloadSecureSettingsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct NodesStatsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    completion_fields: Option<&'a Vec<String>>,
-    fielddata_fields: Option<&'a Vec<String>>,
-    fields: Option<&'a Vec<String>>,
-    groups: Option<&'a bool>,
-    include_segment_file_sizes: Option<&'a bool>,
-    level: Option<&'a i32>,
-    timeout: &'a str,
-    types: Option<&'a Vec<String>>,
+pub struct NodesStatsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    completion_fields: Option<Vec<String>>,
+    fielddata_fields: Option<Vec<String>>,
+    fields: Option<Vec<String>>,
+    groups: Option<bool>,
+    include_segment_file_sizes: Option<bool>,
+    level: Option<i32>,
+    timeout: Option<String>,
+    types: Option<Vec<String>>,
 }
-impl<'a> NodesStatsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesStatsRequestBuilder {
+impl NodesStatsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesStatsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for NodesStatsRequestBuilder<'a> {
+impl Sender for NodesStatsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -141,24 +141,24 @@ impl<'a> Sender for NodesStatsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct NodesUsageRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    timeout: &'a str,
+pub struct NodesUsageBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
 }
-impl<'a> NodesUsageRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesUsageRequestBuilder {
+impl NodesUsageBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesUsageBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for NodesUsageRequestBuilder<'a> {
+impl Sender for NodesUsageBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -171,37 +171,37 @@ impl<'a> Sender for NodesUsageRequestBuilder<'a> {
     }
 }
 #[doc = "Nodes APIs"]
-pub struct NodesNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct NodesClient {
+    client: ElasticsearchClient,
 }
-impl<'a> NodesNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        NodesNamespaceClient { client }
+impl NodesClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        NodesClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-hot-threads.html"]
-    pub fn hot_threads(&self) -> NodesHotThreadsRequestBuilder {
-        NodesHotThreadsRequestBuilder::default()
+    pub fn hot_threads(&self) -> NodesHotThreadsBuilder {
+        NodesHotThreadsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-info.html"]
-    pub fn info(&self) -> NodesInfoRequestBuilder {
-        NodesInfoRequestBuilder::default()
+    pub fn info(&self) -> NodesInfoBuilder {
+        NodesInfoBuilder::default()
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings"]
-    pub fn reload_secure_settings(&self) -> NodesReloadSecureSettingsRequestBuilder {
-        NodesReloadSecureSettingsRequestBuilder::default()
+    pub fn reload_secure_settings(&self) -> NodesReloadSecureSettingsBuilder {
+        NodesReloadSecureSettingsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html"]
-    pub fn stats(&self) -> NodesStatsRequestBuilder {
-        NodesStatsRequestBuilder::default()
+    pub fn stats(&self) -> NodesStatsBuilder {
+        NodesStatsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-usage.html"]
-    pub fn usage(&self) -> NodesUsageRequestBuilder {
-        NodesUsageRequestBuilder::default()
+    pub fn usage(&self) -> NodesUsageBuilder {
+        NodesUsageBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Nodes APIs"]
-    pub fn nodes(&self) -> NodesNamespaceClient {
-        NodesNamespaceClient::new(self)
+    pub fn nodes(&self) -> NodesClient {
+        NodesClient::new(self.clone())
     }
 }

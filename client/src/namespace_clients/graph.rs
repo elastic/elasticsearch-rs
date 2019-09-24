@@ -8,25 +8,25 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct GraphExploreRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    routing: &'a str,
-    timeout: &'a str,
+pub struct GraphExploreBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    routing: Option<String>,
+    timeout: Option<String>,
 }
-impl<'a> GraphExploreRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        GraphExploreRequestBuilder {
+impl GraphExploreBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        GraphExploreBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for GraphExploreRequestBuilder<'a> {
+impl Sender for GraphExploreBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -39,21 +39,21 @@ impl<'a> Sender for GraphExploreRequestBuilder<'a> {
     }
 }
 #[doc = "Graph APIs"]
-pub struct GraphNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct GraphClient {
+    client: ElasticsearchClient,
 }
-impl<'a> GraphNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        GraphNamespaceClient { client }
+impl GraphClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        GraphClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
-    pub fn explore(&self) -> GraphExploreRequestBuilder {
-        GraphExploreRequestBuilder::default()
+    pub fn explore(&self) -> GraphExploreBuilder {
+        GraphExploreBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Graph APIs"]
-    pub fn graph(&self) -> GraphNamespaceClient {
-        GraphNamespaceClient::new(self)
+    pub fn graph(&self) -> GraphClient {
+        GraphClient::new(self.clone())
     }
 }

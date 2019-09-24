@@ -4,6 +4,7 @@ use crate::{response::ElasticsearchResponse, http_method::HttpMethod};
 use reqwest::Method;
 use url::Url;
 
+#[derive(Debug,Clone)]
 pub struct Connection {
     client: reqwest::Client,
     url: Url,
@@ -31,5 +32,11 @@ impl Connection {
         let url = self.url.join(path).expect("Not a valid URL");
         let reqwest_method = self.method(method);
         self.client.request(reqwest_method, url).send()
+    }
+}
+
+impl Default for Connection {
+    fn default() -> Self {
+        Connection::new(Url::parse("http://localhost:9200").unwrap())
     }
 }

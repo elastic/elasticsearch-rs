@@ -8,30 +8,30 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct CatAliasesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatAliasesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatAliasesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatAliasesRequestBuilder {
+impl CatAliasesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatAliasesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatAliasesRequestBuilder<'a> {
+impl Sender for CatAliasesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -44,31 +44,31 @@ impl<'a> Sender for CatAliasesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatAllocationRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatAllocationBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatAllocationRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatAllocationRequestBuilder {
+impl CatAllocationBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatAllocationBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatAllocationRequestBuilder<'a> {
+impl Sender for CatAllocationBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -81,30 +81,30 @@ impl<'a> Sender for CatAllocationRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatCountRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatCountBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatCountRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatCountRequestBuilder {
+impl CatCountBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatCountBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatCountRequestBuilder<'a> {
+impl Sender for CatCountBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -117,32 +117,32 @@ impl<'a> Sender for CatCountRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatFielddataRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    fields: Option<&'a Vec<String>>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatFielddataBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    fields: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatFielddataRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatFielddataRequestBuilder {
+impl CatFielddataBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatFielddataBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatFielddataRequestBuilder<'a> {
+impl Sender for CatFielddataBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -155,31 +155,31 @@ impl<'a> Sender for CatFielddataRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatHealthRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    ts: Option<&'a bool>,
-    v: Option<&'a bool>,
+pub struct CatHealthBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    ts: Option<bool>,
+    v: Option<bool>,
 }
-impl<'a> CatHealthRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatHealthRequestBuilder {
+impl CatHealthBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatHealthBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatHealthRequestBuilder<'a> {
+impl Sender for CatHealthBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -192,25 +192,25 @@ impl<'a> Sender for CatHealthRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatHelpRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    help: Option<&'a bool>,
-    s: Option<&'a Vec<String>>,
+pub struct CatHelpBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    help: Option<bool>,
+    s: Option<Vec<String>>,
 }
-impl<'a> CatHelpRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatHelpRequestBuilder {
+impl CatHelpBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatHelpBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatHelpRequestBuilder<'a> {
+impl Sender for CatHelpBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -223,34 +223,34 @@ impl<'a> Sender for CatHelpRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatIndicesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    health: Option<&'a i32>,
-    help: Option<&'a bool>,
-    include_unloaded_segments: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    pri: Option<&'a bool>,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatIndicesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    health: Option<i32>,
+    help: Option<bool>,
+    include_unloaded_segments: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pri: Option<bool>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatIndicesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatIndicesRequestBuilder {
+impl CatIndicesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatIndicesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatIndicesRequestBuilder<'a> {
+impl Sender for CatIndicesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -263,30 +263,30 @@ impl<'a> Sender for CatIndicesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatMasterRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatMasterBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatMasterRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatMasterRequestBuilder {
+impl CatMasterBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatMasterBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatMasterRequestBuilder<'a> {
+impl Sender for CatMasterBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -299,30 +299,30 @@ impl<'a> Sender for CatMasterRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatNodeattrsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatNodeattrsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatNodeattrsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatNodeattrsRequestBuilder {
+impl CatNodeattrsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatNodeattrsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatNodeattrsRequestBuilder<'a> {
+impl Sender for CatNodeattrsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -335,31 +335,31 @@ impl<'a> Sender for CatNodeattrsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatNodesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    full_id: Option<&'a bool>,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatNodesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    full_id: Option<bool>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatNodesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatNodesRequestBuilder {
+impl CatNodesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatNodesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatNodesRequestBuilder<'a> {
+impl Sender for CatNodesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -372,30 +372,30 @@ impl<'a> Sender for CatNodesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatPendingTasksRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatPendingTasksBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatPendingTasksRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatPendingTasksRequestBuilder {
+impl CatPendingTasksBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatPendingTasksBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatPendingTasksRequestBuilder<'a> {
+impl Sender for CatPendingTasksBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -408,30 +408,30 @@ impl<'a> Sender for CatPendingTasksRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatPluginsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatPluginsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatPluginsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatPluginsRequestBuilder {
+impl CatPluginsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatPluginsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatPluginsRequestBuilder<'a> {
+impl Sender for CatPluginsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -444,30 +444,30 @@ impl<'a> Sender for CatPluginsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatRecoveryRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatRecoveryBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatRecoveryRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatRecoveryRequestBuilder {
+impl CatRecoveryBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatRecoveryBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatRecoveryRequestBuilder<'a> {
+impl Sender for CatRecoveryBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -480,30 +480,30 @@ impl<'a> Sender for CatRecoveryRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatRepositoriesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatRepositoriesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatRepositoriesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatRepositoriesRequestBuilder {
+impl CatRepositoriesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatRepositoriesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatRepositoriesRequestBuilder<'a> {
+impl Sender for CatRepositoriesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -516,29 +516,29 @@ impl<'a> Sender for CatRepositoriesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatSegmentsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatSegmentsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatSegmentsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatSegmentsRequestBuilder {
+impl CatSegmentsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatSegmentsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatSegmentsRequestBuilder<'a> {
+impl Sender for CatSegmentsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -551,31 +551,31 @@ impl<'a> Sender for CatSegmentsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatShardsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    bytes: Option<&'a i32>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatShardsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    bytes: Option<i32>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatShardsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatShardsRequestBuilder {
+impl CatShardsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatShardsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatShardsRequestBuilder<'a> {
+impl Sender for CatShardsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -588,30 +588,30 @@ impl<'a> Sender for CatShardsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatSnapshotsRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    ignore_unavailable: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatSnapshotsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatSnapshotsRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatSnapshotsRequestBuilder {
+impl CatSnapshotsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatSnapshotsBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatSnapshotsRequestBuilder<'a> {
+impl Sender for CatSnapshotsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -624,32 +624,32 @@ impl<'a> Sender for CatSnapshotsRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatTasksRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    actions: Option<&'a Vec<String>>,
-    detailed: Option<&'a bool>,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    node_id: Option<&'a Vec<String>>,
-    parent_task: Option<&'a i64>,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatTasksBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    actions: Option<Vec<String>>,
+    detailed: Option<bool>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    node_id: Option<Vec<String>>,
+    parent_task: Option<i64>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatTasksRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatTasksRequestBuilder {
+impl CatTasksBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatTasksBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatTasksRequestBuilder<'a> {
+impl Sender for CatTasksBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -662,30 +662,30 @@ impl<'a> Sender for CatTasksRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatTemplatesRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    v: Option<&'a bool>,
+pub struct CatTemplatesBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    v: Option<bool>,
 }
-impl<'a> CatTemplatesRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatTemplatesRequestBuilder {
+impl CatTemplatesBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatTemplatesBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatTemplatesRequestBuilder<'a> {
+impl Sender for CatTemplatesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -698,31 +698,31 @@ impl<'a> Sender for CatTemplatesRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct CatThreadPoolRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
-    h: Option<&'a Vec<String>>,
-    help: Option<&'a bool>,
-    local: Option<&'a bool>,
-    master_timeout: &'a str,
-    s: Option<&'a Vec<String>>,
-    size: Option<&'a i32>,
-    v: Option<&'a bool>,
+pub struct CatThreadPoolBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    s: Option<Vec<String>>,
+    size: Option<i32>,
+    v: Option<bool>,
 }
-impl<'a> CatThreadPoolRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatThreadPoolRequestBuilder {
+impl CatThreadPoolBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatThreadPoolBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for CatThreadPoolRequestBuilder<'a> {
+impl Sender for CatThreadPoolBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -735,97 +735,97 @@ impl<'a> Sender for CatThreadPoolRequestBuilder<'a> {
     }
 }
 #[doc = "Cat APIs"]
-pub struct CatNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct CatClient {
+    client: ElasticsearchClient,
 }
-impl<'a> CatNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        CatNamespaceClient { client }
+impl CatClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CatClient { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html"]
-    pub fn aliases(&self) -> CatAliasesRequestBuilder {
-        CatAliasesRequestBuilder::default()
+    pub fn aliases(&self) -> CatAliasesBuilder {
+        CatAliasesBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html"]
-    pub fn allocation(&self) -> CatAllocationRequestBuilder {
-        CatAllocationRequestBuilder::default()
+    pub fn allocation(&self) -> CatAllocationBuilder {
+        CatAllocationBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html"]
-    pub fn count(&self) -> CatCountRequestBuilder {
-        CatCountRequestBuilder::default()
+    pub fn count(&self) -> CatCountBuilder {
+        CatCountBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html"]
-    pub fn fielddata(&self) -> CatFielddataRequestBuilder {
-        CatFielddataRequestBuilder::default()
+    pub fn fielddata(&self) -> CatFielddataBuilder {
+        CatFielddataBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html"]
-    pub fn health(&self) -> CatHealthRequestBuilder {
-        CatHealthRequestBuilder::default()
+    pub fn health(&self) -> CatHealthBuilder {
+        CatHealthBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html"]
-    pub fn help(&self) -> CatHelpRequestBuilder {
-        CatHelpRequestBuilder::default()
+    pub fn help(&self) -> CatHelpBuilder {
+        CatHelpBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html"]
-    pub fn indices(&self) -> CatIndicesRequestBuilder {
-        CatIndicesRequestBuilder::default()
+    pub fn indices(&self) -> CatIndicesBuilder {
+        CatIndicesBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html"]
-    pub fn master(&self) -> CatMasterRequestBuilder {
-        CatMasterRequestBuilder::default()
+    pub fn master(&self) -> CatMasterBuilder {
+        CatMasterBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html"]
-    pub fn nodeattrs(&self) -> CatNodeattrsRequestBuilder {
-        CatNodeattrsRequestBuilder::default()
+    pub fn nodeattrs(&self) -> CatNodeattrsBuilder {
+        CatNodeattrsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html"]
-    pub fn nodes(&self) -> CatNodesRequestBuilder {
-        CatNodesRequestBuilder::default()
+    pub fn nodes(&self) -> CatNodesBuilder {
+        CatNodesBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html"]
-    pub fn pending_tasks(&self) -> CatPendingTasksRequestBuilder {
-        CatPendingTasksRequestBuilder::default()
+    pub fn pending_tasks(&self) -> CatPendingTasksBuilder {
+        CatPendingTasksBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html"]
-    pub fn plugins(&self) -> CatPluginsRequestBuilder {
-        CatPluginsRequestBuilder::default()
+    pub fn plugins(&self) -> CatPluginsBuilder {
+        CatPluginsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html"]
-    pub fn recovery(&self) -> CatRecoveryRequestBuilder {
-        CatRecoveryRequestBuilder::default()
+    pub fn recovery(&self) -> CatRecoveryBuilder {
+        CatRecoveryBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html"]
-    pub fn repositories(&self) -> CatRepositoriesRequestBuilder {
-        CatRepositoriesRequestBuilder::default()
+    pub fn repositories(&self) -> CatRepositoriesBuilder {
+        CatRepositoriesBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html"]
-    pub fn segments(&self) -> CatSegmentsRequestBuilder {
-        CatSegmentsRequestBuilder::default()
+    pub fn segments(&self) -> CatSegmentsBuilder {
+        CatSegmentsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html"]
-    pub fn shards(&self) -> CatShardsRequestBuilder {
-        CatShardsRequestBuilder::default()
+    pub fn shards(&self) -> CatShardsBuilder {
+        CatShardsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html"]
-    pub fn snapshots(&self) -> CatSnapshotsRequestBuilder {
-        CatSnapshotsRequestBuilder::default()
+    pub fn snapshots(&self) -> CatSnapshotsBuilder {
+        CatSnapshotsBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn tasks(&self) -> CatTasksRequestBuilder {
-        CatTasksRequestBuilder::default()
+    pub fn tasks(&self) -> CatTasksBuilder {
+        CatTasksBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html"]
-    pub fn templates(&self) -> CatTemplatesRequestBuilder {
-        CatTemplatesRequestBuilder::default()
+    pub fn templates(&self) -> CatTemplatesBuilder {
+        CatTemplatesBuilder::default()
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html"]
-    pub fn thread_pool(&self) -> CatThreadPoolRequestBuilder {
-        CatThreadPoolRequestBuilder::default()
+    pub fn thread_pool(&self) -> CatThreadPoolBuilder {
+        CatThreadPoolBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Cat APIs"]
-    pub fn cat(&self) -> CatNamespaceClient {
-        CatNamespaceClient::new(self)
+    pub fn cat(&self) -> CatClient {
+        CatClient::new(self.clone())
     }
 }

@@ -8,23 +8,23 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SqlClearCursorRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SqlClearCursorBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SqlClearCursorRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SqlClearCursorRequestBuilder {
+impl SqlClearCursorBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SqlClearCursorBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SqlClearCursorRequestBuilder<'a> {
+impl Sender for SqlClearCursorBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -37,24 +37,24 @@ impl<'a> Sender for SqlClearCursorRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SqlQueryRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    format: &'a str,
+pub struct SqlQueryBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    format: Option<String>,
 }
-impl<'a> SqlQueryRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SqlQueryRequestBuilder {
+impl SqlQueryBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SqlQueryBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SqlQueryRequestBuilder<'a> {
+impl Sender for SqlQueryBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -67,23 +67,23 @@ impl<'a> Sender for SqlQueryRequestBuilder<'a> {
     }
 }
 #[derive(Default)]
-pub struct SqlTranslateRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
+pub struct SqlTranslateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
-impl<'a> SqlTranslateRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SqlTranslateRequestBuilder {
+impl SqlTranslateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SqlTranslateBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for SqlTranslateRequestBuilder<'a> {
+impl Sender for SqlTranslateBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -96,29 +96,29 @@ impl<'a> Sender for SqlTranslateRequestBuilder<'a> {
     }
 }
 #[doc = "Sql APIs"]
-pub struct SqlNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct SqlClient {
+    client: ElasticsearchClient,
 }
-impl<'a> SqlNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        SqlNamespaceClient { client }
+impl SqlClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SqlClient { client }
     }
     #[doc = "Clear SQL cursor"]
-    pub fn clear_cursor(&self) -> SqlClearCursorRequestBuilder {
-        SqlClearCursorRequestBuilder::default()
+    pub fn clear_cursor(&self) -> SqlClearCursorBuilder {
+        SqlClearCursorBuilder::default()
     }
     #[doc = "Execute SQL"]
-    pub fn query(&self) -> SqlQueryRequestBuilder {
-        SqlQueryRequestBuilder::default()
+    pub fn query(&self) -> SqlQueryBuilder {
+        SqlQueryBuilder::default()
     }
     #[doc = "Translate SQL into Elasticsearch queries"]
-    pub fn translate(&self) -> SqlTranslateRequestBuilder {
-        SqlTranslateRequestBuilder::default()
+    pub fn translate(&self) -> SqlTranslateBuilder {
+        SqlTranslateBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Sql APIs"]
-    pub fn sql(&self) -> SqlNamespaceClient {
-        SqlNamespaceClient::new(self)
+    pub fn sql(&self) -> SqlClient {
+        SqlClient::new(self.clone())
     }
 }

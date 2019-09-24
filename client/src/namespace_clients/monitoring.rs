@@ -8,26 +8,26 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct MonitoringBulkRequestBuilder<'a> {
-    client: &'a ElasticsearchClient,
-    error_trace: Option<&'a bool>,
-    filter_path: Option<&'a Vec<String>>,
-    human: Option<&'a bool>,
-    pretty: Option<&'a bool>,
-    source: &'a str,
-    interval: &'a str,
-    system_api_version: &'a str,
-    system_id: &'a str,
+pub struct MonitoringBulkBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    interval: Option<String>,
+    system_api_version: Option<String>,
+    system_id: Option<String>,
 }
-impl<'a> MonitoringBulkRequestBuilder<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        MonitoringBulkRequestBuilder {
+impl MonitoringBulkBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MonitoringBulkBuilder {
             client,
             ..Default::default()
         }
     }
 }
-impl<'a> Sender for MonitoringBulkRequestBuilder<'a> {
+impl Sender for MonitoringBulkBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -40,21 +40,21 @@ impl<'a> Sender for MonitoringBulkRequestBuilder<'a> {
     }
 }
 #[doc = "Monitoring APIs"]
-pub struct MonitoringNamespaceClient<'a> {
-    client: &'a ElasticsearchClient,
+pub struct MonitoringClient {
+    client: ElasticsearchClient,
 }
-impl<'a> MonitoringNamespaceClient<'a> {
-    pub fn new(client: &'a ElasticsearchClient) -> Self {
-        MonitoringNamespaceClient { client }
+impl MonitoringClient {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MonitoringClient { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
-    pub fn bulk(&self) -> MonitoringBulkRequestBuilder {
-        MonitoringBulkRequestBuilder::default()
+    pub fn bulk(&self) -> MonitoringBulkBuilder {
+        MonitoringBulkBuilder::default()
     }
 }
 impl ElasticsearchClient {
     #[doc = "Monitoring APIs"]
-    pub fn monitoring(&self) -> MonitoringNamespaceClient {
-        MonitoringNamespaceClient::new(self)
+    pub fn monitoring(&self) -> MonitoringClient {
+        MonitoringClient::new(self.clone())
     }
 }

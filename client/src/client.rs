@@ -14,6 +14,7 @@ pub trait Sender {
         T: DeserializeOwned;
 }
 
+#[derive(Clone, Debug, Default)]
 pub struct ElasticsearchClient {
     settings: ConnectionSettings,
     connection: Connection,
@@ -29,14 +30,5 @@ impl ElasticsearchClient {
 
     pub fn send(&self, method: HttpMethod, path: &str) -> Result<Response> {
         self.connection.send(method, path)
-    }
-}
-
-impl Default for ElasticsearchClient {
-    fn default() -> Self {
-        ElasticsearchClient {
-            settings: ConnectionSettings::new(),
-            connection: Connection::new(Url::parse("http://localhost:9200").unwrap()),
-        }
     }
 }
