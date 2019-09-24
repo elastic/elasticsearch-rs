@@ -1,5 +1,3 @@
-
-
 use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;

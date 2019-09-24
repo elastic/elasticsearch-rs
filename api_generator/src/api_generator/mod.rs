@@ -217,10 +217,10 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 
 fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
     let paths = read_dir(download_dir).unwrap();
-    let mut namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>> = BTreeMap::new();
+    let mut namespaces = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
     let mut common_params = BTreeMap::new();
-    let global_key = "global";
+    let root_key = "root";
 
     for path in paths {
         let path = path?.path();
@@ -238,7 +238,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
             let (namespace, method_name) = match name_parts.len() {
                 len if len > 1 => (name_parts[0].to_string(), name_parts[1].to_string()),
-                _ => (global_key.to_string(), name),
+                _ => (root_key.to_string(), name),
             };
 
             // collect unique enum values
@@ -283,7 +283,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
     }
 
     // extract the root methods
-    let root = namespaces.remove(global_key).unwrap();
+    let root = namespaces.remove(root_key).unwrap();
 
     let mut sorted_enums = enums.into_iter().collect::<Vec<_>>();
     sorted_enums.sort_by(|a, b| a.name.cmp(&b.name));
@@ -343,12 +343,13 @@ where
     }
 
     // remove stdin: from start of output
-    // TODO: trim leading whitespace afterwards
     let b = "stdin:".as_bytes();
     if output.starts_with(b) {
         output.drain(0..b.len());
     }
 
     let s = String::from_utf8(output)?;
-    Ok(s)
+
+    // trim whitespace
+    Ok(s.trim().to_owned())
 }
