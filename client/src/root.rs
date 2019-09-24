@@ -2,157 +2,3961 @@
 
 use super::super::client::ElasticsearchClient;
 use super::super::http_method::HttpMethod;
+use crate::client::Sender;
+use crate::response::ElasticsearchResponse;
+use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result};
+use serde::de::DeserializeOwned;
+#[derive(Default)]
+pub struct BulkBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    pipeline: Option<String>,
+    refresh: Option<i32>,
+    routing: Option<String>,
+    timeout: Option<String>,
+    ty: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl BulkBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        BulkBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or default list of fields to return, can be overridden on each sub-request"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "Default list of fields to exclude from the returned _source field, can be overridden on each sub-request"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "Default list of fields to extract and return from the _source field, can be overridden on each sub-request"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "The pipeline id to preprocess incoming documents with"]
+    pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
+        self.pipeline = pipeline;
+        self
+    }
+    #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Default document type for items which don't provide one"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the bulk operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl Sender for BulkBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ClearScrollBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl ClearScrollBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ClearScrollBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl Sender for ClearScrollBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CountBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    allow_no_indices: Option<bool>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    default_operator: Option<i32>,
+    df: Option<String>,
+    expand_wildcards: Option<i32>,
+    ignore_throttled: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    lenient: Option<bool>,
+    min_score: Option<i64>,
+    preference: Option<String>,
+    q: Option<String>,
+    routing: Option<Vec<String>>,
+    terminate_after: Option<i64>,
+}
+impl CountBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CountBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
+    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
+        self.analyze_wildcard = analyze_wildcard;
+        self
+    }
+    #[doc = "The analyzer to use for the query string"]
+    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
+        self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The default operator for query string query (AND or OR)"]
+    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+        self.default_operator = default_operator;
+        self
+    }
+    #[doc = "The field to use as default where no field prefix is given in the query string"]
+    pub fn df(mut self, df: Option<String>) -> Self {
+        self.df = df;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
+    pub fn ignore_throttled(mut self, ignore_throttled: Option<bool>) -> Self {
+        self.ignore_throttled = ignore_throttled;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
+    #[doc = "Include only documents with a specific `_score` value in the result"]
+    pub fn min_score(mut self, min_score: Option<i64>) -> Self {
+        self.min_score = min_score;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "The maximum count for each shard, upon reaching which the query execution will terminate early"]
+    pub fn terminate_after(mut self, terminate_after: Option<i64>) -> Self {
+        self.terminate_after = terminate_after;
+        self
+    }
+}
+impl Sender for CountBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CreateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    pipeline: Option<String>,
+    refresh: Option<i32>,
+    routing: Option<String>,
+    timeout: Option<String>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+    wait_for_active_shards: Option<String>,
+}
+impl CreateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        CreateBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The pipeline id to preprocess incoming documents with"]
+    pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
+        self.pipeline = pipeline;
+        self
+    }
+    #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the index operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl Sender for CreateBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct DeleteBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    if_primary_term: Option<i64>,
+    if_seq_no: Option<i64>,
+    refresh: Option<i32>,
+    routing: Option<String>,
+    timeout: Option<String>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+    wait_for_active_shards: Option<String>,
+}
+impl DeleteBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        DeleteBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "only perform the delete operation if the last operation that has changed the document has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
+        self.if_primary_term = if_primary_term;
+        self
+    }
+    #[doc = "only perform the delete operation if the last operation that has changed the document has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
+        self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the delete operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl Sender for DeleteBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct DeleteByQueryBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    allow_no_indices: Option<bool>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    conflicts: Option<i32>,
+    default_operator: Option<i32>,
+    df: Option<String>,
+    expand_wildcards: Option<i32>,
+    from: Option<i64>,
+    ignore_unavailable: Option<bool>,
+    lenient: Option<bool>,
+    max_docs: Option<i64>,
+    preference: Option<String>,
+    q: Option<String>,
+    refresh: Option<bool>,
+    request_cache: Option<bool>,
+    requests_per_second: Option<i64>,
+    routing: Option<Vec<String>>,
+    scroll: Option<String>,
+    scroll_size: Option<i64>,
+    search_timeout: Option<String>,
+    search_type: Option<i32>,
+    size: Option<i64>,
+    slices: Option<i64>,
+    sort: Option<Vec<String>>,
+    stats: Option<Vec<String>>,
+    terminate_after: Option<i64>,
+    timeout: Option<String>,
+    version: Option<bool>,
+    wait_for_active_shards: Option<String>,
+    wait_for_completion: Option<bool>,
+}
+impl DeleteByQueryBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        DeleteByQueryBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
+    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
+        self.analyze_wildcard = analyze_wildcard;
+        self
+    }
+    #[doc = "The analyzer to use for the query string"]
+    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
+        self.analyzer = analyzer;
+        self
+    }
+    #[doc = "What to do when the delete by query hits version conflicts?"]
+    pub fn conflicts(mut self, conflicts: Option<i32>) -> Self {
+        self.conflicts = conflicts;
+        self
+    }
+    #[doc = "The default operator for query string query (AND or OR)"]
+    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+        self.default_operator = default_operator;
+        self
+    }
+    #[doc = "The field to use as default where no field prefix is given in the query string"]
+    pub fn df(mut self, df: Option<String>) -> Self {
+        self.df = df;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Starting offset (default: 0)"]
+    pub fn from(mut self, from: Option<i64>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
+    #[doc = "Maximum number of documents to process (default: all documents)"]
+    pub fn max_docs(mut self, max_docs: Option<i64>) -> Self {
+        self.max_docs = max_docs;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "Should the effected indexes be refreshed?"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specify if request cache should be used for this request or not, defaults to index level setting"]
+    pub fn request_cache(mut self, request_cache: Option<bool>) -> Self {
+        self.request_cache = request_cache;
+        self
+    }
+    #[doc = "The throttle for this request in sub-requests per second. -1 means no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "Size on the scroll request powering the delete by query"]
+    pub fn scroll_size(mut self, scroll_size: Option<i64>) -> Self {
+        self.scroll_size = scroll_size;
+        self
+    }
+    #[doc = "Explicit timeout for each search request. Defaults to no timeout."]
+    pub fn search_timeout(mut self, search_timeout: Option<String>) -> Self {
+        self.search_timeout = search_timeout;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Deprecated, please use `max_docs` instead"]
+    pub fn size(mut self, size: Option<i64>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "The number of slices this task should be divided into. Defaults to 1 meaning the task isn't sliced into subtasks."]
+    pub fn slices(mut self, slices: Option<i64>) -> Self {
+        self.slices = slices;
+        self
+    }
+    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    pub fn sort(mut self, sort: Option<Vec<String>>) -> Self {
+        self.sort = sort;
+        self
+    }
+    #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
+    pub fn stats(mut self, stats: Option<Vec<String>>) -> Self {
+        self.stats = stats;
+        self
+    }
+    #[doc = "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early."]
+    pub fn terminate_after(mut self, terminate_after: Option<i64>) -> Self {
+        self.terminate_after = terminate_after;
+        self
+    }
+    #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Specify whether to return document version as part of a hit"]
+    pub fn version(mut self, version: Option<bool>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the delete by query operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+    #[doc = "Should the request should block until the delete by query is complete."]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
+    }
+}
+impl Sender for DeleteByQueryBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct DeleteByQueryRethrottleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    requests_per_second: Option<i64>,
+}
+impl DeleteByQueryRethrottleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        DeleteByQueryRethrottleBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+}
+impl Sender for DeleteByQueryRethrottleBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct DeleteScriptBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    master_timeout: Option<String>,
+    timeout: Option<String>,
+}
+impl DeleteScriptBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        DeleteScriptBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+}
+impl Sender for DeleteScriptBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ExistsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    refresh: Option<bool>,
+    routing: Option<String>,
+    stored_fields: Option<Vec<String>>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl ExistsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ExistsBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to perform the operation in realtime or search mode"]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Refresh the shard containing the document before performing the operation"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "A comma-separated list of stored fields to return in the response"]
+    pub fn stored_fields(mut self, stored_fields: Option<Vec<String>>) -> Self {
+        self.stored_fields = stored_fields;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for ExistsBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ExistsSourceBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    refresh: Option<bool>,
+    routing: Option<String>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl ExistsSourceBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ExistsSourceBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to perform the operation in realtime or search mode"]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Refresh the shard containing the document before performing the operation"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for ExistsSourceBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ExplainBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    default_operator: Option<i32>,
+    df: Option<String>,
+    lenient: Option<bool>,
+    preference: Option<String>,
+    q: Option<String>,
+    routing: Option<String>,
+    stored_fields: Option<Vec<String>>,
+}
+impl ExplainBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ExplainBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify whether wildcards and prefix queries in the query string query should be analyzed (default: false)"]
+    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
+        self.analyze_wildcard = analyze_wildcard;
+        self
+    }
+    #[doc = "The analyzer for the query string query"]
+    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
+        self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The default operator for query string query (AND or OR)"]
+    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+        self.default_operator = default_operator;
+        self
+    }
+    #[doc = "The default field for query string query (default: _all)"]
+    pub fn df(mut self, df: Option<String>) -> Self {
+        self.df = df;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "A comma-separated list of stored fields to return in the response"]
+    pub fn stored_fields(mut self, stored_fields: Option<Vec<String>>) -> Self {
+        self.stored_fields = stored_fields;
+        self
+    }
+}
+impl Sender for ExplainBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct FieldCapsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    allow_no_indices: Option<bool>,
+    expand_wildcards: Option<i32>,
+    fields: Option<Vec<String>>,
+    ignore_unavailable: Option<bool>,
+    include_unmapped: Option<bool>,
+}
+impl FieldCapsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        FieldCapsBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of field names"]
+    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
+        self.fields = fields;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Indicates whether unmapped fields should be included in the response."]
+    pub fn include_unmapped(mut self, include_unmapped: Option<bool>) -> Self {
+        self.include_unmapped = include_unmapped;
+        self
+    }
+}
+impl Sender for FieldCapsBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct GetBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    refresh: Option<bool>,
+    routing: Option<String>,
+    stored_fields: Option<Vec<String>>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl GetBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        GetBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to perform the operation in realtime or search mode"]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Refresh the shard containing the document before performing the operation"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "A comma-separated list of stored fields to return in the response"]
+    pub fn stored_fields(mut self, stored_fields: Option<Vec<String>>) -> Self {
+        self.stored_fields = stored_fields;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for GetBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct GetScriptBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    master_timeout: Option<String>,
+}
+impl GetScriptBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        GetScriptBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+}
+impl Sender for GetScriptBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct GetSourceBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    refresh: Option<bool>,
+    routing: Option<String>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl GetSourceBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        GetSourceBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to perform the operation in realtime or search mode"]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Refresh the shard containing the document before performing the operation"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for GetSourceBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndexBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    if_primary_term: Option<i64>,
+    if_seq_no: Option<i64>,
+    op_type: Option<i32>,
+    pipeline: Option<String>,
+    refresh: Option<i32>,
+    routing: Option<String>,
+    timeout: Option<String>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndexBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        IndexBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "only perform the index operation if the last operation that has changed the document has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
+        self.if_primary_term = if_primary_term;
+        self
+    }
+    #[doc = "only perform the index operation if the last operation that has changed the document has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
+        self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "Explicit operation type"]
+    pub fn op_type(mut self, op_type: Option<i32>) -> Self {
+        self.op_type = op_type;
+        self
+    }
+    #[doc = "The pipeline id to preprocess incoming documents with"]
+    pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
+        self.pipeline = pipeline;
+        self
+    }
+    #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the index operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl Sender for IndexBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct InfoBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl InfoBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        InfoBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl Sender for InfoBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MgetBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    refresh: Option<bool>,
+    routing: Option<String>,
+    stored_fields: Option<Vec<String>>,
+}
+impl MgetBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MgetBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to perform the operation in realtime or search mode"]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Refresh the shard containing the document before performing the operation"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "A comma-separated list of stored fields to return in the response"]
+    pub fn stored_fields(mut self, stored_fields: Option<Vec<String>>) -> Self {
+        self.stored_fields = stored_fields;
+        self
+    }
+}
+impl Sender for MgetBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MsearchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    ccs_minimize_roundtrips: Option<bool>,
+    max_concurrent_searches: Option<i64>,
+    max_concurrent_shard_requests: Option<i64>,
+    pre_filter_shard_size: Option<i64>,
+    rest_total_hits_as_int: Option<bool>,
+    search_type: Option<i32>,
+    typed_keys: Option<bool>,
+}
+impl MsearchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MsearchBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
+    }
+    #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
+    pub fn max_concurrent_searches(mut self, max_concurrent_searches: Option<i64>) -> Self {
+        self.max_concurrent_searches = max_concurrent_searches;
+        self
+    }
+    #[doc = "The number of concurrent shard requests each sub search executes concurrently per node. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
+    pub fn max_concurrent_shard_requests(
+        mut self,
+        max_concurrent_shard_requests: Option<i64>,
+    ) -> Self {
+        self.max_concurrent_shard_requests = max_concurrent_shard_requests;
+        self
+    }
+    #[doc = "A threshold that enforces a pre-filter roundtrip to prefilter search shards based on query rewriting if the\u{a0}number of shards the search request expands to exceeds the threshold. This filter roundtrip can limit the number of shards significantly if for instance a shard can not match any documents based on it's rewrite method ie. if date filters are mandatory to match but the shard bounds and the query are disjoint."]
+    pub fn pre_filter_shard_size(mut self, pre_filter_shard_size: Option<i64>) -> Self {
+        self.pre_filter_shard_size = pre_filter_shard_size;
+        self
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
+        self.typed_keys = typed_keys;
+        self
+    }
+}
+impl Sender for MsearchBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MsearchTemplateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    ccs_minimize_roundtrips: Option<bool>,
+    max_concurrent_searches: Option<i64>,
+    rest_total_hits_as_int: Option<bool>,
+    search_type: Option<i32>,
+    typed_keys: Option<bool>,
+}
+impl MsearchTemplateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MsearchTemplateBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
+    }
+    #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
+    pub fn max_concurrent_searches(mut self, max_concurrent_searches: Option<i64>) -> Self {
+        self.max_concurrent_searches = max_concurrent_searches;
+        self
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
+        self.typed_keys = typed_keys;
+        self
+    }
+}
+impl Sender for MsearchTemplateBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MtermvectorsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    field_statistics: Option<bool>,
+    fields: Option<Vec<String>>,
+    ids: Option<Vec<String>>,
+    offsets: Option<bool>,
+    payloads: Option<bool>,
+    positions: Option<bool>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    routing: Option<String>,
+    term_statistics: Option<bool>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl MtermvectorsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        MtermvectorsBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Specifies if document count, sum of document frequencies and sum of total term frequencies should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn field_statistics(mut self, field_statistics: Option<bool>) -> Self {
+        self.field_statistics = field_statistics;
+        self
+    }
+    #[doc = "A comma-separated list of fields to return. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
+        self.fields = fields;
+        self
+    }
+    #[doc = "A comma-separated list of documents ids. You must define ids as parameter or set \"ids\" or \"docs\" in the request body"]
+    pub fn ids(mut self, ids: Option<Vec<String>>) -> Self {
+        self.ids = ids;
+        self
+    }
+    #[doc = "Specifies if term offsets should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn offsets(mut self, offsets: Option<bool>) -> Self {
+        self.offsets = offsets;
+        self
+    }
+    #[doc = "Specifies if term payloads should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn payloads(mut self, payloads: Option<bool>) -> Self {
+        self.payloads = payloads;
+        self
+    }
+    #[doc = "Specifies if term positions should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn positions(mut self, positions: Option<bool>) -> Self {
+        self.positions = positions;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random) .Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specifies if requests are real-time as opposed to near-real-time (default: true)."]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Specific routing value. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specifies if total term frequency and document frequency should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
+    pub fn term_statistics(mut self, term_statistics: Option<bool>) -> Self {
+        self.term_statistics = term_statistics;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for MtermvectorsBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct PingBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl PingBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        PingBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl Sender for PingBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct PutScriptBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    context: Option<String>,
+    master_timeout: Option<String>,
+    timeout: Option<String>,
+}
+impl PutScriptBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        PutScriptBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Context name to compile script against"]
+    pub fn context(mut self, context: Option<String>) -> Self {
+        self.context = context;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+}
+impl Sender for PutScriptBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct RankEvalBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    allow_no_indices: Option<bool>,
+    expand_wildcards: Option<i32>,
+    ignore_unavailable: Option<bool>,
+}
+impl RankEvalBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        RankEvalBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+}
+impl Sender for RankEvalBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ReindexBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    max_docs: Option<i64>,
+    refresh: Option<bool>,
+    requests_per_second: Option<i64>,
+    scroll: Option<String>,
+    slices: Option<i64>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+    wait_for_completion: Option<bool>,
+}
+impl ReindexBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ReindexBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Maximum number of documents to process (default: all documents)"]
+    pub fn max_docs(mut self, max_docs: Option<i64>) -> Self {
+        self.max_docs = max_docs;
+        self
+    }
+    #[doc = "Should the effected indexes be refreshed?"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "The throttle to set on this request in sub-requests per second. -1 means no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "Control how long to keep the search context alive"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "The number of slices this task should be divided into. Defaults to 1 meaning the task isn't sliced into subtasks."]
+    pub fn slices(mut self, slices: Option<i64>) -> Self {
+        self.slices = slices;
+        self
+    }
+    #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the reindex operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+    #[doc = "Should the request should block until the reindex is complete."]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
+    }
+}
+impl Sender for ReindexBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ReindexRethrottleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    requests_per_second: Option<i64>,
+}
+impl ReindexRethrottleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ReindexRethrottleBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+}
+impl Sender for ReindexRethrottleBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct RenderSearchTemplateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl RenderSearchTemplateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        RenderSearchTemplateBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl Sender for RenderSearchTemplateBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ScriptsPainlessExecuteBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl ScriptsPainlessExecuteBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ScriptsPainlessExecuteBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl Sender for ScriptsPainlessExecuteBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct ScrollBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    rest_total_hits_as_int: Option<bool>,
+    scroll: Option<String>,
+    scroll_id: Option<String>,
+}
+impl ScrollBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        ScrollBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "The scroll ID for scrolled search"]
+    pub fn scroll_id(mut self, scroll_id: Option<String>) -> Self {
+        self.scroll_id = scroll_id;
+        self
+    }
+}
+impl Sender for ScrollBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct SearchBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    allow_no_indices: Option<bool>,
+    allow_partial_search_results: Option<bool>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    batched_reduce_size: Option<i64>,
+    ccs_minimize_roundtrips: Option<bool>,
+    default_operator: Option<i32>,
+    df: Option<String>,
+    docvalue_fields: Option<Vec<String>>,
+    expand_wildcards: Option<i32>,
+    explain: Option<bool>,
+    from: Option<i64>,
+    ignore_throttled: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    lenient: Option<bool>,
+    max_concurrent_shard_requests: Option<i64>,
+    pre_filter_shard_size: Option<i64>,
+    preference: Option<String>,
+    q: Option<String>,
+    request_cache: Option<bool>,
+    rest_total_hits_as_int: Option<bool>,
+    routing: Option<Vec<String>>,
+    scroll: Option<String>,
+    search_type: Option<i32>,
+    seq_no_primary_term: Option<bool>,
+    size: Option<i64>,
+    sort: Option<Vec<String>>,
+    stats: Option<Vec<String>>,
+    stored_fields: Option<Vec<String>>,
+    suggest_field: Option<String>,
+    suggest_mode: Option<i32>,
+    suggest_size: Option<i64>,
+    suggest_text: Option<String>,
+    terminate_after: Option<i64>,
+    timeout: Option<String>,
+    track_scores: Option<bool>,
+    track_total_hits: Option<bool>,
+    typed_keys: Option<bool>,
+    version: Option<bool>,
+}
+impl SearchBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SearchBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Indicate if an error should be returned if there is a partial search failure or timeout"]
+    pub fn allow_partial_search_results(
+        mut self,
+        allow_partial_search_results: Option<bool>,
+    ) -> Self {
+        self.allow_partial_search_results = allow_partial_search_results;
+        self
+    }
+    #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
+    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
+        self.analyze_wildcard = analyze_wildcard;
+        self
+    }
+    #[doc = "The analyzer to use for the query string"]
+    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
+        self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The number of shard results that should be reduced at once on the coordinating node. This value should be used as a protection mechanism to reduce the memory overhead per search request if the potential number of shards in the request can be large."]
+    pub fn batched_reduce_size(mut self, batched_reduce_size: Option<i64>) -> Self {
+        self.batched_reduce_size = batched_reduce_size;
+        self
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
+    }
+    #[doc = "The default operator for query string query (AND or OR)"]
+    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+        self.default_operator = default_operator;
+        self
+    }
+    #[doc = "The field to use as default where no field prefix is given in the query string"]
+    pub fn df(mut self, df: Option<String>) -> Self {
+        self.df = df;
+        self
+    }
+    #[doc = "A comma-separated list of fields to return as the docvalue representation of a field for each hit"]
+    pub fn docvalue_fields(mut self, docvalue_fields: Option<Vec<String>>) -> Self {
+        self.docvalue_fields = docvalue_fields;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Specify whether to return detailed information about score computation as part of a hit"]
+    pub fn explain(mut self, explain: Option<bool>) -> Self {
+        self.explain = explain;
+        self
+    }
+    #[doc = "Starting offset (default: 0)"]
+    pub fn from(mut self, from: Option<i64>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
+    pub fn ignore_throttled(mut self, ignore_throttled: Option<bool>) -> Self {
+        self.ignore_throttled = ignore_throttled;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
+    #[doc = "The number of concurrent shard requests per node this search executes concurrently. This value should be used to limit the impact of the search on the cluster in order to limit the number of concurrent shard requests"]
+    pub fn max_concurrent_shard_requests(
+        mut self,
+        max_concurrent_shard_requests: Option<i64>,
+    ) -> Self {
+        self.max_concurrent_shard_requests = max_concurrent_shard_requests;
+        self
+    }
+    #[doc = "A threshold that enforces a pre-filter roundtrip to prefilter search shards based on query rewriting if the\u{a0}number of shards the search request expands to exceeds the threshold. This filter roundtrip can limit the number of shards significantly if for instance a shard can not match any documents based on it's rewrite method ie. if date filters are mandatory to match but the shard bounds and the query are disjoint."]
+    pub fn pre_filter_shard_size(mut self, pre_filter_shard_size: Option<i64>) -> Self {
+        self.pre_filter_shard_size = pre_filter_shard_size;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "Specify if request cache should be used for this request or not, defaults to index level setting"]
+    pub fn request_cache(mut self, request_cache: Option<bool>) -> Self {
+        self.request_cache = request_cache;
+        self
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Specify whether to return sequence number and primary term of the last modification of each hit"]
+    pub fn seq_no_primary_term(mut self, seq_no_primary_term: Option<bool>) -> Self {
+        self.seq_no_primary_term = seq_no_primary_term;
+        self
+    }
+    #[doc = "Number of hits to return (default: 10)"]
+    pub fn size(mut self, size: Option<i64>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    pub fn sort(mut self, sort: Option<Vec<String>>) -> Self {
+        self.sort = sort;
+        self
+    }
+    #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
+    pub fn stats(mut self, stats: Option<Vec<String>>) -> Self {
+        self.stats = stats;
+        self
+    }
+    #[doc = "A comma-separated list of stored fields to return as part of a hit"]
+    pub fn stored_fields(mut self, stored_fields: Option<Vec<String>>) -> Self {
+        self.stored_fields = stored_fields;
+        self
+    }
+    #[doc = "Specify which field to use for suggestions"]
+    pub fn suggest_field(mut self, suggest_field: Option<String>) -> Self {
+        self.suggest_field = suggest_field;
+        self
+    }
+    #[doc = "Specify suggest mode"]
+    pub fn suggest_mode(mut self, suggest_mode: Option<i32>) -> Self {
+        self.suggest_mode = suggest_mode;
+        self
+    }
+    #[doc = "How many suggestions to return in response"]
+    pub fn suggest_size(mut self, suggest_size: Option<i64>) -> Self {
+        self.suggest_size = suggest_size;
+        self
+    }
+    #[doc = "The source text for which the suggestions should be returned"]
+    pub fn suggest_text(mut self, suggest_text: Option<String>) -> Self {
+        self.suggest_text = suggest_text;
+        self
+    }
+    #[doc = "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early."]
+    pub fn terminate_after(mut self, terminate_after: Option<i64>) -> Self {
+        self.terminate_after = terminate_after;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Whether to calculate and return scores even if they are not used for sorting"]
+    pub fn track_scores(mut self, track_scores: Option<bool>) -> Self {
+        self.track_scores = track_scores;
+        self
+    }
+    #[doc = "Indicate if the number of documents that match the query should be tracked"]
+    pub fn track_total_hits(mut self, track_total_hits: Option<bool>) -> Self {
+        self.track_total_hits = track_total_hits;
+        self
+    }
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
+        self.typed_keys = typed_keys;
+        self
+    }
+    #[doc = "Specify whether to return document version as part of a hit"]
+    pub fn version(mut self, version: Option<bool>) -> Self {
+        self.version = version;
+        self
+    }
+}
+impl Sender for SearchBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct SearchShardsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    allow_no_indices: Option<bool>,
+    expand_wildcards: Option<i32>,
+    ignore_unavailable: Option<bool>,
+    local: Option<bool>,
+    preference: Option<String>,
+    routing: Option<String>,
+}
+impl SearchShardsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SearchShardsBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+}
+impl Sender for SearchShardsBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct SearchTemplateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    allow_no_indices: Option<bool>,
+    ccs_minimize_roundtrips: Option<bool>,
+    expand_wildcards: Option<i32>,
+    explain: Option<bool>,
+    ignore_throttled: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    preference: Option<String>,
+    profile: Option<bool>,
+    rest_total_hits_as_int: Option<bool>,
+    routing: Option<Vec<String>>,
+    scroll: Option<String>,
+    search_type: Option<i32>,
+    typed_keys: Option<bool>,
+}
+impl SearchTemplateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        SearchTemplateBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Specify whether to return detailed information about score computation as part of a hit"]
+    pub fn explain(mut self, explain: Option<bool>) -> Self {
+        self.explain = explain;
+        self
+    }
+    #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
+    pub fn ignore_throttled(mut self, ignore_throttled: Option<bool>) -> Self {
+        self.ignore_throttled = ignore_throttled;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specify whether to profile the query execution"]
+    pub fn profile(mut self, profile: Option<bool>) -> Self {
+        self.profile = profile;
+        self
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
+        self.typed_keys = typed_keys;
+        self
+    }
+}
+impl Sender for SearchTemplateBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct TermvectorsBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    field_statistics: Option<bool>,
+    fields: Option<Vec<String>>,
+    offsets: Option<bool>,
+    payloads: Option<bool>,
+    positions: Option<bool>,
+    preference: Option<String>,
+    realtime: Option<bool>,
+    routing: Option<String>,
+    term_statistics: Option<bool>,
+    version: Option<i64>,
+    version_type: Option<i32>,
+}
+impl TermvectorsBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        TermvectorsBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Specifies if document count, sum of document frequencies and sum of total term frequencies should be returned."]
+    pub fn field_statistics(mut self, field_statistics: Option<bool>) -> Self {
+        self.field_statistics = field_statistics;
+        self
+    }
+    #[doc = "A comma-separated list of fields to return."]
+    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
+        self.fields = fields;
+        self
+    }
+    #[doc = "Specifies if term offsets should be returned."]
+    pub fn offsets(mut self, offsets: Option<bool>) -> Self {
+        self.offsets = offsets;
+        self
+    }
+    #[doc = "Specifies if term payloads should be returned."]
+    pub fn payloads(mut self, payloads: Option<bool>) -> Self {
+        self.payloads = payloads;
+        self
+    }
+    #[doc = "Specifies if term positions should be returned."]
+    pub fn positions(mut self, positions: Option<bool>) -> Self {
+        self.positions = positions;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)."]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Specifies if request is real-time as opposed to near-real-time (default: true)."]
+    pub fn realtime(mut self, realtime: Option<bool>) -> Self {
+        self.realtime = realtime;
+        self
+    }
+    #[doc = "Specific routing value."]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specifies if total term frequency and document frequency should be returned."]
+    pub fn term_statistics(mut self, term_statistics: Option<bool>) -> Self {
+        self.term_statistics = term_statistics;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Specific version type"]
+    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+}
+impl Sender for TermvectorsBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct UpdateBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    if_primary_term: Option<i64>,
+    if_seq_no: Option<i64>,
+    lang: Option<String>,
+    refresh: Option<i32>,
+    retry_on_conflict: Option<i64>,
+    routing: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl UpdateBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        UpdateBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "only perform the update operation if the last operation that has changed the document has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
+        self.if_primary_term = if_primary_term;
+        self
+    }
+    #[doc = "only perform the update operation if the last operation that has changed the document has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
+        self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "The script language (default: painless)"]
+    pub fn lang(mut self, lang: Option<String>) -> Self {
+        self.lang = lang;
+        self
+    }
+    #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specify how many times should the operation be retried when a conflict occurs (default: 0)"]
+    pub fn retry_on_conflict(mut self, retry_on_conflict: Option<i64>) -> Self {
+        self.retry_on_conflict = retry_on_conflict;
+        self
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the update operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl Sender for UpdateBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct UpdateByQueryBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    _source: Option<Vec<String>>,
+    _source_excludes: Option<Vec<String>>,
+    _source_includes: Option<Vec<String>>,
+    allow_no_indices: Option<bool>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    conflicts: Option<i32>,
+    default_operator: Option<i32>,
+    df: Option<String>,
+    expand_wildcards: Option<i32>,
+    from: Option<i64>,
+    ignore_unavailable: Option<bool>,
+    lenient: Option<bool>,
+    max_docs: Option<i64>,
+    pipeline: Option<String>,
+    preference: Option<String>,
+    q: Option<String>,
+    refresh: Option<bool>,
+    request_cache: Option<bool>,
+    requests_per_second: Option<i64>,
+    routing: Option<Vec<String>>,
+    scroll: Option<String>,
+    scroll_size: Option<i64>,
+    search_timeout: Option<String>,
+    search_type: Option<i32>,
+    size: Option<i64>,
+    slices: Option<i64>,
+    sort: Option<Vec<String>>,
+    stats: Option<Vec<String>>,
+    terminate_after: Option<i64>,
+    timeout: Option<String>,
+    version: Option<bool>,
+    version_type: Option<bool>,
+    wait_for_active_shards: Option<String>,
+    wait_for_completion: Option<bool>,
+}
+impl UpdateByQueryBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        UpdateByQueryBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "True or false to return the _source field or not, or a list of fields to return"]
+    pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
+        self._source = _source;
+        self
+    }
+    #[doc = "A list of fields to exclude from the returned _source field"]
+    pub fn _source_excludes(mut self, _source_excludes: Option<Vec<String>>) -> Self {
+        self._source_excludes = _source_excludes;
+        self
+    }
+    #[doc = "A list of fields to extract and return from the _source field"]
+    pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
+        self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
+    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
+        self.analyze_wildcard = analyze_wildcard;
+        self
+    }
+    #[doc = "The analyzer to use for the query string"]
+    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
+        self.analyzer = analyzer;
+        self
+    }
+    #[doc = "What to do when the update by query hits version conflicts?"]
+    pub fn conflicts(mut self, conflicts: Option<i32>) -> Self {
+        self.conflicts = conflicts;
+        self
+    }
+    #[doc = "The default operator for query string query (AND or OR)"]
+    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+        self.default_operator = default_operator;
+        self
+    }
+    #[doc = "The field to use as default where no field prefix is given in the query string"]
+    pub fn df(mut self, df: Option<String>) -> Self {
+        self.df = df;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Starting offset (default: 0)"]
+    pub fn from(mut self, from: Option<i64>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
+    #[doc = "Maximum number of documents to process (default: all documents)"]
+    pub fn max_docs(mut self, max_docs: Option<i64>) -> Self {
+        self.max_docs = max_docs;
+        self
+    }
+    #[doc = "Ingest pipeline to set on index requests made by this action. (default: none)"]
+    pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
+        self.pipeline = pipeline;
+        self
+    }
+    #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
+    pub fn preference(mut self, preference: Option<String>) -> Self {
+        self.preference = preference;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "Should the effected indexes be refreshed?"]
+    pub fn refresh(mut self, refresh: Option<bool>) -> Self {
+        self.refresh = refresh;
+        self
+    }
+    #[doc = "Specify if request cache should be used for this request or not, defaults to index level setting"]
+    pub fn request_cache(mut self, request_cache: Option<bool>) -> Self {
+        self.request_cache = request_cache;
+        self
+    }
+    #[doc = "The throttle to set on this request in sub-requests per second. -1 means no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "A comma-separated list of specific routing values"]
+    pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
+    pub fn scroll(mut self, scroll: Option<String>) -> Self {
+        self.scroll = scroll;
+        self
+    }
+    #[doc = "Size on the scroll request powering the update by query"]
+    pub fn scroll_size(mut self, scroll_size: Option<i64>) -> Self {
+        self.scroll_size = scroll_size;
+        self
+    }
+    #[doc = "Explicit timeout for each search request. Defaults to no timeout."]
+    pub fn search_timeout(mut self, search_timeout: Option<String>) -> Self {
+        self.search_timeout = search_timeout;
+        self
+    }
+    #[doc = "Search operation type"]
+    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+        self.search_type = search_type;
+        self
+    }
+    #[doc = "Deprecated, please use `max_docs` instead"]
+    pub fn size(mut self, size: Option<i64>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "The number of slices this task should be divided into. Defaults to 1 meaning the task isn't sliced into subtasks."]
+    pub fn slices(mut self, slices: Option<i64>) -> Self {
+        self.slices = slices;
+        self
+    }
+    #[doc = "A comma-separated list of <field>:<direction> pairs"]
+    pub fn sort(mut self, sort: Option<Vec<String>>) -> Self {
+        self.sort = sort;
+        self
+    }
+    #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
+    pub fn stats(mut self, stats: Option<Vec<String>>) -> Self {
+        self.stats = stats;
+        self
+    }
+    #[doc = "The maximum number of documents to collect for each shard, upon reaching which the query execution will terminate early."]
+    pub fn terminate_after(mut self, terminate_after: Option<i64>) -> Self {
+        self.terminate_after = terminate_after;
+        self
+    }
+    #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Specify whether to return document version as part of a hit"]
+    pub fn version(mut self, version: Option<bool>) -> Self {
+        self.version = version;
+        self
+    }
+    #[doc = "Should the document increment the version number (internal) on hit or not (reindex)"]
+    pub fn version_type(mut self, version_type: Option<bool>) -> Self {
+        self.version_type = version_type;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before proceeding with the update by query operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+    #[doc = "Should the request should block until the update by query operation is complete."]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
+    }
+}
+impl Sender for UpdateByQueryBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct UpdateByQueryRethrottleBuilder {
+    client: ElasticsearchClient,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    requests_per_second: Option<i64>,
+}
+impl UpdateByQueryRethrottleBuilder {
+    pub fn new(client: ElasticsearchClient) -> Self {
+        UpdateByQueryRethrottleBuilder {
+            client,
+            ..Default::default()
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
+    pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
+        self.requests_per_second = requests_per_second;
+        self
+    }
+}
+impl Sender for UpdateByQueryRethrottleBuilder {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
 impl ElasticsearchClient {
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html"]
-    pub fn bulk(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_bulk")
+    pub fn bulk(&self) -> BulkBuilder {
+        BulkBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn clear_scroll(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/_search/scroll")
+    pub fn clear_scroll(&self) -> ClearScrollBuilder {
+        ClearScrollBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html"]
-    pub fn count(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_count")
+    pub fn count(&self) -> CountBuilder {
+        CountBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn create(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/{index}/_create/{id}")
+    pub fn create(&self) -> CreateBuilder {
+        CreateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html"]
-    pub fn delete(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/{index}/_doc/{id}")
+    pub fn delete(&self) -> DeleteBuilder {
+        DeleteBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html"]
-    pub fn delete_by_query(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/{index}/_delete_by_query")
+    pub fn delete_by_query(&self) -> DeleteByQueryBuilder {
+        DeleteByQueryBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html"]
-    pub fn delete_by_query_rethrottle(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_delete_by_query/{task_id}/_rethrottle")
+    pub fn delete_by_query_rethrottle(&self) -> DeleteByQueryRethrottleBuilder {
+        DeleteByQueryRethrottleBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn delete_script(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Delete, "/_scripts/{id}")
+    pub fn delete_script(&self) -> DeleteScriptBuilder {
+        DeleteScriptBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/{index}/_doc/{id}")
+    pub fn exists(&self) -> ExistsBuilder {
+        ExistsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists_source(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/{index}/_source/{id}")
+    pub fn exists_source(&self) -> ExistsSourceBuilder {
+        ExistsSourceBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html"]
-    pub fn explain(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/{index}/_explain/{id}")
+    pub fn explain(&self) -> ExplainBuilder {
+        ExplainBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html"]
-    pub fn field_caps(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_field_caps")
+    pub fn field_caps(&self) -> FieldCapsBuilder {
+        FieldCapsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/{index}/_doc/{id}")
+    pub fn get(&self) -> GetBuilder {
+        GetBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn get_script(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_scripts/{id}")
+    pub fn get_script(&self) -> GetScriptBuilder {
+        GetScriptBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get_source(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/{index}/_source/{id}")
+    pub fn get_source(&self) -> GetSourceBuilder {
+        GetSourceBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn index(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_doc/{id}")
+    pub fn index(&self) -> IndexBuilder {
+        IndexBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/"]
-    pub fn info(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/")
+    pub fn info(&self) -> InfoBuilder {
+        InfoBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html"]
-    pub fn mget(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_mget")
+    pub fn mget(&self) -> MgetBuilder {
+        MgetBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html"]
-    pub fn msearch(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_msearch")
+    pub fn msearch(&self) -> MsearchBuilder {
+        MsearchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html"]
-    pub fn msearch_template(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_msearch/template")
+    pub fn msearch_template(&self) -> MsearchTemplateBuilder {
+        MsearchTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html"]
-    pub fn mtermvectors(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_mtermvectors")
+    pub fn mtermvectors(&self) -> MtermvectorsBuilder {
+        MtermvectorsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/"]
-    pub fn ping(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Head, "/")
+    pub fn ping(&self) -> PingBuilder {
+        PingBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn put_script(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Put, "/_scripts/{id}")
+    pub fn put_script(&self) -> PutScriptBuilder {
+        PutScriptBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html"]
-    pub fn rank_eval(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_rank_eval")
+    pub fn rank_eval(&self) -> RankEvalBuilder {
+        RankEvalBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/_reindex")
+    pub fn reindex(&self) -> ReindexBuilder {
+        ReindexBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex_rethrottle(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_reindex/{task_id}/_rethrottle")
+    pub fn reindex_rethrottle(&self) -> ReindexRethrottleBuilder {
+        ReindexRethrottleBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html"]
-    pub fn render_search_template(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_render/template")
+    pub fn render_search_template(&self) -> RenderSearchTemplateBuilder {
+        RenderSearchTemplateBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html"]
-    pub fn scripts_painless_execute(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/_scripts/painless/_execute")
+    pub fn scripts_painless_execute(&self) -> ScriptsPainlessExecuteBuilder {
+        ScriptsPainlessExecuteBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn scroll(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_search/scroll")
+    pub fn scroll(&self) -> ScrollBuilder {
+        ScrollBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html"]
-    pub fn search(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_search")
+    pub fn search(&self) -> SearchBuilder {
+        SearchBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html"]
-    pub fn search_shards(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_search_shards")
+    pub fn search_shards(&self) -> SearchShardsBuilder {
+        SearchShardsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html"]
-    pub fn search_template(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Get, "/_search/template")
+    pub fn search_template(&self) -> SearchTemplateBuilder {
+        SearchTemplateBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html"]
-    pub fn termvectors(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Get, "/{index}/_termvectors/{id}")
+    pub fn termvectors(&self) -> TermvectorsBuilder {
+        TermvectorsBuilder::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html"]
-    pub fn update(&self) -> Result<Response> {
-        self.client.send(HttpMethod::Post, "/{index}/_update/{id}")
+    pub fn update(&self) -> UpdateBuilder {
+        UpdateBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html"]
-    pub fn update_by_query(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/{index}/_update_by_query")
+    pub fn update_by_query(&self) -> UpdateByQueryBuilder {
+        UpdateByQueryBuilder::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html"]
-    pub fn update_by_query_rethrottle(&self) -> Result<Response> {
-        self.client
-            .send(HttpMethod::Post, "/_update_by_query/{task_id}/_rethrottle")
+    pub fn update_by_query_rethrottle(&self) -> UpdateByQueryRethrottleBuilder {
+        UpdateByQueryRethrottleBuilder::new(self.client.clone())
     }
 }

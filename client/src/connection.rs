@@ -1,10 +1,10 @@
 extern crate reqwest;
 
+use self::reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
 use crate::{http_method::HttpMethod, response::ElasticsearchResponse};
 use reqwest::{Method, Result};
 use serde::de::DeserializeOwned;
 use url::Url;
-use self::reqwest::header::{HeaderMap, CONTENT_TYPE, HeaderValue, USER_AGENT};
 
 #[derive(Debug, Clone)]
 pub struct Connection {
@@ -30,7 +30,13 @@ impl Connection {
         }
     }
 
-    pub fn send<T>(&self, method: HttpMethod, path: &str, query: Option<&[(String, String)]>, body: Option<Vec<u8>>) -> Result<ElasticsearchResponse<T>>
+    pub fn send<T>(
+        &self,
+        method: HttpMethod,
+        path: &str,
+        query: Option<&[(String, String)]>,
+        body: Option<Vec<u8>>,
+    ) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
     {
@@ -40,9 +46,7 @@ impl Connection {
         let mut headers = HeaderMap::new();
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
 
-        let mut request_builder = self.client
-            .request(reqwest_method, url)
-            .headers(headers);
+        let mut request_builder = self.client.request(reqwest_method, url).headers(headers);
 
         request_builder = match body {
             Some(b) => request_builder.body(b),

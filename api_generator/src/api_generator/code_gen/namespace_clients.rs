@@ -4,42 +4,20 @@ use inflector::Inflector;
 use quote::Tokens;
 use syn::{Field, FieldValue};
 
-fn create_field(f: (&String, &Type)) -> syn::Field {
-    syn::Field {
-        ident: Some(code_gen::ident(code_gen::valid_name(f.0).to_lowercase())),
-        vis: syn::Visibility::Inherited,
-        attrs: vec![],
-        ty: code_gen::ty(&f.1.ty),
-    }
-}
-
-fn create_builder_method(f: (&String, &Type)) -> Tokens {
-    let name = code_gen::ident(code_gen::valid_name(f.0).to_lowercase());
-    let value = code_gen::ty(&f.1.ty);
-    let doc = match &f.1.description {
-        Some(docs) => Some(code_gen::doc(docs.into())),
-        _ => None,
-    };
-
-    quote!(
-        #doc
-        pub fn #name(mut self, #name: #value) -> Self {
-            self.#name = #name;
-            self
-        }
-    )
-}
-
 /// Generates the source code for a namespace
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
-    let common_fields: Vec<Field> = api.common_params.iter().map(create_field).collect();
+    let common_fields: Vec<Field> = api
+        .common_params
+        .iter()
+        .map(code_gen::create_field)
+        .collect();
 
     let common_builder_methods: Vec<Tokens> = api
         .common_params
         .iter()
-        .map(create_builder_method)
+        .map(code_gen::create_builder_method)
         .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
@@ -83,14 +61,14 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .url
                     .params
                     .iter()
-                    .map(create_field)
+                    .map(code_gen::create_field)
                     .collect();
 
                 let builder_methods: Vec<Tokens> = endpoint
                     .url
                     .params
                     .iter()
-                    .map(create_builder_method)
+                    .map(code_gen::create_builder_method)
                     .collect();
 
                 // clone is required as quote! consumes the Vec<Field>

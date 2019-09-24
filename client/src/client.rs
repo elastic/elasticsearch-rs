@@ -28,7 +28,13 @@ impl ElasticsearchClient {
         }
     }
 
-    pub fn send<T>(&self, method: HttpMethod, path: &str, query: Option<&[(String, String)]>, body: Option<Vec<u8>>) -> Result<ElasticsearchResponse<T>>
+    pub fn send<T>(
+        &self,
+        method: HttpMethod,
+        path: &str,
+        query: Option<&[(String, String)]>,
+        body: Option<Vec<u8>>,
+    ) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
     {

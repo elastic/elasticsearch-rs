@@ -78,6 +78,32 @@ fn ty(type_kind: &TypeKind) -> syn::Ty {
     }
 }
 
+fn create_field(f: (&String, &Type)) -> syn::Field {
+    syn::Field {
+        ident: Some(ident(valid_name(f.0).to_lowercase())),
+        vis: syn::Visibility::Inherited,
+        attrs: vec![],
+        ty: ty(&f.1.ty),
+    }
+}
+
+fn create_builder_method(f: (&String, &Type)) -> Tokens {
+    let name = ident(valid_name(f.0).to_lowercase());
+    let value = ty(&f.1.ty);
+    let doc = match &f.1.description {
+        Some(docs) => Some(doc(docs.into())),
+        _ => None,
+    };
+
+    quote!(
+        #doc
+        pub fn #name(mut self, #name: #value) -> Self {
+            self.#name = #name;
+            self
+        }
+    )
+}
+
 //pub struct Field {
 //    pub description: Option<syn::Attribute>,
 //    pub name: syn::Ident,
