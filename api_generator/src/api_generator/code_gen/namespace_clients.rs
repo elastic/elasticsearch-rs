@@ -4,7 +4,7 @@ use inflector::Inflector;
 use quote::Tokens;
 use syn::{Field, FieldValue};
 
-/// Generates the source code for a namespace
+/// Generates the source code for a namespaced client
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
@@ -23,8 +23,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
 
-        let namespace_client_name =
-            code_gen::ident(format!("{}Client", namespace.to_pascal_case()));
+        let namespace_client_name = code_gen::ident(format!("{}", namespace.to_pascal_case()));
 
         let namespace_doc = code_gen::doc(format!(
             "{} APIs",
@@ -34,7 +33,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let namespace_name = code_gen::ident(namespace.to_string());
 
         let header = quote!(
-            use super::super::client::ElasticsearchClient;
+            use super::super::client::Elasticsearch;
             use super::super::http_method::HttpMethod;
             use super::super::enums::*;
             use reqwest::{Result, Response, Request, Error, StatusCode};
@@ -51,7 +50,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             .iter()
             .map(|(name, endpoint)| {
                 let builder_name = format!(
-                    "{}{}Builder",
+                    "{}{}",
                     namespace.to_pascal_case(),
                     name.to_pascal_case()
                 );
@@ -79,13 +78,13 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 quote!(
                     #[derive(Default)]
                     pub struct #builder_ident {
-                        client: ElasticsearchClient,
+                        client: Elasticsearch,
                         #(#common_fields_clone),*,
                         #(#fields),*
                     }
 
                     impl #builder_ident {
-                        pub fn new(client: ElasticsearchClient) -> Self {
+                        pub fn new(client: Elasticsearch) -> Self {
                             #builder_ident {
                                 client,
                                 ..Default::default()
@@ -117,7 +116,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 let struct_name =
                     format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
                 let struct_ident = code_gen::ident(struct_name.to_string());
-                let builder_ident = code_gen::ident(format!("{}Builder", struct_name.to_string()));
+                let builder_ident = code_gen::ident(format!("{}", struct_name.to_string()));
                 let method_name = code_gen::ident(name.to_string());
                 let path = endpoint.url.paths.first().unwrap();
                 let method = endpoint.methods.first().unwrap();
@@ -142,17 +141,17 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             })
             .collect();
 
-        // namespace client method on ElasticsearchClient
+        // namespace client method on Elasticsearch
         let implementation = quote!(
             #(#builders)*
 
             #namespace_doc
             pub struct #namespace_client_name {
-                client: ElasticsearchClient
+                client: Elasticsearch
             }
 
             impl #namespace_client_name {
-                pub fn new(client: ElasticsearchClient) -> Self {
+                pub fn new(client: Elasticsearch) -> Self {
                     #namespace_client_name {
                         client
                     }
@@ -160,7 +159,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 #(#methods)*
             }
 
-            impl ElasticsearchClient {
+            impl Elasticsearch {
                 #namespace_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
                     #namespace_client_name::new(self.clone())

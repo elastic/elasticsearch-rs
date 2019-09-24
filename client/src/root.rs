@@ -1,6 +1,6 @@
 
 
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -10,7 +10,7 @@ use reqwest::{Error, Request, Response, Result};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct BulkBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -27,7 +27,7 @@ pub struct BulkBuilder {
     wait_for_active_shards: Option<String>,
 }
 impl BulkBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         BulkBuilder {
             client,
             ..Default::default()
@@ -118,7 +118,7 @@ impl Sender for BulkBuilder {
 }
 #[derive(Default)]
 pub struct ClearScrollBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -126,7 +126,7 @@ pub struct ClearScrollBuilder {
     source: Option<String>,
 }
 impl ClearScrollBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ClearScrollBuilder {
             client,
             ..Default::default()
@@ -172,7 +172,7 @@ impl Sender for ClearScrollBuilder {
 }
 #[derive(Default)]
 pub struct CountBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -194,7 +194,7 @@ pub struct CountBuilder {
     terminate_after: Option<i64>,
 }
 impl CountBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         CountBuilder {
             client,
             ..Default::default()
@@ -310,7 +310,7 @@ impl Sender for CountBuilder {
 }
 #[derive(Default)]
 pub struct CreateBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -325,7 +325,7 @@ pub struct CreateBuilder {
     wait_for_active_shards: Option<String>,
 }
 impl CreateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         CreateBuilder {
             client,
             ..Default::default()
@@ -406,7 +406,7 @@ impl Sender for CreateBuilder {
 }
 #[derive(Default)]
 pub struct DeleteBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -422,7 +422,7 @@ pub struct DeleteBuilder {
     wait_for_active_shards: Option<String>,
 }
 impl DeleteBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         DeleteBuilder {
             client,
             ..Default::default()
@@ -508,7 +508,7 @@ impl Sender for DeleteBuilder {
 }
 #[derive(Default)]
 pub struct DeleteByQueryBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -549,7 +549,7 @@ pub struct DeleteByQueryBuilder {
     wait_for_completion: Option<bool>,
 }
 impl DeleteByQueryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         DeleteByQueryBuilder {
             client,
             ..Default::default()
@@ -760,7 +760,7 @@ impl Sender for DeleteByQueryBuilder {
 }
 #[derive(Default)]
 pub struct DeleteByQueryRethrottleBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -769,7 +769,7 @@ pub struct DeleteByQueryRethrottleBuilder {
     requests_per_second: Option<i64>,
 }
 impl DeleteByQueryRethrottleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         DeleteByQueryRethrottleBuilder {
             client,
             ..Default::default()
@@ -820,7 +820,7 @@ impl Sender for DeleteByQueryRethrottleBuilder {
 }
 #[derive(Default)]
 pub struct DeleteScriptBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -830,7 +830,7 @@ pub struct DeleteScriptBuilder {
     timeout: Option<String>,
 }
 impl DeleteScriptBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         DeleteScriptBuilder {
             client,
             ..Default::default()
@@ -886,7 +886,7 @@ impl Sender for DeleteScriptBuilder {
 }
 #[derive(Default)]
 pub struct ExistsBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -904,7 +904,7 @@ pub struct ExistsBuilder {
     version_type: Option<VersionType>,
 }
 impl ExistsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ExistsBuilder {
             client,
             ..Default::default()
@@ -1000,7 +1000,7 @@ impl Sender for ExistsBuilder {
 }
 #[derive(Default)]
 pub struct ExistsSourceBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1017,7 +1017,7 @@ pub struct ExistsSourceBuilder {
     version_type: Option<VersionType>,
 }
 impl ExistsSourceBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ExistsSourceBuilder {
             client,
             ..Default::default()
@@ -1108,7 +1108,7 @@ impl Sender for ExistsSourceBuilder {
 }
 #[derive(Default)]
 pub struct ExplainBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1128,7 +1128,7 @@ pub struct ExplainBuilder {
     stored_fields: Option<Vec<String>>,
 }
 impl ExplainBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ExplainBuilder {
             client,
             ..Default::default()
@@ -1234,7 +1234,7 @@ impl Sender for ExplainBuilder {
 }
 #[derive(Default)]
 pub struct FieldCapsBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1247,7 +1247,7 @@ pub struct FieldCapsBuilder {
     include_unmapped: Option<bool>,
 }
 impl FieldCapsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         FieldCapsBuilder {
             client,
             ..Default::default()
@@ -1318,7 +1318,7 @@ impl Sender for FieldCapsBuilder {
 }
 #[derive(Default)]
 pub struct GetBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1336,7 +1336,7 @@ pub struct GetBuilder {
     version_type: Option<VersionType>,
 }
 impl GetBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         GetBuilder {
             client,
             ..Default::default()
@@ -1432,7 +1432,7 @@ impl Sender for GetBuilder {
 }
 #[derive(Default)]
 pub struct GetScriptBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1441,7 +1441,7 @@ pub struct GetScriptBuilder {
     master_timeout: Option<String>,
 }
 impl GetScriptBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         GetScriptBuilder {
             client,
             ..Default::default()
@@ -1492,7 +1492,7 @@ impl Sender for GetScriptBuilder {
 }
 #[derive(Default)]
 pub struct GetSourceBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1509,7 +1509,7 @@ pub struct GetSourceBuilder {
     version_type: Option<VersionType>,
 }
 impl GetSourceBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         GetSourceBuilder {
             client,
             ..Default::default()
@@ -1600,7 +1600,7 @@ impl Sender for GetSourceBuilder {
 }
 #[derive(Default)]
 pub struct IndexBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1618,7 +1618,7 @@ pub struct IndexBuilder {
     wait_for_active_shards: Option<String>,
 }
 impl IndexBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         IndexBuilder {
             client,
             ..Default::default()
@@ -1714,7 +1714,7 @@ impl Sender for IndexBuilder {
 }
 #[derive(Default)]
 pub struct InfoBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1722,7 +1722,7 @@ pub struct InfoBuilder {
     source: Option<String>,
 }
 impl InfoBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         InfoBuilder {
             client,
             ..Default::default()
@@ -1768,7 +1768,7 @@ impl Sender for InfoBuilder {
 }
 #[derive(Default)]
 pub struct MgetBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1784,7 +1784,7 @@ pub struct MgetBuilder {
     stored_fields: Option<Vec<String>>,
 }
 impl MgetBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         MgetBuilder {
             client,
             ..Default::default()
@@ -1870,7 +1870,7 @@ impl Sender for MgetBuilder {
 }
 #[derive(Default)]
 pub struct MsearchBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1885,7 +1885,7 @@ pub struct MsearchBuilder {
     typed_keys: Option<bool>,
 }
 impl MsearchBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         MsearchBuilder {
             client,
             ..Default::default()
@@ -1969,7 +1969,7 @@ impl Sender for MsearchBuilder {
 }
 #[derive(Default)]
 pub struct MsearchTemplateBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1982,7 +1982,7 @@ pub struct MsearchTemplateBuilder {
     typed_keys: Option<bool>,
 }
 impl MsearchTemplateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         MsearchTemplateBuilder {
             client,
             ..Default::default()
@@ -2053,7 +2053,7 @@ impl Sender for MsearchTemplateBuilder {
 }
 #[derive(Default)]
 pub struct MtermvectorsBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2073,7 +2073,7 @@ pub struct MtermvectorsBuilder {
     version_type: Option<VersionType>,
 }
 impl MtermvectorsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         MtermvectorsBuilder {
             client,
             ..Default::default()
@@ -2179,7 +2179,7 @@ impl Sender for MtermvectorsBuilder {
 }
 #[derive(Default)]
 pub struct PingBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2187,7 +2187,7 @@ pub struct PingBuilder {
     source: Option<String>,
 }
 impl PingBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         PingBuilder {
             client,
             ..Default::default()
@@ -2233,7 +2233,7 @@ impl Sender for PingBuilder {
 }
 #[derive(Default)]
 pub struct PutScriptBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2244,7 +2244,7 @@ pub struct PutScriptBuilder {
     timeout: Option<String>,
 }
 impl PutScriptBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         PutScriptBuilder {
             client,
             ..Default::default()
@@ -2305,7 +2305,7 @@ impl Sender for PutScriptBuilder {
 }
 #[derive(Default)]
 pub struct RankEvalBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2316,7 +2316,7 @@ pub struct RankEvalBuilder {
     ignore_unavailable: Option<bool>,
 }
 impl RankEvalBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         RankEvalBuilder {
             client,
             ..Default::default()
@@ -2377,7 +2377,7 @@ impl Sender for RankEvalBuilder {
 }
 #[derive(Default)]
 pub struct ReindexBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2393,7 +2393,7 @@ pub struct ReindexBuilder {
     wait_for_completion: Option<bool>,
 }
 impl ReindexBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ReindexBuilder {
             client,
             ..Default::default()
@@ -2479,7 +2479,7 @@ impl Sender for ReindexBuilder {
 }
 #[derive(Default)]
 pub struct ReindexRethrottleBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2488,7 +2488,7 @@ pub struct ReindexRethrottleBuilder {
     requests_per_second: Option<i64>,
 }
 impl ReindexRethrottleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ReindexRethrottleBuilder {
             client,
             ..Default::default()
@@ -2539,7 +2539,7 @@ impl Sender for ReindexRethrottleBuilder {
 }
 #[derive(Default)]
 pub struct RenderSearchTemplateBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2547,7 +2547,7 @@ pub struct RenderSearchTemplateBuilder {
     source: Option<String>,
 }
 impl RenderSearchTemplateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         RenderSearchTemplateBuilder {
             client,
             ..Default::default()
@@ -2593,7 +2593,7 @@ impl Sender for RenderSearchTemplateBuilder {
 }
 #[derive(Default)]
 pub struct ScriptsPainlessExecuteBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2601,7 +2601,7 @@ pub struct ScriptsPainlessExecuteBuilder {
     source: Option<String>,
 }
 impl ScriptsPainlessExecuteBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ScriptsPainlessExecuteBuilder {
             client,
             ..Default::default()
@@ -2647,7 +2647,7 @@ impl Sender for ScriptsPainlessExecuteBuilder {
 }
 #[derive(Default)]
 pub struct ScrollBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2658,7 +2658,7 @@ pub struct ScrollBuilder {
     scroll_id: Option<String>,
 }
 impl ScrollBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         ScrollBuilder {
             client,
             ..Default::default()
@@ -2719,7 +2719,7 @@ impl Sender for ScrollBuilder {
 }
 #[derive(Default)]
 pub struct SearchBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2769,7 +2769,7 @@ pub struct SearchBuilder {
     version: Option<bool>,
 }
 impl SearchBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         SearchBuilder {
             client,
             ..Default::default()
@@ -3031,7 +3031,7 @@ impl Sender for SearchBuilder {
 }
 #[derive(Default)]
 pub struct SearchShardsBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3045,7 +3045,7 @@ pub struct SearchShardsBuilder {
     routing: Option<String>,
 }
 impl SearchShardsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         SearchShardsBuilder {
             client,
             ..Default::default()
@@ -3121,7 +3121,7 @@ impl Sender for SearchShardsBuilder {
 }
 #[derive(Default)]
 pub struct SearchTemplateBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3142,7 +3142,7 @@ pub struct SearchTemplateBuilder {
     typed_keys: Option<bool>,
 }
 impl SearchTemplateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         SearchTemplateBuilder {
             client,
             ..Default::default()
@@ -3253,7 +3253,7 @@ impl Sender for SearchTemplateBuilder {
 }
 #[derive(Default)]
 pub struct TermvectorsBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3272,7 +3272,7 @@ pub struct TermvectorsBuilder {
     version_type: Option<VersionType>,
 }
 impl TermvectorsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         TermvectorsBuilder {
             client,
             ..Default::default()
@@ -3373,7 +3373,7 @@ impl Sender for TermvectorsBuilder {
 }
 #[derive(Default)]
 pub struct UpdateBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3392,7 +3392,7 @@ pub struct UpdateBuilder {
     wait_for_active_shards: Option<String>,
 }
 impl UpdateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         UpdateBuilder {
             client,
             ..Default::default()
@@ -3493,7 +3493,7 @@ impl Sender for UpdateBuilder {
 }
 #[derive(Default)]
 pub struct UpdateByQueryBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3536,7 +3536,7 @@ pub struct UpdateByQueryBuilder {
     wait_for_completion: Option<bool>,
 }
 impl UpdateByQueryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         UpdateByQueryBuilder {
             client,
             ..Default::default()
@@ -3757,7 +3757,7 @@ impl Sender for UpdateByQueryBuilder {
 }
 #[derive(Default)]
 pub struct UpdateByQueryRethrottleBuilder {
-    client: ElasticsearchClient,
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3766,7 +3766,7 @@ pub struct UpdateByQueryRethrottleBuilder {
     requests_per_second: Option<i64>,
 }
 impl UpdateByQueryRethrottleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         UpdateByQueryRethrottleBuilder {
             client,
             ..Default::default()
@@ -3815,7 +3815,7 @@ impl Sender for UpdateByQueryRethrottleBuilder {
         })
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html"]
     pub fn bulk(&self) -> BulkBuilder {
         BulkBuilder::new(self.client.clone())

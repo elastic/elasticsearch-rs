@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct RollupDeleteJobBuilder {
-    client: ElasticsearchClient,
+pub struct RollupDeleteJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupDeleteJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupDeleteJobBuilder {
+impl RollupDeleteJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupDeleteJob {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl RollupDeleteJobBuilder {
         self
     }
 }
-impl Sender for RollupDeleteJobBuilder {
+impl Sender for RollupDeleteJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,17 +61,17 @@ impl Sender for RollupDeleteJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupGetJobsBuilder {
-    client: ElasticsearchClient,
+pub struct RollupGetJobs {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupGetJobsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupGetJobsBuilder {
+impl RollupGetJobs {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupGetJobs {
             client,
             ..Default::default()
         }
@@ -102,7 +102,7 @@ impl RollupGetJobsBuilder {
         self
     }
 }
-impl Sender for RollupGetJobsBuilder {
+impl Sender for RollupGetJobs {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -115,17 +115,17 @@ impl Sender for RollupGetJobsBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupGetRollupCapsBuilder {
-    client: ElasticsearchClient,
+pub struct RollupGetRollupCaps {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupGetRollupCapsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupGetRollupCapsBuilder {
+impl RollupGetRollupCaps {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupGetRollupCaps {
             client,
             ..Default::default()
         }
@@ -156,7 +156,7 @@ impl RollupGetRollupCapsBuilder {
         self
     }
 }
-impl Sender for RollupGetRollupCapsBuilder {
+impl Sender for RollupGetRollupCaps {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -169,17 +169,17 @@ impl Sender for RollupGetRollupCapsBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupGetRollupIndexCapsBuilder {
-    client: ElasticsearchClient,
+pub struct RollupGetRollupIndexCaps {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupGetRollupIndexCapsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupGetRollupIndexCapsBuilder {
+impl RollupGetRollupIndexCaps {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupGetRollupIndexCaps {
             client,
             ..Default::default()
         }
@@ -210,7 +210,7 @@ impl RollupGetRollupIndexCapsBuilder {
         self
     }
 }
-impl Sender for RollupGetRollupIndexCapsBuilder {
+impl Sender for RollupGetRollupIndexCaps {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -223,17 +223,17 @@ impl Sender for RollupGetRollupIndexCapsBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupPutJobBuilder {
-    client: ElasticsearchClient,
+pub struct RollupPutJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupPutJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupPutJobBuilder {
+impl RollupPutJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupPutJob {
             client,
             ..Default::default()
         }
@@ -264,7 +264,7 @@ impl RollupPutJobBuilder {
         self
     }
 }
-impl Sender for RollupPutJobBuilder {
+impl Sender for RollupPutJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -277,8 +277,8 @@ impl Sender for RollupPutJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupRollupSearchBuilder {
-    client: ElasticsearchClient,
+pub struct RollupRollupSearch {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -287,9 +287,9 @@ pub struct RollupRollupSearchBuilder {
     rest_total_hits_as_int: Option<bool>,
     typed_keys: Option<bool>,
 }
-impl RollupRollupSearchBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupRollupSearchBuilder {
+impl RollupRollupSearch {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupRollupSearch {
             client,
             ..Default::default()
         }
@@ -330,7 +330,7 @@ impl RollupRollupSearchBuilder {
         self
     }
 }
-impl Sender for RollupRollupSearchBuilder {
+impl Sender for RollupRollupSearch {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -343,17 +343,17 @@ impl Sender for RollupRollupSearchBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupStartJobBuilder {
-    client: ElasticsearchClient,
+pub struct RollupStartJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupStartJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupStartJobBuilder {
+impl RollupStartJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupStartJob {
             client,
             ..Default::default()
         }
@@ -384,7 +384,7 @@ impl RollupStartJobBuilder {
         self
     }
 }
-impl Sender for RollupStartJobBuilder {
+impl Sender for RollupStartJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -397,8 +397,8 @@ impl Sender for RollupStartJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct RollupStopJobBuilder {
-    client: ElasticsearchClient,
+pub struct RollupStopJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -407,9 +407,9 @@ pub struct RollupStopJobBuilder {
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl RollupStopJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupStopJobBuilder {
+impl RollupStopJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        RollupStopJob {
             client,
             ..Default::default()
         }
@@ -450,7 +450,7 @@ impl RollupStopJobBuilder {
         self
     }
 }
-impl Sender for RollupStopJobBuilder {
+impl Sender for RollupStopJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -463,49 +463,49 @@ impl Sender for RollupStopJobBuilder {
     }
 }
 #[doc = "Rollup APIs"]
-pub struct RollupClient {
-    client: ElasticsearchClient,
+pub struct Rollup {
+    client: Elasticsearch,
 }
-impl RollupClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        RollupClient { client }
+impl Rollup {
+    pub fn new(client: Elasticsearch) -> Self {
+        Rollup { client }
     }
     #[doc = ""]
-    pub fn delete_job(&self) -> RollupDeleteJobBuilder {
-        RollupDeleteJobBuilder::new(self.client.clone())
+    pub fn delete_job(&self) -> RollupDeleteJob {
+        RollupDeleteJob::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn get_jobs(&self) -> RollupGetJobsBuilder {
-        RollupGetJobsBuilder::new(self.client.clone())
+    pub fn get_jobs(&self) -> RollupGetJobs {
+        RollupGetJobs::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn get_rollup_caps(&self) -> RollupGetRollupCapsBuilder {
-        RollupGetRollupCapsBuilder::new(self.client.clone())
+    pub fn get_rollup_caps(&self) -> RollupGetRollupCaps {
+        RollupGetRollupCaps::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn get_rollup_index_caps(&self) -> RollupGetRollupIndexCapsBuilder {
-        RollupGetRollupIndexCapsBuilder::new(self.client.clone())
+    pub fn get_rollup_index_caps(&self) -> RollupGetRollupIndexCaps {
+        RollupGetRollupIndexCaps::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn put_job(&self) -> RollupPutJobBuilder {
-        RollupPutJobBuilder::new(self.client.clone())
+    pub fn put_job(&self) -> RollupPutJob {
+        RollupPutJob::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn rollup_search(&self) -> RollupRollupSearchBuilder {
-        RollupRollupSearchBuilder::new(self.client.clone())
+    pub fn rollup_search(&self) -> RollupRollupSearch {
+        RollupRollupSearch::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn start_job(&self) -> RollupStartJobBuilder {
-        RollupStartJobBuilder::new(self.client.clone())
+    pub fn start_job(&self) -> RollupStartJob {
+        RollupStartJob::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn stop_job(&self) -> RollupStopJobBuilder {
-        RollupStopJobBuilder::new(self.client.clone())
+    pub fn stop_job(&self) -> RollupStopJob {
+        RollupStopJob::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Rollup APIs"]
-    pub fn rollup(&self) -> RollupClient {
-        RollupClient::new(self.clone())
+    pub fn rollup(&self) -> Rollup {
+        Rollup::new(self.clone())
     }
 }

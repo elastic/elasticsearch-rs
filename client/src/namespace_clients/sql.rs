@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SqlClearCursorBuilder {
-    client: ElasticsearchClient,
+pub struct SqlClearCursor {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SqlClearCursorBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SqlClearCursorBuilder {
+impl SqlClearCursor {
+    pub fn new(client: Elasticsearch) -> Self {
+        SqlClearCursor {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl SqlClearCursorBuilder {
         self
     }
 }
-impl Sender for SqlClearCursorBuilder {
+impl Sender for SqlClearCursor {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,8 +61,8 @@ impl Sender for SqlClearCursorBuilder {
     }
 }
 #[derive(Default)]
-pub struct SqlQueryBuilder {
-    client: ElasticsearchClient,
+pub struct SqlQuery {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -70,9 +70,9 @@ pub struct SqlQueryBuilder {
     source: Option<String>,
     format: Option<String>,
 }
-impl SqlQueryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SqlQueryBuilder {
+impl SqlQuery {
+    pub fn new(client: Elasticsearch) -> Self {
+        SqlQuery {
             client,
             ..Default::default()
         }
@@ -108,7 +108,7 @@ impl SqlQueryBuilder {
         self
     }
 }
-impl Sender for SqlQueryBuilder {
+impl Sender for SqlQuery {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -121,17 +121,17 @@ impl Sender for SqlQueryBuilder {
     }
 }
 #[derive(Default)]
-pub struct SqlTranslateBuilder {
-    client: ElasticsearchClient,
+pub struct SqlTranslate {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SqlTranslateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SqlTranslateBuilder {
+impl SqlTranslate {
+    pub fn new(client: Elasticsearch) -> Self {
+        SqlTranslate {
             client,
             ..Default::default()
         }
@@ -162,7 +162,7 @@ impl SqlTranslateBuilder {
         self
     }
 }
-impl Sender for SqlTranslateBuilder {
+impl Sender for SqlTranslate {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -175,29 +175,29 @@ impl Sender for SqlTranslateBuilder {
     }
 }
 #[doc = "Sql APIs"]
-pub struct SqlClient {
-    client: ElasticsearchClient,
+pub struct Sql {
+    client: Elasticsearch,
 }
-impl SqlClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SqlClient { client }
+impl Sql {
+    pub fn new(client: Elasticsearch) -> Self {
+        Sql { client }
     }
     #[doc = "Clear SQL cursor"]
-    pub fn clear_cursor(&self) -> SqlClearCursorBuilder {
-        SqlClearCursorBuilder::new(self.client.clone())
+    pub fn clear_cursor(&self) -> SqlClearCursor {
+        SqlClearCursor::new(self.client.clone())
     }
     #[doc = "Execute SQL"]
-    pub fn query(&self) -> SqlQueryBuilder {
-        SqlQueryBuilder::new(self.client.clone())
+    pub fn query(&self) -> SqlQuery {
+        SqlQuery::new(self.client.clone())
     }
     #[doc = "Translate SQL into Elasticsearch queries"]
-    pub fn translate(&self) -> SqlTranslateBuilder {
-        SqlTranslateBuilder::new(self.client.clone())
+    pub fn translate(&self) -> SqlTranslate {
+        SqlTranslate::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Sql APIs"]
-    pub fn sql(&self) -> SqlClient {
-        SqlClient::new(self.clone())
+    pub fn sql(&self) -> Sql {
+        Sql::new(self.clone())
     }
 }

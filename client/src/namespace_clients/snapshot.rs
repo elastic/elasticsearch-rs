@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SnapshotCreateBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotCreate {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -17,9 +17,9 @@ pub struct SnapshotCreateBuilder {
     master_timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl SnapshotCreateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotCreateBuilder {
+impl SnapshotCreate {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotCreate {
             client,
             ..Default::default()
         }
@@ -60,7 +60,7 @@ impl SnapshotCreateBuilder {
         self
     }
 }
-impl Sender for SnapshotCreateBuilder {
+impl Sender for SnapshotCreate {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -73,8 +73,8 @@ impl Sender for SnapshotCreateBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotCreateRepositoryBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotCreateRepository {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -84,9 +84,9 @@ pub struct SnapshotCreateRepositoryBuilder {
     timeout: Option<String>,
     verify: Option<bool>,
 }
-impl SnapshotCreateRepositoryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotCreateRepositoryBuilder {
+impl SnapshotCreateRepository {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotCreateRepository {
             client,
             ..Default::default()
         }
@@ -132,7 +132,7 @@ impl SnapshotCreateRepositoryBuilder {
         self
     }
 }
-impl Sender for SnapshotCreateRepositoryBuilder {
+impl Sender for SnapshotCreateRepository {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -145,8 +145,8 @@ impl Sender for SnapshotCreateRepositoryBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotDeleteBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotDelete {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -154,9 +154,9 @@ pub struct SnapshotDeleteBuilder {
     source: Option<String>,
     master_timeout: Option<String>,
 }
-impl SnapshotDeleteBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotDeleteBuilder {
+impl SnapshotDelete {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotDelete {
             client,
             ..Default::default()
         }
@@ -192,7 +192,7 @@ impl SnapshotDeleteBuilder {
         self
     }
 }
-impl Sender for SnapshotDeleteBuilder {
+impl Sender for SnapshotDelete {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -205,8 +205,8 @@ impl Sender for SnapshotDeleteBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotDeleteRepositoryBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotDeleteRepository {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -215,9 +215,9 @@ pub struct SnapshotDeleteRepositoryBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl SnapshotDeleteRepositoryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotDeleteRepositoryBuilder {
+impl SnapshotDeleteRepository {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotDeleteRepository {
             client,
             ..Default::default()
         }
@@ -258,7 +258,7 @@ impl SnapshotDeleteRepositoryBuilder {
         self
     }
 }
-impl Sender for SnapshotDeleteRepositoryBuilder {
+impl Sender for SnapshotDeleteRepository {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -271,8 +271,8 @@ impl Sender for SnapshotDeleteRepositoryBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotGetBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotGet {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -282,9 +282,9 @@ pub struct SnapshotGetBuilder {
     master_timeout: Option<String>,
     verbose: Option<bool>,
 }
-impl SnapshotGetBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotGetBuilder {
+impl SnapshotGet {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotGet {
             client,
             ..Default::default()
         }
@@ -330,7 +330,7 @@ impl SnapshotGetBuilder {
         self
     }
 }
-impl Sender for SnapshotGetBuilder {
+impl Sender for SnapshotGet {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -343,8 +343,8 @@ impl Sender for SnapshotGetBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotGetRepositoryBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotGetRepository {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -353,9 +353,9 @@ pub struct SnapshotGetRepositoryBuilder {
     local: Option<bool>,
     master_timeout: Option<String>,
 }
-impl SnapshotGetRepositoryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotGetRepositoryBuilder {
+impl SnapshotGetRepository {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotGetRepository {
             client,
             ..Default::default()
         }
@@ -396,7 +396,7 @@ impl SnapshotGetRepositoryBuilder {
         self
     }
 }
-impl Sender for SnapshotGetRepositoryBuilder {
+impl Sender for SnapshotGetRepository {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -409,8 +409,8 @@ impl Sender for SnapshotGetRepositoryBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotRestoreBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotRestore {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -419,9 +419,9 @@ pub struct SnapshotRestoreBuilder {
     master_timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl SnapshotRestoreBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotRestoreBuilder {
+impl SnapshotRestore {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotRestore {
             client,
             ..Default::default()
         }
@@ -462,7 +462,7 @@ impl SnapshotRestoreBuilder {
         self
     }
 }
-impl Sender for SnapshotRestoreBuilder {
+impl Sender for SnapshotRestore {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -475,8 +475,8 @@ impl Sender for SnapshotRestoreBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotStatusBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotStatus {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -485,9 +485,9 @@ pub struct SnapshotStatusBuilder {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
 }
-impl SnapshotStatusBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotStatusBuilder {
+impl SnapshotStatus {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotStatus {
             client,
             ..Default::default()
         }
@@ -528,7 +528,7 @@ impl SnapshotStatusBuilder {
         self
     }
 }
-impl Sender for SnapshotStatusBuilder {
+impl Sender for SnapshotStatus {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -541,8 +541,8 @@ impl Sender for SnapshotStatusBuilder {
     }
 }
 #[derive(Default)]
-pub struct SnapshotVerifyRepositoryBuilder {
-    client: ElasticsearchClient,
+pub struct SnapshotVerifyRepository {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -551,9 +551,9 @@ pub struct SnapshotVerifyRepositoryBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl SnapshotVerifyRepositoryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotVerifyRepositoryBuilder {
+impl SnapshotVerifyRepository {
+    pub fn new(client: Elasticsearch) -> Self {
+        SnapshotVerifyRepository {
             client,
             ..Default::default()
         }
@@ -594,7 +594,7 @@ impl SnapshotVerifyRepositoryBuilder {
         self
     }
 }
-impl Sender for SnapshotVerifyRepositoryBuilder {
+impl Sender for SnapshotVerifyRepository {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -607,53 +607,53 @@ impl Sender for SnapshotVerifyRepositoryBuilder {
     }
 }
 #[doc = "Snapshot APIs"]
-pub struct SnapshotClient {
-    client: ElasticsearchClient,
+pub struct Snapshot {
+    client: Elasticsearch,
 }
-impl SnapshotClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SnapshotClient { client }
+impl Snapshot {
+    pub fn new(client: Elasticsearch) -> Self {
+        Snapshot { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create(&self) -> SnapshotCreateBuilder {
-        SnapshotCreateBuilder::new(self.client.clone())
+    pub fn create(&self) -> SnapshotCreate {
+        SnapshotCreate::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create_repository(&self) -> SnapshotCreateRepositoryBuilder {
-        SnapshotCreateRepositoryBuilder::new(self.client.clone())
+    pub fn create_repository(&self) -> SnapshotCreateRepository {
+        SnapshotCreateRepository::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete(&self) -> SnapshotDeleteBuilder {
-        SnapshotDeleteBuilder::new(self.client.clone())
+    pub fn delete(&self) -> SnapshotDelete {
+        SnapshotDelete::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete_repository(&self) -> SnapshotDeleteRepositoryBuilder {
-        SnapshotDeleteRepositoryBuilder::new(self.client.clone())
+    pub fn delete_repository(&self) -> SnapshotDeleteRepository {
+        SnapshotDeleteRepository::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn get(&self) -> SnapshotGetBuilder {
-        SnapshotGetBuilder::new(self.client.clone())
+    pub fn get(&self) -> SnapshotGet {
+        SnapshotGet::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn get_repository(&self) -> SnapshotGetRepositoryBuilder {
-        SnapshotGetRepositoryBuilder::new(self.client.clone())
+    pub fn get_repository(&self) -> SnapshotGetRepository {
+        SnapshotGetRepository::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn restore(&self) -> SnapshotRestoreBuilder {
-        SnapshotRestoreBuilder::new(self.client.clone())
+    pub fn restore(&self) -> SnapshotRestore {
+        SnapshotRestore::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn status(&self) -> SnapshotStatusBuilder {
-        SnapshotStatusBuilder::new(self.client.clone())
+    pub fn status(&self) -> SnapshotStatus {
+        SnapshotStatus::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn verify_repository(&self) -> SnapshotVerifyRepositoryBuilder {
-        SnapshotVerifyRepositoryBuilder::new(self.client.clone())
+    pub fn verify_repository(&self) -> SnapshotVerifyRepository {
+        SnapshotVerifyRepository::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Snapshot APIs"]
-    pub fn snapshot(&self) -> SnapshotClient {
-        SnapshotClient::new(self.clone())
+    pub fn snapshot(&self) -> Snapshot {
+        Snapshot::new(self.clone())
     }
 }

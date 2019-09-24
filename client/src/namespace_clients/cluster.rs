@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct ClusterAllocationExplainBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterAllocationExplain {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -17,9 +17,9 @@ pub struct ClusterAllocationExplainBuilder {
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
 }
-impl ClusterAllocationExplainBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterAllocationExplainBuilder {
+impl ClusterAllocationExplain {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterAllocationExplain {
             client,
             ..Default::default()
         }
@@ -60,7 +60,7 @@ impl ClusterAllocationExplainBuilder {
         self
     }
 }
-impl Sender for ClusterAllocationExplainBuilder {
+impl Sender for ClusterAllocationExplain {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -73,8 +73,8 @@ impl Sender for ClusterAllocationExplainBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterGetSettingsBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterGetSettings {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -85,9 +85,9 @@ pub struct ClusterGetSettingsBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl ClusterGetSettingsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterGetSettingsBuilder {
+impl ClusterGetSettings {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterGetSettings {
             client,
             ..Default::default()
         }
@@ -138,7 +138,7 @@ impl ClusterGetSettingsBuilder {
         self
     }
 }
-impl Sender for ClusterGetSettingsBuilder {
+impl Sender for ClusterGetSettings {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -151,8 +151,8 @@ impl Sender for ClusterGetSettingsBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterHealthBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterHealth {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -170,9 +170,9 @@ pub struct ClusterHealthBuilder {
     wait_for_nodes: Option<String>,
     wait_for_status: Option<WaitForStatus>,
 }
-impl ClusterHealthBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterHealthBuilder {
+impl ClusterHealth {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterHealth {
             client,
             ..Default::default()
         }
@@ -264,7 +264,7 @@ impl ClusterHealthBuilder {
         self
     }
 }
-impl Sender for ClusterHealthBuilder {
+impl Sender for ClusterHealth {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -277,8 +277,8 @@ impl Sender for ClusterHealthBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterPendingTasksBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterPendingTasks {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -287,9 +287,9 @@ pub struct ClusterPendingTasksBuilder {
     local: Option<bool>,
     master_timeout: Option<String>,
 }
-impl ClusterPendingTasksBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterPendingTasksBuilder {
+impl ClusterPendingTasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterPendingTasks {
             client,
             ..Default::default()
         }
@@ -330,7 +330,7 @@ impl ClusterPendingTasksBuilder {
         self
     }
 }
-impl Sender for ClusterPendingTasksBuilder {
+impl Sender for ClusterPendingTasks {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -343,8 +343,8 @@ impl Sender for ClusterPendingTasksBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterPutSettingsBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterPutSettings {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -354,9 +354,9 @@ pub struct ClusterPutSettingsBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl ClusterPutSettingsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterPutSettingsBuilder {
+impl ClusterPutSettings {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterPutSettings {
             client,
             ..Default::default()
         }
@@ -402,7 +402,7 @@ impl ClusterPutSettingsBuilder {
         self
     }
 }
-impl Sender for ClusterPutSettingsBuilder {
+impl Sender for ClusterPutSettings {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -415,17 +415,17 @@ impl Sender for ClusterPutSettingsBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterRemoteInfoBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterRemoteInfo {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl ClusterRemoteInfoBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterRemoteInfoBuilder {
+impl ClusterRemoteInfo {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterRemoteInfo {
             client,
             ..Default::default()
         }
@@ -456,7 +456,7 @@ impl ClusterRemoteInfoBuilder {
         self
     }
 }
-impl Sender for ClusterRemoteInfoBuilder {
+impl Sender for ClusterRemoteInfo {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -469,8 +469,8 @@ impl Sender for ClusterRemoteInfoBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterRerouteBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterReroute {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -483,9 +483,9 @@ pub struct ClusterRerouteBuilder {
     retry_failed: Option<bool>,
     timeout: Option<String>,
 }
-impl ClusterRerouteBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterRerouteBuilder {
+impl ClusterReroute {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterReroute {
             client,
             ..Default::default()
         }
@@ -546,7 +546,7 @@ impl ClusterRerouteBuilder {
         self
     }
 }
-impl Sender for ClusterRerouteBuilder {
+impl Sender for ClusterReroute {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -559,8 +559,8 @@ impl Sender for ClusterRerouteBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterStateBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterState {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -575,9 +575,9 @@ pub struct ClusterStateBuilder {
     wait_for_metadata_version: Option<i64>,
     wait_for_timeout: Option<String>,
 }
-impl ClusterStateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterStateBuilder {
+impl ClusterState {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterState {
             client,
             ..Default::default()
         }
@@ -648,7 +648,7 @@ impl ClusterStateBuilder {
         self
     }
 }
-impl Sender for ClusterStateBuilder {
+impl Sender for ClusterState {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -661,8 +661,8 @@ impl Sender for ClusterStateBuilder {
     }
 }
 #[derive(Default)]
-pub struct ClusterStatsBuilder {
-    client: ElasticsearchClient,
+pub struct ClusterStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -671,9 +671,9 @@ pub struct ClusterStatsBuilder {
     flat_settings: Option<bool>,
     timeout: Option<String>,
 }
-impl ClusterStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterStatsBuilder {
+impl ClusterStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        ClusterStats {
             client,
             ..Default::default()
         }
@@ -714,7 +714,7 @@ impl ClusterStatsBuilder {
         self
     }
 }
-impl Sender for ClusterStatsBuilder {
+impl Sender for ClusterStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -727,53 +727,53 @@ impl Sender for ClusterStatsBuilder {
     }
 }
 #[doc = "Cluster APIs"]
-pub struct ClusterClient {
-    client: ElasticsearchClient,
+pub struct Cluster {
+    client: Elasticsearch,
 }
-impl ClusterClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        ClusterClient { client }
+impl Cluster {
+    pub fn new(client: Elasticsearch) -> Self {
+        Cluster { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html"]
-    pub fn allocation_explain(&self) -> ClusterAllocationExplainBuilder {
-        ClusterAllocationExplainBuilder::new(self.client.clone())
+    pub fn allocation_explain(&self) -> ClusterAllocationExplain {
+        ClusterAllocationExplain::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
-    pub fn get_settings(&self) -> ClusterGetSettingsBuilder {
-        ClusterGetSettingsBuilder::new(self.client.clone())
+    pub fn get_settings(&self) -> ClusterGetSettings {
+        ClusterGetSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html"]
-    pub fn health(&self) -> ClusterHealthBuilder {
-        ClusterHealthBuilder::new(self.client.clone())
+    pub fn health(&self) -> ClusterHealth {
+        ClusterHealth::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html"]
-    pub fn pending_tasks(&self) -> ClusterPendingTasksBuilder {
-        ClusterPendingTasksBuilder::new(self.client.clone())
+    pub fn pending_tasks(&self) -> ClusterPendingTasks {
+        ClusterPendingTasks::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
-    pub fn put_settings(&self) -> ClusterPutSettingsBuilder {
-        ClusterPutSettingsBuilder::new(self.client.clone())
+    pub fn put_settings(&self) -> ClusterPutSettings {
+        ClusterPutSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html"]
-    pub fn remote_info(&self) -> ClusterRemoteInfoBuilder {
-        ClusterRemoteInfoBuilder::new(self.client.clone())
+    pub fn remote_info(&self) -> ClusterRemoteInfo {
+        ClusterRemoteInfo::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html"]
-    pub fn reroute(&self) -> ClusterRerouteBuilder {
-        ClusterRerouteBuilder::new(self.client.clone())
+    pub fn reroute(&self) -> ClusterReroute {
+        ClusterReroute::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html"]
-    pub fn state(&self) -> ClusterStateBuilder {
-        ClusterStateBuilder::new(self.client.clone())
+    pub fn state(&self) -> ClusterState {
+        ClusterState::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html"]
-    pub fn stats(&self) -> ClusterStatsBuilder {
-        ClusterStatsBuilder::new(self.client.clone())
+    pub fn stats(&self) -> ClusterStats {
+        ClusterStats::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Cluster APIs"]
-    pub fn cluster(&self) -> ClusterClient {
-        ClusterClient::new(self.clone())
+    pub fn cluster(&self) -> Cluster {
+        Cluster::new(self.clone())
     }
 }

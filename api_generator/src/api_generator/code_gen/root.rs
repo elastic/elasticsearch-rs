@@ -4,7 +4,7 @@ use inflector::Inflector;
 use quote::Tokens;
 use syn::Field;
 
-/// Generates the source code for the methods on ElasticsearchClient root
+/// Generates the source code for the methods on Elasticsearch root
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
 
@@ -49,13 +49,13 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
             quote!(
                 #[derive(Default)]
                 pub struct #builder_ident {
-                    client: ElasticsearchClient,
+                    client: Elasticsearch,
                     #(#common_fields_clone),*,
                     #(#fields),*
                 }
 
                 impl #builder_ident {
-                    pub fn new(client: ElasticsearchClient) -> Self {
+                    pub fn new(client: Elasticsearch) -> Self {
                         #builder_ident {
                             client,
                             ..Default::default()
@@ -106,7 +106,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .collect();
 
     let header = quote!(
-        use super::super::client::ElasticsearchClient;
+        use super::super::client::Elasticsearch;
         use super::super::http_method::HttpMethod;
         use super::super::enums::*;
         use reqwest::{Result, Response, Request, Error};
@@ -120,7 +120,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let implementation = quote!(
         #(#builders)*
 
-        impl ElasticsearchClient {
+        impl Elasticsearch {
             #(#methods)*
         }
     );

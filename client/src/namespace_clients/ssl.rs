@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SslCertificatesBuilder {
-    client: ElasticsearchClient,
+pub struct SslCertificates {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SslCertificatesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SslCertificatesBuilder {
+impl SslCertificates {
+    pub fn new(client: Elasticsearch) -> Self {
+        SslCertificates {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl SslCertificatesBuilder {
         self
     }
 }
-impl Sender for SslCertificatesBuilder {
+impl Sender for SslCertificates {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,21 +61,21 @@ impl Sender for SslCertificatesBuilder {
     }
 }
 #[doc = "Ssl APIs"]
-pub struct SslClient {
-    client: ElasticsearchClient,
+pub struct Ssl {
+    client: Elasticsearch,
 }
-impl SslClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SslClient { client }
+impl Ssl {
+    pub fn new(client: Elasticsearch) -> Self {
+        Ssl { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html"]
-    pub fn certificates(&self) -> SslCertificatesBuilder {
-        SslCertificatesBuilder::new(self.client.clone())
+    pub fn certificates(&self) -> SslCertificates {
+        SslCertificates::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Ssl APIs"]
-    pub fn ssl(&self) -> SslClient {
-        SslClient::new(self.clone())
+    pub fn ssl(&self) -> Ssl {
+        Ssl::new(self.clone())
     }
 }

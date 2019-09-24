@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct LicenseDeleteBuilder {
-    client: ElasticsearchClient,
+pub struct LicenseDelete {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl LicenseDeleteBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicenseDeleteBuilder {
+impl LicenseDelete {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicenseDelete {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl LicenseDeleteBuilder {
         self
     }
 }
-impl Sender for LicenseDeleteBuilder {
+impl Sender for LicenseDelete {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,8 +61,8 @@ impl Sender for LicenseDeleteBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicenseGetBuilder {
-    client: ElasticsearchClient,
+pub struct LicenseGet {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -70,9 +70,9 @@ pub struct LicenseGetBuilder {
     source: Option<String>,
     local: Option<bool>,
 }
-impl LicenseGetBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicenseGetBuilder {
+impl LicenseGet {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicenseGet {
             client,
             ..Default::default()
         }
@@ -108,7 +108,7 @@ impl LicenseGetBuilder {
         self
     }
 }
-impl Sender for LicenseGetBuilder {
+impl Sender for LicenseGet {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -121,17 +121,17 @@ impl Sender for LicenseGetBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicenseGetBasicStatusBuilder {
-    client: ElasticsearchClient,
+pub struct LicenseGetBasicStatus {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl LicenseGetBasicStatusBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicenseGetBasicStatusBuilder {
+impl LicenseGetBasicStatus {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicenseGetBasicStatus {
             client,
             ..Default::default()
         }
@@ -162,7 +162,7 @@ impl LicenseGetBasicStatusBuilder {
         self
     }
 }
-impl Sender for LicenseGetBasicStatusBuilder {
+impl Sender for LicenseGetBasicStatus {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -175,17 +175,17 @@ impl Sender for LicenseGetBasicStatusBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicenseGetTrialStatusBuilder {
-    client: ElasticsearchClient,
+pub struct LicenseGetTrialStatus {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl LicenseGetTrialStatusBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicenseGetTrialStatusBuilder {
+impl LicenseGetTrialStatus {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicenseGetTrialStatus {
             client,
             ..Default::default()
         }
@@ -216,7 +216,7 @@ impl LicenseGetTrialStatusBuilder {
         self
     }
 }
-impl Sender for LicenseGetTrialStatusBuilder {
+impl Sender for LicenseGetTrialStatus {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -229,8 +229,8 @@ impl Sender for LicenseGetTrialStatusBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicensePostBuilder {
-    client: ElasticsearchClient,
+pub struct LicensePost {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -238,9 +238,9 @@ pub struct LicensePostBuilder {
     source: Option<String>,
     acknowledge: Option<bool>,
 }
-impl LicensePostBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicensePostBuilder {
+impl LicensePost {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicensePost {
             client,
             ..Default::default()
         }
@@ -276,7 +276,7 @@ impl LicensePostBuilder {
         self
     }
 }
-impl Sender for LicensePostBuilder {
+impl Sender for LicensePost {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -289,8 +289,8 @@ impl Sender for LicensePostBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicensePostStartBasicBuilder {
-    client: ElasticsearchClient,
+pub struct LicensePostStartBasic {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -298,9 +298,9 @@ pub struct LicensePostStartBasicBuilder {
     source: Option<String>,
     acknowledge: Option<bool>,
 }
-impl LicensePostStartBasicBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicensePostStartBasicBuilder {
+impl LicensePostStartBasic {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicensePostStartBasic {
             client,
             ..Default::default()
         }
@@ -336,7 +336,7 @@ impl LicensePostStartBasicBuilder {
         self
     }
 }
-impl Sender for LicensePostStartBasicBuilder {
+impl Sender for LicensePostStartBasic {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -349,8 +349,8 @@ impl Sender for LicensePostStartBasicBuilder {
     }
 }
 #[derive(Default)]
-pub struct LicensePostStartTrialBuilder {
-    client: ElasticsearchClient,
+pub struct LicensePostStartTrial {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -359,9 +359,9 @@ pub struct LicensePostStartTrialBuilder {
     acknowledge: Option<bool>,
     ty: Option<String>,
 }
-impl LicensePostStartTrialBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicensePostStartTrialBuilder {
+impl LicensePostStartTrial {
+    pub fn new(client: Elasticsearch) -> Self {
+        LicensePostStartTrial {
             client,
             ..Default::default()
         }
@@ -402,7 +402,7 @@ impl LicensePostStartTrialBuilder {
         self
     }
 }
-impl Sender for LicensePostStartTrialBuilder {
+impl Sender for LicensePostStartTrial {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -415,45 +415,45 @@ impl Sender for LicensePostStartTrialBuilder {
     }
 }
 #[doc = "License APIs"]
-pub struct LicenseClient {
-    client: ElasticsearchClient,
+pub struct License {
+    client: Elasticsearch,
 }
-impl LicenseClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        LicenseClient { client }
+impl License {
+    pub fn new(client: Elasticsearch) -> Self {
+        License { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html"]
-    pub fn delete(&self) -> LicenseDeleteBuilder {
-        LicenseDeleteBuilder::new(self.client.clone())
+    pub fn delete(&self) -> LicenseDelete {
+        LicenseDelete::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html"]
-    pub fn get(&self) -> LicenseGetBuilder {
-        LicenseGetBuilder::new(self.client.clone())
+    pub fn get(&self) -> LicenseGet {
+        LicenseGet::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html"]
-    pub fn get_basic_status(&self) -> LicenseGetBasicStatusBuilder {
-        LicenseGetBasicStatusBuilder::new(self.client.clone())
+    pub fn get_basic_status(&self) -> LicenseGetBasicStatus {
+        LicenseGetBasicStatus::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html"]
-    pub fn get_trial_status(&self) -> LicenseGetTrialStatusBuilder {
-        LicenseGetTrialStatusBuilder::new(self.client.clone())
+    pub fn get_trial_status(&self) -> LicenseGetTrialStatus {
+        LicenseGetTrialStatus::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html"]
-    pub fn post(&self) -> LicensePostBuilder {
-        LicensePostBuilder::new(self.client.clone())
+    pub fn post(&self) -> LicensePost {
+        LicensePost::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html"]
-    pub fn post_start_basic(&self) -> LicensePostStartBasicBuilder {
-        LicensePostStartBasicBuilder::new(self.client.clone())
+    pub fn post_start_basic(&self) -> LicensePostStartBasic {
+        LicensePostStartBasic::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html"]
-    pub fn post_start_trial(&self) -> LicensePostStartTrialBuilder {
-        LicensePostStartTrialBuilder::new(self.client.clone())
+    pub fn post_start_trial(&self) -> LicensePostStartTrial {
+        LicensePostStartTrial::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "License APIs"]
-    pub fn license(&self) -> LicenseClient {
-        LicenseClient::new(self.clone())
+    pub fn license(&self) -> License {
+        License::new(self.clone())
     }
 }

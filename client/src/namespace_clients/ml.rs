@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct MlCloseJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlCloseJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -18,9 +18,9 @@ pub struct MlCloseJobBuilder {
     force: Option<bool>,
     timeout: Option<String>,
 }
-impl MlCloseJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlCloseJobBuilder {
+impl MlCloseJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlCloseJob {
             client,
             ..Default::default()
         }
@@ -66,7 +66,7 @@ impl MlCloseJobBuilder {
         self
     }
 }
-impl Sender for MlCloseJobBuilder {
+impl Sender for MlCloseJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -79,17 +79,17 @@ impl Sender for MlCloseJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteCalendarBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteCalendar {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteCalendarBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteCalendarBuilder {
+impl MlDeleteCalendar {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteCalendar {
             client,
             ..Default::default()
         }
@@ -120,7 +120,7 @@ impl MlDeleteCalendarBuilder {
         self
     }
 }
-impl Sender for MlDeleteCalendarBuilder {
+impl Sender for MlDeleteCalendar {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -133,17 +133,17 @@ impl Sender for MlDeleteCalendarBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteCalendarEventBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteCalendarEvent {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteCalendarEventBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteCalendarEventBuilder {
+impl MlDeleteCalendarEvent {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteCalendarEvent {
             client,
             ..Default::default()
         }
@@ -174,7 +174,7 @@ impl MlDeleteCalendarEventBuilder {
         self
     }
 }
-impl Sender for MlDeleteCalendarEventBuilder {
+impl Sender for MlDeleteCalendarEvent {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -187,17 +187,17 @@ impl Sender for MlDeleteCalendarEventBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteCalendarJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteCalendarJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteCalendarJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteCalendarJobBuilder {
+impl MlDeleteCalendarJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteCalendarJob {
             client,
             ..Default::default()
         }
@@ -228,7 +228,7 @@ impl MlDeleteCalendarJobBuilder {
         self
     }
 }
-impl Sender for MlDeleteCalendarJobBuilder {
+impl Sender for MlDeleteCalendarJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -241,17 +241,17 @@ impl Sender for MlDeleteCalendarJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteDataFrameAnalyticsBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteDataFrameAnalytics {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteDataFrameAnalyticsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteDataFrameAnalyticsBuilder {
+impl MlDeleteDataFrameAnalytics {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteDataFrameAnalytics {
             client,
             ..Default::default()
         }
@@ -282,7 +282,7 @@ impl MlDeleteDataFrameAnalyticsBuilder {
         self
     }
 }
-impl Sender for MlDeleteDataFrameAnalyticsBuilder {
+impl Sender for MlDeleteDataFrameAnalytics {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -295,8 +295,8 @@ impl Sender for MlDeleteDataFrameAnalyticsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -304,9 +304,9 @@ pub struct MlDeleteDatafeedBuilder {
     source: Option<String>,
     force: Option<bool>,
 }
-impl MlDeleteDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteDatafeedBuilder {
+impl MlDeleteDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteDatafeed {
             client,
             ..Default::default()
         }
@@ -342,7 +342,7 @@ impl MlDeleteDatafeedBuilder {
         self
     }
 }
-impl Sender for MlDeleteDatafeedBuilder {
+impl Sender for MlDeleteDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -355,17 +355,17 @@ impl Sender for MlDeleteDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteExpiredDataBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteExpiredData {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteExpiredDataBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteExpiredDataBuilder {
+impl MlDeleteExpiredData {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteExpiredData {
             client,
             ..Default::default()
         }
@@ -396,7 +396,7 @@ impl MlDeleteExpiredDataBuilder {
         self
     }
 }
-impl Sender for MlDeleteExpiredDataBuilder {
+impl Sender for MlDeleteExpiredData {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -409,17 +409,17 @@ impl Sender for MlDeleteExpiredDataBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteFilterBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteFilter {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteFilterBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteFilterBuilder {
+impl MlDeleteFilter {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteFilter {
             client,
             ..Default::default()
         }
@@ -450,7 +450,7 @@ impl MlDeleteFilterBuilder {
         self
     }
 }
-impl Sender for MlDeleteFilterBuilder {
+impl Sender for MlDeleteFilter {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -463,8 +463,8 @@ impl Sender for MlDeleteFilterBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteForecastBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteForecast {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -473,9 +473,9 @@ pub struct MlDeleteForecastBuilder {
     allow_no_forecasts: Option<bool>,
     timeout: Option<String>,
 }
-impl MlDeleteForecastBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteForecastBuilder {
+impl MlDeleteForecast {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteForecast {
             client,
             ..Default::default()
         }
@@ -516,7 +516,7 @@ impl MlDeleteForecastBuilder {
         self
     }
 }
-impl Sender for MlDeleteForecastBuilder {
+impl Sender for MlDeleteForecast {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -529,8 +529,8 @@ impl Sender for MlDeleteForecastBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -539,9 +539,9 @@ pub struct MlDeleteJobBuilder {
     force: Option<bool>,
     wait_for_completion: Option<bool>,
 }
-impl MlDeleteJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteJobBuilder {
+impl MlDeleteJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteJob {
             client,
             ..Default::default()
         }
@@ -582,7 +582,7 @@ impl MlDeleteJobBuilder {
         self
     }
 }
-impl Sender for MlDeleteJobBuilder {
+impl Sender for MlDeleteJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -595,17 +595,17 @@ impl Sender for MlDeleteJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlDeleteModelSnapshotBuilder {
-    client: ElasticsearchClient,
+pub struct MlDeleteModelSnapshot {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlDeleteModelSnapshotBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlDeleteModelSnapshotBuilder {
+impl MlDeleteModelSnapshot {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlDeleteModelSnapshot {
             client,
             ..Default::default()
         }
@@ -636,7 +636,7 @@ impl MlDeleteModelSnapshotBuilder {
         self
     }
 }
-impl Sender for MlDeleteModelSnapshotBuilder {
+impl Sender for MlDeleteModelSnapshot {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -649,17 +649,17 @@ impl Sender for MlDeleteModelSnapshotBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlEvaluateDataFrameBuilder {
-    client: ElasticsearchClient,
+pub struct MlEvaluateDataFrame {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlEvaluateDataFrameBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlEvaluateDataFrameBuilder {
+impl MlEvaluateDataFrame {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlEvaluateDataFrame {
             client,
             ..Default::default()
         }
@@ -690,7 +690,7 @@ impl MlEvaluateDataFrameBuilder {
         self
     }
 }
-impl Sender for MlEvaluateDataFrameBuilder {
+impl Sender for MlEvaluateDataFrame {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -703,8 +703,8 @@ impl Sender for MlEvaluateDataFrameBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlFindFileStructureBuilder {
-    client: ElasticsearchClient,
+pub struct MlFindFileStructure {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -725,9 +725,9 @@ pub struct MlFindFileStructureBuilder {
     timestamp_field: Option<String>,
     timestamp_format: Option<String>,
 }
-impl MlFindFileStructureBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlFindFileStructureBuilder {
+impl MlFindFileStructure {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlFindFileStructure {
             client,
             ..Default::default()
         }
@@ -828,7 +828,7 @@ impl MlFindFileStructureBuilder {
         self
     }
 }
-impl Sender for MlFindFileStructureBuilder {
+impl Sender for MlFindFileStructure {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -841,8 +841,8 @@ impl Sender for MlFindFileStructureBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlFlushJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlFlushJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -854,9 +854,9 @@ pub struct MlFlushJobBuilder {
     skip_time: Option<String>,
     start: Option<String>,
 }
-impl MlFlushJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlFlushJobBuilder {
+impl MlFlushJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlFlushJob {
             client,
             ..Default::default()
         }
@@ -912,7 +912,7 @@ impl MlFlushJobBuilder {
         self
     }
 }
-impl Sender for MlFlushJobBuilder {
+impl Sender for MlFlushJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -925,8 +925,8 @@ impl Sender for MlFlushJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlForecastBuilder {
-    client: ElasticsearchClient,
+pub struct MlForecast {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -935,9 +935,9 @@ pub struct MlForecastBuilder {
     duration: Option<String>,
     expires_in: Option<String>,
 }
-impl MlForecastBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlForecastBuilder {
+impl MlForecast {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlForecast {
             client,
             ..Default::default()
         }
@@ -978,7 +978,7 @@ impl MlForecastBuilder {
         self
     }
 }
-impl Sender for MlForecastBuilder {
+impl Sender for MlForecast {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -991,8 +991,8 @@ impl Sender for MlForecastBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetBucketsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetBuckets {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1008,9 +1008,9 @@ pub struct MlGetBucketsBuilder {
     sort: Option<String>,
     start: Option<String>,
 }
-impl MlGetBucketsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetBucketsBuilder {
+impl MlGetBuckets {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetBuckets {
             client,
             ..Default::default()
         }
@@ -1086,7 +1086,7 @@ impl MlGetBucketsBuilder {
         self
     }
 }
-impl Sender for MlGetBucketsBuilder {
+impl Sender for MlGetBuckets {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1099,8 +1099,8 @@ impl Sender for MlGetBucketsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetCalendarEventsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetCalendarEvents {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1112,9 +1112,9 @@ pub struct MlGetCalendarEventsBuilder {
     size: Option<i32>,
     start: Option<String>,
 }
-impl MlGetCalendarEventsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetCalendarEventsBuilder {
+impl MlGetCalendarEvents {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetCalendarEvents {
             client,
             ..Default::default()
         }
@@ -1170,7 +1170,7 @@ impl MlGetCalendarEventsBuilder {
         self
     }
 }
-impl Sender for MlGetCalendarEventsBuilder {
+impl Sender for MlGetCalendarEvents {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1183,8 +1183,8 @@ impl Sender for MlGetCalendarEventsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetCalendarsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetCalendars {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1193,9 +1193,9 @@ pub struct MlGetCalendarsBuilder {
     from: Option<i32>,
     size: Option<i32>,
 }
-impl MlGetCalendarsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetCalendarsBuilder {
+impl MlGetCalendars {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetCalendars {
             client,
             ..Default::default()
         }
@@ -1236,7 +1236,7 @@ impl MlGetCalendarsBuilder {
         self
     }
 }
-impl Sender for MlGetCalendarsBuilder {
+impl Sender for MlGetCalendars {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1249,8 +1249,8 @@ impl Sender for MlGetCalendarsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetCategoriesBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetCategories {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1259,9 +1259,9 @@ pub struct MlGetCategoriesBuilder {
     from: Option<i32>,
     size: Option<i32>,
 }
-impl MlGetCategoriesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetCategoriesBuilder {
+impl MlGetCategories {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetCategories {
             client,
             ..Default::default()
         }
@@ -1302,7 +1302,7 @@ impl MlGetCategoriesBuilder {
         self
     }
 }
-impl Sender for MlGetCategoriesBuilder {
+impl Sender for MlGetCategories {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1315,8 +1315,8 @@ impl Sender for MlGetCategoriesBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetDataFrameAnalyticsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetDataFrameAnalytics {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1326,9 +1326,9 @@ pub struct MlGetDataFrameAnalyticsBuilder {
     from: Option<i32>,
     size: Option<i32>,
 }
-impl MlGetDataFrameAnalyticsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetDataFrameAnalyticsBuilder {
+impl MlGetDataFrameAnalytics {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetDataFrameAnalytics {
             client,
             ..Default::default()
         }
@@ -1374,7 +1374,7 @@ impl MlGetDataFrameAnalyticsBuilder {
         self
     }
 }
-impl Sender for MlGetDataFrameAnalyticsBuilder {
+impl Sender for MlGetDataFrameAnalytics {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1387,8 +1387,8 @@ impl Sender for MlGetDataFrameAnalyticsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetDataFrameAnalyticsStatsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetDataFrameAnalyticsStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1398,9 +1398,9 @@ pub struct MlGetDataFrameAnalyticsStatsBuilder {
     from: Option<i32>,
     size: Option<i32>,
 }
-impl MlGetDataFrameAnalyticsStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetDataFrameAnalyticsStatsBuilder {
+impl MlGetDataFrameAnalyticsStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetDataFrameAnalyticsStats {
             client,
             ..Default::default()
         }
@@ -1446,7 +1446,7 @@ impl MlGetDataFrameAnalyticsStatsBuilder {
         self
     }
 }
-impl Sender for MlGetDataFrameAnalyticsStatsBuilder {
+impl Sender for MlGetDataFrameAnalyticsStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1459,8 +1459,8 @@ impl Sender for MlGetDataFrameAnalyticsStatsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetDatafeedStatsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetDatafeedStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1468,9 +1468,9 @@ pub struct MlGetDatafeedStatsBuilder {
     source: Option<String>,
     allow_no_datafeeds: Option<bool>,
 }
-impl MlGetDatafeedStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetDatafeedStatsBuilder {
+impl MlGetDatafeedStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetDatafeedStats {
             client,
             ..Default::default()
         }
@@ -1506,7 +1506,7 @@ impl MlGetDatafeedStatsBuilder {
         self
     }
 }
-impl Sender for MlGetDatafeedStatsBuilder {
+impl Sender for MlGetDatafeedStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1519,8 +1519,8 @@ impl Sender for MlGetDatafeedStatsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetDatafeedsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetDatafeeds {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1528,9 +1528,9 @@ pub struct MlGetDatafeedsBuilder {
     source: Option<String>,
     allow_no_datafeeds: Option<bool>,
 }
-impl MlGetDatafeedsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetDatafeedsBuilder {
+impl MlGetDatafeeds {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetDatafeeds {
             client,
             ..Default::default()
         }
@@ -1566,7 +1566,7 @@ impl MlGetDatafeedsBuilder {
         self
     }
 }
-impl Sender for MlGetDatafeedsBuilder {
+impl Sender for MlGetDatafeeds {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1579,8 +1579,8 @@ impl Sender for MlGetDatafeedsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetFiltersBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetFilters {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1589,9 +1589,9 @@ pub struct MlGetFiltersBuilder {
     from: Option<i32>,
     size: Option<i32>,
 }
-impl MlGetFiltersBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetFiltersBuilder {
+impl MlGetFilters {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetFilters {
             client,
             ..Default::default()
         }
@@ -1632,7 +1632,7 @@ impl MlGetFiltersBuilder {
         self
     }
 }
-impl Sender for MlGetFiltersBuilder {
+impl Sender for MlGetFilters {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1645,8 +1645,8 @@ impl Sender for MlGetFiltersBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetInfluencersBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetInfluencers {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1661,9 +1661,9 @@ pub struct MlGetInfluencersBuilder {
     sort: Option<String>,
     start: Option<String>,
 }
-impl MlGetInfluencersBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetInfluencersBuilder {
+impl MlGetInfluencers {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetInfluencers {
             client,
             ..Default::default()
         }
@@ -1734,7 +1734,7 @@ impl MlGetInfluencersBuilder {
         self
     }
 }
-impl Sender for MlGetInfluencersBuilder {
+impl Sender for MlGetInfluencers {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1747,8 +1747,8 @@ impl Sender for MlGetInfluencersBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetJobStatsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetJobStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1756,9 +1756,9 @@ pub struct MlGetJobStatsBuilder {
     source: Option<String>,
     allow_no_jobs: Option<bool>,
 }
-impl MlGetJobStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetJobStatsBuilder {
+impl MlGetJobStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetJobStats {
             client,
             ..Default::default()
         }
@@ -1794,7 +1794,7 @@ impl MlGetJobStatsBuilder {
         self
     }
 }
-impl Sender for MlGetJobStatsBuilder {
+impl Sender for MlGetJobStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1807,8 +1807,8 @@ impl Sender for MlGetJobStatsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetJobsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetJobs {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1816,9 +1816,9 @@ pub struct MlGetJobsBuilder {
     source: Option<String>,
     allow_no_jobs: Option<bool>,
 }
-impl MlGetJobsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetJobsBuilder {
+impl MlGetJobs {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetJobs {
             client,
             ..Default::default()
         }
@@ -1854,7 +1854,7 @@ impl MlGetJobsBuilder {
         self
     }
 }
-impl Sender for MlGetJobsBuilder {
+impl Sender for MlGetJobs {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1867,8 +1867,8 @@ impl Sender for MlGetJobsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetModelSnapshotsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetModelSnapshots {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1881,9 +1881,9 @@ pub struct MlGetModelSnapshotsBuilder {
     sort: Option<String>,
     start: Option<String>,
 }
-impl MlGetModelSnapshotsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetModelSnapshotsBuilder {
+impl MlGetModelSnapshots {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetModelSnapshots {
             client,
             ..Default::default()
         }
@@ -1944,7 +1944,7 @@ impl MlGetModelSnapshotsBuilder {
         self
     }
 }
-impl Sender for MlGetModelSnapshotsBuilder {
+impl Sender for MlGetModelSnapshots {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1957,8 +1957,8 @@ impl Sender for MlGetModelSnapshotsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetOverallBucketsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetOverallBuckets {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1972,9 +1972,9 @@ pub struct MlGetOverallBucketsBuilder {
     start: Option<String>,
     top_n: Option<i32>,
 }
-impl MlGetOverallBucketsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetOverallBucketsBuilder {
+impl MlGetOverallBuckets {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetOverallBuckets {
             client,
             ..Default::default()
         }
@@ -2040,7 +2040,7 @@ impl MlGetOverallBucketsBuilder {
         self
     }
 }
-impl Sender for MlGetOverallBucketsBuilder {
+impl Sender for MlGetOverallBuckets {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2053,8 +2053,8 @@ impl Sender for MlGetOverallBucketsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlGetRecordsBuilder {
-    client: ElasticsearchClient,
+pub struct MlGetRecords {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2069,9 +2069,9 @@ pub struct MlGetRecordsBuilder {
     sort: Option<String>,
     start: Option<String>,
 }
-impl MlGetRecordsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlGetRecordsBuilder {
+impl MlGetRecords {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetRecords {
             client,
             ..Default::default()
         }
@@ -2141,7 +2141,7 @@ impl MlGetRecordsBuilder {
         self
     }
 }
-impl Sender for MlGetRecordsBuilder {
+impl Sender for MlGetRecords {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2154,17 +2154,17 @@ impl Sender for MlGetRecordsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlInfoBuilder {
-    client: ElasticsearchClient,
+pub struct MlInfo {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlInfoBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlInfoBuilder {
+impl MlInfo {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlInfo {
             client,
             ..Default::default()
         }
@@ -2195,7 +2195,7 @@ impl MlInfoBuilder {
         self
     }
 }
-impl Sender for MlInfoBuilder {
+impl Sender for MlInfo {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2208,17 +2208,17 @@ impl Sender for MlInfoBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlOpenJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlOpenJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlOpenJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlOpenJobBuilder {
+impl MlOpenJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlOpenJob {
             client,
             ..Default::default()
         }
@@ -2249,7 +2249,7 @@ impl MlOpenJobBuilder {
         self
     }
 }
-impl Sender for MlOpenJobBuilder {
+impl Sender for MlOpenJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2262,17 +2262,17 @@ impl Sender for MlOpenJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPostCalendarEventsBuilder {
-    client: ElasticsearchClient,
+pub struct MlPostCalendarEvents {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPostCalendarEventsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPostCalendarEventsBuilder {
+impl MlPostCalendarEvents {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPostCalendarEvents {
             client,
             ..Default::default()
         }
@@ -2303,7 +2303,7 @@ impl MlPostCalendarEventsBuilder {
         self
     }
 }
-impl Sender for MlPostCalendarEventsBuilder {
+impl Sender for MlPostCalendarEvents {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2316,8 +2316,8 @@ impl Sender for MlPostCalendarEventsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPostDataBuilder {
-    client: ElasticsearchClient,
+pub struct MlPostData {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2326,9 +2326,9 @@ pub struct MlPostDataBuilder {
     reset_end: Option<String>,
     reset_start: Option<String>,
 }
-impl MlPostDataBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPostDataBuilder {
+impl MlPostData {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPostData {
             client,
             ..Default::default()
         }
@@ -2369,7 +2369,7 @@ impl MlPostDataBuilder {
         self
     }
 }
-impl Sender for MlPostDataBuilder {
+impl Sender for MlPostData {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2382,17 +2382,17 @@ impl Sender for MlPostDataBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPreviewDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlPreviewDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPreviewDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPreviewDatafeedBuilder {
+impl MlPreviewDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPreviewDatafeed {
             client,
             ..Default::default()
         }
@@ -2423,7 +2423,7 @@ impl MlPreviewDatafeedBuilder {
         self
     }
 }
-impl Sender for MlPreviewDatafeedBuilder {
+impl Sender for MlPreviewDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2436,17 +2436,17 @@ impl Sender for MlPreviewDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutCalendarBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutCalendar {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutCalendarBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutCalendarBuilder {
+impl MlPutCalendar {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutCalendar {
             client,
             ..Default::default()
         }
@@ -2477,7 +2477,7 @@ impl MlPutCalendarBuilder {
         self
     }
 }
-impl Sender for MlPutCalendarBuilder {
+impl Sender for MlPutCalendar {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2490,17 +2490,17 @@ impl Sender for MlPutCalendarBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutCalendarJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutCalendarJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutCalendarJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutCalendarJobBuilder {
+impl MlPutCalendarJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutCalendarJob {
             client,
             ..Default::default()
         }
@@ -2531,7 +2531,7 @@ impl MlPutCalendarJobBuilder {
         self
     }
 }
-impl Sender for MlPutCalendarJobBuilder {
+impl Sender for MlPutCalendarJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2544,17 +2544,17 @@ impl Sender for MlPutCalendarJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutDataFrameAnalyticsBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutDataFrameAnalytics {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutDataFrameAnalyticsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutDataFrameAnalyticsBuilder {
+impl MlPutDataFrameAnalytics {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutDataFrameAnalytics {
             client,
             ..Default::default()
         }
@@ -2585,7 +2585,7 @@ impl MlPutDataFrameAnalyticsBuilder {
         self
     }
 }
-impl Sender for MlPutDataFrameAnalyticsBuilder {
+impl Sender for MlPutDataFrameAnalytics {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2598,17 +2598,17 @@ impl Sender for MlPutDataFrameAnalyticsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutDatafeedBuilder {
+impl MlPutDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutDatafeed {
             client,
             ..Default::default()
         }
@@ -2639,7 +2639,7 @@ impl MlPutDatafeedBuilder {
         self
     }
 }
-impl Sender for MlPutDatafeedBuilder {
+impl Sender for MlPutDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2652,17 +2652,17 @@ impl Sender for MlPutDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutFilterBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutFilter {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutFilterBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutFilterBuilder {
+impl MlPutFilter {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutFilter {
             client,
             ..Default::default()
         }
@@ -2693,7 +2693,7 @@ impl MlPutFilterBuilder {
         self
     }
 }
-impl Sender for MlPutFilterBuilder {
+impl Sender for MlPutFilter {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2706,17 +2706,17 @@ impl Sender for MlPutFilterBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlPutJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlPutJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlPutJobBuilder {
+impl MlPutJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlPutJob {
             client,
             ..Default::default()
         }
@@ -2747,7 +2747,7 @@ impl MlPutJobBuilder {
         self
     }
 }
-impl Sender for MlPutJobBuilder {
+impl Sender for MlPutJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2760,8 +2760,8 @@ impl Sender for MlPutJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlRevertModelSnapshotBuilder {
-    client: ElasticsearchClient,
+pub struct MlRevertModelSnapshot {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2769,9 +2769,9 @@ pub struct MlRevertModelSnapshotBuilder {
     source: Option<String>,
     delete_intervening_results: Option<bool>,
 }
-impl MlRevertModelSnapshotBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlRevertModelSnapshotBuilder {
+impl MlRevertModelSnapshot {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlRevertModelSnapshot {
             client,
             ..Default::default()
         }
@@ -2807,7 +2807,7 @@ impl MlRevertModelSnapshotBuilder {
         self
     }
 }
-impl Sender for MlRevertModelSnapshotBuilder {
+impl Sender for MlRevertModelSnapshot {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2820,8 +2820,8 @@ impl Sender for MlRevertModelSnapshotBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlSetUpgradeModeBuilder {
-    client: ElasticsearchClient,
+pub struct MlSetUpgradeMode {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2830,9 +2830,9 @@ pub struct MlSetUpgradeModeBuilder {
     enabled: Option<bool>,
     timeout: Option<String>,
 }
-impl MlSetUpgradeModeBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlSetUpgradeModeBuilder {
+impl MlSetUpgradeMode {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlSetUpgradeMode {
             client,
             ..Default::default()
         }
@@ -2873,7 +2873,7 @@ impl MlSetUpgradeModeBuilder {
         self
     }
 }
-impl Sender for MlSetUpgradeModeBuilder {
+impl Sender for MlSetUpgradeMode {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2886,8 +2886,8 @@ impl Sender for MlSetUpgradeModeBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlStartDataFrameAnalyticsBuilder {
-    client: ElasticsearchClient,
+pub struct MlStartDataFrameAnalytics {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2895,9 +2895,9 @@ pub struct MlStartDataFrameAnalyticsBuilder {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlStartDataFrameAnalyticsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlStartDataFrameAnalyticsBuilder {
+impl MlStartDataFrameAnalytics {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlStartDataFrameAnalytics {
             client,
             ..Default::default()
         }
@@ -2933,7 +2933,7 @@ impl MlStartDataFrameAnalyticsBuilder {
         self
     }
 }
-impl Sender for MlStartDataFrameAnalyticsBuilder {
+impl Sender for MlStartDataFrameAnalytics {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -2946,8 +2946,8 @@ impl Sender for MlStartDataFrameAnalyticsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlStartDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlStartDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2957,9 +2957,9 @@ pub struct MlStartDatafeedBuilder {
     start: Option<String>,
     timeout: Option<String>,
 }
-impl MlStartDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlStartDatafeedBuilder {
+impl MlStartDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlStartDatafeed {
             client,
             ..Default::default()
         }
@@ -3005,7 +3005,7 @@ impl MlStartDatafeedBuilder {
         self
     }
 }
-impl Sender for MlStartDatafeedBuilder {
+impl Sender for MlStartDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3018,8 +3018,8 @@ impl Sender for MlStartDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlStopDataFrameAnalyticsBuilder {
-    client: ElasticsearchClient,
+pub struct MlStopDataFrameAnalytics {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3029,9 +3029,9 @@ pub struct MlStopDataFrameAnalyticsBuilder {
     force: Option<bool>,
     timeout: Option<String>,
 }
-impl MlStopDataFrameAnalyticsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlStopDataFrameAnalyticsBuilder {
+impl MlStopDataFrameAnalytics {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlStopDataFrameAnalytics {
             client,
             ..Default::default()
         }
@@ -3077,7 +3077,7 @@ impl MlStopDataFrameAnalyticsBuilder {
         self
     }
 }
-impl Sender for MlStopDataFrameAnalyticsBuilder {
+impl Sender for MlStopDataFrameAnalytics {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3090,8 +3090,8 @@ impl Sender for MlStopDataFrameAnalyticsBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlStopDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlStopDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3101,9 +3101,9 @@ pub struct MlStopDatafeedBuilder {
     force: Option<bool>,
     timeout: Option<String>,
 }
-impl MlStopDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlStopDatafeedBuilder {
+impl MlStopDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlStopDatafeed {
             client,
             ..Default::default()
         }
@@ -3149,7 +3149,7 @@ impl MlStopDatafeedBuilder {
         self
     }
 }
-impl Sender for MlStopDatafeedBuilder {
+impl Sender for MlStopDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3162,17 +3162,17 @@ impl Sender for MlStopDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlUpdateDatafeedBuilder {
-    client: ElasticsearchClient,
+pub struct MlUpdateDatafeed {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateDatafeedBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlUpdateDatafeedBuilder {
+impl MlUpdateDatafeed {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlUpdateDatafeed {
             client,
             ..Default::default()
         }
@@ -3203,7 +3203,7 @@ impl MlUpdateDatafeedBuilder {
         self
     }
 }
-impl Sender for MlUpdateDatafeedBuilder {
+impl Sender for MlUpdateDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3216,17 +3216,17 @@ impl Sender for MlUpdateDatafeedBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlUpdateFilterBuilder {
-    client: ElasticsearchClient,
+pub struct MlUpdateFilter {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateFilterBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlUpdateFilterBuilder {
+impl MlUpdateFilter {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlUpdateFilter {
             client,
             ..Default::default()
         }
@@ -3257,7 +3257,7 @@ impl MlUpdateFilterBuilder {
         self
     }
 }
-impl Sender for MlUpdateFilterBuilder {
+impl Sender for MlUpdateFilter {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3270,17 +3270,17 @@ impl Sender for MlUpdateFilterBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlUpdateJobBuilder {
-    client: ElasticsearchClient,
+pub struct MlUpdateJob {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateJobBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlUpdateJobBuilder {
+impl MlUpdateJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlUpdateJob {
             client,
             ..Default::default()
         }
@@ -3311,7 +3311,7 @@ impl MlUpdateJobBuilder {
         self
     }
 }
-impl Sender for MlUpdateJobBuilder {
+impl Sender for MlUpdateJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3324,17 +3324,17 @@ impl Sender for MlUpdateJobBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlUpdateModelSnapshotBuilder {
-    client: ElasticsearchClient,
+pub struct MlUpdateModelSnapshot {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateModelSnapshotBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlUpdateModelSnapshotBuilder {
+impl MlUpdateModelSnapshot {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlUpdateModelSnapshot {
             client,
             ..Default::default()
         }
@@ -3365,7 +3365,7 @@ impl MlUpdateModelSnapshotBuilder {
         self
     }
 }
-impl Sender for MlUpdateModelSnapshotBuilder {
+impl Sender for MlUpdateModelSnapshot {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3378,17 +3378,17 @@ impl Sender for MlUpdateModelSnapshotBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlValidateBuilder {
-    client: ElasticsearchClient,
+pub struct MlValidate {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlValidateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlValidateBuilder {
+impl MlValidate {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlValidate {
             client,
             ..Default::default()
         }
@@ -3419,7 +3419,7 @@ impl MlValidateBuilder {
         self
     }
 }
-impl Sender for MlValidateBuilder {
+impl Sender for MlValidate {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3432,17 +3432,17 @@ impl Sender for MlValidateBuilder {
     }
 }
 #[derive(Default)]
-pub struct MlValidateDetectorBuilder {
-    client: ElasticsearchClient,
+pub struct MlValidateDetector {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlValidateDetectorBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlValidateDetectorBuilder {
+impl MlValidateDetector {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlValidateDetector {
             client,
             ..Default::default()
         }
@@ -3473,7 +3473,7 @@ impl MlValidateDetectorBuilder {
         self
     }
 }
-impl Sender for MlValidateDetectorBuilder {
+impl Sender for MlValidateDetector {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -3486,212 +3486,212 @@ impl Sender for MlValidateDetectorBuilder {
     }
 }
 #[doc = "Ml APIs"]
-pub struct MlClient {
-    client: ElasticsearchClient,
+pub struct Ml {
+    client: Elasticsearch,
 }
-impl MlClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MlClient { client }
+impl Ml {
+    pub fn new(client: Elasticsearch) -> Self {
+        Ml { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
-    pub fn close_job(&self) -> MlCloseJobBuilder {
-        MlCloseJobBuilder::new(self.client.clone())
+    pub fn close_job(&self) -> MlCloseJob {
+        MlCloseJob::new(self.client.clone())
     }
-    pub fn delete_calendar(&self) -> MlDeleteCalendarBuilder {
-        MlDeleteCalendarBuilder::new(self.client.clone())
+    pub fn delete_calendar(&self) -> MlDeleteCalendar {
+        MlDeleteCalendar::new(self.client.clone())
     }
-    pub fn delete_calendar_event(&self) -> MlDeleteCalendarEventBuilder {
-        MlDeleteCalendarEventBuilder::new(self.client.clone())
+    pub fn delete_calendar_event(&self) -> MlDeleteCalendarEvent {
+        MlDeleteCalendarEvent::new(self.client.clone())
     }
-    pub fn delete_calendar_job(&self) -> MlDeleteCalendarJobBuilder {
-        MlDeleteCalendarJobBuilder::new(self.client.clone())
+    pub fn delete_calendar_job(&self) -> MlDeleteCalendarJob {
+        MlDeleteCalendarJob::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html"]
-    pub fn delete_data_frame_analytics(&self) -> MlDeleteDataFrameAnalyticsBuilder {
-        MlDeleteDataFrameAnalyticsBuilder::new(self.client.clone())
+    pub fn delete_data_frame_analytics(&self) -> MlDeleteDataFrameAnalytics {
+        MlDeleteDataFrameAnalytics::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html"]
-    pub fn delete_datafeed(&self) -> MlDeleteDatafeedBuilder {
-        MlDeleteDatafeedBuilder::new(self.client.clone())
+    pub fn delete_datafeed(&self) -> MlDeleteDatafeed {
+        MlDeleteDatafeed::new(self.client.clone())
     }
-    pub fn delete_expired_data(&self) -> MlDeleteExpiredDataBuilder {
-        MlDeleteExpiredDataBuilder::new(self.client.clone())
+    pub fn delete_expired_data(&self) -> MlDeleteExpiredData {
+        MlDeleteExpiredData::new(self.client.clone())
     }
-    pub fn delete_filter(&self) -> MlDeleteFilterBuilder {
-        MlDeleteFilterBuilder::new(self.client.clone())
+    pub fn delete_filter(&self) -> MlDeleteFilter {
+        MlDeleteFilter::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html"]
-    pub fn delete_forecast(&self) -> MlDeleteForecastBuilder {
-        MlDeleteForecastBuilder::new(self.client.clone())
+    pub fn delete_forecast(&self) -> MlDeleteForecast {
+        MlDeleteForecast::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html"]
-    pub fn delete_job(&self) -> MlDeleteJobBuilder {
-        MlDeleteJobBuilder::new(self.client.clone())
+    pub fn delete_job(&self) -> MlDeleteJob {
+        MlDeleteJob::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html"]
-    pub fn delete_model_snapshot(&self) -> MlDeleteModelSnapshotBuilder {
-        MlDeleteModelSnapshotBuilder::new(self.client.clone())
+    pub fn delete_model_snapshot(&self) -> MlDeleteModelSnapshot {
+        MlDeleteModelSnapshot::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
-    pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrameBuilder {
-        MlEvaluateDataFrameBuilder::new(self.client.clone())
+    pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrame {
+        MlEvaluateDataFrame::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html"]
-    pub fn find_file_structure(&self) -> MlFindFileStructureBuilder {
-        MlFindFileStructureBuilder::new(self.client.clone())
+    pub fn find_file_structure(&self) -> MlFindFileStructure {
+        MlFindFileStructure::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
-    pub fn flush_job(&self) -> MlFlushJobBuilder {
-        MlFlushJobBuilder::new(self.client.clone())
+    pub fn flush_job(&self) -> MlFlushJob {
+        MlFlushJob::new(self.client.clone())
     }
-    pub fn forecast(&self) -> MlForecastBuilder {
-        MlForecastBuilder::new(self.client.clone())
+    pub fn forecast(&self) -> MlForecast {
+        MlForecast::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
-    pub fn get_buckets(&self) -> MlGetBucketsBuilder {
-        MlGetBucketsBuilder::new(self.client.clone())
+    pub fn get_buckets(&self) -> MlGetBuckets {
+        MlGetBuckets::new(self.client.clone())
     }
-    pub fn get_calendar_events(&self) -> MlGetCalendarEventsBuilder {
-        MlGetCalendarEventsBuilder::new(self.client.clone())
+    pub fn get_calendar_events(&self) -> MlGetCalendarEvents {
+        MlGetCalendarEvents::new(self.client.clone())
     }
-    pub fn get_calendars(&self) -> MlGetCalendarsBuilder {
-        MlGetCalendarsBuilder::new(self.client.clone())
+    pub fn get_calendars(&self) -> MlGetCalendars {
+        MlGetCalendars::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
-    pub fn get_categories(&self) -> MlGetCategoriesBuilder {
-        MlGetCategoriesBuilder::new(self.client.clone())
+    pub fn get_categories(&self) -> MlGetCategories {
+        MlGetCategories::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
-    pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalyticsBuilder {
-        MlGetDataFrameAnalyticsBuilder::new(self.client.clone())
+    pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalytics {
+        MlGetDataFrameAnalytics::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html"]
-    pub fn get_data_frame_analytics_stats(&self) -> MlGetDataFrameAnalyticsStatsBuilder {
-        MlGetDataFrameAnalyticsStatsBuilder::new(self.client.clone())
+    pub fn get_data_frame_analytics_stats(&self) -> MlGetDataFrameAnalyticsStats {
+        MlGetDataFrameAnalyticsStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html"]
-    pub fn get_datafeed_stats(&self) -> MlGetDatafeedStatsBuilder {
-        MlGetDatafeedStatsBuilder::new(self.client.clone())
+    pub fn get_datafeed_stats(&self) -> MlGetDatafeedStats {
+        MlGetDatafeedStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html"]
-    pub fn get_datafeeds(&self) -> MlGetDatafeedsBuilder {
-        MlGetDatafeedsBuilder::new(self.client.clone())
+    pub fn get_datafeeds(&self) -> MlGetDatafeeds {
+        MlGetDatafeeds::new(self.client.clone())
     }
-    pub fn get_filters(&self) -> MlGetFiltersBuilder {
-        MlGetFiltersBuilder::new(self.client.clone())
+    pub fn get_filters(&self) -> MlGetFilters {
+        MlGetFilters::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
-    pub fn get_influencers(&self) -> MlGetInfluencersBuilder {
-        MlGetInfluencersBuilder::new(self.client.clone())
+    pub fn get_influencers(&self) -> MlGetInfluencers {
+        MlGetInfluencers::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
-    pub fn get_job_stats(&self) -> MlGetJobStatsBuilder {
-        MlGetJobStatsBuilder::new(self.client.clone())
+    pub fn get_job_stats(&self) -> MlGetJobStats {
+        MlGetJobStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html"]
-    pub fn get_jobs(&self) -> MlGetJobsBuilder {
-        MlGetJobsBuilder::new(self.client.clone())
+    pub fn get_jobs(&self) -> MlGetJobs {
+        MlGetJobs::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
-    pub fn get_model_snapshots(&self) -> MlGetModelSnapshotsBuilder {
-        MlGetModelSnapshotsBuilder::new(self.client.clone())
+    pub fn get_model_snapshots(&self) -> MlGetModelSnapshots {
+        MlGetModelSnapshots::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
-    pub fn get_overall_buckets(&self) -> MlGetOverallBucketsBuilder {
-        MlGetOverallBucketsBuilder::new(self.client.clone())
+    pub fn get_overall_buckets(&self) -> MlGetOverallBuckets {
+        MlGetOverallBuckets::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
-    pub fn get_records(&self) -> MlGetRecordsBuilder {
-        MlGetRecordsBuilder::new(self.client.clone())
+    pub fn get_records(&self) -> MlGetRecords {
+        MlGetRecords::new(self.client.clone())
     }
-    pub fn info(&self) -> MlInfoBuilder {
-        MlInfoBuilder::new(self.client.clone())
+    pub fn info(&self) -> MlInfo {
+        MlInfo::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
-    pub fn open_job(&self) -> MlOpenJobBuilder {
-        MlOpenJobBuilder::new(self.client.clone())
+    pub fn open_job(&self) -> MlOpenJob {
+        MlOpenJob::new(self.client.clone())
     }
-    pub fn post_calendar_events(&self) -> MlPostCalendarEventsBuilder {
-        MlPostCalendarEventsBuilder::new(self.client.clone())
+    pub fn post_calendar_events(&self) -> MlPostCalendarEvents {
+        MlPostCalendarEvents::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
-    pub fn post_data(&self) -> MlPostDataBuilder {
-        MlPostDataBuilder::new(self.client.clone())
+    pub fn post_data(&self) -> MlPostData {
+        MlPostData::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
-    pub fn preview_datafeed(&self) -> MlPreviewDatafeedBuilder {
-        MlPreviewDatafeedBuilder::new(self.client.clone())
+    pub fn preview_datafeed(&self) -> MlPreviewDatafeed {
+        MlPreviewDatafeed::new(self.client.clone())
     }
-    pub fn put_calendar(&self) -> MlPutCalendarBuilder {
-        MlPutCalendarBuilder::new(self.client.clone())
+    pub fn put_calendar(&self) -> MlPutCalendar {
+        MlPutCalendar::new(self.client.clone())
     }
-    pub fn put_calendar_job(&self) -> MlPutCalendarJobBuilder {
-        MlPutCalendarJobBuilder::new(self.client.clone())
+    pub fn put_calendar_job(&self) -> MlPutCalendarJob {
+        MlPutCalendarJob::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
-    pub fn put_data_frame_analytics(&self) -> MlPutDataFrameAnalyticsBuilder {
-        MlPutDataFrameAnalyticsBuilder::new(self.client.clone())
+    pub fn put_data_frame_analytics(&self) -> MlPutDataFrameAnalytics {
+        MlPutDataFrameAnalytics::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
-    pub fn put_datafeed(&self) -> MlPutDatafeedBuilder {
-        MlPutDatafeedBuilder::new(self.client.clone())
+    pub fn put_datafeed(&self) -> MlPutDatafeed {
+        MlPutDatafeed::new(self.client.clone())
     }
-    pub fn put_filter(&self) -> MlPutFilterBuilder {
-        MlPutFilterBuilder::new(self.client.clone())
+    pub fn put_filter(&self) -> MlPutFilter {
+        MlPutFilter::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
-    pub fn put_job(&self) -> MlPutJobBuilder {
-        MlPutJobBuilder::new(self.client.clone())
+    pub fn put_job(&self) -> MlPutJob {
+        MlPutJob::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
-    pub fn revert_model_snapshot(&self) -> MlRevertModelSnapshotBuilder {
-        MlRevertModelSnapshotBuilder::new(self.client.clone())
+    pub fn revert_model_snapshot(&self) -> MlRevertModelSnapshot {
+        MlRevertModelSnapshot::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
-    pub fn set_upgrade_mode(&self) -> MlSetUpgradeModeBuilder {
-        MlSetUpgradeModeBuilder::new(self.client.clone())
+    pub fn set_upgrade_mode(&self) -> MlSetUpgradeMode {
+        MlSetUpgradeMode::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
-    pub fn start_data_frame_analytics(&self) -> MlStartDataFrameAnalyticsBuilder {
-        MlStartDataFrameAnalyticsBuilder::new(self.client.clone())
+    pub fn start_data_frame_analytics(&self) -> MlStartDataFrameAnalytics {
+        MlStartDataFrameAnalytics::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
-    pub fn start_datafeed(&self) -> MlStartDatafeedBuilder {
-        MlStartDatafeedBuilder::new(self.client.clone())
+    pub fn start_datafeed(&self) -> MlStartDatafeed {
+        MlStartDatafeed::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
-    pub fn stop_data_frame_analytics(&self) -> MlStopDataFrameAnalyticsBuilder {
-        MlStopDataFrameAnalyticsBuilder::new(self.client.clone())
+    pub fn stop_data_frame_analytics(&self) -> MlStopDataFrameAnalytics {
+        MlStopDataFrameAnalytics::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
-    pub fn stop_datafeed(&self) -> MlStopDatafeedBuilder {
-        MlStopDatafeedBuilder::new(self.client.clone())
+    pub fn stop_datafeed(&self) -> MlStopDatafeed {
+        MlStopDatafeed::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
-    pub fn update_datafeed(&self) -> MlUpdateDatafeedBuilder {
-        MlUpdateDatafeedBuilder::new(self.client.clone())
+    pub fn update_datafeed(&self) -> MlUpdateDatafeed {
+        MlUpdateDatafeed::new(self.client.clone())
     }
-    pub fn update_filter(&self) -> MlUpdateFilterBuilder {
-        MlUpdateFilterBuilder::new(self.client.clone())
+    pub fn update_filter(&self) -> MlUpdateFilter {
+        MlUpdateFilter::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
-    pub fn update_job(&self) -> MlUpdateJobBuilder {
-        MlUpdateJobBuilder::new(self.client.clone())
+    pub fn update_job(&self) -> MlUpdateJob {
+        MlUpdateJob::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
-    pub fn update_model_snapshot(&self) -> MlUpdateModelSnapshotBuilder {
-        MlUpdateModelSnapshotBuilder::new(self.client.clone())
+    pub fn update_model_snapshot(&self) -> MlUpdateModelSnapshot {
+        MlUpdateModelSnapshot::new(self.client.clone())
     }
-    pub fn validate(&self) -> MlValidateBuilder {
-        MlValidateBuilder::new(self.client.clone())
+    pub fn validate(&self) -> MlValidate {
+        MlValidate::new(self.client.clone())
     }
-    pub fn validate_detector(&self) -> MlValidateDetectorBuilder {
-        MlValidateDetectorBuilder::new(self.client.clone())
+    pub fn validate_detector(&self) -> MlValidateDetector {
+        MlValidateDetector::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Ml APIs"]
-    pub fn ml(&self) -> MlClient {
-        MlClient::new(self.clone())
+    pub fn ml(&self) -> Ml {
+        Ml::new(self.clone())
     }
 }

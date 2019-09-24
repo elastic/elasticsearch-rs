@@ -25,6 +25,7 @@ fn doc(comment: String) -> syn::Attribute {
     }
 }
 
+/// Ensures that the name generated is one that is valid for Rust
 fn valid_name(s: &str) -> &str {
     match s {
         "type" => "ty",

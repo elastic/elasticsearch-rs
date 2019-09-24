@@ -14,7 +14,7 @@ mod settings;
 //mod node_pool;
 
 pub use crate::{
-    client::ElasticsearchClient,
+    client::Elasticsearch,
     connection::Connection,
     enums::*,
     http_method::HttpMethod,

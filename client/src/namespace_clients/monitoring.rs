@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct MonitoringBulkBuilder {
-    client: ElasticsearchClient,
+pub struct MonitoringBulk {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -18,9 +18,9 @@ pub struct MonitoringBulkBuilder {
     system_api_version: Option<String>,
     system_id: Option<String>,
 }
-impl MonitoringBulkBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MonitoringBulkBuilder {
+impl MonitoringBulk {
+    pub fn new(client: Elasticsearch) -> Self {
+        MonitoringBulk {
             client,
             ..Default::default()
         }
@@ -66,7 +66,7 @@ impl MonitoringBulkBuilder {
         self
     }
 }
-impl Sender for MonitoringBulkBuilder {
+impl Sender for MonitoringBulk {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -79,21 +79,21 @@ impl Sender for MonitoringBulkBuilder {
     }
 }
 #[doc = "Monitoring APIs"]
-pub struct MonitoringClient {
-    client: ElasticsearchClient,
+pub struct Monitoring {
+    client: Elasticsearch,
 }
-impl MonitoringClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MonitoringClient { client }
+impl Monitoring {
+    pub fn new(client: Elasticsearch) -> Self {
+        Monitoring { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
-    pub fn bulk(&self) -> MonitoringBulkBuilder {
-        MonitoringBulkBuilder::new(self.client.clone())
+    pub fn bulk(&self) -> MonitoringBulk {
+        MonitoringBulk::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Monitoring APIs"]
-    pub fn monitoring(&self) -> MonitoringClient {
-        MonitoringClient::new(self.clone())
+    pub fn monitoring(&self) -> Monitoring {
+        Monitoring::new(self.clone())
     }
 }

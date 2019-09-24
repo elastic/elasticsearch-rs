@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct CatAliasesBuilder {
-    client: ElasticsearchClient,
+pub struct CatAliases {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -22,9 +22,9 @@ pub struct CatAliasesBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatAliasesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatAliasesBuilder {
+impl CatAliases {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatAliases {
             client,
             ..Default::default()
         }
@@ -90,7 +90,7 @@ impl CatAliasesBuilder {
         self
     }
 }
-impl Sender for CatAliasesBuilder {
+impl Sender for CatAliases {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -103,8 +103,8 @@ impl Sender for CatAliasesBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatAllocationBuilder {
-    client: ElasticsearchClient,
+pub struct CatAllocation {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -119,9 +119,9 @@ pub struct CatAllocationBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatAllocationBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatAllocationBuilder {
+impl CatAllocation {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatAllocation {
             client,
             ..Default::default()
         }
@@ -192,7 +192,7 @@ impl CatAllocationBuilder {
         self
     }
 }
-impl Sender for CatAllocationBuilder {
+impl Sender for CatAllocation {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -205,8 +205,8 @@ impl Sender for CatAllocationBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatCountBuilder {
-    client: ElasticsearchClient,
+pub struct CatCount {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -220,9 +220,9 @@ pub struct CatCountBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatCountBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatCountBuilder {
+impl CatCount {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatCount {
             client,
             ..Default::default()
         }
@@ -288,7 +288,7 @@ impl CatCountBuilder {
         self
     }
 }
-impl Sender for CatCountBuilder {
+impl Sender for CatCount {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -301,8 +301,8 @@ impl Sender for CatCountBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatFielddataBuilder {
-    client: ElasticsearchClient,
+pub struct CatFielddata {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -318,9 +318,9 @@ pub struct CatFielddataBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatFielddataBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatFielddataBuilder {
+impl CatFielddata {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatFielddata {
             client,
             ..Default::default()
         }
@@ -396,7 +396,7 @@ impl CatFielddataBuilder {
         self
     }
 }
-impl Sender for CatFielddataBuilder {
+impl Sender for CatFielddata {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -409,8 +409,8 @@ impl Sender for CatFielddataBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatHealthBuilder {
-    client: ElasticsearchClient,
+pub struct CatHealth {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -425,9 +425,9 @@ pub struct CatHealthBuilder {
     ts: Option<bool>,
     v: Option<bool>,
 }
-impl CatHealthBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatHealthBuilder {
+impl CatHealth {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatHealth {
             client,
             ..Default::default()
         }
@@ -498,7 +498,7 @@ impl CatHealthBuilder {
         self
     }
 }
-impl Sender for CatHealthBuilder {
+impl Sender for CatHealth {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -511,8 +511,8 @@ impl Sender for CatHealthBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatHelpBuilder {
-    client: ElasticsearchClient,
+pub struct CatHelp {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -521,9 +521,9 @@ pub struct CatHelpBuilder {
     help: Option<bool>,
     s: Option<Vec<String>>,
 }
-impl CatHelpBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatHelpBuilder {
+impl CatHelp {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatHelp {
             client,
             ..Default::default()
         }
@@ -564,7 +564,7 @@ impl CatHelpBuilder {
         self
     }
 }
-impl Sender for CatHelpBuilder {
+impl Sender for CatHelp {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -577,8 +577,8 @@ impl Sender for CatHelpBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatIndicesBuilder {
-    client: ElasticsearchClient,
+pub struct CatIndices {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -596,9 +596,9 @@ pub struct CatIndicesBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatIndicesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatIndicesBuilder {
+impl CatIndices {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatIndices {
             client,
             ..Default::default()
         }
@@ -684,7 +684,7 @@ impl CatIndicesBuilder {
         self
     }
 }
-impl Sender for CatIndicesBuilder {
+impl Sender for CatIndices {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -697,8 +697,8 @@ impl Sender for CatIndicesBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatMasterBuilder {
-    client: ElasticsearchClient,
+pub struct CatMaster {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -712,9 +712,9 @@ pub struct CatMasterBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatMasterBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatMasterBuilder {
+impl CatMaster {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatMaster {
             client,
             ..Default::default()
         }
@@ -780,7 +780,7 @@ impl CatMasterBuilder {
         self
     }
 }
-impl Sender for CatMasterBuilder {
+impl Sender for CatMaster {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -793,8 +793,8 @@ impl Sender for CatMasterBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatNodeattrsBuilder {
-    client: ElasticsearchClient,
+pub struct CatNodeattrs {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -808,9 +808,9 @@ pub struct CatNodeattrsBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatNodeattrsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatNodeattrsBuilder {
+impl CatNodeattrs {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatNodeattrs {
             client,
             ..Default::default()
         }
@@ -876,7 +876,7 @@ impl CatNodeattrsBuilder {
         self
     }
 }
-impl Sender for CatNodeattrsBuilder {
+impl Sender for CatNodeattrs {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -889,8 +889,8 @@ impl Sender for CatNodeattrsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatNodesBuilder {
-    client: ElasticsearchClient,
+pub struct CatNodes {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -905,9 +905,9 @@ pub struct CatNodesBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatNodesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatNodesBuilder {
+impl CatNodes {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatNodes {
             client,
             ..Default::default()
         }
@@ -978,7 +978,7 @@ impl CatNodesBuilder {
         self
     }
 }
-impl Sender for CatNodesBuilder {
+impl Sender for CatNodes {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -991,8 +991,8 @@ impl Sender for CatNodesBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatPendingTasksBuilder {
-    client: ElasticsearchClient,
+pub struct CatPendingTasks {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1006,9 +1006,9 @@ pub struct CatPendingTasksBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatPendingTasksBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatPendingTasksBuilder {
+impl CatPendingTasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatPendingTasks {
             client,
             ..Default::default()
         }
@@ -1074,7 +1074,7 @@ impl CatPendingTasksBuilder {
         self
     }
 }
-impl Sender for CatPendingTasksBuilder {
+impl Sender for CatPendingTasks {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1087,8 +1087,8 @@ impl Sender for CatPendingTasksBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatPluginsBuilder {
-    client: ElasticsearchClient,
+pub struct CatPlugins {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1102,9 +1102,9 @@ pub struct CatPluginsBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatPluginsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatPluginsBuilder {
+impl CatPlugins {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatPlugins {
             client,
             ..Default::default()
         }
@@ -1170,7 +1170,7 @@ impl CatPluginsBuilder {
         self
     }
 }
-impl Sender for CatPluginsBuilder {
+impl Sender for CatPlugins {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1183,8 +1183,8 @@ impl Sender for CatPluginsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatRecoveryBuilder {
-    client: ElasticsearchClient,
+pub struct CatRecovery {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1198,9 +1198,9 @@ pub struct CatRecoveryBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatRecoveryBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatRecoveryBuilder {
+impl CatRecovery {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatRecovery {
             client,
             ..Default::default()
         }
@@ -1266,7 +1266,7 @@ impl CatRecoveryBuilder {
         self
     }
 }
-impl Sender for CatRecoveryBuilder {
+impl Sender for CatRecovery {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1279,8 +1279,8 @@ impl Sender for CatRecoveryBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatRepositoriesBuilder {
-    client: ElasticsearchClient,
+pub struct CatRepositories {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1294,9 +1294,9 @@ pub struct CatRepositoriesBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatRepositoriesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatRepositoriesBuilder {
+impl CatRepositories {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatRepositories {
             client,
             ..Default::default()
         }
@@ -1362,7 +1362,7 @@ impl CatRepositoriesBuilder {
         self
     }
 }
-impl Sender for CatRepositoriesBuilder {
+impl Sender for CatRepositories {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1375,8 +1375,8 @@ impl Sender for CatRepositoriesBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatSegmentsBuilder {
-    client: ElasticsearchClient,
+pub struct CatSegments {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1389,9 +1389,9 @@ pub struct CatSegmentsBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatSegmentsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatSegmentsBuilder {
+impl CatSegments {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatSegments {
             client,
             ..Default::default()
         }
@@ -1452,7 +1452,7 @@ impl CatSegmentsBuilder {
         self
     }
 }
-impl Sender for CatSegmentsBuilder {
+impl Sender for CatSegments {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1465,8 +1465,8 @@ impl Sender for CatSegmentsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatShardsBuilder {
-    client: ElasticsearchClient,
+pub struct CatShards {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1481,9 +1481,9 @@ pub struct CatShardsBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatShardsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatShardsBuilder {
+impl CatShards {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatShards {
             client,
             ..Default::default()
         }
@@ -1554,7 +1554,7 @@ impl CatShardsBuilder {
         self
     }
 }
-impl Sender for CatShardsBuilder {
+impl Sender for CatShards {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1567,8 +1567,8 @@ impl Sender for CatShardsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatSnapshotsBuilder {
-    client: ElasticsearchClient,
+pub struct CatSnapshots {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1582,9 +1582,9 @@ pub struct CatSnapshotsBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatSnapshotsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatSnapshotsBuilder {
+impl CatSnapshots {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatSnapshots {
             client,
             ..Default::default()
         }
@@ -1650,7 +1650,7 @@ impl CatSnapshotsBuilder {
         self
     }
 }
-impl Sender for CatSnapshotsBuilder {
+impl Sender for CatSnapshots {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1663,8 +1663,8 @@ impl Sender for CatSnapshotsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatTasksBuilder {
-    client: ElasticsearchClient,
+pub struct CatTasks {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1680,9 +1680,9 @@ pub struct CatTasksBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatTasksBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatTasksBuilder {
+impl CatTasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatTasks {
             client,
             ..Default::default()
         }
@@ -1758,7 +1758,7 @@ impl CatTasksBuilder {
         self
     }
 }
-impl Sender for CatTasksBuilder {
+impl Sender for CatTasks {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1771,8 +1771,8 @@ impl Sender for CatTasksBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatTemplatesBuilder {
-    client: ElasticsearchClient,
+pub struct CatTemplates {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1786,9 +1786,9 @@ pub struct CatTemplatesBuilder {
     s: Option<Vec<String>>,
     v: Option<bool>,
 }
-impl CatTemplatesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatTemplatesBuilder {
+impl CatTemplates {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatTemplates {
             client,
             ..Default::default()
         }
@@ -1854,7 +1854,7 @@ impl CatTemplatesBuilder {
         self
     }
 }
-impl Sender for CatTemplatesBuilder {
+impl Sender for CatTemplates {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1867,8 +1867,8 @@ impl Sender for CatTemplatesBuilder {
     }
 }
 #[derive(Default)]
-pub struct CatThreadPoolBuilder {
-    client: ElasticsearchClient,
+pub struct CatThreadPool {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1883,9 +1883,9 @@ pub struct CatThreadPoolBuilder {
     size: Option<Size>,
     v: Option<bool>,
 }
-impl CatThreadPoolBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatThreadPoolBuilder {
+impl CatThreadPool {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatThreadPool {
             client,
             ..Default::default()
         }
@@ -1956,7 +1956,7 @@ impl CatThreadPoolBuilder {
         self
     }
 }
-impl Sender for CatThreadPoolBuilder {
+impl Sender for CatThreadPool {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1969,97 +1969,97 @@ impl Sender for CatThreadPoolBuilder {
     }
 }
 #[doc = "Cat APIs"]
-pub struct CatClient {
-    client: ElasticsearchClient,
+pub struct Cat {
+    client: Elasticsearch,
 }
-impl CatClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CatClient { client }
+impl Cat {
+    pub fn new(client: Elasticsearch) -> Self {
+        Cat { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html"]
-    pub fn aliases(&self) -> CatAliasesBuilder {
-        CatAliasesBuilder::new(self.client.clone())
+    pub fn aliases(&self) -> CatAliases {
+        CatAliases::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html"]
-    pub fn allocation(&self) -> CatAllocationBuilder {
-        CatAllocationBuilder::new(self.client.clone())
+    pub fn allocation(&self) -> CatAllocation {
+        CatAllocation::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html"]
-    pub fn count(&self) -> CatCountBuilder {
-        CatCountBuilder::new(self.client.clone())
+    pub fn count(&self) -> CatCount {
+        CatCount::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html"]
-    pub fn fielddata(&self) -> CatFielddataBuilder {
-        CatFielddataBuilder::new(self.client.clone())
+    pub fn fielddata(&self) -> CatFielddata {
+        CatFielddata::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html"]
-    pub fn health(&self) -> CatHealthBuilder {
-        CatHealthBuilder::new(self.client.clone())
+    pub fn health(&self) -> CatHealth {
+        CatHealth::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html"]
-    pub fn help(&self) -> CatHelpBuilder {
-        CatHelpBuilder::new(self.client.clone())
+    pub fn help(&self) -> CatHelp {
+        CatHelp::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html"]
-    pub fn indices(&self) -> CatIndicesBuilder {
-        CatIndicesBuilder::new(self.client.clone())
+    pub fn indices(&self) -> CatIndices {
+        CatIndices::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html"]
-    pub fn master(&self) -> CatMasterBuilder {
-        CatMasterBuilder::new(self.client.clone())
+    pub fn master(&self) -> CatMaster {
+        CatMaster::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html"]
-    pub fn nodeattrs(&self) -> CatNodeattrsBuilder {
-        CatNodeattrsBuilder::new(self.client.clone())
+    pub fn nodeattrs(&self) -> CatNodeattrs {
+        CatNodeattrs::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html"]
-    pub fn nodes(&self) -> CatNodesBuilder {
-        CatNodesBuilder::new(self.client.clone())
+    pub fn nodes(&self) -> CatNodes {
+        CatNodes::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html"]
-    pub fn pending_tasks(&self) -> CatPendingTasksBuilder {
-        CatPendingTasksBuilder::new(self.client.clone())
+    pub fn pending_tasks(&self) -> CatPendingTasks {
+        CatPendingTasks::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html"]
-    pub fn plugins(&self) -> CatPluginsBuilder {
-        CatPluginsBuilder::new(self.client.clone())
+    pub fn plugins(&self) -> CatPlugins {
+        CatPlugins::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html"]
-    pub fn recovery(&self) -> CatRecoveryBuilder {
-        CatRecoveryBuilder::new(self.client.clone())
+    pub fn recovery(&self) -> CatRecovery {
+        CatRecovery::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html"]
-    pub fn repositories(&self) -> CatRepositoriesBuilder {
-        CatRepositoriesBuilder::new(self.client.clone())
+    pub fn repositories(&self) -> CatRepositories {
+        CatRepositories::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html"]
-    pub fn segments(&self) -> CatSegmentsBuilder {
-        CatSegmentsBuilder::new(self.client.clone())
+    pub fn segments(&self) -> CatSegments {
+        CatSegments::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html"]
-    pub fn shards(&self) -> CatShardsBuilder {
-        CatShardsBuilder::new(self.client.clone())
+    pub fn shards(&self) -> CatShards {
+        CatShards::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html"]
-    pub fn snapshots(&self) -> CatSnapshotsBuilder {
-        CatSnapshotsBuilder::new(self.client.clone())
+    pub fn snapshots(&self) -> CatSnapshots {
+        CatSnapshots::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn tasks(&self) -> CatTasksBuilder {
-        CatTasksBuilder::new(self.client.clone())
+    pub fn tasks(&self) -> CatTasks {
+        CatTasks::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html"]
-    pub fn templates(&self) -> CatTemplatesBuilder {
-        CatTemplatesBuilder::new(self.client.clone())
+    pub fn templates(&self) -> CatTemplates {
+        CatTemplates::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html"]
-    pub fn thread_pool(&self) -> CatThreadPoolBuilder {
-        CatThreadPoolBuilder::new(self.client.clone())
+    pub fn thread_pool(&self) -> CatThreadPool {
+        CatThreadPool::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Cat APIs"]
-    pub fn cat(&self) -> CatClient {
-        CatClient::new(self.clone())
+    pub fn cat(&self) -> Cat {
+        Cat::new(self.clone())
     }
 }

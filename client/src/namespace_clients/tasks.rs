@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct TasksCancelBuilder {
-    client: ElasticsearchClient,
+pub struct TasksCancel {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -18,9 +18,9 @@ pub struct TasksCancelBuilder {
     nodes: Option<Vec<String>>,
     parent_task_id: Option<String>,
 }
-impl TasksCancelBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        TasksCancelBuilder {
+impl TasksCancel {
+    pub fn new(client: Elasticsearch) -> Self {
+        TasksCancel {
             client,
             ..Default::default()
         }
@@ -66,7 +66,7 @@ impl TasksCancelBuilder {
         self
     }
 }
-impl Sender for TasksCancelBuilder {
+impl Sender for TasksCancel {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -79,8 +79,8 @@ impl Sender for TasksCancelBuilder {
     }
 }
 #[derive(Default)]
-pub struct TasksGetBuilder {
-    client: ElasticsearchClient,
+pub struct TasksGet {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -89,9 +89,9 @@ pub struct TasksGetBuilder {
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl TasksGetBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        TasksGetBuilder {
+impl TasksGet {
+    pub fn new(client: Elasticsearch) -> Self {
+        TasksGet {
             client,
             ..Default::default()
         }
@@ -132,7 +132,7 @@ impl TasksGetBuilder {
         self
     }
 }
-impl Sender for TasksGetBuilder {
+impl Sender for TasksGet {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -145,8 +145,8 @@ impl Sender for TasksGetBuilder {
     }
 }
 #[derive(Default)]
-pub struct TasksListBuilder {
-    client: ElasticsearchClient,
+pub struct TasksList {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -160,9 +160,9 @@ pub struct TasksListBuilder {
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl TasksListBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        TasksListBuilder {
+impl TasksList {
+    pub fn new(client: Elasticsearch) -> Self {
+        TasksList {
             client,
             ..Default::default()
         }
@@ -228,7 +228,7 @@ impl TasksListBuilder {
         self
     }
 }
-impl Sender for TasksListBuilder {
+impl Sender for TasksList {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -241,29 +241,29 @@ impl Sender for TasksListBuilder {
     }
 }
 #[doc = "Tasks APIs"]
-pub struct TasksClient {
-    client: ElasticsearchClient,
+pub struct Tasks {
+    client: Elasticsearch,
 }
-impl TasksClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        TasksClient { client }
+impl Tasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        Tasks { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn cancel(&self) -> TasksCancelBuilder {
-        TasksCancelBuilder::new(self.client.clone())
+    pub fn cancel(&self) -> TasksCancel {
+        TasksCancel::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn get(&self) -> TasksGetBuilder {
-        TasksGetBuilder::new(self.client.clone())
+    pub fn get(&self) -> TasksGet {
+        TasksGet::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn list(&self) -> TasksListBuilder {
-        TasksListBuilder::new(self.client.clone())
+    pub fn list(&self) -> TasksList {
+        TasksList::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Tasks APIs"]
-    pub fn tasks(&self) -> TasksClient {
-        TasksClient::new(self.clone())
+    pub fn tasks(&self) -> Tasks {
+        Tasks::new(self.clone())
     }
 }

@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct SecurityAuthenticateBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityAuthenticate {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityAuthenticateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityAuthenticateBuilder {
+impl SecurityAuthenticate {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityAuthenticate {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl SecurityAuthenticateBuilder {
         self
     }
 }
-impl Sender for SecurityAuthenticateBuilder {
+impl Sender for SecurityAuthenticate {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,8 +61,8 @@ impl Sender for SecurityAuthenticateBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityChangePasswordBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityChangePassword {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -70,9 +70,9 @@ pub struct SecurityChangePasswordBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityChangePasswordBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityChangePasswordBuilder {
+impl SecurityChangePassword {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityChangePassword {
             client,
             ..Default::default()
         }
@@ -108,7 +108,7 @@ impl SecurityChangePasswordBuilder {
         self
     }
 }
-impl Sender for SecurityChangePasswordBuilder {
+impl Sender for SecurityChangePassword {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -121,8 +121,8 @@ impl Sender for SecurityChangePasswordBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityClearCachedRealmsBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityClearCachedRealms {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -130,9 +130,9 @@ pub struct SecurityClearCachedRealmsBuilder {
     source: Option<String>,
     usernames: Option<Vec<String>>,
 }
-impl SecurityClearCachedRealmsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityClearCachedRealmsBuilder {
+impl SecurityClearCachedRealms {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityClearCachedRealms {
             client,
             ..Default::default()
         }
@@ -168,7 +168,7 @@ impl SecurityClearCachedRealmsBuilder {
         self
     }
 }
-impl Sender for SecurityClearCachedRealmsBuilder {
+impl Sender for SecurityClearCachedRealms {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -181,17 +181,17 @@ impl Sender for SecurityClearCachedRealmsBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityClearCachedRolesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityClearCachedRoles {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityClearCachedRolesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityClearCachedRolesBuilder {
+impl SecurityClearCachedRoles {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityClearCachedRoles {
             client,
             ..Default::default()
         }
@@ -222,7 +222,7 @@ impl SecurityClearCachedRolesBuilder {
         self
     }
 }
-impl Sender for SecurityClearCachedRolesBuilder {
+impl Sender for SecurityClearCachedRoles {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -235,8 +235,8 @@ impl Sender for SecurityClearCachedRolesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityCreateApiKeyBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityCreateApiKey {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -244,9 +244,9 @@ pub struct SecurityCreateApiKeyBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityCreateApiKeyBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityCreateApiKeyBuilder {
+impl SecurityCreateApiKey {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityCreateApiKey {
             client,
             ..Default::default()
         }
@@ -282,7 +282,7 @@ impl SecurityCreateApiKeyBuilder {
         self
     }
 }
-impl Sender for SecurityCreateApiKeyBuilder {
+impl Sender for SecurityCreateApiKey {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -295,8 +295,8 @@ impl Sender for SecurityCreateApiKeyBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeletePrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityDeletePrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -304,9 +304,9 @@ pub struct SecurityDeletePrivilegesBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityDeletePrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityDeletePrivilegesBuilder {
+impl SecurityDeletePrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityDeletePrivileges {
             client,
             ..Default::default()
         }
@@ -342,7 +342,7 @@ impl SecurityDeletePrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityDeletePrivilegesBuilder {
+impl Sender for SecurityDeletePrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -355,8 +355,8 @@ impl Sender for SecurityDeletePrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteRoleBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityDeleteRole {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -364,9 +364,9 @@ pub struct SecurityDeleteRoleBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityDeleteRoleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityDeleteRoleBuilder {
+impl SecurityDeleteRole {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityDeleteRole {
             client,
             ..Default::default()
         }
@@ -402,7 +402,7 @@ impl SecurityDeleteRoleBuilder {
         self
     }
 }
-impl Sender for SecurityDeleteRoleBuilder {
+impl Sender for SecurityDeleteRole {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -415,8 +415,8 @@ impl Sender for SecurityDeleteRoleBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteRoleMappingBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityDeleteRoleMapping {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -424,9 +424,9 @@ pub struct SecurityDeleteRoleMappingBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityDeleteRoleMappingBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityDeleteRoleMappingBuilder {
+impl SecurityDeleteRoleMapping {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityDeleteRoleMapping {
             client,
             ..Default::default()
         }
@@ -462,7 +462,7 @@ impl SecurityDeleteRoleMappingBuilder {
         self
     }
 }
-impl Sender for SecurityDeleteRoleMappingBuilder {
+impl Sender for SecurityDeleteRoleMapping {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -475,8 +475,8 @@ impl Sender for SecurityDeleteRoleMappingBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityDeleteUserBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityDeleteUser {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -484,9 +484,9 @@ pub struct SecurityDeleteUserBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityDeleteUserBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityDeleteUserBuilder {
+impl SecurityDeleteUser {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityDeleteUser {
             client,
             ..Default::default()
         }
@@ -522,7 +522,7 @@ impl SecurityDeleteUserBuilder {
         self
     }
 }
-impl Sender for SecurityDeleteUserBuilder {
+impl Sender for SecurityDeleteUser {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -535,8 +535,8 @@ impl Sender for SecurityDeleteUserBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityDisableUserBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityDisableUser {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -544,9 +544,9 @@ pub struct SecurityDisableUserBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityDisableUserBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityDisableUserBuilder {
+impl SecurityDisableUser {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityDisableUser {
             client,
             ..Default::default()
         }
@@ -582,7 +582,7 @@ impl SecurityDisableUserBuilder {
         self
     }
 }
-impl Sender for SecurityDisableUserBuilder {
+impl Sender for SecurityDisableUser {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -595,8 +595,8 @@ impl Sender for SecurityDisableUserBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityEnableUserBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityEnableUser {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -604,9 +604,9 @@ pub struct SecurityEnableUserBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityEnableUserBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityEnableUserBuilder {
+impl SecurityEnableUser {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityEnableUser {
             client,
             ..Default::default()
         }
@@ -642,7 +642,7 @@ impl SecurityEnableUserBuilder {
         self
     }
 }
-impl Sender for SecurityEnableUserBuilder {
+impl Sender for SecurityEnableUser {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -655,8 +655,8 @@ impl Sender for SecurityEnableUserBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetApiKeyBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetApiKey {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -667,9 +667,9 @@ pub struct SecurityGetApiKeyBuilder {
     realm_name: Option<String>,
     username: Option<String>,
 }
-impl SecurityGetApiKeyBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetApiKeyBuilder {
+impl SecurityGetApiKey {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetApiKey {
             client,
             ..Default::default()
         }
@@ -720,7 +720,7 @@ impl SecurityGetApiKeyBuilder {
         self
     }
 }
-impl Sender for SecurityGetApiKeyBuilder {
+impl Sender for SecurityGetApiKey {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -733,17 +733,17 @@ impl Sender for SecurityGetApiKeyBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetBuiltinPrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetBuiltinPrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetBuiltinPrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetBuiltinPrivilegesBuilder {
+impl SecurityGetBuiltinPrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetBuiltinPrivileges {
             client,
             ..Default::default()
         }
@@ -774,7 +774,7 @@ impl SecurityGetBuiltinPrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityGetBuiltinPrivilegesBuilder {
+impl Sender for SecurityGetBuiltinPrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -787,17 +787,17 @@ impl Sender for SecurityGetBuiltinPrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetPrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetPrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetPrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetPrivilegesBuilder {
+impl SecurityGetPrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetPrivileges {
             client,
             ..Default::default()
         }
@@ -828,7 +828,7 @@ impl SecurityGetPrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityGetPrivilegesBuilder {
+impl Sender for SecurityGetPrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -841,17 +841,17 @@ impl Sender for SecurityGetPrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetRoleBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetRole {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetRoleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetRoleBuilder {
+impl SecurityGetRole {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetRole {
             client,
             ..Default::default()
         }
@@ -882,7 +882,7 @@ impl SecurityGetRoleBuilder {
         self
     }
 }
-impl Sender for SecurityGetRoleBuilder {
+impl Sender for SecurityGetRole {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -895,17 +895,17 @@ impl Sender for SecurityGetRoleBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetRoleMappingBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetRoleMapping {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetRoleMappingBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetRoleMappingBuilder {
+impl SecurityGetRoleMapping {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetRoleMapping {
             client,
             ..Default::default()
         }
@@ -936,7 +936,7 @@ impl SecurityGetRoleMappingBuilder {
         self
     }
 }
-impl Sender for SecurityGetRoleMappingBuilder {
+impl Sender for SecurityGetRoleMapping {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -949,17 +949,17 @@ impl Sender for SecurityGetRoleMappingBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetTokenBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetToken {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetTokenBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetTokenBuilder {
+impl SecurityGetToken {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetToken {
             client,
             ..Default::default()
         }
@@ -990,7 +990,7 @@ impl SecurityGetTokenBuilder {
         self
     }
 }
-impl Sender for SecurityGetTokenBuilder {
+impl Sender for SecurityGetToken {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1003,17 +1003,17 @@ impl Sender for SecurityGetTokenBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetUserBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetUser {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetUserBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetUserBuilder {
+impl SecurityGetUser {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetUser {
             client,
             ..Default::default()
         }
@@ -1044,7 +1044,7 @@ impl SecurityGetUserBuilder {
         self
     }
 }
-impl Sender for SecurityGetUserBuilder {
+impl Sender for SecurityGetUser {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1057,17 +1057,17 @@ impl Sender for SecurityGetUserBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityGetUserPrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityGetUserPrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetUserPrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityGetUserPrivilegesBuilder {
+impl SecurityGetUserPrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityGetUserPrivileges {
             client,
             ..Default::default()
         }
@@ -1098,7 +1098,7 @@ impl SecurityGetUserPrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityGetUserPrivilegesBuilder {
+impl Sender for SecurityGetUserPrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1111,17 +1111,17 @@ impl Sender for SecurityGetUserPrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityHasPrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityHasPrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityHasPrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityHasPrivilegesBuilder {
+impl SecurityHasPrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityHasPrivileges {
             client,
             ..Default::default()
         }
@@ -1152,7 +1152,7 @@ impl SecurityHasPrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityHasPrivilegesBuilder {
+impl Sender for SecurityHasPrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1165,17 +1165,17 @@ impl Sender for SecurityHasPrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityInvalidateApiKeyBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityInvalidateApiKey {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityInvalidateApiKeyBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityInvalidateApiKeyBuilder {
+impl SecurityInvalidateApiKey {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityInvalidateApiKey {
             client,
             ..Default::default()
         }
@@ -1206,7 +1206,7 @@ impl SecurityInvalidateApiKeyBuilder {
         self
     }
 }
-impl Sender for SecurityInvalidateApiKeyBuilder {
+impl Sender for SecurityInvalidateApiKey {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1219,17 +1219,17 @@ impl Sender for SecurityInvalidateApiKeyBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityInvalidateTokenBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityInvalidateToken {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityInvalidateTokenBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityInvalidateTokenBuilder {
+impl SecurityInvalidateToken {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityInvalidateToken {
             client,
             ..Default::default()
         }
@@ -1260,7 +1260,7 @@ impl SecurityInvalidateTokenBuilder {
         self
     }
 }
-impl Sender for SecurityInvalidateTokenBuilder {
+impl Sender for SecurityInvalidateToken {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1273,8 +1273,8 @@ impl Sender for SecurityInvalidateTokenBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutPrivilegesBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityPutPrivileges {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1282,9 +1282,9 @@ pub struct SecurityPutPrivilegesBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityPutPrivilegesBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityPutPrivilegesBuilder {
+impl SecurityPutPrivileges {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityPutPrivileges {
             client,
             ..Default::default()
         }
@@ -1320,7 +1320,7 @@ impl SecurityPutPrivilegesBuilder {
         self
     }
 }
-impl Sender for SecurityPutPrivilegesBuilder {
+impl Sender for SecurityPutPrivileges {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1333,8 +1333,8 @@ impl Sender for SecurityPutPrivilegesBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutRoleBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityPutRole {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1342,9 +1342,9 @@ pub struct SecurityPutRoleBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityPutRoleBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityPutRoleBuilder {
+impl SecurityPutRole {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityPutRole {
             client,
             ..Default::default()
         }
@@ -1380,7 +1380,7 @@ impl SecurityPutRoleBuilder {
         self
     }
 }
-impl Sender for SecurityPutRoleBuilder {
+impl Sender for SecurityPutRole {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1393,8 +1393,8 @@ impl Sender for SecurityPutRoleBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutRoleMappingBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityPutRoleMapping {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1402,9 +1402,9 @@ pub struct SecurityPutRoleMappingBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityPutRoleMappingBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityPutRoleMappingBuilder {
+impl SecurityPutRoleMapping {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityPutRoleMapping {
             client,
             ..Default::default()
         }
@@ -1440,7 +1440,7 @@ impl SecurityPutRoleMappingBuilder {
         self
     }
 }
-impl Sender for SecurityPutRoleMappingBuilder {
+impl Sender for SecurityPutRoleMapping {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1453,8 +1453,8 @@ impl Sender for SecurityPutRoleMappingBuilder {
     }
 }
 #[derive(Default)]
-pub struct SecurityPutUserBuilder {
-    client: ElasticsearchClient,
+pub struct SecurityPutUser {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1462,9 +1462,9 @@ pub struct SecurityPutUserBuilder {
     source: Option<String>,
     refresh: Option<Refresh>,
 }
-impl SecurityPutUserBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityPutUserBuilder {
+impl SecurityPutUser {
+    pub fn new(client: Elasticsearch) -> Self {
+        SecurityPutUser {
             client,
             ..Default::default()
         }
@@ -1500,7 +1500,7 @@ impl SecurityPutUserBuilder {
         self
     }
 }
-impl Sender for SecurityPutUserBuilder {
+impl Sender for SecurityPutUser {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -1513,121 +1513,121 @@ impl Sender for SecurityPutUserBuilder {
     }
 }
 #[doc = "Security APIs"]
-pub struct SecurityClient {
-    client: ElasticsearchClient,
+pub struct Security {
+    client: Elasticsearch,
 }
-impl SecurityClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        SecurityClient { client }
+impl Security {
+    pub fn new(client: Elasticsearch) -> Self {
+        Security { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html"]
-    pub fn authenticate(&self) -> SecurityAuthenticateBuilder {
-        SecurityAuthenticateBuilder::new(self.client.clone())
+    pub fn authenticate(&self) -> SecurityAuthenticate {
+        SecurityAuthenticate::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
-    pub fn change_password(&self) -> SecurityChangePasswordBuilder {
-        SecurityChangePasswordBuilder::new(self.client.clone())
+    pub fn change_password(&self) -> SecurityChangePassword {
+        SecurityChangePassword::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealmsBuilder {
-        SecurityClearCachedRealmsBuilder::new(self.client.clone())
+    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealms {
+        SecurityClearCachedRealms::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles(&self) -> SecurityClearCachedRolesBuilder {
-        SecurityClearCachedRolesBuilder::new(self.client.clone())
+    pub fn clear_cached_roles(&self) -> SecurityClearCachedRoles {
+        SecurityClearCachedRoles::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
-    pub fn create_api_key(&self) -> SecurityCreateApiKeyBuilder {
-        SecurityCreateApiKeyBuilder::new(self.client.clone())
+    pub fn create_api_key(&self) -> SecurityCreateApiKey {
+        SecurityCreateApiKey::new(self.client.clone())
     }
     #[doc = "TODO"]
-    pub fn delete_privileges(&self) -> SecurityDeletePrivilegesBuilder {
-        SecurityDeletePrivilegesBuilder::new(self.client.clone())
+    pub fn delete_privileges(&self) -> SecurityDeletePrivileges {
+        SecurityDeletePrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
-    pub fn delete_role(&self) -> SecurityDeleteRoleBuilder {
-        SecurityDeleteRoleBuilder::new(self.client.clone())
+    pub fn delete_role(&self) -> SecurityDeleteRole {
+        SecurityDeleteRole::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
-    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMappingBuilder {
-        SecurityDeleteRoleMappingBuilder::new(self.client.clone())
+    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMapping {
+        SecurityDeleteRoleMapping::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
-    pub fn delete_user(&self) -> SecurityDeleteUserBuilder {
-        SecurityDeleteUserBuilder::new(self.client.clone())
+    pub fn delete_user(&self) -> SecurityDeleteUser {
+        SecurityDeleteUser::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user(&self) -> SecurityDisableUserBuilder {
-        SecurityDisableUserBuilder::new(self.client.clone())
+    pub fn disable_user(&self) -> SecurityDisableUser {
+        SecurityDisableUser::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user(&self) -> SecurityEnableUserBuilder {
-        SecurityEnableUserBuilder::new(self.client.clone())
+    pub fn enable_user(&self) -> SecurityEnableUser {
+        SecurityEnableUser::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
-    pub fn get_api_key(&self) -> SecurityGetApiKeyBuilder {
-        SecurityGetApiKeyBuilder::new(self.client.clone())
+    pub fn get_api_key(&self) -> SecurityGetApiKey {
+        SecurityGetApiKey::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html"]
-    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivilegesBuilder {
-        SecurityGetBuiltinPrivilegesBuilder::new(self.client.clone())
+    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivileges {
+        SecurityGetBuiltinPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_privileges(&self) -> SecurityGetPrivilegesBuilder {
-        SecurityGetPrivilegesBuilder::new(self.client.clone())
+    pub fn get_privileges(&self) -> SecurityGetPrivileges {
+        SecurityGetPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html"]
-    pub fn get_role(&self) -> SecurityGetRoleBuilder {
-        SecurityGetRoleBuilder::new(self.client.clone())
+    pub fn get_role(&self) -> SecurityGetRole {
+        SecurityGetRole::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html"]
-    pub fn get_role_mapping(&self) -> SecurityGetRoleMappingBuilder {
-        SecurityGetRoleMappingBuilder::new(self.client.clone())
+    pub fn get_role_mapping(&self) -> SecurityGetRoleMapping {
+        SecurityGetRoleMapping::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
-    pub fn get_token(&self) -> SecurityGetTokenBuilder {
-        SecurityGetTokenBuilder::new(self.client.clone())
+    pub fn get_token(&self) -> SecurityGetToken {
+        SecurityGetToken::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
-    pub fn get_user(&self) -> SecurityGetUserBuilder {
-        SecurityGetUserBuilder::new(self.client.clone())
+    pub fn get_user(&self) -> SecurityGetUser {
+        SecurityGetUser::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_user_privileges(&self) -> SecurityGetUserPrivilegesBuilder {
-        SecurityGetUserPrivilegesBuilder::new(self.client.clone())
+    pub fn get_user_privileges(&self) -> SecurityGetUserPrivileges {
+        SecurityGetUserPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
-    pub fn has_privileges(&self) -> SecurityHasPrivilegesBuilder {
-        SecurityHasPrivilegesBuilder::new(self.client.clone())
+    pub fn has_privileges(&self) -> SecurityHasPrivileges {
+        SecurityHasPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
-    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKeyBuilder {
-        SecurityInvalidateApiKeyBuilder::new(self.client.clone())
+    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKey {
+        SecurityInvalidateApiKey::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
-    pub fn invalidate_token(&self) -> SecurityInvalidateTokenBuilder {
-        SecurityInvalidateTokenBuilder::new(self.client.clone())
+    pub fn invalidate_token(&self) -> SecurityInvalidateToken {
+        SecurityInvalidateToken::new(self.client.clone())
     }
     #[doc = "TODO"]
-    pub fn put_privileges(&self) -> SecurityPutPrivilegesBuilder {
-        SecurityPutPrivilegesBuilder::new(self.client.clone())
+    pub fn put_privileges(&self) -> SecurityPutPrivileges {
+        SecurityPutPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role(&self) -> SecurityPutRoleBuilder {
-        SecurityPutRoleBuilder::new(self.client.clone())
+    pub fn put_role(&self) -> SecurityPutRole {
+        SecurityPutRole::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping(&self) -> SecurityPutRoleMappingBuilder {
-        SecurityPutRoleMappingBuilder::new(self.client.clone())
+    pub fn put_role_mapping(&self) -> SecurityPutRoleMapping {
+        SecurityPutRoleMapping::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user(&self) -> SecurityPutUserBuilder {
-        SecurityPutUserBuilder::new(self.client.clone())
+    pub fn put_user(&self) -> SecurityPutUser {
+        SecurityPutUser::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Security APIs"]
-    pub fn security(&self) -> SecurityClient {
-        SecurityClient::new(self.clone())
+    pub fn security(&self) -> Security {
+        Security::new(self.clone())
     }
 }

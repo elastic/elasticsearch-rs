@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,8 +7,8 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct IngestDeletePipelineBuilder {
-    client: ElasticsearchClient,
+pub struct IngestDeletePipeline {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -17,9 +17,9 @@ pub struct IngestDeletePipelineBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl IngestDeletePipelineBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestDeletePipelineBuilder {
+impl IngestDeletePipeline {
+    pub fn new(client: Elasticsearch) -> Self {
+        IngestDeletePipeline {
             client,
             ..Default::default()
         }
@@ -60,7 +60,7 @@ impl IngestDeletePipelineBuilder {
         self
     }
 }
-impl Sender for IngestDeletePipelineBuilder {
+impl Sender for IngestDeletePipeline {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -73,8 +73,8 @@ impl Sender for IngestDeletePipelineBuilder {
     }
 }
 #[derive(Default)]
-pub struct IngestGetPipelineBuilder {
-    client: ElasticsearchClient,
+pub struct IngestGetPipeline {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -82,9 +82,9 @@ pub struct IngestGetPipelineBuilder {
     source: Option<String>,
     master_timeout: Option<String>,
 }
-impl IngestGetPipelineBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestGetPipelineBuilder {
+impl IngestGetPipeline {
+    pub fn new(client: Elasticsearch) -> Self {
+        IngestGetPipeline {
             client,
             ..Default::default()
         }
@@ -120,7 +120,7 @@ impl IngestGetPipelineBuilder {
         self
     }
 }
-impl Sender for IngestGetPipelineBuilder {
+impl Sender for IngestGetPipeline {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -133,17 +133,17 @@ impl Sender for IngestGetPipelineBuilder {
     }
 }
 #[derive(Default)]
-pub struct IngestProcessorGrokBuilder {
-    client: ElasticsearchClient,
+pub struct IngestProcessorGrok {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IngestProcessorGrokBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestProcessorGrokBuilder {
+impl IngestProcessorGrok {
+    pub fn new(client: Elasticsearch) -> Self {
+        IngestProcessorGrok {
             client,
             ..Default::default()
         }
@@ -174,7 +174,7 @@ impl IngestProcessorGrokBuilder {
         self
     }
 }
-impl Sender for IngestProcessorGrokBuilder {
+impl Sender for IngestProcessorGrok {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -187,8 +187,8 @@ impl Sender for IngestProcessorGrokBuilder {
     }
 }
 #[derive(Default)]
-pub struct IngestPutPipelineBuilder {
-    client: ElasticsearchClient,
+pub struct IngestPutPipeline {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -197,9 +197,9 @@ pub struct IngestPutPipelineBuilder {
     master_timeout: Option<String>,
     timeout: Option<String>,
 }
-impl IngestPutPipelineBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestPutPipelineBuilder {
+impl IngestPutPipeline {
+    pub fn new(client: Elasticsearch) -> Self {
+        IngestPutPipeline {
             client,
             ..Default::default()
         }
@@ -240,7 +240,7 @@ impl IngestPutPipelineBuilder {
         self
     }
 }
-impl Sender for IngestPutPipelineBuilder {
+impl Sender for IngestPutPipeline {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -253,8 +253,8 @@ impl Sender for IngestPutPipelineBuilder {
     }
 }
 #[derive(Default)]
-pub struct IngestSimulateBuilder {
-    client: ElasticsearchClient,
+pub struct IngestSimulate {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -262,9 +262,9 @@ pub struct IngestSimulateBuilder {
     source: Option<String>,
     verbose: Option<bool>,
 }
-impl IngestSimulateBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestSimulateBuilder {
+impl IngestSimulate {
+    pub fn new(client: Elasticsearch) -> Self {
+        IngestSimulate {
             client,
             ..Default::default()
         }
@@ -300,7 +300,7 @@ impl IngestSimulateBuilder {
         self
     }
 }
-impl Sender for IngestSimulateBuilder {
+impl Sender for IngestSimulate {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -313,37 +313,37 @@ impl Sender for IngestSimulateBuilder {
     }
 }
 #[doc = "Ingest APIs"]
-pub struct IngestClient {
-    client: ElasticsearchClient,
+pub struct Ingest {
+    client: Elasticsearch,
 }
-impl IngestClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        IngestClient { client }
+impl Ingest {
+    pub fn new(client: Elasticsearch) -> Self {
+        Ingest { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html"]
-    pub fn delete_pipeline(&self) -> IngestDeletePipelineBuilder {
-        IngestDeletePipelineBuilder::new(self.client.clone())
+    pub fn delete_pipeline(&self) -> IngestDeletePipeline {
+        IngestDeletePipeline::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html"]
-    pub fn get_pipeline(&self) -> IngestGetPipelineBuilder {
-        IngestGetPipelineBuilder::new(self.client.clone())
+    pub fn get_pipeline(&self) -> IngestGetPipeline {
+        IngestGetPipeline::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get"]
-    pub fn processor_grok(&self) -> IngestProcessorGrokBuilder {
-        IngestProcessorGrokBuilder::new(self.client.clone())
+    pub fn processor_grok(&self) -> IngestProcessorGrok {
+        IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html"]
-    pub fn put_pipeline(&self) -> IngestPutPipelineBuilder {
-        IngestPutPipelineBuilder::new(self.client.clone())
+    pub fn put_pipeline(&self) -> IngestPutPipeline {
+        IngestPutPipeline::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html"]
-    pub fn simulate(&self) -> IngestSimulateBuilder {
-        IngestSimulateBuilder::new(self.client.clone())
+    pub fn simulate(&self) -> IngestSimulate {
+        IngestSimulate::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Ingest APIs"]
-    pub fn ingest(&self) -> IngestClient {
-        IngestClient::new(self.clone())
+    pub fn ingest(&self) -> Ingest {
+        Ingest::new(self.clone())
     }
 }

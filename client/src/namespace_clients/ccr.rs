@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct CcrDeleteAutoFollowPatternBuilder {
-    client: ElasticsearchClient,
+pub struct CcrDeleteAutoFollowPattern {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrDeleteAutoFollowPatternBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrDeleteAutoFollowPatternBuilder {
+impl CcrDeleteAutoFollowPattern {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrDeleteAutoFollowPattern {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl CcrDeleteAutoFollowPatternBuilder {
         self
     }
 }
-impl Sender for CcrDeleteAutoFollowPatternBuilder {
+impl Sender for CcrDeleteAutoFollowPattern {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,8 +61,8 @@ impl Sender for CcrDeleteAutoFollowPatternBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrFollowBuilder {
-    client: ElasticsearchClient,
+pub struct CcrFollow {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -70,9 +70,9 @@ pub struct CcrFollowBuilder {
     source: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl CcrFollowBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrFollowBuilder {
+impl CcrFollow {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrFollow {
             client,
             ..Default::default()
         }
@@ -108,7 +108,7 @@ impl CcrFollowBuilder {
         self
     }
 }
-impl Sender for CcrFollowBuilder {
+impl Sender for CcrFollow {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -121,17 +121,17 @@ impl Sender for CcrFollowBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrFollowInfoBuilder {
-    client: ElasticsearchClient,
+pub struct CcrFollowInfo {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrFollowInfoBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrFollowInfoBuilder {
+impl CcrFollowInfo {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrFollowInfo {
             client,
             ..Default::default()
         }
@@ -162,7 +162,7 @@ impl CcrFollowInfoBuilder {
         self
     }
 }
-impl Sender for CcrFollowInfoBuilder {
+impl Sender for CcrFollowInfo {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -175,17 +175,17 @@ impl Sender for CcrFollowInfoBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrFollowStatsBuilder {
-    client: ElasticsearchClient,
+pub struct CcrFollowStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrFollowStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrFollowStatsBuilder {
+impl CcrFollowStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrFollowStats {
             client,
             ..Default::default()
         }
@@ -216,7 +216,7 @@ impl CcrFollowStatsBuilder {
         self
     }
 }
-impl Sender for CcrFollowStatsBuilder {
+impl Sender for CcrFollowStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -229,17 +229,17 @@ impl Sender for CcrFollowStatsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrForgetFollowerBuilder {
-    client: ElasticsearchClient,
+pub struct CcrForgetFollower {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrForgetFollowerBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrForgetFollowerBuilder {
+impl CcrForgetFollower {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrForgetFollower {
             client,
             ..Default::default()
         }
@@ -270,7 +270,7 @@ impl CcrForgetFollowerBuilder {
         self
     }
 }
-impl Sender for CcrForgetFollowerBuilder {
+impl Sender for CcrForgetFollower {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -283,17 +283,17 @@ impl Sender for CcrForgetFollowerBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrGetAutoFollowPatternBuilder {
-    client: ElasticsearchClient,
+pub struct CcrGetAutoFollowPattern {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrGetAutoFollowPatternBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrGetAutoFollowPatternBuilder {
+impl CcrGetAutoFollowPattern {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrGetAutoFollowPattern {
             client,
             ..Default::default()
         }
@@ -324,7 +324,7 @@ impl CcrGetAutoFollowPatternBuilder {
         self
     }
 }
-impl Sender for CcrGetAutoFollowPatternBuilder {
+impl Sender for CcrGetAutoFollowPattern {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -337,17 +337,17 @@ impl Sender for CcrGetAutoFollowPatternBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrPauseFollowBuilder {
-    client: ElasticsearchClient,
+pub struct CcrPauseFollow {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrPauseFollowBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrPauseFollowBuilder {
+impl CcrPauseFollow {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrPauseFollow {
             client,
             ..Default::default()
         }
@@ -378,7 +378,7 @@ impl CcrPauseFollowBuilder {
         self
     }
 }
-impl Sender for CcrPauseFollowBuilder {
+impl Sender for CcrPauseFollow {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -391,17 +391,17 @@ impl Sender for CcrPauseFollowBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrPutAutoFollowPatternBuilder {
-    client: ElasticsearchClient,
+pub struct CcrPutAutoFollowPattern {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrPutAutoFollowPatternBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrPutAutoFollowPatternBuilder {
+impl CcrPutAutoFollowPattern {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrPutAutoFollowPattern {
             client,
             ..Default::default()
         }
@@ -432,7 +432,7 @@ impl CcrPutAutoFollowPatternBuilder {
         self
     }
 }
-impl Sender for CcrPutAutoFollowPatternBuilder {
+impl Sender for CcrPutAutoFollowPattern {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -445,17 +445,17 @@ impl Sender for CcrPutAutoFollowPatternBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrResumeFollowBuilder {
-    client: ElasticsearchClient,
+pub struct CcrResumeFollow {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrResumeFollowBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrResumeFollowBuilder {
+impl CcrResumeFollow {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrResumeFollow {
             client,
             ..Default::default()
         }
@@ -486,7 +486,7 @@ impl CcrResumeFollowBuilder {
         self
     }
 }
-impl Sender for CcrResumeFollowBuilder {
+impl Sender for CcrResumeFollow {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -499,17 +499,17 @@ impl Sender for CcrResumeFollowBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrStatsBuilder {
-    client: ElasticsearchClient,
+pub struct CcrStats {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrStatsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrStatsBuilder {
+impl CcrStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrStats {
             client,
             ..Default::default()
         }
@@ -540,7 +540,7 @@ impl CcrStatsBuilder {
         self
     }
 }
-impl Sender for CcrStatsBuilder {
+impl Sender for CcrStats {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -553,17 +553,17 @@ impl Sender for CcrStatsBuilder {
     }
 }
 #[derive(Default)]
-pub struct CcrUnfollowBuilder {
-    client: ElasticsearchClient,
+pub struct CcrUnfollow {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrUnfollowBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrUnfollowBuilder {
+impl CcrUnfollow {
+    pub fn new(client: Elasticsearch) -> Self {
+        CcrUnfollow {
             client,
             ..Default::default()
         }
@@ -594,7 +594,7 @@ impl CcrUnfollowBuilder {
         self
     }
 }
-impl Sender for CcrUnfollowBuilder {
+impl Sender for CcrUnfollow {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -607,61 +607,61 @@ impl Sender for CcrUnfollowBuilder {
     }
 }
 #[doc = "Ccr APIs"]
-pub struct CcrClient {
-    client: ElasticsearchClient,
+pub struct Ccr {
+    client: Elasticsearch,
 }
-impl CcrClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        CcrClient { client }
+impl Ccr {
+    pub fn new(client: Elasticsearch) -> Self {
+        Ccr { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-delete-auto-follow-pattern.html"]
-    pub fn delete_auto_follow_pattern(&self) -> CcrDeleteAutoFollowPatternBuilder {
-        CcrDeleteAutoFollowPatternBuilder::new(self.client.clone())
+    pub fn delete_auto_follow_pattern(&self) -> CcrDeleteAutoFollowPattern {
+        CcrDeleteAutoFollowPattern::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html"]
-    pub fn follow(&self) -> CcrFollowBuilder {
-        CcrFollowBuilder::new(self.client.clone())
+    pub fn follow(&self) -> CcrFollow {
+        CcrFollow::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html"]
-    pub fn follow_info(&self) -> CcrFollowInfoBuilder {
-        CcrFollowInfoBuilder::new(self.client.clone())
+    pub fn follow_info(&self) -> CcrFollowInfo {
+        CcrFollowInfo::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-stats.html"]
-    pub fn follow_stats(&self) -> CcrFollowStatsBuilder {
-        CcrFollowStatsBuilder::new(self.client.clone())
+    pub fn follow_stats(&self) -> CcrFollowStats {
+        CcrFollowStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn forget_follower(&self) -> CcrForgetFollowerBuilder {
-        CcrForgetFollowerBuilder::new(self.client.clone())
+    pub fn forget_follower(&self) -> CcrForgetFollower {
+        CcrForgetFollower::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html"]
-    pub fn get_auto_follow_pattern(&self) -> CcrGetAutoFollowPatternBuilder {
-        CcrGetAutoFollowPatternBuilder::new(self.client.clone())
+    pub fn get_auto_follow_pattern(&self) -> CcrGetAutoFollowPattern {
+        CcrGetAutoFollowPattern::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html"]
-    pub fn pause_follow(&self) -> CcrPauseFollowBuilder {
-        CcrPauseFollowBuilder::new(self.client.clone())
+    pub fn pause_follow(&self) -> CcrPauseFollow {
+        CcrPauseFollow::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html"]
-    pub fn put_auto_follow_pattern(&self) -> CcrPutAutoFollowPatternBuilder {
-        CcrPutAutoFollowPatternBuilder::new(self.client.clone())
+    pub fn put_auto_follow_pattern(&self) -> CcrPutAutoFollowPattern {
+        CcrPutAutoFollowPattern::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html"]
-    pub fn resume_follow(&self) -> CcrResumeFollowBuilder {
-        CcrResumeFollowBuilder::new(self.client.clone())
+    pub fn resume_follow(&self) -> CcrResumeFollow {
+        CcrResumeFollow::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html"]
-    pub fn stats(&self) -> CcrStatsBuilder {
-        CcrStatsBuilder::new(self.client.clone())
+    pub fn stats(&self) -> CcrStats {
+        CcrStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn unfollow(&self) -> CcrUnfollowBuilder {
-        CcrUnfollowBuilder::new(self.client.clone())
+    pub fn unfollow(&self) -> CcrUnfollow {
+        CcrUnfollow::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Ccr APIs"]
-    pub fn ccr(&self) -> CcrClient {
-        CcrClient::new(self.clone())
+    pub fn ccr(&self) -> Ccr {
+        Ccr::new(self.clone())
     }
 }

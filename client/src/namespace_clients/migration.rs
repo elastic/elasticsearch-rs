@@ -1,4 +1,4 @@
-use super::super::client::ElasticsearchClient;
+use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
@@ -7,17 +7,17 @@ use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
-pub struct MigrationDeprecationsBuilder {
-    client: ElasticsearchClient,
+pub struct MigrationDeprecations {
+    client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MigrationDeprecationsBuilder {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MigrationDeprecationsBuilder {
+impl MigrationDeprecations {
+    pub fn new(client: Elasticsearch) -> Self {
+        MigrationDeprecations {
             client,
             ..Default::default()
         }
@@ -48,7 +48,7 @@ impl MigrationDeprecationsBuilder {
         self
     }
 }
-impl Sender for MigrationDeprecationsBuilder {
+impl Sender for MigrationDeprecations {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
@@ -61,21 +61,21 @@ impl Sender for MigrationDeprecationsBuilder {
     }
 }
 #[doc = "Migration APIs"]
-pub struct MigrationClient {
-    client: ElasticsearchClient,
+pub struct Migration {
+    client: Elasticsearch,
 }
-impl MigrationClient {
-    pub fn new(client: ElasticsearchClient) -> Self {
-        MigrationClient { client }
+impl Migration {
+    pub fn new(client: Elasticsearch) -> Self {
+        Migration { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html"]
-    pub fn deprecations(&self) -> MigrationDeprecationsBuilder {
-        MigrationDeprecationsBuilder::new(self.client.clone())
+    pub fn deprecations(&self) -> MigrationDeprecations {
+        MigrationDeprecations::new(self.client.clone())
     }
 }
-impl ElasticsearchClient {
+impl Elasticsearch {
     #[doc = "Migration APIs"]
-    pub fn migration(&self) -> MigrationClient {
-        MigrationClient::new(self.clone())
+    pub fn migration(&self) -> Migration {
+        Migration::new(self.clone())
     }
 }

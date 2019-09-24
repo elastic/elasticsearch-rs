@@ -15,14 +15,14 @@ pub trait Sender {
 }
 
 #[derive(Clone, Debug, Default)]
-pub struct ElasticsearchClient {
+pub struct Elasticsearch {
     settings: ConnectionSettings,
     connection: Connection,
 }
 
-impl ElasticsearchClient {
+impl Elasticsearch {
     pub fn new<T>(settings: ConnectionSettings, connection: Connection) -> Self {
-        ElasticsearchClient {
+        Elasticsearch {
             settings,
             connection,
         }
