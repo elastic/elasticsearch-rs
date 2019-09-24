@@ -24,7 +24,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .root
         .iter()
         .map(|(name, endpoint)| {
-            let builder_name = format!("{}Builder", name.to_pascal_case());
+            let builder_name = format!("{}", name.to_pascal_case());
 
             let builder_ident = code_gen::ident(builder_name);
 
@@ -84,7 +84,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .root
         .iter()
         .map(|(name, endpoint)| {
-            let builder_ident = code_gen::ident(format!("{}Builder", name.to_pascal_case()));
+            let builder_ident = code_gen::ident(format!("{}", name.to_pascal_case()));
             let method_name = code_gen::ident(name.to_string());
             let path = endpoint.url.paths.first().unwrap();
             let method = endpoint.methods.first().unwrap();
