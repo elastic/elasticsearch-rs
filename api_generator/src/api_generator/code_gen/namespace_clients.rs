@@ -13,13 +13,35 @@ fn create_field(f: (&String, &Type)) -> syn::Field {
     }
 }
 
+fn create_builder_method(f: (&String, &Type)) -> Tokens {
+    let name = code_gen::ident(code_gen::valid_name(f.0).to_lowercase());
+    let value = code_gen::ty(&f.1.ty);
+    let doc = match &f.1.description {
+        Some(docs) => Some(code_gen::doc(docs.into())),
+        _ => None,
+    };
+
+    quote!(
+        #doc
+        pub fn #name(mut self, #name: #value) -> Self {
+            self.#name = #name;
+            self
+        }
+    )
+}
+
 /// Generates the AST for a namespace
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
-    let common_fields : Vec<Field> = api.common_params
+    let common_fields: Vec<Field> = api.common_params
         .iter()
         .map(create_field)
+        .collect();
+
+    let common_builder_methods: Vec<Tokens> = api.common_params
+        .iter()
+        .map(create_builder_method)
         .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
@@ -66,22 +88,16 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .map(create_field)
                     .collect();
 
-//                let assignments: Vec<syn::FieldValue> = endpoint
-//                    .url
-//                    .params
-//                    .iter()
-//                    .map(|(n, t)|
-//                        syn::FieldValue {
-//                            attrs: vec![],
-//                            ident: code_gen::ident(code_gen::valid_name(n).to_lowercase()),
-//                            expr: syn::ExprKind::Path(None, code_gen::ty(&t.ty)).into(),
-//                            is_shorthand: false,
-//                        }
-//                    )
-//                    .collect();
+                let builder_methods: Vec<Tokens> = endpoint
+                    .url
+                    .params
+                    .iter()
+                    .map(create_builder_method)
+                    .collect();
 
                 // clone is required as quote! consumes the Vec<Field>
                 let common_fields_clone = common_fields.clone();
+                let common_builder_methods_clone = common_builder_methods.clone();
 
                 quote!(
                     #[derive(Default)]
@@ -98,7 +114,8 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                                 ..Default::default()
                             }
                         }
-                        // TODO: add builder methods
+                        #(#common_builder_methods_clone)*
+                        #(#builder_methods)*
                     }
 
                     impl Sender for #builder_ident {

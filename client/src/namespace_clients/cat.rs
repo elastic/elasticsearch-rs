@@ -30,6 +30,66 @@ impl CatAliasesBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatAliasesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -67,6 +127,71 @@ impl CatAllocationBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatAllocationBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -102,6 +227,66 @@ impl CatCountBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatCountBuilder {
@@ -141,6 +326,76 @@ impl CatFielddataBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "A comma-separated list of fields to return in the output"]
+    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
+        self.fields = fields;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatFielddataBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -178,6 +433,71 @@ impl CatHealthBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Set to false to disable timestamping"]
+    pub fn ts(mut self, ts: Option<bool>) -> Self {
+        self.ts = ts;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatHealthBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -208,6 +528,41 @@ impl CatHelpBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
     }
 }
 impl Sender for CatHelpBuilder {
@@ -249,6 +604,86 @@ impl CatIndicesBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "A health status (\"green\", \"yellow\", or \"red\" to filter only indices matching the specified health status"]
+    pub fn health(mut self, health: Option<i32>) -> Self {
+        self.health = health;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: Option<bool>) -> Self {
+        self.include_unloaded_segments = include_unloaded_segments;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Set to true to return stats only for primary shards"]
+    pub fn pri(mut self, pri: Option<bool>) -> Self {
+        self.pri = pri;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatIndicesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -285,6 +720,66 @@ impl CatMasterBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatMasterBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -320,6 +815,66 @@ impl CatNodeattrsBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatNodeattrsBuilder {
@@ -358,6 +913,71 @@ impl CatNodesBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Return the full node ID instead of the shortened version (default: false)"]
+    pub fn full_id(mut self, full_id: Option<bool>) -> Self {
+        self.full_id = full_id;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatNodesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -393,6 +1013,66 @@ impl CatPendingTasksBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatPendingTasksBuilder {
@@ -430,6 +1110,66 @@ impl CatPluginsBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatPluginsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -465,6 +1205,66 @@ impl CatRecoveryBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatRecoveryBuilder {
@@ -502,6 +1302,66 @@ impl CatRepositoriesBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatRepositoriesBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -536,6 +1396,61 @@ impl CatSegmentsBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatSegmentsBuilder {
@@ -574,6 +1489,71 @@ impl CatShardsBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+        self.bytes = bytes;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatShardsBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -609,6 +1589,66 @@ impl CatSnapshotsBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Set to true to ignore unavailable snapshots"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatSnapshotsBuilder {
@@ -648,6 +1688,76 @@ impl CatTasksBuilder {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
+    pub fn actions(mut self, actions: Option<Vec<String>>) -> Self {
+        self.actions = actions;
+        self
+    }
+    #[doc = "Return detailed task information (default: false)"]
+    pub fn detailed(mut self, detailed: Option<bool>) -> Self {
+        self.detailed = detailed;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
+    #[doc = "Return tasks with specified parent task id. Set to -1 to return all."]
+    pub fn parent_task(mut self, parent_task: Option<i64>) -> Self {
+        self.parent_task = parent_task;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
+    }
 }
 impl Sender for CatTasksBuilder {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -683,6 +1793,66 @@ impl CatTemplatesBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatTemplatesBuilder {
@@ -720,6 +1890,71 @@ impl CatThreadPoolBuilder {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
+    }
+    #[doc = "Comma-separated list of column names to display"]
+    pub fn h(mut self, h: Option<Vec<String>>) -> Self {
+        self.h = h;
+        self
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
+    }
+    #[doc = "The multiplier in which to display values"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "Verbose mode. Display column headers"]
+    pub fn v(mut self, v: Option<bool>) -> Self {
+        self.v = v;
+        self
     }
 }
 impl Sender for CatThreadPoolBuilder {

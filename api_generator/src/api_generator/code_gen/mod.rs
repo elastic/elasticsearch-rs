@@ -5,14 +5,17 @@ pub mod namespace_clients;
 use crate::api_generator::{TypeKind, Type};
 use quote::Tokens;
 
+/// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
     syn::Lit::Str(lit.into(), syn::StrStyle::Cooked)
 }
 
+/// AST for an identifier
 fn ident(name: String) -> syn::Ident {
     syn::Ident::from(name)
 }
 
+/// AST for doc attribute
 fn doc(comment: String) -> syn::Attribute {
     syn::Attribute {
         style: syn::AttrStyle::Outer,
@@ -25,6 +28,36 @@ fn valid_name(s: &str) -> &str {
     match s {
         "type" => "ty",
         s => s,
+    }
+}
+
+/// AST for a simple path variable.
+fn path_none(path_ident: &str) -> syn::Path {
+    path(path_ident, vec![], vec![])
+}
+
+/// AST for a path variable.
+fn path(path: &str, lifetimes: Vec<syn::Lifetime>, types: Vec<syn::Ty>) -> syn::Path {
+    path_segments(vec![(path, lifetimes, types)])
+}
+
+/// AST for a path variable.
+fn path_segments(paths: Vec<(&str, Vec<syn::Lifetime>, Vec<syn::Ty>)>) -> syn::Path {
+    syn::Path {
+        global: false,
+        segments: paths
+            .into_iter()
+            .map(|(path, lifetimes, types)| syn::PathSegment {
+                ident: syn::Ident::new(valid_name(path)),
+                parameters: syn::PathParameters::AngleBracketed(
+                    syn::AngleBracketedParameterData {
+                        lifetimes,
+                        types,
+                        bindings: vec![],
+                    },
+                ),
+            })
+            .collect(),
     }
 }
 
