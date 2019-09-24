@@ -1,6 +1,6 @@
 use crate::{
-    connection::Connection, settings::ConnectionSettings, response::ElasticsearchResponse,
-    http_method::HttpMethod,
+    connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse,
+    settings::ConnectionSettings,
 };
 
 use reqwest::{header::HeaderMap, Response, Result, StatusCode};
@@ -28,7 +28,10 @@ impl ElasticsearchClient {
         }
     }
 
-    pub fn send(&self, method: HttpMethod, path: &str) -> Result<Response> {
-        self.connection.send(method, path)
+    pub fn send<T>(&self, method: HttpMethod, path: &str, query: Option<&[(String, String)]>, body: Option<Vec<u8>>) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        self.connection.send(method, path, query, body)
     }
 }

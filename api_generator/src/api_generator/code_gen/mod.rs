@@ -1,8 +1,8 @@
 pub mod enums;
-pub mod root;
 pub mod namespace_clients;
+pub mod root;
 
-use crate::api_generator::{TypeKind, Type};
+use crate::api_generator::{Type, TypeKind};
 use quote::Tokens;
 
 /// AST for a literal
@@ -49,13 +49,11 @@ fn path_segments(paths: Vec<(&str, Vec<syn::Lifetime>, Vec<syn::Ty>)>) -> syn::P
             .into_iter()
             .map(|(path, lifetimes, types)| syn::PathSegment {
                 ident: syn::Ident::new(valid_name(path)),
-                parameters: syn::PathParameters::AngleBracketed(
-                    syn::AngleBracketedParameterData {
-                        lifetimes,
-                        types,
-                        bindings: vec![],
-                    },
-                ),
+                parameters: syn::PathParameters::AngleBracketed(syn::AngleBracketedParameterData {
+                    lifetimes,
+                    types,
+                    bindings: vec![],
+                }),
             })
             .collect(),
     }

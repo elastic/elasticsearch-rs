@@ -129,6 +129,16 @@ pub struct ApiEndpoint {
     body: Option<Body>,
 }
 
+impl ApiEndpoint {
+    /// Whether the endpoint supports sending a body
+    pub fn supports_body(&self) -> bool {
+        self.methods
+            .iter()
+            .any(|m| m == &HttpMethod::Post || m == &HttpMethod::Put)
+            || self.body.is_some()
+    }
+}
+
 /// Common parameters accepted by all API endpoints
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Common {
@@ -217,7 +227,11 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
         let name = path.file_name().map(|path| path.to_str());
         let display = path.to_string_lossy().into_owned();
 
-        if name.unwrap().map(|name| !name.starts_with("_")).unwrap_or(true) {
+        if name
+            .unwrap()
+            .map(|name| !name.starts_with("_"))
+            .unwrap_or(true)
+        {
             let mut file = File::open(&path)?;
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
 
@@ -258,7 +272,10 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
                     .unwrap()
                     .insert(method_name, api_endpoint);
             }
-        } else if name.map(|name| name == Some("_common.json")).unwrap_or(true) {
+        } else if name
+            .map(|name| name == Some("_common.json"))
+            .unwrap_or(true)
+        {
             let mut file = File::open(&path)?;
             let common = common_params_from_file(display, &mut file)?;
             common_params = common.params;
@@ -298,17 +315,13 @@ where
 }
 
 /// deserializes Common from a file
-fn common_params_from_file<R>(
-    name: String,
-    reader: &mut R,
-) -> Result<Common, failure::Error>
-    where
-        R: Read,
+fn common_params_from_file<R>(name: String, reader: &mut R) -> Result<Common, failure::Error>
+where
+    R: Read,
 {
-    let common: Common =
-        serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
-            message: format!("Failed to parse {} because: {}", name, e),
-        })?;
+    let common: Common = serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
+        message: format!("Failed to parse {} because: {}", name, e),
+    })?;
 
     Ok(common)
 }

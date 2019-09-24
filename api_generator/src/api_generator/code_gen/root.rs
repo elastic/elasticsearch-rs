@@ -3,6 +3,7 @@ use crate::api_generator::*;
 use inflector::Inflector;
 use quote::Tokens;
 
+/// Generates the source code for the methods on ElasticsearchClient root
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
 
@@ -14,11 +15,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
             let path = endpoint.url.paths.first().unwrap();
             let method = endpoint.methods.first().unwrap();
 
-            let supports_body = endpoint
-                .methods
-                .iter()
-                .any(|m| m == &HttpMethod::Post || m == &HttpMethod::Put)
-                || endpoint.body.is_some();
+            let supports_body = endpoint.supports_body();
 
             let method_doc = match &endpoint.documentation {
                 Some(docs) => Some(code_gen::doc(docs.into())),
