@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;

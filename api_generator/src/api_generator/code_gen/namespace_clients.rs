@@ -36,6 +36,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let header = quote!(
             use super::super::client::ElasticsearchClient;
             use super::super::http_method::HttpMethod;
+            use super::super::enums::*;
             use reqwest::{Result, Response, Request, Error, StatusCode};
             use crate::client::Sender;
             use crate::response::ElasticsearchResponse;

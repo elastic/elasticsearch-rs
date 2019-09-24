@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -67,7 +68,7 @@ pub struct SecurityChangePasswordBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityChangePasswordBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -102,7 +103,7 @@ impl SecurityChangePasswordBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -241,7 +242,7 @@ pub struct SecurityCreateApiKeyBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityCreateApiKeyBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -276,7 +277,7 @@ impl SecurityCreateApiKeyBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -301,7 +302,7 @@ pub struct SecurityDeletePrivilegesBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityDeletePrivilegesBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -336,7 +337,7 @@ impl SecurityDeletePrivilegesBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -361,7 +362,7 @@ pub struct SecurityDeleteRoleBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityDeleteRoleBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -396,7 +397,7 @@ impl SecurityDeleteRoleBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -421,7 +422,7 @@ pub struct SecurityDeleteRoleMappingBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityDeleteRoleMappingBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -456,7 +457,7 @@ impl SecurityDeleteRoleMappingBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -481,7 +482,7 @@ pub struct SecurityDeleteUserBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityDeleteUserBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -516,7 +517,7 @@ impl SecurityDeleteUserBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -541,7 +542,7 @@ pub struct SecurityDisableUserBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityDisableUserBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -576,7 +577,7 @@ impl SecurityDisableUserBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -601,7 +602,7 @@ pub struct SecurityEnableUserBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityEnableUserBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -636,7 +637,7 @@ impl SecurityEnableUserBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -1279,7 +1280,7 @@ pub struct SecurityPutPrivilegesBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityPutPrivilegesBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1314,7 +1315,7 @@ impl SecurityPutPrivilegesBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -1339,7 +1340,7 @@ pub struct SecurityPutRoleBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityPutRoleBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1374,7 +1375,7 @@ impl SecurityPutRoleBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -1399,7 +1400,7 @@ pub struct SecurityPutRoleMappingBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityPutRoleMappingBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1434,7 +1435,7 @@ impl SecurityPutRoleMappingBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -1459,7 +1460,7 @@ pub struct SecurityPutUserBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
 }
 impl SecurityPutUserBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1494,7 +1495,7 @@ impl SecurityPutUserBuilder {
         self
     }
     #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }

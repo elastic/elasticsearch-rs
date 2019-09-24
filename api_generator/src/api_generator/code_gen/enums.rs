@@ -6,7 +6,7 @@ use quote::Tokens;
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
     let header = quote!(
-        use serde::{Deserialize};
+        use serde::{Serialize, Deserialize};
     );
     tokens.append(header);
     for e in &api.enums {

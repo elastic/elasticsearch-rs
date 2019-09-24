@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -74,7 +75,7 @@ pub struct IndicesClearCacheBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     fielddata: Option<bool>,
     fields: Option<Vec<String>>,
     ignore_unavailable: Option<bool>,
@@ -120,7 +121,7 @@ impl IndicesClearCacheBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -176,7 +177,7 @@ pub struct IndicesCloseBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
@@ -220,7 +221,7 @@ impl IndicesCloseBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -344,7 +345,7 @@ pub struct IndicesDeleteBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
@@ -387,7 +388,7 @@ impl IndicesDeleteBuilder {
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -560,7 +561,7 @@ pub struct IndicesExistsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flat_settings: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -604,7 +605,7 @@ impl IndicesExistsBuilder {
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -650,7 +651,7 @@ pub struct IndicesExistsAliasBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
 }
@@ -692,7 +693,7 @@ impl IndicesExistsAliasBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -800,7 +801,7 @@ pub struct IndicesExistsTypeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
 }
@@ -842,7 +843,7 @@ impl IndicesExistsTypeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -878,7 +879,7 @@ pub struct IndicesFlushBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     force: Option<bool>,
     ignore_unavailable: Option<bool>,
     wait_if_ongoing: Option<bool>,
@@ -921,7 +922,7 @@ impl IndicesFlushBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -962,7 +963,7 @@ pub struct IndicesFlushSyncedBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
 }
 impl IndicesFlushSyncedBuilder {
@@ -1003,7 +1004,7 @@ impl IndicesFlushSyncedBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1034,7 +1035,7 @@ pub struct IndicesForcemergeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flush: Option<bool>,
     ignore_unavailable: Option<bool>,
     max_num_segments: Option<i64>,
@@ -1078,7 +1079,7 @@ impl IndicesForcemergeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1124,7 +1125,7 @@ pub struct IndicesFreezeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
@@ -1168,7 +1169,7 @@ impl IndicesFreezeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1214,7 +1215,7 @@ pub struct IndicesGetBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flat_settings: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -1260,7 +1261,7 @@ impl IndicesGetBuilder {
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1316,7 +1317,7 @@ pub struct IndicesGetAliasBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
 }
@@ -1358,7 +1359,7 @@ impl IndicesGetAliasBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1394,7 +1395,7 @@ pub struct IndicesGetFieldMappingBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
     include_type_name: Option<bool>,
@@ -1438,7 +1439,7 @@ impl IndicesGetFieldMappingBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1484,7 +1485,7 @@ pub struct IndicesGetMappingBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
     local: Option<bool>,
@@ -1528,7 +1529,7 @@ impl IndicesGetMappingBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1574,7 +1575,7 @@ pub struct IndicesGetSettingsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flat_settings: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -1619,7 +1620,7 @@ impl IndicesGetSettingsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1748,7 +1749,7 @@ pub struct IndicesGetUpgradeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
 }
 impl IndicesGetUpgradeBuilder {
@@ -1789,7 +1790,7 @@ impl IndicesGetUpgradeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1820,7 +1821,7 @@ pub struct IndicesOpenBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
@@ -1864,7 +1865,7 @@ impl IndicesOpenBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1976,7 +1977,7 @@ pub struct IndicesPutMappingBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<String>,
@@ -2020,7 +2021,7 @@ impl IndicesPutMappingBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2066,7 +2067,7 @@ pub struct IndicesPutSettingsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flat_settings: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
@@ -2111,7 +2112,7 @@ impl IndicesPutSettingsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2318,7 +2319,7 @@ pub struct IndicesRefreshBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
 }
 impl IndicesRefreshBuilder {
@@ -2359,7 +2360,7 @@ impl IndicesRefreshBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2390,7 +2391,7 @@ pub struct IndicesReloadSearchAnalyzersBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
 }
 impl IndicesReloadSearchAnalyzersBuilder {
@@ -2431,7 +2432,7 @@ impl IndicesReloadSearchAnalyzersBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2546,7 +2547,7 @@ pub struct IndicesSegmentsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     verbose: Option<bool>,
 }
@@ -2588,7 +2589,7 @@ impl IndicesSegmentsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2624,7 +2625,7 @@ pub struct IndicesShardStoresBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     status: Option<Vec<String>>,
 }
@@ -2666,7 +2667,7 @@ impl IndicesShardStoresBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2858,14 +2859,14 @@ pub struct IndicesStatsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     completion_fields: Option<Vec<String>>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     fielddata_fields: Option<Vec<String>>,
     fields: Option<Vec<String>>,
     forbid_closed_indices: Option<bool>,
     groups: Option<Vec<String>>,
     include_segment_file_sizes: Option<bool>,
     include_unloaded_segments: Option<bool>,
-    level: Option<i32>,
+    level: Option<Level>,
     types: Option<Vec<String>>,
 }
 impl IndicesStatsBuilder {
@@ -2906,7 +2907,7 @@ impl IndicesStatsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2941,7 +2942,7 @@ impl IndicesStatsBuilder {
         self
     }
     #[doc = "Return stats aggregated at cluster, index or shard level"]
-    pub fn level(mut self, level: Option<i32>) -> Self {
+    pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
         self
     }
@@ -2972,7 +2973,7 @@ pub struct IndicesUnfreezeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
@@ -3016,7 +3017,7 @@ impl IndicesUnfreezeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -3128,7 +3129,7 @@ pub struct IndicesUpgradeBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     only_ancient_segments: Option<bool>,
     wait_for_completion: Option<bool>,
@@ -3171,7 +3172,7 @@ impl IndicesUpgradeBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -3215,9 +3216,9 @@ pub struct IndicesValidateQueryBuilder {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
-    default_operator: Option<i32>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
@@ -3277,7 +3278,7 @@ impl IndicesValidateQueryBuilder {
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -3287,7 +3288,7 @@ impl IndicesValidateQueryBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }

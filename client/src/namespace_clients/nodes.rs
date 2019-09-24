@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -18,7 +19,7 @@ pub struct NodesHotThreadsBuilder {
     snapshots: Option<i64>,
     threads: Option<i64>,
     timeout: Option<String>,
-    ty: Option<i32>,
+    ty: Option<Type>,
 }
 impl NodesHotThreadsBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -78,7 +79,7 @@ impl NodesHotThreadsBuilder {
         self
     }
     #[doc = "The type to sample (default: cpu)"]
-    pub fn ty(mut self, ty: Option<i32>) -> Self {
+    pub fn ty(mut self, ty: Option<Type>) -> Self {
         self.ty = ty;
         self
     }
@@ -234,7 +235,7 @@ pub struct NodesStatsBuilder {
     fields: Option<Vec<String>>,
     groups: Option<bool>,
     include_segment_file_sizes: Option<bool>,
-    level: Option<i32>,
+    level: Option<Level>,
     timeout: Option<String>,
     types: Option<Vec<String>>,
 }
@@ -296,7 +297,7 @@ impl NodesStatsBuilder {
         self
     }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
-    pub fn level(mut self, level: Option<i32>) -> Self {
+    pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
         self
     }

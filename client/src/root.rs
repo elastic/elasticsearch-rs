@@ -1,6 +1,7 @@
 
 
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -19,7 +20,7 @@ pub struct BulkBuilder {
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     pipeline: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
     routing: Option<String>,
     timeout: Option<String>,
     ty: Option<String>,
@@ -78,7 +79,7 @@ impl BulkBuilder {
         self
     }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -180,9 +181,9 @@ pub struct CountBuilder {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
-    default_operator: Option<i32>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
@@ -240,7 +241,7 @@ impl CountBuilder {
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -250,7 +251,7 @@ impl CountBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -316,11 +317,11 @@ pub struct CreateBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     pipeline: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
     routing: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
 impl CreateBuilder {
@@ -361,7 +362,7 @@ impl CreateBuilder {
         self
     }
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -381,7 +382,7 @@ impl CreateBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -413,11 +414,11 @@ pub struct DeleteBuilder {
     source: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
     routing: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
 impl DeleteBuilder {
@@ -463,7 +464,7 @@ impl DeleteBuilder {
         self
     }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -483,7 +484,7 @@ impl DeleteBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -519,10 +520,10 @@ pub struct DeleteByQueryBuilder {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
-    conflicts: Option<i32>,
-    default_operator: Option<i32>,
+    conflicts: Option<Conflicts>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     from: Option<i64>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
@@ -536,7 +537,7 @@ pub struct DeleteByQueryBuilder {
     scroll: Option<String>,
     scroll_size: Option<i64>,
     search_timeout: Option<String>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     size: Option<i64>,
     slices: Option<i64>,
     sort: Option<Vec<String>>,
@@ -610,12 +611,12 @@ impl DeleteByQueryBuilder {
         self
     }
     #[doc = "What to do when the delete by query hits version conflicts?"]
-    pub fn conflicts(mut self, conflicts: Option<i32>) -> Self {
+    pub fn conflicts(mut self, conflicts: Option<Conflicts>) -> Self {
         self.conflicts = conflicts;
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -625,7 +626,7 @@ impl DeleteByQueryBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -695,7 +696,7 @@ impl DeleteByQueryBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }
@@ -900,7 +901,7 @@ pub struct ExistsBuilder {
     routing: Option<String>,
     stored_fields: Option<Vec<String>>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl ExistsBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -980,7 +981,7 @@ impl ExistsBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -1013,7 +1014,7 @@ pub struct ExistsSourceBuilder {
     refresh: Option<bool>,
     routing: Option<String>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl ExistsSourceBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1088,7 +1089,7 @@ impl ExistsSourceBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -1118,7 +1119,7 @@ pub struct ExplainBuilder {
     _source_includes: Option<Vec<String>>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
-    default_operator: Option<i32>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
     lenient: Option<bool>,
     preference: Option<String>,
@@ -1184,7 +1185,7 @@ impl ExplainBuilder {
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -1240,7 +1241,7 @@ pub struct FieldCapsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     fields: Option<Vec<String>>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
@@ -1283,7 +1284,7 @@ impl FieldCapsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -1332,7 +1333,7 @@ pub struct GetBuilder {
     routing: Option<String>,
     stored_fields: Option<Vec<String>>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl GetBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1412,7 +1413,7 @@ impl GetBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -1505,7 +1506,7 @@ pub struct GetSourceBuilder {
     refresh: Option<bool>,
     routing: Option<String>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl GetSourceBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -1580,7 +1581,7 @@ impl GetSourceBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -1607,13 +1608,13 @@ pub struct IndexBuilder {
     source: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    op_type: Option<i32>,
+    op_type: Option<OpType>,
     pipeline: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
     routing: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
 impl IndexBuilder {
@@ -1659,7 +1660,7 @@ impl IndexBuilder {
         self
     }
     #[doc = "Explicit operation type"]
-    pub fn op_type(mut self, op_type: Option<i32>) -> Self {
+    pub fn op_type(mut self, op_type: Option<OpType>) -> Self {
         self.op_type = op_type;
         self
     }
@@ -1669,7 +1670,7 @@ impl IndexBuilder {
         self
     }
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -1689,7 +1690,7 @@ impl IndexBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -1880,7 +1881,7 @@ pub struct MsearchBuilder {
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
     rest_total_hits_as_int: Option<bool>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     typed_keys: Option<bool>,
 }
 impl MsearchBuilder {
@@ -1944,7 +1945,7 @@ impl MsearchBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }
@@ -1977,7 +1978,7 @@ pub struct MsearchTemplateBuilder {
     ccs_minimize_roundtrips: Option<bool>,
     max_concurrent_searches: Option<i64>,
     rest_total_hits_as_int: Option<bool>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     typed_keys: Option<bool>,
 }
 impl MsearchTemplateBuilder {
@@ -2028,7 +2029,7 @@ impl MsearchTemplateBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }
@@ -2069,7 +2070,7 @@ pub struct MtermvectorsBuilder {
     routing: Option<String>,
     term_statistics: Option<bool>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl MtermvectorsBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -2159,7 +2160,7 @@ impl MtermvectorsBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -2311,7 +2312,7 @@ pub struct RankEvalBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
 }
 impl RankEvalBuilder {
@@ -2352,7 +2353,7 @@ impl RankEvalBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2733,10 +2734,10 @@ pub struct SearchBuilder {
     analyzer: Option<String>,
     batched_reduce_size: Option<i64>,
     ccs_minimize_roundtrips: Option<bool>,
-    default_operator: Option<i32>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
     docvalue_fields: Option<Vec<String>>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
     from: Option<i64>,
     ignore_throttled: Option<bool>,
@@ -2750,14 +2751,14 @@ pub struct SearchBuilder {
     rest_total_hits_as_int: Option<bool>,
     routing: Option<Vec<String>>,
     scroll: Option<String>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     seq_no_primary_term: Option<bool>,
     size: Option<i64>,
     sort: Option<Vec<String>>,
     stats: Option<Vec<String>>,
     stored_fields: Option<Vec<String>>,
     suggest_field: Option<String>,
-    suggest_mode: Option<i32>,
+    suggest_mode: Option<SuggestMode>,
     suggest_size: Option<i64>,
     suggest_text: Option<String>,
     terminate_after: Option<i64>,
@@ -2848,7 +2849,7 @@ impl SearchBuilder {
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -2863,7 +2864,7 @@ impl SearchBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -2936,7 +2937,7 @@ impl SearchBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }
@@ -2971,7 +2972,7 @@ impl SearchBuilder {
         self
     }
     #[doc = "Specify suggest mode"]
-    pub fn suggest_mode(mut self, suggest_mode: Option<i32>) -> Self {
+    pub fn suggest_mode(mut self, suggest_mode: Option<SuggestMode>) -> Self {
         self.suggest_mode = suggest_mode;
         self
     }
@@ -3037,7 +3038,7 @@ pub struct SearchShardsBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     preference: Option<String>,
@@ -3081,7 +3082,7 @@ impl SearchShardsBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -3128,7 +3129,7 @@ pub struct SearchTemplateBuilder {
     source: Option<String>,
     allow_no_indices: Option<bool>,
     ccs_minimize_roundtrips: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
@@ -3137,7 +3138,7 @@ pub struct SearchTemplateBuilder {
     rest_total_hits_as_int: Option<bool>,
     routing: Option<Vec<String>>,
     scroll: Option<String>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     typed_keys: Option<bool>,
 }
 impl SearchTemplateBuilder {
@@ -3183,7 +3184,7 @@ impl SearchTemplateBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -3228,7 +3229,7 @@ impl SearchTemplateBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }
@@ -3268,7 +3269,7 @@ pub struct TermvectorsBuilder {
     routing: Option<String>,
     term_statistics: Option<bool>,
     version: Option<i64>,
-    version_type: Option<i32>,
+    version_type: Option<VersionType>,
 }
 impl TermvectorsBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -3353,7 +3354,7 @@ impl TermvectorsBuilder {
         self
     }
     #[doc = "Specific version type"]
-    pub fn version_type(mut self, version_type: Option<i32>) -> Self {
+    pub fn version_type(mut self, version_type: Option<VersionType>) -> Self {
         self.version_type = version_type;
         self
     }
@@ -3384,7 +3385,7 @@ pub struct UpdateBuilder {
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     lang: Option<String>,
-    refresh: Option<i32>,
+    refresh: Option<Refresh>,
     retry_on_conflict: Option<i64>,
     routing: Option<String>,
     timeout: Option<String>,
@@ -3453,7 +3454,7 @@ impl UpdateBuilder {
         self
     }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<i32>) -> Self {
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
         self
     }
@@ -3504,10 +3505,10 @@ pub struct UpdateByQueryBuilder {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
-    conflicts: Option<i32>,
-    default_operator: Option<i32>,
+    conflicts: Option<Conflicts>,
+    default_operator: Option<DefaultOperator>,
     df: Option<String>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     from: Option<i64>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
@@ -3522,7 +3523,7 @@ pub struct UpdateByQueryBuilder {
     scroll: Option<String>,
     scroll_size: Option<i64>,
     search_timeout: Option<String>,
-    search_type: Option<i32>,
+    search_type: Option<SearchType>,
     size: Option<i64>,
     slices: Option<i64>,
     sort: Option<Vec<String>>,
@@ -3597,12 +3598,12 @@ impl UpdateByQueryBuilder {
         self
     }
     #[doc = "What to do when the update by query hits version conflicts?"]
-    pub fn conflicts(mut self, conflicts: Option<i32>) -> Self {
+    pub fn conflicts(mut self, conflicts: Option<Conflicts>) -> Self {
         self.conflicts = conflicts;
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<i32>) -> Self {
+    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
         self.default_operator = default_operator;
         self
     }
@@ -3612,7 +3613,7 @@ impl UpdateByQueryBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
@@ -3687,7 +3688,7 @@ impl UpdateByQueryBuilder {
         self
     }
     #[doc = "Search operation type"]
-    pub fn search_type(mut self, search_type: Option<i32>) -> Self {
+    pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
         self
     }

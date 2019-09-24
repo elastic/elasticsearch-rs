@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -157,17 +158,17 @@ pub struct ClusterHealthBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    expand_wildcards: Option<i32>,
-    level: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
+    level: Option<Level>,
     local: Option<bool>,
     master_timeout: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
-    wait_for_events: Option<i32>,
+    wait_for_events: Option<WaitForEvents>,
     wait_for_no_initializing_shards: Option<bool>,
     wait_for_no_relocating_shards: Option<bool>,
     wait_for_nodes: Option<String>,
-    wait_for_status: Option<i32>,
+    wait_for_status: Option<WaitForStatus>,
 }
 impl ClusterHealthBuilder {
     pub fn new(client: ElasticsearchClient) -> Self {
@@ -202,12 +203,12 @@ impl ClusterHealthBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "Specify the level of detail for returned information"]
-    pub fn level(mut self, level: Option<i32>) -> Self {
+    pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
         self
     }
@@ -232,7 +233,7 @@ impl ClusterHealthBuilder {
         self
     }
     #[doc = "Wait until all currently queued events with the given priority are processed"]
-    pub fn wait_for_events(mut self, wait_for_events: Option<i32>) -> Self {
+    pub fn wait_for_events(mut self, wait_for_events: Option<WaitForEvents>) -> Self {
         self.wait_for_events = wait_for_events;
         self
     }
@@ -258,7 +259,7 @@ impl ClusterHealthBuilder {
         self
     }
     #[doc = "Wait until cluster is in a specific state"]
-    pub fn wait_for_status(mut self, wait_for_status: Option<i32>) -> Self {
+    pub fn wait_for_status(mut self, wait_for_status: Option<WaitForStatus>) -> Self {
         self.wait_for_status = wait_for_status;
         self
     }
@@ -566,7 +567,7 @@ pub struct ClusterStateBuilder {
     pretty: Option<bool>,
     source: Option<String>,
     allow_no_indices: Option<bool>,
-    expand_wildcards: Option<i32>,
+    expand_wildcards: Option<ExpandWildcards>,
     flat_settings: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
@@ -612,7 +613,7 @@ impl ClusterStateBuilder {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<i32>) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }

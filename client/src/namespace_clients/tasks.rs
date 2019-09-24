@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -153,7 +154,7 @@ pub struct TasksListBuilder {
     source: Option<String>,
     actions: Option<Vec<String>>,
     detailed: Option<bool>,
-    group_by: Option<i32>,
+    group_by: Option<GroupBy>,
     nodes: Option<Vec<String>>,
     parent_task_id: Option<String>,
     timeout: Option<String>,
@@ -202,7 +203,7 @@ impl TasksListBuilder {
         self
     }
     #[doc = "Group tasks by nodes or parent/child relationships"]
-    pub fn group_by(mut self, group_by: Option<i32>) -> Self {
+    pub fn group_by(mut self, group_by: Option<GroupBy>) -> Self {
         self.group_by = group_by;
         self
     }

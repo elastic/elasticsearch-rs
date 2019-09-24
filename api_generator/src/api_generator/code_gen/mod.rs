@@ -3,6 +3,7 @@ pub mod namespace_clients;
 pub mod root;
 
 use crate::api_generator::{Type, TypeKind};
+use inflector::Inflector;
 use quote::Tokens;
 
 /// AST for a literal
@@ -59,11 +60,16 @@ fn path_segments(paths: Vec<(&str, Vec<syn::Lifetime>, Vec<syn::Ty>)>) -> syn::P
     }
 }
 
-fn ty(type_kind: &TypeKind) -> syn::Ty {
-    match type_kind {
+fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
+    match kind {
         TypeKind::None => syn::parse_type("Option<String>").unwrap(),
         TypeKind::List => syn::parse_type("Option<Vec<String>>").unwrap(),
-        TypeKind::Enum => syn::parse_type("Option<i32>").unwrap(),
+        TypeKind::Enum => {
+            let mut v = String::from("Option<");
+            v.push_str(name.to_pascal_case().as_str());
+            v.push_str(">");
+            syn::parse_type(v.as_str()).unwrap()
+        }
         TypeKind::String => syn::parse_type("Option<String>").unwrap(),
         TypeKind::Text => syn::parse_type("Option<String>").unwrap(),
         TypeKind::Boolean => syn::parse_type("Option<bool>").unwrap(),
@@ -83,13 +89,13 @@ fn create_field(f: (&String, &Type)) -> syn::Field {
         ident: Some(ident(valid_name(f.0).to_lowercase())),
         vis: syn::Visibility::Inherited,
         attrs: vec![],
-        ty: ty(&f.1.ty),
+        ty: ty(&f.0, &f.1.ty),
     }
 }
 
 fn create_builder_method(f: (&String, &Type)) -> Tokens {
     let name = ident(valid_name(f.0).to_lowercase());
-    let value = ty(&f.1.ty);
+    let value = ty(&f.0, &f.1.ty);
     let doc = match &f.1.description {
         Some(docs) => Some(doc(docs.into())),
         _ => None,
@@ -103,55 +109,3 @@ fn create_builder_method(f: (&String, &Type)) -> Tokens {
         }
     )
 }
-
-//pub struct Field {
-//    pub description: Option<syn::Attribute>,
-//    pub name: syn::Ident,
-//    pub ty: syn::Ty
-//}
-//
-//impl Field {
-//    pub fn new(name: &str, ty: &Type) -> Self {
-//        Self {
-//            description: match &ty.description {
-//                Some(desc) => Some(doc(desc.to_string())),
-//                _ => None,
-//            },
-//            name: ident(valid_name(name).to_lowercase()),
-//            ty: self::ty(&ty.ty),
-//        }
-//    }
-//
-//    pub fn declaration(&self) -> Tokens {
-//        let mut tokens = quote::Tokens::new();
-//        let name = &self.name;
-//        let ty = &self.ty;
-//        let description = &self.description;
-//
-//        let t = quote!(
-//            #description
-//            #name: #ty
-//        );
-//
-//        tokens.append(t);
-//        tokens
-//    }
-//
-//    pub fn method(&self, builder_ident: syn::Ident) -> Tokens {
-//        let mut tokens = quote::Tokens::new();
-//        let name = &self.name;
-//        let ty = &self.ty;
-//        let description = &self.description;
-//
-//        let  t = quote!(
-//            #description
-//            pub fn #name(&self, value: #ty) -> #builder_ident {
-//                self.#name = value;
-//                self
-//            }
-//        );
-//
-//        tokens.append(t);
-//        tokens
-//    }
-//}

@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
 pub enum Bytes {
     #[serde(rename = "b")]

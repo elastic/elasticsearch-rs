@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -109,7 +110,7 @@ pub struct CatAllocationBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
@@ -151,7 +152,7 @@ impl CatAllocationBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -307,7 +308,7 @@ pub struct CatFielddataBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     fields: Option<Vec<String>>,
     format: Option<String>,
     h: Option<Vec<String>>,
@@ -350,7 +351,7 @@ impl CatFielddataBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -583,10 +584,10 @@ pub struct CatIndicesBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
-    health: Option<i32>,
+    health: Option<Health>,
     help: Option<bool>,
     include_unloaded_segments: Option<bool>,
     local: Option<bool>,
@@ -628,7 +629,7 @@ impl CatIndicesBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -643,7 +644,7 @@ impl CatIndicesBuilder {
         self
     }
     #[doc = "A health status (\"green\", \"yellow\", or \"red\" to filter only indices matching the specified health status"]
-    pub fn health(mut self, health: Option<i32>) -> Self {
+    pub fn health(mut self, health: Option<Health>) -> Self {
         self.health = health;
         self
     }
@@ -1189,7 +1190,7 @@ pub struct CatRecoveryBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
@@ -1230,7 +1231,7 @@ impl CatRecoveryBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -1381,7 +1382,7 @@ pub struct CatSegmentsBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
@@ -1421,7 +1422,7 @@ impl CatSegmentsBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -1471,7 +1472,7 @@ pub struct CatShardsBuilder {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    bytes: Option<i32>,
+    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
@@ -1513,7 +1514,7 @@ impl CatShardsBuilder {
         self
     }
     #[doc = "The unit in which to display byte values"]
-    pub fn bytes(mut self, bytes: Option<i32>) -> Self {
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
         self
     }
@@ -1879,7 +1880,7 @@ pub struct CatThreadPoolBuilder {
     local: Option<bool>,
     master_timeout: Option<String>,
     s: Option<Vec<String>>,
-    size: Option<i32>,
+    size: Option<Size>,
     v: Option<bool>,
 }
 impl CatThreadPoolBuilder {
@@ -1945,7 +1946,7 @@ impl CatThreadPoolBuilder {
         self
     }
     #[doc = "The multiplier in which to display values"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
+    pub fn size(mut self, size: Option<Size>) -> Self {
         self.size = size;
         self
     }

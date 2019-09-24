@@ -16,6 +16,7 @@ mod settings;
 pub use crate::{
     client::ElasticsearchClient,
     connection::Connection,
+    enums::*,
     http_method::HttpMethod,
     //node_pool::{Node, NodePool, SingleNodePool},
     response::ElasticsearchResponse,

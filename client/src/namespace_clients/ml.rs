@@ -1,4 +1,5 @@
 use super::super::client::ElasticsearchClient;
+use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
@@ -713,7 +714,7 @@ pub struct MlFindFileStructureBuilder {
     column_names: Option<Vec<String>>,
     delimiter: Option<String>,
     explain: Option<bool>,
-    format: Option<i32>,
+    format: Option<Format>,
     grok_pattern: Option<String>,
     has_header_row: Option<bool>,
     line_merge_size_limit: Option<i32>,
@@ -777,7 +778,7 @@ impl MlFindFileStructureBuilder {
         self
     }
     #[doc = "Optional parameter to specify the high level file format"]
-    pub fn format(mut self, format: Option<i32>) -> Self {
+    pub fn format(mut self, format: Option<Format>) -> Self {
         self.format = format;
         self
     }
