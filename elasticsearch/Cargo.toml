@@ -1,0 +1,13 @@
+[package]
+name = "elasticsearch"
+version = "0.1.0"
+authors = ["Russ Cam <russ.cam@elastic.co>"]
+description = "A low level Elasticsearch Rust client"
+keywords = ["elasticsearch", "elastic", "search", "lucene"]
+license = "Apache-2.0"
+edition = "2018"
+
+[dependencies]
+reqwest = "0.9.14"
+url = "1.7.2"
+serde = "~1"

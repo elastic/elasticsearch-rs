@@ -19,7 +19,7 @@ mod rest_spec;
 
 fn main() {
     let download_dir = fs::canonicalize(PathBuf::from("./rest_specs")).unwrap();
-    let generated_dir = fs::canonicalize(PathBuf::from("./../client/src")).unwrap();
+    let generated_dir = fs::canonicalize(PathBuf::from("./../elasticsearch/src")).unwrap();
     let last_downloaded_version = "last_downloaded_version";
 
     let mut download_specs = false;

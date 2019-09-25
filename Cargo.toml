@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "api_generator",
-    "client"
+    "elasticsearch"
 ]
