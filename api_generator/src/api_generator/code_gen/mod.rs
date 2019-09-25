@@ -81,7 +81,6 @@ fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
         TypeKind::Long => syn::parse_type("Option<i64>").unwrap(),
         TypeKind::Date => syn::parse_type("Option<String>").unwrap(),
         TypeKind::Time => syn::parse_type("Option<String>").unwrap(),
-        TypeKind::Duration => syn::parse_type("Option<String>").unwrap(),
     }
 }
 

@@ -87,7 +87,7 @@ pub enum TypeKind {
     Float,
     #[serde(rename = "double")]
     Double,
-    #[serde(rename = "integer", alias = "int")]
+    #[serde(rename = "int")]
     Integer,
     #[serde(rename = "long")]
     Long,
@@ -95,8 +95,6 @@ pub enum TypeKind {
     Date,
     #[serde(rename = "time")]
     Time,
-    #[serde(rename = "duration")]
-    Duration,
 }
 
 impl Default for TypeKind {
