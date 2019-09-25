@@ -18,9 +18,10 @@ mod error;
 mod rest_spec;
 
 fn main() {
-    let download_dir = fs::canonicalize(PathBuf::from("./rest_specs")).unwrap();
-    let generated_dir = fs::canonicalize(PathBuf::from("./../elasticsearch/src")).unwrap();
-    let last_downloaded_version = "last_downloaded_version";
+    // This must be run from the src root directory, with cargo run -p api_generator
+    let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs")).unwrap();
+    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src")).unwrap();
+    let last_downloaded_version = "./api_generator/last_downloaded_version";
 
     let mut download_specs = false;
     let mut answer = String::new();
