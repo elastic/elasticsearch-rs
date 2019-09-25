@@ -167,16 +167,20 @@ impl PartialEq for ApiEnum {
 
 impl Eq for ApiEnum {}
 
+/// Generates all client source from the REST API spec
 pub fn generate(
     branch: &str,
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
 ) -> Result<(), failure::Error> {
+    // read the Api from file
     let api = read_api(branch, download_dir)?;
 
+    // generate enums
     let enums = code_gen::enums::generate(&api)?;
     write_file(enums, generated_dir, "enums.rs")?;
 
+    // generate namespace clients
     let namespace_clients = code_gen::namespace_clients::generate(&api)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
@@ -198,6 +202,7 @@ pub fn generate(
         )?;
     }
 
+    // generate functions on root of client
     let root = code_gen::root::generate(&api)?;
     write_file(root, generated_dir, "root.rs")?;
 
@@ -215,8 +220,9 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
     Ok(())
 }
 
+/// Reads Api from a directory of REST Api specs
 fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
-    let paths = read_dir(download_dir).unwrap();
+    let paths = read_dir(download_dir)?;
     let mut namespaces = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
     let mut common_params = BTreeMap::new();
