@@ -235,7 +235,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
         if name
             .unwrap()
-            .map(|name| !name.starts_with("_"))
+            .map(|name| !name.starts_with('_'))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;
@@ -349,9 +349,9 @@ where
     }
 
     // remove stdin: from start of output
-    let b = "stdin:".as_bytes();
-    if output.starts_with(b) {
-        output.drain(0..b.len());
+    let stdin = b"stdin:";
+    if output.starts_with(stdin) {
+        output.drain(0..stdin.len());
     }
 
     let s = String::from_utf8(output)?;

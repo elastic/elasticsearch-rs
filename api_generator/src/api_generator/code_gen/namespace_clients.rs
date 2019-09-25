@@ -2,7 +2,7 @@ use crate::api_generator::*;
 
 use inflector::Inflector;
 use quote::Tokens;
-use syn::{Field, FieldValue};
+use syn::Field;
 
 /// Generates the source code for a namespaced client
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
@@ -23,8 +23,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
 
-        let namespace_client_name = code_gen::ident(format!("{}", namespace.to_pascal_case()));
-
+        let namespace_client_name = code_gen::ident(namespace.to_pascal_case());
         let namespace_doc = code_gen::doc(format!(
             "{} APIs",
             namespace.replace("_", " ").to_pascal_case()
@@ -115,8 +114,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             .map(|(name, endpoint)| {
                 let struct_name =
                     format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
-                let struct_ident = code_gen::ident(struct_name.to_string());
-                let builder_ident = code_gen::ident(format!("{}", struct_name.to_string()));
+                let builder_ident = code_gen::ident(struct_name.to_string());
                 let method_name = code_gen::ident(name.to_string());
                 let path = endpoint.url.paths.first().unwrap();
                 let method = endpoint.methods.first().unwrap();

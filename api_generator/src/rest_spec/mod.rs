@@ -4,7 +4,7 @@ extern crate reqwest;
 use pbr::ProgressBar;
 use serde::Deserialize;
 use std::fs::{self, File};
-use std::io::{copy, stdout, Write};
+use std::io::copy;
 use std::path::PathBuf;
 
 struct GitHubSpec {
@@ -75,13 +75,11 @@ fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
             })
             + 1;
 
-    writeln!(
-        stdout(),
+    println!(
         "Downloading {} specs from {}",
         spec.dir,
         spec.branch
-    )
-    .unwrap();
+    );
     let mut pb = ProgressBar::new(rest_api_specs.len() as u64);
 
     // TODO: parallelize downloads

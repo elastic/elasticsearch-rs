@@ -61,7 +61,7 @@ fn main() {
 
         File::create(last_downloaded_version)
             .expect("failed to create last_downloaded_version file")
-            .write(branch.as_bytes())
+            .write_all(branch.as_bytes())
             .expect("unable to write branch to last_downloaded_version file");
     }
 
