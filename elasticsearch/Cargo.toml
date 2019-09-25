@@ -1,7 +1,7 @@
 [package]
 name = "elasticsearch"
 version = "0.1.0"
-authors = ["Russ Cam <russ.cam@elastic.co>"]
+authors = ["Elastic and Contributors"]
 description = "A low level Elasticsearch Rust client"
 keywords = ["elasticsearch", "elastic", "search", "lucene"]
 license = "Apache-2.0"
