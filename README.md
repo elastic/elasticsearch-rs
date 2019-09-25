@@ -4,6 +4,24 @@ A spacetime project to build a low level Rust client.
 
 The project is still very much a _work in progress_; input and contributions welcome!
 
+## Outline
+
+The workspace contains two packages
+
+### api_generator
+
+A small executable to download REST API specs from GitHub and generate much of the client from the specs. Run with
+
+```
+cargo run -p api_generator
+```
+
+from the repository root directory
+
+### elasticsearch
+
+The client package crate
+
 ## Design principles
 
 1. Generate as much of the client as feasible from the REST API specs
