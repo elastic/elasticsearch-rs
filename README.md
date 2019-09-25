@@ -34,13 +34,18 @@ The [`quote`](https://docs.rs/quote/1.0.2/quote/) and [`syn`](https://docs.rs/sy
 The general usage of the client is envisioned as
 
 ```rust
+// common settings for the client, such as global query string params
 let settings = ConnectionSettings::new();
+
+// connection for the client. This may eventually be a ConnectionPool trait,
+// to allow different connection strategies e.g. single node, sniffing, etc.
 let connection = Connection::new(Url::parse("http://localhost:9200").unwrap());
-let client = ElasticsearchClient::new(settings, connection);
+
+let client = Elasticsearch::new(settings, connection);
 
 let cat_response = client.cat()
                          .indices()
-                         .send()?;
+                         .send<Value>()?;
 
 let search_response = client.search()
                             .index("logstash-*")
@@ -50,7 +55,7 @@ let search_response = client.search()
                                 }                                           
                             }))
                             .pretty()
-                            .send()?;
+                            .send<Value>()?;
 ```
 
 ## Development
