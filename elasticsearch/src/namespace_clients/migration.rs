@@ -12,6 +12,7 @@ pub struct MigrationDeprecations {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }

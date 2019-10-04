@@ -1,3 +1,4 @@
+use crate::api_generator::code_gen::url::url_builder::Path;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::Deserialize;
 use serde_json::Value;
@@ -105,7 +106,7 @@ impl Default for TypeKind {
 
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
-    pub paths: Vec<String>,
+    pub paths: Vec<Path>,
     #[serde(default = "BTreeMap::new")]
     pub parts: BTreeMap<String, Type>,
     #[serde(default = "BTreeMap::new")]

@@ -12,6 +12,7 @@ pub struct RollupDeleteJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -66,6 +67,7 @@ pub struct RollupGetJobs {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -120,6 +122,7 @@ pub struct RollupGetRollupCaps {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -174,6 +177,7 @@ pub struct RollupGetRollupIndexCaps {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -228,6 +232,7 @@ pub struct RollupPutJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -282,9 +287,11 @@ pub struct RollupRollupSearch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
-    source: Option<String>,
     rest_total_hits_as_int: Option<bool>,
+    source: Option<String>,
+    ty: Option<String>,
     typed_keys: Option<bool>,
 }
 impl RollupRollupSearch {
@@ -293,6 +300,16 @@ impl RollupRollupSearch {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
+    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
+        self.rest_total_hits_as_int = rest_total_hits_as_int;
+        self
+    }
+    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
+    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
+        self.typed_keys = typed_keys;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -319,16 +336,6 @@ impl RollupRollupSearch {
         self.source = source;
         self
     }
-    #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
-    pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
-        self.rest_total_hits_as_int = rest_total_hits_as_int;
-        self
-    }
-    #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
-    pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
-        self.typed_keys = typed_keys;
-        self
-    }
 }
 impl Sender for RollupRollupSearch {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -348,6 +355,7 @@ pub struct RollupStartJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -402,6 +410,7 @@ pub struct RollupStopJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -413,6 +422,16 @@ impl RollupStopJob {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Block for (at maximum) the specified duration while waiting for the job to stop.  Defaults to 30s."]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "True if the API should block until the job has fully stopped, false if should be executed async. Defaults to false."]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -437,16 +456,6 @@ impl RollupStopJob {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Block for (at maximum) the specified duration while waiting for the job to stop.  Defaults to 30s."]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "True if the API should block until the job has fully stopped, false if should be executed async. Defaults to false."]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
         self
     }
 }

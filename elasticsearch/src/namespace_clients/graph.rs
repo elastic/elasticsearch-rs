@@ -12,10 +12,12 @@ pub struct GraphExplore {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
-    source: Option<String>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
+    ty: Option<Vec<String>>,
 }
 impl GraphExplore {
     pub fn new(client: Elasticsearch) -> Self {
@@ -23,6 +25,16 @@ impl GraphExplore {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -47,16 +59,6 @@ impl GraphExplore {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: Option<String>) -> Self {
-        self.routing = routing;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }

@@ -66,9 +66,9 @@ pub struct LicenseGet {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    local: Option<bool>,
 }
 impl LicenseGet {
     pub fn new(client: Elasticsearch) -> Self {
@@ -76,6 +76,11 @@ impl LicenseGet {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -100,11 +105,6 @@ impl LicenseGet {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
         self
     }
 }
@@ -231,12 +231,12 @@ impl Sender for LicenseGetTrialStatus {
 #[derive(Default)]
 pub struct LicensePost {
     client: Elasticsearch,
+    acknowledge: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    acknowledge: Option<bool>,
 }
 impl LicensePost {
     pub fn new(client: Elasticsearch) -> Self {
@@ -244,6 +244,11 @@ impl LicensePost {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
+    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
+        self.acknowledge = acknowledge;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -268,11 +273,6 @@ impl LicensePost {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
-        self.acknowledge = acknowledge;
         self
     }
 }
@@ -291,12 +291,12 @@ impl Sender for LicensePost {
 #[derive(Default)]
 pub struct LicensePostStartBasic {
     client: Elasticsearch,
+    acknowledge: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    acknowledge: Option<bool>,
 }
 impl LicensePostStartBasic {
     pub fn new(client: Elasticsearch) -> Self {
@@ -304,6 +304,11 @@ impl LicensePostStartBasic {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
+    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
+        self.acknowledge = acknowledge;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -328,11 +333,6 @@ impl LicensePostStartBasic {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
-        self.acknowledge = acknowledge;
         self
     }
 }
@@ -351,12 +351,12 @@ impl Sender for LicensePostStartBasic {
 #[derive(Default)]
 pub struct LicensePostStartTrial {
     client: Elasticsearch,
+    acknowledge: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    acknowledge: Option<bool>,
     ty: Option<String>,
 }
 impl LicensePostStartTrial {
@@ -365,6 +365,16 @@ impl LicensePostStartTrial {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
+    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
+        self.acknowledge = acknowledge;
+        self
+    }
+    #[doc = "The type of trial license to generate (default: \"trial\")"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -389,16 +399,6 @@ impl LicensePostStartTrial {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
-    pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
-        self.acknowledge = acknowledge;
-        self
-    }
-    #[doc = "The type of trial license to generate (default: \"trial\")"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
         self
     }
 }

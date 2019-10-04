@@ -65,10 +65,10 @@ pub struct SqlQuery {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    format: Option<String>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    format: Option<String>,
 }
 impl SqlQuery {
     pub fn new(client: Elasticsearch) -> Self {
@@ -76,6 +76,11 @@ impl SqlQuery {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -100,11 +105,6 @@ impl SqlQuery {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: Option<String>) -> Self {
-        self.format = format;
         self
     }
 }

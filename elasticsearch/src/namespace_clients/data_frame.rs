@@ -14,6 +14,7 @@ pub struct DataFrameDeleteDataFrameTransform {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    transform_id: Option<String>,
 }
 impl DataFrameDeleteDataFrameTransform {
     pub fn new(client: Elasticsearch) -> Self {
@@ -63,14 +64,15 @@ impl Sender for DataFrameDeleteDataFrameTransform {
 #[derive(Default)]
 pub struct DataFrameGetDataFrameTransform {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    from: Option<i32>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_match: Option<bool>,
-    from: Option<i32>,
     size: Option<i32>,
+    source: Option<String>,
+    transform_id: Option<String>,
 }
 impl DataFrameGetDataFrameTransform {
     pub fn new(client: Elasticsearch) -> Self {
@@ -78,6 +80,21 @@ impl DataFrameGetDataFrameTransform {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "skips a number of transform configs, defaults to 0"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of transforms to get, defaults to 100"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -102,21 +119,6 @@ impl DataFrameGetDataFrameTransform {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "skips a number of transform configs, defaults to 0"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of transforms to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -135,14 +137,15 @@ impl Sender for DataFrameGetDataFrameTransform {
 #[derive(Default)]
 pub struct DataFrameGetDataFrameTransformStats {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    from: Option<i64>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_match: Option<bool>,
-    from: Option<i64>,
     size: Option<i64>,
+    source: Option<String>,
+    transform_id: Option<String>,
 }
 impl DataFrameGetDataFrameTransformStats {
     pub fn new(client: Elasticsearch) -> Self {
@@ -150,6 +153,21 @@ impl DataFrameGetDataFrameTransformStats {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "skips a number of transform stats, defaults to 0"]
+    pub fn from(mut self, from: Option<i64>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of transform stats to get, defaults to 100"]
+    pub fn size(mut self, size: Option<i64>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -174,21 +192,6 @@ impl DataFrameGetDataFrameTransformStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "skips a number of transform stats, defaults to 0"]
-    pub fn from(mut self, from: Option<i64>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of transform stats to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i64>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -266,6 +269,7 @@ pub struct DataFramePutDataFrameTransform {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    transform_id: Option<String>,
 }
 impl DataFramePutDataFrameTransform {
     pub fn new(client: Elasticsearch) -> Self {
@@ -321,6 +325,7 @@ pub struct DataFrameStartDataFrameTransform {
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
+    transform_id: Option<String>,
 }
 impl DataFrameStartDataFrameTransform {
     pub fn new(client: Elasticsearch) -> Self {
@@ -328,6 +333,11 @@ impl DataFrameStartDataFrameTransform {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Controls the time to wait for the transform to start"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -352,11 +362,6 @@ impl DataFrameStartDataFrameTransform {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Controls the time to wait for the transform to start"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -375,13 +380,14 @@ impl Sender for DataFrameStartDataFrameTransform {
 #[derive(Default)]
 pub struct DataFrameStopDataFrameTransform {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_match: Option<bool>,
     timeout: Option<String>,
+    transform_id: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl DataFrameStopDataFrameTransform {
@@ -390,6 +396,21 @@ impl DataFrameStopDataFrameTransform {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -414,21 +435,6 @@ impl DataFrameStopDataFrameTransform {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
         self
     }
 }

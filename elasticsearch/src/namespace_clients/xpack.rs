@@ -9,12 +9,12 @@ use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct XpackInfo {
     client: Elasticsearch,
+    categories: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    categories: Option<Vec<String>>,
 }
 impl XpackInfo {
     pub fn new(client: Elasticsearch) -> Self {
@@ -22,6 +22,11 @@ impl XpackInfo {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
+    pub fn categories(mut self, categories: Option<Vec<String>>) -> Self {
+        self.categories = categories;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -46,11 +51,6 @@ impl XpackInfo {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
-    pub fn categories(mut self, categories: Option<Vec<String>>) -> Self {
-        self.categories = categories;
         self
     }
 }
@@ -72,9 +72,9 @@ pub struct XpackUsage {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
 }
 impl XpackUsage {
     pub fn new(client: Elasticsearch) -> Self {
@@ -82,6 +82,11 @@ impl XpackUsage {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specify timeout for watch write operation"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -106,11 +111,6 @@ impl XpackUsage {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for watch write operation"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }

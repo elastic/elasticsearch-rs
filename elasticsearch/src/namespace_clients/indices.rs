@@ -12,9 +12,9 @@ pub struct IndicesAnalyze {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    index: Option<String>,
 }
 impl IndicesAnalyze {
     pub fn new(client: Elasticsearch) -> Self {
@@ -22,6 +22,11 @@ impl IndicesAnalyze {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "The name of the index to scope the operation"]
+    pub fn index(mut self, index: Option<String>) -> Self {
+        self.index = index;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -46,11 +51,6 @@ impl IndicesAnalyze {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "The name of the index to scope the operation"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
         self
     }
 }
@@ -69,19 +69,19 @@ impl Sender for IndicesAnalyze {
 #[derive(Default)]
 pub struct IndicesClearCache {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     fielddata: Option<bool>,
     fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
     index: Option<Vec<String>>,
+    pretty: Option<bool>,
     query: Option<bool>,
     request: Option<bool>,
+    source: Option<String>,
 }
 impl IndicesClearCache {
     pub fn new(client: Elasticsearch) -> Self {
@@ -89,31 +89,6 @@ impl IndicesClearCache {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -155,41 +130,6 @@ impl IndicesClearCache {
         self.request = request;
         self
     }
-}
-impl Sender for IndicesClearCache {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesClose {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
-}
-impl IndicesClose {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesClose {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -214,6 +154,42 @@ impl IndicesClose {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesClearCache {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesClose {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndicesClose {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesClose {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -245,39 +221,6 @@ impl IndicesClose {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
-}
-impl Sender for IndicesClose {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesCreate {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    include_type_name: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
-}
-impl IndicesCreate {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesCreate {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -302,6 +245,40 @@ impl IndicesCreate {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesClose {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesCreate {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    include_type_name: Option<bool>,
+    index: Option<String>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndicesCreate {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesCreate {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether a type should be expected in the body of the mappings."]
     pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
@@ -323,40 +300,6 @@ impl IndicesCreate {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
-}
-impl Sender for IndicesCreate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesDelete {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-}
-impl IndicesDelete {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesDelete {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -381,6 +324,41 @@ impl IndicesDelete {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesCreate {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesDelete {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl IndicesDelete {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesDelete {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -407,37 +385,6 @@ impl IndicesDelete {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for IndicesDelete {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesDeleteAlias {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-}
-impl IndicesDeleteAlias {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesDeleteAlias {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -463,6 +410,39 @@ impl IndicesDeleteAlias {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesDelete {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesDeleteAlias {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl IndicesDeleteAlias {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesDeleteAlias {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -471,6 +451,31 @@ impl IndicesDeleteAlias {
     #[doc = "Explicit timestamp for the document"]
     pub fn timeout(mut self, timeout: Option<String>) -> Self {
         self.timeout = timeout;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -492,9 +497,10 @@ pub struct IndicesDeleteTemplate {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDeleteTemplate {
@@ -503,6 +509,16 @@ impl IndicesDeleteTemplate {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -527,16 +543,6 @@ impl IndicesDeleteTemplate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -555,17 +561,18 @@ impl Sender for IndicesDeleteTemplate {
 #[derive(Default)]
 pub struct IndicesExists {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
+    index: Option<Vec<String>>,
     local: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
 impl IndicesExists {
     pub fn new(client: Elasticsearch) -> Self {
@@ -573,31 +580,6 @@ impl IndicesExists {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -629,39 +611,6 @@ impl IndicesExists {
         self.local = local;
         self
     }
-}
-impl Sender for IndicesExists {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesExistsAlias {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    local: Option<bool>,
-}
-impl IndicesExistsAlias {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesExistsAlias {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -687,6 +636,41 @@ impl IndicesExistsAlias {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesExists {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesExistsAlias {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesExistsAlias {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesExistsAlias {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
@@ -705,6 +689,31 @@ impl IndicesExistsAlias {
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -725,12 +734,13 @@ pub struct IndicesExistsTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     flat_settings: Option<bool>,
+    human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
 impl IndicesExistsTemplate {
     pub fn new(client: Elasticsearch) -> Self {
@@ -738,6 +748,21 @@ impl IndicesExistsTemplate {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Return settings in flat format (default: false)"]
+    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
+        self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -762,21 +787,6 @@ impl IndicesExistsTemplate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }
@@ -795,15 +805,17 @@ impl Sender for IndicesExistsTemplate {
 #[derive(Default)]
 pub struct IndicesExistsType {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    local: Option<bool>,
+    ty: Option<Vec<String>>,
 }
 impl IndicesExistsType {
     pub fn new(client: Elasticsearch) -> Self {
@@ -811,31 +823,6 @@ impl IndicesExistsType {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -857,40 +844,6 @@ impl IndicesExistsType {
         self.local = local;
         self
     }
-}
-impl Sender for IndicesExistsType {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesFlush {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    force: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    wait_if_ongoing: Option<bool>,
-}
-impl IndicesFlush {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesFlush {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -915,6 +868,41 @@ impl IndicesFlush {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesExistsType {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesFlush {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    force: Option<bool>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    wait_if_ongoing: Option<bool>,
+}
+impl IndicesFlush {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesFlush {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -941,38 +929,6 @@ impl IndicesFlush {
         self.wait_if_ongoing = wait_if_ongoing;
         self
     }
-}
-impl Sender for IndicesFlush {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesFlushSynced {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-}
-impl IndicesFlushSynced {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesFlushSynced {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -998,6 +954,39 @@ impl IndicesFlushSynced {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesFlush {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesFlushSynced {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesFlushSynced {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesFlushSynced {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
@@ -1011,6 +1000,31 @@ impl IndicesFlushSynced {
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1029,17 +1043,18 @@ impl Sender for IndicesFlushSynced {
 #[derive(Default)]
 pub struct IndicesForcemerge {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
     flush: Option<bool>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     max_num_segments: Option<i64>,
     only_expunge_deletes: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
 impl IndicesForcemerge {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1047,31 +1062,6 @@ impl IndicesForcemerge {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1103,41 +1093,6 @@ impl IndicesForcemerge {
         self.only_expunge_deletes = only_expunge_deletes;
         self
     }
-}
-impl Sender for IndicesForcemerge {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesFreeze {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
-}
-impl IndicesFreeze {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesFreeze {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1162,6 +1117,42 @@ impl IndicesFreeze {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesForcemerge {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesFreeze {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<String>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndicesFreeze {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesFreeze {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1193,43 +1184,6 @@ impl IndicesFreeze {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
-}
-impl Sender for IndicesFreeze {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGet {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    flat_settings: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    include_defaults: Option<bool>,
-    include_type_name: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-}
-impl IndicesGet {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGet {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1254,6 +1208,44 @@ impl IndicesGet {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesFreeze {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGet {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    include_defaults: Option<bool>,
+    include_type_name: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesGet {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGet {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1295,39 +1287,6 @@ impl IndicesGet {
         self.master_timeout = master_timeout;
         self
     }
-}
-impl Sender for IndicesGet {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetAlias {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    local: Option<bool>,
-}
-impl IndicesGetAlias {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetAlias {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1352,6 +1311,41 @@ impl IndicesGetAlias {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesGet {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetAlias {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesGetAlias {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetAlias {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1373,41 +1367,6 @@ impl IndicesGetAlias {
         self.local = local;
         self
     }
-}
-impl Sender for IndicesGetAlias {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetFieldMapping {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    include_defaults: Option<bool>,
-    include_type_name: Option<bool>,
-    local: Option<bool>,
-}
-impl IndicesGetFieldMapping {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetFieldMapping {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1432,6 +1391,44 @@ impl IndicesGetFieldMapping {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesGetAlias {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetFieldMapping {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    include_defaults: Option<bool>,
+    include_type_name: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    ty: Option<Vec<String>>,
+}
+impl IndicesGetFieldMapping {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetFieldMapping {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1463,41 +1460,6 @@ impl IndicesGetFieldMapping {
         self.local = local;
         self
     }
-}
-impl Sender for IndicesGetFieldMapping {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetMapping {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    include_type_name: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-}
-impl IndicesGetMapping {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetMapping {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1522,6 +1484,43 @@ impl IndicesGetMapping {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesGetFieldMapping {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetMapping {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    include_type_name: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    ty: Option<Vec<String>>,
+}
+impl IndicesGetMapping {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetMapping {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1553,42 +1552,6 @@ impl IndicesGetMapping {
         self.master_timeout = master_timeout;
         self
     }
-}
-impl Sender for IndicesGetMapping {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetSettings {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    flat_settings: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    include_defaults: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-}
-impl IndicesGetSettings {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetSettings {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1613,6 +1576,44 @@ impl IndicesGetSettings {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesGetMapping {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetSettings {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    include_defaults: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesGetSettings {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetSettings {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1649,39 +1650,6 @@ impl IndicesGetSettings {
         self.master_timeout = master_timeout;
         self
     }
-}
-impl Sender for IndicesGetSettings {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetTemplate {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    flat_settings: Option<bool>,
-    include_type_name: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-}
-impl IndicesGetTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetTemplate {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1706,6 +1674,40 @@ impl IndicesGetTemplate {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesGetSettings {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetTemplate {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    include_type_name: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesGetTemplate {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetTemplate {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
@@ -1727,38 +1729,6 @@ impl IndicesGetTemplate {
         self.master_timeout = master_timeout;
         self
     }
-}
-impl Sender for IndicesGetTemplate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesGetUpgrade {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-}
-impl IndicesGetUpgrade {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesGetUpgrade {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1784,6 +1754,39 @@ impl IndicesGetUpgrade {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesGetTemplate {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesGetUpgrade {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesGetUpgrade {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesGetUpgrade {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
@@ -1797,6 +1800,31 @@ impl IndicesGetUpgrade {
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1815,15 +1843,16 @@ impl Sender for IndicesGetUpgrade {
 #[derive(Default)]
 pub struct IndicesOpen {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -1833,31 +1862,6 @@ impl IndicesOpen {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -1889,6 +1893,31 @@ impl IndicesOpen {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
 }
 impl Sender for IndicesOpen {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -1908,9 +1937,11 @@ pub struct IndicesPutAlias {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesPutAlias {
@@ -1919,6 +1950,16 @@ impl IndicesPutAlias {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit timestamp for the document"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1943,16 +1984,6 @@ impl IndicesPutAlias {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit timestamp for the document"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -1971,17 +2002,19 @@ impl Sender for IndicesPutAlias {
 #[derive(Default)]
 pub struct IndicesPutMapping {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
+    index: Option<Vec<String>>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
     timeout: Option<String>,
+    ty: Option<String>,
 }
 impl IndicesPutMapping {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1989,31 +2022,6 @@ impl IndicesPutMapping {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -2045,42 +2053,6 @@ impl IndicesPutMapping {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for IndicesPutMapping {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesPutSettings {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    flat_settings: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    preserve_existing: Option<bool>,
-    timeout: Option<String>,
-}
-impl IndicesPutSettings {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesPutSettings {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2105,6 +2077,43 @@ impl IndicesPutSettings {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesPutMapping {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesPutSettings {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    preserve_existing: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl IndicesPutSettings {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesPutSettings {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -2141,41 +2150,6 @@ impl IndicesPutSettings {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for IndicesPutSettings {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesPutTemplate {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    create: Option<bool>,
-    flat_settings: Option<bool>,
-    include_type_name: Option<bool>,
-    master_timeout: Option<String>,
-    order: Option<i64>,
-    timeout: Option<String>,
-}
-impl IndicesPutTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesPutTemplate {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2200,6 +2174,42 @@ impl IndicesPutTemplate {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesPutSettings {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesPutTemplate {
+    client: Elasticsearch,
+    create: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    include_type_name: Option<bool>,
+    master_timeout: Option<String>,
+    name: Option<String>,
+    order: Option<i64>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl IndicesPutTemplate {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesPutTemplate {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
     pub fn create(mut self, create: Option<bool>) -> Self {
@@ -2231,37 +2241,6 @@ impl IndicesPutTemplate {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for IndicesPutTemplate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesRecovery {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    active_only: Option<bool>,
-    detailed: Option<bool>,
-}
-impl IndicesRecovery {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesRecovery {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2287,6 +2266,38 @@ impl IndicesRecovery {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesPutTemplate {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesRecovery {
+    client: Elasticsearch,
+    active_only: Option<bool>,
+    detailed: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl IndicesRecovery {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesRecovery {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Display only those recoveries that are currently on-going"]
     pub fn active_only(mut self, active_only: Option<bool>) -> Self {
         self.active_only = active_only;
@@ -2295,6 +2306,31 @@ impl IndicesRecovery {
     #[doc = "Whether to display detailed information about shard recovery"]
     pub fn detailed(mut self, detailed: Option<bool>) -> Self {
         self.detailed = detailed;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -2313,14 +2349,15 @@ impl Sender for IndicesRecovery {
 #[derive(Default)]
 pub struct IndicesRefresh {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
 }
 impl IndicesRefresh {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2328,6 +2365,21 @@ impl IndicesRefresh {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2352,21 +2404,6 @@ impl IndicesRefresh {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
         self
     }
 }
@@ -2385,14 +2422,15 @@ impl Sender for IndicesRefresh {
 #[derive(Default)]
 pub struct IndicesReloadSearchAnalyzers {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
 }
 impl IndicesReloadSearchAnalyzers {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2400,6 +2438,21 @@ impl IndicesReloadSearchAnalyzers {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2424,21 +2477,6 @@ impl IndicesReloadSearchAnalyzers {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
         self
     }
 }
@@ -2457,14 +2495,16 @@ impl Sender for IndicesReloadSearchAnalyzers {
 #[derive(Default)]
 pub struct IndicesRollover {
     client: Elasticsearch,
+    alias: Option<String>,
+    dry_run: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    dry_run: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<String>,
+    new_index: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -2474,31 +2514,6 @@ impl IndicesRollover {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "If set to true the rollover action will only be validated but not actually performed even if a condition matches. The default is false"]
     pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
@@ -2525,39 +2540,6 @@ impl IndicesRollover {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
-}
-impl Sender for IndicesRollover {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesSegments {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    verbose: Option<bool>,
-}
-impl IndicesSegments {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesSegments {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2582,6 +2564,40 @@ impl IndicesSegments {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesRollover {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesSegments {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    verbose: Option<bool>,
+}
+impl IndicesSegments {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesSegments {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -2603,39 +2619,6 @@ impl IndicesSegments {
         self.verbose = verbose;
         self
     }
-}
-impl Sender for IndicesSegments {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesShardStores {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    status: Option<Vec<String>>,
-}
-impl IndicesShardStores {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesShardStores {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2660,6 +2643,40 @@ impl IndicesShardStores {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesSegments {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesShardStores {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    status: Option<Vec<String>>,
+}
+impl IndicesShardStores {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesShardStores {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -2681,39 +2698,6 @@ impl IndicesShardStores {
         self.status = status;
         self
     }
-}
-impl Sender for IndicesShardStores {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesShrink {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    copy_settings: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
-}
-impl IndicesShrink {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesShrink {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2739,6 +2723,41 @@ impl IndicesShrink {
         self.source = source;
         self
     }
+}
+impl Sender for IndicesShardStores {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesShrink {
+    client: Elasticsearch,
+    copy_settings: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    index: Option<String>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    target: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndicesShrink {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesShrink {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
         self.copy_settings = copy_settings;
@@ -2757,6 +2776,31 @@ impl IndicesShrink {
     #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
     pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
         self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -2775,13 +2819,15 @@ impl Sender for IndicesShrink {
 #[derive(Default)]
 pub struct IndicesSplit {
     client: Elasticsearch,
+    copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    copy_settings: Option<bool>,
-    master_timeout: Option<String>,
+    target: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -2791,31 +2837,6 @@ impl IndicesSplit {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
@@ -2837,45 +2858,6 @@ impl IndicesSplit {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
-}
-impl Sender for IndicesSplit {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesStats {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    completion_fields: Option<Vec<String>>,
-    expand_wildcards: Option<ExpandWildcards>,
-    fielddata_fields: Option<Vec<String>>,
-    fields: Option<Vec<String>>,
-    forbid_closed_indices: Option<bool>,
-    groups: Option<Vec<String>>,
-    include_segment_file_sizes: Option<bool>,
-    include_unloaded_segments: Option<bool>,
-    level: Option<Level>,
-    types: Option<Vec<String>>,
-}
-impl IndicesStats {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesStats {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2900,6 +2882,47 @@ impl IndicesStats {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesSplit {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesStats {
+    client: Elasticsearch,
+    completion_fields: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    fielddata_fields: Option<Vec<String>>,
+    fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    forbid_closed_indices: Option<bool>,
+    groups: Option<Vec<String>>,
+    human: Option<bool>,
+    include_segment_file_sizes: Option<bool>,
+    include_unloaded_segments: Option<bool>,
+    index: Option<Vec<String>>,
+    level: Option<Level>,
+    metric: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    types: Option<Vec<String>>,
+}
+impl IndicesStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesStats {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
     pub fn completion_fields(mut self, completion_fields: Option<Vec<String>>) -> Self {
@@ -2951,41 +2974,6 @@ impl IndicesStats {
         self.types = types;
         self
     }
-}
-impl Sender for IndicesStats {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesUnfreeze {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
-}
-impl IndicesUnfreeze {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesUnfreeze {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3010,6 +2998,42 @@ impl IndicesUnfreeze {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesStats {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesUnfreeze {
+    client: Elasticsearch,
+    allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<String>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl IndicesUnfreeze {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesUnfreeze {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -3041,6 +3065,31 @@ impl IndicesUnfreeze {
         self.wait_for_active_shards = wait_for_active_shards;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
 }
 impl Sender for IndicesUnfreeze {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -3060,9 +3109,9 @@ pub struct IndicesUpdateAliases {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesUpdateAliases {
@@ -3071,6 +3120,16 @@ impl IndicesUpdateAliases {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Request timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3095,16 +3154,6 @@ impl IndicesUpdateAliases {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Request timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -3123,15 +3172,16 @@ impl Sender for IndicesUpdateAliases {
 #[derive(Default)]
 pub struct IndicesUpgrade {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    only_ancient_segments: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
-    only_ancient_segments: Option<bool>,
     wait_for_completion: Option<bool>,
 }
 impl IndicesUpgrade {
@@ -3140,31 +3190,6 @@ impl IndicesUpgrade {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -3191,47 +3216,6 @@ impl IndicesUpgrade {
         self.wait_for_completion = wait_for_completion;
         self
     }
-}
-impl Sender for IndicesUpgrade {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct IndicesValidateQuery {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    all_shards: Option<bool>,
-    allow_no_indices: Option<bool>,
-    analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
-    default_operator: Option<DefaultOperator>,
-    df: Option<String>,
-    expand_wildcards: Option<ExpandWildcards>,
-    explain: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    lenient: Option<bool>,
-    q: Option<String>,
-    rewrite: Option<bool>,
-}
-impl IndicesValidateQuery {
-    pub fn new(client: Elasticsearch) -> Self {
-        IndicesValidateQuery {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3256,6 +3240,49 @@ impl IndicesValidateQuery {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for IndicesUpgrade {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct IndicesValidateQuery {
+    client: Elasticsearch,
+    all_shards: Option<bool>,
+    allow_no_indices: Option<bool>,
+    analyze_wildcard: Option<bool>,
+    analyzer: Option<String>,
+    default_operator: Option<DefaultOperator>,
+    df: Option<String>,
+    error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
+    explain: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
+    lenient: Option<bool>,
+    pretty: Option<bool>,
+    q: Option<String>,
+    rewrite: Option<bool>,
+    source: Option<String>,
+    ty: Option<Vec<String>>,
+}
+impl IndicesValidateQuery {
+    pub fn new(client: Elasticsearch) -> Self {
+        IndicesValidateQuery {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Execute validation on all shards instead of one random shard per index"]
     pub fn all_shards(mut self, all_shards: Option<bool>) -> Self {
@@ -3315,6 +3342,31 @@ impl IndicesValidateQuery {
     #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
     pub fn rewrite(mut self, rewrite: Option<bool>) -> Self {
         self.rewrite = rewrite;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }

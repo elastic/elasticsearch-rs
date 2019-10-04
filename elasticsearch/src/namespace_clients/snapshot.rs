@@ -12,9 +12,11 @@ pub struct SnapshotCreate {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    snapshot: Option<String>,
+    source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl SnapshotCreate {
@@ -23,6 +25,16 @@ impl SnapshotCreate {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -47,16 +59,6 @@ impl SnapshotCreate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -78,9 +80,10 @@ pub struct SnapshotCreateRepository {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     verify: Option<bool>,
 }
@@ -90,6 +93,21 @@ impl SnapshotCreateRepository {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Whether to verify the repository after creation"]
+    pub fn verify(mut self, verify: Option<bool>) -> Self {
+        self.verify = verify;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -114,21 +132,6 @@ impl SnapshotCreateRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Whether to verify the repository after creation"]
-    pub fn verify(mut self, verify: Option<bool>) -> Self {
-        self.verify = verify;
         self
     }
 }
@@ -150,9 +153,11 @@ pub struct SnapshotDelete {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    snapshot: Option<String>,
+    source: Option<String>,
 }
 impl SnapshotDelete {
     pub fn new(client: Elasticsearch) -> Self {
@@ -160,6 +165,11 @@ impl SnapshotDelete {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -184,11 +194,6 @@ impl SnapshotDelete {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }
@@ -210,9 +215,10 @@ pub struct SnapshotDeleteRepository {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<Vec<String>>,
+    source: Option<String>,
     timeout: Option<String>,
 }
 impl SnapshotDeleteRepository {
@@ -221,6 +227,16 @@ impl SnapshotDeleteRepository {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -245,16 +261,6 @@ impl SnapshotDeleteRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -276,10 +282,12 @@ pub struct SnapshotGet {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    snapshot: Option<Vec<String>>,
+    source: Option<String>,
     verbose: Option<bool>,
 }
 impl SnapshotGet {
@@ -288,6 +296,21 @@ impl SnapshotGet {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Whether to show verbose snapshot info or only show the basic info found in the repository index blob"]
+    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
+        self.verbose = verbose;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -312,21 +335,6 @@ impl SnapshotGet {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Whether to show verbose snapshot info or only show the basic info found in the repository index blob"]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
         self
     }
 }
@@ -348,10 +356,11 @@ pub struct SnapshotGetRepository {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<Vec<String>>,
+    source: Option<String>,
 }
 impl SnapshotGetRepository {
     pub fn new(client: Elasticsearch) -> Self {
@@ -359,6 +368,16 @@ impl SnapshotGetRepository {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -383,16 +402,6 @@ impl SnapshotGetRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }
@@ -414,9 +423,11 @@ pub struct SnapshotRestore {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    snapshot: Option<String>,
+    source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl SnapshotRestore {
@@ -425,6 +436,16 @@ impl SnapshotRestore {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -449,16 +470,6 @@ impl SnapshotRestore {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -480,10 +491,12 @@ pub struct SnapshotStatus {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    snapshot: Option<Vec<String>>,
+    source: Option<String>,
 }
 impl SnapshotStatus {
     pub fn new(client: Elasticsearch) -> Self {
@@ -491,6 +504,16 @@ impl SnapshotStatus {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -515,16 +538,6 @@ impl SnapshotStatus {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }
@@ -546,9 +559,10 @@ pub struct SnapshotVerifyRepository {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
 }
 impl SnapshotVerifyRepository {
@@ -557,6 +571,16 @@ impl SnapshotVerifyRepository {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -581,16 +605,6 @@ impl SnapshotVerifyRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }

@@ -12,11 +12,12 @@ pub struct NodesHotThreads {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     ignore_idle_threads: Option<bool>,
     interval: Option<String>,
+    node_id: Option<Vec<String>>,
+    pretty: Option<bool>,
     snapshots: Option<i64>,
+    source: Option<String>,
     threads: Option<i64>,
     timeout: Option<String>,
     ty: Option<Type>,
@@ -27,31 +28,6 @@ impl NodesHotThreads {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Don't show threads that are in known-idle places, such as waiting on a socket select or pulling from an empty task queue (default: true)"]
     pub fn ignore_idle_threads(mut self, ignore_idle_threads: Option<bool>) -> Self {
@@ -83,37 +59,6 @@ impl NodesHotThreads {
         self.ty = ty;
         self
     }
-}
-impl Sender for NodesHotThreads {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct NodesInfo {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    flat_settings: Option<bool>,
-    timeout: Option<String>,
-}
-impl NodesInfo {
-    pub fn new(client: Elasticsearch) -> Self {
-        NodesInfo {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -139,6 +84,39 @@ impl NodesInfo {
         self.source = source;
         self
     }
+}
+impl Sender for NodesHotThreads {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct NodesInfo {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    flat_settings: Option<bool>,
+    human: Option<bool>,
+    metric: Option<Vec<String>>,
+    node_id: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl NodesInfo {
+    pub fn new(client: Elasticsearch) -> Self {
+        NodesInfo {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
@@ -147,6 +125,31 @@ impl NodesInfo {
     #[doc = "Explicit operation timeout"]
     pub fn timeout(mut self, timeout: Option<String>) -> Self {
         self.timeout = timeout;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -168,6 +171,7 @@ pub struct NodesReloadSecureSettings {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -178,6 +182,11 @@ impl NodesReloadSecureSettings {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -202,11 +211,6 @@ impl NodesReloadSecureSettings {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -225,17 +229,20 @@ impl Sender for NodesReloadSecureSettings {
 #[derive(Default)]
 pub struct NodesStats {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     completion_fields: Option<Vec<String>>,
+    error_trace: Option<bool>,
     fielddata_fields: Option<Vec<String>>,
     fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
     groups: Option<bool>,
+    human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
+    index_metric: Option<Vec<String>>,
     level: Option<Level>,
+    metric: Option<Vec<String>>,
+    node_id: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
     timeout: Option<String>,
     types: Option<Vec<String>>,
 }
@@ -245,31 +252,6 @@ impl NodesStats {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
     pub fn completion_fields(mut self, completion_fields: Option<Vec<String>>) -> Self {
@@ -311,36 +293,6 @@ impl NodesStats {
         self.types = types;
         self
     }
-}
-impl Sender for NodesStats {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct NodesUsage {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
-}
-impl NodesUsage {
-    pub fn new(client: Elasticsearch) -> Self {
-        NodesUsage {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -366,9 +318,66 @@ impl NodesUsage {
         self.source = source;
         self
     }
+}
+impl Sender for NodesStats {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct NodesUsage {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    metric: Option<Vec<String>>,
+    node_id: Option<Vec<String>>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+}
+impl NodesUsage {
+    pub fn new(client: Elasticsearch) -> Self {
+        NodesUsage {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Explicit operation timeout"]
     pub fn timeout(mut self, timeout: Option<String>) -> Self {
         self.timeout = timeout;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }

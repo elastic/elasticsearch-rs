@@ -1,10 +1,12 @@
 pub mod enums;
 pub mod namespace_clients;
 pub mod root;
+pub mod url;
 
 use crate::api_generator::{Type, TypeKind};
 use inflector::Inflector;
 use quote::Tokens;
+use std::str;
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -12,8 +14,8 @@ fn lit<I: Into<String>>(lit: I) -> syn::Lit {
 }
 
 /// AST for an identifier
-fn ident(name: String) -> syn::Ident {
-    syn::Ident::from(name)
+fn ident<I: AsRef<str>>(name: I) -> syn::Ident {
+    syn::Ident::from(name.as_ref())
 }
 
 /// AST for doc attribute
@@ -23,6 +25,11 @@ fn doc(comment: String) -> syn::Attribute {
         value: syn::MetaItem::NameValue(ident("doc".to_string()), lit(comment)),
         is_sugared_doc: true,
     }
+}
+
+/// AST for an expression parsed from quoted tokens
+pub fn parse_expr(input: quote::Tokens) -> syn::Expr {
+    syn::parse_expr(input.to_string().as_ref()).unwrap()
 }
 
 /// Ensures that the name generated is one that is valid for Rust
@@ -108,4 +115,61 @@ fn create_builder_method(f: (&String, &Type)) -> Tokens {
             self
         }
     )
+}
+
+pub fn shift_while<F>(i: &[u8], f: F) -> &[u8]
+where
+    F: Fn(u8) -> bool,
+{
+    let mut ctr = 0;
+    for c in i {
+        if f(*c) {
+            ctr += 1;
+        } else {
+            break;
+        }
+    }
+
+    &i[ctr..]
+}
+
+pub fn take_while<F>(i: &[u8], f: F) -> (&[u8], &str)
+where
+    F: Fn(u8) -> bool,
+{
+    let mut ctr = 0;
+
+    for c in i {
+        if f(*c) {
+            ctr += 1;
+        } else {
+            break;
+        }
+    }
+
+    (&i[ctr..], str::from_utf8(&i[0..ctr]).unwrap())
+}
+
+pub fn take_while1<F>(i: &[u8], f: F) -> (&[u8], &str)
+where
+    F: Fn(u8) -> bool,
+{
+    let mut ctr = 0;
+
+    for c in i {
+        if f(*c) || ctr == 0 {
+            ctr += 1;
+        } else {
+            break;
+        }
+    }
+
+    (&i[ctr..], str::from_utf8(&i[0..ctr]).unwrap())
+}
+
+pub fn shift(i: &[u8], c: usize) -> &[u8] {
+    match c {
+        c if c >= i.len() => &[],
+        _ => &i[c..],
+    }
 }

@@ -75,11 +75,7 @@ fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
             })
             + 1;
 
-    println!(
-        "Downloading {} specs from {}",
-        spec.dir,
-        spec.branch
-    );
+    println!("Downloading {} specs from {}", spec.dir, spec.branch);
     let mut pb = ProgressBar::new(rest_api_specs.len() as u64);
 
     // TODO: parallelize downloads

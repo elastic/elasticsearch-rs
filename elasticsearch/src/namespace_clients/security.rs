@@ -67,8 +67,9 @@ pub struct SecurityChangePassword {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
+    username: Option<String>,
 }
 impl SecurityChangePassword {
     pub fn new(client: Elasticsearch) -> Self {
@@ -76,6 +77,11 @@ impl SecurityChangePassword {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -100,11 +106,6 @@ impl SecurityChangePassword {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -127,6 +128,7 @@ pub struct SecurityClearCachedRealms {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
+    realms: Option<Vec<String>>,
     source: Option<String>,
     usernames: Option<Vec<String>>,
 }
@@ -136,6 +138,11 @@ impl SecurityClearCachedRealms {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Comma-separated list of usernames to clear from the cache"]
+    pub fn usernames(mut self, usernames: Option<Vec<String>>) -> Self {
+        self.usernames = usernames;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -162,11 +169,6 @@ impl SecurityClearCachedRealms {
         self.source = source;
         self
     }
-    #[doc = "Comma-separated list of usernames to clear from the cache"]
-    pub fn usernames(mut self, usernames: Option<Vec<String>>) -> Self {
-        self.usernames = usernames;
-        self
-    }
 }
 impl Sender for SecurityClearCachedRealms {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -186,6 +188,7 @@ pub struct SecurityClearCachedRoles {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -241,8 +244,8 @@ pub struct SecurityCreateApiKey {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityCreateApiKey {
     pub fn new(client: Elasticsearch) -> Self {
@@ -250,6 +253,11 @@ impl SecurityCreateApiKey {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -274,11 +282,6 @@ impl SecurityCreateApiKey {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -297,12 +300,14 @@ impl Sender for SecurityCreateApiKey {
 #[derive(Default)]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
+    application: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityDeletePrivileges {
     pub fn new(client: Elasticsearch) -> Self {
@@ -310,6 +315,11 @@ impl SecurityDeletePrivileges {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -334,11 +344,6 @@ impl SecurityDeletePrivileges {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -360,9 +365,10 @@ pub struct SecurityDeleteRole {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityDeleteRole {
     pub fn new(client: Elasticsearch) -> Self {
@@ -370,6 +376,11 @@ impl SecurityDeleteRole {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -394,11 +405,6 @@ impl SecurityDeleteRole {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -420,9 +426,10 @@ pub struct SecurityDeleteRoleMapping {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityDeleteRoleMapping {
     pub fn new(client: Elasticsearch) -> Self {
@@ -430,6 +437,11 @@ impl SecurityDeleteRoleMapping {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -454,11 +466,6 @@ impl SecurityDeleteRoleMapping {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -481,8 +488,9 @@ pub struct SecurityDeleteUser {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
+    username: Option<String>,
 }
 impl SecurityDeleteUser {
     pub fn new(client: Elasticsearch) -> Self {
@@ -490,6 +498,11 @@ impl SecurityDeleteUser {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -514,11 +527,6 @@ impl SecurityDeleteUser {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -541,8 +549,9 @@ pub struct SecurityDisableUser {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
+    username: Option<String>,
 }
 impl SecurityDisableUser {
     pub fn new(client: Elasticsearch) -> Self {
@@ -550,6 +559,11 @@ impl SecurityDisableUser {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -574,11 +588,6 @@ impl SecurityDisableUser {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -601,8 +610,9 @@ pub struct SecurityEnableUser {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
+    username: Option<String>,
 }
 impl SecurityEnableUser {
     pub fn new(client: Elasticsearch) -> Self {
@@ -610,6 +620,11 @@ impl SecurityEnableUser {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -634,11 +649,6 @@ impl SecurityEnableUser {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -660,11 +670,11 @@ pub struct SecurityGetApiKey {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     id: Option<String>,
     name: Option<String>,
+    pretty: Option<bool>,
     realm_name: Option<String>,
+    source: Option<String>,
     username: Option<String>,
 }
 impl SecurityGetApiKey {
@@ -673,6 +683,26 @@ impl SecurityGetApiKey {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "API key id of the API key to be retrieved"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "API key name of the API key to be retrieved"]
+    pub fn name(mut self, name: Option<String>) -> Self {
+        self.name = name;
+        self
+    }
+    #[doc = "realm name of the user who created this API key to be retrieved"]
+    pub fn realm_name(mut self, realm_name: Option<String>) -> Self {
+        self.realm_name = realm_name;
+        self
+    }
+    #[doc = "user name of the user who created this API key to be retrieved"]
+    pub fn username(mut self, username: Option<String>) -> Self {
+        self.username = username;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -697,26 +727,6 @@ impl SecurityGetApiKey {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "API key id of the API key to be retrieved"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "API key name of the API key to be retrieved"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
-        self
-    }
-    #[doc = "realm name of the user who created this API key to be retrieved"]
-    pub fn realm_name(mut self, realm_name: Option<String>) -> Self {
-        self.realm_name = realm_name;
-        self
-    }
-    #[doc = "user name of the user who created this API key to be retrieved"]
-    pub fn username(mut self, username: Option<String>) -> Self {
-        self.username = username;
         self
     }
 }
@@ -789,9 +799,11 @@ impl Sender for SecurityGetBuiltinPrivileges {
 #[derive(Default)]
 pub struct SecurityGetPrivileges {
     client: Elasticsearch,
+    application: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -846,6 +858,7 @@ pub struct SecurityGetRole {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -900,6 +913,7 @@ pub struct SecurityGetRoleMapping {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -1010,6 +1024,7 @@ pub struct SecurityGetUser {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    username: Option<Vec<String>>,
 }
 impl SecurityGetUser {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1118,6 +1133,7 @@ pub struct SecurityHasPrivileges {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    user: Option<String>,
 }
 impl SecurityHasPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1279,8 +1295,8 @@ pub struct SecurityPutPrivileges {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityPutPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1288,6 +1304,11 @@ impl SecurityPutPrivileges {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1312,11 +1333,6 @@ impl SecurityPutPrivileges {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -1338,9 +1354,10 @@ pub struct SecurityPutRole {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityPutRole {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1348,6 +1365,11 @@ impl SecurityPutRole {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1372,11 +1394,6 @@ impl SecurityPutRole {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -1398,9 +1415,10 @@ pub struct SecurityPutRoleMapping {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
 }
 impl SecurityPutRoleMapping {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1408,6 +1426,11 @@ impl SecurityPutRoleMapping {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1432,11 +1455,6 @@ impl SecurityPutRoleMapping {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }
@@ -1459,8 +1477,9 @@ pub struct SecurityPutUser {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     refresh: Option<Refresh>,
+    source: Option<String>,
+    username: Option<String>,
 }
 impl SecurityPutUser {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1468,6 +1487,11 @@ impl SecurityPutUser {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1492,11 +1516,6 @@ impl SecurityPutUser {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
         self
     }
 }

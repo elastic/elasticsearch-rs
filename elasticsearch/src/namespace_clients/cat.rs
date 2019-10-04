@@ -11,15 +11,16 @@ pub struct CatAliases {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
+    human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    name: Option<Vec<String>>,
+    pretty: Option<bool>,
     s: Option<Vec<String>>,
+    source: Option<String>,
     v: Option<bool>,
 }
 impl CatAliases {
@@ -28,31 +29,6 @@ impl CatAliases {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -89,43 +65,6 @@ impl CatAliases {
         self.v = v;
         self
     }
-}
-impl Sender for CatAliases {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatAllocation {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatAllocation {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatAllocation {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -150,6 +89,44 @@ impl CatAllocation {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatAliases {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatAllocation {
+    client: Elasticsearch,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    node_id: Option<Vec<String>>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatAllocation {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatAllocation {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -191,42 +168,6 @@ impl CatAllocation {
         self.v = v;
         self
     }
-}
-impl Sender for CatAllocation {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatCount {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatCount {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatCount {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -251,6 +192,43 @@ impl CatCount {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatAllocation {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatCount {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatCount {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatCount {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -287,44 +265,6 @@ impl CatCount {
         self.v = v;
         self
     }
-}
-impl Sender for CatCount {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatFielddata {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
-    fields: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatFielddata {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatFielddata {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -349,6 +289,44 @@ impl CatFielddata {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatCount {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatFielddata {
+    client: Elasticsearch,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatFielddata {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatFielddata {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -395,43 +373,6 @@ impl CatFielddata {
         self.v = v;
         self
     }
-}
-impl Sender for CatFielddata {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatHealth {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    ts: Option<bool>,
-    v: Option<bool>,
-}
-impl CatHealth {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatHealth {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -456,6 +397,43 @@ impl CatHealth {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatFielddata {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatHealth {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    ts: Option<bool>,
+    v: Option<bool>,
+}
+impl CatHealth {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatHealth {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -497,6 +475,31 @@ impl CatHealth {
         self.v = v;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
 }
 impl Sender for CatHealth {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -515,11 +518,11 @@ pub struct CatHelp {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    help: Option<bool>,
     s: Option<Vec<String>>,
+    source: Option<String>,
 }
 impl CatHelp {
     pub fn new(client: Elasticsearch) -> Self {
@@ -527,6 +530,16 @@ impl CatHelp {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Return help information"]
+    pub fn help(mut self, help: Option<bool>) -> Self {
+        self.help = help;
+        self
+    }
+    #[doc = "Comma-separated list of column names or column aliases to sort by"]
+    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
+        self.s = s;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -551,16 +564,6 @@ impl CatHelp {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Return help information"]
-    pub fn help(mut self, help: Option<bool>) -> Self {
-        self.help = help;
-        self
-    }
-    #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Option<Vec<String>>) -> Self {
-        self.s = s;
         self
     }
 }
@@ -579,21 +582,22 @@ impl Sender for CatHelp {
 #[derive(Default)]
 pub struct CatIndices {
     client: Elasticsearch,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
     format: Option<String>,
     h: Option<Vec<String>>,
     health: Option<Health>,
     help: Option<bool>,
+    human: Option<bool>,
     include_unloaded_segments: Option<bool>,
+    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
     pri: Option<bool>,
     s: Option<Vec<String>>,
+    source: Option<String>,
     v: Option<bool>,
 }
 impl CatIndices {
@@ -602,31 +606,6 @@ impl CatIndices {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -683,42 +662,6 @@ impl CatIndices {
         self.v = v;
         self
     }
-}
-impl Sender for CatIndices {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatMaster {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatMaster {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatMaster {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -743,6 +686,42 @@ impl CatMaster {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatIndices {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatMaster {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatMaster {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatMaster {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -777,6 +756,31 @@ impl CatMaster {
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -797,15 +801,15 @@ pub struct CatNodeattrs {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
+    human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
     s: Option<Vec<String>>,
+    source: Option<String>,
     v: Option<bool>,
 }
 impl CatNodeattrs {
@@ -814,31 +818,6 @@ impl CatNodeattrs {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -875,43 +854,6 @@ impl CatNodeattrs {
         self.v = v;
         self
     }
-}
-impl Sender for CatNodeattrs {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatNodes {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    full_id: Option<bool>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatNodes {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatNodes {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -936,6 +878,43 @@ impl CatNodes {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatNodeattrs {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatNodes {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    full_id: Option<bool>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatNodes {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatNodes {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -977,42 +956,6 @@ impl CatNodes {
         self.v = v;
         self
     }
-}
-impl Sender for CatNodes {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatPendingTasks {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatPendingTasks {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatPendingTasks {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1037,6 +980,42 @@ impl CatPendingTasks {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatNodes {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatPendingTasks {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatPendingTasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatPendingTasks {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1071,6 +1050,31 @@ impl CatPendingTasks {
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1091,15 +1095,15 @@ pub struct CatPlugins {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
+    human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
+    pretty: Option<bool>,
     s: Option<Vec<String>>,
+    source: Option<String>,
     v: Option<bool>,
 }
 impl CatPlugins {
@@ -1108,31 +1112,6 @@ impl CatPlugins {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1169,42 +1148,6 @@ impl CatPlugins {
         self.v = v;
         self
     }
-}
-impl Sender for CatPlugins {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatRecovery {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatRecovery {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatRecovery {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1229,6 +1172,43 @@ impl CatRecovery {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatPlugins {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatRecovery {
+    client: Elasticsearch,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatRecovery {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatRecovery {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -1265,42 +1245,6 @@ impl CatRecovery {
         self.v = v;
         self
     }
-}
-impl Sender for CatRecovery {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatRepositories {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatRepositories {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatRepositories {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1325,6 +1269,42 @@ impl CatRepositories {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatRecovery {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatRepositories {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatRepositories {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatRepositories {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1361,41 +1341,6 @@ impl CatRepositories {
         self.v = v;
         self
     }
-}
-impl Sender for CatRepositories {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatSegments {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatSegments {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatSegments {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1420,6 +1365,42 @@ impl CatSegments {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatRepositories {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatSegments {
+    client: Elasticsearch,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatSegments {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatSegments {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -1451,43 +1432,6 @@ impl CatSegments {
         self.v = v;
         self
     }
-}
-impl Sender for CatSegments {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatShards {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    bytes: Option<Bytes>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatShards {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatShards {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1512,6 +1456,44 @@ impl CatShards {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatSegments {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatShards {
+    client: Elasticsearch,
+    bytes: Option<Bytes>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    index: Option<Vec<String>>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatShards {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatShards {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
@@ -1553,42 +1535,6 @@ impl CatShards {
         self.v = v;
         self
     }
-}
-impl Sender for CatShards {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatSnapshots {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatSnapshots {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatSnapshots {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1613,6 +1559,43 @@ impl CatSnapshots {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatShards {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatSnapshots {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    ignore_unavailable: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    repository: Option<Vec<String>>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatSnapshots {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatSnapshots {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1649,44 +1632,6 @@ impl CatSnapshots {
         self.v = v;
         self
     }
-}
-impl Sender for CatSnapshots {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatTasks {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    actions: Option<Vec<String>>,
-    detailed: Option<bool>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    node_id: Option<Vec<String>>,
-    parent_task: Option<i64>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatTasks {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatTasks {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1711,6 +1656,44 @@ impl CatTasks {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatSnapshots {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatTasks {
+    client: Elasticsearch,
+    actions: Option<Vec<String>>,
+    detailed: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    node_id: Option<Vec<String>>,
+    parent_task: Option<i64>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatTasks {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatTasks {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
     pub fn actions(mut self, actions: Option<Vec<String>>) -> Self {
@@ -1757,42 +1740,6 @@ impl CatTasks {
         self.v = v;
         self
     }
-}
-impl Sender for CatTasks {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatTemplates {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    v: Option<bool>,
-}
-impl CatTemplates {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatTemplates {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1817,6 +1764,43 @@ impl CatTemplates {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatTasks {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatTemplates {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    name: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    source: Option<String>,
+    v: Option<bool>,
+}
+impl CatTemplates {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatTemplates {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1853,43 +1837,6 @@ impl CatTemplates {
         self.v = v;
         self
     }
-}
-impl Sender for CatTemplates {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct CatThreadPool {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
-    help: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
-    s: Option<Vec<String>>,
-    size: Option<Size>,
-    v: Option<bool>,
-}
-impl CatThreadPool {
-    pub fn new(client: Elasticsearch) -> Self {
-        CatThreadPool {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1914,6 +1861,44 @@ impl CatThreadPool {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for CatTemplates {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct CatThreadPool {
+    client: Elasticsearch,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    format: Option<String>,
+    h: Option<Vec<String>>,
+    help: Option<bool>,
+    human: Option<bool>,
+    local: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    s: Option<Vec<String>>,
+    size: Option<Size>,
+    source: Option<String>,
+    thread_pool_patterns: Option<Vec<String>>,
+    v: Option<bool>,
+}
+impl CatThreadPool {
+    pub fn new(client: Elasticsearch) -> Self {
+        CatThreadPool {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: Option<String>) -> Self {
@@ -1953,6 +1938,31 @@ impl CatThreadPool {
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }

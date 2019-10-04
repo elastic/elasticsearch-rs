@@ -9,11 +9,13 @@ use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct WatcherAckWatch {
     client: Elasticsearch,
+    action_id: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    watch_id: Option<String>,
 }
 impl WatcherAckWatch {
     pub fn new(client: Elasticsearch) -> Self {
@@ -68,6 +70,7 @@ pub struct WatcherActivateWatch {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    watch_id: Option<String>,
 }
 impl WatcherActivateWatch {
     pub fn new(client: Elasticsearch) -> Self {
@@ -122,6 +125,7 @@ pub struct WatcherDeactivateWatch {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
+    watch_id: Option<String>,
 }
 impl WatcherDeactivateWatch {
     pub fn new(client: Elasticsearch) -> Self {
@@ -174,6 +178,7 @@ pub struct WatcherDeleteWatch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -225,12 +230,13 @@ impl Sender for WatcherDeleteWatch {
 #[derive(Default)]
 pub struct WatcherExecuteWatch {
     client: Elasticsearch,
+    debug: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    debug: Option<bool>,
 }
 impl WatcherExecuteWatch {
     pub fn new(client: Elasticsearch) -> Self {
@@ -238,6 +244,11 @@ impl WatcherExecuteWatch {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "indicates whether the watch should execute in debug mode"]
+    pub fn debug(mut self, debug: Option<bool>) -> Self {
+        self.debug = debug;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -264,11 +275,6 @@ impl WatcherExecuteWatch {
         self.source = source;
         self
     }
-    #[doc = "indicates whether the watch should execute in debug mode"]
-    pub fn debug(mut self, debug: Option<bool>) -> Self {
-        self.debug = debug;
-        self
-    }
 }
 impl Sender for WatcherExecuteWatch {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -288,6 +294,7 @@ pub struct WatcherGetWatch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -339,14 +346,15 @@ impl Sender for WatcherGetWatch {
 #[derive(Default)]
 pub struct WatcherPutWatch {
     client: Elasticsearch,
+    active: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    active: Option<bool>,
+    id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
+    pretty: Option<bool>,
+    source: Option<String>,
     version: Option<i64>,
 }
 impl WatcherPutWatch {
@@ -355,6 +363,26 @@ impl WatcherPutWatch {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Specify whether the watch is in/active by default"]
+    pub fn active(mut self, active: Option<bool>) -> Self {
+        self.active = active;
+        self
+    }
+    #[doc = "only update the watch if the last operation that has changed the watch has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
+        self.if_primary_term = if_primary_term;
+        self
+    }
+    #[doc = "only update the watch if the last operation that has changed the watch has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
+        self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -379,26 +407,6 @@ impl WatcherPutWatch {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify whether the watch is in/active by default"]
-    pub fn active(mut self, active: Option<bool>) -> Self {
-        self.active = active;
-        self
-    }
-    #[doc = "only update the watch if the last operation that has changed the watch has the specified primary term"]
-    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
-        self.if_primary_term = if_primary_term;
-        self
-    }
-    #[doc = "only update the watch if the last operation that has changed the watch has the specified sequence number"]
-    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
-        self.if_seq_no = if_seq_no;
-        self
-    }
-    #[doc = "Explicit version number for concurrency control"]
-    pub fn version(mut self, version: Option<i64>) -> Self {
-        self.version = version;
         self
     }
 }
@@ -471,13 +479,13 @@ impl Sender for WatcherStart {
 #[derive(Default)]
 pub struct WatcherStats {
     client: Elasticsearch,
+    emit_stacktraces: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    metric: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
-    emit_stacktraces: Option<bool>,
-    metric: Option<Vec<String>>,
 }
 impl WatcherStats {
     pub fn new(client: Elasticsearch) -> Self {
@@ -485,6 +493,16 @@ impl WatcherStats {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Emits stack traces of currently running watches"]
+    pub fn emit_stacktraces(mut self, emit_stacktraces: Option<bool>) -> Self {
+        self.emit_stacktraces = emit_stacktraces;
+        self
+    }
+    #[doc = "Controls what additional stat metrics should be include in the response"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -509,16 +527,6 @@ impl WatcherStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Emits stack traces of currently running watches"]
-    pub fn emit_stacktraces(mut self, emit_stacktraces: Option<bool>) -> Self {
-        self.emit_stacktraces = emit_stacktraces;
-        self
-    }
-    #[doc = "Controls what additional stat metrics should be include in the response"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
         self
     }
 }

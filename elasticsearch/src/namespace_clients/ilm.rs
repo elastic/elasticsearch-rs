@@ -12,6 +12,7 @@ pub struct IlmDeleteLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    policy: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -66,6 +67,7 @@ pub struct IlmExplainLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -120,6 +122,7 @@ pub struct IlmGetLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    policy: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -228,6 +231,7 @@ pub struct IlmMoveToStep {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -282,6 +286,7 @@ pub struct IlmPutLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    policy: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -336,6 +341,7 @@ pub struct IlmRemovePolicy {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -390,6 +396,7 @@ pub struct IlmRetry {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }

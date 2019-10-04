@@ -9,13 +9,14 @@ use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct MlCloseJob {
     client: Elasticsearch,
+    allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    force: Option<bool>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_jobs: Option<bool>,
-    force: Option<bool>,
     timeout: Option<String>,
 }
 impl MlCloseJob {
@@ -24,6 +25,21 @@ impl MlCloseJob {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
+        self.allow_no_jobs = allow_no_jobs;
+        self
+    }
+    #[doc = "True if the job should be forcefully closed"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
+    }
+    #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -50,21 +66,6 @@ impl MlCloseJob {
         self.source = source;
         self
     }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
-        self
-    }
-    #[doc = "True if the job should be forcefully closed"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
 }
 impl Sender for MlCloseJob {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -81,6 +82,7 @@ impl Sender for MlCloseJob {
 #[derive(Default)]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -135,7 +137,9 @@ impl Sender for MlDeleteCalendar {
 #[derive(Default)]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
+    event_id: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -189,9 +193,11 @@ impl Sender for MlDeleteCalendarEvent {
 #[derive(Default)]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -246,6 +252,7 @@ pub struct MlDeleteDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -297,12 +304,13 @@ impl Sender for MlDeleteDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    force: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    force: Option<bool>,
 }
 impl MlDeleteDatafeed {
     pub fn new(client: Elasticsearch) -> Self {
@@ -310,6 +318,11 @@ impl MlDeleteDatafeed {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "True if the datafeed should be forcefully deleted"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -334,11 +347,6 @@ impl MlDeleteDatafeed {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "True if the datafeed should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
         self
     }
 }
@@ -412,6 +420,7 @@ impl Sender for MlDeleteExpiredData {
 pub struct MlDeleteFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
+    filter_id: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -465,12 +474,14 @@ impl Sender for MlDeleteFilter {
 #[derive(Default)]
 pub struct MlDeleteForecast {
     client: Elasticsearch,
+    allow_no_forecasts: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    forecast_id: Option<String>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_forecasts: Option<bool>,
     timeout: Option<String>,
 }
 impl MlDeleteForecast {
@@ -479,6 +490,16 @@ impl MlDeleteForecast {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if `_all` matches no forecasts"]
+    pub fn allow_no_forecasts(mut self, allow_no_forecasts: Option<bool>) -> Self {
+        self.allow_no_forecasts = allow_no_forecasts;
+        self
+    }
+    #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -503,16 +524,6 @@ impl MlDeleteForecast {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if `_all` matches no forecasts"]
-    pub fn allow_no_forecasts(mut self, allow_no_forecasts: Option<bool>) -> Self {
-        self.allow_no_forecasts = allow_no_forecasts;
-        self
-    }
-    #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -533,10 +544,11 @@ pub struct MlDeleteJob {
     client: Elasticsearch,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    force: Option<bool>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    force: Option<bool>,
     wait_for_completion: Option<bool>,
 }
 impl MlDeleteJob {
@@ -545,6 +557,16 @@ impl MlDeleteJob {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "True if the job should be forcefully deleted"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -569,16 +591,6 @@ impl MlDeleteJob {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "True if the job should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -600,7 +612,9 @@ pub struct MlDeleteModelSnapshot {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
+    snapshot_id: Option<String>,
     source: Option<String>,
 }
 impl MlDeleteModelSnapshot {
@@ -705,22 +719,22 @@ impl Sender for MlEvaluateDataFrame {
 #[derive(Default)]
 pub struct MlFindFileStructure {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     charset: Option<String>,
     column_names: Option<Vec<String>>,
     delimiter: Option<String>,
+    error_trace: Option<bool>,
     explain: Option<bool>,
+    filter_path: Option<Vec<String>>,
     format: Option<Format>,
     grok_pattern: Option<String>,
     has_header_row: Option<bool>,
+    human: Option<bool>,
     line_merge_size_limit: Option<i32>,
     lines_to_sample: Option<i32>,
+    pretty: Option<bool>,
     quote: Option<String>,
     should_trim_fields: Option<bool>,
+    source: Option<String>,
     timeout: Option<String>,
     timestamp_field: Option<String>,
     timestamp_format: Option<String>,
@@ -731,31 +745,6 @@ impl MlFindFileStructure {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Optional parameter to specify the character set of the file"]
     pub fn charset(mut self, charset: Option<String>) -> Self {
@@ -827,40 +816,6 @@ impl MlFindFileStructure {
         self.timestamp_format = timestamp_format;
         self
     }
-}
-impl Sender for MlFindFileStructure {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlFlushJob {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    advance_time: Option<String>,
-    calc_interim: Option<bool>,
-    end: Option<String>,
-    skip_time: Option<String>,
-    start: Option<String>,
-}
-impl MlFlushJob {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlFlushJob {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -885,6 +840,41 @@ impl MlFlushJob {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for MlFindFileStructure {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlFlushJob {
+    client: Elasticsearch,
+    advance_time: Option<String>,
+    calc_interim: Option<bool>,
+    end: Option<String>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
+    skip_time: Option<String>,
+    source: Option<String>,
+    start: Option<String>,
+}
+impl MlFlushJob {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlFlushJob {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Advances time to the given value generating results and updating the model for the advanced interval"]
     pub fn advance_time(mut self, advance_time: Option<String>) -> Self {
@@ -911,37 +901,6 @@ impl MlFlushJob {
         self.start = start;
         self
     }
-}
-impl Sender for MlFlushJob {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlForecast {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    duration: Option<String>,
-    expires_in: Option<String>,
-}
-impl MlForecast {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlForecast {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -967,6 +926,38 @@ impl MlForecast {
         self.source = source;
         self
     }
+}
+impl Sender for MlFlushJob {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlForecast {
+    client: Elasticsearch,
+    duration: Option<String>,
+    error_trace: Option<bool>,
+    expires_in: Option<String>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl MlForecast {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlForecast {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "The duration of the forecast"]
     pub fn duration(mut self, duration: Option<String>) -> Self {
         self.duration = duration;
@@ -975,6 +966,31 @@ impl MlForecast {
     #[doc = "The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity."]
     pub fn expires_in(mut self, expires_in: Option<String>) -> Self {
         self.expires_in = expires_in;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -993,20 +1009,22 @@ impl Sender for MlForecast {
 #[derive(Default)]
 pub struct MlGetBuckets {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     anomaly_score: Option<f64>,
     desc: Option<bool>,
     end: Option<String>,
+    error_trace: Option<bool>,
     exclude_interim: Option<bool>,
     expand: Option<bool>,
+    filter_path: Option<Vec<String>>,
     from: Option<i32>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
+    source: Option<String>,
     start: Option<String>,
+    timestamp: Option<String>,
 }
 impl MlGetBuckets {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1014,31 +1032,6 @@ impl MlGetBuckets {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Filter for the most anomalous buckets"]
     pub fn anomaly_score(mut self, anomaly_score: Option<f64>) -> Self {
@@ -1085,40 +1078,6 @@ impl MlGetBuckets {
         self.start = start;
         self
     }
-}
-impl Sender for MlGetBuckets {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlGetCalendarEvents {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    end: Option<String>,
-    from: Option<i32>,
-    job_id: Option<String>,
-    size: Option<i32>,
-    start: Option<String>,
-}
-impl MlGetCalendarEvents {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlGetCalendarEvents {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1143,6 +1102,41 @@ impl MlGetCalendarEvents {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for MlGetBuckets {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlGetCalendarEvents {
+    client: Elasticsearch,
+    calendar_id: Option<String>,
+    end: Option<String>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    from: Option<i32>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
+    size: Option<i32>,
+    source: Option<String>,
+    start: Option<String>,
+}
+impl MlGetCalendarEvents {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetCalendarEvents {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Get events before this time"]
     pub fn end(mut self, end: Option<String>) -> Self {
@@ -1169,37 +1163,6 @@ impl MlGetCalendarEvents {
         self.start = start;
         self
     }
-}
-impl Sender for MlGetCalendarEvents {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlGetCalendars {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    from: Option<i32>,
-    size: Option<i32>,
-}
-impl MlGetCalendars {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlGetCalendars {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1225,6 +1188,38 @@ impl MlGetCalendars {
         self.source = source;
         self
     }
+}
+impl Sender for MlGetCalendarEvents {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlGetCalendars {
+    client: Elasticsearch,
+    calendar_id: Option<String>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    from: Option<i32>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    size: Option<i32>,
+    source: Option<String>,
+}
+impl MlGetCalendars {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetCalendars {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "skips a number of calendars"]
     pub fn from(mut self, from: Option<i32>) -> Self {
         self.from = from;
@@ -1233,6 +1228,31 @@ impl MlGetCalendars {
     #[doc = "specifies a max number of calendars to get"]
     pub fn size(mut self, size: Option<i32>) -> Self {
         self.size = size;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1251,13 +1271,15 @@ impl Sender for MlGetCalendars {
 #[derive(Default)]
 pub struct MlGetCategories {
     client: Elasticsearch,
+    category_id: Option<i64>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     from: Option<i32>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
+    source: Option<String>,
 }
 impl MlGetCategories {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1265,6 +1287,16 @@ impl MlGetCategories {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "skips a number of categories"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of categories to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1289,16 +1321,6 @@ impl MlGetCategories {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "skips a number of categories"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of categories to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -1317,14 +1339,15 @@ impl Sender for MlGetCategories {
 #[derive(Default)]
 pub struct MlGetDataFrameAnalytics {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_match: Option<bool>,
     from: Option<i32>,
+    human: Option<bool>,
+    id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
+    source: Option<String>,
 }
 impl MlGetDataFrameAnalytics {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1332,6 +1355,21 @@ impl MlGetDataFrameAnalytics {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "skips a number of analytics"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of analytics to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1356,21 +1394,6 @@ impl MlGetDataFrameAnalytics {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -1389,14 +1412,15 @@ impl Sender for MlGetDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlGetDataFrameAnalyticsStats {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_match: Option<bool>,
     from: Option<i32>,
+    human: Option<bool>,
+    id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
+    source: Option<String>,
 }
 impl MlGetDataFrameAnalyticsStats {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1404,6 +1428,21 @@ impl MlGetDataFrameAnalyticsStats {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "skips a number of analytics"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of analytics to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1428,21 +1467,6 @@ impl MlGetDataFrameAnalyticsStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -1461,12 +1485,13 @@ impl Sender for MlGetDataFrameAnalyticsStats {
 #[derive(Default)]
 pub struct MlGetDatafeedStats {
     client: Elasticsearch,
+    allow_no_datafeeds: Option<bool>,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_datafeeds: Option<bool>,
 }
 impl MlGetDatafeedStats {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1474,6 +1499,11 @@ impl MlGetDatafeedStats {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
+        self.allow_no_datafeeds = allow_no_datafeeds;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1498,11 +1528,6 @@ impl MlGetDatafeedStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
         self
     }
 }
@@ -1521,12 +1546,13 @@ impl Sender for MlGetDatafeedStats {
 #[derive(Default)]
 pub struct MlGetDatafeeds {
     client: Elasticsearch,
+    allow_no_datafeeds: Option<bool>,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_datafeeds: Option<bool>,
 }
 impl MlGetDatafeeds {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1534,6 +1560,11 @@ impl MlGetDatafeeds {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
+        self.allow_no_datafeeds = allow_no_datafeeds;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1558,11 +1589,6 @@ impl MlGetDatafeeds {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
         self
     }
 }
@@ -1582,12 +1608,13 @@ impl Sender for MlGetDatafeeds {
 pub struct MlGetFilters {
     client: Elasticsearch,
     error_trace: Option<bool>,
+    filter_id: Option<String>,
     filter_path: Option<Vec<String>>,
+    from: Option<i32>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    from: Option<i32>,
     size: Option<i32>,
+    source: Option<String>,
 }
 impl MlGetFilters {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1595,6 +1622,16 @@ impl MlGetFilters {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "skips a number of filters"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
+    #[doc = "specifies a max number of filters to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1619,16 +1656,6 @@ impl MlGetFilters {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "skips a number of filters"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of filters to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
         self
     }
 }
@@ -1647,18 +1674,19 @@ impl Sender for MlGetFilters {
 #[derive(Default)]
 pub struct MlGetInfluencers {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     desc: Option<bool>,
     end: Option<String>,
+    error_trace: Option<bool>,
     exclude_interim: Option<bool>,
+    filter_path: Option<Vec<String>>,
     from: Option<i32>,
+    human: Option<bool>,
     influencer_score: Option<f64>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
+    source: Option<String>,
     start: Option<String>,
 }
 impl MlGetInfluencers {
@@ -1667,31 +1695,6 @@ impl MlGetInfluencers {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "whether the results should be sorted in decending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -1733,36 +1736,6 @@ impl MlGetInfluencers {
         self.start = start;
         self
     }
-}
-impl Sender for MlGetInfluencers {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlGetJobStats {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_jobs: Option<bool>,
-}
-impl MlGetJobStats {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlGetJobStats {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1788,9 +1761,65 @@ impl MlGetJobStats {
         self.source = source;
         self
     }
+}
+impl Sender for MlGetInfluencers {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlGetJobStats {
+    client: Elasticsearch,
+    allow_no_jobs: Option<bool>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl MlGetJobStats {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetJobStats {
+            client,
+            ..Default::default()
+        }
+    }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
         self.allow_no_jobs = allow_no_jobs;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1809,12 +1838,13 @@ impl Sender for MlGetJobStats {
 #[derive(Default)]
 pub struct MlGetJobs {
     client: Elasticsearch,
+    allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_jobs: Option<bool>,
 }
 impl MlGetJobs {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1822,6 +1852,11 @@ impl MlGetJobs {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
+    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
+        self.allow_no_jobs = allow_no_jobs;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1846,11 +1881,6 @@ impl MlGetJobs {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
         self
     }
 }
@@ -1869,16 +1899,18 @@ impl Sender for MlGetJobs {
 #[derive(Default)]
 pub struct MlGetModelSnapshots {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     desc: Option<bool>,
     end: Option<String>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
     from: Option<i32>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
     size: Option<i32>,
+    snapshot_id: Option<String>,
     sort: Option<String>,
+    source: Option<String>,
     start: Option<String>,
 }
 impl MlGetModelSnapshots {
@@ -1887,31 +1919,6 @@ impl MlGetModelSnapshots {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True if the results should be sorted in descending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -1943,42 +1950,6 @@ impl MlGetModelSnapshots {
         self.start = start;
         self
     }
-}
-impl Sender for MlGetModelSnapshots {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlGetOverallBuckets {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_jobs: Option<bool>,
-    bucket_span: Option<String>,
-    end: Option<String>,
-    exclude_interim: Option<bool>,
-    overall_score: Option<f64>,
-    start: Option<String>,
-    top_n: Option<i32>,
-}
-impl MlGetOverallBuckets {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlGetOverallBuckets {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2003,6 +1974,43 @@ impl MlGetOverallBuckets {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for MlGetModelSnapshots {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlGetOverallBuckets {
+    client: Elasticsearch,
+    allow_no_jobs: Option<bool>,
+    bucket_span: Option<String>,
+    end: Option<String>,
+    error_trace: Option<bool>,
+    exclude_interim: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    overall_score: Option<f64>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    start: Option<String>,
+    top_n: Option<i32>,
+}
+impl MlGetOverallBuckets {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetOverallBuckets {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
@@ -2039,43 +2047,6 @@ impl MlGetOverallBuckets {
         self.top_n = top_n;
         self
     }
-}
-impl Sender for MlGetOverallBuckets {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
-    }
-}
-#[derive(Default)]
-pub struct MlGetRecords {
-    client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    desc: Option<bool>,
-    end: Option<String>,
-    exclude_interim: Option<bool>,
-    from: Option<i32>,
-    record_score: Option<f64>,
-    size: Option<i32>,
-    sort: Option<String>,
-    start: Option<String>,
-}
-impl MlGetRecords {
-    pub fn new(client: Elasticsearch) -> Self {
-        MlGetRecords {
-            client,
-            ..Default::default()
-        }
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2100,6 +2071,44 @@ impl MlGetRecords {
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
         self
+    }
+}
+impl Sender for MlGetOverallBuckets {
+    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
+    where
+        T: DeserializeOwned,
+    {
+        Ok(ElasticsearchResponse {
+            headers: HeaderMap::new(),
+            status_code: StatusCode::OK,
+            body: None,
+        })
+    }
+}
+#[derive(Default)]
+pub struct MlGetRecords {
+    client: Elasticsearch,
+    desc: Option<bool>,
+    end: Option<String>,
+    error_trace: Option<bool>,
+    exclude_interim: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    from: Option<i32>,
+    human: Option<bool>,
+    job_id: Option<String>,
+    pretty: Option<bool>,
+    record_score: Option<f64>,
+    size: Option<i32>,
+    sort: Option<String>,
+    source: Option<String>,
+    start: Option<String>,
+}
+impl MlGetRecords {
+    pub fn new(client: Elasticsearch) -> Self {
+        MlGetRecords {
+            client,
+            ..Default::default()
+        }
     }
     #[doc = "Set the sort direction"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -2138,6 +2147,31 @@ impl MlGetRecords {
     #[doc = "Start time filter for records"]
     pub fn start(mut self, start: Option<String>) -> Self {
         self.start = start;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -2213,8 +2247,11 @@ pub struct MlOpenJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_downtime: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
+    timeout: Option<String>,
 }
 impl MlOpenJob {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2264,6 +2301,7 @@ impl Sender for MlOpenJob {
 #[derive(Default)]
 pub struct MlPostCalendarEvents {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2321,10 +2359,11 @@ pub struct MlPostData {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
-    source: Option<String>,
     reset_end: Option<String>,
     reset_start: Option<String>,
+    source: Option<String>,
 }
 impl MlPostData {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2332,6 +2371,16 @@ impl MlPostData {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Optional parameter to specify the end of the bucket resetting range"]
+    pub fn reset_end(mut self, reset_end: Option<String>) -> Self {
+        self.reset_end = reset_end;
+        self
+    }
+    #[doc = "Optional parameter to specify the start of the bucket resetting range"]
+    pub fn reset_start(mut self, reset_start: Option<String>) -> Self {
+        self.reset_start = reset_start;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2358,16 +2407,6 @@ impl MlPostData {
         self.source = source;
         self
     }
-    #[doc = "Optional parameter to specify the end of the bucket resetting range"]
-    pub fn reset_end(mut self, reset_end: Option<String>) -> Self {
-        self.reset_end = reset_end;
-        self
-    }
-    #[doc = "Optional parameter to specify the start of the bucket resetting range"]
-    pub fn reset_start(mut self, reset_start: Option<String>) -> Self {
-        self.reset_start = reset_start;
-        self
-    }
 }
 impl Sender for MlPostData {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -2384,6 +2423,7 @@ impl Sender for MlPostData {
 #[derive(Default)]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2438,6 +2478,7 @@ impl Sender for MlPreviewDatafeed {
 #[derive(Default)]
 pub struct MlPutCalendar {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2492,9 +2533,11 @@ impl Sender for MlPutCalendar {
 #[derive(Default)]
 pub struct MlPutCalendarJob {
     client: Elasticsearch,
+    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2549,6 +2592,7 @@ pub struct MlPutDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2600,6 +2644,7 @@ impl Sender for MlPutDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlPutDatafeed {
     client: Elasticsearch,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2655,6 +2700,7 @@ impl Sender for MlPutDatafeed {
 pub struct MlPutFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
+    filter_id: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -2711,6 +2757,7 @@ pub struct MlPutJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2762,12 +2809,14 @@ impl Sender for MlPutJob {
 #[derive(Default)]
 pub struct MlRevertModelSnapshot {
     client: Elasticsearch,
+    delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
+    snapshot_id: Option<String>,
     source: Option<String>,
-    delete_intervening_results: Option<bool>,
 }
 impl MlRevertModelSnapshot {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2775,6 +2824,11 @@ impl MlRevertModelSnapshot {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Should we reset the results back to the time of the snapshot?"]
+    pub fn delete_intervening_results(mut self, delete_intervening_results: Option<bool>) -> Self {
+        self.delete_intervening_results = delete_intervening_results;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2799,11 +2853,6 @@ impl MlRevertModelSnapshot {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Should we reset the results back to the time of the snapshot?"]
-    pub fn delete_intervening_results(mut self, delete_intervening_results: Option<bool>) -> Self {
-        self.delete_intervening_results = delete_intervening_results;
         self
     }
 }
@@ -2822,12 +2871,12 @@ impl Sender for MlRevertModelSnapshot {
 #[derive(Default)]
 pub struct MlSetUpgradeMode {
     client: Elasticsearch,
+    enabled: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    enabled: Option<bool>,
     timeout: Option<String>,
 }
 impl MlSetUpgradeMode {
@@ -2836,6 +2885,16 @@ impl MlSetUpgradeMode {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to enable upgrade_mode ML setting or not. Defaults to false."]
+    pub fn enabled(mut self, enabled: Option<bool>) -> Self {
+        self.enabled = enabled;
+        self
+    }
+    #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2860,16 +2919,6 @@ impl MlSetUpgradeMode {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to enable upgrade_mode ML setting or not. Defaults to false."]
-    pub fn enabled(mut self, enabled: Option<bool>) -> Self {
-        self.enabled = enabled;
-        self
-    }
-    #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -2891,6 +2940,7 @@ pub struct MlStartDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -2901,6 +2951,11 @@ impl MlStartDataFrameAnalytics {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Controls the time to wait until the task has started. Defaults to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2925,11 +2980,6 @@ impl MlStartDataFrameAnalytics {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Controls the time to wait until the task has started. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -2948,12 +2998,13 @@ impl Sender for MlStartDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlStartDatafeed {
     client: Elasticsearch,
+    datafeed_id: Option<String>,
+    end: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    end: Option<String>,
     start: Option<String>,
     timeout: Option<String>,
 }
@@ -2963,6 +3014,21 @@ impl MlStartDatafeed {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
+    pub fn end(mut self, end: Option<String>) -> Self {
+        self.end = end;
+        self
+    }
+    #[doc = "The start time from where the datafeed should begin"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
+        self
+    }
+    #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2987,21 +3053,6 @@ impl MlStartDatafeed {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
-        self
-    }
-    #[doc = "The start time from where the datafeed should begin"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -3020,13 +3071,14 @@ impl Sender for MlStartDatafeed {
 #[derive(Default)]
 pub struct MlStopDataFrameAnalytics {
     client: Elasticsearch,
+    allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    force: Option<bool>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_match: Option<bool>,
-    force: Option<bool>,
     timeout: Option<String>,
 }
 impl MlStopDataFrameAnalytics {
@@ -3035,6 +3087,21 @@ impl MlStopDataFrameAnalytics {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
+    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
+        self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "True if the data frame analytics should be forcefully stopped"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
+    }
+    #[doc = "Controls the time to wait until the task has stopped. Defaults to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3059,21 +3126,6 @@ impl MlStopDataFrameAnalytics {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
-        self
-    }
-    #[doc = "True if the data frame analytics should be forcefully stopped"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until the task has stopped. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
         self
     }
 }
@@ -3092,13 +3144,14 @@ impl Sender for MlStopDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlStopDatafeed {
     client: Elasticsearch,
+    allow_no_datafeeds: Option<bool>,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
+    force: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_datafeeds: Option<bool>,
-    force: Option<bool>,
     timeout: Option<String>,
 }
 impl MlStopDatafeed {
@@ -3107,6 +3160,21 @@ impl MlStopDatafeed {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
+        self.allow_no_datafeeds = allow_no_datafeeds;
+        self
+    }
+    #[doc = "True if the datafeed should be forcefully stopped."]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
+    }
+    #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3133,21 +3201,6 @@ impl MlStopDatafeed {
         self.source = source;
         self
     }
-    #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
-        self
-    }
-    #[doc = "True if the datafeed should be forcefully stopped."]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
 }
 impl Sender for MlStopDatafeed {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -3164,6 +3217,7 @@ impl Sender for MlStopDatafeed {
 #[derive(Default)]
 pub struct MlUpdateDatafeed {
     client: Elasticsearch,
+    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3219,6 +3273,7 @@ impl Sender for MlUpdateDatafeed {
 pub struct MlUpdateFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
+    filter_id: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -3275,6 +3330,7 @@ pub struct MlUpdateJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -3329,7 +3385,9 @@ pub struct MlUpdateModelSnapshot {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    job_id: Option<String>,
     pretty: Option<bool>,
+    snapshot_id: Option<String>,
     source: Option<String>,
 }
 impl MlUpdateModelSnapshot {

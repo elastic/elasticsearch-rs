@@ -12,6 +12,7 @@ pub struct CcrDeleteAutoFollowPattern {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -66,6 +67,7 @@ pub struct CcrFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_active_shards: Option<String>,
@@ -76,6 +78,11 @@ impl CcrFollow {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Sets the number of shard copies that must be active before returning. Defaults to 0. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -102,11 +109,6 @@ impl CcrFollow {
         self.source = source;
         self
     }
-    #[doc = "Sets the number of shard copies that must be active before returning. Defaults to 0. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
 }
 impl Sender for CcrFollow {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -126,6 +128,7 @@ pub struct CcrFollowInfo {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -180,6 +183,7 @@ pub struct CcrFollowStats {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -234,6 +238,7 @@ pub struct CcrForgetFollower {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -288,6 +293,7 @@ pub struct CcrGetAutoFollowPattern {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -342,6 +348,7 @@ pub struct CcrPauseFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -396,6 +403,7 @@ pub struct CcrPutAutoFollowPattern {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -450,6 +458,7 @@ pub struct CcrResumeFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -558,6 +567,7 @@ pub struct CcrUnfollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }

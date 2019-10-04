@@ -1,7 +1,9 @@
 use crate::api_generator::*;
 
+use array_tool::vec::Intersect;
 use inflector::Inflector;
 use quote::Tokens;
+use reduce::Reduce;
 use syn::Field;
 
 /// Generates the source code for a namespaced client
@@ -14,7 +16,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         .map(code_gen::create_field)
         .collect();
 
-    let common_builder_methods: Vec<Tokens> = api
+    let common_builder_fns: Vec<Tokens> = api
         .common_params
         .iter()
         .map(code_gen::create_builder_method)
@@ -56,14 +58,39 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
 
                 let builder_ident = code_gen::ident(builder_name);
 
-                let fields: Vec<syn::Field> = endpoint
+                // url parts that are common across all urls.
+                // These are required parameters for the builder ctor new() fn
+                let required_parts: Option<Vec<&str>> = endpoint
                     .url
-                    .params
+                    .paths
+                    .iter()
+                    .map(|p| {
+                        p.params()
+                    })
+                    .reduce(|a, b| a.intersect(b));
+
+                // collect all the fields for the builder struct
+                let mut fields: Vec<syn::Field> = endpoint
+                    .url
+                    .parts
                     .iter()
                     .map(code_gen::create_field)
                     .collect();
 
-                let builder_methods: Vec<Tokens> = endpoint
+                fields.append(&mut endpoint
+                    .url
+                    .params
+                    .iter()
+                    .map(code_gen::create_field)
+                    .collect());
+
+                // clone common_fields as quote!() consumes the Vec<Field>
+                fields.append(&mut common_fields.clone());
+                fields.sort_by(|a, b| a.ident.cmp(&b.ident));
+                fields.dedup_by(|a, b| a.ident.eq(&b.ident));
+
+                // collect all the functions for the builder struct
+                let mut builder_fns: Vec<Tokens> = endpoint
                     .url
                     .params
                     .iter()
@@ -71,26 +98,24 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .collect();
 
                 // clone is required as quote! consumes the Vec<Field>
-                let common_fields_clone = common_fields.clone();
-                let common_builder_methods_clone = common_builder_methods.clone();
+                builder_fns.append(&mut common_builder_fns.clone());
 
                 quote!(
                     #[derive(Default)]
                     pub struct #builder_ident {
                         client: Elasticsearch,
-                        #(#common_fields_clone),*,
-                        #(#fields),*
+                        #(#fields),*,
                     }
 
                     impl #builder_ident {
+                        // TODO: add required_parts to new fn
                         pub fn new(client: Elasticsearch) -> Self {
                             #builder_ident {
                                 client,
                                 ..Default::default()
                             }
                         }
-                        #(#common_builder_methods_clone)*
-                        #(#builder_methods)*
+                        #(#builder_fns)*
                     }
 
                     impl Sender for #builder_ident {
