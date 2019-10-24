@@ -192,10 +192,11 @@ fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
                 decl: syn::FnDecl {
                     inputs: vec![
                         syn::FnArg::SelfValue(syn::Mutability::Mutable),
-                        syn::FnArg::Captured(syn::Pat::Path(None, path_none(name.as_str())), ty)],
+                        syn::FnArg::Captured(syn::Pat::Path(None, path_none(name.as_str())), ty),
+                    ],
                     // TODO: a Self syn type?
                     output: syn::FunctionRetTy::Ty(syn::parse_type("Self").unwrap()),
-                    variadic: false
+                    variadic: false,
                 },
                 generics: generics_none(),
             },
@@ -206,8 +207,10 @@ fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
             // ---------
             syn::Block {
                 stmts: vec![
-                    syn::Stmt::Semi(Box::new(parse_expr(quote!(self.#field_ident = #value_ident)))),
-                    syn::Stmt::Expr(Box::new(parse_expr(quote!(self))))
+                    syn::Stmt::Semi(Box::new(parse_expr(
+                        quote!(self.#field_ident = #value_ident),
+                    ))),
+                    syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
                 ],
             },
         ),

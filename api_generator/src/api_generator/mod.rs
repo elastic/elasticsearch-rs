@@ -2,6 +2,7 @@ use crate::api_generator::code_gen::url::url_builder::Path;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::Deserialize;
 use serde_json::Value;
+use std::fs::OpenOptions;
 use std::path::PathBuf;
 use std::{
     collections::{BTreeMap, HashSet},
@@ -214,6 +215,27 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
     let path = generated_path.to_string_lossy().into_owned();
 
     let mut file = File::create(&path)?;
+    file.write_all("// -----------------------------------------------
+// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
+// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
+// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
+// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
+// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
+// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
+// -----------------------------------------------
+//
+// This file is generated,
+// Please do not edit it manually.
+// Run the following in the root of the repo:
+//
+// cargo run -p api_generator
+//
+// -----------------------------------------------
+"
+        .as_bytes(),
+    )?;
+
+    let mut file = OpenOptions::new().append(true).write(true).open(&path)?;
     file.write_all(input.as_bytes())?;
 
     Ok(())

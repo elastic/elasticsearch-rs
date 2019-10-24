@@ -14,11 +14,8 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .map(code_gen::create_field)
         .collect();
 
-    let common_builder_fns: Vec<ImplItem> = api
-        .common_params
-        .iter()
-        .map(code_gen::create_fn)
-        .collect();
+    let common_builder_fns: Vec<ImplItem> =
+        api.common_params.iter().map(code_gen::create_fn).collect();
 
     let builders: Vec<Tokens> = api
         .root

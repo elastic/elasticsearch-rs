@@ -10,10 +10,11 @@ use serde::{Deserialize, Deserializer};
 
 use crate::api_generator::code_gen::*;
 
+/// A URL path
 #[derive(Debug, Deserialize, PartialEq, Clone)]
 pub struct Path(#[serde(deserialize_with = "rooted_path_string")] pub String);
 
-// Ensure all deserialized paths have a leading `/`
+/// Ensure all deserialized paths have a leading `/`
 fn rooted_path_string<'de, D>(deserializer: D) -> Result<String, D::Error>
 where
     D: Deserializer<'de>,
@@ -34,10 +35,12 @@ impl fmt::Display for Path {
 }
 
 impl Path {
+    /// Splits a path into a vector of parameter and literal parts
     pub fn split(&self) -> Vec<PathPart> {
         Path::parse(self.0.as_bytes(), PathParseState::Literal, Vec::new())
     }
 
+    /// Gets the parameters from the path
     pub fn params(&self) -> Vec<&str> {
         self.split()
             .iter()
@@ -98,6 +101,7 @@ enum PathParseState {
     Param,
 }
 
+/// A part of a Path
 #[derive(Debug, PartialEq)]
 pub enum PathPart<'a> {
     Literal(&'a str),
@@ -136,28 +140,23 @@ impl<'a> ReplaceBuilder<'a> {
         let lit_len_expr = Self::literal_length_expr(&self.url);
 
         let mut params_len_exprs = Self::parameter_length_exprs(&self.url);
-
         let mut len_exprs = vec![lit_len_expr];
         len_exprs.append(&mut params_len_exprs);
 
         let len_expr = Self::summed_length_expr(len_exprs);
-
         let url_ident = ident("url");
         let url_ty = ident("UrlPath");
-
         let let_stmt = Self::let_url_stmt(url_ident.clone(), len_expr);
 
         let mut push_stmts = Self::push_part_stmts(url_ident.clone(), &self.url);
-
         let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ty ::from(#url_ident)))));
 
         let mut stmts = vec![let_stmt];
 
         stmts.append(&mut push_stmts);
-
         stmts.push(return_expr);
 
-        syn::Block { stmts: stmts }
+        syn::Block { stmts }
     }
 
     /// Build a non-allocated url from the path literals.
