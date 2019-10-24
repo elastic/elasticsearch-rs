@@ -4,7 +4,7 @@ use array_tool::vec::Intersect;
 use inflector::Inflector;
 use quote::Tokens;
 use reduce::Reduce;
-use syn::Field;
+use syn::{Field, ImplItem};
 
 /// Generates the source code for a namespaced client
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
@@ -16,10 +16,10 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         .map(code_gen::create_field)
         .collect();
 
-    let common_builder_fns: Vec<Tokens> = api
+    let common_builder_fns : Vec<ImplItem> = api
         .common_params
         .iter()
-        .map(code_gen::create_builder_method)
+        .map(code_gen::create_fn)
         .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
@@ -69,7 +69,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     })
                     .reduce(|a, b| a.intersect(b));
 
-                // collect all the fields for the builder struct
+                // collect all the fields for the builder struct. Start with url parts
                 let mut fields: Vec<syn::Field> = endpoint
                     .url
                     .parts
@@ -77,6 +77,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .map(code_gen::create_field)
                     .collect();
 
+                // url parameters
                 fields.append(&mut endpoint
                     .url
                     .params
@@ -84,21 +85,25 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     .map(code_gen::create_field)
                     .collect());
 
-                // clone common_fields as quote!() consumes the Vec<Field>
+                // Combine common fields with struct fields, sort and deduplicate
+                // clone common_fields, since quote!() consumes the Vec<Field>
                 fields.append(&mut common_fields.clone());
                 fields.sort_by(|a, b| a.ident.cmp(&b.ident));
                 fields.dedup_by(|a, b| a.ident.eq(&b.ident));
 
                 // collect all the functions for the builder struct
-                let mut builder_fns: Vec<Tokens> = endpoint
+                let mut builder_fns: Vec<ImplItem> = endpoint
                     .url
                     .params
                     .iter()
-                    .map(code_gen::create_builder_method)
+                    .map(code_gen::create_fn)
                     .collect();
 
-                // clone is required as quote! consumes the Vec<Field>
+                // Combine common fns with builder fns, sort and deduplicate
+                // clone is required, since quote!() consumes the Vec<Item>
                 builder_fns.append(&mut common_builder_fns.clone());
+                builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
+                builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
                 quote!(
                     #[derive(Default)]

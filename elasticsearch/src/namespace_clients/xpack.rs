@@ -83,11 +83,6 @@ impl XpackUsage {
             ..Default::default()
         }
     }
-    #[doc = "Specify timeout for watch write operation"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -101,6 +96,11 @@ impl XpackUsage {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Specify timeout for watch write operation"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]

@@ -25,16 +25,6 @@ impl IngestDeletePipeline {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -50,6 +40,11 @@ impl IngestDeletePipeline {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -58,6 +53,11 @@ impl IngestDeletePipeline {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -91,11 +91,6 @@ impl IngestGetPipeline {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -109,6 +104,11 @@ impl IngestGetPipeline {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -207,16 +207,6 @@ impl IngestPutPipeline {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -232,6 +222,11 @@ impl IngestPutPipeline {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -240,6 +235,11 @@ impl IngestPutPipeline {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -273,11 +273,6 @@ impl IngestSimulate {
             ..Default::default()
         }
     }
-    #[doc = "Verbose mode. Display data output for each processor in executed pipeline"]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -301,6 +296,11 @@ impl IngestSimulate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Verbose mode. Display data output for each processor in executed pipeline"]
+    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
+        self.verbose = verbose;
         self
     }
 }

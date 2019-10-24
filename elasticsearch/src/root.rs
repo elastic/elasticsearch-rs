@@ -9,17 +9,17 @@ use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct Bulk {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     pipeline: Option<String>,
+    pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     ty: Option<String>,
     wait_for_active_shards: Option<String>,
@@ -30,31 +30,6 @@ impl Bulk {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or default list of fields to return, can be overridden on each sub-request"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -71,9 +46,29 @@ impl Bulk {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "The pipeline id to preprocess incoming documents with"]
     pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
         self.pipeline = pipeline;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
@@ -84,6 +79,11 @@ impl Bulk {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -171,24 +171,24 @@ impl Sender for ClearScroll {
 #[derive(Default)]
 pub struct Count {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     min_score: Option<i64>,
     preference: Option<String>,
+    pretty: Option<bool>,
     q: Option<String>,
     routing: Option<Vec<String>>,
+    source: Option<String>,
     terminate_after: Option<i64>,
 }
 impl Count {
@@ -197,31 +197,6 @@ impl Count {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -248,9 +223,24 @@ impl Count {
         self.df = df;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
@@ -278,6 +268,11 @@ impl Count {
         self.preference = preference;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Query in the Lucene query string syntax"]
     pub fn q(mut self, q: Option<String>) -> Self {
         self.q = q;
@@ -286,6 +281,11 @@ impl Count {
     #[doc = "A comma-separated list of specific routing values"]
     pub fn routing(mut self, routing: Option<Vec<String>>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "The maximum count for each shard, upon reaching which the query execution will terminate early"]
@@ -312,11 +312,11 @@ pub struct Create {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     pipeline: Option<String>,
+    pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -344,19 +344,14 @@ impl Create {
         self.human = human;
         self
     }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "The pipeline id to preprocess incoming documents with"]
     pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
         self.pipeline = pipeline;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
@@ -367,6 +362,11 @@ impl Create {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -408,12 +408,12 @@ pub struct Delete {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
+    pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -441,16 +441,6 @@ impl Delete {
         self.human = human;
         self
     }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "only perform the delete operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -461,6 +451,11 @@ impl Delete {
         self.if_seq_no = if_seq_no;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
@@ -469,6 +464,11 @@ impl Delete {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -507,11 +507,6 @@ impl Sender for Delete {
 #[derive(Default)]
 pub struct DeleteByQuery {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -521,12 +516,16 @@ pub struct DeleteByQuery {
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
     from: Option<i64>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     preference: Option<String>,
+    pretty: Option<bool>,
     q: Option<String>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
@@ -539,6 +538,7 @@ pub struct DeleteByQuery {
     size: Option<i64>,
     slices: Option<i64>,
     sort: Option<Vec<String>>,
+    source: Option<String>,
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
@@ -552,31 +552,6 @@ impl DeleteByQuery {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -623,14 +598,29 @@ impl DeleteByQuery {
         self.df = df;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Starting offset (default: 0)"]
     pub fn from(mut self, from: Option<i64>) -> Self {
         self.from = from;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -651,6 +641,11 @@ impl DeleteByQuery {
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
@@ -713,6 +708,11 @@ impl DeleteByQuery {
         self.sort = sort;
         self
     }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
     pub fn stats(mut self, stats: Option<Vec<String>>) -> Self {
         self.stats = stats;
@@ -763,8 +763,8 @@ pub struct DeleteByQueryRethrottle {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     requests_per_second: Option<i64>,
+    source: Option<String>,
 }
 impl DeleteByQueryRethrottle {
     pub fn new(client: Elasticsearch) -> Self {
@@ -793,14 +793,14 @@ impl DeleteByQueryRethrottle {
         self.pretty = pretty;
         self
     }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
         self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -822,9 +822,9 @@ pub struct DeleteScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
 }
 impl DeleteScript {
@@ -849,6 +849,11 @@ impl DeleteScript {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -857,11 +862,6 @@ impl DeleteScript {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -885,18 +885,18 @@ impl Sender for DeleteScript {
 #[derive(Default)]
 pub struct Exists {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     stored_fields: Option<Vec<String>>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -907,31 +907,6 @@ impl Exists {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -948,9 +923,29 @@ impl Exists {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to perform the operation in realtime or search mode"]
@@ -966,6 +961,11 @@ impl Exists {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
@@ -999,18 +999,18 @@ impl Sender for Exists {
 #[derive(Default)]
 pub struct ExistsSource {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1020,31 +1020,6 @@ impl ExistsSource {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -1061,9 +1036,29 @@ impl ExistsSource {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to perform the operation in realtime or search mode"]
@@ -1079,6 +1074,11 @@ impl ExistsSource {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit version number for concurrency control"]
@@ -1107,11 +1107,6 @@ impl Sender for ExistsSource {
 #[derive(Default)]
 pub struct Explain {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -1119,10 +1114,15 @@ pub struct Explain {
     analyzer: Option<String>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     lenient: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     q: Option<String>,
     routing: Option<String>,
+    source: Option<String>,
     stored_fields: Option<Vec<String>>,
 }
 impl Explain {
@@ -1131,31 +1131,6 @@ impl Explain {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -1192,6 +1167,21 @@ impl Explain {
         self.df = df;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -1202,6 +1192,11 @@ impl Explain {
         self.preference = preference;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Query in the Lucene query string syntax"]
     pub fn q(mut self, q: Option<String>) -> Self {
         self.q = q;
@@ -1210,6 +1205,11 @@ impl Explain {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
@@ -1233,16 +1233,16 @@ impl Sender for Explain {
 #[derive(Default)]
 pub struct FieldCaps {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
 }
 impl FieldCaps {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1251,34 +1251,14 @@ impl FieldCaps {
             ..Default::default()
         }
     }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
@@ -1291,6 +1271,16 @@ impl FieldCaps {
         self.fields = fields;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
@@ -1299,6 +1289,16 @@ impl FieldCaps {
     #[doc = "Indicates whether unmapped fields should be included in the response."]
     pub fn include_unmapped(mut self, include_unmapped: Option<bool>) -> Self {
         self.include_unmapped = include_unmapped;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -1317,18 +1317,18 @@ impl Sender for FieldCaps {
 #[derive(Default)]
 pub struct Get {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     stored_fields: Option<Vec<String>>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -1339,31 +1339,6 @@ impl Get {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -1380,9 +1355,29 @@ impl Get {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to perform the operation in realtime or search mode"]
@@ -1398,6 +1393,11 @@ impl Get {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
@@ -1434,9 +1434,9 @@ pub struct GetScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    master_timeout: Option<String>,
 }
 impl GetScript {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1460,6 +1460,11 @@ impl GetScript {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1468,11 +1473,6 @@ impl GetScript {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
 }
@@ -1491,18 +1491,18 @@ impl Sender for GetScript {
 #[derive(Default)]
 pub struct GetSource {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1512,31 +1512,6 @@ impl GetSource {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -1553,9 +1528,29 @@ impl GetSource {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to perform the operation in realtime or search mode"]
@@ -1571,6 +1566,11 @@ impl GetSource {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit version number for concurrency control"]
@@ -1602,14 +1602,14 @@ pub struct Index {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     op_type: Option<OpType>,
     pipeline: Option<String>,
+    pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -1637,16 +1637,6 @@ impl Index {
         self.human = human;
         self
     }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "only perform the index operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -1667,6 +1657,11 @@ impl Index {
         self.pipeline = pipeline;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "If `true` then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
@@ -1675,6 +1670,11 @@ impl Index {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -1767,18 +1767,18 @@ impl Sender for Info {
 #[derive(Default)]
 pub struct Mget {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     stored_fields: Option<Vec<String>>,
 }
 impl Mget {
@@ -1787,31 +1787,6 @@ impl Mget {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -1828,9 +1803,29 @@ impl Mget {
         self._source_includes = _source_includes;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to perform the operation in realtime or search mode"]
@@ -1846,6 +1841,11 @@ impl Mget {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
@@ -1869,17 +1869,17 @@ impl Sender for Mget {
 #[derive(Default)]
 pub struct Msearch {
     client: Elasticsearch,
+    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    ccs_minimize_roundtrips: Option<bool>,
     max_concurrent_searches: Option<i64>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
+    pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
+    source: Option<String>,
     typed_keys: Option<bool>,
 }
 impl Msearch {
@@ -1888,6 +1888,11 @@ impl Msearch {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1902,21 +1907,6 @@ impl Msearch {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
-    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
-    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
-        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
         self
     }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
@@ -1937,6 +1927,11 @@ impl Msearch {
         self.pre_filter_shard_size = pre_filter_shard_size;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
         self.rest_total_hits_as_int = rest_total_hits_as_int;
@@ -1945,6 +1940,11 @@ impl Msearch {
     #[doc = "Search operation type"]
     pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
@@ -1968,15 +1968,15 @@ impl Sender for Msearch {
 #[derive(Default)]
 pub struct MsearchTemplate {
     client: Elasticsearch,
+    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    ccs_minimize_roundtrips: Option<bool>,
     max_concurrent_searches: Option<i64>,
+    pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
+    source: Option<String>,
     typed_keys: Option<bool>,
 }
 impl MsearchTemplate {
@@ -1985,6 +1985,11 @@ impl MsearchTemplate {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
+        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2001,24 +2006,14 @@ impl MsearchTemplate {
         self.human = human;
         self
     }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
-    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
-    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
-        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
-        self
-    }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
     pub fn max_concurrent_searches(mut self, max_concurrent_searches: Option<i64>) -> Self {
         self.max_concurrent_searches = max_concurrent_searches;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
@@ -2029,6 +2024,11 @@ impl MsearchTemplate {
     #[doc = "Search operation type"]
     pub fn search_type(mut self, search_type: Option<SearchType>) -> Self {
         self.search_type = search_type;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
@@ -2053,19 +2053,19 @@ impl Sender for MsearchTemplate {
 pub struct Mtermvectors {
     client: Elasticsearch,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     field_statistics: Option<bool>,
     fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     ids: Option<Vec<String>>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     term_statistics: Option<bool>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -2082,26 +2082,6 @@ impl Mtermvectors {
         self.error_trace = error_trace;
         self
     }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "Specifies if document count, sum of document frequencies and sum of total term frequencies should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
     pub fn field_statistics(mut self, field_statistics: Option<bool>) -> Self {
         self.field_statistics = field_statistics;
@@ -2110,6 +2090,16 @@ impl Mtermvectors {
     #[doc = "A comma-separated list of fields to return. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
     pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
         self.fields = fields;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "A comma-separated list of documents ids. You must define ids as parameter or set \"ids\" or \"docs\" in the request body"]
@@ -2137,6 +2127,11 @@ impl Mtermvectors {
         self.preference = preference;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Specifies if requests are real-time as opposed to near-real-time (default: true)."]
     pub fn realtime(mut self, realtime: Option<bool>) -> Self {
         self.realtime = realtime;
@@ -2145,6 +2140,11 @@ impl Mtermvectors {
     #[doc = "Specific routing value. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Specifies if total term frequency and document frequency should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
@@ -2232,13 +2232,13 @@ impl Sender for Ping {
 #[derive(Default)]
 pub struct PutScript {
     client: Elasticsearch,
+    context: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    context: Option<String>,
-    master_timeout: Option<String>,
     timeout: Option<String>,
 }
 impl PutScript {
@@ -2247,6 +2247,11 @@ impl PutScript {
             client,
             ..Default::default()
         }
+    }
+    #[doc = "Context name to compile script against"]
+    pub fn context(mut self, context: Option<String>) -> Self {
+        self.context = context;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2263,6 +2268,11 @@ impl PutScript {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2271,16 +2281,6 @@ impl PutScript {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Context name to compile script against"]
-    pub fn context(mut self, context: Option<String>) -> Self {
-        self.context = context;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -2304,14 +2304,14 @@ impl Sender for PutScript {
 #[derive(Default)]
 pub struct RankEval {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
-    ignore_unavailable: Option<bool>,
 }
 impl RankEval {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2320,9 +2320,19 @@ impl RankEval {
             ..Default::default()
         }
     }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2335,6 +2345,11 @@ impl RankEval {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2343,21 +2358,6 @@ impl RankEval {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
         self
     }
 }
@@ -2379,13 +2379,13 @@ pub struct Reindex {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     max_docs: Option<i64>,
+    pretty: Option<bool>,
     refresh: Option<bool>,
     requests_per_second: Option<i64>,
     scroll: Option<String>,
     slices: Option<i64>,
+    source: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
@@ -2412,19 +2412,14 @@ impl Reindex {
         self.human = human;
         self
     }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "Maximum number of documents to process (default: all documents)"]
     pub fn max_docs(mut self, max_docs: Option<i64>) -> Self {
         self.max_docs = max_docs;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Should the effected indexes be refreshed?"]
@@ -2445,6 +2440,11 @@ impl Reindex {
     #[doc = "The number of slices this task should be divided into. Defaults to 1 meaning the task isn't sliced into subtasks."]
     pub fn slices(mut self, slices: Option<i64>) -> Self {
         self.slices = slices;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
@@ -2482,8 +2482,8 @@ pub struct ReindexRethrottle {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     requests_per_second: Option<i64>,
+    source: Option<String>,
 }
 impl ReindexRethrottle {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2512,14 +2512,14 @@ impl ReindexRethrottle {
         self.pretty = pretty;
         self
     }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
         self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -2650,10 +2650,10 @@ pub struct Scroll {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     rest_total_hits_as_int: Option<bool>,
     scroll: Option<String>,
     scroll_id: Option<String>,
+    source: Option<String>,
 }
 impl Scroll {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2682,11 +2682,6 @@ impl Scroll {
         self.pretty = pretty;
         self
     }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "Indicates whether hits.total should be rendered as an integer or an object in the rest search response"]
     pub fn rest_total_hits_as_int(mut self, rest_total_hits_as_int: Option<bool>) -> Self {
         self.rest_total_hits_as_int = rest_total_hits_as_int;
@@ -2700,6 +2695,11 @@ impl Scroll {
     #[doc = "The scroll ID for scrolled search"]
     pub fn scroll_id(mut self, scroll_id: Option<String>) -> Self {
         self.scroll_id = scroll_id;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -2718,11 +2718,6 @@ impl Sender for Scroll {
 #[derive(Default)]
 pub struct Search {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -2735,15 +2730,19 @@ pub struct Search {
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
     docvalue_fields: Option<Vec<String>>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
+    filter_path: Option<Vec<String>>,
     from: Option<i64>,
+    human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
     preference: Option<String>,
+    pretty: Option<bool>,
     q: Option<String>,
     request_cache: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
@@ -2753,6 +2752,7 @@ pub struct Search {
     seq_no_primary_term: Option<bool>,
     size: Option<i64>,
     sort: Option<Vec<String>>,
+    source: Option<String>,
     stats: Option<Vec<String>>,
     stored_fields: Option<Vec<String>>,
     suggest_field: Option<String>,
@@ -2772,31 +2772,6 @@ impl Search {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -2861,6 +2836,11 @@ impl Search {
         self.docvalue_fields = docvalue_fields;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
@@ -2871,9 +2851,19 @@ impl Search {
         self.explain = explain;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Starting offset (default: 0)"]
     pub fn from(mut self, from: Option<i64>) -> Self {
         self.from = from;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
@@ -2907,6 +2897,11 @@ impl Search {
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
@@ -2952,6 +2947,11 @@ impl Search {
     #[doc = "A comma-separated list of <field>:<direction> pairs"]
     pub fn sort(mut self, sort: Option<Vec<String>>) -> Self {
         self.sort = sort;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
@@ -3030,17 +3030,17 @@ impl Sender for Search {
 #[derive(Default)]
 pub struct SearchShards {
     client: Elasticsearch,
+    allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
+    expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
-    allow_no_indices: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
 }
 impl SearchShards {
     pub fn new(client: Elasticsearch) -> Self {
@@ -3049,9 +3049,19 @@ impl SearchShards {
             ..Default::default()
         }
     }
+    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
+    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
+        self.allow_no_indices = allow_no_indices;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3062,26 +3072,6 @@ impl SearchShards {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
-    #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
-        self
-    }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -3099,9 +3089,19 @@ impl SearchShards {
         self.preference = preference;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }
@@ -3120,23 +3120,23 @@ impl Sender for SearchShards {
 #[derive(Default)]
 pub struct SearchTemplate {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     allow_no_indices: Option<bool>,
     ccs_minimize_roundtrips: Option<bool>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     profile: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     routing: Option<Vec<String>>,
     scroll: Option<String>,
     search_type: Option<SearchType>,
+    source: Option<String>,
     typed_keys: Option<bool>,
 }
 impl SearchTemplate {
@@ -3145,31 +3145,6 @@ impl SearchTemplate {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
@@ -3181,6 +3156,11 @@ impl SearchTemplate {
         self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
@@ -3189,6 +3169,16 @@ impl SearchTemplate {
     #[doc = "Specify whether to return detailed information about score computation as part of a hit"]
     pub fn explain(mut self, explain: Option<bool>) -> Self {
         self.explain = explain;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete, expanded or aliased indices should be ignored when throttled"]
@@ -3204,6 +3194,11 @@ impl SearchTemplate {
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Specify whether to profile the query execution"]
@@ -3231,6 +3226,11 @@ impl SearchTemplate {
         self.search_type = search_type;
         self
     }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -3253,18 +3253,18 @@ impl Sender for SearchTemplate {
 pub struct Termvectors {
     client: Elasticsearch,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     field_statistics: Option<bool>,
     fields: Option<Vec<String>>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
     preference: Option<String>,
+    pretty: Option<bool>,
     realtime: Option<bool>,
     routing: Option<String>,
+    source: Option<String>,
     term_statistics: Option<bool>,
     version: Option<i64>,
     version_type: Option<VersionType>,
@@ -3281,26 +3281,6 @@ impl Termvectors {
         self.error_trace = error_trace;
         self
     }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "Specifies if document count, sum of document frequencies and sum of total term frequencies should be returned."]
     pub fn field_statistics(mut self, field_statistics: Option<bool>) -> Self {
         self.field_statistics = field_statistics;
@@ -3309,6 +3289,16 @@ impl Termvectors {
     #[doc = "A comma-separated list of fields to return."]
     pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
         self.fields = fields;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Specifies if term offsets should be returned."]
@@ -3331,6 +3321,11 @@ impl Termvectors {
         self.preference = preference;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Specifies if request is real-time as opposed to near-real-time (default: true)."]
     pub fn realtime(mut self, realtime: Option<bool>) -> Self {
         self.realtime = realtime;
@@ -3339,6 +3334,11 @@ impl Termvectors {
     #[doc = "Specific routing value."]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Specifies if total term frequency and document frequency should be returned."]
@@ -3372,20 +3372,20 @@ impl Sender for Termvectors {
 #[derive(Default)]
 pub struct Update {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     lang: Option<String>,
+    pretty: Option<bool>,
     refresh: Option<Refresh>,
     retry_on_conflict: Option<i64>,
     routing: Option<String>,
+    source: Option<String>,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -3395,31 +3395,6 @@ impl Update {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -3434,6 +3409,21 @@ impl Update {
     #[doc = "A list of fields to extract and return from the _source field"]
     pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
         self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "only perform the update operation if the last operation that has changed the document has the specified primary term"]
@@ -3451,6 +3441,11 @@ impl Update {
         self.lang = lang;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "If `true` then refresh the effected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` (the default) then do nothing with refreshes."]
     pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
         self.refresh = refresh;
@@ -3464,6 +3459,11 @@ impl Update {
     #[doc = "Specific routing value"]
     pub fn routing(mut self, routing: Option<String>) -> Self {
         self.routing = routing;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -3492,11 +3492,6 @@ impl Sender for Update {
 #[derive(Default)]
 pub struct UpdateByQuery {
     client: Elasticsearch,
-    error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<String>,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -3506,13 +3501,17 @@ pub struct UpdateByQuery {
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
+    error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
+    filter_path: Option<Vec<String>>,
     from: Option<i64>,
+    human: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     pipeline: Option<String>,
     preference: Option<String>,
+    pretty: Option<bool>,
     q: Option<String>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
@@ -3525,6 +3524,7 @@ pub struct UpdateByQuery {
     size: Option<i64>,
     slices: Option<i64>,
     sort: Option<Vec<String>>,
+    source: Option<String>,
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
@@ -3539,31 +3539,6 @@ impl UpdateByQuery {
             client,
             ..Default::default()
         }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
     pub fn _source(mut self, _source: Option<Vec<String>>) -> Self {
@@ -3610,14 +3585,29 @@ impl UpdateByQuery {
         self.df = df;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Starting offset (default: 0)"]
     pub fn from(mut self, from: Option<i64>) -> Self {
         self.from = from;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -3643,6 +3633,11 @@ impl UpdateByQuery {
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
@@ -3705,6 +3700,11 @@ impl UpdateByQuery {
         self.sort = sort;
         self
     }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
     pub fn stats(mut self, stats: Option<Vec<String>>) -> Self {
         self.stats = stats;
@@ -3760,8 +3760,8 @@ pub struct UpdateByQueryRethrottle {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
     requests_per_second: Option<i64>,
+    source: Option<String>,
 }
 impl UpdateByQueryRethrottle {
     pub fn new(client: Elasticsearch) -> Self {
@@ -3790,14 +3790,14 @@ impl UpdateByQueryRethrottle {
         self.pretty = pretty;
         self
     }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
     #[doc = "The throttle to set on this request in floating sub-requests per second. -1 means set no throttle."]
     pub fn requests_per_second(mut self, requests_per_second: Option<i64>) -> Self {
         self.requests_per_second = requests_per_second;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
 }

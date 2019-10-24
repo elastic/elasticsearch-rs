@@ -2,7 +2,7 @@ use crate::api_generator::*;
 
 use inflector::Inflector;
 use quote::Tokens;
-use syn::Field;
+use syn::{Field, ImplItem};
 
 /// Generates the source code for the methods on Elasticsearch root
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
@@ -14,10 +14,10 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .map(code_gen::create_field)
         .collect();
 
-    let common_builder_methods: Vec<Tokens> = api
+    let common_builder_fns: Vec<ImplItem> = api
         .common_params
         .iter()
-        .map(code_gen::create_builder_method)
+        .map(code_gen::create_fn)
         .collect();
 
     let builders: Vec<Tokens> = api
@@ -28,30 +28,37 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
 
             let builder_ident = code_gen::ident(builder_name);
 
-            let fields: Vec<syn::Field> = endpoint
+            let mut fields: Vec<syn::Field> = endpoint
                 .url
                 .params
                 .iter()
                 .map(code_gen::create_field)
                 .collect();
 
-            let builder_methods: Vec<Tokens> = endpoint
+            // Combine common fields with struct fields, sort and deduplicate
+            // clone common_fields, since quote!() consumes the Vec<Field>
+            fields.append(&mut common_fields.clone());
+            fields.sort_by(|a, b| a.ident.cmp(&b.ident));
+            fields.dedup_by(|a, b| a.ident.eq(&b.ident));
+
+            let mut builder_fns: Vec<ImplItem> = endpoint
                 .url
                 .params
                 .iter()
-                .map(code_gen::create_builder_method)
+                .map(code_gen::create_fn)
                 .collect();
 
-            // clone is required as quote! consumes the Vec<Field>
-            let common_fields_clone = common_fields.clone();
-            let common_builder_methods_clone = common_builder_methods.clone();
+            // Combine common fns with builder fns, sort and deduplicate
+            // clone is required, since quote!() consumes the Vec<Item>
+            builder_fns.append(&mut common_builder_fns.clone());
+            builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
+            builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
             quote!(
                 #[derive(Default)]
                 pub struct #builder_ident {
                     client: Elasticsearch,
-                    #(#common_fields_clone),*,
-                    #(#fields),*
+                    #(#fields),*,
                 }
 
                 impl #builder_ident {
@@ -61,8 +68,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
                             ..Default::default()
                         }
                     }
-                    #(#common_builder_methods_clone)*
-                    #(#builder_methods)*
+                    #(#builder_fns)*
                 }
 
                 impl Sender for #builder_ident {

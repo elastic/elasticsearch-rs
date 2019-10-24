@@ -77,11 +77,6 @@ impl SqlQuery {
             ..Default::default()
         }
     }
-    #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: Option<String>) -> Self {
-        self.format = format;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -90,6 +85,11 @@ impl SqlQuery {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "a short version of the Accept header, e.g. json, yaml"]
+    pub fn format(mut self, format: Option<String>) -> Self {
+        self.format = format;
         self
     }
     #[doc = "Return human readable values for statistics."]

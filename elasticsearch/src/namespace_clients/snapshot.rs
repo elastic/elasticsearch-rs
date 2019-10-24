@@ -26,16 +26,6 @@ impl SnapshotCreate {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -51,6 +41,11 @@ impl SnapshotCreate {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -59,6 +54,11 @@ impl SnapshotCreate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -94,21 +94,6 @@ impl SnapshotCreateRepository {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Whether to verify the repository after creation"]
-    pub fn verify(mut self, verify: Option<bool>) -> Self {
-        self.verify = verify;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -124,6 +109,11 @@ impl SnapshotCreateRepository {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -132,6 +122,16 @@ impl SnapshotCreateRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Whether to verify the repository after creation"]
+    pub fn verify(mut self, verify: Option<bool>) -> Self {
+        self.verify = verify;
         self
     }
 }
@@ -166,11 +166,6 @@ impl SnapshotDelete {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -184,6 +179,11 @@ impl SnapshotDelete {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -228,16 +228,6 @@ impl SnapshotDeleteRepository {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -253,6 +243,11 @@ impl SnapshotDeleteRepository {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -261,6 +256,11 @@ impl SnapshotDeleteRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -297,21 +297,6 @@ impl SnapshotGet {
             ..Default::default()
         }
     }
-    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Whether to show verbose snapshot info or only show the basic info found in the repository index blob"]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -327,6 +312,16 @@ impl SnapshotGet {
         self.human = human;
         self
     }
+    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -335,6 +330,11 @@ impl SnapshotGet {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Whether to show verbose snapshot info or only show the basic info found in the repository index blob"]
+    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
+        self.verbose = verbose;
         self
     }
 }
@@ -369,16 +369,6 @@ impl SnapshotGetRepository {
             ..Default::default()
         }
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -392,6 +382,16 @@ impl SnapshotGetRepository {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -437,16 +437,6 @@ impl SnapshotRestore {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -462,6 +452,11 @@ impl SnapshotRestore {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -470,6 +465,11 @@ impl SnapshotRestore {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -505,16 +505,6 @@ impl SnapshotStatus {
             ..Default::default()
         }
     }
-    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -528,6 +518,16 @@ impl SnapshotStatus {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether to ignore unavailable snapshots, defaults to false which means a SnapshotMissingException is thrown"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -572,16 +572,6 @@ impl SnapshotVerifyRepository {
             ..Default::default()
         }
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -597,6 +587,11 @@ impl SnapshotVerifyRepository {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -605,6 +600,11 @@ impl SnapshotVerifyRepository {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }

@@ -23,11 +23,6 @@ impl IndicesAnalyze {
             ..Default::default()
         }
     }
-    #[doc = "The name of the index to scope the operation"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -41,6 +36,11 @@ impl IndicesAnalyze {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "The name of the index to scope the operation"]
+    pub fn index(mut self, index: Option<String>) -> Self {
+        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -95,6 +95,11 @@ impl IndicesClearCache {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
@@ -110,31 +115,6 @@ impl IndicesClearCache {
         self.fields = fields;
         self
     }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index name to limit the operation"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
-    #[doc = "Clear query caches"]
-    pub fn query(mut self, query: Option<bool>) -> Self {
-        self.query = query;
-        self
-    }
-    #[doc = "Clear request cache"]
-    pub fn request(mut self, request: Option<bool>) -> Self {
-        self.request = request;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -145,9 +125,29 @@ impl IndicesClearCache {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "A comma-separated list of index name to limit the operation"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "Clear query caches"]
+    pub fn query(mut self, query: Option<bool>) -> Self {
+        self.query = query;
+        self
+    }
+    #[doc = "Clear request cache"]
+    pub fn request(mut self, request: Option<bool>) -> Self {
+        self.request = request;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -196,34 +196,14 @@ impl IndicesClose {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -236,6 +216,16 @@ impl IndicesClose {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -244,6 +234,16 @@ impl IndicesClose {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of active shards to wait for before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -280,26 +280,6 @@ impl IndicesCreate {
             ..Default::default()
         }
     }
-    #[doc = "Whether a type should be expected in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Set the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -315,6 +295,16 @@ impl IndicesCreate {
         self.human = human;
         self
     }
+    #[doc = "Whether a type should be expected in the body of the mappings."]
+    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
+        self.include_type_name = include_type_name;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -323,6 +313,16 @@ impl IndicesCreate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Set the number of active shards to wait for before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -365,29 +365,14 @@ impl IndicesDelete {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Ignore unavailable indexes (default: false)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -400,6 +385,16 @@ impl IndicesDelete {
         self.human = human;
         self
     }
+    #[doc = "Ignore unavailable indexes (default: false)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -408,6 +403,11 @@ impl IndicesDelete {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -443,16 +443,6 @@ impl IndicesDeleteAlias {
             ..Default::default()
         }
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit timestamp for the document"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -468,6 +458,11 @@ impl IndicesDeleteAlias {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -476,6 +471,11 @@ impl IndicesDeleteAlias {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit timestamp for the document"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -510,16 +510,6 @@ impl IndicesDeleteTemplate {
             ..Default::default()
         }
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -535,6 +525,11 @@ impl IndicesDeleteTemplate {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -543,6 +538,11 @@ impl IndicesDeleteTemplate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -586,14 +586,29 @@ impl IndicesExists {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Ignore unavailable indexes (default: false)"]
@@ -609,21 +624,6 @@ impl IndicesExists {
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -676,24 +676,14 @@ impl IndicesExistsAlias {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -704,6 +694,16 @@ impl IndicesExistsAlias {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -749,21 +749,6 @@ impl IndicesExistsTemplate {
             ..Default::default()
         }
     }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -774,9 +759,24 @@ impl IndicesExistsTemplate {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "Return settings in flat format (default: false)"]
+    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
+        self.flat_settings = flat_settings;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -829,24 +829,14 @@ impl IndicesExistsType {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -857,6 +847,16 @@ impl IndicesExistsType {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -909,29 +909,14 @@ impl IndicesFlush {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether a flush should be forced even if it is not necessarily needed ie. if no changes will be committed to the index. This is useful if transaction log IDs should be incremented even if no uncommitted changes are present. (This setting can be considered as internal)"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "If set to true the flush operation will block until the flush can be executed if another flush operation is already executing. The default is true. If set to false the flush will be skipped iff if another flush operation is already running."]
-    pub fn wait_if_ongoing(mut self, wait_if_ongoing: Option<bool>) -> Self {
-        self.wait_if_ongoing = wait_if_ongoing;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -939,9 +924,19 @@ impl IndicesFlush {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "Whether a flush should be forced even if it is not necessarily needed ie. if no changes will be committed to the index. This is useful if transaction log IDs should be incremented even if no uncommitted changes are present. (This setting can be considered as internal)"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -952,6 +947,11 @@ impl IndicesFlush {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "If set to true the flush operation will block until the flush can be executed if another flush operation is already executing. The default is true. If set to false the flush will be skipped iff if another flush operation is already running."]
+    pub fn wait_if_ongoing(mut self, wait_if_ongoing: Option<bool>) -> Self {
+        self.wait_if_ongoing = wait_if_ongoing;
         self
     }
 }
@@ -992,19 +992,14 @@ impl IndicesFlushSynced {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1015,6 +1010,11 @@ impl IndicesFlushSynced {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1068,14 +1068,29 @@ impl IndicesForcemerge {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Specify whether the index should be flushed after performing the operation (default: true)"]
     pub fn flush(mut self, flush: Option<bool>) -> Self {
         self.flush = flush;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -1091,21 +1106,6 @@ impl IndicesForcemerge {
     #[doc = "Specify whether the operation should only expunge deleted documents"]
     pub fn only_expunge_deletes(mut self, only_expunge_deletes: Option<bool>) -> Self {
         self.only_expunge_deletes = only_expunge_deletes;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1159,34 +1159,14 @@ impl IndicesFreeze {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1199,6 +1179,16 @@ impl IndicesFreeze {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1207,6 +1197,16 @@ impl IndicesFreeze {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of active shards to wait for before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -1252,14 +1252,29 @@ impl IndicesGet {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Ignore unavailable indexes (default: false)"]
@@ -1285,21 +1300,6 @@ impl IndicesGet {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1352,24 +1352,14 @@ impl IndicesGetAlias {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1380,6 +1370,16 @@ impl IndicesGetAlias {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1435,9 +1435,24 @@ impl IndicesGetFieldMapping {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -1458,21 +1473,6 @@ impl IndicesGetFieldMapping {
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1527,9 +1527,24 @@ impl IndicesGetMapping {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -1550,21 +1565,6 @@ impl IndicesGetMapping {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1620,14 +1620,29 @@ impl IndicesGetSettings {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -1648,21 +1663,6 @@ impl IndicesGetSettings {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1709,9 +1709,24 @@ impl IndicesGetTemplate {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether a type should be returned in the body of the mappings."]
@@ -1727,21 +1742,6 @@ impl IndicesGetTemplate {
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1792,19 +1792,14 @@ impl IndicesGetUpgrade {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1815,6 +1810,11 @@ impl IndicesGetUpgrade {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1868,34 +1868,14 @@ impl IndicesOpen {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1908,6 +1888,16 @@ impl IndicesOpen {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1916,6 +1906,16 @@ impl IndicesOpen {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of active shards to wait for before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -1951,16 +1951,6 @@ impl IndicesPutAlias {
             ..Default::default()
         }
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit timestamp for the document"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1976,6 +1966,11 @@ impl IndicesPutAlias {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1984,6 +1979,11 @@ impl IndicesPutAlias {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit timestamp for the document"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -2028,9 +2028,24 @@ impl IndicesPutMapping {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -2048,26 +2063,6 @@ impl IndicesPutMapping {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2076,6 +2071,11 @@ impl IndicesPutMapping {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -2120,14 +2120,29 @@ impl IndicesPutSettings {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -2145,26 +2160,6 @@ impl IndicesPutSettings {
         self.preserve_existing = preserve_existing;
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2173,6 +2168,11 @@ impl IndicesPutSettings {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -2216,9 +2216,24 @@ impl IndicesPutTemplate {
         self.create = create;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether a type should be returned in the body of the mappings."]
@@ -2236,26 +2251,6 @@ impl IndicesPutTemplate {
         self.order = order;
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2264,6 +2259,11 @@ impl IndicesPutTemplate {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -2371,19 +2371,14 @@ impl IndicesRefresh {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2394,6 +2389,11 @@ impl IndicesRefresh {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2444,19 +2444,14 @@ impl IndicesReloadSearchAnalyzers {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2467,6 +2462,11 @@ impl IndicesReloadSearchAnalyzers {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2520,26 +2520,6 @@ impl IndicesRollover {
         self.dry_run = dry_run;
         self
     }
-    #[doc = "Whether a type should be included in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Set the number of active shards to wait for on the newly created rollover index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2555,6 +2535,16 @@ impl IndicesRollover {
         self.human = human;
         self
     }
+    #[doc = "Whether a type should be included in the body of the mappings."]
+    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
+        self.include_type_name = include_type_name;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2563,6 +2553,16 @@ impl IndicesRollover {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Set the number of active shards to wait for on the newly created rollover index before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -2604,24 +2604,14 @@ impl IndicesSegments {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Includes detailed memory usage by Lucene."]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2634,6 +2624,11 @@ impl IndicesSegments {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2642,6 +2637,11 @@ impl IndicesSegments {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Includes detailed memory usage by Lucene."]
+    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
+        self.verbose = verbose;
         self
     }
 }
@@ -2683,24 +2683,14 @@ impl IndicesShardStores {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of statuses used to filter on shards to get store information for"]
-    pub fn status(mut self, status: Option<Vec<String>>) -> Self {
-        self.status = status;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2713,6 +2703,11 @@ impl IndicesShardStores {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2721,6 +2716,11 @@ impl IndicesShardStores {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "A comma-separated list of statuses used to filter on shards to get store information for"]
+    pub fn status(mut self, status: Option<Vec<String>>) -> Self {
+        self.status = status;
         self
     }
 }
@@ -2763,21 +2763,6 @@ impl IndicesShrink {
         self.copy_settings = copy_settings;
         self
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2793,6 +2778,11 @@ impl IndicesShrink {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2801,6 +2791,16 @@ impl IndicesShrink {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -2843,21 +2843,6 @@ impl IndicesSplit {
         self.copy_settings = copy_settings;
         self
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2873,6 +2858,11 @@ impl IndicesSplit {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2881,6 +2871,16 @@ impl IndicesSplit {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -2929,6 +2929,11 @@ impl IndicesStats {
         self.completion_fields = completion_fields;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
@@ -2944,6 +2949,11 @@ impl IndicesStats {
         self.fields = fields;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "If set to false stats will also collected from closed indices if explicitly specified or if expand_wildcards expands to closed indices"]
     pub fn forbid_closed_indices(mut self, forbid_closed_indices: Option<bool>) -> Self {
         self.forbid_closed_indices = forbid_closed_indices;
@@ -2952,6 +2962,11 @@ impl IndicesStats {
     #[doc = "A comma-separated list of search groups for `search` index metric"]
     pub fn groups(mut self, groups: Option<Vec<String>>) -> Self {
         self.groups = groups;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
@@ -2969,26 +2984,6 @@ impl IndicesStats {
         self.level = level;
         self
     }
-    #[doc = "A comma-separated list of document types for the `indexing` index metric"]
-    pub fn types(mut self, types: Option<Vec<String>>) -> Self {
-        self.types = types;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2997,6 +2992,11 @@ impl IndicesStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "A comma-separated list of document types for the `indexing` index metric"]
+    pub fn types(mut self, types: Option<Vec<String>>) -> Self {
+        self.types = types;
         self
     }
 }
@@ -3040,34 +3040,14 @@ impl IndicesUnfreeze {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3080,6 +3060,16 @@ impl IndicesUnfreeze {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3088,6 +3078,16 @@ impl IndicesUnfreeze {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Sets the number of active shards to wait for before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }
@@ -3121,16 +3121,6 @@ impl IndicesUpdateAliases {
             ..Default::default()
         }
     }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Request timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3146,6 +3136,11 @@ impl IndicesUpdateAliases {
         self.human = human;
         self
     }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3154,6 +3149,11 @@ impl IndicesUpdateAliases {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Request timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -3196,29 +3196,14 @@ impl IndicesUpgrade {
         self.allow_no_indices = allow_no_indices;
         self
     }
-    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "If true, only ancient (an older Lucene major release) segments will be upgraded"]
-    pub fn only_ancient_segments(mut self, only_ancient_segments: Option<bool>) -> Self {
-        self.only_ancient_segments = only_ancient_segments;
-        self
-    }
-    #[doc = "Specify whether the request should block until the all segments are upgraded (default: false)"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
+    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
+        self.expand_wildcards = expand_wildcards;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3231,6 +3216,16 @@ impl IndicesUpgrade {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "If true, only ancient (an older Lucene major release) segments will be upgraded"]
+    pub fn only_ancient_segments(mut self, only_ancient_segments: Option<bool>) -> Self {
+        self.only_ancient_segments = only_ancient_segments;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3239,6 +3234,11 @@ impl IndicesUpgrade {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Specify whether the request should block until the all segments are upgraded (default: false)"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -3314,6 +3314,11 @@ impl IndicesValidateQuery {
         self.df = df;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
@@ -3322,31 +3327,6 @@ impl IndicesValidateQuery {
     #[doc = "Return detailed information about the error"]
     pub fn explain(mut self, explain: Option<bool>) -> Self {
         self.explain = explain;
-        self
-    }
-    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
-    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
-        self.lenient = lenient;
-        self
-    }
-    #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: Option<String>) -> Self {
-        self.q = q;
-        self
-    }
-    #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
-    pub fn rewrite(mut self, rewrite: Option<bool>) -> Self {
-        self.rewrite = rewrite;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3359,9 +3339,29 @@ impl IndicesValidateQuery {
         self.human = human;
         self
     }
+    #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
+    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
+        self.ignore_unavailable = ignore_unavailable;
+        self
+    }
+    #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
+    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
+        self.lenient = lenient;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "Query in the Lucene query string syntax"]
+    pub fn q(mut self, q: Option<String>) -> Self {
+        self.q = q;
+        self
+    }
+    #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
+    pub fn rewrite(mut self, rewrite: Option<bool>) -> Self {
+        self.rewrite = rewrite;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]

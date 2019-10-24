@@ -369,21 +369,6 @@ impl WatcherPutWatch {
         self.active = active;
         self
     }
-    #[doc = "only update the watch if the last operation that has changed the watch has the specified primary term"]
-    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
-        self.if_primary_term = if_primary_term;
-        self
-    }
-    #[doc = "only update the watch if the last operation that has changed the watch has the specified sequence number"]
-    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
-        self.if_seq_no = if_seq_no;
-        self
-    }
-    #[doc = "Explicit version number for concurrency control"]
-    pub fn version(mut self, version: Option<i64>) -> Self {
-        self.version = version;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -399,6 +384,16 @@ impl WatcherPutWatch {
         self.human = human;
         self
     }
+    #[doc = "only update the watch if the last operation that has changed the watch has the specified primary term"]
+    pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
+        self.if_primary_term = if_primary_term;
+        self
+    }
+    #[doc = "only update the watch if the last operation that has changed the watch has the specified sequence number"]
+    pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
+        self.if_seq_no = if_seq_no;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -407,6 +402,11 @@ impl WatcherPutWatch {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit version number for concurrency control"]
+    pub fn version(mut self, version: Option<i64>) -> Self {
+        self.version = version;
         self
     }
 }
@@ -499,11 +499,6 @@ impl WatcherStats {
         self.emit_stacktraces = emit_stacktraces;
         self
     }
-    #[doc = "Controls what additional stat metrics should be include in the response"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -517,6 +512,11 @@ impl WatcherStats {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Controls what additional stat metrics should be include in the response"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
         self
     }
     #[doc = "Pretty format the returned JSON response."]

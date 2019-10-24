@@ -26,16 +26,6 @@ impl GraphExplore {
             ..Default::default()
         }
     }
-    #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: Option<String>) -> Self {
-        self.routing = routing;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -56,9 +46,19 @@ impl GraphExplore {
         self.pretty = pretty;
         self
     }
+    #[doc = "Specific routing value"]
+    pub fn routing(mut self, routing: Option<String>) -> Self {
+        self.routing = routing;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }

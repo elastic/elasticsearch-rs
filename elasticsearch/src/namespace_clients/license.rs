@@ -77,11 +77,6 @@ impl LicenseGet {
             ..Default::default()
         }
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -95,6 +90,11 @@ impl LicenseGet {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -371,11 +371,6 @@ impl LicensePostStartTrial {
         self.acknowledge = acknowledge;
         self
     }
-    #[doc = "The type of trial license to generate (default: \"trial\")"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -399,6 +394,11 @@ impl LicensePostStartTrial {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The type of trial license to generate (default: \"trial\")"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
         self
     }
 }

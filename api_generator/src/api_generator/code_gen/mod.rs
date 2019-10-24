@@ -7,6 +7,7 @@ use crate::api_generator::{Type, TypeKind};
 use inflector::Inflector;
 use quote::Tokens;
 use std::str;
+use syn::ImplItem;
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -68,6 +69,25 @@ fn path_segments(paths: Vec<(&str, Vec<syn::Lifetime>, Vec<syn::Ty>)>) -> syn::P
     }
 }
 
+pub trait GetPath {
+    fn get_path(&self) -> &syn::Path;
+}
+
+impl GetPath for syn::Ty {
+    fn get_path(&self) -> &syn::Path {
+        match self {
+            &syn::Ty::Path(_, ref p) => &p,
+            _ => panic!("Only path types are supported."),
+        }
+    }
+}
+
+impl GetPath for syn::Path {
+    fn get_path(&self) -> &syn::Path {
+        &self
+    }
+}
+
 fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
     match kind {
         TypeKind::None => syn::parse_type("Option<String>").unwrap(),
@@ -91,30 +111,107 @@ fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
     }
 }
 
+/// A standard `'a` lifetime
+pub fn lifetime_a() -> syn::Lifetime {
+    syn::Lifetime {
+        ident: syn::Ident::new("'a"),
+    }
+}
+
+pub trait HasLifetime {
+    fn has_lifetime(&self) -> bool;
+}
+
+impl<T: GetPath> HasLifetime for T {
+    fn has_lifetime(&self) -> bool {
+        match &self.get_path().segments[0].parameters {
+            &syn::PathParameters::AngleBracketed(ref params) => params.lifetimes.len() > 0,
+            _ => false,
+        }
+    }
+}
+
+/// Generics with a standard `'a` lifetime
+pub fn generics_a() -> syn::Generics {
+    generics(vec![lifetime_a()], vec![])
+}
+
+/// Generics with no parameters.
+pub fn generics_none() -> syn::Generics {
+    generics(vec![], vec![])
+}
+
+/// Generics with the given lifetimes and type bounds.
+pub fn generics(lifetimes: Vec<syn::Lifetime>, types: Vec<syn::TyParam>) -> syn::Generics {
+    syn::Generics {
+        lifetimes: lifetimes
+            .into_iter()
+            .map(|l| syn::LifetimeDef {
+                attrs: vec![],
+                lifetime: l,
+                bounds: vec![],
+            })
+            .collect(),
+        ty_params: types,
+        where_clause: syn::WhereClause::none(),
+    }
+}
+
+/// Creates a field for a struct
 fn create_field(f: (&String, &Type)) -> syn::Field {
     syn::Field {
-        ident: Some(ident(valid_name(f.0).to_lowercase())),
+        ident: Some(ident(valid_name(&f.0).to_lowercase())),
         vis: syn::Visibility::Inherited,
         attrs: vec![],
         ty: ty(&f.0, &f.1.ty),
     }
 }
 
-fn create_builder_method(f: (&String, &Type)) -> Tokens {
-    let name = ident(valid_name(f.0).to_lowercase());
-    let value = ty(&f.0, &f.1.ty);
-    let doc = match &f.1.description {
-        Some(docs) => Some(doc(docs.into())),
-        _ => None,
+/// Creates an builder fn for an impl
+fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
+    let name = valid_name(&f.0).to_lowercase();
+    let impl_ident = ident(&name);
+    let field_ident = ident(&name);
+    let value_ident = ident(&name);
+    let ty = ty(&f.0, &f.1.ty);
+    let doc_attr = match &f.1.description {
+        Some(docs) => vec![doc(docs.into())],
+        _ => vec![],
     };
 
-    quote!(
-        #doc
-        pub fn #name(mut self, #name: #value) -> Self {
-            self.#name = #name;
-            self
-        }
-    )
+    syn::ImplItem {
+        ident: impl_ident,
+        vis: syn::Visibility::Public,
+        defaultness: syn::Defaultness::Final,
+        attrs: doc_attr,
+        node: syn::ImplItemKind::Method(
+            syn::MethodSig {
+                unsafety: syn::Unsafety::Normal,
+                constness: syn::Constness::NotConst,
+                abi: None,
+                decl: syn::FnDecl {
+                    inputs: vec![
+                        syn::FnArg::SelfValue(syn::Mutability::Mutable),
+                        syn::FnArg::Captured(syn::Pat::Path(None, path_none(name.as_str())), ty)],
+                    // TODO: a Self syn type?
+                    output: syn::FunctionRetTy::Ty(syn::parse_type("Self").unwrap()),
+                    variadic: false
+                },
+                generics: generics_none(),
+            },
+            // generates a fn body of the form
+            // --------
+            // self.<field> = <field>;
+            // self
+            // ---------
+            syn::Block {
+                stmts: vec![
+                    syn::Stmt::Semi(Box::new(parse_expr(quote!(self.#field_ident = #value_ident)))),
+                    syn::Stmt::Expr(Box::new(parse_expr(quote!(self))))
+                ],
+            },
+        ),
+    }
 }
 
 pub fn shift_while<F>(i: &[u8], f: F) -> &[u8]

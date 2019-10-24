@@ -24,16 +24,6 @@ impl ClusterAllocationExplain {
             ..Default::default()
         }
     }
-    #[doc = "Return information about disk usage and shard sizes (default: false)"]
-    pub fn include_disk_info(mut self, include_disk_info: Option<bool>) -> Self {
-        self.include_disk_info = include_disk_info;
-        self
-    }
-    #[doc = "Return 'YES' decisions in explanation (default: false)"]
-    pub fn include_yes_decisions(mut self, include_yes_decisions: Option<bool>) -> Self {
-        self.include_yes_decisions = include_yes_decisions;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -47,6 +37,16 @@ impl ClusterAllocationExplain {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Return information about disk usage and shard sizes (default: false)"]
+    pub fn include_disk_info(mut self, include_disk_info: Option<bool>) -> Self {
+        self.include_disk_info = include_disk_info;
+        self
+    }
+    #[doc = "Return 'YES' decisions in explanation (default: false)"]
+    pub fn include_yes_decisions(mut self, include_yes_decisions: Option<bool>) -> Self {
+        self.include_yes_decisions = include_yes_decisions;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -92,9 +92,24 @@ impl ClusterGetSettings {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether to return all default clusters setting."]
@@ -107,26 +122,6 @@ impl ClusterGetSettings {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -135,6 +130,11 @@ impl ClusterGetSettings {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -178,9 +178,24 @@ impl ClusterHealth {
             ..Default::default()
         }
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Specify the level of detail for returned information"]
@@ -196,6 +211,16 @@ impl ClusterHealth {
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -239,31 +264,6 @@ impl ClusterHealth {
         self.wait_for_status = wait_for_status;
         self
     }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
-        self
-    }
 }
 impl Sender for ClusterHealth {
     fn send<T>(self) -> Result<ElasticsearchResponse<T>>
@@ -295,16 +295,6 @@ impl ClusterPendingTasks {
             ..Default::default()
         }
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -318,6 +308,16 @@ impl ClusterPendingTasks {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
+    pub fn local(mut self, local: Option<bool>) -> Self {
+        self.local = local;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -362,21 +362,6 @@ impl ClusterPutSettings {
             ..Default::default()
         }
     }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -387,9 +372,19 @@ impl ClusterPutSettings {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "Return settings in flat format (default: false)"]
+    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
+        self.flat_settings = flat_settings;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -400,6 +395,11 @@ impl ClusterPutSettings {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -496,34 +496,14 @@ impl ClusterReroute {
         self.dry_run = dry_run;
         self
     }
-    #[doc = "Return an explanation of why the commands can or cannot be executed"]
-    pub fn explain(mut self, explain: Option<bool>) -> Self {
-        self.explain = explain;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Limit the information returned to the specified metrics. Defaults to all but metadata"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
-        self
-    }
-    #[doc = "Retries allocation of shards that are blocked due to too many subsequent allocation failures"]
-    pub fn retry_failed(mut self, retry_failed: Option<bool>) -> Self {
-        self.retry_failed = retry_failed;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "Return an explanation of why the commands can or cannot be executed"]
+    pub fn explain(mut self, explain: Option<bool>) -> Self {
+        self.explain = explain;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -536,14 +516,34 @@ impl ClusterReroute {
         self.human = human;
         self
     }
+    #[doc = "Explicit operation timeout for connection to master node"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Limit the information returned to the specified metrics. Defaults to all but metadata"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
         self
     }
+    #[doc = "Retries allocation of shards that are blocked due to too many subsequent allocation failures"]
+    pub fn retry_failed(mut self, retry_failed: Option<bool>) -> Self {
+        self.retry_failed = retry_failed;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -590,14 +590,29 @@ impl ClusterState {
         self.allow_no_indices = allow_no_indices;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
         self.flat_settings = flat_settings;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
@@ -615,31 +630,6 @@ impl ClusterState {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "Wait for the metadata version to be equal or greater than the specified metadata version"]
-    pub fn wait_for_metadata_version(mut self, wait_for_metadata_version: Option<i64>) -> Self {
-        self.wait_for_metadata_version = wait_for_metadata_version;
-        self
-    }
-    #[doc = "The maximum time to wait for wait_for_metadata_version before timing out"]
-    pub fn wait_for_timeout(mut self, wait_for_timeout: Option<String>) -> Self {
-        self.wait_for_timeout = wait_for_timeout;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -648,6 +638,16 @@ impl ClusterState {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Wait for the metadata version to be equal or greater than the specified metadata version"]
+    pub fn wait_for_metadata_version(mut self, wait_for_metadata_version: Option<i64>) -> Self {
+        self.wait_for_metadata_version = wait_for_metadata_version;
+        self
+    }
+    #[doc = "The maximum time to wait for wait_for_metadata_version before timing out"]
+    pub fn wait_for_timeout(mut self, wait_for_timeout: Option<String>) -> Self {
+        self.wait_for_timeout = wait_for_timeout;
         self
     }
 }
@@ -682,16 +682,6 @@ impl ClusterStats {
             ..Default::default()
         }
     }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
-        self
-    }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -700,6 +690,11 @@ impl ClusterStats {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return settings in flat format (default: false)"]
+    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
+        self.flat_settings = flat_settings;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -715,6 +710,11 @@ impl ClusterStats {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }

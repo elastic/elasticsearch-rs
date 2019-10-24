@@ -78,11 +78,6 @@ impl SecurityChangePassword {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -101,6 +96,11 @@ impl SecurityChangePassword {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -139,11 +139,6 @@ impl SecurityClearCachedRealms {
             ..Default::default()
         }
     }
-    #[doc = "Comma-separated list of usernames to clear from the cache"]
-    pub fn usernames(mut self, usernames: Option<Vec<String>>) -> Self {
-        self.usernames = usernames;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -167,6 +162,11 @@ impl SecurityClearCachedRealms {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Comma-separated list of usernames to clear from the cache"]
+    pub fn usernames(mut self, usernames: Option<Vec<String>>) -> Self {
+        self.usernames = usernames;
         self
     }
 }
@@ -254,11 +254,6 @@ impl SecurityCreateApiKey {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -277,6 +272,11 @@ impl SecurityCreateApiKey {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -316,11 +316,6 @@ impl SecurityDeletePrivileges {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -339,6 +334,11 @@ impl SecurityDeletePrivileges {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -377,11 +377,6 @@ impl SecurityDeleteRole {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -400,6 +395,11 @@ impl SecurityDeleteRole {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -438,11 +438,6 @@ impl SecurityDeleteRoleMapping {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -461,6 +456,11 @@ impl SecurityDeleteRoleMapping {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -499,11 +499,6 @@ impl SecurityDeleteUser {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -522,6 +517,11 @@ impl SecurityDeleteUser {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -560,11 +560,6 @@ impl SecurityDisableUser {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -583,6 +578,11 @@ impl SecurityDisableUser {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -621,11 +621,6 @@ impl SecurityEnableUser {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -644,6 +639,11 @@ impl SecurityEnableUser {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -684,26 +684,6 @@ impl SecurityGetApiKey {
             ..Default::default()
         }
     }
-    #[doc = "API key id of the API key to be retrieved"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "API key name of the API key to be retrieved"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
-        self
-    }
-    #[doc = "realm name of the user who created this API key to be retrieved"]
-    pub fn realm_name(mut self, realm_name: Option<String>) -> Self {
-        self.realm_name = realm_name;
-        self
-    }
-    #[doc = "user name of the user who created this API key to be retrieved"]
-    pub fn username(mut self, username: Option<String>) -> Self {
-        self.username = username;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -719,14 +699,34 @@ impl SecurityGetApiKey {
         self.human = human;
         self
     }
+    #[doc = "API key id of the API key to be retrieved"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "API key name of the API key to be retrieved"]
+    pub fn name(mut self, name: Option<String>) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
         self
     }
+    #[doc = "realm name of the user who created this API key to be retrieved"]
+    pub fn realm_name(mut self, realm_name: Option<String>) -> Self {
+        self.realm_name = realm_name;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "user name of the user who created this API key to be retrieved"]
+    pub fn username(mut self, username: Option<String>) -> Self {
+        self.username = username;
         self
     }
 }
@@ -1305,11 +1305,6 @@ impl SecurityPutPrivileges {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1328,6 +1323,11 @@ impl SecurityPutPrivileges {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1366,11 +1366,6 @@ impl SecurityPutRole {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1389,6 +1384,11 @@ impl SecurityPutRole {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1427,11 +1427,6 @@ impl SecurityPutRoleMapping {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1450,6 +1445,11 @@ impl SecurityPutRoleMapping {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1488,11 +1488,6 @@ impl SecurityPutUser {
             ..Default::default()
         }
     }
-    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
-    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
-        self.refresh = refresh;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1511,6 +1506,11 @@ impl SecurityPutUser {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "If `true` (the default) then refresh the affected shards to make this operation visible to search, if `wait_for` then wait for a refresh to make this operation visible to search, if `false` then do nothing with refreshes."]
+    pub fn refresh(mut self, refresh: Option<Refresh>) -> Self {
+        self.refresh = refresh;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]

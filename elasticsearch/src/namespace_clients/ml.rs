@@ -31,16 +31,6 @@ impl MlCloseJob {
         self.allow_no_jobs = allow_no_jobs;
         self
     }
-    #[doc = "True if the job should be forcefully closed"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -49,6 +39,11 @@ impl MlCloseJob {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "True if the job should be forcefully closed"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -64,6 +59,11 @@ impl MlCloseJob {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -319,11 +319,6 @@ impl MlDeleteDatafeed {
             ..Default::default()
         }
     }
-    #[doc = "True if the datafeed should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -332,6 +327,11 @@ impl MlDeleteDatafeed {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "True if the datafeed should be forcefully deleted"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -496,11 +496,6 @@ impl MlDeleteForecast {
         self.allow_no_forecasts = allow_no_forecasts;
         self
     }
-    #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -524,6 +519,11 @@ impl MlDeleteForecast {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -558,16 +558,6 @@ impl MlDeleteJob {
             ..Default::default()
         }
     }
-    #[doc = "True if the job should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -576,6 +566,11 @@ impl MlDeleteJob {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "True if the job should be forcefully deleted"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -591,6 +586,11 @@ impl MlDeleteJob {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Should this request wait until the operation has completed before returning"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
         self
     }
 }
@@ -761,9 +761,19 @@ impl MlFindFileStructure {
         self.delimiter = delimiter;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Whether to include a commentary on how the structure was derived"]
     pub fn explain(mut self, explain: Option<bool>) -> Self {
         self.explain = explain;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
         self
     }
     #[doc = "Optional parameter to specify the high level file format"]
@@ -781,6 +791,11 @@ impl MlFindFileStructure {
         self.has_header_row = has_header_row;
         self
     }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "Maximum number of characters permitted in a single message when lines are merged to create messages."]
     pub fn line_merge_size_limit(mut self, line_merge_size_limit: Option<i32>) -> Self {
         self.line_merge_size_limit = line_merge_size_limit;
@@ -791,6 +806,11 @@ impl MlFindFileStructure {
         self.lines_to_sample = lines_to_sample;
         self
     }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
     #[doc = "Optional parameter to specify the quote character for a delimited file - must be a single character"]
     pub fn quote(mut self, quote: Option<String>) -> Self {
         self.quote = quote;
@@ -799,6 +819,11 @@ impl MlFindFileStructure {
     #[doc = "Optional parameter to specify whether the values between delimiters in a delimited file should have whitespace trimmed from them"]
     pub fn should_trim_fields(mut self, should_trim_fields: Option<bool>) -> Self {
         self.should_trim_fields = should_trim_fields;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
         self
     }
     #[doc = "Timeout after which the analysis will be aborted"]
@@ -814,31 +839,6 @@ impl MlFindFileStructure {
     #[doc = "Optional parameter to specify the timestamp format in the file - may be either a Joda or Java time format"]
     pub fn timestamp_format(mut self, timestamp_format: Option<String>) -> Self {
         self.timestamp_format = timestamp_format;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
         self
     }
 }
@@ -891,16 +891,6 @@ impl MlFlushJob {
         self.end = end;
         self
     }
-    #[doc = "Skips time to the given value without generating results or updating the model for the skipped interval"]
-    pub fn skip_time(mut self, skip_time: Option<String>) -> Self {
-        self.skip_time = skip_time;
-        self
-    }
-    #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -921,9 +911,19 @@ impl MlFlushJob {
         self.pretty = pretty;
         self
     }
+    #[doc = "Skips time to the given value without generating results or updating the model for the skipped interval"]
+    pub fn skip_time(mut self, skip_time: Option<String>) -> Self {
+        self.skip_time = skip_time;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -963,14 +963,14 @@ impl MlForecast {
         self.duration = duration;
         self
     }
-    #[doc = "The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity."]
-    pub fn expires_in(mut self, expires_in: Option<String>) -> Self {
-        self.expires_in = expires_in;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity."]
+    pub fn expires_in(mut self, expires_in: Option<String>) -> Self {
+        self.expires_in = expires_in;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -1048,6 +1048,11 @@ impl MlGetBuckets {
         self.end = end;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Exclude interim results"]
     pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
         self.exclude_interim = exclude_interim;
@@ -1058,34 +1063,14 @@ impl MlGetBuckets {
         self.expand = expand;
         self
     }
-    #[doc = "skips a number of buckets"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of buckets to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
-    #[doc = "Sort buckets by a particular field"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
-        self
-    }
-    #[doc = "Start time filter for buckets"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "skips a number of buckets"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1098,9 +1083,24 @@ impl MlGetBuckets {
         self.pretty = pretty;
         self
     }
+    #[doc = "specifies a max number of buckets to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "Sort buckets by a particular field"]
+    pub fn sort(mut self, sort: Option<String>) -> Self {
+        self.sort = sort;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Start time filter for buckets"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -1143,26 +1143,6 @@ impl MlGetCalendarEvents {
         self.end = end;
         self
     }
-    #[doc = "Skips a number of events"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "Get events for the job. When this option is used calendar_id must be '_all'"]
-    pub fn job_id(mut self, job_id: Option<String>) -> Self {
-        self.job_id = job_id;
-        self
-    }
-    #[doc = "Specifies a max number of events to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
-    #[doc = "Get events after this time"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1173,9 +1153,19 @@ impl MlGetCalendarEvents {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "Skips a number of events"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Get events for the job. When this option is used calendar_id must be '_all'"]
+    pub fn job_id(mut self, job_id: Option<String>) -> Self {
+        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1183,9 +1173,19 @@ impl MlGetCalendarEvents {
         self.pretty = pretty;
         self
     }
+    #[doc = "Specifies a max number of events to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Get events after this time"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -1220,16 +1220,6 @@ impl MlGetCalendars {
             ..Default::default()
         }
     }
-    #[doc = "skips a number of calendars"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of calendars to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1240,6 +1230,11 @@ impl MlGetCalendars {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of calendars"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -1248,6 +1243,11 @@ impl MlGetCalendars {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of calendars to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1288,16 +1288,6 @@ impl MlGetCategories {
             ..Default::default()
         }
     }
-    #[doc = "skips a number of categories"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of categories to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1308,6 +1298,11 @@ impl MlGetCategories {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of categories"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -1316,6 +1311,11 @@ impl MlGetCategories {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of categories to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1361,16 +1361,6 @@ impl MlGetDataFrameAnalytics {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1381,6 +1371,11 @@ impl MlGetDataFrameAnalytics {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of analytics"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -1389,6 +1384,11 @@ impl MlGetDataFrameAnalytics {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of analytics to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1434,16 +1434,6 @@ impl MlGetDataFrameAnalyticsStats {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1454,6 +1444,11 @@ impl MlGetDataFrameAnalyticsStats {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of analytics"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -1462,6 +1457,11 @@ impl MlGetDataFrameAnalyticsStats {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of analytics to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1623,16 +1623,6 @@ impl MlGetFilters {
             ..Default::default()
         }
     }
-    #[doc = "skips a number of filters"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of filters to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1643,6 +1633,11 @@ impl MlGetFilters {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of filters"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -1651,6 +1646,11 @@ impl MlGetFilters {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of filters to get"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1706,9 +1706,19 @@ impl MlGetInfluencers {
         self.end = end;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Exclude interim results"]
     pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
         self.exclude_interim = exclude_interim;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
         self
     }
     #[doc = "skips a number of influencers"]
@@ -1716,9 +1726,19 @@ impl MlGetInfluencers {
         self.from = from;
         self
     }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
     #[doc = "influencer score threshold for the requested influencers"]
     pub fn influencer_score(mut self, influencer_score: Option<f64>) -> Self {
         self.influencer_score = influencer_score;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     #[doc = "specifies a max number of influencers to get"]
@@ -1731,34 +1751,14 @@ impl MlGetInfluencers {
         self.sort = sort;
         self
     }
-    #[doc = "start timestamp for the requested influencers"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "start timestamp for the requested influencers"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -1930,26 +1930,6 @@ impl MlGetModelSnapshots {
         self.end = end;
         self
     }
-    #[doc = "Skips a number of documents"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "The default number of documents returned in queries as a string."]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
-    #[doc = "Name of the field to sort on"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
-        self
-    }
-    #[doc = "The filter 'start' query parameter"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1958,6 +1938,11 @@ impl MlGetModelSnapshots {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Skips a number of documents"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1970,9 +1955,24 @@ impl MlGetModelSnapshots {
         self.pretty = pretty;
         self
     }
+    #[doc = "The default number of documents returned in queries as a string."]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
+        self
+    }
+    #[doc = "Name of the field to sort on"]
+    pub fn sort(mut self, sort: Option<String>) -> Self {
+        self.sort = sort;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The filter 'start' query parameter"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -2027,29 +2027,14 @@ impl MlGetOverallBuckets {
         self.end = end;
         self
     }
-    #[doc = "If true overall buckets that include interim buckets will be excluded"]
-    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
-        self.exclude_interim = exclude_interim;
-        self
-    }
-    #[doc = "Returns overall buckets with overall scores higher than this value"]
-    pub fn overall_score(mut self, overall_score: Option<f64>) -> Self {
-        self.overall_score = overall_score;
-        self
-    }
-    #[doc = "Returns overall buckets with timestamps after this time"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "The number of top job bucket scores to be used in the overall_score calculation"]
-    pub fn top_n(mut self, top_n: Option<i32>) -> Self {
-        self.top_n = top_n;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "If true overall buckets that include interim buckets will be excluded"]
+    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
+        self.exclude_interim = exclude_interim;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2062,6 +2047,11 @@ impl MlGetOverallBuckets {
         self.human = human;
         self
     }
+    #[doc = "Returns overall buckets with overall scores higher than this value"]
+    pub fn overall_score(mut self, overall_score: Option<f64>) -> Self {
+        self.overall_score = overall_score;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2070,6 +2060,16 @@ impl MlGetOverallBuckets {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Returns overall buckets with timestamps after this time"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
+        self
+    }
+    #[doc = "The number of top job bucket scores to be used in the overall_score calculation"]
+    pub fn top_n(mut self, top_n: Option<i32>) -> Self {
+        self.top_n = top_n;
         self
     }
 }
@@ -2120,14 +2120,34 @@ impl MlGetRecords {
         self.end = end;
         self
     }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
     #[doc = "Exclude interim results"]
     pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
         self.exclude_interim = exclude_interim;
         self
     }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
     #[doc = "skips a number of records"]
     pub fn from(mut self, from: Option<i32>) -> Self {
         self.from = from;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
         self
     }
     pub fn record_score(mut self, record_score: Option<f64>) -> Self {
@@ -2144,34 +2164,14 @@ impl MlGetRecords {
         self.sort = sort;
         self
     }
-    #[doc = "Start time filter for records"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Start time filter for records"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
         self
     }
 }
@@ -2372,16 +2372,6 @@ impl MlPostData {
             ..Default::default()
         }
     }
-    #[doc = "Optional parameter to specify the end of the bucket resetting range"]
-    pub fn reset_end(mut self, reset_end: Option<String>) -> Self {
-        self.reset_end = reset_end;
-        self
-    }
-    #[doc = "Optional parameter to specify the start of the bucket resetting range"]
-    pub fn reset_start(mut self, reset_start: Option<String>) -> Self {
-        self.reset_start = reset_start;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2400,6 +2390,16 @@ impl MlPostData {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "Optional parameter to specify the end of the bucket resetting range"]
+    pub fn reset_end(mut self, reset_end: Option<String>) -> Self {
+        self.reset_end = reset_end;
+        self
+    }
+    #[doc = "Optional parameter to specify the start of the bucket resetting range"]
+    pub fn reset_start(mut self, reset_start: Option<String>) -> Self {
+        self.reset_start = reset_start;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -2891,11 +2891,6 @@ impl MlSetUpgradeMode {
         self.enabled = enabled;
         self
     }
-    #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2919,6 +2914,11 @@ impl MlSetUpgradeMode {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -2952,11 +2952,6 @@ impl MlStartDataFrameAnalytics {
             ..Default::default()
         }
     }
-    #[doc = "Controls the time to wait until the task has started. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2980,6 +2975,11 @@ impl MlStartDataFrameAnalytics {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until the task has started. Defaults to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -3020,16 +3020,6 @@ impl MlStartDatafeed {
         self.end = end;
         self
     }
-    #[doc = "The start time from where the datafeed should begin"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
-        self
-    }
-    #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3053,6 +3043,16 @@ impl MlStartDatafeed {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The start time from where the datafeed should begin"]
+    pub fn start(mut self, start: Option<String>) -> Self {
+        self.start = start;
+        self
+    }
+    #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -3093,16 +3093,6 @@ impl MlStopDataFrameAnalytics {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "True if the data frame analytics should be forcefully stopped"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until the task has stopped. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3111,6 +3101,11 @@ impl MlStopDataFrameAnalytics {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "True if the data frame analytics should be forcefully stopped"]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3126,6 +3121,11 @@ impl MlStopDataFrameAnalytics {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until the task has stopped. Defaults to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -3166,16 +3166,6 @@ impl MlStopDatafeed {
         self.allow_no_datafeeds = allow_no_datafeeds;
         self
     }
-    #[doc = "True if the datafeed should be forcefully stopped."]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
-        self
-    }
-    #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3184,6 +3174,11 @@ impl MlStopDatafeed {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
+        self
+    }
+    #[doc = "True if the datafeed should be forcefully stopped."]
+    pub fn force(mut self, force: Option<bool>) -> Self {
+        self.force = force;
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3199,6 +3194,11 @@ impl MlStopDatafeed {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }

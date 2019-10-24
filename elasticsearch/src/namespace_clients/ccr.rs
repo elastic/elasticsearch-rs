@@ -79,11 +79,6 @@ impl CcrFollow {
             ..Default::default()
         }
     }
-    #[doc = "Sets the number of shard copies that must be active before returning. Defaults to 0. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -107,6 +102,11 @@ impl CcrFollow {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Sets the number of shard copies that must be active before returning. Defaults to 0. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
         self
     }
 }

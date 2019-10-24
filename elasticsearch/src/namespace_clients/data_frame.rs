@@ -86,16 +86,6 @@ impl DataFrameGetDataFrameTransform {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "skips a number of transform configs, defaults to 0"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of transforms to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -106,6 +96,11 @@ impl DataFrameGetDataFrameTransform {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of transform configs, defaults to 0"]
+    pub fn from(mut self, from: Option<i32>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -114,6 +109,11 @@ impl DataFrameGetDataFrameTransform {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of transforms to get, defaults to 100"]
+    pub fn size(mut self, size: Option<i32>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -159,16 +159,6 @@ impl DataFrameGetDataFrameTransformStats {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "skips a number of transform stats, defaults to 0"]
-    pub fn from(mut self, from: Option<i64>) -> Self {
-        self.from = from;
-        self
-    }
-    #[doc = "specifies a max number of transform stats to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i64>) -> Self {
-        self.size = size;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -179,6 +169,11 @@ impl DataFrameGetDataFrameTransformStats {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "skips a number of transform stats, defaults to 0"]
+    pub fn from(mut self, from: Option<i64>) -> Self {
+        self.from = from;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
@@ -187,6 +182,11 @@ impl DataFrameGetDataFrameTransformStats {
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "specifies a max number of transform stats to get, defaults to 100"]
+    pub fn size(mut self, size: Option<i64>) -> Self {
+        self.size = size;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -334,11 +334,6 @@ impl DataFrameStartDataFrameTransform {
             ..Default::default()
         }
     }
-    #[doc = "Controls the time to wait for the transform to start"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -362,6 +357,11 @@ impl DataFrameStartDataFrameTransform {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait for the transform to start"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
         self
     }
 }
@@ -402,16 +402,6 @@ impl DataFrameStopDataFrameTransform {
         self.allow_no_match = allow_no_match;
         self
     }
-    #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
-    #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -435,6 +425,16 @@ impl DataFrameStopDataFrameTransform {
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
+    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
+        self.wait_for_completion = wait_for_completion;
         self
     }
 }
