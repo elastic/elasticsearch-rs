@@ -187,6 +187,7 @@ pub fn generate(
     namespace_clients_dir.push("namespace_clients");
     std::fs::create_dir_all(&namespace_clients_dir)?;
 
+    // generate the mod file to reference all namespace clients
     let modules = namespace_clients
         .iter()
         .map(|(name, _)| format!("pub mod {};", name))
@@ -195,11 +196,11 @@ pub fn generate(
 
     write_file(modules, &namespace_clients_dir, "mod.rs")?;
 
-    for namespace_client in namespace_clients {
+    for (name, input) in namespace_clients {
         write_file(
-            namespace_client.1,
+            input,
             &namespace_clients_dir,
-            format!("{}.rs", namespace_client.0).as_str(),
+            format!("{}.rs", name).as_str(),
         )?;
     }
 
@@ -233,8 +234,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-"
-        .as_bytes(),
+".as_bytes(),
     )?;
 
     let mut file = OpenOptions::new().append(true).write(true).open(&path)?;
