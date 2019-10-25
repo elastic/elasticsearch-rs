@@ -144,14 +144,15 @@ pub struct SecurityClearCachedRealms {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    realms: Option<Vec<String>>,
+    realms: Vec<String>,
     source: Option<String>,
     usernames: Option<Vec<String>>,
 }
 impl SecurityClearCachedRealms {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, realms: Vec<String>) -> Self {
         SecurityClearCachedRealms {
             client,
+            realms: realms,
             ..Default::default()
         }
     }
@@ -204,14 +205,15 @@ pub struct SecurityClearCachedRoles {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<Vec<String>>,
+    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl SecurityClearCachedRoles {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
         SecurityClearCachedRoles {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -316,19 +318,21 @@ impl Sender for SecurityCreateApiKey {
 #[derive(Default)]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
-    application: Option<String>,
+    application: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeletePrivileges {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, application: String, name: String) -> Self {
         SecurityDeletePrivileges {
             client,
+            application: application,
+            name: name,
             ..Default::default()
         }
     }
@@ -381,15 +385,16 @@ pub struct SecurityDeleteRole {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeleteRole {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityDeleteRole {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -442,15 +447,16 @@ pub struct SecurityDeleteRoleMapping {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeleteRoleMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityDeleteRoleMapping {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -506,12 +512,13 @@ pub struct SecurityDeleteUser {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: Option<String>,
+    username: String,
 }
 impl SecurityDeleteUser {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityDeleteUser {
             client,
+            username: username,
             ..Default::default()
         }
     }
@@ -567,12 +574,13 @@ pub struct SecurityDisableUser {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: Option<String>,
+    username: String,
 }
 impl SecurityDisableUser {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityDisableUser {
             client,
+            username: username,
             ..Default::default()
         }
     }
@@ -628,12 +636,13 @@ pub struct SecurityEnableUser {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: Option<String>,
+    username: String,
 }
 impl SecurityEnableUser {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityEnableUser {
             client,
+            username: username,
             ..Default::default()
         }
     }
@@ -1370,15 +1379,16 @@ pub struct SecurityPutRole {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityPutRole {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityPutRole {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -1431,15 +1441,16 @@ pub struct SecurityPutRoleMapping {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityPutRoleMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityPutRoleMapping {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -1495,12 +1506,13 @@ pub struct SecurityPutUser {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: Option<String>,
+    username: String,
 }
 impl SecurityPutUser {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityPutUser {
             client,
+            username: username,
             ..Default::default()
         }
     }
@@ -1564,40 +1576,40 @@ impl Security {
         SecurityChangePassword::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms(&self) -> SecurityClearCachedRealms {
-        SecurityClearCachedRealms::new(self.client.clone())
+    pub fn clear_cached_realms(&self, realms: Vec<String>) -> SecurityClearCachedRealms {
+        SecurityClearCachedRealms::new(self.client.clone(), realms)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles(&self) -> SecurityClearCachedRoles {
-        SecurityClearCachedRoles::new(self.client.clone())
+    pub fn clear_cached_roles(&self, name: Vec<String>) -> SecurityClearCachedRoles {
+        SecurityClearCachedRoles::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
     pub fn create_api_key(&self) -> SecurityCreateApiKey {
         SecurityCreateApiKey::new(self.client.clone())
     }
     #[doc = "TODO"]
-    pub fn delete_privileges(&self) -> SecurityDeletePrivileges {
-        SecurityDeletePrivileges::new(self.client.clone())
+    pub fn delete_privileges(&self, application: String, name: String) -> SecurityDeletePrivileges {
+        SecurityDeletePrivileges::new(self.client.clone(), application, name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
-    pub fn delete_role(&self) -> SecurityDeleteRole {
-        SecurityDeleteRole::new(self.client.clone())
+    pub fn delete_role(&self, name: String) -> SecurityDeleteRole {
+        SecurityDeleteRole::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
-    pub fn delete_role_mapping(&self) -> SecurityDeleteRoleMapping {
-        SecurityDeleteRoleMapping::new(self.client.clone())
+    pub fn delete_role_mapping(&self, name: String) -> SecurityDeleteRoleMapping {
+        SecurityDeleteRoleMapping::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
-    pub fn delete_user(&self) -> SecurityDeleteUser {
-        SecurityDeleteUser::new(self.client.clone())
+    pub fn delete_user(&self, username: String) -> SecurityDeleteUser {
+        SecurityDeleteUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user(&self) -> SecurityDisableUser {
-        SecurityDisableUser::new(self.client.clone())
+    pub fn disable_user(&self, username: String) -> SecurityDisableUser {
+        SecurityDisableUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user(&self) -> SecurityEnableUser {
-        SecurityEnableUser::new(self.client.clone())
+    pub fn enable_user(&self, username: String) -> SecurityEnableUser {
+        SecurityEnableUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
     pub fn get_api_key(&self) -> SecurityGetApiKey {
@@ -1648,16 +1660,16 @@ impl Security {
         SecurityPutPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role(&self) -> SecurityPutRole {
-        SecurityPutRole::new(self.client.clone())
+    pub fn put_role(&self, name: String) -> SecurityPutRole {
+        SecurityPutRole::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping(&self) -> SecurityPutRoleMapping {
-        SecurityPutRoleMapping::new(self.client.clone())
+    pub fn put_role_mapping(&self, name: String) -> SecurityPutRoleMapping {
+        SecurityPutRoleMapping::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user(&self) -> SecurityPutUser {
-        SecurityPutUser::new(self.client.clone())
+    pub fn put_user(&self, username: String) -> SecurityPutUser {
+        SecurityPutUser::new(self.client.clone(), username)
     }
 }
 impl Elasticsearch {

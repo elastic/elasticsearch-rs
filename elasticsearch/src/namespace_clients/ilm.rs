@@ -28,14 +28,15 @@ pub struct IlmDeleteLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    policy: Option<String>,
+    policy: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmDeleteLifecycle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, policy: String) -> Self {
         IlmDeleteLifecycle {
             client,
+            policy: policy,
             ..Default::default()
         }
     }
@@ -83,14 +84,15 @@ pub struct IlmExplainLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmExplainLifecycle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmExplainLifecycle {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -247,14 +249,15 @@ pub struct IlmMoveToStep {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmMoveToStep {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmMoveToStep {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -302,14 +305,15 @@ pub struct IlmPutLifecycle {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    policy: Option<String>,
+    policy: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmPutLifecycle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, policy: String) -> Self {
         IlmPutLifecycle {
             client,
+            policy: policy,
             ..Default::default()
         }
     }
@@ -357,14 +361,15 @@ pub struct IlmRemovePolicy {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmRemovePolicy {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmRemovePolicy {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -412,14 +417,15 @@ pub struct IlmRetry {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IlmRetry {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmRetry {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -578,12 +584,12 @@ impl Ilm {
         Ilm { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html"]
-    pub fn delete_lifecycle(&self) -> IlmDeleteLifecycle {
-        IlmDeleteLifecycle::new(self.client.clone())
+    pub fn delete_lifecycle(&self, policy: String) -> IlmDeleteLifecycle {
+        IlmDeleteLifecycle::new(self.client.clone(), policy)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html"]
-    pub fn explain_lifecycle(&self) -> IlmExplainLifecycle {
-        IlmExplainLifecycle::new(self.client.clone())
+    pub fn explain_lifecycle(&self, index: String) -> IlmExplainLifecycle {
+        IlmExplainLifecycle::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html"]
     pub fn get_lifecycle(&self) -> IlmGetLifecycle {
@@ -594,20 +600,20 @@ impl Ilm {
         IlmGetStatus::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html"]
-    pub fn move_to_step(&self) -> IlmMoveToStep {
-        IlmMoveToStep::new(self.client.clone())
+    pub fn move_to_step(&self, index: String) -> IlmMoveToStep {
+        IlmMoveToStep::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html"]
-    pub fn put_lifecycle(&self) -> IlmPutLifecycle {
-        IlmPutLifecycle::new(self.client.clone())
+    pub fn put_lifecycle(&self, policy: String) -> IlmPutLifecycle {
+        IlmPutLifecycle::new(self.client.clone(), policy)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html"]
-    pub fn remove_policy(&self) -> IlmRemovePolicy {
-        IlmRemovePolicy::new(self.client.clone())
+    pub fn remove_policy(&self, index: String) -> IlmRemovePolicy {
+        IlmRemovePolicy::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html"]
-    pub fn retry(&self) -> IlmRetry {
-        IlmRetry::new(self.client.clone())
+    pub fn retry(&self, index: String) -> IlmRetry {
+        IlmRetry::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html"]
     pub fn start(&self) -> IlmStart {

@@ -30,15 +30,17 @@ pub struct SnapshotCreate {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
-    snapshot: Option<String>,
+    repository: String,
+    snapshot: String,
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl SnapshotCreate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String, snapshot: String) -> Self {
         SnapshotCreate {
             client,
+            repository: repository,
+            snapshot: snapshot,
             ..Default::default()
         }
     }
@@ -98,15 +100,16 @@ pub struct SnapshotCreateRepository {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
+    repository: String,
     source: Option<String>,
     timeout: Option<String>,
     verify: Option<bool>,
 }
 impl SnapshotCreateRepository {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String) -> Self {
         SnapshotCreateRepository {
             client,
+            repository: repository,
             ..Default::default()
         }
     }
@@ -171,14 +174,16 @@ pub struct SnapshotDelete {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
-    snapshot: Option<String>,
+    repository: String,
+    snapshot: String,
     source: Option<String>,
 }
 impl SnapshotDelete {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String, snapshot: String) -> Self {
         SnapshotDelete {
             client,
+            repository: repository,
+            snapshot: snapshot,
             ..Default::default()
         }
     }
@@ -233,14 +238,15 @@ pub struct SnapshotDeleteRepository {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<Vec<String>>,
+    repository: Vec<String>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl SnapshotDeleteRepository {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: Vec<String>) -> Self {
         SnapshotDeleteRepository {
             client,
+            repository: repository,
             ..Default::default()
         }
     }
@@ -301,15 +307,17 @@ pub struct SnapshotGet {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
-    snapshot: Option<Vec<String>>,
+    repository: String,
+    snapshot: Vec<String>,
     source: Option<String>,
     verbose: Option<bool>,
 }
 impl SnapshotGet {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String, snapshot: Vec<String>) -> Self {
         SnapshotGet {
             client,
+            repository: repository,
+            snapshot: snapshot,
             ..Default::default()
         }
     }
@@ -441,15 +449,17 @@ pub struct SnapshotRestore {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
-    snapshot: Option<String>,
+    repository: String,
+    snapshot: String,
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl SnapshotRestore {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String, snapshot: String) -> Self {
         SnapshotRestore {
             client,
+            repository: repository,
+            snapshot: snapshot,
             ..Default::default()
         }
     }
@@ -577,14 +587,15 @@ pub struct SnapshotVerifyRepository {
     human: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<String>,
+    repository: String,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl SnapshotVerifyRepository {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, repository: String) -> Self {
         SnapshotVerifyRepository {
             client,
+            repository: repository,
             ..Default::default()
         }
     }
@@ -645,40 +656,40 @@ impl Snapshot {
         Snapshot { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create(&self) -> SnapshotCreate {
-        SnapshotCreate::new(self.client.clone())
+    pub fn create(&self, repository: String, snapshot: String) -> SnapshotCreate {
+        SnapshotCreate::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create_repository(&self) -> SnapshotCreateRepository {
-        SnapshotCreateRepository::new(self.client.clone())
+    pub fn create_repository(&self, repository: String) -> SnapshotCreateRepository {
+        SnapshotCreateRepository::new(self.client.clone(), repository)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete(&self) -> SnapshotDelete {
-        SnapshotDelete::new(self.client.clone())
+    pub fn delete(&self, repository: String, snapshot: String) -> SnapshotDelete {
+        SnapshotDelete::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn delete_repository(&self) -> SnapshotDeleteRepository {
-        SnapshotDeleteRepository::new(self.client.clone())
+    pub fn delete_repository(&self, repository: Vec<String>) -> SnapshotDeleteRepository {
+        SnapshotDeleteRepository::new(self.client.clone(), repository)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn get(&self) -> SnapshotGet {
-        SnapshotGet::new(self.client.clone())
+    pub fn get(&self, repository: String, snapshot: Vec<String>) -> SnapshotGet {
+        SnapshotGet::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn get_repository(&self) -> SnapshotGetRepository {
         SnapshotGetRepository::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn restore(&self) -> SnapshotRestore {
-        SnapshotRestore::new(self.client.clone())
+    pub fn restore(&self, repository: String, snapshot: String) -> SnapshotRestore {
+        SnapshotRestore::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
     pub fn status(&self) -> SnapshotStatus {
         SnapshotStatus::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn verify_repository(&self) -> SnapshotVerifyRepository {
-        SnapshotVerifyRepository::new(self.client.clone())
+    pub fn verify_repository(&self, repository: String) -> SnapshotVerifyRepository {
+        SnapshotVerifyRepository::new(self.client.clone(), repository)
     }
 }
 impl Elasticsearch {

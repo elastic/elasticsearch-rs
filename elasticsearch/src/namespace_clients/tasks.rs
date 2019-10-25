@@ -103,14 +103,15 @@ pub struct TasksGet {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    task_id: Option<String>,
+    task_id: String,
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl TasksGet {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, task_id: String) -> Self {
         TasksGet {
             client,
+            task_id: task_id,
             ..Default::default()
         }
     }
@@ -271,8 +272,8 @@ impl Tasks {
         TasksCancel::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn get(&self) -> TasksGet {
-        TasksGet::new(self.client.clone())
+    pub fn get(&self, task_id: String) -> TasksGet {
+        TasksGet::new(self.client.clone(), task_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
     pub fn list(&self) -> TasksList {

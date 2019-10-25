@@ -332,8 +332,8 @@ pub struct Create {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     pipeline: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -346,9 +346,11 @@ pub struct Create {
     wait_for_active_shards: Option<String>,
 }
 impl Create {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Create {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -431,10 +433,10 @@ pub struct Delete {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
@@ -446,9 +448,11 @@ pub struct Delete {
     wait_for_active_shards: Option<String>,
 }
 impl Delete {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Delete {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -548,7 +552,7 @@ pub struct DeleteByQuery {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     preference: Option<String>,
@@ -575,9 +579,10 @@ pub struct DeleteByQuery {
     wait_for_completion: Option<bool>,
 }
 impl DeleteByQuery {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         DeleteByQuery {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -793,12 +798,13 @@ pub struct DeleteByQueryRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: Option<String>,
+    task_id: String,
 }
 impl DeleteByQueryRethrottle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, task_id: String) -> Self {
         DeleteByQueryRethrottle {
             client,
+            task_id: task_id,
             ..Default::default()
         }
     }
@@ -851,16 +857,17 @@ pub struct DeleteScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl DeleteScript {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         DeleteScript {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -921,8 +928,8 @@ pub struct Exists {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -935,9 +942,11 @@ pub struct Exists {
     version_type: Option<VersionType>,
 }
 impl Exists {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Exists {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -1038,8 +1047,8 @@ pub struct ExistsSource {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1051,9 +1060,11 @@ pub struct ExistsSource {
     version_type: Option<VersionType>,
 }
 impl ExistsSource {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         ExistsSource {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -1153,8 +1164,8 @@ pub struct Explain {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     lenient: Option<bool>,
     preference: Option<String>,
     pretty: Option<bool>,
@@ -1165,9 +1176,11 @@ pub struct Explain {
     ty: Option<String>,
 }
 impl Explain {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Explain {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -1363,8 +1376,8 @@ pub struct Get {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1377,9 +1390,11 @@ pub struct Get {
     version_type: Option<VersionType>,
 }
 impl Get {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Get {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -1477,15 +1492,16 @@ pub struct GetScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl GetScript {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         GetScript {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -1541,8 +1557,8 @@ pub struct GetSource {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: Option<String>,
+    id: String,
+    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1554,9 +1570,11 @@ pub struct GetSource {
     version_type: Option<VersionType>,
 }
 impl GetSource {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         GetSource {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -1652,7 +1670,7 @@ pub struct Index {
     id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: Option<String>,
+    index: String,
     op_type: Option<OpType>,
     pipeline: Option<String>,
     pretty: Option<bool>,
@@ -1666,9 +1684,10 @@ pub struct Index {
     wait_for_active_shards: Option<String>,
 }
 impl Index {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         Index {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -2294,16 +2313,17 @@ pub struct PutScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl PutScript {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         PutScript {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -2544,12 +2564,13 @@ pub struct ReindexRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: Option<String>,
+    task_id: String,
 }
 impl ReindexRethrottle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, task_id: String) -> Self {
         ReindexRethrottle {
             client,
+            task_id: task_id,
             ..Default::default()
         }
     }
@@ -3325,7 +3346,7 @@ pub struct Termvectors {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     id: Option<String>,
-    index: Option<String>,
+    index: String,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
@@ -3340,9 +3361,10 @@ pub struct Termvectors {
     version_type: Option<VersionType>,
 }
 impl Termvectors {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         Termvectors {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -3448,10 +3470,10 @@ pub struct Update {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: Option<String>,
+    index: String,
     lang: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -3463,9 +3485,11 @@ pub struct Update {
     wait_for_active_shards: Option<String>,
 }
 impl Update {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
         Update {
             client,
+            id: id,
+            index: index,
             ..Default::default()
         }
     }
@@ -3580,7 +3604,7 @@ pub struct UpdateByQuery {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     pipeline: Option<String>,
@@ -3609,9 +3633,10 @@ pub struct UpdateByQuery {
     wait_for_completion: Option<bool>,
 }
 impl UpdateByQuery {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         UpdateByQuery {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -3837,12 +3862,13 @@ pub struct UpdateByQueryRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: Option<String>,
+    task_id: String,
 }
 impl UpdateByQueryRethrottle {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, task_id: String) -> Self {
         UpdateByQueryRethrottle {
             client,
+            task_id: task_id,
             ..Default::default()
         }
     }
@@ -3903,56 +3929,56 @@ impl Elasticsearch {
         Count::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn create(&self) -> Create {
-        Create::new(self.client.clone())
+    pub fn create(&self, id: String, index: String) -> Create {
+        Create::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html"]
-    pub fn delete(&self) -> Delete {
-        Delete::new(self.client.clone())
+    pub fn delete(&self, id: String, index: String) -> Delete {
+        Delete::new(self.client.clone(), id, index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html"]
-    pub fn delete_by_query(&self) -> DeleteByQuery {
-        DeleteByQuery::new(self.client.clone())
+    pub fn delete_by_query(&self, index: Vec<String>) -> DeleteByQuery {
+        DeleteByQuery::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html"]
-    pub fn delete_by_query_rethrottle(&self) -> DeleteByQueryRethrottle {
-        DeleteByQueryRethrottle::new(self.client.clone())
+    pub fn delete_by_query_rethrottle(&self, task_id: String) -> DeleteByQueryRethrottle {
+        DeleteByQueryRethrottle::new(self.client.clone(), task_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn delete_script(&self) -> DeleteScript {
-        DeleteScript::new(self.client.clone())
+    pub fn delete_script(&self, id: String) -> DeleteScript {
+        DeleteScript::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists(&self) -> Exists {
-        Exists::new(self.client.clone())
+    pub fn exists(&self, id: String, index: String) -> Exists {
+        Exists::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists_source(&self) -> ExistsSource {
-        ExistsSource::new(self.client.clone())
+    pub fn exists_source(&self, id: String, index: String) -> ExistsSource {
+        ExistsSource::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html"]
-    pub fn explain(&self) -> Explain {
-        Explain::new(self.client.clone())
+    pub fn explain(&self, id: String, index: String) -> Explain {
+        Explain::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html"]
     pub fn field_caps(&self) -> FieldCaps {
         FieldCaps::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get(&self) -> Get {
-        Get::new(self.client.clone())
+    pub fn get(&self, id: String, index: String) -> Get {
+        Get::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn get_script(&self) -> GetScript {
-        GetScript::new(self.client.clone())
+    pub fn get_script(&self, id: String) -> GetScript {
+        GetScript::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get_source(&self) -> GetSource {
-        GetSource::new(self.client.clone())
+    pub fn get_source(&self, id: String, index: String) -> GetSource {
+        GetSource::new(self.client.clone(), id, index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn index(&self) -> Index {
-        Index::new(self.client.clone())
+    pub fn index(&self, index: String) -> Index {
+        Index::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/"]
     pub fn info(&self) -> Info {
@@ -3979,8 +4005,8 @@ impl Elasticsearch {
         Ping::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn put_script(&self) -> PutScript {
-        PutScript::new(self.client.clone())
+    pub fn put_script(&self, id: String) -> PutScript {
+        PutScript::new(self.client.clone(), id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html"]
     pub fn rank_eval(&self) -> RankEval {
@@ -3991,8 +4017,8 @@ impl Elasticsearch {
         Reindex::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex_rethrottle(&self) -> ReindexRethrottle {
-        ReindexRethrottle::new(self.client.clone())
+    pub fn reindex_rethrottle(&self, task_id: String) -> ReindexRethrottle {
+        ReindexRethrottle::new(self.client.clone(), task_id)
     }
     #[doc = "http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html"]
     pub fn render_search_template(&self) -> RenderSearchTemplate {
@@ -4019,19 +4045,19 @@ impl Elasticsearch {
         SearchTemplate::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html"]
-    pub fn termvectors(&self) -> Termvectors {
-        Termvectors::new(self.client.clone())
+    pub fn termvectors(&self, index: String) -> Termvectors {
+        Termvectors::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html"]
-    pub fn update(&self) -> Update {
-        Update::new(self.client.clone())
+    pub fn update(&self, id: String, index: String) -> Update {
+        Update::new(self.client.clone(), id, index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html"]
-    pub fn update_by_query(&self) -> UpdateByQuery {
-        UpdateByQuery::new(self.client.clone())
+    pub fn update_by_query(&self, index: Vec<String>) -> UpdateByQuery {
+        UpdateByQuery::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html"]
-    pub fn update_by_query_rethrottle(&self) -> UpdateByQueryRethrottle {
-        UpdateByQueryRethrottle::new(self.client.clone())
+    pub fn update_by_query_rethrottle(&self, task_id: String) -> UpdateByQueryRethrottle {
+        UpdateByQueryRethrottle::new(self.client.clone(), task_id)
     }
 }

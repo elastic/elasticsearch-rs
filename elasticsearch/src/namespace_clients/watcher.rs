@@ -31,12 +31,13 @@ pub struct WatcherAckWatch {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    watch_id: Option<String>,
+    watch_id: String,
 }
 impl WatcherAckWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherAckWatch {
             client,
+            watch_id: watch_id,
             ..Default::default()
         }
     }
@@ -86,12 +87,13 @@ pub struct WatcherActivateWatch {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    watch_id: Option<String>,
+    watch_id: String,
 }
 impl WatcherActivateWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherActivateWatch {
             client,
+            watch_id: watch_id,
             ..Default::default()
         }
     }
@@ -141,12 +143,13 @@ pub struct WatcherDeactivateWatch {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    watch_id: Option<String>,
+    watch_id: String,
 }
 impl WatcherDeactivateWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherDeactivateWatch {
             client,
+            watch_id: watch_id,
             ..Default::default()
         }
     }
@@ -194,14 +197,15 @@ pub struct WatcherDeleteWatch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl WatcherDeleteWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         WatcherDeleteWatch {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -310,14 +314,15 @@ pub struct WatcherGetWatch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl WatcherGetWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         WatcherGetWatch {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -366,7 +371,7 @@ pub struct WatcherPutWatch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     pretty: Option<bool>,
@@ -374,9 +379,10 @@ pub struct WatcherPutWatch {
     version: Option<i64>,
 }
 impl WatcherPutWatch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         WatcherPutWatch {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -621,32 +627,32 @@ impl Watcher {
         Watcher { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html"]
-    pub fn ack_watch(&self) -> WatcherAckWatch {
-        WatcherAckWatch::new(self.client.clone())
+    pub fn ack_watch(&self, watch_id: String) -> WatcherAckWatch {
+        WatcherAckWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html"]
-    pub fn activate_watch(&self) -> WatcherActivateWatch {
-        WatcherActivateWatch::new(self.client.clone())
+    pub fn activate_watch(&self, watch_id: String) -> WatcherActivateWatch {
+        WatcherActivateWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html"]
-    pub fn deactivate_watch(&self) -> WatcherDeactivateWatch {
-        WatcherDeactivateWatch::new(self.client.clone())
+    pub fn deactivate_watch(&self, watch_id: String) -> WatcherDeactivateWatch {
+        WatcherDeactivateWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html"]
-    pub fn delete_watch(&self) -> WatcherDeleteWatch {
-        WatcherDeleteWatch::new(self.client.clone())
+    pub fn delete_watch(&self, id: String) -> WatcherDeleteWatch {
+        WatcherDeleteWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html"]
     pub fn execute_watch(&self) -> WatcherExecuteWatch {
         WatcherExecuteWatch::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html"]
-    pub fn get_watch(&self) -> WatcherGetWatch {
-        WatcherGetWatch::new(self.client.clone())
+    pub fn get_watch(&self, id: String) -> WatcherGetWatch {
+        WatcherGetWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html"]
-    pub fn put_watch(&self) -> WatcherPutWatch {
-        WatcherPutWatch::new(self.client.clone())
+    pub fn put_watch(&self, id: String) -> WatcherPutWatch {
+        WatcherPutWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html"]
     pub fn start(&self) -> WatcherStart {

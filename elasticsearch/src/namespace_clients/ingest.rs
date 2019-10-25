@@ -28,16 +28,17 @@ pub struct IngestDeletePipeline {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IngestDeletePipeline {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         IngestDeletePipeline {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -210,16 +211,17 @@ pub struct IngestPutPipeline {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IngestPutPipeline {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         IngestPutPipeline {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -341,8 +343,8 @@ impl Ingest {
         Ingest { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html"]
-    pub fn delete_pipeline(&self) -> IngestDeletePipeline {
-        IngestDeletePipeline::new(self.client.clone())
+    pub fn delete_pipeline(&self, id: String) -> IngestDeletePipeline {
+        IngestDeletePipeline::new(self.client.clone(), id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html"]
     pub fn get_pipeline(&self) -> IngestGetPipeline {
@@ -353,8 +355,8 @@ impl Ingest {
         IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html"]
-    pub fn put_pipeline(&self) -> IngestPutPipeline {
-        IngestPutPipeline::new(self.client.clone())
+    pub fn put_pipeline(&self, id: String) -> IngestPutPipeline {
+        IngestPutPipeline::new(self.client.clone(), id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html"]
     pub fn simulate(&self) -> IngestSimulate {

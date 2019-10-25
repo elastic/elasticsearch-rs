@@ -6,10 +6,11 @@ pub mod url;
 use crate::api_generator::{Type, TypeKind, ApiEndpoint};
 use array_tool::vec::Intersect;
 use inflector::Inflector;
-use quote::Tokens;
+use quote::{Tokens, ToTokens};
 use reduce::Reduce;
 use std::str;
-use syn::{Field, ImplItem};
+use syn::{Field, ImplItem, FieldValue, FnArg};
+use std::collections::BTreeMap;
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -91,27 +92,33 @@ impl GetPath for syn::Path {
 }
 
 /// Gets the Ty syntax token for a TypeKind
-fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
-    match kind {
-        TypeKind::None => syn::parse_type("Option<String>").unwrap(),
-        TypeKind::List => syn::parse_type("Option<Vec<String>>").unwrap(),
-        TypeKind::Enum => {
-            let mut v = String::from("Option<");
-            v.push_str(name.to_pascal_case().as_str());
-            v.push_str(">");
-            syn::parse_type(v.as_str()).unwrap()
-        }
-        TypeKind::String => syn::parse_type("Option<String>").unwrap(),
-        TypeKind::Text => syn::parse_type("Option<String>").unwrap(),
-        TypeKind::Boolean => syn::parse_type("Option<bool>").unwrap(),
-        TypeKind::Number => syn::parse_type("Option<i64>").unwrap(),
-        TypeKind::Float => syn::parse_type("Option<f32>").unwrap(),
-        TypeKind::Double => syn::parse_type("Option<f64>").unwrap(),
-        TypeKind::Integer => syn::parse_type("Option<i32>").unwrap(),
-        TypeKind::Long => syn::parse_type("Option<i64>").unwrap(),
-        TypeKind::Date => syn::parse_type("Option<String>").unwrap(),
-        TypeKind::Time => syn::parse_type("Option<String>").unwrap(),
+fn ty(name: &str, kind: &TypeKind, required: bool) -> syn::Ty {
+    let mut v = String::new();
+    if !required {
+        v.push_str("Option<");
     }
+
+    match kind {
+        TypeKind::None => v.push_str("String"),
+        TypeKind::List => v.push_str("Vec<String>"),
+        TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
+        TypeKind::String => v.push_str("String"),
+        TypeKind::Text => v.push_str("String"),
+        TypeKind::Boolean => v.push_str("bool"),
+        TypeKind::Number => v.push_str("i64"),
+        TypeKind::Float => v.push_str("f32"),
+        TypeKind::Double => v.push_str("f64"),
+        TypeKind::Integer => v.push_str("i32"),
+        TypeKind::Long => v.push_str("i64"),
+        TypeKind::Date => v.push_str("String"),
+        TypeKind::Time => v.push_str("String"),
+    };
+
+    if !required {
+        v.push_str(">");
+    }
+
+    syn::parse_type(v.as_str()).unwrap()
 }
 
 /// A standard `'a` lifetime
@@ -160,23 +167,39 @@ pub fn generics(lifetimes: Vec<syn::Lifetime>, types: Vec<syn::TyParam>) -> syn:
     }
 }
 
+fn create_required_field(f: (&String, &Type)) -> syn::Field {
+    create_field(f, true)
+}
+
+fn create_optional_field(f: (&String, &Type)) -> syn::Field {
+    create_field(f, false)
+}
+
 /// Creates a field for a struct
-fn create_field(f: (&String, &Type)) -> syn::Field {
+fn create_field(f: (&String, &Type), required: bool) -> syn::Field {
     syn::Field {
         ident: Some(ident(valid_name(&f.0).to_lowercase())),
         vis: syn::Visibility::Inherited,
         attrs: vec![],
-        ty: ty(&f.0, &f.1.ty),
+        ty: ty(&f.0, &f.1.ty, required),
     }
 }
 
+fn create_required_fn(f: (&String, &Type)) -> syn::ImplItem {
+    create_fn(f, true)
+}
+
+fn create_optional_fn(f: (&String, &Type)) -> syn::ImplItem {
+    create_fn(f, false)
+}
+
 /// Creates a builder fn for a builder impl
-fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
+fn create_fn(f: (&String, &Type), required: bool) -> syn::ImplItem {
     let name = valid_name(&f.0).to_lowercase();
     let impl_ident = ident(&name);
     let field_ident = ident(&name);
     let value_ident = ident(&name);
-    let ty = ty(&f.0, &f.1.ty);
+    let ty = ty(&f.0, &f.1.ty, required);
     let doc_attr = match &f.1.description {
         Some(docs) => vec![doc(docs.into())],
         _ => vec![],
@@ -197,7 +220,7 @@ fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
                         syn::FnArg::SelfValue(syn::Mutability::Mutable),
                         syn::FnArg::Captured(syn::Pat::Path(None, path_none(name.as_str())), ty),
                     ],
-                    // TODO: a Self syn type?
+                    // TODO: is there a Self syn type?
                     output: syn::FunctionRetTy::Ty(syn::parse_type("Self").unwrap()),
                     variadic: false,
                 },
@@ -234,27 +257,82 @@ pub fn use_declarations() -> Tokens {
     )
 }
 
+fn create_new_fnargs_fields(builder_ident: &syn::Ident, required_parts: &BTreeMap<&String,&Type>) -> (Vec<FnArg>, Vec<FieldValue>) {
+    match required_parts.len() {
+        0 => (vec![], vec![]),
+        _ => {
+            let fnargs = required_parts.iter()
+                .map(|part| (valid_name(part.0), part.1))
+                .map(|part| {
+                    syn::FnArg::Captured(syn::Pat::Path(None, path_none(part.0)), ty(part.0, &part.1.ty, true))
+                })
+                .collect::<Vec<syn::FnArg>>();
+
+            let fields = required_parts.iter()
+                .map(|part| valid_name(part.0))
+                .map(|part| {
+                    syn::FieldValue {
+                        attrs: vec![],
+                        ident: ident(part),
+                        expr: syn::ExprKind::Path(None, path_none(ident(part).as_ref())).into(),
+                        is_shorthand: false,
+                    }
+                })
+                .collect();
+
+            (fnargs, fields)
+        }
+    }
+}
+
+fn create_new_fn(builder_ident: &syn::Ident, required_parts: BTreeMap<&String,&Type>) -> Tokens {
+    let (fnargs, fields) = create_new_fnargs_fields(builder_ident, &required_parts);
+    match required_parts.len() {
+        0 => quote!(
+                pub fn new(client: Elasticsearch) -> Self {
+                    #builder_ident {
+                        client,
+                        ..Default::default()
+                    }
+                }
+            ),
+        _ => {
+            quote!(
+                 pub fn new(client: Elasticsearch, #(#fnargs),*) -> Self {
+                    #builder_ident {
+                        client,
+                        #(#fields),*,
+                        ..Default::default()
+                    }
+                }
+            )
+        }
+    }
+
+}
+
 /// creates the AST for a builder struct
 pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, common_fields: &Vec<Field>, common_builder_fns: &Vec<ImplItem>) -> Tokens {
     let builder_ident = ident(builder_name);
 
     // url parts that are common across all urls.
     // These are required parameters for the builder ctor new() fn
-    let required_parts: Option<Vec<&str>> = endpoint
+    let required_parts: Vec<&str> = endpoint
         .url
         .paths
         .iter()
         .map(|p| {
             p.params()
         })
-        .reduce(|a, b| a.intersect(b));
+        .reduce(|a, b| a.intersect(b))
+        .unwrap();
 
     // collect all the fields for the builder struct. Start with url parts
     let mut fields: Vec<syn::Field> = endpoint
         .url
         .parts
         .iter()
-        .map(create_field)
+        .map(|f| create_field(f, required_parts.contains(&&**f.0)))
         .collect();
 
     // url parameters
@@ -262,7 +340,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
         .url
         .params
         .iter()
-        .map(create_field)
+        .map(create_optional_field)
         .collect());
 
     // Combine common fields with struct fields, sort and deduplicate
@@ -276,7 +354,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
         .url
         .params
         .iter()
-        .map(create_fn)
+        .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
         .collect();
 
     // Combine common fns with builder fns, sort and deduplicate
@@ -284,6 +362,13 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
     builder_fns.append(&mut common_builder_fns.clone());
     builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
     builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
+
+    let req_parts: BTreeMap<&String,&Type> = endpoint.url.parts
+        .iter()
+        .filter(|p| required_parts.contains(&p.0.as_str()))
+        .collect::<BTreeMap<&String,&Type>>();
+
+    let new_fn = create_new_fn(&builder_ident, req_parts);
 
     quote!(
         #[derive(Default)]
@@ -293,13 +378,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
         }
 
         impl #builder_ident {
-            // TODO: add required_parts to new fn
-            pub fn new(client: Elasticsearch) -> Self {
-                #builder_ident {
-                    client,
-                    ..Default::default()
-                }
-            }
+            #new_fn
             #(#builder_fns)*
         }
 
@@ -329,10 +408,41 @@ pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpo
         _ => None,
     };
 
+    // url parts that are common across all urls.
+    // These are required parameters for the builder ctor new() fn
+    let required_parts: Vec<&str> = endpoint
+        .url
+        .paths
+        .iter()
+        .map(|p| {
+            p.params()
+        })
+        .reduce(|a, b| a.intersect(b))
+        .unwrap();
+
+    let req_parts: BTreeMap<&String,&Type> = endpoint.url.parts
+        .iter()
+        .filter(|p| required_parts.contains(&p.0.as_str()))
+        .collect::<BTreeMap<&String,&Type>>();
+
+    let (fnargs, fields) = create_new_fnargs_fields(&builder_ident, &req_parts);
+
+    let t : Vec<syn::Pat> = fnargs
+        .clone()
+        .into_iter()
+        .filter_map(|f| {
+            match f {
+                FnArg::Captured(p, ty) => Some(p),
+                _ => None
+            }
+        })
+        .collect();
+
     quote!(
         #method_doc
-        pub fn #fn_name(&self) -> #builder_ident {
-            #builder_ident::new(self.client.clone())
+        pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident {
+            // TODO: Add fn a
+            #builder_ident::new(self.client.clone(),#(#t),*)
         }
     )
 }

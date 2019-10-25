@@ -28,7 +28,7 @@ pub struct GraphExplore {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     pretty: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
@@ -36,9 +36,10 @@ pub struct GraphExplore {
     ty: Option<Vec<String>>,
 }
 impl GraphExplore {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         GraphExplore {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -99,8 +100,8 @@ impl Graph {
         Graph { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
-    pub fn explore(&self) -> GraphExplore {
-        GraphExplore::new(self.client.clone())
+    pub fn explore(&self, index: Vec<String>) -> GraphExplore {
+        GraphExplore::new(self.client.clone(), index)
     }
 }
 impl Elasticsearch {

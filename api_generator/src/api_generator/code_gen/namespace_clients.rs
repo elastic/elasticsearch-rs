@@ -11,11 +11,11 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let common_fields: Vec<Field> = api
         .common_params
         .iter()
-        .map(code_gen::create_field)
+        .map(code_gen::create_optional_field)
         .collect();
 
     let common_builder_fns: Vec<ImplItem> =
-        api.common_params.iter().map(code_gen::create_fn).collect();
+        api.common_params.iter().map(code_gen::create_optional_fn).collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();

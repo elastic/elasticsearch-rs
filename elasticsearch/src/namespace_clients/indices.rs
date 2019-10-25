@@ -193,7 +193,7 @@ pub struct IndicesClose {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -201,9 +201,10 @@ pub struct IndicesClose {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesClose {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesClose {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -282,7 +283,7 @@ pub struct IndicesCreate {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<String>,
+    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -290,9 +291,10 @@ pub struct IndicesCreate {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesCreate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesCreate {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -363,16 +365,17 @@ pub struct IndicesDelete {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDelete {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesDelete {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -445,17 +448,19 @@ pub struct IndicesDeleteAlias {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
-    name: Option<Vec<String>>,
+    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDeleteAlias {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>, name: Vec<String>) -> Self {
         IndicesDeleteAlias {
             client,
+            index: index,
+            name: name,
             ..Default::default()
         }
     }
@@ -514,15 +519,16 @@ pub struct IndicesDeleteTemplate {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDeleteTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         IndicesDeleteTemplate {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -585,15 +591,16 @@ pub struct IndicesExists {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExists {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesExists {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -676,14 +683,15 @@ pub struct IndicesExistsAlias {
     ignore_unavailable: Option<bool>,
     index: Option<Vec<String>>,
     local: Option<bool>,
-    name: Option<Vec<String>>,
+    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExistsAlias {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
         IndicesExistsAlias {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -754,14 +762,15 @@ pub struct IndicesExistsTemplate {
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<Vec<String>>,
+    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExistsTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
         IndicesExistsTemplate {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -827,16 +836,18 @@ pub struct IndicesExistsType {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
+    ty: Vec<String>,
 }
 impl IndicesExistsType {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>, ty: Vec<String>) -> Self {
         IndicesExistsType {
             client,
+            index: index,
+            ty: ty,
             ..Default::default()
         }
     }
@@ -1156,7 +1167,7 @@ pub struct IndicesFreeze {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<String>,
+    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -1164,9 +1175,10 @@ pub struct IndicesFreeze {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesFreeze {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesFreeze {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -1250,16 +1262,17 @@ pub struct IndicesGet {
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     local: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGet {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesGet {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -1427,7 +1440,7 @@ pub struct IndicesGetFieldMapping {
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    fields: Option<Vec<String>>,
+    fields: Vec<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
@@ -1440,9 +1453,10 @@ pub struct IndicesGetFieldMapping {
     ty: Option<Vec<String>>,
 }
 impl IndicesGetFieldMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, fields: Vec<String>) -> Self {
         IndicesGetFieldMapping {
             client,
+            fields: fields,
             ..Default::default()
         }
     }
@@ -1865,7 +1879,7 @@ pub struct IndicesOpen {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -1873,9 +1887,10 @@ pub struct IndicesOpen {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesOpen {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesOpen {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -1953,17 +1968,19 @@ pub struct IndicesPutAlias {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesPutAlias {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>, name: String) -> Self {
         IndicesPutAlias {
             client,
+            index: index,
+            name: name,
             ..Default::default()
         }
     }
@@ -2025,7 +2042,7 @@ pub struct IndicesPutMapping {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -2033,9 +2050,10 @@ pub struct IndicesPutMapping {
     ty: Option<String>,
 }
 impl IndicesPutMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesPutMapping {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -2214,16 +2232,17 @@ pub struct IndicesPutTemplate {
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<String>,
+    name: String,
     order: Option<i64>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesPutTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         IndicesPutTemplate {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -2444,14 +2463,15 @@ pub struct IndicesReloadSearchAnalyzers {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesReloadSearchAnalyzers {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesReloadSearchAnalyzers {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -2511,7 +2531,7 @@ impl Sender for IndicesReloadSearchAnalyzers {
 #[derive(Default)]
 pub struct IndicesRollover {
     client: Elasticsearch,
-    alias: Option<String>,
+    alias: String,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2525,9 +2545,10 @@ pub struct IndicesRollover {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesRollover {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, alias: String) -> Self {
         IndicesRollover {
             client,
+            alias: alias,
             ..Default::default()
         }
     }
@@ -2759,18 +2780,20 @@ pub struct IndicesShrink {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    target: Option<String>,
+    target: String,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
 impl IndicesShrink {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
         IndicesShrink {
             client,
+            index: index,
+            target: target,
             ..Default::default()
         }
     }
@@ -2839,18 +2862,20 @@ pub struct IndicesSplit {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    target: Option<String>,
+    target: String,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
 impl IndicesSplit {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
         IndicesSplit {
             client,
+            index: index,
+            target: target,
             ..Default::default()
         }
     }
@@ -3037,7 +3062,7 @@ pub struct IndicesUnfreeze {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<String>,
+    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -3045,9 +3070,10 @@ pub struct IndicesUnfreeze {
     wait_for_active_shards: Option<String>,
 }
 impl IndicesUnfreeze {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesUnfreeze {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -3415,40 +3441,40 @@ impl Indices {
         IndicesClearCache::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn close(&self) -> IndicesClose {
-        IndicesClose::new(self.client.clone())
+    pub fn close(&self, index: Vec<String>) -> IndicesClose {
+        IndicesClose::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html"]
-    pub fn create(&self) -> IndicesCreate {
-        IndicesCreate::new(self.client.clone())
+    pub fn create(&self, index: String) -> IndicesCreate {
+        IndicesCreate::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html"]
-    pub fn delete(&self) -> IndicesDelete {
-        IndicesDelete::new(self.client.clone())
+    pub fn delete(&self, index: Vec<String>) -> IndicesDelete {
+        IndicesDelete::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn delete_alias(&self) -> IndicesDeleteAlias {
-        IndicesDeleteAlias::new(self.client.clone())
+    pub fn delete_alias(&self, index: Vec<String>, name: Vec<String>) -> IndicesDeleteAlias {
+        IndicesDeleteAlias::new(self.client.clone(), index, name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn delete_template(&self) -> IndicesDeleteTemplate {
-        IndicesDeleteTemplate::new(self.client.clone())
+    pub fn delete_template(&self, name: String) -> IndicesDeleteTemplate {
+        IndicesDeleteTemplate::new(self.client.clone(), name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html"]
-    pub fn exists(&self) -> IndicesExists {
-        IndicesExists::new(self.client.clone())
+    pub fn exists(&self, index: Vec<String>) -> IndicesExists {
+        IndicesExists::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn exists_alias(&self) -> IndicesExistsAlias {
-        IndicesExistsAlias::new(self.client.clone())
+    pub fn exists_alias(&self, name: Vec<String>) -> IndicesExistsAlias {
+        IndicesExistsAlias::new(self.client.clone(), name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn exists_template(&self) -> IndicesExistsTemplate {
-        IndicesExistsTemplate::new(self.client.clone())
+    pub fn exists_template(&self, name: Vec<String>) -> IndicesExistsTemplate {
+        IndicesExistsTemplate::new(self.client.clone(), name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html"]
-    pub fn exists_type(&self) -> IndicesExistsType {
-        IndicesExistsType::new(self.client.clone())
+    pub fn exists_type(&self, index: Vec<String>, ty: Vec<String>) -> IndicesExistsType {
+        IndicesExistsType::new(self.client.clone(), index, ty)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html"]
     pub fn flush(&self) -> IndicesFlush {
@@ -3463,20 +3489,20 @@ impl Indices {
         IndicesForcemerge::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn freeze(&self) -> IndicesFreeze {
-        IndicesFreeze::new(self.client.clone())
+    pub fn freeze(&self, index: String) -> IndicesFreeze {
+        IndicesFreeze::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html"]
-    pub fn get(&self) -> IndicesGet {
-        IndicesGet::new(self.client.clone())
+    pub fn get(&self, index: Vec<String>) -> IndicesGet {
+        IndicesGet::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn get_alias(&self) -> IndicesGetAlias {
         IndicesGetAlias::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html"]
-    pub fn get_field_mapping(&self) -> IndicesGetFieldMapping {
-        IndicesGetFieldMapping::new(self.client.clone())
+    pub fn get_field_mapping(&self, fields: Vec<String>) -> IndicesGetFieldMapping {
+        IndicesGetFieldMapping::new(self.client.clone(), fields)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html"]
     pub fn get_mapping(&self) -> IndicesGetMapping {
@@ -3495,24 +3521,24 @@ impl Indices {
         IndicesGetUpgrade::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn open(&self) -> IndicesOpen {
-        IndicesOpen::new(self.client.clone())
+    pub fn open(&self, index: Vec<String>) -> IndicesOpen {
+        IndicesOpen::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn put_alias(&self) -> IndicesPutAlias {
-        IndicesPutAlias::new(self.client.clone())
+    pub fn put_alias(&self, index: Vec<String>, name: String) -> IndicesPutAlias {
+        IndicesPutAlias::new(self.client.clone(), index, name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
-    pub fn put_mapping(&self) -> IndicesPutMapping {
-        IndicesPutMapping::new(self.client.clone())
+    pub fn put_mapping(&self, index: Vec<String>) -> IndicesPutMapping {
+        IndicesPutMapping::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
     pub fn put_settings(&self) -> IndicesPutSettings {
         IndicesPutSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn put_template(&self) -> IndicesPutTemplate {
-        IndicesPutTemplate::new(self.client.clone())
+    pub fn put_template(&self, name: String) -> IndicesPutTemplate {
+        IndicesPutTemplate::new(self.client.clone(), name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html"]
     pub fn recovery(&self) -> IndicesRecovery {
@@ -3523,12 +3549,12 @@ impl Indices {
         IndicesRefresh::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html"]
-    pub fn reload_search_analyzers(&self) -> IndicesReloadSearchAnalyzers {
-        IndicesReloadSearchAnalyzers::new(self.client.clone())
+    pub fn reload_search_analyzers(&self, index: Vec<String>) -> IndicesReloadSearchAnalyzers {
+        IndicesReloadSearchAnalyzers::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html"]
-    pub fn rollover(&self) -> IndicesRollover {
-        IndicesRollover::new(self.client.clone())
+    pub fn rollover(&self, alias: String) -> IndicesRollover {
+        IndicesRollover::new(self.client.clone(), alias)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html"]
     pub fn segments(&self) -> IndicesSegments {
@@ -3539,20 +3565,20 @@ impl Indices {
         IndicesShardStores::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html"]
-    pub fn shrink(&self) -> IndicesShrink {
-        IndicesShrink::new(self.client.clone())
+    pub fn shrink(&self, index: String, target: String) -> IndicesShrink {
+        IndicesShrink::new(self.client.clone(), index, target)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html"]
-    pub fn split(&self) -> IndicesSplit {
-        IndicesSplit::new(self.client.clone())
+    pub fn split(&self, index: String, target: String) -> IndicesSplit {
+        IndicesSplit::new(self.client.clone(), index, target)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html"]
     pub fn stats(&self) -> IndicesStats {
         IndicesStats::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn unfreeze(&self) -> IndicesUnfreeze {
-        IndicesUnfreeze::new(self.client.clone())
+    pub fn unfreeze(&self, index: String) -> IndicesUnfreeze {
+        IndicesUnfreeze::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
     pub fn update_aliases(&self) -> IndicesUpdateAliases {

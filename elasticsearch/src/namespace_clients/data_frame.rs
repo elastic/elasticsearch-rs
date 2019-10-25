@@ -30,12 +30,13 @@ pub struct DataFrameDeleteDataFrameTransform {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    transform_id: Option<String>,
+    transform_id: String,
 }
 impl DataFrameDeleteDataFrameTransform {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameDeleteDataFrameTransform {
             client,
+            transform_id: transform_id,
             ..Default::default()
         }
     }
@@ -161,12 +162,13 @@ pub struct DataFrameGetDataFrameTransformStats {
     pretty: Option<bool>,
     size: Option<i64>,
     source: Option<String>,
-    transform_id: Option<String>,
+    transform_id: String,
 }
 impl DataFrameGetDataFrameTransformStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameGetDataFrameTransformStats {
             client,
+            transform_id: transform_id,
             ..Default::default()
         }
     }
@@ -285,12 +287,13 @@ pub struct DataFramePutDataFrameTransform {
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    transform_id: Option<String>,
+    transform_id: String,
 }
 impl DataFramePutDataFrameTransform {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFramePutDataFrameTransform {
             client,
+            transform_id: transform_id,
             ..Default::default()
         }
     }
@@ -341,12 +344,13 @@ pub struct DataFrameStartDataFrameTransform {
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
-    transform_id: Option<String>,
+    transform_id: String,
 }
 impl DataFrameStartDataFrameTransform {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameStartDataFrameTransform {
             client,
+            transform_id: transform_id,
             ..Default::default()
         }
     }
@@ -403,13 +407,14 @@ pub struct DataFrameStopDataFrameTransform {
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
-    transform_id: Option<String>,
+    transform_id: String,
     wait_for_completion: Option<bool>,
 }
 impl DataFrameStopDataFrameTransform {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameStopDataFrameTransform {
             client,
+            transform_id: transform_id,
             ..Default::default()
         }
     }
@@ -475,32 +480,44 @@ impl DataFrame {
         DataFrame { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-data-frame-transform.html"]
-    pub fn delete_data_frame_transform(&self) -> DataFrameDeleteDataFrameTransform {
-        DataFrameDeleteDataFrameTransform::new(self.client.clone())
+    pub fn delete_data_frame_transform(
+        &self,
+        transform_id: String,
+    ) -> DataFrameDeleteDataFrameTransform {
+        DataFrameDeleteDataFrameTransform::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform.html"]
     pub fn get_data_frame_transform(&self) -> DataFrameGetDataFrameTransform {
         DataFrameGetDataFrameTransform::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/get-data-frame-transform-stats.html"]
-    pub fn get_data_frame_transform_stats(&self) -> DataFrameGetDataFrameTransformStats {
-        DataFrameGetDataFrameTransformStats::new(self.client.clone())
+    pub fn get_data_frame_transform_stats(
+        &self,
+        transform_id: String,
+    ) -> DataFrameGetDataFrameTransformStats {
+        DataFrameGetDataFrameTransformStats::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-data-frame-transform.html"]
     pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransform {
         DataFramePreviewDataFrameTransform::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/put-data-frame-transform.html"]
-    pub fn put_data_frame_transform(&self) -> DataFramePutDataFrameTransform {
-        DataFramePutDataFrameTransform::new(self.client.clone())
+    pub fn put_data_frame_transform(&self, transform_id: String) -> DataFramePutDataFrameTransform {
+        DataFramePutDataFrameTransform::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/start-data-frame-transform.html"]
-    pub fn start_data_frame_transform(&self) -> DataFrameStartDataFrameTransform {
-        DataFrameStartDataFrameTransform::new(self.client.clone())
+    pub fn start_data_frame_transform(
+        &self,
+        transform_id: String,
+    ) -> DataFrameStartDataFrameTransform {
+        DataFrameStartDataFrameTransform::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/stop-data-frame-transform.html"]
-    pub fn stop_data_frame_transform(&self) -> DataFrameStopDataFrameTransform {
-        DataFrameStopDataFrameTransform::new(self.client.clone())
+    pub fn stop_data_frame_transform(
+        &self,
+        transform_id: String,
+    ) -> DataFrameStopDataFrameTransform {
+        DataFrameStopDataFrameTransform::new(self.client.clone(), transform_id)
     }
 }
 impl Elasticsearch {

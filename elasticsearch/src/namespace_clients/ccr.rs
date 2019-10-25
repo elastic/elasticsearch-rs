@@ -28,14 +28,15 @@ pub struct CcrDeleteAutoFollowPattern {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrDeleteAutoFollowPattern {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         CcrDeleteAutoFollowPattern {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -83,15 +84,16 @@ pub struct CcrFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_active_shards: Option<String>,
 }
 impl CcrFollow {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrFollow {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -144,14 +146,15 @@ pub struct CcrFollowInfo {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrFollowInfo {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         CcrFollowInfo {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -199,14 +202,15 @@ pub struct CcrFollowStats {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrFollowStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         CcrFollowStats {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -254,14 +258,15 @@ pub struct CcrForgetFollower {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrForgetFollower {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrForgetFollower {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -364,14 +369,15 @@ pub struct CcrPauseFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrPauseFollow {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrPauseFollow {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -419,14 +425,15 @@ pub struct CcrPutAutoFollowPattern {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
+    name: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrPutAutoFollowPattern {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, name: String) -> Self {
         CcrPutAutoFollowPattern {
             client,
+            name: name,
             ..Default::default()
         }
     }
@@ -474,14 +481,15 @@ pub struct CcrResumeFollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrResumeFollow {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrResumeFollow {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -583,14 +591,15 @@ pub struct CcrUnfollow {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrUnfollow {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrUnfollow {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -641,48 +650,48 @@ impl Ccr {
         Ccr { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-delete-auto-follow-pattern.html"]
-    pub fn delete_auto_follow_pattern(&self) -> CcrDeleteAutoFollowPattern {
-        CcrDeleteAutoFollowPattern::new(self.client.clone())
+    pub fn delete_auto_follow_pattern(&self, name: String) -> CcrDeleteAutoFollowPattern {
+        CcrDeleteAutoFollowPattern::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html"]
-    pub fn follow(&self) -> CcrFollow {
-        CcrFollow::new(self.client.clone())
+    pub fn follow(&self, index: String) -> CcrFollow {
+        CcrFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html"]
-    pub fn follow_info(&self) -> CcrFollowInfo {
-        CcrFollowInfo::new(self.client.clone())
+    pub fn follow_info(&self, index: Vec<String>) -> CcrFollowInfo {
+        CcrFollowInfo::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-stats.html"]
-    pub fn follow_stats(&self) -> CcrFollowStats {
-        CcrFollowStats::new(self.client.clone())
+    pub fn follow_stats(&self, index: Vec<String>) -> CcrFollowStats {
+        CcrFollowStats::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn forget_follower(&self) -> CcrForgetFollower {
-        CcrForgetFollower::new(self.client.clone())
+    pub fn forget_follower(&self, index: String) -> CcrForgetFollower {
+        CcrForgetFollower::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html"]
     pub fn get_auto_follow_pattern(&self) -> CcrGetAutoFollowPattern {
         CcrGetAutoFollowPattern::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html"]
-    pub fn pause_follow(&self) -> CcrPauseFollow {
-        CcrPauseFollow::new(self.client.clone())
+    pub fn pause_follow(&self, index: String) -> CcrPauseFollow {
+        CcrPauseFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html"]
-    pub fn put_auto_follow_pattern(&self) -> CcrPutAutoFollowPattern {
-        CcrPutAutoFollowPattern::new(self.client.clone())
+    pub fn put_auto_follow_pattern(&self, name: String) -> CcrPutAutoFollowPattern {
+        CcrPutAutoFollowPattern::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html"]
-    pub fn resume_follow(&self) -> CcrResumeFollow {
-        CcrResumeFollow::new(self.client.clone())
+    pub fn resume_follow(&self, index: String) -> CcrResumeFollow {
+        CcrResumeFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html"]
     pub fn stats(&self) -> CcrStats {
         CcrStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn unfollow(&self) -> CcrUnfollow {
-        CcrUnfollow::new(self.client.clone())
+    pub fn unfollow(&self, index: String) -> CcrUnfollow {
+        CcrUnfollow::new(self.client.clone(), index)
     }
 }
 impl Elasticsearch {

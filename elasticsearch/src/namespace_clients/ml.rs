@@ -30,15 +30,16 @@ pub struct MlCloseJob {
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlCloseJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlCloseJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -98,7 +99,7 @@ impl Sender for MlCloseJob {
 #[derive(Default)]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -106,9 +107,10 @@ pub struct MlDeleteCalendar {
     source: Option<String>,
 }
 impl MlDeleteCalendar {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlDeleteCalendar {
             client,
+            calendar_id: calendar_id,
             ..Default::default()
         }
     }
@@ -153,18 +155,20 @@ impl Sender for MlDeleteCalendar {
 #[derive(Default)]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
-    event_id: Option<String>,
+    event_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteCalendarEvent {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String, event_id: String) -> Self {
         MlDeleteCalendarEvent {
             client,
+            calendar_id: calendar_id,
+            event_id: event_id,
             ..Default::default()
         }
     }
@@ -209,18 +213,20 @@ impl Sender for MlDeleteCalendarEvent {
 #[derive(Default)]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteCalendarJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String, job_id: String) -> Self {
         MlDeleteCalendarJob {
             client,
+            calendar_id: calendar_id,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -268,14 +274,15 @@ pub struct MlDeleteDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteDataFrameAnalytics {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         MlDeleteDataFrameAnalytics {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -320,7 +327,7 @@ impl Sender for MlDeleteDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -329,9 +336,10 @@ pub struct MlDeleteDatafeed {
     source: Option<String>,
 }
 impl MlDeleteDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlDeleteDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -436,16 +444,17 @@ impl Sender for MlDeleteExpiredData {
 pub struct MlDeleteFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
-    filter_id: Option<String>,
+    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteFilter {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
         MlDeleteFilter {
             client,
+            filter_id: filter_id,
             ..Default::default()
         }
     }
@@ -495,15 +504,16 @@ pub struct MlDeleteForecast {
     filter_path: Option<Vec<String>>,
     forecast_id: Option<String>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlDeleteForecast {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlDeleteForecast {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -562,15 +572,16 @@ pub struct MlDeleteJob {
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl MlDeleteJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlDeleteJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -628,15 +639,17 @@ pub struct MlDeleteModelSnapshot {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: Option<String>,
+    snapshot_id: String,
     source: Option<String>,
 }
 impl MlDeleteModelSnapshot {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
         MlDeleteModelSnapshot {
             client,
+            job_id: job_id,
+            snapshot_id: snapshot_id,
             ..Default::default()
         }
     }
@@ -879,16 +892,17 @@ pub struct MlFlushJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     skip_time: Option<String>,
     source: Option<String>,
     start: Option<String>,
 }
 impl MlFlushJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlFlushJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -963,14 +977,15 @@ pub struct MlForecast {
     expires_in: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlForecast {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlForecast {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -1034,7 +1049,7 @@ pub struct MlGetBuckets {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
@@ -1043,9 +1058,10 @@ pub struct MlGetBuckets {
     timestamp: Option<String>,
 }
 impl MlGetBuckets {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetBuckets {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -1135,7 +1151,7 @@ impl Sender for MlGetBuckets {
 #[derive(Default)]
 pub struct MlGetCalendarEvents {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     end: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1148,9 +1164,10 @@ pub struct MlGetCalendarEvents {
     start: Option<String>,
 }
 impl MlGetCalendarEvents {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlGetCalendarEvents {
             client,
+            calendar_id: calendar_id,
             ..Default::default()
         }
     }
@@ -1292,15 +1309,16 @@ pub struct MlGetCategories {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<String>,
 }
 impl MlGetCategories {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetCategories {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -1698,7 +1716,7 @@ pub struct MlGetInfluencers {
     from: Option<i32>,
     human: Option<bool>,
     influencer_score: Option<f64>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
@@ -1706,9 +1724,10 @@ pub struct MlGetInfluencers {
     start: Option<String>,
 }
 impl MlGetInfluencers {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetInfluencers {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -1921,7 +1940,7 @@ pub struct MlGetModelSnapshots {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     snapshot_id: Option<String>,
@@ -1930,9 +1949,10 @@ pub struct MlGetModelSnapshots {
     start: Option<String>,
 }
 impl MlGetModelSnapshots {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetModelSnapshots {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2014,7 +2034,7 @@ pub struct MlGetOverallBuckets {
     exclude_interim: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     overall_score: Option<f64>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -2022,9 +2042,10 @@ pub struct MlGetOverallBuckets {
     top_n: Option<i32>,
 }
 impl MlGetOverallBuckets {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetOverallBuckets {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2111,7 +2132,7 @@ pub struct MlGetRecords {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     record_score: Option<f64>,
     size: Option<i32>,
@@ -2120,9 +2141,10 @@ pub struct MlGetRecords {
     start: Option<String>,
 }
 impl MlGetRecords {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetRecords {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2264,15 +2286,16 @@ pub struct MlOpenJob {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_downtime: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlOpenJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlOpenJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2317,7 +2340,7 @@ impl Sender for MlOpenJob {
 #[derive(Default)]
 pub struct MlPostCalendarEvents {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2325,9 +2348,10 @@ pub struct MlPostCalendarEvents {
     source: Option<String>,
 }
 impl MlPostCalendarEvents {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlPostCalendarEvents {
             client,
+            calendar_id: calendar_id,
             ..Default::default()
         }
     }
@@ -2375,16 +2399,17 @@ pub struct MlPostData {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     reset_end: Option<String>,
     reset_start: Option<String>,
     source: Option<String>,
 }
 impl MlPostData {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlPostData {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2439,7 +2464,7 @@ impl Sender for MlPostData {
 #[derive(Default)]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2447,9 +2472,10 @@ pub struct MlPreviewDatafeed {
     source: Option<String>,
 }
 impl MlPreviewDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlPreviewDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -2494,7 +2520,7 @@ impl Sender for MlPreviewDatafeed {
 #[derive(Default)]
 pub struct MlPutCalendar {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2502,9 +2528,10 @@ pub struct MlPutCalendar {
     source: Option<String>,
 }
 impl MlPutCalendar {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlPutCalendar {
             client,
+            calendar_id: calendar_id,
             ..Default::default()
         }
     }
@@ -2549,18 +2576,20 @@ impl Sender for MlPutCalendar {
 #[derive(Default)]
 pub struct MlPutCalendarJob {
     client: Elasticsearch,
-    calendar_id: Option<String>,
+    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlPutCalendarJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, calendar_id: String, job_id: String) -> Self {
         MlPutCalendarJob {
             client,
+            calendar_id: calendar_id,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2608,14 +2637,15 @@ pub struct MlPutDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlPutDataFrameAnalytics {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         MlPutDataFrameAnalytics {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -2660,7 +2690,7 @@ impl Sender for MlPutDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlPutDatafeed {
     client: Elasticsearch,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2668,9 +2698,10 @@ pub struct MlPutDatafeed {
     source: Option<String>,
 }
 impl MlPutDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlPutDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -2716,16 +2747,17 @@ impl Sender for MlPutDatafeed {
 pub struct MlPutFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
-    filter_id: Option<String>,
+    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlPutFilter {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
         MlPutFilter {
             client,
+            filter_id: filter_id,
             ..Default::default()
         }
     }
@@ -2773,14 +2805,15 @@ pub struct MlPutJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlPutJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlPutJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -2829,15 +2862,17 @@ pub struct MlRevertModelSnapshot {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: Option<String>,
+    snapshot_id: String,
     source: Option<String>,
 }
 impl MlRevertModelSnapshot {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
         MlRevertModelSnapshot {
             client,
+            job_id: job_id,
+            snapshot_id: snapshot_id,
             ..Default::default()
         }
     }
@@ -2956,15 +2991,16 @@ pub struct MlStartDataFrameAnalytics {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlStartDataFrameAnalytics {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         MlStartDataFrameAnalytics {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -3014,7 +3050,7 @@ impl Sender for MlStartDataFrameAnalytics {
 #[derive(Default)]
 pub struct MlStartDatafeed {
     client: Elasticsearch,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     end: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3025,9 +3061,10 @@ pub struct MlStartDatafeed {
     timeout: Option<String>,
 }
 impl MlStartDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlStartDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -3092,15 +3129,16 @@ pub struct MlStopDataFrameAnalytics {
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlStopDataFrameAnalytics {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         MlStopDataFrameAnalytics {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -3161,7 +3199,7 @@ impl Sender for MlStopDataFrameAnalytics {
 pub struct MlStopDatafeed {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -3171,9 +3209,10 @@ pub struct MlStopDatafeed {
     timeout: Option<String>,
 }
 impl MlStopDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlStopDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -3233,7 +3272,7 @@ impl Sender for MlStopDatafeed {
 #[derive(Default)]
 pub struct MlUpdateDatafeed {
     client: Elasticsearch,
-    datafeed_id: Option<String>,
+    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3241,9 +3280,10 @@ pub struct MlUpdateDatafeed {
     source: Option<String>,
 }
 impl MlUpdateDatafeed {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlUpdateDatafeed {
             client,
+            datafeed_id: datafeed_id,
             ..Default::default()
         }
     }
@@ -3289,16 +3329,17 @@ impl Sender for MlUpdateDatafeed {
 pub struct MlUpdateFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
-    filter_id: Option<String>,
+    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlUpdateFilter {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
         MlUpdateFilter {
             client,
+            filter_id: filter_id,
             ..Default::default()
         }
     }
@@ -3346,14 +3387,15 @@ pub struct MlUpdateJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlUpdateJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlUpdateJob {
             client,
+            job_id: job_id,
             ..Default::default()
         }
     }
@@ -3401,15 +3443,17 @@ pub struct MlUpdateModelSnapshot {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
+    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: Option<String>,
+    snapshot_id: String,
     source: Option<String>,
 }
 impl MlUpdateModelSnapshot {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
         MlUpdateModelSnapshot {
             client,
+            job_id: job_id,
+            snapshot_id: snapshot_id,
             ..Default::default()
         }
     }
@@ -3568,43 +3612,51 @@ impl Ml {
         Ml { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
-    pub fn close_job(&self) -> MlCloseJob {
-        MlCloseJob::new(self.client.clone())
+    pub fn close_job(&self, job_id: String) -> MlCloseJob {
+        MlCloseJob::new(self.client.clone(), job_id)
     }
-    pub fn delete_calendar(&self) -> MlDeleteCalendar {
-        MlDeleteCalendar::new(self.client.clone())
+    pub fn delete_calendar(&self, calendar_id: String) -> MlDeleteCalendar {
+        MlDeleteCalendar::new(self.client.clone(), calendar_id)
     }
-    pub fn delete_calendar_event(&self) -> MlDeleteCalendarEvent {
-        MlDeleteCalendarEvent::new(self.client.clone())
+    pub fn delete_calendar_event(
+        &self,
+        calendar_id: String,
+        event_id: String,
+    ) -> MlDeleteCalendarEvent {
+        MlDeleteCalendarEvent::new(self.client.clone(), calendar_id, event_id)
     }
-    pub fn delete_calendar_job(&self) -> MlDeleteCalendarJob {
-        MlDeleteCalendarJob::new(self.client.clone())
+    pub fn delete_calendar_job(&self, calendar_id: String, job_id: String) -> MlDeleteCalendarJob {
+        MlDeleteCalendarJob::new(self.client.clone(), calendar_id, job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html"]
-    pub fn delete_data_frame_analytics(&self) -> MlDeleteDataFrameAnalytics {
-        MlDeleteDataFrameAnalytics::new(self.client.clone())
+    pub fn delete_data_frame_analytics(&self, id: String) -> MlDeleteDataFrameAnalytics {
+        MlDeleteDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html"]
-    pub fn delete_datafeed(&self) -> MlDeleteDatafeed {
-        MlDeleteDatafeed::new(self.client.clone())
+    pub fn delete_datafeed(&self, datafeed_id: String) -> MlDeleteDatafeed {
+        MlDeleteDatafeed::new(self.client.clone(), datafeed_id)
     }
     pub fn delete_expired_data(&self) -> MlDeleteExpiredData {
         MlDeleteExpiredData::new(self.client.clone())
     }
-    pub fn delete_filter(&self) -> MlDeleteFilter {
-        MlDeleteFilter::new(self.client.clone())
+    pub fn delete_filter(&self, filter_id: String) -> MlDeleteFilter {
+        MlDeleteFilter::new(self.client.clone(), filter_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html"]
-    pub fn delete_forecast(&self) -> MlDeleteForecast {
-        MlDeleteForecast::new(self.client.clone())
+    pub fn delete_forecast(&self, job_id: String) -> MlDeleteForecast {
+        MlDeleteForecast::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html"]
-    pub fn delete_job(&self) -> MlDeleteJob {
-        MlDeleteJob::new(self.client.clone())
+    pub fn delete_job(&self, job_id: String) -> MlDeleteJob {
+        MlDeleteJob::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html"]
-    pub fn delete_model_snapshot(&self) -> MlDeleteModelSnapshot {
-        MlDeleteModelSnapshot::new(self.client.clone())
+    pub fn delete_model_snapshot(
+        &self,
+        job_id: String,
+        snapshot_id: String,
+    ) -> MlDeleteModelSnapshot {
+        MlDeleteModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
     pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrame {
@@ -3615,25 +3667,25 @@ impl Ml {
         MlFindFileStructure::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
-    pub fn flush_job(&self) -> MlFlushJob {
-        MlFlushJob::new(self.client.clone())
+    pub fn flush_job(&self, job_id: String) -> MlFlushJob {
+        MlFlushJob::new(self.client.clone(), job_id)
     }
-    pub fn forecast(&self) -> MlForecast {
-        MlForecast::new(self.client.clone())
+    pub fn forecast(&self, job_id: String) -> MlForecast {
+        MlForecast::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
-    pub fn get_buckets(&self) -> MlGetBuckets {
-        MlGetBuckets::new(self.client.clone())
+    pub fn get_buckets(&self, job_id: String) -> MlGetBuckets {
+        MlGetBuckets::new(self.client.clone(), job_id)
     }
-    pub fn get_calendar_events(&self) -> MlGetCalendarEvents {
-        MlGetCalendarEvents::new(self.client.clone())
+    pub fn get_calendar_events(&self, calendar_id: String) -> MlGetCalendarEvents {
+        MlGetCalendarEvents::new(self.client.clone(), calendar_id)
     }
     pub fn get_calendars(&self) -> MlGetCalendars {
         MlGetCalendars::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
-    pub fn get_categories(&self) -> MlGetCategories {
-        MlGetCategories::new(self.client.clone())
+    pub fn get_categories(&self, job_id: String) -> MlGetCategories {
+        MlGetCategories::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
     pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalytics {
@@ -3655,8 +3707,8 @@ impl Ml {
         MlGetFilters::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
-    pub fn get_influencers(&self) -> MlGetInfluencers {
-        MlGetInfluencers::new(self.client.clone())
+    pub fn get_influencers(&self, job_id: String) -> MlGetInfluencers {
+        MlGetInfluencers::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
     pub fn get_job_stats(&self) -> MlGetJobStats {
@@ -3667,94 +3719,102 @@ impl Ml {
         MlGetJobs::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
-    pub fn get_model_snapshots(&self) -> MlGetModelSnapshots {
-        MlGetModelSnapshots::new(self.client.clone())
+    pub fn get_model_snapshots(&self, job_id: String) -> MlGetModelSnapshots {
+        MlGetModelSnapshots::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
-    pub fn get_overall_buckets(&self) -> MlGetOverallBuckets {
-        MlGetOverallBuckets::new(self.client.clone())
+    pub fn get_overall_buckets(&self, job_id: String) -> MlGetOverallBuckets {
+        MlGetOverallBuckets::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
-    pub fn get_records(&self) -> MlGetRecords {
-        MlGetRecords::new(self.client.clone())
+    pub fn get_records(&self, job_id: String) -> MlGetRecords {
+        MlGetRecords::new(self.client.clone(), job_id)
     }
     pub fn info(&self) -> MlInfo {
         MlInfo::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
-    pub fn open_job(&self) -> MlOpenJob {
-        MlOpenJob::new(self.client.clone())
+    pub fn open_job(&self, job_id: String) -> MlOpenJob {
+        MlOpenJob::new(self.client.clone(), job_id)
     }
-    pub fn post_calendar_events(&self) -> MlPostCalendarEvents {
-        MlPostCalendarEvents::new(self.client.clone())
+    pub fn post_calendar_events(&self, calendar_id: String) -> MlPostCalendarEvents {
+        MlPostCalendarEvents::new(self.client.clone(), calendar_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
-    pub fn post_data(&self) -> MlPostData {
-        MlPostData::new(self.client.clone())
+    pub fn post_data(&self, job_id: String) -> MlPostData {
+        MlPostData::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
-    pub fn preview_datafeed(&self) -> MlPreviewDatafeed {
-        MlPreviewDatafeed::new(self.client.clone())
+    pub fn preview_datafeed(&self, datafeed_id: String) -> MlPreviewDatafeed {
+        MlPreviewDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn put_calendar(&self) -> MlPutCalendar {
-        MlPutCalendar::new(self.client.clone())
+    pub fn put_calendar(&self, calendar_id: String) -> MlPutCalendar {
+        MlPutCalendar::new(self.client.clone(), calendar_id)
     }
-    pub fn put_calendar_job(&self) -> MlPutCalendarJob {
-        MlPutCalendarJob::new(self.client.clone())
+    pub fn put_calendar_job(&self, calendar_id: String, job_id: String) -> MlPutCalendarJob {
+        MlPutCalendarJob::new(self.client.clone(), calendar_id, job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
-    pub fn put_data_frame_analytics(&self) -> MlPutDataFrameAnalytics {
-        MlPutDataFrameAnalytics::new(self.client.clone())
+    pub fn put_data_frame_analytics(&self, id: String) -> MlPutDataFrameAnalytics {
+        MlPutDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
-    pub fn put_datafeed(&self) -> MlPutDatafeed {
-        MlPutDatafeed::new(self.client.clone())
+    pub fn put_datafeed(&self, datafeed_id: String) -> MlPutDatafeed {
+        MlPutDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn put_filter(&self) -> MlPutFilter {
-        MlPutFilter::new(self.client.clone())
+    pub fn put_filter(&self, filter_id: String) -> MlPutFilter {
+        MlPutFilter::new(self.client.clone(), filter_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
-    pub fn put_job(&self) -> MlPutJob {
-        MlPutJob::new(self.client.clone())
+    pub fn put_job(&self, job_id: String) -> MlPutJob {
+        MlPutJob::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
-    pub fn revert_model_snapshot(&self) -> MlRevertModelSnapshot {
-        MlRevertModelSnapshot::new(self.client.clone())
+    pub fn revert_model_snapshot(
+        &self,
+        job_id: String,
+        snapshot_id: String,
+    ) -> MlRevertModelSnapshot {
+        MlRevertModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
     pub fn set_upgrade_mode(&self) -> MlSetUpgradeMode {
         MlSetUpgradeMode::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
-    pub fn start_data_frame_analytics(&self) -> MlStartDataFrameAnalytics {
-        MlStartDataFrameAnalytics::new(self.client.clone())
+    pub fn start_data_frame_analytics(&self, id: String) -> MlStartDataFrameAnalytics {
+        MlStartDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
-    pub fn start_datafeed(&self) -> MlStartDatafeed {
-        MlStartDatafeed::new(self.client.clone())
+    pub fn start_datafeed(&self, datafeed_id: String) -> MlStartDatafeed {
+        MlStartDatafeed::new(self.client.clone(), datafeed_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
-    pub fn stop_data_frame_analytics(&self) -> MlStopDataFrameAnalytics {
-        MlStopDataFrameAnalytics::new(self.client.clone())
+    pub fn stop_data_frame_analytics(&self, id: String) -> MlStopDataFrameAnalytics {
+        MlStopDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
-    pub fn stop_datafeed(&self) -> MlStopDatafeed {
-        MlStopDatafeed::new(self.client.clone())
+    pub fn stop_datafeed(&self, datafeed_id: String) -> MlStopDatafeed {
+        MlStopDatafeed::new(self.client.clone(), datafeed_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
-    pub fn update_datafeed(&self) -> MlUpdateDatafeed {
-        MlUpdateDatafeed::new(self.client.clone())
+    pub fn update_datafeed(&self, datafeed_id: String) -> MlUpdateDatafeed {
+        MlUpdateDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn update_filter(&self) -> MlUpdateFilter {
-        MlUpdateFilter::new(self.client.clone())
+    pub fn update_filter(&self, filter_id: String) -> MlUpdateFilter {
+        MlUpdateFilter::new(self.client.clone(), filter_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
-    pub fn update_job(&self) -> MlUpdateJob {
-        MlUpdateJob::new(self.client.clone())
+    pub fn update_job(&self, job_id: String) -> MlUpdateJob {
+        MlUpdateJob::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
-    pub fn update_model_snapshot(&self) -> MlUpdateModelSnapshot {
-        MlUpdateModelSnapshot::new(self.client.clone())
+    pub fn update_model_snapshot(
+        &self,
+        job_id: String,
+        snapshot_id: String,
+    ) -> MlUpdateModelSnapshot {
+        MlUpdateModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
     pub fn validate(&self) -> MlValidate {
         MlValidate::new(self.client.clone())

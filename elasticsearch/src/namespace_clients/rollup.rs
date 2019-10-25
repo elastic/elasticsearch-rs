@@ -28,14 +28,15 @@ pub struct RollupDeleteJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupDeleteJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupDeleteJob {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -193,14 +194,15 @@ pub struct RollupGetRollupIndexCaps {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
+    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupGetRollupIndexCaps {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: String) -> Self {
         RollupGetRollupIndexCaps {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -248,14 +250,15 @@ pub struct RollupPutJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupPutJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupPutJob {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -303,7 +306,7 @@ pub struct RollupRollupSearch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Vec<String>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     source: Option<String>,
@@ -311,9 +314,10 @@ pub struct RollupRollupSearch {
     typed_keys: Option<bool>,
 }
 impl RollupRollupSearch {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         RollupRollupSearch {
             client,
+            index: index,
             ..Default::default()
         }
     }
@@ -371,14 +375,15 @@ pub struct RollupStartJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupStartJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupStartJob {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -426,16 +431,17 @@ pub struct RollupStopJob {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
+    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl RollupStopJob {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupStopJob {
             client,
+            id: id,
             ..Default::default()
         }
     }
@@ -496,8 +502,8 @@ impl Rollup {
         Rollup { client }
     }
     #[doc = ""]
-    pub fn delete_job(&self) -> RollupDeleteJob {
-        RollupDeleteJob::new(self.client.clone())
+    pub fn delete_job(&self, id: String) -> RollupDeleteJob {
+        RollupDeleteJob::new(self.client.clone(), id)
     }
     #[doc = ""]
     pub fn get_jobs(&self) -> RollupGetJobs {
@@ -508,24 +514,24 @@ impl Rollup {
         RollupGetRollupCaps::new(self.client.clone())
     }
     #[doc = ""]
-    pub fn get_rollup_index_caps(&self) -> RollupGetRollupIndexCaps {
-        RollupGetRollupIndexCaps::new(self.client.clone())
+    pub fn get_rollup_index_caps(&self, index: String) -> RollupGetRollupIndexCaps {
+        RollupGetRollupIndexCaps::new(self.client.clone(), index)
     }
     #[doc = ""]
-    pub fn put_job(&self) -> RollupPutJob {
-        RollupPutJob::new(self.client.clone())
+    pub fn put_job(&self, id: String) -> RollupPutJob {
+        RollupPutJob::new(self.client.clone(), id)
     }
     #[doc = ""]
-    pub fn rollup_search(&self) -> RollupRollupSearch {
-        RollupRollupSearch::new(self.client.clone())
+    pub fn rollup_search(&self, index: Vec<String>) -> RollupRollupSearch {
+        RollupRollupSearch::new(self.client.clone(), index)
     }
     #[doc = ""]
-    pub fn start_job(&self) -> RollupStartJob {
-        RollupStartJob::new(self.client.clone())
+    pub fn start_job(&self, id: String) -> RollupStartJob {
+        RollupStartJob::new(self.client.clone(), id)
     }
     #[doc = ""]
-    pub fn stop_job(&self) -> RollupStopJob {
-        RollupStopJob::new(self.client.clone())
+    pub fn stop_job(&self, id: String) -> RollupStopJob {
+        RollupStopJob::new(self.client.clone(), id)
     }
 }
 impl Elasticsearch {
