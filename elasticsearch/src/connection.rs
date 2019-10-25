@@ -12,6 +12,7 @@ pub struct Connection {
     url: Url,
 }
 
+/// A connection to an Elasticsearch node, used to send a request
 impl Connection {
     fn method(&self, method: HttpMethod) -> Method {
         match method {
@@ -40,7 +41,7 @@ impl Connection {
     where
         T: DeserializeOwned,
     {
-        let url = self.url.join(path).expect("Not a valid URL");
+        let url = self.url.join(path).unwrap();
         let reqwest_method = self.method(method);
 
         let mut headers = HeaderMap::new();
@@ -59,12 +60,16 @@ impl Connection {
         };
 
         let mut response = request_builder.send()?;
-        let response_body = response.json::<T>()?;
+        let response_body = match response.json::<T>() {
+            Ok(b) => Some(b),
+            // TODO: surface failure to deserialize nicely. Perhaps move deserialization to a fn on response impl, and let ElasticsearchResponse wrap reqwest's Response?
+            Err(_) => None
+        };
 
         Ok(ElasticsearchResponse {
             headers: response.headers().clone(),
             status_code: response.status(),
-            body: Some(response_body),
+            body: response_body,
         })
     }
 }

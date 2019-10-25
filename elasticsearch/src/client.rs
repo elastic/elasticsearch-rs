@@ -14,6 +14,7 @@ pub trait Sender {
         T: DeserializeOwned;
 }
 
+/// Client used to make API calls to Elasticsearch
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
     settings: ConnectionSettings,
@@ -32,12 +33,12 @@ impl Elasticsearch {
         &self,
         method: HttpMethod,
         path: &str,
-        query: Option<&[(String, String)]>,
+        query_string: Option<&[(String, String)]>,
         body: Option<Vec<u8>>,
     ) -> Result<ElasticsearchResponse<T>>
     where
         T: DeserializeOwned,
     {
-        self.connection.send(method, path, query, body)
+        self.connection.send(method, path, query_string, body)
     }
 }
