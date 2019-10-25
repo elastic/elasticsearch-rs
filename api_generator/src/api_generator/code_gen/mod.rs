@@ -3,11 +3,13 @@ pub mod namespace_clients;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::{Type, TypeKind};
+use crate::api_generator::{Type, TypeKind, ApiEndpoint};
+use array_tool::vec::Intersect;
 use inflector::Inflector;
 use quote::Tokens;
+use reduce::Reduce;
 use std::str;
-use syn::ImplItem;
+use syn::{Field, ImplItem};
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -88,6 +90,7 @@ impl GetPath for syn::Path {
     }
 }
 
+/// Gets the Ty syntax token for a TypeKind
 fn ty(name: &str, kind: &TypeKind) -> syn::Ty {
     match kind {
         TypeKind::None => syn::parse_type("Option<String>").unwrap(),
@@ -167,7 +170,7 @@ fn create_field(f: (&String, &Type)) -> syn::Field {
     }
 }
 
-/// Creates an builder fn for an impl
+/// Creates a builder fn for a builder impl
 fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
     let name = valid_name(&f.0).to_lowercase();
     let impl_ident = ident(&name);
@@ -215,6 +218,123 @@ fn create_fn(f: (&String, &Type)) -> syn::ImplItem {
             },
         ),
     }
+}
+
+/// use declarations common across builders
+pub fn use_declarations() -> Tokens {
+    quote!(
+        use super::super::client::Elasticsearch;
+        use super::super::http_method::HttpMethod;
+        use super::super::enums::*;
+        use reqwest::{Result, Response, Request, Error, StatusCode};
+        use crate::client::Sender;
+        use crate::response::ElasticsearchResponse;
+        use serde::de::DeserializeOwned;
+        use reqwest::header::HeaderMap;
+    )
+}
+
+/// creates the AST for a builder struct
+pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, common_fields: &Vec<Field>, common_builder_fns: &Vec<ImplItem>) -> Tokens {
+    let builder_ident = ident(builder_name);
+
+    // url parts that are common across all urls.
+    // These are required parameters for the builder ctor new() fn
+    let required_parts: Option<Vec<&str>> = endpoint
+        .url
+        .paths
+        .iter()
+        .map(|p| {
+            p.params()
+        })
+        .reduce(|a, b| a.intersect(b));
+
+    // collect all the fields for the builder struct. Start with url parts
+    let mut fields: Vec<syn::Field> = endpoint
+        .url
+        .parts
+        .iter()
+        .map(create_field)
+        .collect();
+
+    // url parameters
+    fields.append(&mut endpoint
+        .url
+        .params
+        .iter()
+        .map(create_field)
+        .collect());
+
+    // Combine common fields with struct fields, sort and deduplicate
+    // clone common_fields, since quote!() consumes the Vec<Field>
+    fields.append(&mut common_fields.clone());
+    fields.sort_by(|a, b| a.ident.cmp(&b.ident));
+    fields.dedup_by(|a, b| a.ident.eq(&b.ident));
+
+    // collect all the functions for the builder struct
+    let mut builder_fns: Vec<ImplItem> = endpoint
+        .url
+        .params
+        .iter()
+        .map(create_fn)
+        .collect();
+
+    // Combine common fns with builder fns, sort and deduplicate
+    // clone is required, since quote!() consumes the Vec<Item>
+    builder_fns.append(&mut common_builder_fns.clone());
+    builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
+    builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
+
+    quote!(
+        #[derive(Default)]
+        pub struct #builder_ident {
+            client: Elasticsearch,
+            #(#fields),*,
+        }
+
+        impl #builder_ident {
+            // TODO: add required_parts to new fn
+            pub fn new(client: Elasticsearch) -> Self {
+                #builder_ident {
+                    client,
+                    ..Default::default()
+                }
+            }
+            #(#builder_fns)*
+        }
+
+        impl Sender for #builder_ident {
+            fn send<T>(self) -> Result<ElasticsearchResponse<T>> where T:DeserializeOwned {
+                  // TODO: build up the url based on parameters passed, and execute request
+                  Ok(ElasticsearchResponse {
+                       headers: HeaderMap::new(),
+                       status_code: StatusCode::OK,
+                       body: None
+                  })
+
+            }
+        }
+    )
+}
+
+/// Creates the AST for a fn that returns a new instance of a builder struct
+pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpoint: &ApiEndpoint) -> Tokens {
+    let builder_ident = ident(builder_name.to_pascal_case());
+    let fn_name = ident(name.to_string());
+    let path = endpoint.url.paths.first().unwrap();
+    let method = endpoint.methods.first().unwrap();
+    let supports_body = endpoint.supports_body();
+    let method_doc = match &endpoint.documentation {
+        Some(docs) => Some(doc(docs.into())),
+        _ => None,
+    };
+
+    quote!(
+        #method_doc
+        pub fn #fn_name(&self) -> #builder_ident {
+            #builder_ident::new(self.client.clone())
+        }
+    )
 }
 
 pub fn shift_while<F>(i: &[u8], f: F) -> &[u8]

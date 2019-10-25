@@ -20,7 +20,7 @@ use super::super::http_method::HttpMethod;
 use crate::client::Sender;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result};
+use reqwest::{Error, Request, Response, Result, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct Bulk {
@@ -31,6 +31,7 @@ pub struct Bulk {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     pipeline: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -137,6 +138,7 @@ pub struct ClearScroll {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
+    scroll_id: Option<Vec<String>>,
     source: Option<String>,
 }
 impl ClearScroll {
@@ -198,6 +200,7 @@ pub struct Count {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     lenient: Option<bool>,
     min_score: Option<i64>,
     preference: Option<String>,
@@ -206,6 +209,7 @@ pub struct Count {
     routing: Option<Vec<String>>,
     source: Option<String>,
     terminate_after: Option<i64>,
+    ty: Option<Vec<String>>,
 }
 impl Count {
     pub fn new(client: Elasticsearch) -> Self {
@@ -328,12 +332,15 @@ pub struct Create {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     pipeline: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
@@ -424,13 +431,16 @@ pub struct Delete {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
+    index: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
@@ -538,6 +548,7 @@ pub struct DeleteByQuery {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     preference: Option<String>,
@@ -558,6 +569,7 @@ pub struct DeleteByQuery {
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
+    ty: Option<Vec<String>>,
     version: Option<bool>,
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
@@ -781,6 +793,7 @@ pub struct DeleteByQueryRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
+    task_id: Option<String>,
 }
 impl DeleteByQueryRethrottle {
     pub fn new(client: Elasticsearch) -> Self {
@@ -838,6 +851,7 @@ pub struct DeleteScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -907,6 +921,8 @@ pub struct Exists {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -914,6 +930,7 @@ pub struct Exists {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1021,12 +1038,15 @@ pub struct ExistsSource {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1133,6 +1153,8 @@ pub struct Explain {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     lenient: Option<bool>,
     preference: Option<String>,
     pretty: Option<bool>,
@@ -1140,6 +1162,7 @@ pub struct Explain {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
+    ty: Option<String>,
 }
 impl Explain {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1257,6 +1280,7 @@ pub struct FieldCaps {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -1339,6 +1363,8 @@ pub struct Get {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1346,6 +1372,7 @@ pub struct Get {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1450,6 +1477,7 @@ pub struct GetScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -1513,12 +1541,15 @@ pub struct GetSource {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -1618,8 +1649,10 @@ pub struct Index {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
+    index: Option<String>,
     op_type: Option<OpType>,
     pipeline: Option<String>,
     pretty: Option<bool>,
@@ -1627,6 +1660,7 @@ pub struct Index {
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
@@ -1789,6 +1823,7 @@ pub struct Mget {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1796,6 +1831,7 @@ pub struct Mget {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
+    ty: Option<String>,
 }
 impl Mget {
     pub fn new(client: Elasticsearch) -> Self {
@@ -1889,6 +1925,7 @@ pub struct Msearch {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     max_concurrent_searches: Option<i64>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
@@ -1896,6 +1933,7 @@ pub struct Msearch {
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<String>,
+    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl Msearch {
@@ -1988,11 +2026,13 @@ pub struct MsearchTemplate {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    index: Option<Vec<String>>,
     max_concurrent_searches: Option<i64>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<String>,
+    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl MsearchTemplate {
@@ -2074,6 +2114,7 @@ pub struct Mtermvectors {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ids: Option<Vec<String>>,
+    index: Option<String>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
@@ -2083,6 +2124,7 @@ pub struct Mtermvectors {
     routing: Option<String>,
     source: Option<String>,
     term_statistics: Option<bool>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -2252,6 +2294,7 @@ pub struct PutScript {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -2326,6 +2369,7 @@ pub struct RankEval {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2500,6 +2544,7 @@ pub struct ReindexRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
+    task_id: Option<String>,
 }
 impl ReindexRethrottle {
     pub fn new(client: Elasticsearch) -> Self {
@@ -2557,6 +2602,7 @@ pub struct RenderSearchTemplate {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2754,6 +2800,7 @@ pub struct Search {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
@@ -2779,6 +2826,7 @@ pub struct Search {
     timeout: Option<String>,
     track_scores: Option<bool>,
     track_total_hits: Option<bool>,
+    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
     version: Option<bool>,
 }
@@ -3052,6 +3100,7 @@ pub struct SearchShards {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     local: Option<bool>,
     preference: Option<String>,
     pretty: Option<bool>,
@@ -3145,6 +3194,7 @@ pub struct SearchTemplate {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     preference: Option<String>,
     pretty: Option<bool>,
     profile: Option<bool>,
@@ -3153,6 +3203,7 @@ pub struct SearchTemplate {
     scroll: Option<String>,
     search_type: Option<SearchType>,
     source: Option<String>,
+    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl SearchTemplate {
@@ -3273,6 +3324,8 @@ pub struct Termvectors {
     fields: Option<Vec<String>>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
+    index: Option<String>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
@@ -3282,6 +3335,7 @@ pub struct Termvectors {
     routing: Option<String>,
     source: Option<String>,
     term_statistics: Option<bool>,
+    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -3394,8 +3448,10 @@ pub struct Update {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
+    id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
+    index: Option<String>,
     lang: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -3403,6 +3459,7 @@ pub struct Update {
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
+    ty: Option<String>,
     wait_for_active_shards: Option<String>,
 }
 impl Update {
@@ -3523,6 +3580,7 @@ pub struct UpdateByQuery {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
+    index: Option<Vec<String>>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     pipeline: Option<String>,
@@ -3544,6 +3602,7 @@ pub struct UpdateByQuery {
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
+    ty: Option<Vec<String>>,
     version: Option<bool>,
     version_type: Option<bool>,
     wait_for_active_shards: Option<String>,
@@ -3778,6 +3837,7 @@ pub struct UpdateByQueryRethrottle {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
+    task_id: Option<String>,
 }
 impl UpdateByQueryRethrottle {
     pub fn new(client: Elasticsearch) -> Self {

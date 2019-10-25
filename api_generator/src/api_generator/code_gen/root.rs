@@ -4,9 +4,10 @@ use inflector::Inflector;
 use quote::Tokens;
 use syn::{Field, ImplItem};
 
-/// Generates the source code for the methods on Elasticsearch root
+/// Generates the source code for the methods on the root of Elasticsearch
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let mut tokens = quote::Tokens::new();
+    tokens.append(code_gen::use_declarations());
 
     let common_fields: Vec<Field> = api
         .common_params
@@ -17,118 +18,32 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
     let common_builder_fns: Vec<ImplItem> =
         api.common_params.iter().map(code_gen::create_fn).collect();
 
+    // AST for builder structs
     let builders: Vec<Tokens> = api
         .root
         .iter()
         .map(|(name, endpoint)| {
-            let builder_name = name.to_pascal_case();
-
-            let builder_ident = code_gen::ident(builder_name);
-
-            let mut fields: Vec<syn::Field> = endpoint
-                .url
-                .params
-                .iter()
-                .map(code_gen::create_field)
-                .collect();
-
-            // Combine common fields with struct fields, sort and deduplicate
-            // clone common_fields, since quote!() consumes the Vec<Field>
-            fields.append(&mut common_fields.clone());
-            fields.sort_by(|a, b| a.ident.cmp(&b.ident));
-            fields.dedup_by(|a, b| a.ident.eq(&b.ident));
-
-            let mut builder_fns: Vec<ImplItem> = endpoint
-                .url
-                .params
-                .iter()
-                .map(code_gen::create_fn)
-                .collect();
-
-            // Combine common fns with builder fns, sort and deduplicate
-            // clone is required, since quote!() consumes the Vec<Item>
-            builder_fns.append(&mut common_builder_fns.clone());
-            builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
-            builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
-
-            quote!(
-                #[derive(Default)]
-                pub struct #builder_ident {
-                    client: Elasticsearch,
-                    #(#fields),*,
-                }
-
-                impl #builder_ident {
-                    pub fn new(client: Elasticsearch) -> Self {
-                        #builder_ident {
-                            client,
-                            ..Default::default()
-                        }
-                    }
-                    #(#builder_fns)*
-                }
-
-                impl Sender for #builder_ident {
-                    fn send<T>(self) -> Result<ElasticsearchResponse<T>> where T:DeserializeOwned {
-                          // TODO: build up the url based on parameters passed, and execute request
-                          Ok(ElasticsearchResponse {
-                               headers: HeaderMap::new(),
-                               status_code: StatusCode::OK,
-                               body: None
-                          })
-
-                    }
-                }
-            )
+            code_gen::create_builder_struct(name.to_pascal_case(), endpoint, &common_fields, &common_builder_fns)
         })
         .collect();
 
+    // AST for methods on Elasticsearch that return builder types
     let methods: Vec<Tokens> = api
         .root
         .iter()
         .map(|(name, endpoint)| {
-            let builder_ident = code_gen::ident(name.to_pascal_case());
-            let method_name = code_gen::ident(name.to_string());
-            let path = endpoint.url.paths.first().unwrap();
-            let method = endpoint.methods.first().unwrap();
-
-            let supports_body = endpoint.supports_body();
-
-            let method_doc = match &endpoint.documentation {
-                Some(docs) => Some(code_gen::doc(docs.into())),
-                _ => None,
-            };
-
-            quote!(
-                #method_doc
-                pub fn #method_name(&self) -> #builder_ident {
-                    #builder_ident::new(self.client.clone())
-                }
-            )
+            code_gen::create_builder_struct_ctor_fns(name.to_pascal_case(), name, endpoint)
         })
         .collect();
 
-    let header = quote!(
-        use super::super::client::Elasticsearch;
-        use super::super::http_method::HttpMethod;
-        use super::super::enums::*;
-        use reqwest::{Result, Response, Request, Error};
-        use crate::client::Sender;
-        use crate::response::ElasticsearchResponse;
-        use serde::de::DeserializeOwned;
-        use reqwest::header::HeaderMap;
-    );
-
-    tokens.append(header);
-    let implementation = quote!(
+    tokens.append(quote!(
         #(#builders)*
 
         impl Elasticsearch {
             #(#methods)*
         }
-    );
+    ));
 
-    tokens.append(implementation);
     let generated = rust_fmt(tokens.to_string())?;
     Ok(generated)
 }

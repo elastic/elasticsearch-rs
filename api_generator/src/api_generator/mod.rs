@@ -2,13 +2,12 @@ use crate::api_generator::code_gen::url::url_builder::Path;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::Deserialize;
 use serde_json::Value;
-use std::fs::OpenOptions;
-use std::path::PathBuf;
 use std::{
     collections::{BTreeMap, HashSet},
-    fs::{read_dir, File},
+    fs::{read_dir, File,OpenOptions},
     hash::{Hash, Hasher},
     io::{prelude::*, Read},
+    path::PathBuf
 };
 
 mod code_gen;
@@ -18,9 +17,9 @@ pub struct Api {
     pub commit: String,
     /// parameters that are common to all API methods
     pub common_params: BTreeMap<String, Type>,
-    /// root API methods
+    /// root API methods e.g. Search, Index
     pub root: BTreeMap<String, ApiEndpoint>,
-    /// namespace client methods
+    /// namespace client methods e.g. Indices.Create, Ml.PutJob
     pub namespaces: BTreeMap<String, BTreeMap<String, ApiEndpoint>>,
     /// enums in parameters
     pub enums: Vec<ApiEnum>,
@@ -105,6 +104,7 @@ impl Default for TypeKind {
     }
 }
 
+/// The URL components of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
     pub paths: Vec<Path>,
@@ -114,6 +114,7 @@ pub struct Url {
     pub params: BTreeMap<String, Type>,
 }
 
+/// Body of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Body {
     pub description: String,
@@ -167,7 +168,7 @@ impl PartialEq for ApiEnum {
 
 impl Eq for ApiEnum {}
 
-/// Generates all client source from the REST API spec
+/// Generates all client source code from the REST API spec
 pub fn generate(
     branch: &str,
     download_dir: &PathBuf,
@@ -209,6 +210,7 @@ pub fn generate(
     Ok(())
 }
 
+/// Writes the input to the specified file, preceded by a header comment indicating generated code
 fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::Error> {
     let mut generated_path = dir.clone();
     generated_path.push(file);
