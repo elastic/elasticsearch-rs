@@ -257,18 +257,27 @@ pub fn use_declarations() -> Tokens {
     )
 }
 
-fn create_new_fnargs_fields(builder_ident: &syn::Ident, required_parts: &BTreeMap<&String,&Type>) -> (Vec<FnArg>, Vec<FieldValue>) {
+/// Creates the function arguments for a builder struct new fn
+fn create_new_fnargs(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Vec<FnArg> {
     match required_parts.len() {
-        0 => (vec![], vec![]),
+        0 => vec![],
         _ => {
-            let fnargs = required_parts.iter()
+            required_parts.iter()
                 .map(|part| (valid_name(part.0), part.1))
                 .map(|part| {
                     syn::FnArg::Captured(syn::Pat::Path(None, path_none(part.0)), ty(part.0, &part.1.ty, true))
                 })
-                .collect::<Vec<syn::FnArg>>();
+                .collect::<Vec<syn::FnArg>>()
+        }
+    }
+}
 
-            let fields = required_parts.iter()
+/// Creates the field values for a builder struct new fn call
+fn create_new_fields(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Vec<FieldValue> {
+    match required_parts.len() {
+        0 => vec![],
+        _ => {
+            required_parts.iter()
                 .map(|part| valid_name(part.0))
                 .map(|part| {
                     syn::FieldValue {
@@ -278,15 +287,14 @@ fn create_new_fnargs_fields(builder_ident: &syn::Ident, required_parts: &BTreeMa
                         is_shorthand: false,
                     }
                 })
-                .collect();
-
-            (fnargs, fields)
+                .collect()
         }
     }
 }
 
-fn create_new_fn(builder_ident: &syn::Ident, required_parts: BTreeMap<&String,&Type>) -> Tokens {
-    let (fnargs, fields) = create_new_fnargs_fields(builder_ident, &required_parts);
+fn create_new_fn(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Tokens {
+    let fnargs = create_new_fnargs(builder_ident, &required_parts);
+    let fields = create_new_fields(builder_ident, &required_parts);
     match required_parts.len() {
         0 => quote!(
                 pub fn new(client: Elasticsearch) -> Self {
@@ -317,15 +325,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
 
     // url parts that are common across all urls.
     // These are required parameters for the builder ctor new() fn
-    let required_parts: Vec<&str> = endpoint
-        .url
-        .paths
-        .iter()
-        .map(|p| {
-            p.params()
-        })
-        .reduce(|a, b| a.intersect(b))
-        .unwrap();
+    let required_parts: Vec<&str> = endpoint.url.required_part_names();
 
     // collect all the fields for the builder struct. Start with url parts
     let mut fields: Vec<syn::Field> = endpoint
@@ -363,12 +363,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
     builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
     builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
-    let req_parts: BTreeMap<&String,&Type> = endpoint.url.parts
-        .iter()
-        .filter(|p| required_parts.contains(&p.0.as_str()))
-        .collect::<BTreeMap<&String,&Type>>();
-
-    let new_fn = create_new_fn(&builder_ident, req_parts);
+    let new_fn = create_new_fn(&builder_ident, &endpoint.url.required_parts());
 
     quote!(
         #[derive(Default)]
@@ -408,26 +403,8 @@ pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpo
         _ => None,
     };
 
-    // url parts that are common across all urls.
-    // These are required parameters for the builder ctor new() fn
-    let required_parts: Vec<&str> = endpoint
-        .url
-        .paths
-        .iter()
-        .map(|p| {
-            p.params()
-        })
-        .reduce(|a, b| a.intersect(b))
-        .unwrap();
-
-    let req_parts: BTreeMap<&String,&Type> = endpoint.url.parts
-        .iter()
-        .filter(|p| required_parts.contains(&p.0.as_str()))
-        .collect::<BTreeMap<&String,&Type>>();
-
-    let (fnargs, fields) = create_new_fnargs_fields(&builder_ident, &req_parts);
-
-    let t : Vec<syn::Pat> = fnargs
+    let fnargs = create_new_fnargs(&builder_ident, &endpoint.url.required_parts());
+    let builder_args: Vec<syn::Pat> = fnargs
         .clone()
         .into_iter()
         .filter_map(|f| {
@@ -442,7 +419,7 @@ pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpo
         #method_doc
         pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident {
             // TODO: Add fn a
-            #builder_ident::new(self.client.clone(),#(#t),*)
+            #builder_ident::new(self.client.clone(),#(#builder_args),*)
         }
     )
 }

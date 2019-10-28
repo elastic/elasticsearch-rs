@@ -346,11 +346,11 @@ pub struct Create {
     wait_for_active_shards: Option<String>,
 }
 impl Create {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Create {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -448,11 +448,11 @@ pub struct Delete {
     wait_for_active_shards: Option<String>,
 }
 impl Delete {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Delete {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -942,11 +942,11 @@ pub struct Exists {
     version_type: Option<VersionType>,
 }
 impl Exists {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Exists {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -1060,11 +1060,11 @@ pub struct ExistsSource {
     version_type: Option<VersionType>,
 }
 impl ExistsSource {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         ExistsSource {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -1176,11 +1176,11 @@ pub struct Explain {
     ty: Option<String>,
 }
 impl Explain {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Explain {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -1390,11 +1390,11 @@ pub struct Get {
     version_type: Option<VersionType>,
 }
 impl Get {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Get {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -1570,11 +1570,11 @@ pub struct GetSource {
     version_type: Option<VersionType>,
 }
 impl GetSource {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         GetSource {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -3485,11 +3485,11 @@ pub struct Update {
     wait_for_active_shards: Option<String>,
 }
 impl Update {
-    pub fn new(client: Elasticsearch, id: String, index: String) -> Self {
+    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Update {
             client,
-            id: id,
             index: index,
+            id: id,
             ..Default::default()
         }
     }
@@ -3929,12 +3929,12 @@ impl Elasticsearch {
         Count::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn create(&self, id: String, index: String) -> Create {
-        Create::new(self.client.clone(), id, index)
+    pub fn create(&self, index: String, id: String) -> Create {
+        Create::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html"]
-    pub fn delete(&self, id: String, index: String) -> Delete {
-        Delete::new(self.client.clone(), id, index)
+    pub fn delete(&self, index: String, id: String) -> Delete {
+        Delete::new(self.client.clone(), index, id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html"]
     pub fn delete_by_query(&self, index: Vec<String>) -> DeleteByQuery {
@@ -3949,32 +3949,32 @@ impl Elasticsearch {
         DeleteScript::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists(&self, id: String, index: String) -> Exists {
-        Exists::new(self.client.clone(), id, index)
+    pub fn exists(&self, index: String, id: String) -> Exists {
+        Exists::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists_source(&self, id: String, index: String) -> ExistsSource {
-        ExistsSource::new(self.client.clone(), id, index)
+    pub fn exists_source(&self, index: String, id: String) -> ExistsSource {
+        ExistsSource::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html"]
-    pub fn explain(&self, id: String, index: String) -> Explain {
-        Explain::new(self.client.clone(), id, index)
+    pub fn explain(&self, index: String, id: String) -> Explain {
+        Explain::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html"]
     pub fn field_caps(&self) -> FieldCaps {
         FieldCaps::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get(&self, id: String, index: String) -> Get {
-        Get::new(self.client.clone(), id, index)
+    pub fn get(&self, index: String, id: String) -> Get {
+        Get::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
     pub fn get_script(&self, id: String) -> GetScript {
         GetScript::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get_source(&self, id: String, index: String) -> GetSource {
-        GetSource::new(self.client.clone(), id, index)
+    pub fn get_source(&self, index: String, id: String) -> GetSource {
+        GetSource::new(self.client.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
     pub fn index(&self, index: String) -> Index {
@@ -4049,8 +4049,8 @@ impl Elasticsearch {
         Termvectors::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html"]
-    pub fn update(&self, id: String, index: String) -> Update {
-        Update::new(self.client.clone(), id, index)
+    pub fn update(&self, index: String, id: String) -> Update {
+        Update::new(self.client.clone(), index, id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html"]
     pub fn update_by_query(&self, index: Vec<String>) -> UpdateByQuery {

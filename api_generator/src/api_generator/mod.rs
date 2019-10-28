@@ -9,6 +9,10 @@ use std::{
     io::{prelude::*, Read},
     path::PathBuf
 };
+use std::cmp::Ordering;
+use reduce::Reduce;
+use array_tool::vec::Intersect;
+use std::iter::FromIterator;
 
 mod code_gen;
 
@@ -112,6 +116,47 @@ pub struct Url {
     pub parts: BTreeMap<String, Type>,
     #[serde(default = "BTreeMap::new")]
     pub params: BTreeMap<String, Type>,
+}
+
+impl Url {
+    /// Required url part names that are common across all url variants of an API endpoint
+    pub fn required_part_names(&self) -> Vec<&str> {
+
+        self
+            .paths
+            .iter()
+            .map(|p| p.params())
+            .reduce(|a, b| a.intersect(b))
+            .unwrap()
+    }
+
+    /// Required url part names that are common across all url variants of an API endpoint,
+    /// ordered by index, ty, id then lexicographically
+    pub fn required_parts(&self) -> Vec<(&String,&Type)> {
+        let required_parts = self.required_part_names();
+
+        let mut vec = self.parts
+            .iter()
+            .filter(|p| required_parts.contains(&p.0.as_str()))
+            .collect::<Vec<(&String, &Type)>>();
+
+        vec
+        .sort_by(|&(a, _), &(b, _)| {
+            let index_ident = String::from("index");
+            let ty_ident = String::from("ty");
+            let id_ident = String::from("id");
+
+            match (a.as_str(), b.as_str()) {
+                ("index", _) => Ordering::Less,
+                (_, "index") => Ordering::Greater,
+                (_, "ty") => Ordering::Greater,
+                (_, "id") => Ordering::Greater,
+                _ => a.cmp(&b)
+            }
+        });
+
+        vec
+    }
 }
 
 /// Body of an API endpoint
