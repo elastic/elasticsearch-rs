@@ -18,9 +18,10 @@ use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
+use crate::error::ElasticsearchError;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result, StatusCode};
+use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct Bulk {
@@ -120,15 +121,9 @@ impl Bulk {
     }
 }
 impl Sender for Bulk {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -175,15 +170,9 @@ impl ClearScroll {
     }
 }
 impl Sender for ClearScroll {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -315,15 +304,9 @@ impl Count {
     }
 }
 impl Sender for Count {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -416,15 +399,9 @@ impl Create {
     }
 }
 impl Sender for Create {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -523,15 +500,9 @@ impl Delete {
     }
 }
 impl Sender for Delete {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -778,15 +749,9 @@ impl DeleteByQuery {
     }
 }
 impl Sender for DeleteByQuery {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -840,15 +805,9 @@ impl DeleteByQueryRethrottle {
     }
 }
 impl Sender for DeleteByQueryRethrottle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -908,15 +867,9 @@ impl DeleteScript {
     }
 }
 impl Sender for DeleteScript {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1027,15 +980,9 @@ impl Exists {
     }
 }
 impl Sender for Exists {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1140,15 +1087,9 @@ impl ExistsSource {
     }
 }
 impl Sender for ExistsSource {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1271,15 +1212,9 @@ impl Explain {
     }
 }
 impl Sender for Explain {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1356,15 +1291,9 @@ impl FieldCaps {
     }
 }
 impl Sender for FieldCaps {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1475,15 +1404,9 @@ impl Get {
     }
 }
 impl Sender for Get {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1537,15 +1460,9 @@ impl GetScript {
     }
 }
 impl Sender for GetScript {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1650,15 +1567,9 @@ impl GetSource {
     }
 }
 impl Sender for GetSource {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1768,15 +1679,9 @@ impl Index {
     }
 }
 impl Sender for Index {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1822,15 +1727,9 @@ impl Info {
     }
 }
 impl Sender for Info {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1926,15 +1825,9 @@ impl Mget {
     }
 }
 impl Sender for Mget {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2027,15 +1920,9 @@ impl Msearch {
     }
 }
 impl Sender for Msearch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2113,15 +2000,9 @@ impl MsearchTemplate {
     }
 }
 impl Sender for MsearchTemplate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2241,15 +2122,9 @@ impl Mtermvectors {
     }
 }
 impl Sender for Mtermvectors {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2295,15 +2170,9 @@ impl Ping {
     }
 }
 impl Sender for Ping {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2369,15 +2238,9 @@ impl PutScript {
     }
 }
 impl Sender for PutScript {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2442,15 +2305,9 @@ impl RankEval {
     }
 }
 impl Sender for RankEval {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2544,15 +2401,9 @@ impl Reindex {
     }
 }
 impl Sender for Reindex {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2606,15 +2457,9 @@ impl ReindexRethrottle {
     }
 }
 impl Sender for ReindexRethrottle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2661,15 +2506,9 @@ impl RenderSearchTemplate {
     }
 }
 impl Sender for RenderSearchTemplate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2715,15 +2554,9 @@ impl ScriptsPainlessExecute {
     }
 }
 impl Sender for ScriptsPainlessExecute {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -2787,15 +2620,9 @@ impl Scroll {
     }
 }
 impl Sender for Scroll {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3101,15 +2928,9 @@ impl Search {
     }
 }
 impl Sender for Search {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3192,15 +3013,9 @@ impl SearchShards {
     }
 }
 impl Sender for SearchShards {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3326,15 +3141,9 @@ impl SearchTemplate {
     }
 }
 impl Sender for SearchTemplate {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3450,15 +3259,9 @@ impl Termvectors {
     }
 }
 impl Sender for Termvectors {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3575,15 +3378,9 @@ impl Update {
     }
 }
 impl Sender for Update {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3842,15 +3639,9 @@ impl UpdateByQuery {
     }
 }
 impl Sender for UpdateByQuery {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -3904,15 +3695,9 @@ impl UpdateByQueryRethrottle {
     }
 }
 impl Sender for UpdateByQueryRethrottle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 impl Elasticsearch {

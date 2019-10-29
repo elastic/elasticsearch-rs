@@ -14,8 +14,11 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         .map(code_gen::create_optional_field)
         .collect();
 
-    let common_builder_fns: Vec<ImplItem> =
-        api.common_params.iter().map(code_gen::create_optional_fn).collect();
+    let common_builder_fns: Vec<ImplItem> = api
+        .common_params
+        .iter()
+        .map(code_gen::create_optional_fn)
+        .collect();
 
     for (namespace, namespace_methods) in &api.namespaces {
         let mut tokens = quote::Tokens::new();
@@ -32,13 +35,15 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         let builders: Vec<Tokens> = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let builder_name = format!(
-                    "{}{}",
-                    namespace.to_pascal_case(),
-                    name.to_pascal_case()
-                );
+                let builder_name =
+                    format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
 
-                code_gen::create_builder_struct(builder_name, endpoint, &common_fields, &common_builder_fns)
+                code_gen::create_builder_struct(
+                    builder_name,
+                    endpoint,
+                    &common_fields,
+                    &common_builder_fns,
+                )
             })
             .collect();
 

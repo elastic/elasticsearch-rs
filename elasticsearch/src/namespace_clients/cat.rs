@@ -18,9 +18,10 @@ use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
+use crate::error::ElasticsearchError;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result, StatusCode};
+use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct CatAliases {
@@ -108,15 +109,9 @@ impl CatAliases {
     }
 }
 impl Sender for CatAliases {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -211,15 +206,9 @@ impl CatAllocation {
     }
 }
 impl Sender for CatAllocation {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -308,15 +297,9 @@ impl CatCount {
     }
 }
 impl Sender for CatCount {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -416,15 +399,9 @@ impl CatFielddata {
     }
 }
 impl Sender for CatFielddata {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -518,15 +495,9 @@ impl CatHealth {
     }
 }
 impl Sender for CatHealth {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -584,15 +555,9 @@ impl CatHelp {
     }
 }
 impl Sender for CatHelp {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -705,15 +670,9 @@ impl CatIndices {
     }
 }
 impl Sender for CatIndices {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -801,15 +760,9 @@ impl CatMaster {
     }
 }
 impl Sender for CatMaster {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -897,15 +850,9 @@ impl CatNodeattrs {
     }
 }
 impl Sender for CatNodeattrs {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -999,15 +946,9 @@ impl CatNodes {
     }
 }
 impl Sender for CatNodes {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1095,15 +1036,9 @@ impl CatPendingTasks {
     }
 }
 impl Sender for CatPendingTasks {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1191,15 +1126,9 @@ impl CatPlugins {
     }
 }
 impl Sender for CatPlugins {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1288,15 +1217,9 @@ impl CatRecovery {
     }
 }
 impl Sender for CatRecovery {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1384,15 +1307,9 @@ impl CatRepositories {
     }
 }
 impl Sender for CatRepositories {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1475,15 +1392,9 @@ impl CatSegments {
     }
 }
 impl Sender for CatSegments {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1578,15 +1489,9 @@ impl CatShards {
     }
 }
 impl Sender for CatShards {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1675,15 +1580,9 @@ impl CatSnapshots {
     }
 }
 impl Sender for CatSnapshots {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1783,15 +1682,9 @@ impl CatTasks {
     }
 }
 impl Sender for CatTasks {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1880,15 +1773,9 @@ impl CatTemplates {
     }
 }
 impl Sender for CatTemplates {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -1983,15 +1870,9 @@ impl CatThreadPool {
     }
 }
 impl Sender for CatThreadPool {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[doc = "Cat APIs"]

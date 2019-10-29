@@ -18,9 +18,10 @@ use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
+use crate::error::ElasticsearchError;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result, StatusCode};
+use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct WatcherAckWatch {
@@ -68,15 +69,9 @@ impl WatcherAckWatch {
     }
 }
 impl Sender for WatcherAckWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -124,15 +119,9 @@ impl WatcherActivateWatch {
     }
 }
 impl Sender for WatcherActivateWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -180,15 +169,9 @@ impl WatcherDeactivateWatch {
     }
 }
 impl Sender for WatcherDeactivateWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -236,15 +219,9 @@ impl WatcherDeleteWatch {
     }
 }
 impl Sender for WatcherDeleteWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -297,15 +274,9 @@ impl WatcherExecuteWatch {
     }
 }
 impl Sender for WatcherExecuteWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -353,15 +324,9 @@ impl WatcherGetWatch {
     }
 }
 impl Sender for WatcherGetWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -433,15 +398,9 @@ impl WatcherPutWatch {
     }
 }
 impl Sender for WatcherPutWatch {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -487,15 +446,9 @@ impl WatcherStart {
     }
 }
 impl Sender for WatcherStart {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -553,15 +506,9 @@ impl WatcherStats {
     }
 }
 impl Sender for WatcherStats {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -607,15 +554,9 @@ impl WatcherStop {
     }
 }
 impl Sender for WatcherStop {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[doc = "Watcher APIs"]

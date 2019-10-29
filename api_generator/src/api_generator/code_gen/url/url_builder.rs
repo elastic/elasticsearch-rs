@@ -52,7 +52,7 @@ impl Path {
     }
 
     fn parse<'a>(i: &'a [u8], state: PathParseState, r: Vec<PathPart<'a>>) -> Vec<PathPart<'a>> {
-        if i.len() == 0 {
+        if i.is_empty() {
             return r;
         }
 
@@ -60,7 +60,7 @@ impl Path {
         match state {
             PathParseState::Literal => {
                 let (rest, part) = Path::parse_literal(i);
-                if part.len() > 0 {
+                if !part.is_empty() {
                     r.push(PathPart::Literal(part));
                 }
 
@@ -68,7 +68,7 @@ impl Path {
             }
             PathParseState::Param => {
                 let (rest, part) = Path::parse_param(i);
-                if part.len() > 0 {
+                if !part.is_empty() {
                     r.push(PathPart::Param(part));
                 }
 
@@ -221,7 +221,7 @@ impl<'a> ReplaceBuilder<'a> {
 
                 let first_expr = Box::new(len_iter.next().unwrap());
 
-                *(len_iter.map(|p| Box::new(p)).fold(first_expr, |acc, p| {
+                *(len_iter.map(Box::new).fold(first_expr, |acc, p| {
                     Box::new(syn::ExprKind::Binary(syn::BinOp::Add, acc, p).into())
                 }))
             }

@@ -18,9 +18,10 @@ use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
+use crate::error::ElasticsearchError;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result, StatusCode};
+use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct IlmDeleteLifecycle {
@@ -67,15 +68,9 @@ impl IlmDeleteLifecycle {
     }
 }
 impl Sender for IlmDeleteLifecycle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -123,15 +118,9 @@ impl IlmExplainLifecycle {
     }
 }
 impl Sender for IlmExplainLifecycle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -178,15 +167,9 @@ impl IlmGetLifecycle {
     }
 }
 impl Sender for IlmGetLifecycle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -232,15 +215,9 @@ impl IlmGetStatus {
     }
 }
 impl Sender for IlmGetStatus {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -288,15 +265,9 @@ impl IlmMoveToStep {
     }
 }
 impl Sender for IlmMoveToStep {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -344,15 +315,9 @@ impl IlmPutLifecycle {
     }
 }
 impl Sender for IlmPutLifecycle {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -400,15 +365,9 @@ impl IlmRemovePolicy {
     }
 }
 impl Sender for IlmRemovePolicy {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -456,15 +415,9 @@ impl IlmRetry {
     }
 }
 impl Sender for IlmRetry {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -510,15 +463,9 @@ impl IlmStart {
     }
 }
 impl Sender for IlmStart {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -564,15 +511,9 @@ impl IlmStop {
     }
 }
 impl Sender for IlmStop {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[doc = "Ilm APIs"]

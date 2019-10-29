@@ -1,9 +1,10 @@
 extern crate reqwest;
 
 use self::reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
-use crate::{http_method::HttpMethod, response::ElasticsearchResponse};
-use reqwest::{Method, Result};
+use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
+use reqwest::Method;
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 use url::Url;
 
 #[derive(Debug, Clone)]
@@ -31,15 +32,15 @@ impl Connection {
         }
     }
 
-    pub fn send<T>(
+    pub fn send<S>(
         &self,
         method: HttpMethod,
         path: &str,
-        query: Option<&[(String, String)]>,
-        body: Option<Vec<u8>>,
-    ) -> Result<ElasticsearchResponse<T>>
+        query_string: Option<&[(String, String)]>,
+        body: Option<S>,
+    ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
-        T: DeserializeOwned,
+        S: Serialize,
     {
         let url = self.url.join(path).unwrap();
         let reqwest_method = self.method(method);
@@ -50,27 +51,17 @@ impl Connection {
         let mut request_builder = self.client.request(reqwest_method, url).headers(headers);
 
         request_builder = match body {
-            Some(b) => request_builder.body(b),
+            Some(b) => request_builder.json(&b),
             None => request_builder,
         };
 
-        request_builder = match query {
+        request_builder = match query_string {
             Some(q) => request_builder.query(q),
             None => request_builder,
         };
 
-        let mut response = request_builder.send()?;
-        let response_body = match response.json::<T>() {
-            Ok(b) => Some(b),
-            // TODO: surface failure to deserialize nicely. Perhaps move deserialization to a fn on response impl, and let ElasticsearchResponse wrap reqwest's Response?
-            Err(_) => None
-        };
-
-        Ok(ElasticsearchResponse {
-            headers: response.headers().clone(),
-            status_code: response.status(),
-            body: response_body,
-        })
+        let response = request_builder.send()?;
+        Ok(ElasticsearchResponse::new(response))
     }
 }
 

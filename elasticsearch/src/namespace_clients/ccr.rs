@@ -18,9 +18,10 @@ use super::super::client::Elasticsearch;
 use super::super::enums::*;
 use super::super::http_method::HttpMethod;
 use crate::client::Sender;
+use crate::error::ElasticsearchError;
 use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, Result, StatusCode};
+use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
 #[derive(Default)]
 pub struct CcrDeleteAutoFollowPattern {
@@ -67,15 +68,9 @@ impl CcrDeleteAutoFollowPattern {
     }
 }
 impl Sender for CcrDeleteAutoFollowPattern {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -129,15 +124,9 @@ impl CcrFollow {
     }
 }
 impl Sender for CcrFollow {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -185,15 +174,9 @@ impl CcrFollowInfo {
     }
 }
 impl Sender for CcrFollowInfo {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -241,15 +224,9 @@ impl CcrFollowStats {
     }
 }
 impl Sender for CcrFollowStats {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -297,15 +274,9 @@ impl CcrForgetFollower {
     }
 }
 impl Sender for CcrForgetFollower {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -352,15 +323,9 @@ impl CcrGetAutoFollowPattern {
     }
 }
 impl Sender for CcrGetAutoFollowPattern {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -408,15 +373,9 @@ impl CcrPauseFollow {
     }
 }
 impl Sender for CcrPauseFollow {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -464,15 +423,9 @@ impl CcrPutAutoFollowPattern {
     }
 }
 impl Sender for CcrPutAutoFollowPattern {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -520,15 +473,9 @@ impl CcrResumeFollow {
     }
 }
 impl Sender for CcrResumeFollow {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -574,15 +521,9 @@ impl CcrStats {
     }
 }
 impl Sender for CcrStats {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[derive(Default)]
@@ -630,15 +571,9 @@ impl CcrUnfollow {
     }
 }
 impl Sender for CcrUnfollow {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned,
-    {
-        Ok(ElasticsearchResponse {
-            headers: HeaderMap::new(),
-            status_code: StatusCode::OK,
-            body: None,
-        })
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        Ok(response)
     }
 }
 #[doc = "Ccr APIs"]

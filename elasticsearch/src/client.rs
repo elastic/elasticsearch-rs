@@ -1,17 +1,16 @@
 use crate::{
     connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse,
-    settings::ConnectionSettings,
+    settings::ConnectionSettings, ElasticsearchError,
 };
 
-use reqwest::{header::HeaderMap, Response, Result, StatusCode};
+use reqwest::{header::HeaderMap, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 use url::Url;
 
-/// Sender trait for terminal method to send the request to Elasticsearch
+/// Sender trait for terminal method to send a synchronous request to Elasticsearch
 pub trait Sender {
-    fn send<T>(self) -> Result<ElasticsearchResponse<T>>
-    where
-        T: DeserializeOwned;
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError>;
 }
 
 /// Client used to make API calls to Elasticsearch
@@ -29,15 +28,16 @@ impl Elasticsearch {
         }
     }
 
-    pub fn send<T>(
+    /// Sends an API request to Elasticsearch
+    pub fn send<S>(
         &self,
         method: HttpMethod,
         path: &str,
         query_string: Option<&[(String, String)]>,
-        body: Option<Vec<u8>>,
-    ) -> Result<ElasticsearchResponse<T>>
+        body: Option<S>,
+    ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
-        T: DeserializeOwned,
+        S: Serialize,
     {
         self.connection.send(method, path, query_string, body)
     }

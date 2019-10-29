@@ -1,18 +1,17 @@
 use crate::api_generator::code_gen::url::url_builder::Path;
+use array_tool::vec::Intersect;
+use reduce::Reduce;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::Deserialize;
 use serde_json::Value;
+use std::cmp::Ordering;
 use std::{
     collections::{BTreeMap, HashSet},
-    fs::{read_dir, File,OpenOptions},
+    fs::{read_dir, File, OpenOptions},
     hash::{Hash, Hasher},
     io::{prelude::*, Read},
-    path::PathBuf
+    path::PathBuf,
 };
-use std::cmp::Ordering;
-use reduce::Reduce;
-use array_tool::vec::Intersect;
-use std::iter::FromIterator;
 
 mod code_gen;
 
@@ -121,9 +120,7 @@ pub struct Url {
 impl Url {
     /// Required url part names that are common across all url variants of an API endpoint
     pub fn required_part_names(&self) -> Vec<&str> {
-
-        self
-            .paths
+        self.paths
             .iter()
             .map(|p| p.params())
             .reduce(|a, b| a.intersect(b))
@@ -132,26 +129,22 @@ impl Url {
 
     /// Required url part names that are common across all url variants of an API endpoint,
     /// ordered by index, ty, id then lexicographically
-    pub fn required_parts(&self) -> Vec<(&String,&Type)> {
+    pub fn required_parts(&self) -> Vec<(&String, &Type)> {
         let required_parts = self.required_part_names();
 
-        let mut vec = self.parts
+        let mut vec = self
+            .parts
             .iter()
             .filter(|p| required_parts.contains(&p.0.as_str()))
             .collect::<Vec<(&String, &Type)>>();
 
-        vec
-        .sort_by(|&(a, _), &(b, _)| {
-            let index_ident = String::from("index");
-            let ty_ident = String::from("ty");
-            let id_ident = String::from("id");
-
+        vec.sort_by(|&(a, _), &(b, _)| {
             match (a.as_str(), b.as_str()) {
                 ("index", _) => Ordering::Less,
                 (_, "index") => Ordering::Greater,
                 (_, "ty") => Ordering::Greater,
                 (_, "id") => Ordering::Greater,
-                _ => a.cmp(&b)
+                _ => a.cmp(&b),
             }
         });
 
@@ -263,7 +256,8 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
     let path = generated_path.to_string_lossy().into_owned();
 
     let mut file = File::create(&path)?;
-    file.write_all("// -----------------------------------------------
+    file.write_all(
+        "// -----------------------------------------------
 // ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
 // ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
 // ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
@@ -279,7 +273,8 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-".as_bytes(),
+"
+        .as_bytes(),
     )?;
 
     let mut file = OpenOptions::new().append(true).write(true).open(&path)?;

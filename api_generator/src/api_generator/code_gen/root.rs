@@ -15,15 +15,23 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .map(code_gen::create_optional_field)
         .collect();
 
-    let common_builder_fns: Vec<ImplItem> =
-        api.common_params.iter().map(code_gen::create_optional_fn).collect();
+    let common_builder_fns: Vec<ImplItem> = api
+        .common_params
+        .iter()
+        .map(code_gen::create_optional_fn)
+        .collect();
 
     // AST for builder structs
     let builders: Vec<Tokens> = api
         .root
         .iter()
         .map(|(name, endpoint)| {
-            code_gen::create_builder_struct(name.to_pascal_case(), endpoint, &common_fields, &common_builder_fns)
+            code_gen::create_builder_struct(
+                name.to_pascal_case(),
+                endpoint,
+                &common_fields,
+                &common_builder_fns,
+            )
         })
         .collect();
 

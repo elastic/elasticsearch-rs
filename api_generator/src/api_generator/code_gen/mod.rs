@@ -3,14 +3,11 @@ pub mod namespace_clients;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::{Type, TypeKind, ApiEndpoint};
-use array_tool::vec::Intersect;
+use crate::api_generator::{ApiEndpoint, Type, TypeKind};
 use inflector::Inflector;
-use quote::{Tokens, ToTokens};
-use reduce::Reduce;
+use quote::Tokens;
 use std::str;
-use syn::{Field, ImplItem, FieldValue, FnArg};
-use std::collections::BTreeMap;
+use syn::{Field, FieldValue, FnArg, ImplItem};
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -78,8 +75,8 @@ pub trait GetPath {
 
 impl GetPath for syn::Ty {
     fn get_path(&self) -> &syn::Path {
-        match self {
-            &syn::Ty::Path(_, ref p) => &p,
+        match *self {
+            syn::Ty::Path(_, ref p) => &p,
             _ => panic!("Only path types are supported."),
         }
     }
@@ -134,8 +131,8 @@ pub trait HasLifetime {
 
 impl<T: GetPath> HasLifetime for T {
     fn has_lifetime(&self) -> bool {
-        match &self.get_path().segments[0].parameters {
-            &syn::PathParameters::AngleBracketed(ref params) => params.lifetimes.len() > 0,
+        match self.get_path().segments[0].parameters {
+            syn::PathParameters::AngleBracketed(ref params) => !params.lifetimes.is_empty(),
             _ => false,
         }
     }
@@ -249,78 +246,85 @@ pub fn use_declarations() -> Tokens {
         use super::super::client::Elasticsearch;
         use super::super::http_method::HttpMethod;
         use super::super::enums::*;
-        use reqwest::{Result, Response, Request, Error, StatusCode};
+        use reqwest::{Response, Request, Error, StatusCode};
         use crate::client::Sender;
         use crate::response::ElasticsearchResponse;
+        use crate::error::ElasticsearchError;
         use serde::de::DeserializeOwned;
         use reqwest::header::HeaderMap;
     )
 }
 
 /// Creates the function arguments for a builder struct new fn
-fn create_new_fnargs(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Vec<FnArg> {
+fn create_new_fnargs(
+    required_parts: &[(&String, &Type)],
+) -> Vec<FnArg> {
     match required_parts.len() {
         0 => vec![],
-        _ => {
-            required_parts.iter()
-                .map(|part| (valid_name(part.0), part.1))
-                .map(|part| {
-                    syn::FnArg::Captured(syn::Pat::Path(None, path_none(part.0)), ty(part.0, &part.1.ty, true))
-                })
-                .collect::<Vec<syn::FnArg>>()
-        }
+        _ => required_parts
+            .iter()
+            .map(|part| (valid_name(part.0), part.1))
+            .map(|part| {
+                syn::FnArg::Captured(
+                    syn::Pat::Path(None, path_none(part.0)),
+                    ty(part.0, &part.1.ty, true),
+                )
+            })
+            .collect::<Vec<syn::FnArg>>(),
     }
 }
 
 /// Creates the field values for a builder struct new fn call
-fn create_new_fields(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Vec<FieldValue> {
+fn create_new_fields(
+    builder_ident: &syn::Ident,
+    required_parts: &[(&String, &Type)],
+) -> Vec<FieldValue> {
     match required_parts.len() {
         0 => vec![],
-        _ => {
-            required_parts.iter()
-                .map(|part| valid_name(part.0))
-                .map(|part| {
-                    syn::FieldValue {
-                        attrs: vec![],
-                        ident: ident(part),
-                        expr: syn::ExprKind::Path(None, path_none(ident(part).as_ref())).into(),
-                        is_shorthand: false,
-                    }
-                })
-                .collect()
-        }
+        _ => required_parts
+            .iter()
+            .map(|part| valid_name(part.0))
+            .map(|part| syn::FieldValue {
+                attrs: vec![],
+                ident: ident(part),
+                expr: syn::ExprKind::Path(None, path_none(ident(part).as_ref())).into(),
+                is_shorthand: false,
+            })
+            .collect(),
     }
 }
 
-fn create_new_fn(builder_ident: &syn::Ident, required_parts: &Vec<(&String,&Type)>) -> Tokens {
-    let fnargs = create_new_fnargs(builder_ident, &required_parts);
+fn create_new_fn(builder_ident: &syn::Ident, required_parts: &[(&String, &Type)]) -> Tokens {
+    let fnargs = create_new_fnargs(&required_parts);
     let fields = create_new_fields(builder_ident, &required_parts);
     match required_parts.len() {
         0 => quote!(
-                pub fn new(client: Elasticsearch) -> Self {
-                    #builder_ident {
-                        client,
-                        ..Default::default()
-                    }
+            pub fn new(client: Elasticsearch) -> Self {
+                #builder_ident {
+                    client,
+                    ..Default::default()
                 }
-            ),
-        _ => {
-            quote!(
-                 pub fn new(client: Elasticsearch, #(#fnargs),*) -> Self {
-                    #builder_ident {
-                        client,
-                        #(#fields),*,
-                        ..Default::default()
-                    }
+            }
+        ),
+        _ => quote!(
+             pub fn new(client: Elasticsearch, #(#fnargs),*) -> Self {
+                #builder_ident {
+                    client,
+                    #(#fields),*,
+                    ..Default::default()
                 }
-            )
-        }
+            }
+        ),
     }
-
 }
 
 /// creates the AST for a builder struct
-pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, common_fields: &Vec<Field>, common_builder_fns: &Vec<ImplItem>) -> Tokens {
+pub fn create_builder_struct(
+    builder_name: String,
+    endpoint: &ApiEndpoint,
+    common_fields: &[Field],
+    common_builder_fns: &[ImplItem],
+) -> Tokens {
     let builder_ident = ident(builder_name);
 
     // url parts that are common across all urls.
@@ -336,16 +340,18 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
         .collect();
 
     // url parameters
-    fields.append(&mut endpoint
-        .url
-        .params
-        .iter()
-        .map(create_optional_field)
-        .collect());
+    fields.append(
+        &mut endpoint
+            .url
+            .params
+            .iter()
+            .map(create_optional_field)
+            .collect(),
+    );
 
     // Combine common fields with struct fields, sort and deduplicate
     // clone common_fields, since quote!() consumes the Vec<Field>
-    fields.append(&mut common_fields.clone());
+    fields.append(&mut common_fields.to_vec().clone());
     fields.sort_by(|a, b| a.ident.cmp(&b.ident));
     fields.dedup_by(|a, b| a.ident.eq(&b.ident));
 
@@ -359,7 +365,7 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
 
     // Combine common fns with builder fns, sort and deduplicate
     // clone is required, since quote!() consumes the Vec<Item>
-    builder_fns.append(&mut common_builder_fns.clone());
+    builder_fns.append(&mut common_builder_fns.to_vec().clone());
     builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
     builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
@@ -378,21 +384,21 @@ pub fn create_builder_struct(builder_name: String, endpoint: &ApiEndpoint, commo
         }
 
         impl Sender for #builder_ident {
-            fn send<T>(self) -> Result<ElasticsearchResponse<T>> where T:DeserializeOwned {
+            fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
                   // TODO: build up the url based on parameters passed, and execute request
-                  Ok(ElasticsearchResponse {
-                       headers: HeaderMap::new(),
-                       status_code: StatusCode::OK,
-                       body: None
-                  })
-
+                  let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+                  Ok(response)
             }
         }
     )
 }
 
 /// Creates the AST for a fn that returns a new instance of a builder struct
-pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpoint: &ApiEndpoint) -> Tokens {
+pub fn create_builder_struct_ctor_fns(
+    builder_name: String,
+    name: &str,
+    endpoint: &ApiEndpoint,
+) -> Tokens {
     let builder_ident = ident(builder_name.to_pascal_case());
     let fn_name = ident(name.to_string());
     let path = endpoint.url.paths.first().unwrap();
@@ -403,22 +409,19 @@ pub fn create_builder_struct_ctor_fns(builder_name: String, name: &String, endpo
         _ => None,
     };
 
-    let fnargs = create_new_fnargs(&builder_ident, &endpoint.url.required_parts());
+    let fnargs = create_new_fnargs(&endpoint.url.required_parts());
     let builder_args: Vec<syn::Pat> = fnargs
         .clone()
         .into_iter()
-        .filter_map(|f| {
-            match f {
-                FnArg::Captured(p, ty) => Some(p),
-                _ => None
-            }
+        .filter_map(|f| match f {
+            FnArg::Captured(p, _) => Some(p),
+            _ => None,
         })
         .collect();
 
     quote!(
         #method_doc
         pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident {
-            // TODO: Add fn a
             #builder_ident::new(self.client.clone(),#(#builder_args),*)
         }
     )
