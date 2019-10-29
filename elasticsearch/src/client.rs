@@ -29,15 +29,16 @@ impl Elasticsearch {
     }
 
     /// Sends an API request to Elasticsearch
-    pub fn send<S>(
+    pub fn send<S, Q>(
         &self,
         method: HttpMethod,
         path: &str,
-        query_string: Option<&[(String, String)]>,
+        query_string: Option<&Q>,
         body: Option<S>,
     ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
         S: Serialize,
+        Q: Serialize + ?Sized,
     {
         self.connection.send(method, path, query_string, body)
     }

@@ -32,15 +32,16 @@ impl Connection {
         }
     }
 
-    pub fn send<S>(
+    pub fn send<S, Q>(
         &self,
         method: HttpMethod,
         path: &str,
-        query_string: Option<&[(String, String)]>,
+        query_string: Option<&Q>,
         body: Option<S>,
     ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
         S: Serialize,
+        Q: Serialize + ?Sized,
     {
         let url = self.url.join(path).unwrap();
         let reqwest_method = self.method(method);
