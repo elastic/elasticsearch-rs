@@ -3,9 +3,9 @@ pub mod namespace_clients;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::{ApiEndpoint, Type, TypeKind};
+use crate::api_generator::{ApiEndpoint, Type, TypeKind, HttpMethod};
 use inflector::Inflector;
-use quote::Tokens;
+use quote::{Tokens, ToTokens};
 use std::str;
 use syn::{Field, FieldValue, FnArg, ImplItem};
 
@@ -325,11 +325,11 @@ pub fn create_builder_struct(
     common_fields: &[Field],
     common_builder_fns: &[ImplItem],
 ) -> Tokens {
-    let builder_ident = ident(builder_name);
+    let builder_ident = ident(&builder_name);
 
     // url parts that are common across all urls.
     // These are required parameters for the builder ctor new() fn
-    let required_parts: Vec<&str> = endpoint.url.required_part_names();
+    let required_parts = endpoint.url.required_part_names();
 
     // collect all the fields for the builder struct. Start with url parts
     let mut fields: Vec<syn::Field> = endpoint
@@ -371,6 +371,10 @@ pub fn create_builder_struct(
 
     let new_fn = create_new_fn(&builder_ident, &endpoint.url.required_parts());
 
+    let path_expr = create_path_expression(&endpoint);
+    let method = create_method_expression(&builder_name, &endpoint);
+    let supports_body = endpoint.supports_body();
+
     quote!(
         #[derive(Default)]
         pub struct #builder_ident {
@@ -385,8 +389,11 @@ pub fn create_builder_struct(
 
         impl Sender for #builder_ident {
             fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+                  let path = #path_expr;
+                  let method = #method;
+
                   // TODO: build up the url based on parameters passed, and execute request
-                  let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+                  let response = self.client.send::<()>(method, path, None, None)?;
                   Ok(response)
             }
         }
@@ -401,9 +408,6 @@ pub fn create_builder_struct_ctor_fns(
 ) -> Tokens {
     let builder_ident = ident(builder_name.to_pascal_case());
     let fn_name = ident(name.to_string());
-    let path = endpoint.url.paths.first().unwrap();
-    let method = endpoint.methods.first().unwrap();
-    let supports_body = endpoint.supports_body();
     let method_doc = match &endpoint.documentation {
         Some(docs) => Some(doc(docs.into())),
         _ => None,
@@ -425,6 +429,70 @@ pub fn create_builder_struct_ctor_fns(
             #builder_ident::new(self.client.clone(),#(#builder_args),*)
         }
     )
+}
+
+/// Creates the AST for the expression to select the correct API url path, based on inputs
+pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
+    match endpoint.url.paths.len() {
+        1 => {
+            let single_path = endpoint.url.paths.first().unwrap();
+
+            match endpoint.url.required_part_names().len() {
+                0 => {
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                },
+                _ => {
+                    // TODO: build an
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                }
+            }
+        },
+        _ => {
+            let single_path = endpoint.url.paths.first().unwrap();
+
+            // TODO: build a match expression
+            match endpoint.url.required_part_names().len() {
+                0 => {
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                },
+                _ => {
+                    // TODO: build an
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                }
+            }
+        }
+    }
+}
+
+/// Create the AST for an expression that assigns a HttpMethod value
+pub fn create_method_expression(builder_name: &str, endpoint: &ApiEndpoint) -> syn::Expr {
+    match endpoint.methods.len() {
+        1 => {
+            let method = endpoint.methods.first().unwrap();
+            let mut tokens = Tokens::new();
+            method.to_tokens(&mut tokens);
+            parse_expr(tokens)
+        },
+        _ => {
+            match endpoint.methods.as_slice() {
+                [HttpMethod::Post, HttpMethod::Put] => {
+                    if builder_name.contains("Put") {
+                        parse_expr(quote!(HttpMethod::Put))
+                    } else {
+                        parse_expr(quote!(HttpMethod::Post))
+                    }
+                },
+                [HttpMethod::Get, HttpMethod::Post] =>
+                    parse_expr(quote!(
+                        match self.body {
+                            Some(_) => HttpMethod::Post,
+                            None => HttpMethod::Get
+                        }
+                    )),
+                _ => panic!("Combination of methods unexpected"),
+            }
+        }
+    }
 }
 
 pub fn shift_while<F>(i: &[u8], f: F) -> &[u8]

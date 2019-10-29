@@ -67,7 +67,9 @@ impl LicenseDelete {
 }
 impl Sender for LicenseDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -121,7 +123,9 @@ impl LicenseGet {
 }
 impl Sender for LicenseGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -169,7 +173,9 @@ impl LicenseGetBasicStatus {
 }
 impl Sender for LicenseGetBasicStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license/basic_status";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -217,7 +223,9 @@ impl LicenseGetTrialStatus {
 }
 impl Sender for LicenseGetTrialStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license/trial_status";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -271,7 +279,9 @@ impl LicensePost {
 }
 impl Sender for LicensePost {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -325,7 +335,9 @@ impl LicensePostStartBasic {
 }
 impl Sender for LicensePostStartBasic {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license/start_basic";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -385,7 +397,9 @@ impl LicensePostStartTrial {
 }
 impl Sender for LicensePostStartTrial {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_license/start_trial";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

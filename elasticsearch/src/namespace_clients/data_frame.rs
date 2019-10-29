@@ -69,7 +69,9 @@ impl DataFrameDeleteDataFrameTransform {
 }
 impl Sender for DataFrameDeleteDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -136,7 +138,9 @@ impl DataFrameGetDataFrameTransform {
 }
 impl Sender for DataFrameGetDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -204,7 +208,9 @@ impl DataFrameGetDataFrameTransformStats {
 }
 impl Sender for DataFrameGetDataFrameTransformStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}/_stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -252,7 +258,9 @@ impl DataFramePreviewDataFrameTransform {
 }
 impl Sender for DataFramePreviewDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/_preview";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -302,7 +310,9 @@ impl DataFramePutDataFrameTransform {
 }
 impl Sender for DataFramePutDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -358,7 +368,9 @@ impl DataFrameStartDataFrameTransform {
 }
 impl Sender for DataFrameStartDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}/_start";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -426,7 +438,9 @@ impl DataFrameStopDataFrameTransform {
 }
 impl Sender for DataFrameStopDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_data_frame/transforms/{transform_id}/_stop";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

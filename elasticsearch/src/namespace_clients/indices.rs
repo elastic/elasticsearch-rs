@@ -73,7 +73,12 @@ impl IndicesAnalyze {
 }
 impl Sender for IndicesAnalyze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_analyze";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -169,7 +174,9 @@ impl IndicesClearCache {
 }
 impl Sender for IndicesClearCache {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_cache/clear";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -255,7 +262,9 @@ impl IndicesClose {
 }
 impl Sender for IndicesClose {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_close";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -329,7 +338,9 @@ impl IndicesCreate {
 }
 impl Sender for IndicesCreate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -409,7 +420,9 @@ impl IndicesDelete {
 }
 impl Sender for IndicesDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -473,7 +486,9 @@ impl IndicesDeleteAlias {
 }
 impl Sender for IndicesDeleteAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_alias/{name}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -535,7 +550,9 @@ impl IndicesDeleteTemplate {
 }
 impl Sender for IndicesDeleteTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_template/{name}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -621,7 +638,9 @@ impl IndicesExists {
 }
 impl Sender for IndicesExists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -696,7 +715,9 @@ impl IndicesExistsAlias {
 }
 impl Sender for IndicesExistsAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_alias/{name}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -764,7 +785,9 @@ impl IndicesExistsTemplate {
 }
 impl Sender for IndicesExistsTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_template/{name}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -840,7 +863,9 @@ impl IndicesExistsType {
 }
 impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_mapping/{type}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -919,7 +944,12 @@ impl IndicesFlush {
 }
 impl Sender for IndicesFlush {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_flush";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -986,7 +1016,12 @@ impl IndicesFlushSynced {
 }
 impl Sender for IndicesFlushSynced {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_flush/synced";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1071,7 +1106,9 @@ impl IndicesForcemerge {
 }
 impl Sender for IndicesForcemerge {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_forcemerge";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1157,7 +1194,9 @@ impl IndicesFreeze {
 }
 impl Sender for IndicesFreeze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_freeze";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1255,7 +1294,9 @@ impl IndicesGet {
 }
 impl Sender for IndicesGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1329,7 +1370,9 @@ impl IndicesGetAlias {
 }
 impl Sender for IndicesGetAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_alias";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1417,7 +1460,9 @@ impl IndicesGetFieldMapping {
 }
 impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_mapping/field/{fields}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1503,7 +1548,9 @@ impl IndicesGetMapping {
 }
 impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_mapping";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1595,7 +1642,9 @@ impl IndicesGetSettings {
 }
 impl Sender for IndicesGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_settings";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1668,7 +1717,9 @@ impl IndicesGetTemplate {
 }
 impl Sender for IndicesGetTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_template";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1735,7 +1786,9 @@ impl IndicesGetUpgrade {
 }
 impl Sender for IndicesGetUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_upgrade";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1821,7 +1874,9 @@ impl IndicesOpen {
 }
 impl Sender for IndicesOpen {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_open";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1885,7 +1940,9 @@ impl IndicesPutAlias {
 }
 impl Sender for IndicesPutAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_alias/{name}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1972,7 +2029,9 @@ impl IndicesPutMapping {
 }
 impl Sender for IndicesPutMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_mapping";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2063,7 +2122,9 @@ impl IndicesPutSettings {
 }
 impl Sender for IndicesPutSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_settings";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2149,7 +2210,9 @@ impl IndicesPutTemplate {
 }
 impl Sender for IndicesPutTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_template/{name}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2210,7 +2273,9 @@ impl IndicesRecovery {
 }
 impl Sender for IndicesRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_recovery";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2277,7 +2342,12 @@ impl IndicesRefresh {
 }
 impl Sender for IndicesRefresh {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_refresh";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2345,7 +2415,12 @@ impl IndicesReloadSearchAnalyzers {
 }
 impl Sender for IndicesReloadSearchAnalyzers {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_reload_search_analyzers";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2426,7 +2501,9 @@ impl IndicesRollover {
 }
 impl Sender for IndicesRollover {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{alias}/_rollover";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2499,7 +2576,9 @@ impl IndicesSegments {
 }
 impl Sender for IndicesSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_segments";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2572,7 +2651,9 @@ impl IndicesShardStores {
 }
 impl Sender for IndicesShardStores {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_shard_stores";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2648,7 +2729,9 @@ impl IndicesShrink {
 }
 impl Sender for IndicesShrink {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_shrink/{target}";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2724,7 +2807,9 @@ impl IndicesSplit {
 }
 impl Sender for IndicesSplit {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_split/{target}";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2834,7 +2919,9 @@ impl IndicesStats {
 }
 impl Sender for IndicesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2920,7 +3007,9 @@ impl IndicesUnfreeze {
 }
 impl Sender for IndicesUnfreeze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_unfreeze";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2980,7 +3069,9 @@ impl IndicesUpdateAliases {
 }
 impl Sender for IndicesUpdateAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_aliases";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3059,7 +3150,9 @@ impl IndicesUpgrade {
 }
 impl Sender for IndicesUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_upgrade";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3181,7 +3274,12 @@ impl IndicesValidateQuery {
 }
 impl Sender for IndicesValidateQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_validate/query";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

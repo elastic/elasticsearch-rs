@@ -68,7 +68,9 @@ impl MigrationDeprecations {
 }
 impl Sender for MigrationDeprecations {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_migration/deprecations";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

@@ -70,7 +70,9 @@ impl WatcherAckWatch {
 }
 impl Sender for WatcherAckWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{watch_id}/_ack";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -120,7 +122,9 @@ impl WatcherActivateWatch {
 }
 impl Sender for WatcherActivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{watch_id}/_activate";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -170,7 +174,9 @@ impl WatcherDeactivateWatch {
 }
 impl Sender for WatcherDeactivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{watch_id}/_deactivate";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -220,7 +226,9 @@ impl WatcherDeleteWatch {
 }
 impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -275,7 +283,9 @@ impl WatcherExecuteWatch {
 }
 impl Sender for WatcherExecuteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{id}/_execute";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -325,7 +335,9 @@ impl WatcherGetWatch {
 }
 impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -399,7 +411,9 @@ impl WatcherPutWatch {
 }
 impl Sender for WatcherPutWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/watch/{id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -447,7 +461,9 @@ impl WatcherStart {
 }
 impl Sender for WatcherStart {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/_start";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -507,7 +523,9 @@ impl WatcherStats {
 }
 impl Sender for WatcherStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -555,7 +573,9 @@ impl WatcherStop {
 }
 impl Sender for WatcherStop {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_watcher/_stop";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

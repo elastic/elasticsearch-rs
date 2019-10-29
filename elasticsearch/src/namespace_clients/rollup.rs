@@ -69,7 +69,9 @@ impl RollupDeleteJob {
 }
 impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/job/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -118,7 +120,9 @@ impl RollupGetJobs {
 }
 impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/job/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -167,7 +171,9 @@ impl RollupGetRollupCaps {
 }
 impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/data/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -217,7 +223,9 @@ impl RollupGetRollupIndexCaps {
 }
 impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_rollup/data";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -267,7 +275,9 @@ impl RollupPutJob {
 }
 impl Sender for RollupPutJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/job/{id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -330,7 +340,12 @@ impl RollupRollupSearch {
 }
 impl Sender for RollupRollupSearch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_rollup_search";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -380,7 +395,9 @@ impl RollupStartJob {
 }
 impl Sender for RollupStartJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/job/{id}/_start";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -442,7 +459,9 @@ impl RollupStopJob {
 }
 impl Sender for RollupStopJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rollup/job/{id}/_stop";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

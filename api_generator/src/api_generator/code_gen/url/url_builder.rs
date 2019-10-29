@@ -132,7 +132,7 @@ struct ReplaceBuilder<'a> {
 
 impl<'a> ReplaceBuilder<'a> {
     pub fn new(url: Vec<PathPart<'a>>) -> Self {
-        ReplaceBuilder { url: url }
+        ReplaceBuilder { url }
     }
 
     /// Build an allocated url from the path literals and params.
@@ -149,7 +149,7 @@ impl<'a> ReplaceBuilder<'a> {
         let let_stmt = Self::let_url_stmt(url_ident.clone(), len_expr);
 
         let mut push_stmts = Self::push_part_stmts(url_ident.clone(), &self.url);
-        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ty ::from(#url_ident)))));
+        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ty::from(#url_ident)))));
 
         let mut stmts = vec![let_stmt];
 

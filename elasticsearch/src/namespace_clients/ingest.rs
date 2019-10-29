@@ -81,7 +81,9 @@ impl IngestDeletePipeline {
 }
 impl Sender for IngestDeletePipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ingest/pipeline/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -136,7 +138,9 @@ impl IngestGetPipeline {
 }
 impl Sender for IngestGetPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ingest/pipeline";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -184,7 +188,9 @@ impl IngestProcessorGrok {
 }
 impl Sender for IngestProcessorGrok {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ingest/processor/grok";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -246,7 +252,9 @@ impl IngestPutPipeline {
 }
 impl Sender for IngestPutPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ingest/pipeline/{id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -301,7 +309,12 @@ impl IngestSimulate {
 }
 impl Sender for IngestSimulate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ingest/pipeline/_simulate";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

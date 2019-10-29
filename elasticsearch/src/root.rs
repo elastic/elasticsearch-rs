@@ -122,7 +122,9 @@ impl Bulk {
 }
 impl Sender for Bulk {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_bulk";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -171,7 +173,9 @@ impl ClearScroll {
 }
 impl Sender for ClearScroll {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_search/scroll";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -305,7 +309,12 @@ impl Count {
 }
 impl Sender for Count {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_count";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -400,7 +409,9 @@ impl Create {
 }
 impl Sender for Create {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_create/{id}";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -501,7 +512,9 @@ impl Delete {
 }
 impl Sender for Delete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_doc/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -750,7 +763,9 @@ impl DeleteByQuery {
 }
 impl Sender for DeleteByQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_delete_by_query";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -806,7 +821,9 @@ impl DeleteByQueryRethrottle {
 }
 impl Sender for DeleteByQueryRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_delete_by_query/{task_id}/_rethrottle";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -868,7 +885,9 @@ impl DeleteScript {
 }
 impl Sender for DeleteScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_scripts/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -981,7 +1000,9 @@ impl Exists {
 }
 impl Sender for Exists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_doc/{id}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1088,7 +1109,9 @@ impl ExistsSource {
 }
 impl Sender for ExistsSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_source/{id}";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1213,7 +1236,12 @@ impl Explain {
 }
 impl Sender for Explain {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_explain/{id}";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1292,7 +1320,12 @@ impl FieldCaps {
 }
 impl Sender for FieldCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_field_caps";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1405,7 +1438,9 @@ impl Get {
 }
 impl Sender for Get {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_doc/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1461,7 +1496,9 @@ impl GetScript {
 }
 impl Sender for GetScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_scripts/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1568,7 +1605,9 @@ impl GetSource {
 }
 impl Sender for GetSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_source/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1680,7 +1719,9 @@ impl Index {
 }
 impl Sender for Index {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_doc/{id}";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1728,7 +1769,9 @@ impl Info {
 }
 impl Sender for Info {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1826,7 +1869,12 @@ impl Mget {
 }
 impl Sender for Mget {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_mget";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1921,7 +1969,12 @@ impl Msearch {
 }
 impl Sender for Msearch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_msearch";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2001,7 +2054,12 @@ impl MsearchTemplate {
 }
 impl Sender for MsearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_msearch/template";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2123,7 +2181,12 @@ impl Mtermvectors {
 }
 impl Sender for Mtermvectors {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_mtermvectors";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2171,7 +2234,9 @@ impl Ping {
 }
 impl Sender for Ping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/";
+        let method = HttpMethod::Head;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2239,7 +2304,9 @@ impl PutScript {
 }
 impl Sender for PutScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_scripts/{id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2306,7 +2373,12 @@ impl RankEval {
 }
 impl Sender for RankEval {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_rank_eval";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2402,7 +2474,9 @@ impl Reindex {
 }
 impl Sender for Reindex {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_reindex";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2458,7 +2532,9 @@ impl ReindexRethrottle {
 }
 impl Sender for ReindexRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_reindex/{task_id}/_rethrottle";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2507,7 +2583,12 @@ impl RenderSearchTemplate {
 }
 impl Sender for RenderSearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_render/template";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2555,7 +2636,12 @@ impl ScriptsPainlessExecute {
 }
 impl Sender for ScriptsPainlessExecute {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_scripts/painless/_execute";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2621,7 +2707,12 @@ impl Scroll {
 }
 impl Sender for Scroll {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_search/scroll";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2929,7 +3020,12 @@ impl Search {
 }
 impl Sender for Search {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_search";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3014,7 +3110,12 @@ impl SearchShards {
 }
 impl Sender for SearchShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_search_shards";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3142,7 +3243,12 @@ impl SearchTemplate {
 }
 impl Sender for SearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_search/template";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3260,7 +3366,12 @@ impl Termvectors {
 }
 impl Sender for Termvectors {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_termvectors/{id}";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3379,7 +3490,9 @@ impl Update {
 }
 impl Sender for Update {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_update/{id}";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3640,7 +3753,9 @@ impl UpdateByQuery {
 }
 impl Sender for UpdateByQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/{index}/_update_by_query";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3696,7 +3811,9 @@ impl UpdateByQueryRethrottle {
 }
 impl Sender for UpdateByQueryRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_update_by_query/{task_id}/_rethrottle";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }

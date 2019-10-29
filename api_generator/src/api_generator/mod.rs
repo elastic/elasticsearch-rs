@@ -28,7 +28,7 @@ pub struct Api {
     pub enums: Vec<ApiEnum>,
 }
 
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, Eq, PartialEq, Deserialize, Clone, Copy, Ord, PartialOrd)]
 pub enum HttpMethod {
     #[serde(rename = "HEAD")]
     Head,
@@ -374,13 +374,19 @@ fn endpoint_from_file<R>(
 where
     R: Read,
 {
+    // deserialize the map from the reader
     let endpoint: BTreeMap<String, ApiEndpoint> =
         serde_json::from_reader(reader).map_err(|e| super::error::ParseError {
             message: format!("Failed to parse {} because: {}", name, e),
         })?;
 
     // get the first (and only) endpoint name and endpoint body
-    Ok(endpoint.into_iter().next().unwrap())
+    let mut first_endpoint = endpoint.into_iter().next().unwrap();
+
+    // sort the HTTP methods so that we can easily pattern match on them later
+    first_endpoint.1.methods.sort();
+
+    Ok(first_endpoint)
 }
 
 /// deserializes Common from a file
@@ -417,8 +423,9 @@ where
         output.drain(0..stdin.len());
     }
 
-    let s = String::from_utf8(output)?;
-
     // trim whitespace
-    Ok(s.trim().to_owned())
+    output.trim();
+
+    let s = String::from_utf8(output)?;
+    Ok(s)
 }

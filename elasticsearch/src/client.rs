@@ -21,7 +21,7 @@ pub struct Elasticsearch {
 }
 
 impl Elasticsearch {
-    pub fn new<T>(settings: ConnectionSettings, connection: Connection) -> Self {
+    pub fn new(settings: ConnectionSettings, connection: Connection) -> Self {
         Elasticsearch {
             settings,
             connection,

@@ -1,6 +1,6 @@
 extern crate reqwest;
 
-use self::reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
+use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
 use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
 use reqwest::Method;
 use serde::de::DeserializeOwned;
@@ -32,6 +32,7 @@ impl Connection {
         }
     }
 
+    /// Sends a request to the Elasticsearch node
     pub fn send<S>(
         &self,
         method: HttpMethod,

@@ -87,7 +87,9 @@ impl MlCloseJob {
 }
 impl Sender for MlCloseJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_close";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -137,7 +139,9 @@ impl MlDeleteCalendar {
 }
 impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -189,7 +193,9 @@ impl MlDeleteCalendarEvent {
 }
 impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}/events/{event_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -241,7 +247,9 @@ impl MlDeleteCalendarJob {
 }
 impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -291,7 +299,9 @@ impl MlDeleteDataFrameAnalytics {
 }
 impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/{id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -347,7 +357,9 @@ impl MlDeleteDatafeed {
 }
 impl Sender for MlDeleteDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -395,7 +407,9 @@ impl MlDeleteExpiredData {
 }
 impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/_delete_expired_data";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -445,7 +459,9 @@ impl MlDeleteFilter {
 }
 impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/filters/{filter_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -508,7 +524,9 @@ impl MlDeleteForecast {
 }
 impl Sender for MlDeleteForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -570,7 +588,9 @@ impl MlDeleteJob {
 }
 impl Sender for MlDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -622,7 +642,9 @@ impl MlDeleteModelSnapshot {
 }
 impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
+        let method = HttpMethod::Delete;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -670,7 +692,9 @@ impl MlEvaluateDataFrame {
 }
 impl Sender for MlEvaluateDataFrame {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/_evaluate";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -802,7 +826,9 @@ impl MlFindFileStructure {
 }
 impl Sender for MlFindFileStructure {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/find_file_structure";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -882,7 +908,9 @@ impl MlFlushJob {
 }
 impl Sender for MlFlushJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_flush";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -944,7 +972,9 @@ impl MlForecast {
 }
 impl Sender for MlForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1049,7 +1079,12 @@ impl MlGetBuckets {
 }
 impl Sender for MlGetBuckets {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/results/buckets/{timestamp}";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1129,7 +1164,9 @@ impl MlGetCalendarEvents {
 }
 impl Sender for MlGetCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}/events";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1190,7 +1227,12 @@ impl MlGetCalendars {
 }
 impl Sender for MlGetCalendars {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1253,7 +1295,12 @@ impl MlGetCategories {
 }
 impl Sender for MlGetCategories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/results/categories/{category_id}";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1320,7 +1367,9 @@ impl MlGetDataFrameAnalytics {
 }
 impl Sender for MlGetDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/{id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1387,7 +1436,9 @@ impl MlGetDataFrameAnalyticsStats {
 }
 impl Sender for MlGetDataFrameAnalyticsStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/_stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1442,7 +1493,9 @@ impl MlGetDatafeedStats {
 }
 impl Sender for MlGetDatafeedStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}/_stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1497,7 +1550,9 @@ impl MlGetDatafeeds {
 }
 impl Sender for MlGetDatafeeds {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1558,7 +1613,9 @@ impl MlGetFilters {
 }
 impl Sender for MlGetFilters {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/filters";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1656,7 +1713,12 @@ impl MlGetInfluencers {
 }
 impl Sender for MlGetInfluencers {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/results/influencers";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1711,7 +1773,9 @@ impl MlGetJobStats {
 }
 impl Sender for MlGetJobStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/_stats";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1766,7 +1830,9 @@ impl MlGetJobs {
 }
 impl Sender for MlGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1853,7 +1919,12 @@ impl MlGetModelSnapshots {
 }
 impl Sender for MlGetModelSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -1945,7 +2016,12 @@ impl MlGetOverallBuckets {
 }
 impl Sender for MlGetOverallBuckets {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/results/overall_buckets";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2042,7 +2118,12 @@ impl MlGetRecords {
 }
 impl Sender for MlGetRecords {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/results/records";
+        let method = match self.body {
+            Some(_) => HttpMethod::Post,
+            None => HttpMethod::Get,
+        };
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2090,7 +2171,9 @@ impl MlInfo {
 }
 impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/info";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2142,7 +2225,9 @@ impl MlOpenJob {
 }
 impl Sender for MlOpenJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_open";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2192,7 +2277,9 @@ impl MlPostCalendarEvents {
 }
 impl Sender for MlPostCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}/events";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2254,7 +2341,9 @@ impl MlPostData {
 }
 impl Sender for MlPostData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_data";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2304,7 +2393,9 @@ impl MlPreviewDatafeed {
 }
 impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}/_preview";
+        let method = HttpMethod::Get;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2354,7 +2445,9 @@ impl MlPutCalendar {
 }
 impl Sender for MlPutCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2406,7 +2499,9 @@ impl MlPutCalendarJob {
 }
 impl Sender for MlPutCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2456,7 +2551,9 @@ impl MlPutDataFrameAnalytics {
 }
 impl Sender for MlPutDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/{id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2506,7 +2603,9 @@ impl MlPutDatafeed {
 }
 impl Sender for MlPutDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2556,7 +2655,9 @@ impl MlPutFilter {
 }
 impl Sender for MlPutFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/filters/{filter_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2606,7 +2707,9 @@ impl MlPutJob {
 }
 impl Sender for MlPutJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}";
+        let method = HttpMethod::Put;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2664,7 +2767,9 @@ impl MlRevertModelSnapshot {
 }
 impl Sender for MlRevertModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_revert";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2724,7 +2829,9 @@ impl MlSetUpgradeMode {
 }
 impl Sender for MlSetUpgradeMode {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/set_upgrade_mode";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2780,7 +2887,9 @@ impl MlStartDataFrameAnalytics {
 }
 impl Sender for MlStartDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/{id}/_start";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2848,7 +2957,9 @@ impl MlStartDatafeed {
 }
 impl Sender for MlStartDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}/_start";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2916,7 +3027,9 @@ impl MlStopDataFrameAnalytics {
 }
 impl Sender for MlStopDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/data_frame/analytics/{id}/_stop";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -2984,7 +3097,9 @@ impl MlStopDatafeed {
 }
 impl Sender for MlStopDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}/_stop";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3034,7 +3149,9 @@ impl MlUpdateDatafeed {
 }
 impl Sender for MlUpdateDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/datafeeds/{datafeed_id}/_update";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3084,7 +3201,9 @@ impl MlUpdateFilter {
 }
 impl Sender for MlUpdateFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/filters/{filter_id}/_update";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3134,7 +3253,9 @@ impl MlUpdateJob {
 }
 impl Sender for MlUpdateJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/_update";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3186,7 +3307,9 @@ impl MlUpdateModelSnapshot {
 }
 impl Sender for MlUpdateModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_update";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3234,7 +3357,9 @@ impl MlValidate {
 }
 impl Sender for MlValidate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/_validate";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
@@ -3282,7 +3407,9 @@ impl MlValidateDetector {
 }
 impl Sender for MlValidateDetector {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let path = "/_ml/anomaly_detectors/_validate/detector";
+        let method = HttpMethod::Post;
+        let response = self.client.send::<()>(method, path, None, None)?;
         Ok(response)
     }
 }
