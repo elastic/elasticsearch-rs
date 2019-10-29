@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct Bulk {
     client: Elasticsearch,
@@ -122,7 +123,45 @@ impl Bulk {
 }
 impl Sender for Bulk {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "pipeline")]
+                pipeline: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "type")]
+                ty: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                pipeline: self.pipeline,
+                refresh: self.refresh,
+                routing: self.routing,
+                timeout: self.timeout,
+                ty: self.ty,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -171,7 +210,11 @@ impl ClearScroll {
 }
 impl Sender for ClearScroll {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -305,7 +348,60 @@ impl Count {
 }
 impl Sender for Count {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_throttled")]
+                ignore_throttled: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "min_score")]
+                min_score: Option<i64>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "routing")]
+                routing: Option<Vec<String>>,
+                #[serde(rename = "terminate_after")]
+                terminate_after: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                default_operator: self.default_operator,
+                df: self.df,
+                expand_wildcards: self.expand_wildcards,
+                ignore_throttled: self.ignore_throttled,
+                ignore_unavailable: self.ignore_unavailable,
+                lenient: self.lenient,
+                min_score: self.min_score,
+                preference: self.preference,
+                q: self.q,
+                routing: self.routing,
+                terminate_after: self.terminate_after,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -400,7 +496,39 @@ impl Create {
 }
 impl Sender for Create {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "pipeline")]
+                pipeline: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                pipeline: self.pipeline,
+                refresh: self.refresh,
+                routing: self.routing,
+                timeout: self.timeout,
+                version: self.version,
+                version_type: self.version_type,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -501,7 +629,42 @@ impl Delete {
 }
 impl Sender for Delete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "if_primary_term")]
+                if_primary_term: Option<i64>,
+                #[serde(rename = "if_seq_no")]
+                if_seq_no: Option<i64>,
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                refresh: self.refresh,
+                routing: self.routing,
+                timeout: self.timeout,
+                version: self.version,
+                version_type: self.version_type,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -750,7 +913,117 @@ impl DeleteByQuery {
 }
 impl Sender for DeleteByQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "conflicts")]
+                conflicts: Option<Conflicts>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "from")]
+                from: Option<i64>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "max_docs")]
+                max_docs: Option<i64>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "request_cache")]
+                request_cache: Option<bool>,
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+                #[serde(rename = "routing")]
+                routing: Option<Vec<String>>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "scroll_size")]
+                scroll_size: Option<i64>,
+                #[serde(rename = "search_timeout")]
+                search_timeout: Option<String>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "size")]
+                size: Option<i64>,
+                #[serde(rename = "slices")]
+                slices: Option<i64>,
+                #[serde(rename = "sort")]
+                sort: Option<Vec<String>>,
+                #[serde(rename = "stats")]
+                stats: Option<Vec<String>>,
+                #[serde(rename = "terminate_after")]
+                terminate_after: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<bool>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                allow_no_indices: self.allow_no_indices,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                conflicts: self.conflicts,
+                default_operator: self.default_operator,
+                df: self.df,
+                expand_wildcards: self.expand_wildcards,
+                from: self.from,
+                ignore_unavailable: self.ignore_unavailable,
+                lenient: self.lenient,
+                max_docs: self.max_docs,
+                preference: self.preference,
+                q: self.q,
+                refresh: self.refresh,
+                request_cache: self.request_cache,
+                requests_per_second: self.requests_per_second,
+                routing: self.routing,
+                scroll: self.scroll,
+                scroll_size: self.scroll_size,
+                search_timeout: self.search_timeout,
+                search_type: self.search_type,
+                size: self.size,
+                slices: self.slices,
+                sort: self.sort,
+                stats: self.stats,
+                terminate_after: self.terminate_after,
+                timeout: self.timeout,
+                version: self.version,
+                wait_for_active_shards: self.wait_for_active_shards,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -806,7 +1079,21 @@ impl DeleteByQueryRethrottle {
 }
 impl Sender for DeleteByQueryRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                requests_per_second: self.requests_per_second,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -868,7 +1155,24 @@ impl DeleteScript {
 }
 impl Sender for DeleteScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -981,7 +1285,48 @@ impl Exists {
 }
 impl Sender for Exists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "stored_fields")]
+                stored_fields: Option<Vec<String>>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                preference: self.preference,
+                realtime: self.realtime,
+                refresh: self.refresh,
+                routing: self.routing,
+                stored_fields: self.stored_fields,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1088,7 +1433,45 @@ impl ExistsSource {
 }
 impl Sender for ExistsSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                preference: self.preference,
+                realtime: self.realtime,
+                refresh: self.refresh,
+                routing: self.routing,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1213,7 +1596,54 @@ impl Explain {
 }
 impl Sender for Explain {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "stored_fields")]
+                stored_fields: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                default_operator: self.default_operator,
+                df: self.df,
+                lenient: self.lenient,
+                preference: self.preference,
+                q: self.q,
+                routing: self.routing,
+                stored_fields: self.stored_fields,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1292,7 +1722,33 @@ impl FieldCaps {
 }
 impl Sender for FieldCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_unmapped")]
+                include_unmapped: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                fields: self.fields,
+                ignore_unavailable: self.ignore_unavailable,
+                include_unmapped: self.include_unmapped,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1405,7 +1861,48 @@ impl Get {
 }
 impl Sender for Get {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "stored_fields")]
+                stored_fields: Option<Vec<String>>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                preference: self.preference,
+                realtime: self.realtime,
+                refresh: self.refresh,
+                routing: self.routing,
+                stored_fields: self.stored_fields,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1461,7 +1958,21 @@ impl GetScript {
 }
 impl Sender for GetScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1568,7 +2079,45 @@ impl GetSource {
 }
 impl Sender for GetSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                preference: self.preference,
+                realtime: self.realtime,
+                refresh: self.refresh,
+                routing: self.routing,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1680,7 +2229,48 @@ impl Index {
 }
 impl Sender for Index {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "if_primary_term")]
+                if_primary_term: Option<i64>,
+                #[serde(rename = "if_seq_no")]
+                if_seq_no: Option<i64>,
+                #[serde(rename = "op_type")]
+                op_type: Option<OpType>,
+                #[serde(rename = "pipeline")]
+                pipeline: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                op_type: self.op_type,
+                pipeline: self.pipeline,
+                refresh: self.refresh,
+                routing: self.routing,
+                timeout: self.timeout,
+                version: self.version,
+                version_type: self.version_type,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1728,7 +2318,11 @@ impl Info {
 }
 impl Sender for Info {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1826,7 +2420,42 @@ impl Mget {
 }
 impl Sender for Mget {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "stored_fields")]
+                stored_fields: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                preference: self.preference,
+                realtime: self.realtime,
+                refresh: self.refresh,
+                routing: self.routing,
+                stored_fields: self.stored_fields,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1921,7 +2550,39 @@ impl Msearch {
 }
 impl Sender for Msearch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "max_concurrent_searches")]
+                max_concurrent_searches: Option<i64>,
+                #[serde(rename = "max_concurrent_shard_requests")]
+                max_concurrent_shard_requests: Option<i64>,
+                #[serde(rename = "pre_filter_shard_size")]
+                pre_filter_shard_size: Option<i64>,
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "typed_keys")]
+                typed_keys: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                max_concurrent_searches: self.max_concurrent_searches,
+                max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+                pre_filter_shard_size: self.pre_filter_shard_size,
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                search_type: self.search_type,
+                typed_keys: self.typed_keys,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2001,7 +2662,33 @@ impl MsearchTemplate {
 }
 impl Sender for MsearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "max_concurrent_searches")]
+                max_concurrent_searches: Option<i64>,
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "typed_keys")]
+                typed_keys: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                max_concurrent_searches: self.max_concurrent_searches,
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                search_type: self.search_type,
+                typed_keys: self.typed_keys,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2123,7 +2810,54 @@ impl Mtermvectors {
 }
 impl Sender for Mtermvectors {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "field_statistics")]
+                field_statistics: Option<bool>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "ids")]
+                ids: Option<Vec<String>>,
+                #[serde(rename = "offsets")]
+                offsets: Option<bool>,
+                #[serde(rename = "payloads")]
+                payloads: Option<bool>,
+                #[serde(rename = "positions")]
+                positions: Option<bool>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "term_statistics")]
+                term_statistics: Option<bool>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                field_statistics: self.field_statistics,
+                fields: self.fields,
+                ids: self.ids,
+                offsets: self.offsets,
+                payloads: self.payloads,
+                positions: self.positions,
+                preference: self.preference,
+                realtime: self.realtime,
+                routing: self.routing,
+                term_statistics: self.term_statistics,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2171,7 +2905,11 @@ impl Ping {
 }
 impl Sender for Ping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2239,7 +2977,27 @@ impl PutScript {
 }
 impl Sender for PutScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "context")]
+                context: Option<String>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                context: self.context,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2306,7 +3064,27 @@ impl RankEval {
 }
 impl Sender for RankEval {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2402,7 +3180,42 @@ impl Reindex {
 }
 impl Sender for Reindex {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "max_docs")]
+                max_docs: Option<i64>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "slices")]
+                slices: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                max_docs: self.max_docs,
+                refresh: self.refresh,
+                requests_per_second: self.requests_per_second,
+                scroll: self.scroll,
+                slices: self.slices,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2458,7 +3271,21 @@ impl ReindexRethrottle {
 }
 impl Sender for ReindexRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                requests_per_second: self.requests_per_second,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2507,7 +3334,11 @@ impl RenderSearchTemplate {
 }
 impl Sender for RenderSearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2555,7 +3386,11 @@ impl ScriptsPainlessExecute {
 }
 impl Sender for ScriptsPainlessExecute {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2621,7 +3456,27 @@ impl Scroll {
 }
 impl Sender for Scroll {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "scroll_id")]
+                scroll_id: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                scroll: self.scroll,
+                scroll_id: self.scroll_id,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2929,7 +3784,144 @@ impl Search {
 }
 impl Sender for Search {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "allow_partial_search_results")]
+                allow_partial_search_results: Option<bool>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "batched_reduce_size")]
+                batched_reduce_size: Option<i64>,
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "docvalue_fields")]
+                docvalue_fields: Option<Vec<String>>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "explain")]
+                explain: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i64>,
+                #[serde(rename = "ignore_throttled")]
+                ignore_throttled: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "max_concurrent_shard_requests")]
+                max_concurrent_shard_requests: Option<i64>,
+                #[serde(rename = "pre_filter_shard_size")]
+                pre_filter_shard_size: Option<i64>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "request_cache")]
+                request_cache: Option<bool>,
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<Vec<String>>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "seq_no_primary_term")]
+                seq_no_primary_term: Option<bool>,
+                #[serde(rename = "size")]
+                size: Option<i64>,
+                #[serde(rename = "sort")]
+                sort: Option<Vec<String>>,
+                #[serde(rename = "stats")]
+                stats: Option<Vec<String>>,
+                #[serde(rename = "stored_fields")]
+                stored_fields: Option<Vec<String>>,
+                #[serde(rename = "suggest_field")]
+                suggest_field: Option<String>,
+                #[serde(rename = "suggest_mode")]
+                suggest_mode: Option<SuggestMode>,
+                #[serde(rename = "suggest_size")]
+                suggest_size: Option<i64>,
+                #[serde(rename = "suggest_text")]
+                suggest_text: Option<String>,
+                #[serde(rename = "terminate_after")]
+                terminate_after: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "track_scores")]
+                track_scores: Option<bool>,
+                #[serde(rename = "track_total_hits")]
+                track_total_hits: Option<bool>,
+                #[serde(rename = "typed_keys")]
+                typed_keys: Option<bool>,
+                #[serde(rename = "version")]
+                version: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                allow_no_indices: self.allow_no_indices,
+                allow_partial_search_results: self.allow_partial_search_results,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                batched_reduce_size: self.batched_reduce_size,
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                default_operator: self.default_operator,
+                df: self.df,
+                docvalue_fields: self.docvalue_fields,
+                expand_wildcards: self.expand_wildcards,
+                explain: self.explain,
+                from: self.from,
+                ignore_throttled: self.ignore_throttled,
+                ignore_unavailable: self.ignore_unavailable,
+                lenient: self.lenient,
+                max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+                pre_filter_shard_size: self.pre_filter_shard_size,
+                preference: self.preference,
+                q: self.q,
+                request_cache: self.request_cache,
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                routing: self.routing,
+                scroll: self.scroll,
+                search_type: self.search_type,
+                seq_no_primary_term: self.seq_no_primary_term,
+                size: self.size,
+                sort: self.sort,
+                stats: self.stats,
+                stored_fields: self.stored_fields,
+                suggest_field: self.suggest_field,
+                suggest_mode: self.suggest_mode,
+                suggest_size: self.suggest_size,
+                suggest_text: self.suggest_text,
+                terminate_after: self.terminate_after,
+                timeout: self.timeout,
+                track_scores: self.track_scores,
+                track_total_hits: self.track_total_hits,
+                typed_keys: self.typed_keys,
+                version: self.version,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3014,7 +4006,36 @@ impl SearchShards {
 }
 impl Sender for SearchShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                local: self.local,
+                preference: self.preference,
+                routing: self.routing,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3142,7 +4163,57 @@ impl SearchTemplate {
 }
 impl Sender for SearchTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "explain")]
+                explain: Option<bool>,
+                #[serde(rename = "ignore_throttled")]
+                ignore_throttled: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "profile")]
+                profile: Option<bool>,
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<Vec<String>>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "typed_keys")]
+                typed_keys: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                expand_wildcards: self.expand_wildcards,
+                explain: self.explain,
+                ignore_throttled: self.ignore_throttled,
+                ignore_unavailable: self.ignore_unavailable,
+                preference: self.preference,
+                profile: self.profile,
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                routing: self.routing,
+                scroll: self.scroll,
+                search_type: self.search_type,
+                typed_keys: self.typed_keys,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3260,7 +4331,51 @@ impl Termvectors {
 }
 impl Sender for Termvectors {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "field_statistics")]
+                field_statistics: Option<bool>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "offsets")]
+                offsets: Option<bool>,
+                #[serde(rename = "payloads")]
+                payloads: Option<bool>,
+                #[serde(rename = "positions")]
+                positions: Option<bool>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "realtime")]
+                realtime: Option<bool>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "term_statistics")]
+                term_statistics: Option<bool>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+                #[serde(rename = "version_type")]
+                version_type: Option<VersionType>,
+            }
+            let query_params = QueryParamsStruct {
+                field_statistics: self.field_statistics,
+                fields: self.fields,
+                offsets: self.offsets,
+                payloads: self.payloads,
+                positions: self.positions,
+                preference: self.preference,
+                realtime: self.realtime,
+                routing: self.routing,
+                term_statistics: self.term_statistics,
+                version: self.version,
+                version_type: self.version_type,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3379,7 +4494,51 @@ impl Update {
 }
 impl Sender for Update {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "if_primary_term")]
+                if_primary_term: Option<i64>,
+                #[serde(rename = "if_seq_no")]
+                if_seq_no: Option<i64>,
+                #[serde(rename = "lang")]
+                lang: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+                #[serde(rename = "retry_on_conflict")]
+                retry_on_conflict: Option<i64>,
+                #[serde(rename = "routing")]
+                routing: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                lang: self.lang,
+                refresh: self.refresh,
+                retry_on_conflict: self.retry_on_conflict,
+                routing: self.routing,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3640,7 +4799,123 @@ impl UpdateByQuery {
 }
 impl Sender for UpdateByQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "_source")]
+                _source: Option<Vec<String>>,
+                #[serde(rename = "_source_excludes")]
+                _source_excludes: Option<Vec<String>>,
+                #[serde(rename = "_source_includes")]
+                _source_includes: Option<Vec<String>>,
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "conflicts")]
+                conflicts: Option<Conflicts>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "from")]
+                from: Option<i64>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "max_docs")]
+                max_docs: Option<i64>,
+                #[serde(rename = "pipeline")]
+                pipeline: Option<String>,
+                #[serde(rename = "preference")]
+                preference: Option<String>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "refresh")]
+                refresh: Option<bool>,
+                #[serde(rename = "request_cache")]
+                request_cache: Option<bool>,
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+                #[serde(rename = "routing")]
+                routing: Option<Vec<String>>,
+                #[serde(rename = "scroll")]
+                scroll: Option<String>,
+                #[serde(rename = "scroll_size")]
+                scroll_size: Option<i64>,
+                #[serde(rename = "search_timeout")]
+                search_timeout: Option<String>,
+                #[serde(rename = "search_type")]
+                search_type: Option<SearchType>,
+                #[serde(rename = "size")]
+                size: Option<i64>,
+                #[serde(rename = "slices")]
+                slices: Option<i64>,
+                #[serde(rename = "sort")]
+                sort: Option<Vec<String>>,
+                #[serde(rename = "stats")]
+                stats: Option<Vec<String>>,
+                #[serde(rename = "terminate_after")]
+                terminate_after: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "version")]
+                version: Option<bool>,
+                #[serde(rename = "version_type")]
+                version_type: Option<bool>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                _source: self._source,
+                _source_excludes: self._source_excludes,
+                _source_includes: self._source_includes,
+                allow_no_indices: self.allow_no_indices,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                conflicts: self.conflicts,
+                default_operator: self.default_operator,
+                df: self.df,
+                expand_wildcards: self.expand_wildcards,
+                from: self.from,
+                ignore_unavailable: self.ignore_unavailable,
+                lenient: self.lenient,
+                max_docs: self.max_docs,
+                pipeline: self.pipeline,
+                preference: self.preference,
+                q: self.q,
+                refresh: self.refresh,
+                request_cache: self.request_cache,
+                requests_per_second: self.requests_per_second,
+                routing: self.routing,
+                scroll: self.scroll,
+                scroll_size: self.scroll_size,
+                search_timeout: self.search_timeout,
+                search_type: self.search_type,
+                size: self.size,
+                slices: self.slices,
+                sort: self.sort,
+                stats: self.stats,
+                terminate_after: self.terminate_after,
+                timeout: self.timeout,
+                version: self.version,
+                version_type: self.version_type,
+                wait_for_active_shards: self.wait_for_active_shards,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3696,7 +4971,21 @@ impl UpdateByQueryRethrottle {
 }
 impl Sender for UpdateByQueryRethrottle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "requests_per_second")]
+                requests_per_second: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                requests_per_second: self.requests_per_second,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct CatAliases {
     client: Elasticsearch,
@@ -110,7 +111,39 @@ impl CatAliases {
 }
 impl Sender for CatAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -207,7 +240,42 @@ impl CatAllocation {
 }
 impl Sender for CatAllocation {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -298,7 +366,39 @@ impl CatCount {
 }
 impl Sender for CatCount {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -400,7 +500,45 @@ impl CatFielddata {
 }
 impl Sender for CatFielddata {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                fields: self.fields,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -496,7 +634,42 @@ impl CatHealth {
 }
 impl Sender for CatHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "ts")]
+                ts: Option<bool>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                ts: self.ts,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -556,7 +729,24 @@ impl CatHelp {
 }
 impl Sender for CatHelp {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                help: self.help,
+                s: self.s,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -671,7 +861,51 @@ impl CatIndices {
 }
 impl Sender for CatIndices {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "health")]
+                health: Option<Health>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "include_unloaded_segments")]
+                include_unloaded_segments: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "pri")]
+                pri: Option<bool>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                format: self.format,
+                h: self.h,
+                health: self.health,
+                help: self.help,
+                include_unloaded_segments: self.include_unloaded_segments,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                pri: self.pri,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -761,7 +995,39 @@ impl CatMaster {
 }
 impl Sender for CatMaster {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -851,7 +1117,39 @@ impl CatNodeattrs {
 }
 impl Sender for CatNodeattrs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -947,7 +1245,42 @@ impl CatNodes {
 }
 impl Sender for CatNodes {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "full_id")]
+                full_id: Option<bool>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                full_id: self.full_id,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1037,7 +1370,39 @@ impl CatPendingTasks {
 }
 impl Sender for CatPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1127,7 +1492,39 @@ impl CatPlugins {
 }
 impl Sender for CatPlugins {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1218,7 +1615,39 @@ impl CatRecovery {
 }
 impl Sender for CatRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1308,7 +1737,39 @@ impl CatRepositories {
 }
 impl Sender for CatRepositories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1393,7 +1854,36 @@ impl CatSegments {
 }
 impl Sender for CatSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1490,7 +1980,42 @@ impl CatShards {
 }
 impl Sender for CatShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "bytes")]
+                bytes: Option<Bytes>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                bytes: self.bytes,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1581,7 +2106,39 @@ impl CatSnapshots {
 }
 impl Sender for CatSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1683,7 +2240,45 @@ impl CatTasks {
 }
 impl Sender for CatTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "actions")]
+                actions: Option<Vec<String>>,
+                #[serde(rename = "detailed")]
+                detailed: Option<bool>,
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "node_id")]
+                node_id: Option<Vec<String>>,
+                #[serde(rename = "parent_task")]
+                parent_task: Option<i64>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                actions: self.actions,
+                detailed: self.detailed,
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                node_id: self.node_id,
+                parent_task: self.parent_task,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1774,7 +2369,39 @@ impl CatTemplates {
 }
 impl Sender for CatTemplates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1871,7 +2498,42 @@ impl CatThreadPool {
 }
 impl Sender for CatThreadPool {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "format")]
+                format: Option<String>,
+                #[serde(rename = "h")]
+                h: Option<Vec<String>>,
+                #[serde(rename = "help")]
+                help: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "s")]
+                s: Option<Vec<String>>,
+                #[serde(rename = "size")]
+                size: Option<Size>,
+                #[serde(rename = "v")]
+                v: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                format: self.format,
+                h: self.h,
+                help: self.help,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                s: self.s,
+                size: self.size,
+                v: self.v,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

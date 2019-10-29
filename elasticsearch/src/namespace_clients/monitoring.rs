@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct MonitoringBulk {
     client: Elasticsearch,
@@ -86,7 +87,27 @@ impl MonitoringBulk {
 }
 impl Sender for MonitoringBulk {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "interval")]
+                interval: Option<String>,
+                #[serde(rename = "system_api_version")]
+                system_api_version: Option<String>,
+                #[serde(rename = "system_id")]
+                system_id: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                interval: self.interval,
+                system_api_version: self.system_api_version,
+                system_id: self.system_id,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

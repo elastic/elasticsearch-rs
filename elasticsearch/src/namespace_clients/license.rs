@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct LicenseDelete {
     client: Elasticsearch,
@@ -67,7 +68,11 @@ impl LicenseDelete {
 }
 impl Sender for LicenseDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -121,7 +126,19 @@ impl LicenseGet {
 }
 impl Sender for LicenseGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct { local: self.local };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -169,7 +186,11 @@ impl LicenseGetBasicStatus {
 }
 impl Sender for LicenseGetBasicStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -217,7 +238,11 @@ impl LicenseGetTrialStatus {
 }
 impl Sender for LicenseGetTrialStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -271,7 +296,21 @@ impl LicensePost {
 }
 impl Sender for LicensePost {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "acknowledge")]
+                acknowledge: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                acknowledge: self.acknowledge,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -325,7 +364,21 @@ impl LicensePostStartBasic {
 }
 impl Sender for LicensePostStartBasic {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "acknowledge")]
+                acknowledge: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                acknowledge: self.acknowledge,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -385,7 +438,24 @@ impl LicensePostStartTrial {
 }
 impl Sender for LicensePostStartTrial {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "acknowledge")]
+                acknowledge: Option<bool>,
+                #[serde(rename = "type")]
+                ty: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                acknowledge: self.acknowledge,
+                ty: self.ty,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

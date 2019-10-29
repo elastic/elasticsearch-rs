@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct WatcherAckWatch {
     client: Elasticsearch,
@@ -70,7 +71,11 @@ impl WatcherAckWatch {
 }
 impl Sender for WatcherAckWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -120,7 +125,11 @@ impl WatcherActivateWatch {
 }
 impl Sender for WatcherActivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -170,7 +179,11 @@ impl WatcherDeactivateWatch {
 }
 impl Sender for WatcherDeactivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -220,7 +233,11 @@ impl WatcherDeleteWatch {
 }
 impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -275,7 +292,19 @@ impl WatcherExecuteWatch {
 }
 impl Sender for WatcherExecuteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "debug")]
+                debug: Option<bool>,
+            }
+            let query_params = QueryParamsStruct { debug: self.debug };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -325,7 +354,11 @@ impl WatcherGetWatch {
 }
 impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -399,7 +432,30 @@ impl WatcherPutWatch {
 }
 impl Sender for WatcherPutWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "active")]
+                active: Option<bool>,
+                #[serde(rename = "if_primary_term")]
+                if_primary_term: Option<i64>,
+                #[serde(rename = "if_seq_no")]
+                if_seq_no: Option<i64>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                active: self.active,
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                version: self.version,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -447,7 +503,11 @@ impl WatcherStart {
 }
 impl Sender for WatcherStart {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -507,7 +567,24 @@ impl WatcherStats {
 }
 impl Sender for WatcherStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "emit_stacktraces")]
+                emit_stacktraces: Option<bool>,
+                #[serde(rename = "metric")]
+                metric: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                emit_stacktraces: self.emit_stacktraces,
+                metric: self.metric,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -555,7 +632,11 @@ impl WatcherStop {
 }
 impl Sender for WatcherStop {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

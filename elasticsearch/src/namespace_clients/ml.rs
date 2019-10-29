@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct MlCloseJob {
     client: Elasticsearch,
@@ -87,7 +88,27 @@ impl MlCloseJob {
 }
 impl Sender for MlCloseJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_jobs")]
+                allow_no_jobs: Option<bool>,
+                #[serde(rename = "force")]
+                force: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_jobs: self.allow_no_jobs,
+                force: self.force,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -137,7 +158,11 @@ impl MlDeleteCalendar {
 }
 impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -189,7 +214,11 @@ impl MlDeleteCalendarEvent {
 }
 impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -241,7 +270,11 @@ impl MlDeleteCalendarJob {
 }
 impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -291,7 +324,11 @@ impl MlDeleteDataFrameAnalytics {
 }
 impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -347,7 +384,19 @@ impl MlDeleteDatafeed {
 }
 impl Sender for MlDeleteDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "force")]
+                force: Option<bool>,
+            }
+            let query_params = QueryParamsStruct { force: self.force };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -395,7 +444,11 @@ impl MlDeleteExpiredData {
 }
 impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -445,7 +498,11 @@ impl MlDeleteFilter {
 }
 impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -508,7 +565,24 @@ impl MlDeleteForecast {
 }
 impl Sender for MlDeleteForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_forecasts")]
+                allow_no_forecasts: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_forecasts: self.allow_no_forecasts,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -570,7 +644,24 @@ impl MlDeleteJob {
 }
 impl Sender for MlDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "force")]
+                force: Option<bool>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                force: self.force,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -622,7 +713,11 @@ impl MlDeleteModelSnapshot {
 }
 impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -670,7 +765,11 @@ impl MlEvaluateDataFrame {
 }
 impl Sender for MlEvaluateDataFrame {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -802,7 +901,60 @@ impl MlFindFileStructure {
 }
 impl Sender for MlFindFileStructure {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "charset")]
+                charset: Option<String>,
+                #[serde(rename = "column_names")]
+                column_names: Option<Vec<String>>,
+                #[serde(rename = "delimiter")]
+                delimiter: Option<String>,
+                #[serde(rename = "explain")]
+                explain: Option<bool>,
+                #[serde(rename = "format")]
+                format: Option<Format>,
+                #[serde(rename = "grok_pattern")]
+                grok_pattern: Option<String>,
+                #[serde(rename = "has_header_row")]
+                has_header_row: Option<bool>,
+                #[serde(rename = "line_merge_size_limit")]
+                line_merge_size_limit: Option<i32>,
+                #[serde(rename = "lines_to_sample")]
+                lines_to_sample: Option<i32>,
+                #[serde(rename = "quote")]
+                quote: Option<String>,
+                #[serde(rename = "should_trim_fields")]
+                should_trim_fields: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "timestamp_field")]
+                timestamp_field: Option<String>,
+                #[serde(rename = "timestamp_format")]
+                timestamp_format: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                charset: self.charset,
+                column_names: self.column_names,
+                delimiter: self.delimiter,
+                explain: self.explain,
+                format: self.format,
+                grok_pattern: self.grok_pattern,
+                has_header_row: self.has_header_row,
+                line_merge_size_limit: self.line_merge_size_limit,
+                lines_to_sample: self.lines_to_sample,
+                quote: self.quote,
+                should_trim_fields: self.should_trim_fields,
+                timeout: self.timeout,
+                timestamp_field: self.timestamp_field,
+                timestamp_format: self.timestamp_format,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -882,7 +1034,33 @@ impl MlFlushJob {
 }
 impl Sender for MlFlushJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "advance_time")]
+                advance_time: Option<String>,
+                #[serde(rename = "calc_interim")]
+                calc_interim: Option<bool>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "skip_time")]
+                skip_time: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                advance_time: self.advance_time,
+                calc_interim: self.calc_interim,
+                end: self.end,
+                skip_time: self.skip_time,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -944,7 +1122,24 @@ impl MlForecast {
 }
 impl Sender for MlForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "duration")]
+                duration: Option<String>,
+                #[serde(rename = "expires_in")]
+                expires_in: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                duration: self.duration,
+                expires_in: self.expires_in,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1049,7 +1244,45 @@ impl MlGetBuckets {
 }
 impl Sender for MlGetBuckets {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "anomaly_score")]
+                anomaly_score: Option<f64>,
+                #[serde(rename = "desc")]
+                desc: Option<bool>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "exclude_interim")]
+                exclude_interim: Option<bool>,
+                #[serde(rename = "expand")]
+                expand: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+                #[serde(rename = "sort")]
+                sort: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                anomaly_score: self.anomaly_score,
+                desc: self.desc,
+                end: self.end,
+                exclude_interim: self.exclude_interim,
+                expand: self.expand,
+                from: self.from,
+                size: self.size,
+                sort: self.sort,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1129,7 +1362,33 @@ impl MlGetCalendarEvents {
 }
 impl Sender for MlGetCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "job_id")]
+                job_id: Option<String>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                end: self.end,
+                from: self.from,
+                job_id: self.job_id,
+                size: self.size,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1190,7 +1449,24 @@ impl MlGetCalendars {
 }
 impl Sender for MlGetCalendars {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1253,7 +1529,24 @@ impl MlGetCategories {
 }
 impl Sender for MlGetCategories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1320,7 +1613,27 @@ impl MlGetDataFrameAnalytics {
 }
 impl Sender for MlGetDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1387,7 +1700,27 @@ impl MlGetDataFrameAnalyticsStats {
 }
 impl Sender for MlGetDataFrameAnalyticsStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1442,7 +1775,21 @@ impl MlGetDatafeedStats {
 }
 impl Sender for MlGetDatafeedStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_datafeeds")]
+                allow_no_datafeeds: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_datafeeds: self.allow_no_datafeeds,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1497,7 +1844,21 @@ impl MlGetDatafeeds {
 }
 impl Sender for MlGetDatafeeds {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_datafeeds")]
+                allow_no_datafeeds: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_datafeeds: self.allow_no_datafeeds,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1558,7 +1919,24 @@ impl MlGetFilters {
 }
 impl Sender for MlGetFilters {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1656,7 +2034,42 @@ impl MlGetInfluencers {
 }
 impl Sender for MlGetInfluencers {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "desc")]
+                desc: Option<bool>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "exclude_interim")]
+                exclude_interim: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "influencer_score")]
+                influencer_score: Option<f64>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+                #[serde(rename = "sort")]
+                sort: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                desc: self.desc,
+                end: self.end,
+                exclude_interim: self.exclude_interim,
+                from: self.from,
+                influencer_score: self.influencer_score,
+                size: self.size,
+                sort: self.sort,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1711,7 +2124,21 @@ impl MlGetJobStats {
 }
 impl Sender for MlGetJobStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_jobs")]
+                allow_no_jobs: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_jobs: self.allow_no_jobs,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1766,7 +2193,21 @@ impl MlGetJobs {
 }
 impl Sender for MlGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_jobs")]
+                allow_no_jobs: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_jobs: self.allow_no_jobs,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1853,7 +2294,36 @@ impl MlGetModelSnapshots {
 }
 impl Sender for MlGetModelSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "desc")]
+                desc: Option<bool>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+                #[serde(rename = "sort")]
+                sort: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                desc: self.desc,
+                end: self.end,
+                from: self.from,
+                size: self.size,
+                sort: self.sort,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1945,7 +2415,39 @@ impl MlGetOverallBuckets {
 }
 impl Sender for MlGetOverallBuckets {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_jobs")]
+                allow_no_jobs: Option<bool>,
+                #[serde(rename = "bucket_span")]
+                bucket_span: Option<String>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "exclude_interim")]
+                exclude_interim: Option<bool>,
+                #[serde(rename = "overall_score")]
+                overall_score: Option<f64>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+                #[serde(rename = "top_n")]
+                top_n: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_jobs: self.allow_no_jobs,
+                bucket_span: self.bucket_span,
+                end: self.end,
+                exclude_interim: self.exclude_interim,
+                overall_score: self.overall_score,
+                start: self.start,
+                top_n: self.top_n,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2042,7 +2544,42 @@ impl MlGetRecords {
 }
 impl Sender for MlGetRecords {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "desc")]
+                desc: Option<bool>,
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "exclude_interim")]
+                exclude_interim: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "record_score")]
+                record_score: Option<f64>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+                #[serde(rename = "sort")]
+                sort: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                desc: self.desc,
+                end: self.end,
+                exclude_interim: self.exclude_interim,
+                from: self.from,
+                record_score: self.record_score,
+                size: self.size,
+                sort: self.sort,
+                start: self.start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2090,7 +2627,11 @@ impl MlInfo {
 }
 impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2142,7 +2683,11 @@ impl MlOpenJob {
 }
 impl Sender for MlOpenJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2192,7 +2737,11 @@ impl MlPostCalendarEvents {
 }
 impl Sender for MlPostCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2254,7 +2803,24 @@ impl MlPostData {
 }
 impl Sender for MlPostData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "reset_end")]
+                reset_end: Option<String>,
+                #[serde(rename = "reset_start")]
+                reset_start: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                reset_end: self.reset_end,
+                reset_start: self.reset_start,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2304,7 +2870,11 @@ impl MlPreviewDatafeed {
 }
 impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2354,7 +2924,11 @@ impl MlPutCalendar {
 }
 impl Sender for MlPutCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2406,7 +2980,11 @@ impl MlPutCalendarJob {
 }
 impl Sender for MlPutCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2456,7 +3034,11 @@ impl MlPutDataFrameAnalytics {
 }
 impl Sender for MlPutDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2506,7 +3088,11 @@ impl MlPutDatafeed {
 }
 impl Sender for MlPutDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2556,7 +3142,11 @@ impl MlPutFilter {
 }
 impl Sender for MlPutFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2606,7 +3196,11 @@ impl MlPutJob {
 }
 impl Sender for MlPutJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2664,7 +3258,21 @@ impl MlRevertModelSnapshot {
 }
 impl Sender for MlRevertModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "delete_intervening_results")]
+                delete_intervening_results: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                delete_intervening_results: self.delete_intervening_results,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2724,7 +3332,24 @@ impl MlSetUpgradeMode {
 }
 impl Sender for MlSetUpgradeMode {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "enabled")]
+                enabled: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                enabled: self.enabled,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2780,7 +3405,21 @@ impl MlStartDataFrameAnalytics {
 }
 impl Sender for MlStartDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2848,7 +3487,27 @@ impl MlStartDatafeed {
 }
 impl Sender for MlStartDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "end")]
+                end: Option<String>,
+                #[serde(rename = "start")]
+                start: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                end: self.end,
+                start: self.start,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2916,7 +3575,27 @@ impl MlStopDataFrameAnalytics {
 }
 impl Sender for MlStopDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "force")]
+                force: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                force: self.force,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2984,7 +3663,27 @@ impl MlStopDatafeed {
 }
 impl Sender for MlStopDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_datafeeds")]
+                allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "force")]
+                force: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_datafeeds: self.allow_no_datafeeds,
+                force: self.force,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3034,7 +3733,11 @@ impl MlUpdateDatafeed {
 }
 impl Sender for MlUpdateDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3084,7 +3787,11 @@ impl MlUpdateFilter {
 }
 impl Sender for MlUpdateFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3134,7 +3841,11 @@ impl MlUpdateJob {
 }
 impl Sender for MlUpdateJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3186,7 +3897,11 @@ impl MlUpdateModelSnapshot {
 }
 impl Sender for MlUpdateModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3234,7 +3949,11 @@ impl MlValidate {
 }
 impl Sender for MlValidate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3282,7 +4001,11 @@ impl MlValidateDetector {
 }
 impl Sender for MlValidateDetector {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct IndicesAnalyze {
     client: Elasticsearch,
@@ -73,7 +74,19 @@ impl IndicesAnalyze {
 }
 impl Sender for IndicesAnalyze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "index")]
+                index: Option<String>,
+            }
+            let query_params = QueryParamsStruct { index: self.index };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -169,7 +182,42 @@ impl IndicesClearCache {
 }
 impl Sender for IndicesClearCache {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "fielddata")]
+                fielddata: Option<bool>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "index")]
+                index: Option<Vec<String>>,
+                #[serde(rename = "query")]
+                query: Option<bool>,
+                #[serde(rename = "request")]
+                request: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                fielddata: self.fielddata,
+                fields: self.fields,
+                ignore_unavailable: self.ignore_unavailable,
+                index: self.index,
+                query: self.query,
+                request: self.request,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -255,7 +303,36 @@ impl IndicesClose {
 }
 impl Sender for IndicesClose {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -329,7 +406,30 @@ impl IndicesCreate {
 }
 impl Sender for IndicesCreate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                include_type_name: self.include_type_name,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -409,7 +509,33 @@ impl IndicesDelete {
 }
 impl Sender for IndicesDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -473,7 +599,24 @@ impl IndicesDeleteAlias {
 }
 impl Sender for IndicesDeleteAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -535,7 +678,24 @@ impl IndicesDeleteTemplate {
 }
 impl Sender for IndicesDeleteTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -621,7 +781,36 @@ impl IndicesExists {
 }
 impl Sender for IndicesExists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_defaults")]
+                include_defaults: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flat_settings: self.flat_settings,
+                ignore_unavailable: self.ignore_unavailable,
+                include_defaults: self.include_defaults,
+                local: self.local,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -696,7 +885,30 @@ impl IndicesExistsAlias {
 }
 impl Sender for IndicesExistsAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                local: self.local,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -764,7 +976,27 @@ impl IndicesExistsTemplate {
 }
 impl Sender for IndicesExistsTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -840,7 +1072,30 @@ impl IndicesExistsType {
 }
 impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                local: self.local,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -919,7 +1174,33 @@ impl IndicesFlush {
 }
 impl Sender for IndicesFlush {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "force")]
+                force: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "wait_if_ongoing")]
+                wait_if_ongoing: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                force: self.force,
+                ignore_unavailable: self.ignore_unavailable,
+                wait_if_ongoing: self.wait_if_ongoing,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -986,7 +1267,27 @@ impl IndicesFlushSynced {
 }
 impl Sender for IndicesFlushSynced {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1071,7 +1372,36 @@ impl IndicesForcemerge {
 }
 impl Sender for IndicesForcemerge {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flush")]
+                flush: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "max_num_segments")]
+                max_num_segments: Option<i64>,
+                #[serde(rename = "only_expunge_deletes")]
+                only_expunge_deletes: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flush: self.flush,
+                ignore_unavailable: self.ignore_unavailable,
+                max_num_segments: self.max_num_segments,
+                only_expunge_deletes: self.only_expunge_deletes,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1157,7 +1487,36 @@ impl IndicesFreeze {
 }
 impl Sender for IndicesFreeze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1255,7 +1614,42 @@ impl IndicesGet {
 }
 impl Sender for IndicesGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_defaults")]
+                include_defaults: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flat_settings: self.flat_settings,
+                ignore_unavailable: self.ignore_unavailable,
+                include_defaults: self.include_defaults,
+                include_type_name: self.include_type_name,
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1329,7 +1723,30 @@ impl IndicesGetAlias {
 }
 impl Sender for IndicesGetAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                local: self.local,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1417,7 +1834,36 @@ impl IndicesGetFieldMapping {
 }
 impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_defaults")]
+                include_defaults: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                include_defaults: self.include_defaults,
+                include_type_name: self.include_type_name,
+                local: self.local,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1503,7 +1949,36 @@ impl IndicesGetMapping {
 }
 impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                include_type_name: self.include_type_name,
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1595,7 +2070,39 @@ impl IndicesGetSettings {
 }
 impl Sender for IndicesGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_defaults")]
+                include_defaults: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flat_settings: self.flat_settings,
+                ignore_unavailable: self.ignore_unavailable,
+                include_defaults: self.include_defaults,
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1668,7 +2175,30 @@ impl IndicesGetTemplate {
 }
 impl Sender for IndicesGetTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                include_type_name: self.include_type_name,
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1735,7 +2265,27 @@ impl IndicesGetUpgrade {
 }
 impl Sender for IndicesGetUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1821,7 +2371,36 @@ impl IndicesOpen {
 }
 impl Sender for IndicesOpen {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1885,7 +2464,24 @@ impl IndicesPutAlias {
 }
 impl Sender for IndicesPutAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1972,7 +2568,36 @@ impl IndicesPutMapping {
 }
 impl Sender for IndicesPutMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                include_type_name: self.include_type_name,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2063,7 +2688,39 @@ impl IndicesPutSettings {
 }
 impl Sender for IndicesPutSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "preserve_existing")]
+                preserve_existing: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flat_settings: self.flat_settings,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                preserve_existing: self.preserve_existing,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2149,7 +2806,36 @@ impl IndicesPutTemplate {
 }
 impl Sender for IndicesPutTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "create")]
+                create: Option<bool>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "order")]
+                order: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                create: self.create,
+                flat_settings: self.flat_settings,
+                include_type_name: self.include_type_name,
+                master_timeout: self.master_timeout,
+                order: self.order,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2210,7 +2896,24 @@ impl IndicesRecovery {
 }
 impl Sender for IndicesRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "active_only")]
+                active_only: Option<bool>,
+                #[serde(rename = "detailed")]
+                detailed: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                active_only: self.active_only,
+                detailed: self.detailed,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2277,7 +2980,27 @@ impl IndicesRefresh {
 }
 impl Sender for IndicesRefresh {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2345,7 +3068,27 @@ impl IndicesReloadSearchAnalyzers {
 }
 impl Sender for IndicesReloadSearchAnalyzers {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2426,7 +3169,33 @@ impl IndicesRollover {
 }
 impl Sender for IndicesRollover {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "dry_run")]
+                dry_run: Option<bool>,
+                #[serde(rename = "include_type_name")]
+                include_type_name: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                dry_run: self.dry_run,
+                include_type_name: self.include_type_name,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2499,7 +3268,30 @@ impl IndicesSegments {
 }
 impl Sender for IndicesSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "verbose")]
+                verbose: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                verbose: self.verbose,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2572,7 +3364,30 @@ impl IndicesShardStores {
 }
 impl Sender for IndicesShardStores {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "status")]
+                status: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                status: self.status,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2648,7 +3463,30 @@ impl IndicesShrink {
 }
 impl Sender for IndicesShrink {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "copy_settings")]
+                copy_settings: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                copy_settings: self.copy_settings,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2724,7 +3562,30 @@ impl IndicesSplit {
 }
 impl Sender for IndicesSplit {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "copy_settings")]
+                copy_settings: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                copy_settings: self.copy_settings,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2834,7 +3695,48 @@ impl IndicesStats {
 }
 impl Sender for IndicesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "completion_fields")]
+                completion_fields: Option<Vec<String>>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "fielddata_fields")]
+                fielddata_fields: Option<Vec<String>>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "forbid_closed_indices")]
+                forbid_closed_indices: Option<bool>,
+                #[serde(rename = "groups")]
+                groups: Option<Vec<String>>,
+                #[serde(rename = "include_segment_file_sizes")]
+                include_segment_file_sizes: Option<bool>,
+                #[serde(rename = "include_unloaded_segments")]
+                include_unloaded_segments: Option<bool>,
+                #[serde(rename = "level")]
+                level: Option<Level>,
+                #[serde(rename = "types")]
+                types: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                completion_fields: self.completion_fields,
+                expand_wildcards: self.expand_wildcards,
+                fielddata_fields: self.fielddata_fields,
+                fields: self.fields,
+                forbid_closed_indices: self.forbid_closed_indices,
+                groups: self.groups,
+                include_segment_file_sizes: self.include_segment_file_sizes,
+                include_unloaded_segments: self.include_unloaded_segments,
+                level: self.level,
+                types: self.types,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2920,7 +3822,36 @@ impl IndicesUnfreeze {
 }
 impl Sender for IndicesUnfreeze {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2980,7 +3911,24 @@ impl IndicesUpdateAliases {
 }
 impl Sender for IndicesUpdateAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3059,7 +4007,33 @@ impl IndicesUpgrade {
 }
 impl Sender for IndicesUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "only_ancient_segments")]
+                only_ancient_segments: Option<bool>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                ignore_unavailable: self.ignore_unavailable,
+                only_ancient_segments: self.only_ancient_segments,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3181,7 +4155,54 @@ impl IndicesValidateQuery {
 }
 impl Sender for IndicesValidateQuery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "all_shards")]
+                all_shards: Option<bool>,
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "analyze_wildcard")]
+                analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<String>,
+                #[serde(rename = "default_operator")]
+                default_operator: Option<DefaultOperator>,
+                #[serde(rename = "df")]
+                df: Option<String>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "explain")]
+                explain: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "lenient")]
+                lenient: Option<bool>,
+                #[serde(rename = "q")]
+                q: Option<String>,
+                #[serde(rename = "rewrite")]
+                rewrite: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                all_shards: self.all_shards,
+                allow_no_indices: self.allow_no_indices,
+                analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
+                default_operator: self.default_operator,
+                df: self.df,
+                expand_wildcards: self.expand_wildcards,
+                explain: self.explain,
+                ignore_unavailable: self.ignore_unavailable,
+                lenient: self.lenient,
+                q: self.q,
+                rewrite: self.rewrite,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

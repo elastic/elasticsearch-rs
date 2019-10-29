@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct NodesHotThreads {
     client: Elasticsearch,
@@ -104,7 +105,36 @@ impl NodesHotThreads {
 }
 impl Sender for NodesHotThreads {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "ignore_idle_threads")]
+                ignore_idle_threads: Option<bool>,
+                #[serde(rename = "interval")]
+                interval: Option<String>,
+                #[serde(rename = "snapshots")]
+                snapshots: Option<i64>,
+                #[serde(rename = "threads")]
+                threads: Option<i64>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "type")]
+                ty: Option<Type>,
+            }
+            let query_params = QueryParamsStruct {
+                ignore_idle_threads: self.ignore_idle_threads,
+                interval: self.interval,
+                snapshots: self.snapshots,
+                threads: self.threads,
+                timeout: self.timeout,
+                ty: self.ty,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -166,7 +196,24 @@ impl NodesInfo {
 }
 impl Sender for NodesInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -221,7 +268,21 @@ impl NodesReloadSecureSettings {
 }
 impl Sender for NodesReloadSecureSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -320,7 +381,42 @@ impl NodesStats {
 }
 impl Sender for NodesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "completion_fields")]
+                completion_fields: Option<Vec<String>>,
+                #[serde(rename = "fielddata_fields")]
+                fielddata_fields: Option<Vec<String>>,
+                #[serde(rename = "fields")]
+                fields: Option<Vec<String>>,
+                #[serde(rename = "groups")]
+                groups: Option<bool>,
+                #[serde(rename = "include_segment_file_sizes")]
+                include_segment_file_sizes: Option<bool>,
+                #[serde(rename = "level")]
+                level: Option<Level>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "types")]
+                types: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                completion_fields: self.completion_fields,
+                fielddata_fields: self.fielddata_fields,
+                fields: self.fields,
+                groups: self.groups,
+                include_segment_file_sizes: self.include_segment_file_sizes,
+                level: self.level,
+                timeout: self.timeout,
+                types: self.types,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -376,7 +472,21 @@ impl NodesUsage {
 }
 impl Sender for NodesUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let response = self.client.send::<()>(HttpMethod::Post, "/", None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(HttpMethod::Post, "/", query_params.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -15,7 +15,7 @@
 //
 // -----------------------------------------------
 use serde::{Deserialize, Serialize};
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Bytes {
     #[serde(rename = "b")]
     B,
@@ -40,21 +40,21 @@ pub enum Bytes {
     #[serde(rename = "pb")]
     Pb,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Conflicts {
     #[serde(rename = "abort")]
     Abort,
     #[serde(rename = "proceed")]
     Proceed,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum DefaultOperator {
     #[serde(rename = "AND")]
     And,
     #[serde(rename = "OR")]
     Or,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum ExpandWildcards {
     #[serde(rename = "open")]
     Open,
@@ -65,7 +65,7 @@ pub enum ExpandWildcards {
     #[serde(rename = "all")]
     All,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Format {
     #[serde(rename = "ndjson")]
     Ndjson,
@@ -76,7 +76,7 @@ pub enum Format {
     #[serde(rename = "semi_structured_text")]
     SemiStructuredText,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum GroupBy {
     #[serde(rename = "nodes")]
     Nodes,
@@ -85,7 +85,7 @@ pub enum GroupBy {
     #[serde(rename = "none")]
     None,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Health {
     #[serde(rename = "green")]
     Green,
@@ -94,7 +94,7 @@ pub enum Health {
     #[serde(rename = "red")]
     Red,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Level {
     #[serde(rename = "cluster")]
     Cluster,
@@ -103,14 +103,14 @@ pub enum Level {
     #[serde(rename = "shards")]
     Shards,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum OpType {
     #[serde(rename = "index")]
     Index,
     #[serde(rename = "create")]
     Create,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Refresh {
     #[serde(rename = "true")]
     True,
@@ -119,14 +119,14 @@ pub enum Refresh {
     #[serde(rename = "wait_for")]
     WaitFor,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum SearchType {
     #[serde(rename = "query_then_fetch")]
     QueryThenFetch,
     #[serde(rename = "dfs_query_then_fetch")]
     DfsQueryThenFetch,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Size {
     #[serde(rename = "k")]
     K,
@@ -139,7 +139,7 @@ pub enum Size {
     #[serde(rename = "p")]
     P,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum SuggestMode {
     #[serde(rename = "missing")]
     Missing,
@@ -148,7 +148,7 @@ pub enum SuggestMode {
     #[serde(rename = "always")]
     Always,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Type {
     #[serde(rename = "cpu")]
     Cpu,
@@ -157,7 +157,7 @@ pub enum Type {
     #[serde(rename = "block")]
     Block,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum VersionType {
     #[serde(rename = "internal")]
     Internal,
@@ -168,7 +168,7 @@ pub enum VersionType {
     #[serde(rename = "force")]
     Force,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum WaitForEvents {
     #[serde(rename = "immediate")]
     Immediate,
@@ -183,7 +183,7 @@ pub enum WaitForEvents {
     #[serde(rename = "languid")]
     Languid,
 }
-#[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum WaitForStatus {
     #[serde(rename = "green")]
     Green,
