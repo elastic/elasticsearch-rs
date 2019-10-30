@@ -1,6 +1,6 @@
 use super::RestApiSpec;
 
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
+use indicatif::{MultiProgress, ProgressBar, ProgressStyle, ProgressDrawTarget};
 use rayon::prelude::*;
 use std::fs::File;
 use std::io::{self, copy, Read};
@@ -21,17 +21,19 @@ pub(super) enum DownloadSpecsErrors {
 pub(super) fn download_specs_to_dir(specs: &[RestApiSpec], download_dir: &PathBuf) -> Result<(), DownloadSpecsErrors> {
     let client = reqwest::Client::new();
     let sty = ProgressStyle::default_bar()
-        .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} (ETA: {eta}) {wide_msg}")
+        .template("{spinner:.green} {msg} [{elapsed_precise} (ETA: {eta})] [{bar:40.cyan/blue}] {bytes}/{total_bytes}")
         .progress_chars("#>-");
+
+    let max_name = specs.iter().max_by(|a, b| a.name.len().cmp(&b.name.len())).map(|r| r.name.len()).unwrap_or(0) + 1;
 
     // We need to chunk it because none of the progress bar libs offer good support for simultaneously
     // showing more progress bars than there are terminal rows.
     let results = specs.chunks(rayon::current_num_threads()).map(|specs_group| {
-        let multibar = MultiProgress::new();
+        let multibar = MultiProgress::with_draw_target(ProgressDrawTarget::stderr_with_hz(60));
         let download_packs = specs_group.iter().map(|spec| {
             let progress_bar = multibar.add(ProgressBar::new(spec.size as u64));
             progress_bar.set_style(sty.clone());
-            progress_bar.set_message(&spec.name);
+            progress_bar.set_message(&right_pad(&spec.name, max_name));
             (spec.name.clone(),
              spec.download_url.clone(),
              progress_bar,
@@ -71,6 +73,17 @@ fn ok_or_accumulate(results: Vec<Result<(), DownloadSpecsErrors>>) -> Result<(),
     }
 }
 
+fn right_pad(s: &str, pad: usize) -> String {
+    let mut out = String::from(s);
+    let len = s.len();
+    if pad > len {
+        for _ in 0..pad - len {
+            out.push(' ');
+        }
+    }
+    out
+}
+
 /// A thin wrapper around another `Reader` so that we can report on progress
 struct ReadWithProgress<'bar, R> {
     inner: R,
@@ -91,7 +104,11 @@ impl<'bar, R> Read for ReadWithProgress<'bar, R>
 
 impl std::fmt::Display for DownloadSpecsErrors {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{:?}", self)
+        match self {
+            DownloadSpecsErrors::IoErr(err) => write!(f, "IoErr {}", err),
+            DownloadSpecsErrors::HttpError(err) => write!(f, "HttpError {}", err),
+            DownloadSpecsErrors::Cumulative(errs) => write!(f, "Cumulative {:?}", errs)
+        }
     }
 }
 

@@ -68,14 +68,3 @@ fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
     download_specs_to_dir(rest_api_specs.as_slice(), download_dir).unwrap();
     println!("Done downloading {} specs from {}", spec.dir, spec.branch);
 }
-
-fn right_pad(s: &str, pad: usize) -> String {
-    let mut out = String::from(s);
-    let len = s.len();
-    if pad > len {
-        for _ in 0..pad - len {
-            out.push(' ');
-        }
-    }
-    out
-}
