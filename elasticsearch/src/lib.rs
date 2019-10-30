@@ -16,7 +16,6 @@ mod namespace_clients;
 mod response;
 mod root;
 mod settings;
-//mod node_pool;
 
 pub use crate::{
     client::Elasticsearch,
@@ -24,7 +23,6 @@ pub use crate::{
     enums::*,
     error::ElasticsearchError,
     http_method::HttpMethod,
-    //node_pool::{Node, NodePool, SingleNodePool},
     response::ElasticsearchResponse,
     settings::ConnectionSettings,
 };
