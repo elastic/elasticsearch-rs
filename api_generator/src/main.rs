@@ -25,12 +25,12 @@ fn main() {
 
     let mut download_specs = false;
     let mut answer = String::new();
-    let mut branch = String::new();
     let default_branch = if Path::new(last_downloaded_version).exists() {
         fs::read_to_string(last_downloaded_version).expect("Could not read branch into string")
     } else {
         String::from("master")
     };
+    let mut branch = default_branch.clone();
 
     while answer != "y" && answer != "n" {
         answer = Input::new()
@@ -81,7 +81,7 @@ fn main() {
                 .with_prompt(
                     format!(
                         "Generate code from rest specifications {} [Y/n]",
-                        default_branch
+                        branch
                     )
                     .as_str(),
                 )
