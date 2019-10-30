@@ -59,6 +59,11 @@ impl IlmDeleteLifecycle {
         self.human = human;
         self
     }
+    #[doc = "The name of the index lifecycle policy"]
+    pub fn policy(mut self, policy: String) -> Self {
+        self.policy = policy;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -74,7 +79,29 @@ impl Sender for IlmDeleteLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -118,6 +145,11 @@ impl IlmExplainLifecycle {
         self.human = human;
         self
     }
+    #[doc = "The name of the index to explain"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -133,7 +165,29 @@ impl Sender for IlmExplainLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/explain";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -177,6 +231,11 @@ impl IlmGetLifecycle {
         self.human = human;
         self
     }
+    #[doc = "The name of the index lifecycle policy"]
+    pub fn policy(mut self, policy: Option<String>) -> Self {
+        self.policy = policy;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -192,7 +251,29 @@ impl Sender for IlmGetLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -249,7 +330,29 @@ impl Sender for IlmGetStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/status";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -303,6 +406,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the index whose lifecycle step is to change"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -321,7 +429,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/move/{index}";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -375,6 +505,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the index lifecycle policy"]
+    pub fn policy(mut self, policy: String) -> Self {
+        self.policy = policy;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -393,7 +528,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -447,6 +604,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the index to remove policy on"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -465,7 +627,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/remove";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -519,6 +703,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the indices (comma-separated) whose failed lifecycle step is to be retry"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -537,7 +726,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/retry";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -607,7 +818,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/start";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -677,7 +910,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/stop";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client

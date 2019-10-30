@@ -257,7 +257,7 @@ pub fn use_declarations() -> Tokens {
 }
 
 /// Creates the function arguments for a builder struct new fn
-fn create_new_fnargs(required_parts: &[(&String, &Type)]) -> Vec<FnArg> {
+fn create_new_fn_args(required_parts: &[(&String, &Type)]) -> Vec<FnArg> {
     match required_parts.len() {
         0 => vec![],
         _ => required_parts
@@ -290,6 +290,9 @@ fn create_new_fields(required_parts: &[(&String, &Type)]) -> Vec<FieldValue> {
     }
 }
 
+/// Creates the AST for field values initialized with a default value.
+///
+/// Since all default values are Option<T>, the default value for all is None
 fn create_default_fields(default_fields: &[&syn::Ident]) -> Vec<FieldValue> {
     default_fields
         .iter()
@@ -308,10 +311,9 @@ fn create_new_fn(
     required_parts: &[(&String, &Type)],
     default_fields: &[&syn::Ident],
 ) -> Tokens {
-    let fn_args = create_new_fnargs(&required_parts);
+    let fn_args = create_new_fn_args(&required_parts);
     let fields = create_new_fields(&required_parts);
     let default_fields = create_default_fields(default_fields);
-    // TODO: Initialize all Option<T> to None
     match required_parts.len() {
         0 => quote!(
             pub fn new(client: Elasticsearch) -> Self {
@@ -339,6 +341,7 @@ pub fn create_builder_struct(
     endpoint: &ApiEndpoint,
     common_fields: &[Field],
     common_builder_fns: &[ImplItem],
+    common_params: &BTreeMap<String, Type>,
 ) -> Tokens {
     let supports_body = endpoint.supports_body();
     let builder_ident = ident(&builder_name);
@@ -387,6 +390,14 @@ pub fn create_builder_struct(
         .iter()
         .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
         .collect();
+
+    builder_fns.append(&mut endpoint
+        .url
+        .parts
+        .iter()
+        .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
+        .collect(),
+    );
 
     if supports_body {
         builder_fns.push(syn::ImplItem {
@@ -452,8 +463,13 @@ pub fn create_builder_struct(
 
     let path_expr = create_path_expression(&endpoint);
     let method = create_method_expression(&builder_name, &endpoint);
-    // TODO: Include common url params in query string too
-    let query_string_expr = create_query_string_expression(&endpoint.url.params);
+    let query_string_params = {
+        let mut p = endpoint.url.params.clone();
+        p.append(&mut common_params.clone());
+        p
+    };
+
+    let query_string_expr = create_query_string_expression(&query_string_params);
 
     let body_expr = {
         if supports_body {
@@ -513,21 +529,19 @@ pub fn create_builder_struct_ctor_fns(
 ) -> Tokens {
     let builder_ident = ident(builder_name.to_pascal_case());
 
-    let builder_ident_ret = {
-        let i = ident(builder_name.to_pascal_case());
-        if endpoint.supports_body() {
-            quote!(#i<B> where B: Serialize)
-        } else {
-            quote!(#i)
-        }
-    };
-
-    let fn_name = {
+    let (fn_name, builder_ident_ret) = {
         let i = ident(name.to_string());
+        let b = ident(builder_name.to_pascal_case());
         if endpoint.supports_body() {
-            quote!(#i<B>)
+            (
+                quote!(#i<B>),
+                quote!(#b<B> where B: Serialize)
+            )
         } else {
-            quote!(#i)
+            (
+                quote!(#i),
+                quote!(#b)
+            )
         }
     };
 
@@ -536,8 +550,8 @@ pub fn create_builder_struct_ctor_fns(
         _ => None,
     };
 
-    let fnargs = create_new_fnargs(&endpoint.url.required_parts());
-    let builder_args: Vec<syn::Pat> = fnargs
+    let fn_args = create_new_fn_args(&endpoint.url.required_parts());
+    let builder_args: Vec<syn::Pat> = fn_args
         .clone()
         .into_iter()
         .filter_map(|f| match f {
@@ -556,7 +570,7 @@ pub fn create_builder_struct_ctor_fns(
 
     quote!(
         #method_doc
-        pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident_ret {
+        pub fn #fn_name(&self, #(#fn_args),*) -> #builder_ident_ret {
             #builder_ident::new(#clone_expr,#(#builder_args),*)
         }
     )

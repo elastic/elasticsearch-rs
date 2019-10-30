@@ -43,6 +43,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                     endpoint,
                     &common_fields,
                     &common_builder_fns,
+                    &api.common_params,
                 )
             })
             .collect();

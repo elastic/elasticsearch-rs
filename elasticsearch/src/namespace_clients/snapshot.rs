@@ -85,6 +85,16 @@ where
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
+    #[doc = "A snapshot name"]
+    pub fn snapshot(mut self, snapshot: String) -> Self {
+        self.snapshot = snapshot;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -106,13 +116,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
@@ -186,6 +211,11 @@ where
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -212,15 +242,30 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "verify")]
                 verify: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 verify: self.verify,
             };
@@ -283,6 +328,16 @@ impl SnapshotDelete {
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
+    #[doc = "A snapshot name"]
+    pub fn snapshot(mut self, snapshot: String) -> Self {
+        self.snapshot = snapshot;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -296,11 +351,26 @@ impl Sender for SnapshotDelete {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -361,6 +431,11 @@ impl SnapshotDeleteRepository {
         self.pretty = pretty;
         self
     }
+    #[doc = "A comma-separated list of repository names"]
+    pub fn repository(mut self, repository: Vec<String>) -> Self {
+        self.repository = repository;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -379,13 +454,28 @@ impl Sender for SnapshotDeleteRepository {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -456,6 +546,16 @@ impl SnapshotGet {
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
+    #[doc = "A comma-separated list of snapshot names"]
+    pub fn snapshot(mut self, snapshot: Vec<String>) -> Self {
+        self.snapshot = snapshot;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -474,16 +574,31 @@ impl Sender for SnapshotGet {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "verbose")]
                 verbose: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 verbose: self.verbose,
             };
             Some(query_params)
@@ -550,6 +665,11 @@ impl SnapshotGetRepository {
         self.pretty = pretty;
         self
     }
+    #[doc = "A comma-separated list of repository names"]
+    pub fn repository(mut self, repository: Option<Vec<String>>) -> Self {
+        self.repository = repository;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -563,14 +683,29 @@ impl Sender for SnapshotGetRepository {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -643,6 +778,16 @@ where
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
+    #[doc = "A snapshot name"]
+    pub fn snapshot(mut self, snapshot: String) -> Self {
+        self.snapshot = snapshot;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -664,13 +809,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
@@ -739,6 +899,16 @@ impl SnapshotStatus {
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: Option<String>) -> Self {
+        self.repository = repository;
+        self
+    }
+    #[doc = "A comma-separated list of snapshot names"]
+    pub fn snapshot(mut self, snapshot: Option<Vec<String>>) -> Self {
+        self.snapshot = snapshot;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -752,14 +922,29 @@ impl Sender for SnapshotStatus {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -830,6 +1015,11 @@ where
         self.pretty = pretty;
         self
     }
+    #[doc = "A repository name"]
+    pub fn repository(mut self, repository: String) -> Self {
+        self.repository = repository;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -851,13 +1041,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)

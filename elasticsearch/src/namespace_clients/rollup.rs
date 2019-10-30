@@ -59,6 +59,11 @@ impl RollupDeleteJob {
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to delete"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -74,7 +79,29 @@ impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -118,6 +145,11 @@ impl RollupGetJobs {
         self.human = human;
         self
     }
+    #[doc = "The ID of the job(s) to fetch. Accepts glob patterns, or left blank for all jobs"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -133,7 +165,29 @@ impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -177,6 +231,11 @@ impl RollupGetRollupCaps {
         self.human = human;
         self
     }
+    #[doc = "The ID of the index to check rollup capabilities on, or left blank for all jobs"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -192,7 +251,29 @@ impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/data/{id}";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -236,6 +317,11 @@ impl RollupGetRollupIndexCaps {
         self.human = human;
         self
     }
+    #[doc = "The rollup index or index pattern to obtain rollup capabilities from."]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -251,7 +337,29 @@ impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_rollup/data";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -305,6 +413,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to create"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -323,7 +436,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -383,6 +518,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The indices or index-pattern(s) (containing rollup or regular data) that should be searched"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -396,6 +536,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The doc type inside the index"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
         self
     }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
@@ -417,13 +562,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
+                source: self.source,
                 typed_keys: self.typed_keys,
             };
             Some(query_params)
@@ -481,6 +641,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to start"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -499,7 +664,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}/_start";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -557,6 +744,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to stop"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -588,12 +780,27 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_completion: self.wait_for_completion,
             };

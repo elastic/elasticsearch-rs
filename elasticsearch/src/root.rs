@@ -102,6 +102,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Default index for items which don't provide one"]
+    pub fn index(mut self, index: Option<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "The pipeline id to preprocess incoming documents with"]
     pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
         self.pipeline = pipeline;
@@ -159,12 +164,22 @@ where
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "pipeline")]
                 pipeline: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "type")]
@@ -176,9 +191,14 @@ where
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 pipeline: self.pipeline,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
                 ty: self.ty,
                 wait_for_active_shards: self.wait_for_active_shards,
@@ -243,6 +263,11 @@ where
         self.pretty = pretty;
         self
     }
+    #[doc = "A comma-separated list of scroll IDs to clear"]
+    pub fn scroll_id(mut self, scroll_id: Option<Vec<String>>) -> Self {
+        self.scroll_id = scroll_id;
+        self
+    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -256,7 +281,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search/scroll";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -380,6 +427,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of indices to restrict the results"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -420,6 +472,11 @@ where
         self.terminate_after = terminate_after;
         self
     }
+    #[doc = "A comma-separated list of types to restrict the results"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for Count<B>
 where
@@ -444,8 +501,14 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_throttled")]
                 ignore_throttled: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
@@ -456,10 +519,14 @@ where
                 min_score: Option<i64>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "routing")]
                 routing: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "terminate_after")]
                 terminate_after: Option<i64>,
             }
@@ -469,14 +536,19 @@ where
                 analyzer: self.analyzer,
                 default_operator: self.default_operator,
                 df: self.df,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_throttled: self.ignore_throttled,
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 min_score: self.min_score,
                 preference: self.preference,
+                pretty: self.pretty,
                 q: self.q,
                 routing: self.routing,
+                source: self.source,
                 terminate_after: self.terminate_after,
             };
             Some(query_params)
@@ -552,6 +624,16 @@ where
         self.human = human;
         self
     }
+    #[doc = "Document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "The pipeline id to preprocess incoming documents with"]
     pub fn pipeline(mut self, pipeline: Option<String>) -> Self {
         self.pipeline = pipeline;
@@ -582,6 +664,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -608,12 +695,22 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "pipeline")]
                 pipeline: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "version")]
@@ -624,9 +721,14 @@ where
                 wait_for_active_shards: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 pipeline: self.pipeline,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
                 version: self.version,
                 version_type: self.version_type,
@@ -697,6 +799,11 @@ impl Delete {
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "only perform the delete operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -705,6 +812,11 @@ impl Delete {
     #[doc = "only perform the delete operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -732,6 +844,11 @@ impl Delete {
         self.timeout = timeout;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -755,14 +872,24 @@ impl Sender for Delete {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "if_primary_term")]
                 if_primary_term: Option<i64>,
                 #[serde(rename = "if_seq_no")]
                 if_seq_no: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "version")]
@@ -773,10 +900,15 @@ impl Sender for Delete {
                 wait_for_active_shards: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 if_primary_term: self.if_primary_term,
                 if_seq_no: self.if_seq_no,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
                 version: self.version,
                 version_type: self.version_type,
@@ -965,6 +1097,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -1065,6 +1202,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether to return document version as part of a hit"]
     pub fn version(mut self, version: Option<bool>) -> Self {
         self.version = version;
@@ -1109,10 +1251,16 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "lenient")]
@@ -1121,6 +1269,8 @@ where
                 max_docs: Option<i64>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "refresh")]
@@ -1145,6 +1295,8 @@ where
                 slices: Option<i64>,
                 #[serde(rename = "sort")]
                 sort: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stats")]
                 stats: Option<Vec<String>>,
                 #[serde(rename = "terminate_after")]
@@ -1168,12 +1320,16 @@ where
                 conflicts: self.conflicts,
                 default_operator: self.default_operator,
                 df: self.df,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_docs: self.max_docs,
                 preference: self.preference,
+                pretty: self.pretty,
                 q: self.q,
                 refresh: self.refresh,
                 request_cache: self.request_cache,
@@ -1186,6 +1342,7 @@ where
                 size: self.size,
                 slices: self.slices,
                 sort: self.sort,
+                source: self.source,
                 stats: self.stats,
                 terminate_after: self.terminate_after,
                 timeout: self.timeout,
@@ -1265,6 +1422,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "The task id to rethrottle"]
+    pub fn task_id(mut self, task_id: String) -> Self {
+        self.task_id = task_id;
+        self
+    }
 }
 impl<B> Sender for DeleteByQueryRethrottle<B>
 where
@@ -1276,11 +1438,26 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "requests_per_second")]
                 requests_per_second: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 requests_per_second: self.requests_per_second,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1331,6 +1508,11 @@ impl DeleteScript {
         self.human = human;
         self
     }
+    #[doc = "Script ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -1359,13 +1541,28 @@ impl Sender for DeleteScript {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -1452,6 +1649,16 @@ impl Exists {
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -1487,6 +1694,11 @@ impl Exists {
         self.stored_fields = stored_fields;
         self
     }
+    #[doc = "The type of the document (use `_all` to fetch the first document matching the ID across all types)"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -1511,14 +1723,24 @@ impl Sender for Exists {
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stored_fields")]
                 stored_fields: Option<Vec<String>>,
                 #[serde(rename = "version")]
@@ -1530,10 +1752,15 @@ impl Sender for Exists {
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 stored_fields: self.stored_fields,
                 version: self.version,
                 version_type: self.version_type,
@@ -1620,6 +1847,16 @@ impl ExistsSource {
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -1650,6 +1887,11 @@ impl ExistsSource {
         self.source = source;
         self
     }
+    #[doc = "The type of the document; deprecated and optional starting with 7.0"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -1674,14 +1916,24 @@ impl Sender for ExistsSource {
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "version")]
                 version: Option<i64>,
                 #[serde(rename = "version_type")]
@@ -1691,10 +1943,15 @@ impl Sender for ExistsSource {
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 version: self.version,
                 version_type: self.version_type,
             };
@@ -1816,6 +2073,16 @@ where
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -1851,6 +2118,11 @@ where
         self.stored_fields = stored_fields;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for Explain<B>
 where
@@ -1879,14 +2151,24 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "lenient")]
                 lenient: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stored_fields")]
                 stored_fields: Option<Vec<String>>,
             }
@@ -1898,10 +2180,15 @@ where
                 analyzer: self.analyzer,
                 default_operator: self.default_operator,
                 df: self.df,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 lenient: self.lenient,
                 preference: self.preference,
+                pretty: self.pretty,
                 q: self.q,
                 routing: self.routing,
+                source: self.source,
                 stored_fields: self.stored_fields,
             };
             Some(query_params)
@@ -1994,6 +2281,11 @@ where
         self.include_unmapped = include_unmapped;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2020,21 +2312,36 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_unmapped")]
                 include_unmapped: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 fields: self.fields,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_unmapped: self.include_unmapped,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2120,6 +2427,16 @@ impl Get {
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -2155,6 +2472,11 @@ impl Get {
         self.stored_fields = stored_fields;
         self
     }
+    #[doc = "The type of the document (use `_all` to fetch the first document matching the ID across all types)"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -2179,14 +2501,24 @@ impl Sender for Get {
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stored_fields")]
                 stored_fields: Option<Vec<String>>,
                 #[serde(rename = "version")]
@@ -2198,10 +2530,15 @@ impl Sender for Get {
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 stored_fields: self.stored_fields,
                 version: self.version,
                 version_type: self.version_type,
@@ -2253,6 +2590,11 @@ impl GetScript {
         self.human = human;
         self
     }
+    #[doc = "Script ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -2276,11 +2618,26 @@ impl Sender for GetScript {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2364,6 +2721,16 @@ impl GetSource {
         self.human = human;
         self
     }
+    #[doc = "The document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -2394,6 +2761,11 @@ impl GetSource {
         self.source = source;
         self
     }
+    #[doc = "The type of the document; deprecated and optional starting with 7.0"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -2418,14 +2790,24 @@ impl Sender for GetSource {
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "version")]
                 version: Option<i64>,
                 #[serde(rename = "version_type")]
@@ -2435,10 +2817,15 @@ impl Sender for GetSource {
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 version: self.version,
                 version_type: self.version_type,
             };
@@ -2521,6 +2908,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Document ID"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "only perform the index operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -2529,6 +2921,11 @@ where
     #[doc = "only perform the index operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
         self
     }
     #[doc = "Explicit operation type"]
@@ -2566,6 +2963,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -2592,6 +2994,12 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "if_primary_term")]
                 if_primary_term: Option<i64>,
                 #[serde(rename = "if_seq_no")]
@@ -2600,10 +3008,14 @@ where
                 op_type: Option<OpType>,
                 #[serde(rename = "pipeline")]
                 pipeline: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "version")]
@@ -2614,12 +3026,17 @@ where
                 wait_for_active_shards: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 if_primary_term: self.if_primary_term,
                 if_seq_no: self.if_seq_no,
                 op_type: self.op_type,
                 pipeline: self.pipeline,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
                 version: self.version,
                 version_type: self.version_type,
@@ -2683,7 +3100,29 @@ impl Sender for Info {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -2770,6 +3209,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: Option<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -2805,6 +3249,11 @@ where
         self.stored_fields = stored_fields;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for Mget<B>
 where
@@ -2825,14 +3274,24 @@ where
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stored_fields")]
                 stored_fields: Option<Vec<String>>,
             }
@@ -2840,10 +3299,15 @@ where
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 refresh: self.refresh,
                 routing: self.routing,
+                source: self.source,
                 stored_fields: self.stored_fields,
             };
             Some(query_params)
@@ -2922,6 +3386,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to use as default"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
     pub fn max_concurrent_searches(mut self, max_concurrent_searches: Option<i64>) -> Self {
         self.max_concurrent_searches = max_concurrent_searches;
@@ -2960,6 +3429,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types to use as default"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -2981,26 +3455,41 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "ccs_minimize_roundtrips")]
                 ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "max_concurrent_searches")]
                 max_concurrent_searches: Option<i64>,
                 #[serde(rename = "max_concurrent_shard_requests")]
                 max_concurrent_shard_requests: Option<i64>,
                 #[serde(rename = "pre_filter_shard_size")]
                 pre_filter_shard_size: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 max_concurrent_searches: self.max_concurrent_searches,
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
                 pre_filter_shard_size: self.pre_filter_shard_size,
+                pretty: self.pretty,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
                 search_type: self.search_type,
+                source: self.source,
                 typed_keys: self.typed_keys,
             };
             Some(query_params)
@@ -3075,6 +3564,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to use as default"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
     pub fn max_concurrent_searches(mut self, max_concurrent_searches: Option<i64>) -> Self {
         self.max_concurrent_searches = max_concurrent_searches;
@@ -3100,6 +3594,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types to use as default"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -3121,20 +3620,35 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "ccs_minimize_roundtrips")]
                 ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "max_concurrent_searches")]
                 max_concurrent_searches: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 max_concurrent_searches: self.max_concurrent_searches,
+                pretty: self.pretty,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
                 search_type: self.search_type,
+                source: self.source,
                 typed_keys: self.typed_keys,
             };
             Some(query_params)
@@ -3233,6 +3747,11 @@ where
         self.ids = ids;
         self
     }
+    #[doc = "The index in which the document resides."]
+    pub fn index(mut self, index: Option<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specifies if term offsets should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
     pub fn offsets(mut self, offsets: Option<bool>) -> Self {
         self.offsets = offsets;
@@ -3278,6 +3797,11 @@ where
         self.term_statistics = term_statistics;
         self
     }
+    #[doc = "The type of the document."]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -3302,10 +3826,16 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "field_statistics")]
                 field_statistics: Option<bool>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ids")]
                 ids: Option<Vec<String>>,
                 #[serde(rename = "offsets")]
@@ -3316,10 +3846,14 @@ where
                 positions: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "term_statistics")]
                 term_statistics: Option<bool>,
                 #[serde(rename = "version")]
@@ -3328,15 +3862,20 @@ where
                 version_type: Option<VersionType>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
                 field_statistics: self.field_statistics,
                 fields: self.fields,
+                filter_path: self.filter_path,
+                human: self.human,
                 ids: self.ids,
                 offsets: self.offsets,
                 payloads: self.payloads,
                 positions: self.positions,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 routing: self.routing,
+                source: self.source,
                 term_statistics: self.term_statistics,
                 version: self.version,
                 version_type: self.version_type,
@@ -3399,7 +3938,29 @@ impl Sender for Ping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/";
         let method = HttpMethod::Head;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -3464,6 +4025,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Script ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -3497,14 +4063,29 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "context")]
                 context: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 context: self.context,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -3583,6 +4164,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3609,15 +4195,30 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3749,8 +4350,16 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "max_docs")]
                 max_docs: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<bool>,
                 #[serde(rename = "requests_per_second")]
@@ -3759,6 +4368,8 @@ where
                 scroll: Option<String>,
                 #[serde(rename = "slices")]
                 slices: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -3767,11 +4378,16 @@ where
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 max_docs: self.max_docs,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 requests_per_second: self.requests_per_second,
                 scroll: self.scroll,
                 slices: self.slices,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
                 wait_for_completion: self.wait_for_completion,
@@ -3848,6 +4464,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "The task id to rethrottle"]
+    pub fn task_id(mut self, task_id: String) -> Self {
+        self.task_id = task_id;
+        self
+    }
 }
 impl<B> Sender for ReindexRethrottle<B>
 where
@@ -3859,11 +4480,26 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "requests_per_second")]
                 requests_per_second: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 requests_per_second: self.requests_per_second,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3920,6 +4556,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The id of the stored search template"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3941,7 +4582,29 @@ where
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4014,7 +4677,29 @@ where
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4111,17 +4796,32 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(rename = "scroll")]
                 scroll: Option<String>,
                 #[serde(rename = "scroll_id")]
                 scroll_id: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
                 scroll: self.scroll,
                 scroll_id: self.scroll_id,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -4352,6 +5052,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -4480,6 +5185,11 @@ where
         self.track_total_hits = track_total_hits;
         self
     }
+    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -4528,12 +5238,18 @@ where
                 df: Option<String>,
                 #[serde(rename = "docvalue_fields")]
                 docvalue_fields: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_throttled")]
                 ignore_throttled: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
@@ -4546,6 +5262,8 @@ where
                 pre_filter_shard_size: Option<i64>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "request_cache")]
@@ -4564,6 +5282,8 @@ where
                 size: Option<i64>,
                 #[serde(rename = "sort")]
                 sort: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stats")]
                 stats: Option<Vec<String>>,
                 #[serde(rename = "stored_fields")]
@@ -4602,15 +5322,19 @@ where
                 default_operator: self.default_operator,
                 df: self.df,
                 docvalue_fields: self.docvalue_fields,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
                 ignore_throttled: self.ignore_throttled,
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_concurrent_shard_requests: self.max_concurrent_shard_requests,
                 pre_filter_shard_size: self.pre_filter_shard_size,
                 preference: self.preference,
+                pretty: self.pretty,
                 q: self.q,
                 request_cache: self.request_cache,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
@@ -4620,6 +5344,7 @@ where
                 seq_no_primary_term: self.seq_no_primary_term,
                 size: self.size,
                 sort: self.sort,
+                source: self.source,
                 stats: self.stats,
                 stored_fields: self.stored_fields,
                 suggest_field: self.suggest_field,
@@ -4715,6 +5440,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -4756,24 +5486,39 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
                 preference: self.preference,
+                pretty: self.pretty,
                 routing: self.routing,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -4888,6 +5633,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -4928,6 +5678,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -4951,16 +5706,24 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "ccs_minimize_roundtrips")]
                 ccs_minimize_roundtrips: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_throttled")]
                 ignore_throttled: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "profile")]
                 profile: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
@@ -4971,22 +5734,29 @@ where
                 scroll: Option<String>,
                 #[serde(rename = "search_type")]
                 search_type: Option<SearchType>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
                 ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_throttled: self.ignore_throttled,
                 ignore_unavailable: self.ignore_unavailable,
                 preference: self.preference,
+                pretty: self.pretty,
                 profile: self.profile,
                 rest_total_hits_as_int: self.rest_total_hits_as_int,
                 routing: self.routing,
                 scroll: self.scroll,
                 search_type: self.search_type,
+                source: self.source,
                 typed_keys: self.typed_keys,
             };
             Some(query_params)
@@ -5080,6 +5850,16 @@ where
         self.human = human;
         self
     }
+    #[doc = "The id of the document, when not specified a doc param should be supplied."]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
+    #[doc = "The index in which the document resides."]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specifies if term offsets should be returned."]
     pub fn offsets(mut self, offsets: Option<bool>) -> Self {
         self.offsets = offsets;
@@ -5125,6 +5905,11 @@ where
         self.term_statistics = term_statistics;
         self
     }
+    #[doc = "The type of the document."]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -5149,10 +5934,16 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "field_statistics")]
                 field_statistics: Option<bool>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "offsets")]
                 offsets: Option<bool>,
                 #[serde(rename = "payloads")]
@@ -5161,10 +5952,14 @@ where
                 positions: Option<bool>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "realtime")]
                 realtime: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "term_statistics")]
                 term_statistics: Option<bool>,
                 #[serde(rename = "version")]
@@ -5173,14 +5968,19 @@ where
                 version_type: Option<VersionType>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
                 field_statistics: self.field_statistics,
                 fields: self.fields,
+                filter_path: self.filter_path,
+                human: self.human,
                 offsets: self.offsets,
                 payloads: self.payloads,
                 positions: self.positions,
                 preference: self.preference,
+                pretty: self.pretty,
                 realtime: self.realtime,
                 routing: self.routing,
+                source: self.source,
                 term_statistics: self.term_statistics,
                 version: self.version,
                 version_type: self.version_type,
@@ -5281,6 +6081,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Document ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "only perform the update operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -5289,6 +6094,11 @@ where
     #[doc = "only perform the update operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
+        self
+    }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
         self
     }
     #[doc = "The script language (default: painless)"]
@@ -5326,6 +6136,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The type of the document"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the update operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
     pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
         self.wait_for_active_shards = wait_for_active_shards;
@@ -5348,18 +6163,28 @@ where
                 _source_excludes: Option<Vec<String>>,
                 #[serde(rename = "_source_includes")]
                 _source_includes: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "if_primary_term")]
                 if_primary_term: Option<i64>,
                 #[serde(rename = "if_seq_no")]
                 if_seq_no: Option<i64>,
                 #[serde(rename = "lang")]
                 lang: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "retry_on_conflict")]
                 retry_on_conflict: Option<i64>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -5369,12 +6194,17 @@ where
                 _source: self._source,
                 _source_excludes: self._source_excludes,
                 _source_includes: self._source_includes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 if_primary_term: self.if_primary_term,
                 if_seq_no: self.if_seq_no,
                 lang: self.lang,
+                pretty: self.pretty,
                 refresh: self.refresh,
                 retry_on_conflict: self.retry_on_conflict,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -5565,6 +6395,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -5670,6 +6505,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
     #[doc = "Specify whether to return document version as part of a hit"]
     pub fn version(mut self, version: Option<bool>) -> Self {
         self.version = version;
@@ -5719,10 +6559,16 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "lenient")]
@@ -5733,6 +6579,8 @@ where
                 pipeline: Option<String>,
                 #[serde(rename = "preference")]
                 preference: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "refresh")]
@@ -5757,6 +6605,8 @@ where
                 slices: Option<i64>,
                 #[serde(rename = "sort")]
                 sort: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "stats")]
                 stats: Option<Vec<String>>,
                 #[serde(rename = "terminate_after")]
@@ -5782,13 +6632,17 @@ where
                 conflicts: self.conflicts,
                 default_operator: self.default_operator,
                 df: self.df,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
                 max_docs: self.max_docs,
                 pipeline: self.pipeline,
                 preference: self.preference,
+                pretty: self.pretty,
                 q: self.q,
                 refresh: self.refresh,
                 request_cache: self.request_cache,
@@ -5801,6 +6655,7 @@ where
                 size: self.size,
                 slices: self.slices,
                 sort: self.sort,
+                source: self.source,
                 stats: self.stats,
                 terminate_after: self.terminate_after,
                 timeout: self.timeout,
@@ -5881,6 +6736,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "The task id to rethrottle"]
+    pub fn task_id(mut self, task_id: String) -> Self {
+        self.task_id = task_id;
+        self
+    }
 }
 impl<B> Sender for UpdateByQueryRethrottle<B>
 where
@@ -5892,11 +6752,26 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "requests_per_second")]
                 requests_per_second: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 requests_per_second: self.requests_per_second,
+                source: self.source,
             };
             Some(query_params)
         };

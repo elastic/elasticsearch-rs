@@ -72,7 +72,29 @@ impl Sender for LicenseDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -139,10 +161,27 @@ impl Sender for LicenseGet {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
-            let query_params = QueryParamsStruct { local: self.local };
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                local: self.local,
+                pretty: self.pretty,
+                source: self.source,
+            };
             Some(query_params)
         };
         let body = Option::<()>::None;
@@ -201,7 +240,29 @@ impl Sender for LicenseGetBasicStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/basic_status";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -258,7 +319,29 @@ impl Sender for LicenseGetTrialStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/trial_status";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -340,9 +423,24 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -427,9 +525,24 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -521,11 +634,26 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "type")]
                 ty: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 ty: self.ty,
             };
             Some(query_params)

@@ -69,12 +69,39 @@ impl DataFrameDeleteDataFrameTransform {
         self.source = source;
         self
     }
+    #[doc = "The id of the transform to delete"]
+    pub fn transform_id(mut self, transform_id: String) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
 }
 impl Sender for DataFrameDeleteDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -149,6 +176,11 @@ impl DataFrameGetDataFrameTransform {
         self.source = source;
         self
     }
+    #[doc = "The id or comma delimited list of id expressions of the transforms to get, '_all' or '*' implies get all transforms"]
+    pub fn transform_id(mut self, transform_id: Option<String>) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
 }
 impl Sender for DataFrameGetDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
@@ -159,15 +191,30 @@ impl Sender for DataFrameGetDataFrameTransform {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -245,6 +292,11 @@ impl DataFrameGetDataFrameTransformStats {
         self.source = source;
         self
     }
+    #[doc = "The id of the transform for which to get stats. '_all' or '*' implies all transforms"]
+    pub fn transform_id(mut self, transform_id: String) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
 }
 impl Sender for DataFrameGetDataFrameTransformStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
@@ -255,15 +307,30 @@ impl Sender for DataFrameGetDataFrameTransformStats {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -336,7 +403,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/_preview";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -400,6 +489,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "The id of the new transform."]
+    pub fn transform_id(mut self, transform_id: String) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
 }
 impl<B> Sender for DataFramePutDataFrameTransform<B>
 where
@@ -408,7 +502,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -479,6 +595,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The id of the transform to start"]
+    pub fn transform_id(mut self, transform_id: String) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
 }
 impl<B> Sender for DataFrameStartDataFrameTransform<B>
 where
@@ -490,10 +611,25 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -577,6 +713,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The id of the transform to stop"]
+    pub fn transform_id(mut self, transform_id: String) -> Self {
+        self.transform_id = transform_id;
+        self
+    }
     #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
     pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
         self.wait_for_completion = wait_for_completion;
@@ -595,6 +736,16 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_completion")]
@@ -602,6 +753,11 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_completion: self.wait_for_completion,
             };

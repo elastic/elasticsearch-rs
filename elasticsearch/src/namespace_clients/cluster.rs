@@ -105,14 +105,29 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_disk_info")]
                 include_disk_info: Option<bool>,
                 #[serde(rename = "include_yes_decisions")]
                 include_yes_decisions: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 include_disk_info: self.include_disk_info,
                 include_yes_decisions: self.include_yes_decisions,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -203,19 +218,34 @@ impl Sender for ClusterGetSettings {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 include_defaults: self.include_defaults,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -288,6 +318,11 @@ impl ClusterHealth {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "Limit the information returned to a specific index"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
         self
     }
     #[doc = "Specify the level of detail for returned information"]
@@ -364,14 +399,24 @@ impl Sender for ClusterHealth {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "level")]
                 level: Option<Level>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -388,10 +433,15 @@ impl Sender for ClusterHealth {
                 wait_for_status: Option<WaitForStatus>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 level: self.level,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
                 wait_for_events: self.wait_for_events,
@@ -475,14 +525,29 @@ impl Sender for ClusterPendingTasks {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -579,16 +644,31 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -649,7 +729,29 @@ impl Sender for ClusterRemoteInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_remote/info";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -766,23 +868,38 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "dry_run")]
                 dry_run: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
                 #[serde(rename = "metric")]
                 metric: Option<Vec<String>>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "retry_failed")]
                 retry_failed: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 dry_run: self.dry_run,
+                error_trace: self.error_trace,
                 explain: self.explain,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
                 metric: self.metric,
+                pretty: self.pretty,
                 retry_failed: self.retry_failed,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -868,6 +985,11 @@ impl ClusterState {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -876,6 +998,11 @@ impl ClusterState {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Limit the information returned to the specified metrics"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -908,16 +1035,26 @@ impl Sender for ClusterState {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_for_metadata_version")]
                 wait_for_metadata_version: Option<i64>,
                 #[serde(rename = "wait_for_timeout")]
@@ -925,11 +1062,16 @@ impl Sender for ClusterState {
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 wait_for_metadata_version: self.wait_for_metadata_version,
                 wait_for_timeout: self.wait_for_timeout,
             };
@@ -987,6 +1129,11 @@ impl ClusterStats {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1010,13 +1157,28 @@ impl Sender for ClusterStats {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)

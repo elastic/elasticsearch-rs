@@ -100,6 +100,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "Cancel the task with specified task id (node_id:task_number)"]
+    pub fn task_id(mut self, task_id: Option<String>) -> Self {
+        self.task_id = task_id;
+        self
+    }
 }
 impl<B> Sender for TasksCancel<B>
 where
@@ -113,15 +118,30 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "actions")]
                 actions: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "nodes")]
                 nodes: Option<Vec<String>>,
                 #[serde(rename = "parent_task_id")]
                 parent_task_id: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 actions: self.actions,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 nodes: self.nodes,
                 parent_task_id: self.parent_task_id,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -182,6 +202,11 @@ impl TasksGet {
         self.source = source;
         self
     }
+    #[doc = "Return the task with specified id (node_id:task_number)"]
+    pub fn task_id(mut self, task_id: String) -> Self {
+        self.task_id = task_id;
+        self
+    }
     #[doc = "Explicit operation timeout"]
     pub fn timeout(mut self, timeout: Option<String>) -> Self {
         self.timeout = timeout;
@@ -200,12 +225,27 @@ impl Sender for TasksGet {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_completion: self.wait_for_completion,
             };
@@ -323,12 +363,22 @@ impl Sender for TasksList {
                 actions: Option<Vec<String>>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "group_by")]
                 group_by: Option<GroupBy>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "nodes")]
                 nodes: Option<Vec<String>>,
                 #[serde(rename = "parent_task_id")]
                 parent_task_id: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_completion")]
@@ -337,9 +387,14 @@ impl Sender for TasksList {
             let query_params = QueryParamsStruct {
                 actions: self.actions,
                 detailed: self.detailed,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 group_by: self.group_by,
+                human: self.human,
                 nodes: self.nodes,
                 parent_task_id: self.parent_task_id,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_completion: self.wait_for_completion,
             };

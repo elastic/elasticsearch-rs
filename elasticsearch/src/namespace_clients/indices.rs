@@ -98,10 +98,27 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "index")]
                 index: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
-            let query_params = QueryParamsStruct { index: self.index };
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                index: self.index,
+                pretty: self.pretty,
+                source: self.source,
+            };
             Some(query_params)
         };
         let body = self.body;
@@ -234,30 +251,45 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "fielddata")]
                 fielddata: Option<bool>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "index")]
                 index: Option<Vec<String>>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "query")]
                 query: Option<bool>,
                 #[serde(rename = "request")]
                 request: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 fielddata: self.fielddata,
                 fields: self.fields,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 index: self.index,
+                pretty: self.pretty,
                 query: self.query,
                 request: self.request,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -341,6 +373,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma separated list of indices to close"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -379,12 +416,22 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -392,9 +439,14 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -466,6 +518,11 @@ where
         self.include_type_name = include_type_name;
         self
     }
+    #[doc = "The name of the index"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -502,18 +559,33 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_type_name")]
                 include_type_name: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
                 wait_for_active_shards: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 include_type_name: self.include_type_name,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -587,6 +659,11 @@ impl IndicesDelete {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of indices to delete; use `_all` or `*` string to delete all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -617,20 +694,35 @@ impl Sender for IndicesDelete {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -684,9 +776,19 @@ impl IndicesDeleteAlias {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names (supports wildcards); use `_all` for all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "A comma-separated list of aliases to delete (supports wildcards); use `_all` to delete all aliases for the specified indices."]
+    pub fn name(mut self, name: Vec<String>) -> Self {
+        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -712,13 +814,28 @@ impl Sender for IndicesDeleteAlias {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -775,6 +892,11 @@ impl IndicesDeleteTemplate {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "The name of the template"]
+    pub fn name(mut self, name: String) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -798,13 +920,28 @@ impl Sender for IndicesDeleteTemplate {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -889,6 +1026,11 @@ impl IndicesExists {
         self.include_defaults = include_defaults;
         self
     }
+    #[doc = "A comma-separated list of index names"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -914,24 +1056,39 @@ impl Sender for IndicesExists {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_defaults: self.include_defaults,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1003,9 +1160,19 @@ impl IndicesExistsAlias {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to filter aliases"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
+        self
+    }
+    #[doc = "A comma-separated list of alias names to return"]
+    pub fn name(mut self, name: Vec<String>) -> Self {
+        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1028,18 +1195,33 @@ impl Sender for IndicesExistsAlias {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1107,6 +1289,11 @@ impl IndicesExistsTemplate {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "The comma separated names of the index templates"]
+    pub fn name(mut self, name: Vec<String>) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1125,17 +1312,32 @@ impl Sender for IndicesExistsTemplate {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1207,6 +1409,11 @@ impl IndicesExistsType {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` to check the types across all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1222,6 +1429,11 @@ impl IndicesExistsType {
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types to check"]
+    pub fn ty(mut self, ty: Vec<String>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
@@ -1232,18 +1444,33 @@ impl Sender for IndicesExistsType {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1330,6 +1557,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string for all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1361,20 +1593,35 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_if_ongoing")]
                 wait_if_ongoing: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 force: self.force,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
                 wait_if_ongoing: self.wait_if_ongoing,
             };
             Some(query_params)
@@ -1453,6 +1700,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string for all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1479,15 +1731,30 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1576,6 +1843,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "The number of segments the index should be merged into (default: dynamic)"]
     pub fn max_num_segments(mut self, max_num_segments: Option<i64>) -> Self {
         self.max_num_segments = max_num_segments;
@@ -1609,24 +1881,39 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flush")]
                 flush: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "max_num_segments")]
                 max_num_segments: Option<i64>,
                 #[serde(rename = "only_expunge_deletes")]
                 only_expunge_deletes: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flush: self.flush,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 max_num_segments: self.max_num_segments,
                 only_expunge_deletes: self.only_expunge_deletes,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1710,6 +1997,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "The name of the index to freeze"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -1748,12 +2040,22 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -1761,9 +2063,14 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -1858,6 +2165,11 @@ impl IndicesGet {
         self.include_type_name = include_type_name;
         self
     }
+    #[doc = "A comma-separated list of index names"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1888,10 +2200,16 @@ impl Sender for IndicesGet {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_defaults")]
@@ -1902,16 +2220,25 @@ impl Sender for IndicesGet {
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_defaults: self.include_defaults,
                 include_type_name: self.include_type_name,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1983,9 +2310,19 @@ impl IndicesGetAlias {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to filter aliases"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
+        self
+    }
+    #[doc = "A comma-separated list of alias names to return"]
+    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
+        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2008,18 +2345,33 @@ impl Sender for IndicesGetAlias {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2082,6 +2434,11 @@ impl IndicesGetFieldMapping {
         self.expand_wildcards = expand_wildcards;
         self
     }
+    #[doc = "A comma-separated list of fields"]
+    pub fn fields(mut self, fields: Vec<String>) -> Self {
+        self.fields = fields;
+        self
+    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -2107,6 +2464,11 @@ impl IndicesGetFieldMapping {
         self.include_type_name = include_type_name;
         self
     }
+    #[doc = "A comma-separated list of index names"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2122,6 +2484,11 @@ impl IndicesGetFieldMapping {
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
@@ -2132,8 +2499,14 @@ impl Sender for IndicesGetFieldMapping {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_defaults")]
@@ -2142,14 +2515,23 @@ impl Sender for IndicesGetFieldMapping {
                 include_type_name: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_defaults: self.include_defaults,
                 include_type_name: self.include_type_name,
                 local: self.local,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2230,6 +2612,11 @@ impl IndicesGetMapping {
         self.include_type_name = include_type_name;
         self
     }
+    #[doc = "A comma-separated list of index names"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2250,6 +2637,11 @@ impl IndicesGetMapping {
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of document types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
@@ -2260,8 +2652,14 @@ impl Sender for IndicesGetMapping {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_type_name")]
@@ -2270,14 +2668,23 @@ impl Sender for IndicesGetMapping {
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_type_name: self.include_type_name,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2365,6 +2772,11 @@ impl IndicesGetSettings {
         self.include_defaults = include_defaults;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2373,6 +2785,11 @@ impl IndicesGetSettings {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "The name of the settings that should be included"]
+    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
+        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2395,10 +2812,16 @@ impl Sender for IndicesGetSettings {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_defaults")]
@@ -2407,15 +2830,24 @@ impl Sender for IndicesGetSettings {
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_defaults: self.include_defaults,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2490,6 +2922,11 @@ impl IndicesGetTemplate {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "The comma separated names of the index templates"]
+    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2508,20 +2945,35 @@ impl Sender for IndicesGetTemplate {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_type_name")]
                 include_type_name: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 include_type_name: self.include_type_name,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2589,6 +3041,11 @@ impl IndicesGetUpgrade {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2609,15 +3066,30 @@ impl Sender for IndicesGetUpgrade {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2701,6 +3173,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma separated list of indices to open"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -2739,12 +3216,22 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -2752,9 +3239,14 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -2819,9 +3311,19 @@ where
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names the alias should point to (supports wildcards); use `_all` to perform the operation on all indices."]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "The name of the alias to be created or updated"]
+    pub fn name(mut self, name: String) -> Self {
+        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2850,13 +3352,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -2948,6 +3465,11 @@ where
         self.include_type_name = include_type_name;
         self
     }
+    #[doc = "A comma-separated list of index names the mapping should be added to (supports wildcards); use `_all` or omit to add the mapping on all indices."]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -2968,6 +3490,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "The name of the document type"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for IndicesPutMapping<B>
 where
@@ -2981,23 +3508,38 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "include_type_name")]
                 include_type_name: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 include_type_name: self.include_type_name,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -3089,6 +3631,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -3127,26 +3674,41 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
                 #[serde(rename = "preserve_existing")]
                 preserve_existing: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
                 preserve_existing: self.preserve_existing,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -3236,6 +3798,11 @@ where
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "The name of the template"]
+    pub fn name(mut self, name: String) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "The order for this template when merging multiple matching ones (higher numbers are merged later, overriding the lower numbers)"]
     pub fn order(mut self, order: Option<i64>) -> Self {
         self.order = order;
@@ -3269,23 +3836,38 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "create")]
                 create: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_type_name")]
                 include_type_name: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
                 #[serde(rename = "order")]
                 order: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 create: self.create,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
                 include_type_name: self.include_type_name,
                 master_timeout: self.master_timeout,
                 order: self.order,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -3347,6 +3929,11 @@ impl IndicesRecovery {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3369,10 +3956,25 @@ impl Sender for IndicesRecovery {
                 active_only: Option<bool>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 active_only: self.active_only,
                 detailed: self.detailed,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3450,6 +4052,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3476,15 +4083,30 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3562,6 +4184,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to reload analyzers for"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3588,15 +4215,30 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3645,6 +4287,11 @@ where
             wait_for_active_shards: None,
         }
     }
+    #[doc = "The name of the alias to rollover"]
+    pub fn alias(mut self, alias: String) -> Self {
+        self.alias = alias;
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
@@ -3680,6 +4327,11 @@ where
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "The name of the rollover index"]
+    pub fn new_index(mut self, new_index: Option<String>) -> Self {
+        self.new_index = new_index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3713,10 +4365,20 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "dry_run")]
                 dry_run: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_type_name")]
                 include_type_name: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -3724,8 +4386,13 @@ where
             }
             let query_params = QueryParamsStruct {
                 dry_run: self.dry_run,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 include_type_name: self.include_type_name,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -3797,6 +4464,11 @@ impl IndicesSegments {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3822,17 +4494,32 @@ impl Sender for IndicesSegments {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "verbose")]
                 verbose: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
                 verbose: self.verbose,
             };
             Some(query_params)
@@ -3903,6 +4590,11 @@ impl IndicesShardStores {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3928,17 +4620,32 @@ impl Sender for IndicesShardStores {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "status")]
                 status: Option<Vec<String>>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
+                pretty: self.pretty,
+                source: self.source,
                 status: self.status,
             };
             Some(query_params)
@@ -4011,6 +4718,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the source index to shrink"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -4024,6 +4736,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The name of the target index to shrink into"]
+    pub fn target(mut self, target: String) -> Self {
+        self.target = target;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -4049,8 +4766,18 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "copy_settings")]
                 copy_settings: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -4058,7 +4785,12 @@ where
             }
             let query_params = QueryParamsStruct {
                 copy_settings: self.copy_settings,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -4132,6 +4864,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the source index to split"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -4145,6 +4882,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "The name of the target index to split into"]
+    pub fn target(mut self, target: String) -> Self {
+        self.target = target;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -4170,8 +4912,18 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "copy_settings")]
                 copy_settings: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -4179,7 +4931,12 @@ where
             }
             let query_params = QueryParamsStruct {
                 copy_settings: self.copy_settings,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -4290,9 +5047,19 @@ impl IndicesStats {
         self.include_unloaded_segments = include_unloaded_segments;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return stats aggregated at cluster, index or shard level"]
     pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
+        self
+    }
+    #[doc = "Limit the information returned the specific metrics."]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -4320,35 +5087,50 @@ impl Sender for IndicesStats {
             struct QueryParamsStruct {
                 #[serde(rename = "completion_fields")]
                 completion_fields: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "fielddata_fields")]
                 fielddata_fields: Option<Vec<String>>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "forbid_closed_indices")]
                 forbid_closed_indices: Option<bool>,
                 #[serde(rename = "groups")]
                 groups: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_segment_file_sizes")]
                 include_segment_file_sizes: Option<bool>,
                 #[serde(rename = "include_unloaded_segments")]
                 include_unloaded_segments: Option<bool>,
                 #[serde(rename = "level")]
                 level: Option<Level>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "types")]
                 types: Option<Vec<String>>,
             }
             let query_params = QueryParamsStruct {
                 completion_fields: self.completion_fields,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 fielddata_fields: self.fielddata_fields,
                 fields: self.fields,
+                filter_path: self.filter_path,
                 forbid_closed_indices: self.forbid_closed_indices,
                 groups: self.groups,
+                human: self.human,
                 include_segment_file_sizes: self.include_segment_file_sizes,
                 include_unloaded_segments: self.include_unloaded_segments,
                 level: self.level,
+                pretty: self.pretty,
+                source: self.source,
                 types: self.types,
             };
             Some(query_params)
@@ -4433,6 +5215,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "The name of the index to unfreeze"]
+    pub fn index(mut self, index: String) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -4471,12 +5258,22 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "wait_for_active_shards")]
@@ -4484,9 +5281,14 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 wait_for_active_shards: self.wait_for_active_shards,
             };
@@ -4578,13 +5380,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -4667,6 +5484,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "If true, only ancient (an older Lucene major release) segments will be upgraded"]
     pub fn only_ancient_segments(mut self, only_ancient_segments: Option<bool>) -> Self {
         self.only_ancient_segments = only_ancient_segments;
@@ -4700,20 +5522,35 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "only_ancient_segments")]
                 only_ancient_segments: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 only_ancient_segments: self.only_ancient_segments,
+                pretty: self.pretty,
+                source: self.source,
                 wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
@@ -4842,6 +5679,11 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
+    #[doc = "A comma-separated list of index names to restrict the operation; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -4865,6 +5707,11 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
+        self
+    }
+    #[doc = "A comma-separated list of document types to restrict the operation; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
         self
     }
 }
@@ -4893,18 +5740,28 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "lenient")]
                 lenient: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
                 #[serde(rename = "rewrite")]
                 rewrite: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 all_shards: self.all_shards,
@@ -4913,12 +5770,17 @@ where
                 analyzer: self.analyzer,
                 default_operator: self.default_operator,
                 df: self.df,
+                error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 lenient: self.lenient,
+                pretty: self.pretty,
                 q: self.q,
                 rewrite: self.rewrite,
+                source: self.source,
             };
             Some(query_params)
         };

@@ -81,6 +81,11 @@ impl NodesHotThreads {
         self.interval = interval;
         self
     }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -119,12 +124,22 @@ impl Sender for NodesHotThreads {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_idle_threads")]
                 ignore_idle_threads: Option<bool>,
                 #[serde(rename = "interval")]
                 interval: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "snapshots")]
                 snapshots: Option<i64>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "threads")]
                 threads: Option<i64>,
                 #[serde(rename = "timeout")]
@@ -133,9 +148,14 @@ impl Sender for NodesHotThreads {
                 ty: Option<Type>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 ignore_idle_threads: self.ignore_idle_threads,
                 interval: self.interval,
+                pretty: self.pretty,
                 snapshots: self.snapshots,
+                source: self.source,
                 threads: self.threads,
                 timeout: self.timeout,
                 ty: self.ty,
@@ -196,6 +216,16 @@ impl NodesInfo {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of metrics you wish returned. Leave empty to return all."]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
+        self
+    }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -219,13 +249,28 @@ impl Sender for NodesInfo {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 flat_settings: self.flat_settings,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -285,6 +330,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of node IDs to span the reload/reinit call. Should stay empty because reloading usually involves all cluster nodes."]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -311,10 +361,25 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -407,9 +472,24 @@ impl NodesStats {
         self.include_segment_file_sizes = include_segment_file_sizes;
         self
     }
+    #[doc = "Limit the information returned for `indices` metric to the specific index metrics. Isn't used if `indices` (or `all`) metric isn't specified."]
+    pub fn index_metric(mut self, index_metric: Option<Vec<String>>) -> Self {
+        self.index_metric = index_metric;
+        self
+    }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
     pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
+        self
+    }
+    #[doc = "Limit the information returned to the specified metrics"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
+        self
+    }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -442,16 +522,26 @@ impl Sender for NodesStats {
             struct QueryParamsStruct {
                 #[serde(rename = "completion_fields")]
                 completion_fields: Option<Vec<String>>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "fielddata_fields")]
                 fielddata_fields: Option<Vec<String>>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "groups")]
                 groups: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_segment_file_sizes")]
                 include_segment_file_sizes: Option<bool>,
                 #[serde(rename = "level")]
                 level: Option<Level>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "types")]
@@ -459,11 +549,16 @@ impl Sender for NodesStats {
             }
             let query_params = QueryParamsStruct {
                 completion_fields: self.completion_fields,
+                error_trace: self.error_trace,
                 fielddata_fields: self.fielddata_fields,
                 fields: self.fields,
+                filter_path: self.filter_path,
                 groups: self.groups,
+                human: self.human,
                 include_segment_file_sizes: self.include_segment_file_sizes,
                 level: self.level,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
                 types: self.types,
             };
@@ -516,6 +611,16 @@ impl NodesUsage {
         self.human = human;
         self
     }
+    #[doc = "Limit the information returned to the specified metrics"]
+    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
+        self.metric = metric;
+        self
+    }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -539,10 +644,25 @@ impl Sender for NodesUsage {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)

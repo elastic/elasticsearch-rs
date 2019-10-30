@@ -51,6 +51,11 @@ where
             source: None,
         }
     }
+    #[doc = "A comma-separated list of the action ids to be acked"]
+    pub fn action_id(mut self, action_id: Option<Vec<String>>) -> Self {
+        self.action_id = action_id;
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
@@ -81,6 +86,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn watch_id(mut self, watch_id: String) -> Self {
+        self.watch_id = watch_id;
+        self
+    }
 }
 impl<B> Sender for WatcherAckWatch<B>
 where
@@ -89,7 +99,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_ack";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -153,6 +185,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn watch_id(mut self, watch_id: String) -> Self {
+        self.watch_id = watch_id;
+        self
+    }
 }
 impl<B> Sender for WatcherActivateWatch<B>
 where
@@ -161,7 +198,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_activate";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -225,6 +284,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn watch_id(mut self, watch_id: String) -> Self {
+        self.watch_id = watch_id;
+        self
+    }
 }
 impl<B> Sender for WatcherDeactivateWatch<B>
 where
@@ -233,7 +297,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_deactivate";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -277,6 +363,11 @@ impl WatcherDeleteWatch {
         self.human = human;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -292,7 +383,29 @@ impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -353,6 +466,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -376,8 +494,25 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "debug")]
                 debug: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
-            let query_params = QueryParamsStruct { debug: self.debug };
+            let query_params = QueryParamsStruct {
+                debug: self.debug,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
             Some(query_params)
         };
         let body = self.body;
@@ -423,6 +558,11 @@ impl WatcherGetWatch {
         self.human = human;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -438,7 +578,29 @@ impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -505,6 +667,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "Watch ID"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "only update the watch if the last operation that has changed the watch has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -543,17 +710,32 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "active")]
                 active: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "if_primary_term")]
                 if_primary_term: Option<i64>,
                 #[serde(rename = "if_seq_no")]
                 if_seq_no: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "version")]
                 version: Option<i64>,
             }
             let query_params = QueryParamsStruct {
                 active: self.active,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 if_primary_term: self.if_primary_term,
                 if_seq_no: self.if_seq_no,
+                pretty: self.pretty,
+                source: self.source,
                 version: self.version,
             };
             Some(query_params)
@@ -627,7 +809,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_start";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -703,12 +907,27 @@ impl Sender for WatcherStats {
             struct QueryParamsStruct {
                 #[serde(rename = "emit_stacktraces")]
                 emit_stacktraces: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "metric")]
                 metric: Option<Vec<String>>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 emit_stacktraces: self.emit_stacktraces,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 metric: self.metric,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -781,7 +1000,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_stop";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client

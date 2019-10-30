@@ -75,6 +75,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -95,6 +100,11 @@ where
         self.timeout = timeout;
         self
     }
+    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
+    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for GraphExplore<B>
 where
@@ -109,13 +119,28 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "routing")]
                 routing: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 routing: self.routing,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)

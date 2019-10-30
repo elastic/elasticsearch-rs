@@ -100,6 +100,11 @@ where
         self.system_id = system_id;
         self
     }
+    #[doc = "Default document type for items which don't provide one"]
+    pub fn ty(mut self, ty: Option<String>) -> Self {
+        self.ty = ty;
+        self
+    }
 }
 impl<B> Sender for MonitoringBulk<B>
 where
@@ -111,15 +116,30 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "interval")]
                 interval: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "system_api_version")]
                 system_api_version: Option<String>,
                 #[serde(rename = "system_id")]
                 system_id: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
                 interval: self.interval,
+                pretty: self.pretty,
+                source: self.source,
                 system_api_version: self.system_api_version,
                 system_id: self.system_id,
             };

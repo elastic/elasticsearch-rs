@@ -85,6 +85,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the job to close"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -113,14 +118,29 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_jobs: self.allow_no_jobs,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 force: self.force,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -153,6 +173,11 @@ impl MlDeleteCalendar {
             source: None,
         }
     }
+    #[doc = "The ID of the calendar to delete"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -183,7 +208,29 @@ impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -214,9 +261,19 @@ impl MlDeleteCalendarEvent {
             source: None,
         }
     }
+    #[doc = "The ID of the calendar to modify"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
+        self
+    }
+    #[doc = "The ID of the event to remove from the calendar"]
+    pub fn event_id(mut self, event_id: String) -> Self {
+        self.event_id = event_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -244,7 +301,29 @@ impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/events/{event_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -275,6 +354,11 @@ impl MlDeleteCalendarJob {
             source: None,
         }
     }
+    #[doc = "The ID of the calendar to modify"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -288,6 +372,11 @@ impl MlDeleteCalendarJob {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "The ID of the job to remove from the calendar"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -305,7 +394,29 @@ impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -349,6 +460,11 @@ impl MlDeleteDataFrameAnalytics {
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics to delete"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -364,7 +480,29 @@ impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -394,6 +532,11 @@ impl MlDeleteDatafeed {
             pretty: None,
             source: None,
         }
+    }
+    #[doc = "The ID of the datafeed to delete"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -433,10 +576,27 @@ impl Sender for MlDeleteDatafeed {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
-            let query_params = QueryParamsStruct { force: self.force };
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                force: self.force,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
             Some(query_params)
         };
         let body = Option::<()>::None;
@@ -495,7 +655,29 @@ impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/_delete_expired_data";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -529,6 +711,11 @@ impl MlDeleteFilter {
         self.error_trace = error_trace;
         self
     }
+    #[doc = "The ID of the filter to delete"]
+    pub fn filter_id(mut self, filter_id: String) -> Self {
+        self.filter_id = filter_id;
+        self
+    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -554,7 +741,29 @@ impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -604,9 +813,19 @@ impl MlDeleteForecast {
         self.filter_path = filter_path;
         self
     }
+    #[doc = "The ID of the forecast to delete, can be comma delimited list. Leaving blank implies `_all`"]
+    pub fn forecast_id(mut self, forecast_id: Option<String>) -> Self {
+        self.forecast_id = forecast_id;
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "The ID of the job from which to delete forecasts"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -634,11 +853,26 @@ impl Sender for MlDeleteForecast {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_forecasts")]
                 allow_no_forecasts: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_forecasts: self.allow_no_forecasts,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -695,6 +929,11 @@ impl MlDeleteJob {
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to delete"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -718,13 +957,28 @@ impl Sender for MlDeleteJob {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 force: self.force,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
@@ -774,9 +1028,19 @@ impl MlDeleteModelSnapshot {
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to fetch"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "The ID of the snapshot to delete"]
+    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
+        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -789,7 +1053,29 @@ impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
         let method = HttpMethod::Delete;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -859,7 +1145,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/_evaluate";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -1036,22 +1344,32 @@ where
                 column_names: Option<Vec<String>>,
                 #[serde(rename = "delimiter")]
                 delimiter: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<Format>,
                 #[serde(rename = "grok_pattern")]
                 grok_pattern: Option<String>,
                 #[serde(rename = "has_header_row")]
                 has_header_row: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "line_merge_size_limit")]
                 line_merge_size_limit: Option<i32>,
                 #[serde(rename = "lines_to_sample")]
                 lines_to_sample: Option<i32>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "quote")]
                 quote: Option<String>,
                 #[serde(rename = "should_trim_fields")]
                 should_trim_fields: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
                 #[serde(rename = "timestamp_field")]
@@ -1063,14 +1381,19 @@ where
                 charset: self.charset,
                 column_names: self.column_names,
                 delimiter: self.delimiter,
+                error_trace: self.error_trace,
                 explain: self.explain,
+                filter_path: self.filter_path,
                 format: self.format,
                 grok_pattern: self.grok_pattern,
                 has_header_row: self.has_header_row,
+                human: self.human,
                 line_merge_size_limit: self.line_merge_size_limit,
                 lines_to_sample: self.lines_to_sample,
+                pretty: self.pretty,
                 quote: self.quote,
                 should_trim_fields: self.should_trim_fields,
+                source: self.source,
                 timeout: self.timeout,
                 timestamp_field: self.timestamp_field,
                 timestamp_format: self.timestamp_format,
@@ -1155,6 +1478,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the job to flush"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1192,8 +1520,18 @@ where
                 calc_interim: Option<bool>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "skip_time")]
                 skip_time: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
@@ -1201,7 +1539,12 @@ where
                 advance_time: self.advance_time,
                 calc_interim: self.calc_interim,
                 end: self.end,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 skip_time: self.skip_time,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -1273,6 +1616,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to forecast for"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1296,12 +1644,27 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "duration")]
                 duration: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "expires_in")]
                 expires_in: Option<String>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 duration: self.duration,
+                error_trace: self.error_trace,
                 expires_in: self.expires_in,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1408,6 +1771,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "ID of the job to get bucket results from"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1433,6 +1801,11 @@ where
         self.start = start;
         self
     }
+    #[doc = "The timestamp of the desired single bucket result"]
+    pub fn timestamp(mut self, timestamp: Option<String>) -> Self {
+        self.timestamp = timestamp;
+        self
+    }
 }
 impl<B> Sender for MlGetBuckets<B>
 where
@@ -1453,16 +1826,26 @@ where
                 desc: Option<bool>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
                 exclude_interim: Option<bool>,
                 #[serde(rename = "expand")]
                 expand: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
                 sort: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
@@ -1470,11 +1853,16 @@ where
                 anomaly_score: self.anomaly_score,
                 desc: self.desc,
                 end: self.end,
+                error_trace: self.error_trace,
                 exclude_interim: self.exclude_interim,
                 expand: self.expand,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
                 sort: self.sort,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -1516,6 +1904,11 @@ impl MlGetCalendarEvents {
             source: None,
             start: None,
         }
+    }
+    #[doc = "The ID of the calendar containing the events"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
     }
     #[doc = "Get events before this time"]
     pub fn end(mut self, end: Option<String>) -> Self {
@@ -1577,20 +1970,35 @@ impl Sender for MlGetCalendarEvents {
             struct QueryParamsStruct {
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "job_id")]
                 job_id: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 end: self.end,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
                 job_id: self.job_id,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -1635,6 +2043,11 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
+        self
+    }
+    #[doc = "The ID of the calendar to fetch"]
+    pub fn calendar_id(mut self, calendar_id: Option<String>) -> Self {
+        self.calendar_id = calendar_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1686,14 +2099,29 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1741,6 +2169,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The identifier of the category definition of interest"]
+    pub fn category_id(mut self, category_id: Option<i64>) -> Self {
+        self.category_id = category_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -1759,6 +2192,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "The name of the job"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1790,14 +2228,29 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1860,6 +2313,11 @@ impl MlGetDataFrameAnalytics {
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics to fetch"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1885,15 +2343,30 @@ impl Sender for MlGetDataFrameAnalytics {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -1956,6 +2429,11 @@ impl MlGetDataFrameAnalyticsStats {
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics stats to fetch"]
+    pub fn id(mut self, id: Option<String>) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1981,15 +2459,30 @@ impl Sender for MlGetDataFrameAnalyticsStats {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2028,6 +2521,11 @@ impl MlGetDatafeedStats {
         self.allow_no_datafeeds = allow_no_datafeeds;
         self
     }
+    #[doc = "The ID of the datafeeds stats to fetch"]
+    pub fn datafeed_id(mut self, datafeed_id: Option<String>) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2063,9 +2561,24 @@ impl Sender for MlGetDatafeedStats {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2104,6 +2617,11 @@ impl MlGetDatafeeds {
         self.allow_no_datafeeds = allow_no_datafeeds;
         self
     }
+    #[doc = "The ID of the datafeeds to fetch"]
+    pub fn datafeed_id(mut self, datafeed_id: Option<String>) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -2139,9 +2657,24 @@ impl Sender for MlGetDatafeeds {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2182,6 +2715,11 @@ impl MlGetFilters {
         self.error_trace = error_trace;
         self
     }
+    #[doc = "The ID of the filter to fetch"]
+    pub fn filter_id(mut self, filter_id: Option<String>) -> Self {
+        self.filter_id = filter_id;
+        self
+    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -2220,14 +2758,29 @@ impl Sender for MlGetFilters {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2325,6 +2878,10 @@ where
         self.influencer_score = influencer_score;
         self
     }
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2368,27 +2925,42 @@ where
                 desc: Option<bool>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
                 exclude_interim: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "influencer_score")]
                 influencer_score: Option<f64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
                 sort: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 desc: self.desc,
                 end: self.end,
+                error_trace: self.error_trace,
                 exclude_interim: self.exclude_interim,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
                 influencer_score: self.influencer_score,
+                pretty: self.pretty,
                 size: self.size,
                 sort: self.sort,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -2443,6 +3015,11 @@ impl MlGetJobStats {
         self.human = human;
         self
     }
+    #[doc = "The ID of the jobs stats to fetch"]
+    pub fn job_id(mut self, job_id: Option<String>) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2463,9 +3040,24 @@ impl Sender for MlGetJobStats {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_jobs: self.allow_no_jobs,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2519,6 +3111,11 @@ impl MlGetJobs {
         self.human = human;
         self
     }
+    #[doc = "The ID of the jobs to fetch"]
+    pub fn job_id(mut self, job_id: Option<String>) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2539,9 +3136,24 @@ impl Sender for MlGetJobs {
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_jobs: self.allow_no_jobs,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -2627,6 +3239,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to fetch"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2635,6 +3252,11 @@ where
     #[doc = "The default number of documents returned in queries as a string."]
     pub fn size(mut self, size: Option<i32>) -> Self {
         self.size = size;
+        self
+    }
+    #[doc = "The ID of the snapshot to fetch"]
+    pub fn snapshot_id(mut self, snapshot_id: Option<String>) -> Self {
+        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "Name of the field to sort on"]
@@ -2670,21 +3292,36 @@ where
                 desc: Option<bool>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
                 sort: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 desc: self.desc,
                 end: self.end,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 size: self.size,
                 sort: self.sort,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -2776,6 +3413,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The job IDs for which to calculate overall bucket results"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Returns overall buckets with overall scores higher than this value"]
     pub fn overall_score(mut self, overall_score: Option<f64>) -> Self {
         self.overall_score = overall_score;
@@ -2821,10 +3463,20 @@ where
                 bucket_span: Option<String>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
                 exclude_interim: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "overall_score")]
                 overall_score: Option<f64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
                 #[serde(rename = "top_n")]
@@ -2834,8 +3486,13 @@ where
                 allow_no_jobs: self.allow_no_jobs,
                 bucket_span: self.bucket_span,
                 end: self.end,
+                error_trace: self.error_trace,
                 exclude_interim: self.exclude_interim,
+                filter_path: self.filter_path,
+                human: self.human,
                 overall_score: self.overall_score,
+                pretty: self.pretty,
+                source: self.source,
                 start: self.start,
                 top_n: self.top_n,
             };
@@ -2930,6 +3587,10 @@ where
         self.human = human;
         self
     }
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2977,27 +3638,42 @@ where
                 desc: Option<bool>,
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
                 exclude_interim: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "record_score")]
                 record_score: Option<f64>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
                 sort: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 desc: self.desc,
                 end: self.end,
+                error_trace: self.error_trace,
                 exclude_interim: self.exclude_interim,
+                filter_path: self.filter_path,
                 from: self.from,
+                human: self.human,
+                pretty: self.pretty,
                 record_score: self.record_score,
                 size: self.size,
                 sort: self.sort,
+                source: self.source,
                 start: self.start,
             };
             Some(query_params)
@@ -3058,7 +3734,29 @@ impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/info";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -3116,6 +3814,16 @@ where
         self.human = human;
         self
     }
+    #[doc = "Controls if gaps in data are treated as anomalous or as a maintenance window after a job re-start"]
+    pub fn ignore_downtime(mut self, ignore_downtime: Option<bool>) -> Self {
+        self.ignore_downtime = ignore_downtime;
+        self
+    }
+    #[doc = "The ID of the job to open"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3126,6 +3834,11 @@ where
         self.source = source;
         self
     }
+    #[doc = "Controls the time to wait until a job has opened. Default to 30 minutes"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
 }
 impl<B> Sender for MlOpenJob<B>
 where
@@ -3134,7 +3847,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_open";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3173,6 +3908,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the calendar to modify"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3206,7 +3946,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/events";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3264,6 +4026,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The name of the job receiving the data"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3295,14 +4062,29 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "reset_end")]
                 reset_end: Option<String>,
                 #[serde(rename = "reset_start")]
                 reset_start: Option<String>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
                 reset_end: self.reset_end,
                 reset_start: self.reset_start,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3334,6 +4116,11 @@ impl MlPreviewDatafeed {
             source: None,
         }
     }
+    #[doc = "The ID of the datafeed to preview"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3364,7 +4151,29 @@ impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_preview";
         let method = HttpMethod::Get;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = Option::<()>::None;
         let response = self
             .client
@@ -3403,6 +4212,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the calendar to create"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3436,7 +4250,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3477,6 +4313,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the calendar to modify"]
+    pub fn calendar_id(mut self, calendar_id: String) -> Self {
+        self.calendar_id = calendar_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3490,6 +4331,11 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
+        self
+    }
+    #[doc = "The ID of the job to add to the calendar"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -3510,7 +4356,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3564,6 +4432,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics to create"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3582,7 +4455,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3621,6 +4516,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the datafeed to create"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -3654,7 +4554,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3698,6 +4620,11 @@ where
         self.error_trace = error_trace;
         self
     }
+    #[doc = "The ID of the filter to create"]
+    pub fn filter_id(mut self, filter_id: String) -> Self {
+        self.filter_id = filter_id;
+        self
+    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -3726,7 +4653,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3780,6 +4729,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to create"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3798,7 +4752,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}";
         let method = HttpMethod::Put;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -3861,9 +4837,19 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to fetch"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "The ID of the snapshot to revert to"]
+    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
+        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -3884,9 +4870,24 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "delete_intervening_results")]
                 delete_intervening_results: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 delete_intervening_results: self.delete_intervening_results,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -3978,11 +4979,26 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "enabled")]
                 enabled: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 enabled: self.enabled,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -4042,6 +5058,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics to start"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4068,10 +5089,25 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -4118,6 +5154,11 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
+        self
+    }
+    #[doc = "The ID of the datafeed to start"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
@@ -4173,6 +5214,16 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "end")]
                 end: Option<String>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "start")]
                 start: Option<String>,
                 #[serde(rename = "timeout")]
@@ -4180,6 +5231,11 @@ where
             }
             let query_params = QueryParamsStruct {
                 end: self.end,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 start: self.start,
                 timeout: self.timeout,
             };
@@ -4254,6 +5310,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the data frame analytics to stop"]
+    pub fn id(mut self, id: String) -> Self {
+        self.id = id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4282,14 +5343,29 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 force: self.force,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -4343,6 +5419,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the datafeed to stop"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -4391,14 +5472,29 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "timeout")]
                 timeout: Option<String>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_datafeeds: self.allow_no_datafeeds,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 force: self.force,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
                 timeout: self.timeout,
             };
             Some(query_params)
@@ -4441,6 +5537,11 @@ where
         self.body = body;
         self
     }
+    #[doc = "The ID of the datafeed to update"]
+    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
+        self.datafeed_id = datafeed_id;
+        self
+    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
@@ -4474,7 +5575,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_update";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4518,6 +5641,11 @@ where
         self.error_trace = error_trace;
         self
     }
+    #[doc = "The ID of the filter to update"]
+    pub fn filter_id(mut self, filter_id: String) -> Self {
+        self.filter_id = filter_id;
+        self
+    }
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
         self.filter_path = filter_path;
@@ -4546,7 +5674,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}/_update";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4600,6 +5750,11 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to create"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4618,7 +5773,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_update";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4674,9 +5851,19 @@ where
         self.human = human;
         self
     }
+    #[doc = "The ID of the job to fetch"]
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = job_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
+        self
+    }
+    #[doc = "The ID of the snapshot to update"]
+    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
+        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -4692,7 +5879,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_update";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4762,7 +5971,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/_validate";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client
@@ -4832,7 +6063,29 @@ where
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/_validate/detector";
         let method = HttpMethod::Post;
-        let query_string = None::<()>;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
         let body = self.body;
         let response = self
             .client

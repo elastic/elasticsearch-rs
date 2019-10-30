@@ -66,6 +66,7 @@ pub mod tests {
 
         let mut response = client
             .search::<()>()
+            .pretty(Some(true))
             .q(Some("title:Elasticsearch".into()))
             .send()
             .unwrap();

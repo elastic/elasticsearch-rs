@@ -31,6 +31,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
                 endpoint,
                 &common_fields,
                 &common_builder_fns,
+                &api.common_params,
             )
         })
         .collect();

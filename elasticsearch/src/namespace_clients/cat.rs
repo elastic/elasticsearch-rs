@@ -98,6 +98,11 @@ impl CatAliases {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "A comma-separated list of alias names to return"]
+    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -126,28 +131,43 @@ impl Sender for CatAliases {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -241,6 +261,11 @@ impl CatAllocation {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "A comma-separated list of node IDs or names to limit the returned information"]
+    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
+        self.node_id = node_id;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -271,29 +296,44 @@ impl Sender for CatAllocation {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -370,6 +410,11 @@ impl CatCount {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to limit the returned information"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -408,28 +453,43 @@ impl Sender for CatCount {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -558,32 +618,47 @@ impl Sender for CatFielddata {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
                 #[serde(rename = "fields")]
                 fields: Option<Vec<String>>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
                 fields: self.fields,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -703,30 +778,45 @@ impl Sender for CatHealth {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "ts")]
                 ts: Option<bool>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 ts: self.ts,
                 v: self.v,
             };
@@ -805,14 +895,29 @@ impl Sender for CatHelp {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 help: self.help,
+                human: self.human,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
             };
             Some(query_params)
         };
@@ -911,6 +1016,11 @@ impl CatIndices {
         self.include_unloaded_segments = include_unloaded_segments;
         self
     }
+    #[doc = "A comma-separated list of index names to limit the returned information"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -956,6 +1066,10 @@ impl Sender for CatIndices {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
@@ -964,30 +1078,41 @@ impl Sender for CatIndices {
                 health: Option<Health>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "include_unloaded_segments")]
                 include_unloaded_segments: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "pri")]
                 pri: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 health: self.health,
                 help: self.help,
+                human: self.human,
                 include_unloaded_segments: self.include_unloaded_segments,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 pri: self.pri,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1100,28 +1225,43 @@ impl Sender for CatMaster {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1234,28 +1374,43 @@ impl Sender for CatNodeattrs {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1375,6 +1530,10 @@ impl Sender for CatNodes {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "full_id")]
@@ -1383,23 +1542,34 @@ impl Sender for CatNodes {
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 full_id: self.full_id,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1512,28 +1682,43 @@ impl Sender for CatPendingTasks {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1646,28 +1831,43 @@ impl Sender for CatPlugins {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1749,6 +1949,11 @@ impl CatRecovery {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to limit the returned information"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -1784,26 +1989,41 @@ impl Sender for CatRecovery {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -1916,28 +2136,43 @@ impl Sender for CatRepositories {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2017,6 +2252,11 @@ impl CatSegments {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to limit the returned information"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2047,23 +2287,38 @@ impl Sender for CatSegments {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2147,6 +2402,11 @@ impl CatShards {
         self.human = human;
         self
     }
+    #[doc = "A comma-separated list of index names to limit the returned information"]
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
+        self.index = index;
+        self
+    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2187,29 +2447,44 @@ impl Sender for CatShards {
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 bytes: self.bytes,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2301,6 +2576,11 @@ impl CatSnapshots {
         self.pretty = pretty;
         self
     }
+    #[doc = "Name of repository from which to fetch the snapshot information"]
+    pub fn repository(mut self, repository: Option<Vec<String>>) -> Self {
+        self.repository = repository;
+        self
+    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: Option<Vec<String>>) -> Self {
         self.s = s;
@@ -2324,28 +2604,43 @@ impl Sender for CatSnapshots {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 ignore_unavailable: self.ignore_unavailable,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2476,30 +2771,45 @@ impl Sender for CatTasks {
                 actions: Option<Vec<String>>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "node_id")]
                 node_id: Option<Vec<String>>,
                 #[serde(rename = "parent_task")]
                 parent_task: Option<i64>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 actions: self.actions,
                 detailed: self.detailed,
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 node_id: self.node_id,
                 parent_task: self.parent_task,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2586,6 +2896,11 @@ impl CatTemplates {
         self.master_timeout = master_timeout;
         self
     }
+    #[doc = "A pattern that returned template names must match"]
+    pub fn name(mut self, name: Option<String>) -> Self {
+        self.name = name;
+        self
+    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2614,28 +2929,43 @@ impl Sender for CatTemplates {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
@@ -2744,6 +3074,11 @@ impl CatThreadPool {
         self.source = source;
         self
     }
+    #[doc = "A comma-separated list of regular-expressions to filter the thread pools in the output"]
+    pub fn thread_pool_patterns(mut self, thread_pool_patterns: Option<Vec<String>>) -> Self {
+        self.thread_pool_patterns = thread_pool_patterns;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -2757,31 +3092,46 @@ impl Sender for CatThreadPool {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(rename = "filter_path")]
+                filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "h")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
                 #[serde(rename = "s")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "size")]
                 size: Option<Size>,
+                #[serde(rename = "source")]
+                source: Option<String>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
+                human: self.human,
                 local: self.local,
                 master_timeout: self.master_timeout,
+                pretty: self.pretty,
                 s: self.s,
                 size: self.size,
+                source: self.source,
                 v: self.v,
             };
             Some(query_params)
