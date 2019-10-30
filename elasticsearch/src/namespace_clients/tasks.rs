@@ -14,20 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct TasksCancel {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct TasksCancel<B> {
     client: Elasticsearch,
     actions: Option<Vec<String>>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -37,16 +36,33 @@ pub struct TasksCancel {
     source: Option<String>,
     task_id: Option<String>,
 }
-impl TasksCancel {
+impl<B> TasksCancel<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         TasksCancel {
             client,
-            ..Default::default()
+            actions: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            nodes: None,
+            parent_task_id: None,
+            pretty: None,
+            source: None,
+            task_id: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
     pub fn actions(mut self, actions: Option<Vec<String>>) -> Self {
         self.actions = actions;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -85,11 +101,14 @@ impl TasksCancel {
         self
     }
 }
-impl Sender for TasksCancel {
+impl<B> Sender for TasksCancel<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks/_cancel";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "actions")]
@@ -106,14 +125,13 @@ impl Sender for TasksCancel {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct TasksGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -130,7 +148,13 @@ impl TasksGet {
         TasksGet {
             client,
             task_id: task_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -173,7 +197,7 @@ impl Sender for TasksGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks/{task_id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -187,14 +211,13 @@ impl Sender for TasksGet {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct TasksList {
     client: Elasticsearch,
     actions: Option<Vec<String>>,
@@ -214,7 +237,18 @@ impl TasksList {
     pub fn new(client: Elasticsearch) -> Self {
         TasksList {
             client,
-            ..Default::default()
+            actions: None,
+            detailed: None,
+            error_trace: None,
+            filter_path: None,
+            group_by: None,
+            human: None,
+            nodes: None,
+            parent_task_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
@@ -282,7 +316,7 @@ impl Sender for TasksList {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "actions")]
@@ -311,10 +345,10 @@ impl Sender for TasksList {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -327,7 +361,10 @@ impl Tasks {
         Tasks { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn cancel(&self) -> TasksCancel {
+    pub fn cancel<B>(&self) -> TasksCancel<B>
+    where
+        B: Serialize,
+    {
         TasksCancel::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]

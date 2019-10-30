@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct SslCertificates {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -37,7 +35,11 @@ impl SslCertificates {
     pub fn new(client: Elasticsearch) -> Self {
         SslCertificates {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -70,11 +72,11 @@ impl Sender for SslCertificates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ssl/certificates";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

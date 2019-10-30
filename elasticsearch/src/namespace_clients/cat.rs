@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct CatAliases {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -45,7 +43,19 @@ impl CatAliases {
     pub fn new(client: Elasticsearch) -> Self {
         CatAliases {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            name: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -113,7 +123,7 @@ impl Sender for CatAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/aliases";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -142,14 +152,13 @@ impl Sender for CatAliases {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatAllocation {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -171,7 +180,20 @@ impl CatAllocation {
     pub fn new(client: Elasticsearch) -> Self {
         CatAllocation {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            node_id: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -244,7 +266,7 @@ impl Sender for CatAllocation {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/allocation";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -276,14 +298,13 @@ impl Sender for CatAllocation {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatCount {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -304,7 +325,19 @@ impl CatCount {
     pub fn new(client: Elasticsearch) -> Self {
         CatCount {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -372,7 +405,7 @@ impl Sender for CatCount {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/count";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -401,14 +434,13 @@ impl Sender for CatCount {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatFielddata {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -430,7 +462,20 @@ impl CatFielddata {
     pub fn new(client: Elasticsearch) -> Self {
         CatFielddata {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            fields: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -508,7 +553,7 @@ impl Sender for CatFielddata {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/fielddata";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -543,14 +588,13 @@ impl Sender for CatFielddata {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatHealth {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -571,7 +615,19 @@ impl CatHealth {
     pub fn new(client: Elasticsearch) -> Self {
         CatHealth {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            ts: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -644,7 +700,7 @@ impl Sender for CatHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/health";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -676,14 +732,13 @@ impl Sender for CatHealth {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatHelp {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -698,7 +753,13 @@ impl CatHelp {
     pub fn new(client: Elasticsearch) -> Self {
         CatHelp {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            help: None,
+            human: None,
+            pretty: None,
+            s: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -741,7 +802,7 @@ impl Sender for CatHelp {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "help")]
@@ -755,14 +816,13 @@ impl Sender for CatHelp {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatIndices {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -787,7 +847,23 @@ impl CatIndices {
     pub fn new(client: Elasticsearch) -> Self {
         CatIndices {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            health: None,
+            help: None,
+            human: None,
+            include_unloaded_segments: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            pri: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -875,7 +951,7 @@ impl Sender for CatIndices {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/indices";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -916,14 +992,13 @@ impl Sender for CatIndices {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatMaster {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -943,7 +1018,18 @@ impl CatMaster {
     pub fn new(client: Elasticsearch) -> Self {
         CatMaster {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1011,7 +1097,7 @@ impl Sender for CatMaster {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/master";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1040,14 +1126,13 @@ impl Sender for CatMaster {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatNodeattrs {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1067,7 +1152,18 @@ impl CatNodeattrs {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodeattrs {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1135,7 +1231,7 @@ impl Sender for CatNodeattrs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/nodeattrs";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1164,14 +1260,13 @@ impl Sender for CatNodeattrs {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatNodes {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1192,7 +1287,19 @@ impl CatNodes {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodes {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            full_id: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1265,7 +1372,7 @@ impl Sender for CatNodes {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/nodes";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1297,14 +1404,13 @@ impl Sender for CatNodes {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatPendingTasks {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1324,7 +1430,18 @@ impl CatPendingTasks {
     pub fn new(client: Elasticsearch) -> Self {
         CatPendingTasks {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1392,7 +1509,7 @@ impl Sender for CatPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/pending_tasks";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1421,14 +1538,13 @@ impl Sender for CatPendingTasks {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatPlugins {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1448,7 +1564,18 @@ impl CatPlugins {
     pub fn new(client: Elasticsearch) -> Self {
         CatPlugins {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1516,7 +1643,7 @@ impl Sender for CatPlugins {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/plugins";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1545,14 +1672,13 @@ impl Sender for CatPlugins {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatRecovery {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -1573,7 +1699,19 @@ impl CatRecovery {
     pub fn new(client: Elasticsearch) -> Self {
         CatRecovery {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            index: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -1641,7 +1779,7 @@ impl Sender for CatRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/recovery";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -1670,14 +1808,13 @@ impl Sender for CatRecovery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatRepositories {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1697,7 +1834,18 @@ impl CatRepositories {
     pub fn new(client: Elasticsearch) -> Self {
         CatRepositories {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1765,7 +1913,7 @@ impl Sender for CatRepositories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/repositories";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -1794,14 +1942,13 @@ impl Sender for CatRepositories {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatSegments {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -1821,7 +1968,18 @@ impl CatSegments {
     pub fn new(client: Elasticsearch) -> Self {
         CatSegments {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            index: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -1884,7 +2042,7 @@ impl Sender for CatSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/segments";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -1910,14 +2068,13 @@ impl Sender for CatSegments {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatShards {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -1939,7 +2096,20 @@ impl CatShards {
     pub fn new(client: Elasticsearch) -> Self {
         CatShards {
             client,
-            ..Default::default()
+            bytes: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "The unit in which to display byte values"]
@@ -2012,7 +2182,7 @@ impl Sender for CatShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/shards";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "bytes")]
@@ -2044,14 +2214,13 @@ impl Sender for CatShards {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatSnapshots {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2072,7 +2241,19 @@ impl CatSnapshots {
     pub fn new(client: Elasticsearch) -> Self {
         CatSnapshots {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            repository: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2140,7 +2321,7 @@ impl Sender for CatSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/snapshots";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -2169,14 +2350,13 @@ impl Sender for CatSnapshots {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatTasks {
     client: Elasticsearch,
     actions: Option<Vec<String>>,
@@ -2198,7 +2378,20 @@ impl CatTasks {
     pub fn new(client: Elasticsearch) -> Self {
         CatTasks {
             client,
-            ..Default::default()
+            actions: None,
+            detailed: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            node_id: None,
+            parent_task: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
@@ -2276,7 +2469,7 @@ impl Sender for CatTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/tasks";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "actions")]
@@ -2311,14 +2504,13 @@ impl Sender for CatTasks {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatTemplates {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2339,7 +2531,19 @@ impl CatTemplates {
     pub fn new(client: Elasticsearch) -> Self {
         CatTemplates {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            name: None,
+            pretty: None,
+            s: None,
+            source: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2407,7 +2611,7 @@ impl Sender for CatTemplates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/templates";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -2436,14 +2640,13 @@ impl Sender for CatTemplates {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CatThreadPool {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2465,7 +2668,20 @@ impl CatThreadPool {
     pub fn new(client: Elasticsearch) -> Self {
         CatThreadPool {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            h: None,
+            help: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            s: None,
+            size: None,
+            source: None,
+            thread_pool_patterns: None,
+            v: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2538,7 +2754,7 @@ impl Sender for CatThreadPool {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cat/thread_pool";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -2570,10 +2786,10 @@ impl Sender for CatThreadPool {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

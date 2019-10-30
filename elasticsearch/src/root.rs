@@ -14,22 +14,21 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct Bulk {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct Bulk<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -43,11 +42,29 @@ pub struct Bulk {
     ty: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl Bulk {
+impl<B> Bulk<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Bulk {
             client,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            pipeline: None,
+            pretty: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or default list of fields to return, can be overridden on each sub-request"]
@@ -63,6 +80,11 @@ impl Bulk {
     #[doc = "Default list of fields to extract and return from the _source field, can be overridden on each sub-request"]
     pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
         self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -121,11 +143,14 @@ impl Bulk {
         self
     }
 }
-impl Sender for Bulk {
+impl<B> Sender for Bulk<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_bulk";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -160,16 +185,16 @@ impl Sender for Bulk {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct ClearScroll {
+pub struct ClearScroll<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -177,12 +202,26 @@ pub struct ClearScroll {
     scroll_id: Option<Vec<String>>,
     source: Option<String>,
 }
-impl ClearScroll {
+impl<B> ClearScroll<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         ClearScroll {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            scroll_id: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -210,24 +249,27 @@ impl ClearScroll {
         self
     }
 }
-impl Sender for ClearScroll {
+impl<B> Sender for ClearScroll<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search/scroll";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Count {
+pub struct Count<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
+    body: Option<B>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
     error_trace: Option<bool>,
@@ -247,11 +289,35 @@ pub struct Count {
     terminate_after: Option<i64>,
     ty: Option<Vec<String>>,
 }
-impl Count {
+impl<B> Count<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Count {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            body: None,
+            default_operator: None,
+            df: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_throttled: None,
+            ignore_unavailable: None,
+            index: None,
+            lenient: None,
+            min_score: None,
+            preference: None,
+            pretty: None,
+            q: None,
+            routing: None,
+            source: None,
+            terminate_after: None,
+            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -267,6 +333,11 @@ impl Count {
     #[doc = "The analyzer to use for the query string"]
     pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
         self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
@@ -350,14 +421,17 @@ impl Count {
         self
     }
 }
-impl Sender for Count {
+impl<B> Sender for Count<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_count";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -407,16 +481,16 @@ impl Sender for Count {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Create {
+pub struct Create<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -433,14 +507,35 @@ pub struct Create {
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
-impl Create {
+impl<B> Create<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Create {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pipeline: None,
+            pretty: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
+            version: None,
+            version_type: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -503,11 +598,14 @@ impl Create {
         self
     }
 }
-impl Sender for Create {
+impl<B> Sender for Create<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_create/{id}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "pipeline")]
@@ -536,14 +634,13 @@ impl Sender for Create {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct Delete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -569,7 +666,20 @@ impl Delete {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            if_primary_term: None,
+            if_seq_no: None,
+            pretty: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
+            version: None,
+            version_type: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -642,7 +752,7 @@ impl Sender for Delete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_doc/{id}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "if_primary_term")]
@@ -674,15 +784,14 @@ impl Sender for Delete {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DeleteByQuery {
+pub struct DeleteByQuery<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
@@ -690,6 +799,7 @@ pub struct DeleteByQuery {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
+    body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
@@ -725,12 +835,54 @@ pub struct DeleteByQuery {
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl DeleteByQuery {
+impl<B> DeleteByQuery<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         DeleteByQuery {
             client,
             index: index,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            allow_no_indices: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            body: None,
+            conflicts: None,
+            default_operator: None,
+            df: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            ignore_unavailable: None,
+            lenient: None,
+            max_docs: None,
+            preference: None,
+            pretty: None,
+            q: None,
+            refresh: None,
+            request_cache: None,
+            requests_per_second: None,
+            routing: None,
+            scroll: None,
+            scroll_size: None,
+            search_timeout: None,
+            search_type: None,
+            size: None,
+            slices: None,
+            sort: None,
+            source: None,
+            stats: None,
+            terminate_after: None,
+            timeout: None,
+            ty: None,
+            version: None,
+            wait_for_active_shards: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -761,6 +913,11 @@ impl DeleteByQuery {
     #[doc = "The analyzer to use for the query string"]
     pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
         self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "What to do when the delete by query hits version conflicts?"]
@@ -924,11 +1081,14 @@ impl DeleteByQuery {
         self
     }
 }
-impl Sender for DeleteByQuery {
+impl<B> Sender for DeleteByQuery<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_delete_by_query";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -1035,16 +1195,16 @@ impl Sender for DeleteByQuery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DeleteByQueryRethrottle {
+pub struct DeleteByQueryRethrottle<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1053,13 +1213,27 @@ pub struct DeleteByQueryRethrottle {
     source: Option<String>,
     task_id: String,
 }
-impl DeleteByQueryRethrottle {
+impl<B> DeleteByQueryRethrottle<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, task_id: String) -> Self {
         DeleteByQueryRethrottle {
             client,
             task_id: task_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            requests_per_second: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1092,11 +1266,14 @@ impl DeleteByQueryRethrottle {
         self
     }
 }
-impl Sender for DeleteByQueryRethrottle {
+impl<B> Sender for DeleteByQueryRethrottle<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_delete_by_query/{task_id}/_rethrottle";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "requests_per_second")]
@@ -1107,14 +1284,13 @@ impl Sender for DeleteByQueryRethrottle {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct DeleteScript {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1131,7 +1307,13 @@ impl DeleteScript {
         DeleteScript {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1174,7 +1356,7 @@ impl Sender for DeleteScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_scripts/{id}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -1188,14 +1370,13 @@ impl Sender for DeleteScript {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct Exists {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -1223,7 +1404,22 @@ impl Exists {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            stored_fields: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -1306,7 +1502,7 @@ impl Sender for Exists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_doc/{id}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -1344,14 +1540,13 @@ impl Sender for Exists {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ExistsSource {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -1378,7 +1573,21 @@ impl ExistsSource {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -1456,7 +1665,7 @@ impl Sender for ExistsSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_source/{id}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -1491,21 +1700,21 @@ impl Sender for ExistsSource {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Explain {
+pub struct Explain<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
+    body: Option<B>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
     error_trace: Option<bool>,
@@ -1522,13 +1731,34 @@ pub struct Explain {
     stored_fields: Option<Vec<String>>,
     ty: Option<String>,
 }
-impl Explain {
+impl<B> Explain<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Explain {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            body: None,
+            default_operator: None,
+            df: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            lenient: None,
+            preference: None,
+            pretty: None,
+            q: None,
+            routing: None,
+            source: None,
+            stored_fields: None,
+            ty: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -1554,6 +1784,11 @@ impl Explain {
     #[doc = "The analyzer for the query string query"]
     pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
         self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
@@ -1617,14 +1852,17 @@ impl Explain {
         self
     }
 }
-impl Sender for Explain {
+impl<B> Sender for Explain<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_explain/{id}";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -1668,17 +1906,17 @@ impl Sender for Explain {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct FieldCaps {
+pub struct FieldCaps<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     fields: Option<Vec<String>>,
@@ -1690,16 +1928,35 @@ pub struct FieldCaps {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl FieldCaps {
+impl<B> FieldCaps<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         FieldCaps {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            fields: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            include_unmapped: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1748,14 +2005,17 @@ impl FieldCaps {
         self
     }
 }
-impl Sender for FieldCaps {
+impl<B> Sender for FieldCaps<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_field_caps";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1778,14 +2038,13 @@ impl Sender for FieldCaps {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct Get {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -1813,7 +2072,22 @@ impl Get {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            stored_fields: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -1896,7 +2170,7 @@ impl Sender for Get {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_doc/{id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -1934,14 +2208,13 @@ impl Sender for Get {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct GetScript {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1957,7 +2230,12 @@ impl GetScript {
         GetScript {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1995,7 +2273,7 @@ impl Sender for GetScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_scripts/{id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -2006,14 +2284,13 @@ impl Sender for GetScript {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct GetSource {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -2040,7 +2317,21 @@ impl GetSource {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -2118,7 +2409,7 @@ impl Sender for GetSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_source/{id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -2153,16 +2444,16 @@ impl Sender for GetSource {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Index {
+pub struct Index<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2182,13 +2473,38 @@ pub struct Index {
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
-impl Index {
+impl<B> Index<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         Index {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            if_primary_term: None,
+            if_seq_no: None,
+            op_type: None,
+            pipeline: None,
+            pretty: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
+            version: None,
+            version_type: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2266,11 +2582,14 @@ impl Index {
         self
     }
 }
-impl Sender for Index {
+impl<B> Sender for Index<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_doc/{id}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "if_primary_term")]
@@ -2308,14 +2627,13 @@ impl Sender for Index {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct Info {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2328,7 +2646,11 @@ impl Info {
     pub fn new(client: Elasticsearch) -> Self {
         Info {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2361,20 +2683,20 @@ impl Sender for Info {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Mget {
+pub struct Mget<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2388,11 +2710,29 @@ pub struct Mget {
     stored_fields: Option<Vec<String>>,
     ty: Option<String>,
 }
-impl Mget {
+impl<B> Mget<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Mget {
             client,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            refresh: None,
+            routing: None,
+            source: None,
+            stored_fields: None,
+            ty: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -2408,6 +2748,11 @@ impl Mget {
     #[doc = "A list of fields to extract and return from the _source field"]
     pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
         self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2461,14 +2806,17 @@ impl Mget {
         self
     }
 }
-impl Sender for Mget {
+impl<B> Sender for Mget<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_mget";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -2500,16 +2848,16 @@ impl Sender for Mget {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Msearch {
+pub struct Msearch<B> {
     client: Elasticsearch,
+    body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2525,12 +2873,34 @@ pub struct Msearch {
     ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
-impl Msearch {
+impl<B> Msearch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Msearch {
             client,
-            ..Default::default()
+            body: None,
+            ccs_minimize_roundtrips: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            max_concurrent_searches: None,
+            max_concurrent_shard_requests: None,
+            pre_filter_shard_size: None,
+            pretty: None,
+            rest_total_hits_as_int: None,
+            search_type: None,
+            source: None,
+            ty: None,
+            typed_keys: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
     pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
@@ -2596,14 +2966,17 @@ impl Msearch {
         self
     }
 }
-impl Sender for Msearch {
+impl<B> Sender for Msearch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_msearch";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "ccs_minimize_roundtrips")]
@@ -2632,16 +3005,16 @@ impl Sender for Msearch {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MsearchTemplate {
+pub struct MsearchTemplate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2655,12 +3028,32 @@ pub struct MsearchTemplate {
     ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
-impl MsearchTemplate {
+impl<B> MsearchTemplate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MsearchTemplate {
             client,
-            ..Default::default()
+            body: None,
+            ccs_minimize_roundtrips: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            max_concurrent_searches: None,
+            pretty: None,
+            rest_total_hits_as_int: None,
+            search_type: None,
+            source: None,
+            ty: None,
+            typed_keys: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
     pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
@@ -2713,14 +3106,17 @@ impl MsearchTemplate {
         self
     }
 }
-impl Sender for MsearchTemplate {
+impl<B> Sender for MsearchTemplate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_msearch/template";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "ccs_minimize_roundtrips")]
@@ -2743,16 +3139,16 @@ impl Sender for MsearchTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Mtermvectors {
+pub struct Mtermvectors<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
     fields: Option<Vec<String>>,
@@ -2773,12 +3169,39 @@ pub struct Mtermvectors {
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl Mtermvectors {
+impl<B> Mtermvectors<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Mtermvectors {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            field_statistics: None,
+            fields: None,
+            filter_path: None,
+            human: None,
+            ids: None,
+            index: None,
+            offsets: None,
+            payloads: None,
+            positions: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            routing: None,
+            source: None,
+            term_statistics: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2866,14 +3289,17 @@ impl Mtermvectors {
         self
     }
 }
-impl Sender for Mtermvectors {
+impl<B> Sender for Mtermvectors<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_mtermvectors";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "field_statistics")]
@@ -2917,14 +3343,13 @@ impl Sender for Mtermvectors {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct Ping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2937,7 +3362,11 @@ impl Ping {
     pub fn new(client: Elasticsearch) -> Self {
         Ping {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2970,17 +3399,17 @@ impl Sender for Ping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/";
         let method = HttpMethod::Head;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct PutScript {
+pub struct PutScript<B> {
     client: Elasticsearch,
+    body: Option<B>,
     context: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2991,13 +3420,29 @@ pub struct PutScript {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl PutScript {
+impl<B> PutScript<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         PutScript {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            context: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Context name to compile script against"]
     pub fn context(mut self, context: Option<String>) -> Self {
@@ -3040,11 +3485,14 @@ impl PutScript {
         self
     }
 }
-impl Sender for PutScript {
+impl<B> Sender for PutScript<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_scripts/{id}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "context")]
@@ -3061,17 +3509,17 @@ impl Sender for PutScript {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RankEval {
+pub struct RankEval<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -3081,16 +3529,33 @@ pub struct RankEval {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RankEval {
+impl<B> RankEval<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         RankEval {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3129,14 +3594,17 @@ impl RankEval {
         self
     }
 }
-impl Sender for RankEval {
+impl<B> Sender for RankEval<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rank_eval";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3153,16 +3621,16 @@ impl Sender for RankEval {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Reindex {
+pub struct Reindex<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3177,12 +3645,33 @@ pub struct Reindex {
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl Reindex {
+impl<B> Reindex<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Reindex {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            max_docs: None,
+            pretty: None,
+            refresh: None,
+            requests_per_second: None,
+            scroll: None,
+            slices: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
+            wait_for_completion: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3250,11 +3739,14 @@ impl Reindex {
         self
     }
 }
-impl Sender for Reindex {
+impl<B> Sender for Reindex<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_reindex";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "max_docs")]
@@ -3286,16 +3778,16 @@ impl Sender for Reindex {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct ReindexRethrottle {
+pub struct ReindexRethrottle<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3304,13 +3796,27 @@ pub struct ReindexRethrottle {
     source: Option<String>,
     task_id: String,
 }
-impl ReindexRethrottle {
+impl<B> ReindexRethrottle<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, task_id: String) -> Self {
         ReindexRethrottle {
             client,
             task_id: task_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            requests_per_second: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3343,11 +3849,14 @@ impl ReindexRethrottle {
         self
     }
 }
-impl Sender for ReindexRethrottle {
+impl<B> Sender for ReindexRethrottle<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_reindex/{task_id}/_rethrottle";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "requests_per_second")]
@@ -3358,16 +3867,16 @@ impl Sender for ReindexRethrottle {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RenderSearchTemplate {
+pub struct RenderSearchTemplate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3375,12 +3884,26 @@ pub struct RenderSearchTemplate {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RenderSearchTemplate {
+impl<B> RenderSearchTemplate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         RenderSearchTemplate {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3408,36 +3931,52 @@ impl RenderSearchTemplate {
         self
     }
 }
-impl Sender for RenderSearchTemplate {
+impl<B> Sender for RenderSearchTemplate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_render/template";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct ScriptsPainlessExecute {
+pub struct ScriptsPainlessExecute<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl ScriptsPainlessExecute {
+impl<B> ScriptsPainlessExecute<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         ScriptsPainlessExecute {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3465,24 +4004,27 @@ impl ScriptsPainlessExecute {
         self
     }
 }
-impl Sender for ScriptsPainlessExecute {
+impl<B> Sender for ScriptsPainlessExecute<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_scripts/painless/_execute";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Scroll {
+pub struct Scroll<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3492,12 +4034,28 @@ pub struct Scroll {
     scroll_id: Option<String>,
     source: Option<String>,
 }
-impl Scroll {
+impl<B> Scroll<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Scroll {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            rest_total_hits_as_int: None,
+            scroll: None,
+            scroll_id: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3540,14 +4098,17 @@ impl Scroll {
         self
     }
 }
-impl Sender for Scroll {
+impl<B> Sender for Scroll<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search/scroll";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "rest_total_hits_as_int")]
@@ -3564,15 +4125,14 @@ impl Sender for Scroll {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Search {
+pub struct Search<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
@@ -3582,6 +4142,7 @@ pub struct Search {
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
     batched_reduce_size: Option<i64>,
+    body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
@@ -3624,11 +4185,63 @@ pub struct Search {
     typed_keys: Option<bool>,
     version: Option<bool>,
 }
-impl Search {
+impl<B> Search<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         Search {
             client,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            allow_no_indices: None,
+            allow_partial_search_results: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            batched_reduce_size: None,
+            body: None,
+            ccs_minimize_roundtrips: None,
+            default_operator: None,
+            df: None,
+            docvalue_fields: None,
+            error_trace: None,
+            expand_wildcards: None,
+            explain: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            ignore_throttled: None,
+            ignore_unavailable: None,
+            index: None,
+            lenient: None,
+            max_concurrent_shard_requests: None,
+            pre_filter_shard_size: None,
+            preference: None,
+            pretty: None,
+            q: None,
+            request_cache: None,
+            rest_total_hits_as_int: None,
+            routing: None,
+            scroll: None,
+            search_type: None,
+            seq_no_primary_term: None,
+            size: None,
+            sort: None,
+            source: None,
+            stats: None,
+            stored_fields: None,
+            suggest_field: None,
+            suggest_mode: None,
+            suggest_size: None,
+            suggest_text: None,
+            terminate_after: None,
+            timeout: None,
+            track_scores: None,
+            track_total_hits: None,
+            ty: None,
+            typed_keys: None,
+            version: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -3672,6 +4285,11 @@ impl Search {
     #[doc = "The number of shard results that should be reduced at once on the coordinating node. This value should be used as a protection mechanism to reduce the memory overhead per search request if the potential number of shards in the request can be large."]
     pub fn batched_reduce_size(mut self, batched_reduce_size: Option<i64>) -> Self {
         self.batched_reduce_size = batched_reduce_size;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
@@ -3873,14 +4491,17 @@ impl Search {
         self
     }
 }
-impl Sender for Search {
+impl<B> Sender for Search<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -4014,17 +4635,17 @@ impl Sender for Search {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SearchShards {
+pub struct SearchShards<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -4037,16 +4658,36 @@ pub struct SearchShards {
     routing: Option<String>,
     source: Option<String>,
 }
-impl SearchShards {
+impl<B> SearchShards<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SearchShards {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            local: None,
+            preference: None,
+            pretty: None,
+            routing: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4100,14 +4741,17 @@ impl SearchShards {
         self
     }
 }
-impl Sender for SearchShards {
+impl<B> Sender for SearchShards<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search_shards";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -4133,17 +4777,17 @@ impl Sender for SearchShards {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SearchTemplate {
+pub struct SearchTemplate<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -4164,16 +4808,44 @@ pub struct SearchTemplate {
     ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
-impl SearchTemplate {
+impl<B> SearchTemplate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SearchTemplate {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            ccs_minimize_roundtrips: None,
+            error_trace: None,
+            expand_wildcards: None,
+            explain: None,
+            filter_path: None,
+            human: None,
+            ignore_throttled: None,
+            ignore_unavailable: None,
+            index: None,
+            preference: None,
+            pretty: None,
+            profile: None,
+            rest_total_hits_as_int: None,
+            routing: None,
+            scroll: None,
+            search_type: None,
+            source: None,
+            ty: None,
+            typed_keys: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
@@ -4262,14 +4934,17 @@ impl SearchTemplate {
         self
     }
 }
-impl Sender for SearchTemplate {
+impl<B> Sender for SearchTemplate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_search/template";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -4316,16 +4991,16 @@ impl Sender for SearchTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Termvectors {
+pub struct Termvectors<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
     fields: Option<Vec<String>>,
@@ -4346,13 +5021,39 @@ pub struct Termvectors {
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl Termvectors {
+impl<B> Termvectors<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         Termvectors {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            field_statistics: None,
+            fields: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            offsets: None,
+            payloads: None,
+            positions: None,
+            preference: None,
+            pretty: None,
+            realtime: None,
+            routing: None,
+            source: None,
+            term_statistics: None,
+            ty: None,
+            version: None,
+            version_type: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4435,14 +5136,17 @@ impl Termvectors {
         self
     }
 }
-impl Sender for Termvectors {
+impl<B> Sender for Termvectors<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_termvectors/{id}";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "field_statistics")]
@@ -4483,19 +5187,19 @@ impl Sender for Termvectors {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct Update {
+pub struct Update<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4513,13 +5217,33 @@ pub struct Update {
     ty: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl Update {
+impl<B> Update<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
         Update {
             client,
             index: index,
             id: id,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            if_primary_term: None,
+            if_seq_no: None,
+            lang: None,
+            pretty: None,
+            refresh: None,
+            retry_on_conflict: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -4535,6 +5259,11 @@ impl Update {
     #[doc = "A list of fields to extract and return from the _source field"]
     pub fn _source_includes(mut self, _source_includes: Option<Vec<String>>) -> Self {
         self._source_includes = _source_includes;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4603,11 +5332,14 @@ impl Update {
         self
     }
 }
-impl Sender for Update {
+impl<B> Sender for Update<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_update/{id}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -4648,15 +5380,14 @@ impl Sender for Update {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct UpdateByQuery {
+pub struct UpdateByQuery<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
@@ -4664,6 +5395,7 @@ pub struct UpdateByQuery {
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
+    body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
@@ -4701,12 +5433,56 @@ pub struct UpdateByQuery {
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl UpdateByQuery {
+impl<B> UpdateByQuery<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         UpdateByQuery {
             client,
             index: index,
-            ..Default::default()
+            _source: None,
+            _source_excludes: None,
+            _source_includes: None,
+            allow_no_indices: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            body: None,
+            conflicts: None,
+            default_operator: None,
+            df: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            ignore_unavailable: None,
+            lenient: None,
+            max_docs: None,
+            pipeline: None,
+            preference: None,
+            pretty: None,
+            q: None,
+            refresh: None,
+            request_cache: None,
+            requests_per_second: None,
+            routing: None,
+            scroll: None,
+            scroll_size: None,
+            search_timeout: None,
+            search_type: None,
+            size: None,
+            slices: None,
+            sort: None,
+            source: None,
+            stats: None,
+            terminate_after: None,
+            timeout: None,
+            ty: None,
+            version: None,
+            version_type: None,
+            wait_for_active_shards: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -4737,6 +5513,11 @@ impl UpdateByQuery {
     #[doc = "The analyzer to use for the query string"]
     pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
         self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "What to do when the update by query hits version conflicts?"]
@@ -4910,11 +5691,14 @@ impl UpdateByQuery {
         self
     }
 }
-impl Sender for UpdateByQuery {
+impl<B> Sender for UpdateByQuery<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_update_by_query";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "_source")]
@@ -5027,16 +5811,16 @@ impl Sender for UpdateByQuery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct UpdateByQueryRethrottle {
+pub struct UpdateByQueryRethrottle<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -5045,13 +5829,27 @@ pub struct UpdateByQueryRethrottle {
     source: Option<String>,
     task_id: String,
 }
-impl UpdateByQueryRethrottle {
+impl<B> UpdateByQueryRethrottle<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, task_id: String) -> Self {
         UpdateByQueryRethrottle {
             client,
             task_id: task_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            requests_per_second: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5084,11 +5882,14 @@ impl UpdateByQueryRethrottle {
         self
     }
 }
-impl Sender for UpdateByQueryRethrottle {
+impl<B> Sender for UpdateByQueryRethrottle<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_update_by_query/{task_id}/_rethrottle";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "requests_per_second")]
@@ -5099,156 +5900,237 @@ impl Sender for UpdateByQueryRethrottle {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
 impl Elasticsearch {
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html"]
-    pub fn bulk(&self) -> Bulk {
-        Bulk::new(self.client.clone())
+    pub fn bulk<B>(&self) -> Bulk<B>
+    where
+        B: Serialize,
+    {
+        Bulk::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn clear_scroll(&self) -> ClearScroll {
-        ClearScroll::new(self.client.clone())
+    pub fn clear_scroll<B>(&self) -> ClearScroll<B>
+    where
+        B: Serialize,
+    {
+        ClearScroll::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html"]
-    pub fn count(&self) -> Count {
-        Count::new(self.client.clone())
+    pub fn count<B>(&self) -> Count<B>
+    where
+        B: Serialize,
+    {
+        Count::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn create(&self, index: String, id: String) -> Create {
-        Create::new(self.client.clone(), index, id)
+    pub fn create<B>(&self, index: String, id: String) -> Create<B>
+    where
+        B: Serialize,
+    {
+        Create::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html"]
     pub fn delete(&self, index: String, id: String) -> Delete {
-        Delete::new(self.client.clone(), index, id)
+        Delete::new(self.clone(), index, id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html"]
-    pub fn delete_by_query(&self, index: Vec<String>) -> DeleteByQuery {
-        DeleteByQuery::new(self.client.clone(), index)
+    pub fn delete_by_query<B>(&self, index: Vec<String>) -> DeleteByQuery<B>
+    where
+        B: Serialize,
+    {
+        DeleteByQuery::new(self.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html"]
-    pub fn delete_by_query_rethrottle(&self, task_id: String) -> DeleteByQueryRethrottle {
-        DeleteByQueryRethrottle::new(self.client.clone(), task_id)
+    pub fn delete_by_query_rethrottle<B>(&self, task_id: String) -> DeleteByQueryRethrottle<B>
+    where
+        B: Serialize,
+    {
+        DeleteByQueryRethrottle::new(self.clone(), task_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
     pub fn delete_script(&self, id: String) -> DeleteScript {
-        DeleteScript::new(self.client.clone(), id)
+        DeleteScript::new(self.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
     pub fn exists(&self, index: String, id: String) -> Exists {
-        Exists::new(self.client.clone(), index, id)
+        Exists::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
     pub fn exists_source(&self, index: String, id: String) -> ExistsSource {
-        ExistsSource::new(self.client.clone(), index, id)
+        ExistsSource::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html"]
-    pub fn explain(&self, index: String, id: String) -> Explain {
-        Explain::new(self.client.clone(), index, id)
+    pub fn explain<B>(&self, index: String, id: String) -> Explain<B>
+    where
+        B: Serialize,
+    {
+        Explain::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html"]
-    pub fn field_caps(&self) -> FieldCaps {
-        FieldCaps::new(self.client.clone())
+    pub fn field_caps<B>(&self) -> FieldCaps<B>
+    where
+        B: Serialize,
+    {
+        FieldCaps::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
     pub fn get(&self, index: String, id: String) -> Get {
-        Get::new(self.client.clone(), index, id)
+        Get::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
     pub fn get_script(&self, id: String) -> GetScript {
-        GetScript::new(self.client.clone(), id)
+        GetScript::new(self.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
     pub fn get_source(&self, index: String, id: String) -> GetSource {
-        GetSource::new(self.client.clone(), index, id)
+        GetSource::new(self.clone(), index, id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn index(&self, index: String) -> Index {
-        Index::new(self.client.clone(), index)
+    pub fn index<B>(&self, index: String) -> Index<B>
+    where
+        B: Serialize,
+    {
+        Index::new(self.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/"]
     pub fn info(&self) -> Info {
-        Info::new(self.client.clone())
+        Info::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html"]
-    pub fn mget(&self) -> Mget {
-        Mget::new(self.client.clone())
+    pub fn mget<B>(&self) -> Mget<B>
+    where
+        B: Serialize,
+    {
+        Mget::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html"]
-    pub fn msearch(&self) -> Msearch {
-        Msearch::new(self.client.clone())
+    pub fn msearch<B>(&self) -> Msearch<B>
+    where
+        B: Serialize,
+    {
+        Msearch::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html"]
-    pub fn msearch_template(&self) -> MsearchTemplate {
-        MsearchTemplate::new(self.client.clone())
+    pub fn msearch_template<B>(&self) -> MsearchTemplate<B>
+    where
+        B: Serialize,
+    {
+        MsearchTemplate::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html"]
-    pub fn mtermvectors(&self) -> Mtermvectors {
-        Mtermvectors::new(self.client.clone())
+    pub fn mtermvectors<B>(&self) -> Mtermvectors<B>
+    where
+        B: Serialize,
+    {
+        Mtermvectors::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/"]
     pub fn ping(&self) -> Ping {
-        Ping::new(self.client.clone())
+        Ping::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn put_script(&self, id: String) -> PutScript {
-        PutScript::new(self.client.clone(), id)
+    pub fn put_script<B>(&self, id: String) -> PutScript<B>
+    where
+        B: Serialize,
+    {
+        PutScript::new(self.clone(), id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html"]
-    pub fn rank_eval(&self) -> RankEval {
-        RankEval::new(self.client.clone())
+    pub fn rank_eval<B>(&self) -> RankEval<B>
+    where
+        B: Serialize,
+    {
+        RankEval::new(self.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex(&self) -> Reindex {
-        Reindex::new(self.client.clone())
+    pub fn reindex<B>(&self) -> Reindex<B>
+    where
+        B: Serialize,
+    {
+        Reindex::new(self.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex_rethrottle(&self, task_id: String) -> ReindexRethrottle {
-        ReindexRethrottle::new(self.client.clone(), task_id)
+    pub fn reindex_rethrottle<B>(&self, task_id: String) -> ReindexRethrottle<B>
+    where
+        B: Serialize,
+    {
+        ReindexRethrottle::new(self.clone(), task_id)
     }
     #[doc = "http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html"]
-    pub fn render_search_template(&self) -> RenderSearchTemplate {
-        RenderSearchTemplate::new(self.client.clone())
+    pub fn render_search_template<B>(&self) -> RenderSearchTemplate<B>
+    where
+        B: Serialize,
+    {
+        RenderSearchTemplate::new(self.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html"]
-    pub fn scripts_painless_execute(&self) -> ScriptsPainlessExecute {
-        ScriptsPainlessExecute::new(self.client.clone())
+    pub fn scripts_painless_execute<B>(&self) -> ScriptsPainlessExecute<B>
+    where
+        B: Serialize,
+    {
+        ScriptsPainlessExecute::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn scroll(&self) -> Scroll {
-        Scroll::new(self.client.clone())
+    pub fn scroll<B>(&self) -> Scroll<B>
+    where
+        B: Serialize,
+    {
+        Scroll::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html"]
-    pub fn search(&self) -> Search {
-        Search::new(self.client.clone())
+    pub fn search<B>(&self) -> Search<B>
+    where
+        B: Serialize,
+    {
+        Search::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html"]
-    pub fn search_shards(&self) -> SearchShards {
-        SearchShards::new(self.client.clone())
+    pub fn search_shards<B>(&self) -> SearchShards<B>
+    where
+        B: Serialize,
+    {
+        SearchShards::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html"]
-    pub fn search_template(&self) -> SearchTemplate {
-        SearchTemplate::new(self.client.clone())
+    pub fn search_template<B>(&self) -> SearchTemplate<B>
+    where
+        B: Serialize,
+    {
+        SearchTemplate::new(self.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html"]
-    pub fn termvectors(&self, index: String) -> Termvectors {
-        Termvectors::new(self.client.clone(), index)
+    pub fn termvectors<B>(&self, index: String) -> Termvectors<B>
+    where
+        B: Serialize,
+    {
+        Termvectors::new(self.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html"]
-    pub fn update(&self, index: String, id: String) -> Update {
-        Update::new(self.client.clone(), index, id)
+    pub fn update<B>(&self, index: String, id: String) -> Update<B>
+    where
+        B: Serialize,
+    {
+        Update::new(self.clone(), index, id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html"]
-    pub fn update_by_query(&self, index: Vec<String>) -> UpdateByQuery {
-        UpdateByQuery::new(self.client.clone(), index)
+    pub fn update_by_query<B>(&self, index: Vec<String>) -> UpdateByQuery<B>
+    where
+        B: Serialize,
+    {
+        UpdateByQuery::new(self.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html"]
-    pub fn update_by_query_rethrottle(&self, task_id: String) -> UpdateByQueryRethrottle {
-        UpdateByQueryRethrottle::new(self.client.clone(), task_id)
+    pub fn update_by_query_rethrottle<B>(&self, task_id: String) -> UpdateByQueryRethrottle<B>
+    where
+        B: Serialize,
+    {
+        UpdateByQueryRethrottle::new(self.clone(), task_id)
     }
 }

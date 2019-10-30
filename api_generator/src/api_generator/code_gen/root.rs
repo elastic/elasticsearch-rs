@@ -40,7 +40,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .root
         .iter()
         .map(|(name, endpoint)| {
-            code_gen::create_builder_struct_ctor_fns(name.to_pascal_case(), name, endpoint)
+            code_gen::create_builder_struct_ctor_fns(name.to_pascal_case(), name, endpoint, true)
         })
         .collect();
 

@@ -14,31 +14,43 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct SqlClearCursor {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct SqlClearCursor<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SqlClearCursor {
+impl<B> SqlClearCursor<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SqlClearCursor {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -66,21 +78,24 @@ impl SqlClearCursor {
         self
     }
 }
-impl Sender for SqlClearCursor {
+impl<B> Sender for SqlClearCursor<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_sql/close";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SqlQuery {
+pub struct SqlQuery<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -88,12 +103,26 @@ pub struct SqlQuery {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SqlQuery {
+impl<B> SqlQuery<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SqlQuery {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            format: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -126,14 +155,17 @@ impl SqlQuery {
         self
     }
 }
-impl Sender for SqlQuery {
+impl<B> Sender for SqlQuery<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_sql";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "format")]
@@ -144,28 +176,41 @@ impl Sender for SqlQuery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SqlTranslate {
+pub struct SqlTranslate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SqlTranslate {
+impl<B> SqlTranslate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SqlTranslate {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -193,18 +238,21 @@ impl SqlTranslate {
         self
     }
 }
-impl Sender for SqlTranslate {
+impl<B> Sender for SqlTranslate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_sql/translate";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -217,15 +265,24 @@ impl Sql {
         Sql { client }
     }
     #[doc = "Clear SQL cursor"]
-    pub fn clear_cursor(&self) -> SqlClearCursor {
+    pub fn clear_cursor<B>(&self) -> SqlClearCursor<B>
+    where
+        B: Serialize,
+    {
         SqlClearCursor::new(self.client.clone())
     }
     #[doc = "Execute SQL"]
-    pub fn query(&self) -> SqlQuery {
+    pub fn query<B>(&self) -> SqlQuery<B>
+    where
+        B: Serialize,
+    {
         SqlQuery::new(self.client.clone())
     }
     #[doc = "Translate SQL into Elasticsearch queries"]
-    pub fn translate(&self) -> SqlTranslate {
+    pub fn translate<B>(&self) -> SqlTranslate<B>
+    where
+        B: Serialize,
+    {
         SqlTranslate::new(self.client.clone())
     }
 }

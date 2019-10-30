@@ -14,19 +14,18 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct ClusterAllocationExplain {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct ClusterAllocationExplain<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -35,12 +34,27 @@ pub struct ClusterAllocationExplain {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl ClusterAllocationExplain {
+impl<B> ClusterAllocationExplain<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         ClusterAllocationExplain {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            include_disk_info: None,
+            include_yes_decisions: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -78,14 +92,17 @@ impl ClusterAllocationExplain {
         self
     }
 }
-impl Sender for ClusterAllocationExplain {
+impl<B> Sender for ClusterAllocationExplain<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/allocation/explain";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "include_disk_info")]
@@ -99,14 +116,13 @@ impl Sender for ClusterAllocationExplain {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterGetSettings {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -123,7 +139,15 @@ impl ClusterGetSettings {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            include_defaults: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -176,7 +200,7 @@ impl Sender for ClusterGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/settings";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -196,14 +220,13 @@ impl Sender for ClusterGetSettings {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterHealth {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -228,7 +251,23 @@ impl ClusterHealth {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterHealth {
             client,
-            ..Default::default()
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            level: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
+            wait_for_events: None,
+            wait_for_no_initializing_shards: None,
+            wait_for_no_relocating_shards: None,
+            wait_for_nodes: None,
+            wait_for_status: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -322,7 +361,7 @@ impl Sender for ClusterHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/health";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "expand_wildcards")]
@@ -363,14 +402,13 @@ impl Sender for ClusterHealth {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterPendingTasks {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -385,7 +423,13 @@ impl ClusterPendingTasks {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -428,7 +472,7 @@ impl Sender for ClusterPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/pending_tasks";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "local")]
@@ -442,16 +486,16 @@ impl Sender for ClusterPendingTasks {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct ClusterPutSettings {
+pub struct ClusterPutSettings<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
@@ -461,12 +505,28 @@ pub struct ClusterPutSettings {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl ClusterPutSettings {
+impl<B> ClusterPutSettings<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPutSettings {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -509,11 +569,14 @@ impl ClusterPutSettings {
         self
     }
 }
-impl Sender for ClusterPutSettings {
+impl<B> Sender for ClusterPutSettings<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/settings";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -530,14 +593,13 @@ impl Sender for ClusterPutSettings {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterRemoteInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -550,7 +612,11 @@ impl ClusterRemoteInfo {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -583,17 +649,17 @@ impl Sender for ClusterRemoteInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_remote/info";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct ClusterReroute {
+pub struct ClusterReroute<B> {
     client: Elasticsearch,
+    body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     explain: Option<bool>,
@@ -606,12 +672,31 @@ pub struct ClusterReroute {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl ClusterReroute {
+impl<B> ClusterReroute<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         ClusterReroute {
             client,
-            ..Default::default()
+            body: None,
+            dry_run: None,
+            error_trace: None,
+            explain: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            metric: None,
+            pretty: None,
+            retry_failed: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Simulate the operation only and return the resulting state"]
     pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
@@ -669,11 +754,14 @@ impl ClusterReroute {
         self
     }
 }
-impl Sender for ClusterReroute {
+impl<B> Sender for ClusterReroute<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/reroute";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "dry_run")]
@@ -699,14 +787,13 @@ impl Sender for ClusterReroute {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterState {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -729,7 +816,21 @@ impl ClusterState {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterState {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            metric: None,
+            pretty: None,
+            source: None,
+            wait_for_metadata_version: None,
+            wait_for_timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -802,7 +903,7 @@ impl Sender for ClusterState {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/state";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -834,14 +935,13 @@ impl Sender for ClusterState {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct ClusterStats {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -857,7 +957,14 @@ impl ClusterStats {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterStats {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            node_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -900,7 +1007,7 @@ impl Sender for ClusterStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -914,10 +1021,10 @@ impl Sender for ClusterStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -930,7 +1037,10 @@ impl Cluster {
         Cluster { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html"]
-    pub fn allocation_explain(&self) -> ClusterAllocationExplain {
+    pub fn allocation_explain<B>(&self) -> ClusterAllocationExplain<B>
+    where
+        B: Serialize,
+    {
         ClusterAllocationExplain::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
@@ -946,7 +1056,10 @@ impl Cluster {
         ClusterPendingTasks::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
-    pub fn put_settings(&self) -> ClusterPutSettings {
+    pub fn put_settings<B>(&self) -> ClusterPutSettings<B>
+    where
+        B: Serialize,
+    {
         ClusterPutSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html"]
@@ -954,7 +1067,10 @@ impl Cluster {
         ClusterRemoteInfo::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html"]
-    pub fn reroute(&self) -> ClusterReroute {
+    pub fn reroute<B>(&self) -> ClusterReroute<B>
+    where
+        B: Serialize,
+    {
         ClusterReroute::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html"]

@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct IngestDeletePipeline {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -41,7 +39,13 @@ impl IngestDeletePipeline {
         IngestDeletePipeline {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -84,7 +88,7 @@ impl Sender for IngestDeletePipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline/{id}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -98,14 +102,13 @@ impl Sender for IngestDeletePipeline {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IngestGetPipeline {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -120,7 +123,13 @@ impl IngestGetPipeline {
     pub fn new(client: Elasticsearch) -> Self {
         IngestGetPipeline {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -158,7 +167,7 @@ impl Sender for IngestGetPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -169,14 +178,13 @@ impl Sender for IngestGetPipeline {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IngestProcessorGrok {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -189,7 +197,11 @@ impl IngestProcessorGrok {
     pub fn new(client: Elasticsearch) -> Self {
         IngestProcessorGrok {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -222,17 +234,17 @@ impl Sender for IngestProcessorGrok {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/processor/grok";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IngestPutPipeline {
+pub struct IngestPutPipeline<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -242,13 +254,28 @@ pub struct IngestPutPipeline {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl IngestPutPipeline {
+impl<B> IngestPutPipeline<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         IngestPutPipeline {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -286,11 +313,14 @@ impl IngestPutPipeline {
         self
     }
 }
-impl Sender for IngestPutPipeline {
+impl<B> Sender for IngestPutPipeline<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline/{id}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -304,16 +334,16 @@ impl Sender for IngestPutPipeline {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IngestSimulate {
+pub struct IngestSimulate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -322,12 +352,27 @@ pub struct IngestSimulate {
     source: Option<String>,
     verbose: Option<bool>,
 }
-impl IngestSimulate {
+impl<B> IngestSimulate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IngestSimulate {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            pretty: None,
+            source: None,
+            verbose: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -360,14 +405,17 @@ impl IngestSimulate {
         self
     }
 }
-impl Sender for IngestSimulate {
+impl<B> Sender for IngestSimulate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline/_simulate";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "verbose")]
@@ -378,10 +426,10 @@ impl Sender for IngestSimulate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -406,11 +454,17 @@ impl Ingest {
         IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html"]
-    pub fn put_pipeline(&self, id: String) -> IngestPutPipeline {
+    pub fn put_pipeline<B>(&self, id: String) -> IngestPutPipeline<B>
+    where
+        B: Serialize,
+    {
         IngestPutPipeline::new(self.client.clone(), id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html"]
-    pub fn simulate(&self) -> IngestSimulate {
+    pub fn simulate<B>(&self) -> IngestSimulate<B>
+    where
+        B: Serialize,
+    {
         IngestSimulate::new(self.client.clone())
     }
 }

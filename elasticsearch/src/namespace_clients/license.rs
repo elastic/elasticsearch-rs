@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct LicenseDelete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -37,7 +35,11 @@ impl LicenseDelete {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseDelete {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -70,15 +72,14 @@ impl Sender for LicenseDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct LicenseGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -92,7 +93,12 @@ impl LicenseGet {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGet {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            local: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -130,7 +136,7 @@ impl Sender for LicenseGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "local")]
@@ -139,14 +145,13 @@ impl Sender for LicenseGet {
             let query_params = QueryParamsStruct { local: self.local };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct LicenseGetBasicStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -159,7 +164,11 @@ impl LicenseGetBasicStatus {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetBasicStatus {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -192,15 +201,14 @@ impl Sender for LicenseGetBasicStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/basic_status";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct LicenseGetTrialStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -213,7 +221,11 @@ impl LicenseGetTrialStatus {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetTrialStatus {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -246,34 +258,48 @@ impl Sender for LicenseGetTrialStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/trial_status";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct LicensePost {
+pub struct LicensePost<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl LicensePost {
+impl<B> LicensePost<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         LicensePost {
             client,
-            ..Default::default()
+            acknowledge: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
     pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
         self.acknowledge = acknowledge;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -302,11 +328,14 @@ impl LicensePost {
         self
     }
 }
-impl Sender for LicensePost {
+impl<B> Sender for LicensePost<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
@@ -317,33 +346,47 @@ impl Sender for LicensePost {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct LicensePostStartBasic {
+pub struct LicensePostStartBasic<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl LicensePostStartBasic {
+impl<B> LicensePostStartBasic<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartBasic {
             client,
-            ..Default::default()
+            acknowledge: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
     pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
         self.acknowledge = acknowledge;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -372,11 +415,14 @@ impl LicensePostStartBasic {
         self
     }
 }
-impl Sender for LicensePostStartBasic {
+impl<B> Sender for LicensePostStartBasic<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/start_basic";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
@@ -387,17 +433,17 @@ impl Sender for LicensePostStartBasic {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct LicensePostStartTrial {
+pub struct LicensePostStartTrial<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -405,16 +451,31 @@ pub struct LicensePostStartTrial {
     source: Option<String>,
     ty: Option<String>,
 }
-impl LicensePostStartTrial {
+impl<B> LicensePostStartTrial<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartTrial {
             client,
-            ..Default::default()
+            acknowledge: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            ty: None,
         }
     }
     #[doc = "whether the user has acknowledged acknowledge messages (default: false)"]
     pub fn acknowledge(mut self, acknowledge: Option<bool>) -> Self {
         self.acknowledge = acknowledge;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -448,11 +509,14 @@ impl LicensePostStartTrial {
         self
     }
 }
-impl Sender for LicensePostStartTrial {
+impl<B> Sender for LicensePostStartTrial<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_license/start_trial";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "acknowledge")]
@@ -466,10 +530,10 @@ impl Sender for LicensePostStartTrial {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -498,15 +562,24 @@ impl License {
         LicenseGetTrialStatus::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html"]
-    pub fn post(&self) -> LicensePost {
+    pub fn post<B>(&self) -> LicensePost<B>
+    where
+        B: Serialize,
+    {
         LicensePost::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html"]
-    pub fn post_start_basic(&self) -> LicensePostStartBasic {
+    pub fn post_start_basic<B>(&self) -> LicensePostStartBasic<B>
+    where
+        B: Serialize,
+    {
         LicensePostStartBasic::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html"]
-    pub fn post_start_trial(&self) -> LicensePostStartTrial {
+    pub fn post_start_trial<B>(&self) -> LicensePostStartTrial<B>
+    where
+        B: Serialize,
+    {
         LicensePostStartTrial::new(self.client.clone())
     }
 }

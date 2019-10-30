@@ -3,12 +3,12 @@ pub mod namespace_clients;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::{ApiEndpoint, Type, TypeKind, HttpMethod};
+use crate::api_generator::{ApiEndpoint, HttpMethod, Type, TypeKind};
 use inflector::Inflector;
-use quote::{Tokens, ToTokens};
+use quote::{ToTokens, Tokens};
+use std::collections::BTreeMap;
 use std::str;
 use syn::{Field, FieldValue, FnArg, ImplItem};
-use std::collections::BTreeMap;
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -244,23 +244,20 @@ fn create_fn(f: (&String, &Type), required: bool) -> syn::ImplItem {
 /// use declarations common across builders
 pub fn use_declarations() -> Tokens {
     quote!(
-        use super::super::client::Elasticsearch;
-        use super::super::http_method::HttpMethod;
-        use super::super::enums::*;
-        use reqwest::{Response, Request, Error, StatusCode};
-        use crate::client::Sender;
-        use crate::response::ElasticsearchResponse;
-        use crate::error::ElasticsearchError;
-        use serde::de::DeserializeOwned;
-        use serde::Serialize;
-        use reqwest::header::HeaderMap;
+        use crate::{
+            client::{Elasticsearch, Sender},
+            enums::*,
+            error::ElasticsearchError,
+            http_method::HttpMethod,
+            response::ElasticsearchResponse,
+        };
+        use reqwest::{Response, Request, Error, StatusCode, header::HeaderMap};
+        use serde::{Serialize, de::DeserializeOwned};
     )
 }
 
 /// Creates the function arguments for a builder struct new fn
-fn create_new_fnargs(
-    required_parts: &[(&String, &Type)],
-) -> Vec<FnArg> {
+fn create_new_fnargs(required_parts: &[(&String, &Type)]) -> Vec<FnArg> {
     match required_parts.len() {
         0 => vec![],
         _ => required_parts
@@ -277,10 +274,7 @@ fn create_new_fnargs(
 }
 
 /// Creates the field values for a builder struct new fn call
-fn create_new_fields(
-    builder_ident: &syn::Ident,
-    required_parts: &[(&String, &Type)],
-) -> Vec<FieldValue> {
+fn create_new_fields(required_parts: &[(&String, &Type)]) -> Vec<FieldValue> {
     match required_parts.len() {
         0 => vec![],
         _ => required_parts
@@ -296,24 +290,43 @@ fn create_new_fields(
     }
 }
 
-fn create_new_fn(builder_ident: &syn::Ident, required_parts: &[(&String, &Type)]) -> Tokens {
-    let fnargs = create_new_fnargs(&required_parts);
-    let fields = create_new_fields(builder_ident, &required_parts);
+fn create_default_fields(default_fields: &[&syn::Ident]) -> Vec<FieldValue> {
+    default_fields
+        .iter()
+        .map(|part| syn::FieldValue {
+            attrs: vec![],
+            ident: ident(part),
+            expr: syn::ExprKind::Path(None, path_none(ident("None").as_ref())).into(),
+            is_shorthand: false,
+        })
+        .collect()
+}
+
+/// Creates the AST for a new fn for a builder struct
+fn create_new_fn(
+    builder_ident: &syn::Ident,
+    required_parts: &[(&String, &Type)],
+    default_fields: &[&syn::Ident],
+) -> Tokens {
+    let fn_args = create_new_fnargs(&required_parts);
+    let fields = create_new_fields(&required_parts);
+    let default_fields = create_default_fields(default_fields);
+    // TODO: Initialize all Option<T> to None
     match required_parts.len() {
         0 => quote!(
             pub fn new(client: Elasticsearch) -> Self {
                 #builder_ident {
                     client,
-                    ..Default::default()
+                    #(#default_fields),*,
                 }
             }
         ),
         _ => quote!(
-             pub fn new(client: Elasticsearch, #(#fnargs),*) -> Self {
+             pub fn new(client: Elasticsearch, #(#fn_args),*) -> Self {
                 #builder_ident {
                     client,
                     #(#fields),*,
-                    ..Default::default()
+                    #(#default_fields),*,
                 }
             }
         ),
@@ -327,6 +340,7 @@ pub fn create_builder_struct(
     common_fields: &[Field],
     common_builder_fns: &[ImplItem],
 ) -> Tokens {
+    let supports_body = endpoint.supports_body();
     let builder_ident = ident(&builder_name);
 
     // url parts that are common across all urls.
@@ -340,6 +354,15 @@ pub fn create_builder_struct(
         .iter()
         .map(|f| create_field(f, required_parts.contains(&&**f.0)))
         .collect();
+
+    if supports_body {
+        fields.push(syn::Field {
+            ident: Some(ident("body")),
+            vis: syn::Visibility::Inherited,
+            attrs: vec![],
+            ty: syn::parse_type("Option<B>").unwrap(),
+        })
+    }
 
     // url parameters
     fields.append(
@@ -365,40 +388,116 @@ pub fn create_builder_struct(
         .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
         .collect();
 
+    if supports_body {
+        builder_fns.push(syn::ImplItem {
+            ident: ident("body"),
+            vis: syn::Visibility::Public,
+            defaultness: syn::Defaultness::Final,
+            attrs: vec![doc("The body for the API call".into())],
+            node: syn::ImplItemKind::Method(
+                syn::MethodSig {
+                    unsafety: syn::Unsafety::Normal,
+                    constness: syn::Constness::NotConst,
+                    abi: None,
+                    decl: syn::FnDecl {
+                        inputs: vec![
+                            syn::FnArg::SelfValue(syn::Mutability::Mutable),
+                            syn::FnArg::Captured(
+                                syn::Pat::Path(None, path_none("body")),
+                                syn::parse_type("Option<B>").unwrap(),
+                            ),
+                        ],
+                        // TODO: is there a Self syn type?
+                        output: syn::FunctionRetTy::Ty(syn::parse_type("Self").unwrap()),
+                        variadic: false,
+                    },
+                    generics: generics_none(),
+                },
+                // generates a fn body of the form
+                // --------
+                // self.<field> = <field>;
+                // self
+                // ---------
+                syn::Block {
+                    stmts: vec![
+                        syn::Stmt::Semi(Box::new(parse_expr(quote!(self.body = body)))),
+                        syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
+                    ],
+                },
+            ),
+        });
+    }
+
     // Combine common fns with builder fns, sort and deduplicate
     // clone is required, since quote!() consumes the Vec<Item>
     builder_fns.append(&mut common_builder_fns.to_vec().clone());
     builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
     builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
-    let new_fn = create_new_fn(&builder_ident, &endpoint.url.required_parts());
+    let default_fields = {
+        let r: Vec<&str> = required_parts.iter().map(|p| valid_name(p)).collect();
+
+        fields
+            .iter()
+            .map(|f| f.ident.as_ref().unwrap())
+            .filter(|f| !r.contains(&valid_name(f.to_string().as_str())))
+            .collect::<Vec<_>>()
+    };
+
+    let new_fn = create_new_fn(
+        &builder_ident,
+        &endpoint.url.required_parts(),
+        &default_fields,
+    );
 
     let path_expr = create_path_expression(&endpoint);
     let method = create_method_expression(&builder_name, &endpoint);
-    let supports_body = endpoint.supports_body();
-    let query_params_expr = build_query_params_expr(&endpoint.url.params);
-	
+    // TODO: Include common url params in query string too
+    let query_string_expr = create_query_string_expression(&endpoint.url.params);
+
+    let body_expr = {
+        if supports_body {
+            quote!(self.body)
+        } else {
+            quote!(Option::<()>::None)
+        }
+    };
+
+    let (builder_expr, builder_impl, sender_impl) = {
+        if supports_body {
+            let builder_expr = quote!(#builder_ident<B>);
+            (
+                quote!(#builder_expr),
+                quote!(impl<B> #builder_expr where B: Serialize),
+                quote!(impl<B> Sender for #builder_expr where B: Serialize),
+            )
+        } else {
+            (
+                quote!(#builder_ident),
+                quote!(impl #builder_ident),
+                quote!(impl Sender for #builder_ident),
+            )
+        }
+    };
+
     quote!(
-        #[derive(Default)]
-        pub struct #builder_ident {
+        pub struct #builder_expr {
             client: Elasticsearch,
             #(#fields),*,
         }
 
-        impl #builder_ident {
+        #builder_impl {
             #new_fn
             #(#builder_fns)*
         }
 
-        impl Sender for #builder_ident {
+        #sender_impl {
             fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
                   let path = #path_expr;
                   let method = #method;
-                  let query_params = #query_params_expr;
-				  // TODO: get the body from self, if sender supports body
-				  let body: Option<()> = None;
-                  // TODO: build up the path based on parameters passed, and execute request
-                  let response = self.client.send(method, path, query_params.as_ref(), body)?;
+                  let query_string = #query_string_expr;
+                  let body = #body_expr;
+                  let response = self.client.send(method, path, query_string.as_ref(), body)?;
                   Ok(response)
             }
         }
@@ -410,9 +509,28 @@ pub fn create_builder_struct_ctor_fns(
     builder_name: String,
     name: &str,
     endpoint: &ApiEndpoint,
+    is_root_method: bool,
 ) -> Tokens {
     let builder_ident = ident(builder_name.to_pascal_case());
-    let fn_name = ident(name.to_string());
+
+    let builder_ident_ret = {
+        let i = ident(builder_name.to_pascal_case());
+        if endpoint.supports_body() {
+            quote!(#i<B> where B: Serialize)
+        } else {
+            quote!(#i)
+        }
+    };
+
+    let fn_name = {
+        let i = ident(name.to_string());
+        if endpoint.supports_body() {
+            quote!(#i<B>)
+        } else {
+            quote!(#i)
+        }
+    };
+
     let method_doc = match &endpoint.documentation {
         Some(docs) => Some(doc(docs.into())),
         _ => None,
@@ -428,10 +546,18 @@ pub fn create_builder_struct_ctor_fns(
         })
         .collect();
 
+    let clone_expr = {
+        if is_root_method {
+            quote!(self.clone())
+        } else {
+            quote!(self.client.clone())
+        }
+    };
+
     quote!(
         #method_doc
-        pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident {
-            #builder_ident::new(self.client.clone(),#(#builder_args),*)
+        pub fn #fn_name(&self, #(#fnargs),*) -> #builder_ident_ret {
+            #builder_ident::new(#clone_expr,#(#builder_args),*)
         }
     )
 }
@@ -444,25 +570,29 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
 
             match endpoint.url.required_part_names().len() {
                 0 => {
-                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
-                },
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked))
+                        .into()
+                }
                 _ => {
-                    // TODO: build an
-                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                    // TODO: build an expression for combining the Url with the params, using UrlBuilder
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked))
+                        .into()
                 }
             }
-        },
+        }
         _ => {
             let single_path = endpoint.url.paths.first().unwrap();
 
-            // TODO: build a match expression
+            // TODO: build a match expression, matching on a tuple of URL parts
             match endpoint.url.required_part_names().len() {
                 0 => {
-                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
-                },
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked))
+                        .into()
+                }
                 _ => {
-                    // TODO: build an
-                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked)).into()
+                    // TODO: build an expression for combining the Url with the params, using UrlBuilder
+                    syn::ExprKind::Lit(syn::Lit::Str(single_path.0.clone(), syn::StrStyle::Cooked))
+                        .into()
                 }
             }
         }
@@ -477,24 +607,54 @@ pub fn create_method_expression(builder_name: &str, endpoint: &ApiEndpoint) -> s
             let mut tokens = Tokens::new();
             method.to_tokens(&mut tokens);
             parse_expr(tokens)
+        }
+        _ => match endpoint.methods.as_slice() {
+            [HttpMethod::Post, HttpMethod::Put] => {
+                if builder_name.contains("Put") {
+                    parse_expr(quote!(HttpMethod::Put))
+                } else {
+                    parse_expr(quote!(HttpMethod::Post))
+                }
+            }
+            [HttpMethod::Get, HttpMethod::Post] => parse_expr(quote!(match self.body {
+                Some(_) => HttpMethod::Post,
+                None => HttpMethod::Get,
+            })),
+            _ => panic!("Combination of methods unexpected"),
         },
-        _ => {
-            match endpoint.methods.as_slice() {
-                [HttpMethod::Post, HttpMethod::Put] => {
-                    if builder_name.contains("Put") {
-                        parse_expr(quote!(HttpMethod::Put))
-                    } else {
-                        parse_expr(quote!(HttpMethod::Post))
-                    }
-                },
-                [HttpMethod::Get, HttpMethod::Post] =>
-                    parse_expr(quote!(
-                        match self.body {
-                            Some(_) => HttpMethod::Post,
-                            None => HttpMethod::Get
-                        }
-                    )),
-                _ => panic!("Combination of methods unexpected"),
+    }
+}
+
+/// Create the AST for an expression that builds a struct of query string parameters
+fn create_query_string_expression(endpoint_params: &BTreeMap<String, Type>) -> Tokens {
+    if endpoint_params.is_empty() {
+        quote!(None::<()>)
+    } else {
+        let query_struct_typ = ident("QueryParamsStruct");
+        let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
+            let field = create_optional_field((param_name, param_type));
+            let field_rename = lit(param_name);
+            quote! {
+                #[serde(rename = #field_rename)]
+                #field
+            }
+        });
+        let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
+            let field_name = ident(valid_name(param_name).to_lowercase());
+            quote! {
+                #field_name: self.#field_name
+            }
+        });
+        quote! {
+            {
+                #[derive(Serialize)]
+                struct #query_struct_typ {
+                    #(#struct_fields,)*
+                }
+                let query_params = #query_struct_typ {
+                    #(#query_ctor,)*
+                };
+                Some(query_params)
             }
         }
     }
@@ -554,39 +714,5 @@ pub fn shift(i: &[u8], c: usize) -> &[u8] {
     match c {
         c if c >= i.len() => &[],
         _ => &i[c..],
-    }
-}
-
-fn build_query_params_expr(endpoint_params: &BTreeMap<String, Type>) -> Tokens {
-    if endpoint_params.is_empty() {
-        quote!(None::<()>)
-    } else {
-        let query_struct_typ = ident("QueryParamsStruct");
-        let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
-            let field = create_optional_field((param_name, param_type));
-            let field_rename = lit(param_name);
-            quote! {
-                #[serde(rename = #field_rename)]
-                #field
-            }
-        });
-        let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
-            let field_name = ident(valid_name(param_name).to_lowercase());
-            quote! {
-                #field_name: self.#field_name
-            }
-        });
-        quote! {
-            {
-                #[derive(Serialize)]
-                struct #query_struct_typ {
-                    #(#struct_fields,)*
-                }
-                let query_params = #query_struct_typ {
-                    #(#query_ctor,)*
-                };
-                Some(query_params)
-            }
-        }
     }
 }

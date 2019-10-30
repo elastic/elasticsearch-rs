@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct SecurityAuthenticate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -37,7 +35,11 @@ impl SecurityAuthenticate {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -70,17 +72,17 @@ impl Sender for SecurityAuthenticate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/_authenticate";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityChangePassword {
+pub struct SecurityChangePassword<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -89,12 +91,27 @@ pub struct SecurityChangePassword {
     source: Option<String>,
     username: Option<String>,
 }
-impl SecurityChangePassword {
+impl<B> SecurityChangePassword<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityChangePassword {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
+            username: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -127,11 +144,14 @@ impl SecurityChangePassword {
         self
     }
 }
-impl Sender for SecurityChangePassword {
+impl<B> Sender for SecurityChangePassword<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_password";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -142,16 +162,16 @@ impl Sender for SecurityChangePassword {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityClearCachedRealms {
+pub struct SecurityClearCachedRealms<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -160,13 +180,27 @@ pub struct SecurityClearCachedRealms {
     source: Option<String>,
     usernames: Option<Vec<String>>,
 }
-impl SecurityClearCachedRealms {
+impl<B> SecurityClearCachedRealms<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, realms: Vec<String>) -> Self {
         SecurityClearCachedRealms {
             client,
             realms: realms,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            usernames: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -199,11 +233,14 @@ impl SecurityClearCachedRealms {
         self
     }
 }
-impl Sender for SecurityClearCachedRealms {
+impl<B> Sender for SecurityClearCachedRealms<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/realm/{realms}/_clear_cache";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "usernames")]
@@ -214,16 +251,16 @@ impl Sender for SecurityClearCachedRealms {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityClearCachedRoles {
+pub struct SecurityClearCachedRoles<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -231,13 +268,26 @@ pub struct SecurityClearCachedRoles {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityClearCachedRoles {
+impl<B> SecurityClearCachedRoles<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
         SecurityClearCachedRoles {
             client,
             name: name,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -265,21 +315,24 @@ impl SecurityClearCachedRoles {
         self
     }
 }
-impl Sender for SecurityClearCachedRoles {
+impl<B> Sender for SecurityClearCachedRoles<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}/_clear_cache";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityCreateApiKey {
+pub struct SecurityCreateApiKey<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -287,12 +340,26 @@ pub struct SecurityCreateApiKey {
     refresh: Option<Refresh>,
     source: Option<String>,
 }
-impl SecurityCreateApiKey {
+impl<B> SecurityCreateApiKey<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityCreateApiKey {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -325,11 +392,14 @@ impl SecurityCreateApiKey {
         self
     }
 }
-impl Sender for SecurityCreateApiKey {
+impl<B> Sender for SecurityCreateApiKey<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -340,14 +410,13 @@ impl Sender for SecurityCreateApiKey {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
     application: String,
@@ -365,7 +434,12 @@ impl SecurityDeletePrivileges {
             client,
             application: application,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -403,7 +477,7 @@ impl Sender for SecurityDeletePrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/{application}/{name}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -414,14 +488,13 @@ impl Sender for SecurityDeletePrivileges {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityDeleteRole {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -437,7 +510,12 @@ impl SecurityDeleteRole {
         SecurityDeleteRole {
             client,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -475,7 +553,7 @@ impl Sender for SecurityDeleteRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -486,14 +564,13 @@ impl Sender for SecurityDeleteRole {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityDeleteRoleMapping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -509,7 +586,12 @@ impl SecurityDeleteRoleMapping {
         SecurityDeleteRoleMapping {
             client,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -547,7 +629,7 @@ impl Sender for SecurityDeleteRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -558,14 +640,13 @@ impl Sender for SecurityDeleteRoleMapping {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityDeleteUser {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -581,7 +662,12 @@ impl SecurityDeleteUser {
         SecurityDeleteUser {
             client,
             username: username,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -619,7 +705,7 @@ impl Sender for SecurityDeleteUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -630,16 +716,16 @@ impl Sender for SecurityDeleteUser {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityDisableUser {
+pub struct SecurityDisableUser<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -648,13 +734,27 @@ pub struct SecurityDisableUser {
     source: Option<String>,
     username: String,
 }
-impl SecurityDisableUser {
+impl<B> SecurityDisableUser<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityDisableUser {
             client,
             username: username,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -687,11 +787,14 @@ impl SecurityDisableUser {
         self
     }
 }
-impl Sender for SecurityDisableUser {
+impl<B> Sender for SecurityDisableUser<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_disable";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -702,16 +805,16 @@ impl Sender for SecurityDisableUser {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityEnableUser {
+pub struct SecurityEnableUser<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -720,13 +823,27 @@ pub struct SecurityEnableUser {
     source: Option<String>,
     username: String,
 }
-impl SecurityEnableUser {
+impl<B> SecurityEnableUser<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityEnableUser {
             client,
             username: username,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -759,11 +876,14 @@ impl SecurityEnableUser {
         self
     }
 }
-impl Sender for SecurityEnableUser {
+impl<B> Sender for SecurityEnableUser<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_enable";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -774,14 +894,13 @@ impl Sender for SecurityEnableUser {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetApiKey {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -798,7 +917,15 @@ impl SecurityGetApiKey {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            name: None,
+            pretty: None,
+            realm_name: None,
+            source: None,
+            username: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -851,7 +978,7 @@ impl Sender for SecurityGetApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "id")]
@@ -871,14 +998,13 @@ impl Sender for SecurityGetApiKey {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetBuiltinPrivileges {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -891,7 +1017,11 @@ impl SecurityGetBuiltinPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -924,15 +1054,14 @@ impl Sender for SecurityGetBuiltinPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/_builtin";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetPrivileges {
     client: Elasticsearch,
     application: Option<String>,
@@ -947,7 +1076,13 @@ impl SecurityGetPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetPrivileges {
             client,
-            ..Default::default()
+            application: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -980,15 +1115,14 @@ impl Sender for SecurityGetPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetRole {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1002,7 +1136,12 @@ impl SecurityGetRole {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetRole {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1035,15 +1174,14 @@ impl Sender for SecurityGetRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetRoleMapping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1057,7 +1195,12 @@ impl SecurityGetRoleMapping {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetRoleMapping {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1090,29 +1233,42 @@ impl Sender for SecurityGetRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityGetToken {
+pub struct SecurityGetToken<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityGetToken {
+impl<B> SecurityGetToken<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetToken {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1140,19 +1296,21 @@ impl SecurityGetToken {
         self
     }
 }
-impl Sender for SecurityGetToken {
+impl<B> Sender for SecurityGetToken<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/oauth2/token";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetUser {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1166,7 +1324,12 @@ impl SecurityGetUser {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUser {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            username: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1199,15 +1362,14 @@ impl Sender for SecurityGetUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SecurityGetUserPrivileges {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1220,7 +1382,11 @@ impl SecurityGetUserPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1253,17 +1419,17 @@ impl Sender for SecurityGetUserPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/_privileges";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityHasPrivileges {
+pub struct SecurityHasPrivileges<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1271,12 +1437,26 @@ pub struct SecurityHasPrivileges {
     source: Option<String>,
     user: Option<String>,
 }
-impl SecurityHasPrivileges {
+impl<B> SecurityHasPrivileges<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityHasPrivileges {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            user: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1304,36 +1484,52 @@ impl SecurityHasPrivileges {
         self
     }
 }
-impl Sender for SecurityHasPrivileges {
+impl<B> Sender for SecurityHasPrivileges<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/_has_privileges";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityInvalidateApiKey {
+pub struct SecurityInvalidateApiKey<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityInvalidateApiKey {
+impl<B> SecurityInvalidateApiKey<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1361,33 +1557,49 @@ impl SecurityInvalidateApiKey {
         self
     }
 }
-impl Sender for SecurityInvalidateApiKey {
+impl<B> Sender for SecurityInvalidateApiKey<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityInvalidateToken {
+pub struct SecurityInvalidateToken<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl SecurityInvalidateToken {
+impl<B> SecurityInvalidateToken<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateToken {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1415,21 +1627,24 @@ impl SecurityInvalidateToken {
         self
     }
 }
-impl Sender for SecurityInvalidateToken {
+impl<B> Sender for SecurityInvalidateToken<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/oauth2/token";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityPutPrivileges {
+pub struct SecurityPutPrivileges<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1437,12 +1652,26 @@ pub struct SecurityPutPrivileges {
     refresh: Option<Refresh>,
     source: Option<String>,
 }
-impl SecurityPutPrivileges {
+impl<B> SecurityPutPrivileges<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         SecurityPutPrivileges {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1475,11 +1704,14 @@ impl SecurityPutPrivileges {
         self
     }
 }
-impl Sender for SecurityPutPrivileges {
+impl<B> Sender for SecurityPutPrivileges<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -1490,16 +1722,16 @@ impl Sender for SecurityPutPrivileges {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityPutRole {
+pub struct SecurityPutRole<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1508,13 +1740,27 @@ pub struct SecurityPutRole {
     refresh: Option<Refresh>,
     source: Option<String>,
 }
-impl SecurityPutRole {
+impl<B> SecurityPutRole<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityPutRole {
             client,
             name: name,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1547,11 +1793,14 @@ impl SecurityPutRole {
         self
     }
 }
-impl Sender for SecurityPutRole {
+impl<B> Sender for SecurityPutRole<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -1562,16 +1811,16 @@ impl Sender for SecurityPutRole {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityPutRoleMapping {
+pub struct SecurityPutRoleMapping<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1580,13 +1829,27 @@ pub struct SecurityPutRoleMapping {
     refresh: Option<Refresh>,
     source: Option<String>,
 }
-impl SecurityPutRoleMapping {
+impl<B> SecurityPutRoleMapping<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, name: String) -> Self {
         SecurityPutRoleMapping {
             client,
             name: name,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1619,11 +1882,14 @@ impl SecurityPutRoleMapping {
         self
     }
 }
-impl Sender for SecurityPutRoleMapping {
+impl<B> Sender for SecurityPutRoleMapping<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -1634,16 +1900,16 @@ impl Sender for SecurityPutRoleMapping {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SecurityPutUser {
+pub struct SecurityPutUser<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1652,13 +1918,27 @@ pub struct SecurityPutUser {
     source: Option<String>,
     username: String,
 }
-impl SecurityPutUser {
+impl<B> SecurityPutUser<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, username: String) -> Self {
         SecurityPutUser {
             client,
             username: username,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            refresh: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1691,11 +1971,14 @@ impl SecurityPutUser {
         self
     }
 }
-impl Sender for SecurityPutUser {
+impl<B> Sender for SecurityPutUser<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "refresh")]
@@ -1706,10 +1989,10 @@ impl Sender for SecurityPutUser {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1726,19 +2009,31 @@ impl Security {
         SecurityAuthenticate::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
-    pub fn change_password(&self) -> SecurityChangePassword {
+    pub fn change_password<B>(&self) -> SecurityChangePassword<B>
+    where
+        B: Serialize,
+    {
         SecurityChangePassword::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms(&self, realms: Vec<String>) -> SecurityClearCachedRealms {
+    pub fn clear_cached_realms<B>(&self, realms: Vec<String>) -> SecurityClearCachedRealms<B>
+    where
+        B: Serialize,
+    {
         SecurityClearCachedRealms::new(self.client.clone(), realms)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles(&self, name: Vec<String>) -> SecurityClearCachedRoles {
+    pub fn clear_cached_roles<B>(&self, name: Vec<String>) -> SecurityClearCachedRoles<B>
+    where
+        B: Serialize,
+    {
         SecurityClearCachedRoles::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
-    pub fn create_api_key(&self) -> SecurityCreateApiKey {
+    pub fn create_api_key<B>(&self) -> SecurityCreateApiKey<B>
+    where
+        B: Serialize,
+    {
         SecurityCreateApiKey::new(self.client.clone())
     }
     #[doc = "TODO"]
@@ -1758,11 +2053,17 @@ impl Security {
         SecurityDeleteUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user(&self, username: String) -> SecurityDisableUser {
+    pub fn disable_user<B>(&self, username: String) -> SecurityDisableUser<B>
+    where
+        B: Serialize,
+    {
         SecurityDisableUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user(&self, username: String) -> SecurityEnableUser {
+    pub fn enable_user<B>(&self, username: String) -> SecurityEnableUser<B>
+    where
+        B: Serialize,
+    {
         SecurityEnableUser::new(self.client.clone(), username)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
@@ -1786,7 +2087,10 @@ impl Security {
         SecurityGetRoleMapping::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
-    pub fn get_token(&self) -> SecurityGetToken {
+    pub fn get_token<B>(&self) -> SecurityGetToken<B>
+    where
+        B: Serialize,
+    {
         SecurityGetToken::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
@@ -1798,31 +2102,52 @@ impl Security {
         SecurityGetUserPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
-    pub fn has_privileges(&self) -> SecurityHasPrivileges {
+    pub fn has_privileges<B>(&self) -> SecurityHasPrivileges<B>
+    where
+        B: Serialize,
+    {
         SecurityHasPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
-    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKey {
+    pub fn invalidate_api_key<B>(&self) -> SecurityInvalidateApiKey<B>
+    where
+        B: Serialize,
+    {
         SecurityInvalidateApiKey::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
-    pub fn invalidate_token(&self) -> SecurityInvalidateToken {
+    pub fn invalidate_token<B>(&self) -> SecurityInvalidateToken<B>
+    where
+        B: Serialize,
+    {
         SecurityInvalidateToken::new(self.client.clone())
     }
     #[doc = "TODO"]
-    pub fn put_privileges(&self) -> SecurityPutPrivileges {
+    pub fn put_privileges<B>(&self) -> SecurityPutPrivileges<B>
+    where
+        B: Serialize,
+    {
         SecurityPutPrivileges::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role(&self, name: String) -> SecurityPutRole {
+    pub fn put_role<B>(&self, name: String) -> SecurityPutRole<B>
+    where
+        B: Serialize,
+    {
         SecurityPutRole::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping(&self, name: String) -> SecurityPutRoleMapping {
+    pub fn put_role_mapping<B>(&self, name: String) -> SecurityPutRoleMapping<B>
+    where
+        B: Serialize,
+    {
         SecurityPutRoleMapping::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user(&self, username: String) -> SecurityPutUser {
+    pub fn put_user<B>(&self, username: String) -> SecurityPutUser<B>
+    where
+        B: Serialize,
+    {
         SecurityPutUser::new(self.client.clone(), username)
     }
 }

@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct NodesHotThreads {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -44,7 +42,18 @@ impl NodesHotThreads {
     pub fn new(client: Elasticsearch) -> Self {
         NodesHotThreads {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            ignore_idle_threads: None,
+            interval: None,
+            node_id: None,
+            pretty: None,
+            snapshots: None,
+            source: None,
+            threads: None,
+            timeout: None,
+            ty: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -107,7 +116,7 @@ impl Sender for NodesHotThreads {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_nodes/hot_threads";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "ignore_idle_threads")]
@@ -133,14 +142,13 @@ impl Sender for NodesHotThreads {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct NodesInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -157,7 +165,15 @@ impl NodesInfo {
     pub fn new(client: Elasticsearch) -> Self {
         NodesInfo {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            metric: None,
+            node_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -200,7 +216,7 @@ impl Sender for NodesInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_nodes";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -214,16 +230,16 @@ impl Sender for NodesInfo {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct NodesReloadSecureSettings {
+pub struct NodesReloadSecureSettings<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -232,12 +248,27 @@ pub struct NodesReloadSecureSettings {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl NodesReloadSecureSettings {
+impl<B> NodesReloadSecureSettings<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         NodesReloadSecureSettings {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            node_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -270,11 +301,14 @@ impl NodesReloadSecureSettings {
         self
     }
 }
-impl Sender for NodesReloadSecureSettings {
+impl<B> Sender for NodesReloadSecureSettings<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_nodes/reload_secure_settings";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -285,14 +319,13 @@ impl Sender for NodesReloadSecureSettings {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct NodesStats {
     client: Elasticsearch,
     completion_fields: Option<Vec<String>>,
@@ -316,7 +349,22 @@ impl NodesStats {
     pub fn new(client: Elasticsearch) -> Self {
         NodesStats {
             client,
-            ..Default::default()
+            completion_fields: None,
+            error_trace: None,
+            fielddata_fields: None,
+            fields: None,
+            filter_path: None,
+            groups: None,
+            human: None,
+            include_segment_file_sizes: None,
+            index_metric: None,
+            level: None,
+            metric: None,
+            node_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            types: None,
         }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
@@ -389,7 +437,7 @@ impl Sender for NodesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_nodes/stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "completion_fields")]
@@ -421,14 +469,13 @@ impl Sender for NodesStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct NodesUsage {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -444,7 +491,14 @@ impl NodesUsage {
     pub fn new(client: Elasticsearch) -> Self {
         NodesUsage {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            metric: None,
+            node_id: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -482,7 +536,7 @@ impl Sender for NodesUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_nodes/usage";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -493,10 +547,10 @@ impl Sender for NodesUsage {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -517,7 +571,10 @@ impl Nodes {
         NodesInfo::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings"]
-    pub fn reload_secure_settings(&self) -> NodesReloadSecureSettings {
+    pub fn reload_secure_settings<B>(&self) -> NodesReloadSecureSettings<B>
+    where
+        B: Serialize,
+    {
         NodesReloadSecureSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html"]

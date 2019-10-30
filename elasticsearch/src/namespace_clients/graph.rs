@@ -14,19 +14,18 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct GraphExplore {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct GraphExplore<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -37,13 +36,29 @@ pub struct GraphExplore {
     timeout: Option<String>,
     ty: Option<Vec<String>>,
 }
-impl GraphExplore {
+impl<B> GraphExplore<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         GraphExplore {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            routing: None,
+            source: None,
+            timeout: None,
+            ty: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -81,14 +96,17 @@ impl GraphExplore {
         self
     }
 }
-impl Sender for GraphExplore {
+impl<B> Sender for GraphExplore<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_graph/explore";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "routing")]
@@ -102,10 +120,10 @@ impl Sender for GraphExplore {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -118,7 +136,10 @@ impl Graph {
         Graph { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
-    pub fn explore(&self, index: Vec<String>) -> GraphExplore {
+    pub fn explore<B>(&self, index: Vec<String>) -> GraphExplore<B>
+    where
+        B: Serialize,
+    {
         GraphExplore::new(self.client.clone(), index)
     }
 }

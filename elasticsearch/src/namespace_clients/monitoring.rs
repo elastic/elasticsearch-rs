@@ -14,19 +14,18 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct MonitoringBulk {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct MonitoringBulk<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -37,12 +36,29 @@ pub struct MonitoringBulk {
     system_id: Option<String>,
     ty: Option<String>,
 }
-impl MonitoringBulk {
+impl<B> MonitoringBulk<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MonitoringBulk {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            interval: None,
+            pretty: None,
+            source: None,
+            system_api_version: None,
+            system_id: None,
+            ty: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -85,11 +101,14 @@ impl MonitoringBulk {
         self
     }
 }
-impl Sender for MonitoringBulk {
+impl<B> Sender for MonitoringBulk<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_monitoring/bulk";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "interval")]
@@ -106,10 +125,10 @@ impl Sender for MonitoringBulk {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -122,7 +141,10 @@ impl Monitoring {
         Monitoring { client }
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
-    pub fn bulk(&self) -> MonitoringBulk {
+    pub fn bulk<B>(&self) -> MonitoringBulk<B>
+    where
+        B: Serialize,
+    {
         MonitoringBulk::new(self.client.clone())
     }
 }

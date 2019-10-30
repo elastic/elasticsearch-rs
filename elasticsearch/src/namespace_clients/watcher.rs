@@ -14,20 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct WatcherAckWatch {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct WatcherAckWatch<B> {
     client: Elasticsearch,
     action_id: Option<Vec<String>>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -35,13 +34,27 @@ pub struct WatcherAckWatch {
     source: Option<String>,
     watch_id: String,
 }
-impl WatcherAckWatch {
+impl<B> WatcherAckWatch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherAckWatch {
             client,
             watch_id: watch_id,
-            ..Default::default()
+            action_id: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -69,21 +82,24 @@ impl WatcherAckWatch {
         self
     }
 }
-impl Sender for WatcherAckWatch {
+impl<B> Sender for WatcherAckWatch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_ack";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherActivateWatch {
+pub struct WatcherActivateWatch<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -91,13 +107,26 @@ pub struct WatcherActivateWatch {
     source: Option<String>,
     watch_id: String,
 }
-impl WatcherActivateWatch {
+impl<B> WatcherActivateWatch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherActivateWatch {
             client,
             watch_id: watch_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -125,21 +154,24 @@ impl WatcherActivateWatch {
         self
     }
 }
-impl Sender for WatcherActivateWatch {
+impl<B> Sender for WatcherActivateWatch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_activate";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherDeactivateWatch {
+pub struct WatcherDeactivateWatch<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -147,13 +179,26 @@ pub struct WatcherDeactivateWatch {
     source: Option<String>,
     watch_id: String,
 }
-impl WatcherDeactivateWatch {
+impl<B> WatcherDeactivateWatch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, watch_id: String) -> Self {
         WatcherDeactivateWatch {
             client,
             watch_id: watch_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -181,19 +226,21 @@ impl WatcherDeactivateWatch {
         self
     }
 }
-impl Sender for WatcherDeactivateWatch {
+impl<B> Sender for WatcherDeactivateWatch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_deactivate";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct WatcherDeleteWatch {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -208,7 +255,11 @@ impl WatcherDeleteWatch {
         WatcherDeleteWatch {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -241,17 +292,17 @@ impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherExecuteWatch {
+pub struct WatcherExecuteWatch<B> {
     client: Elasticsearch,
+    body: Option<B>,
     debug: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -260,12 +311,27 @@ pub struct WatcherExecuteWatch {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl WatcherExecuteWatch {
+impl<B> WatcherExecuteWatch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         WatcherExecuteWatch {
             client,
-            ..Default::default()
+            body: None,
+            debug: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "indicates whether the watch should execute in debug mode"]
     pub fn debug(mut self, debug: Option<bool>) -> Self {
@@ -298,11 +364,14 @@ impl WatcherExecuteWatch {
         self
     }
 }
-impl Sender for WatcherExecuteWatch {
+impl<B> Sender for WatcherExecuteWatch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}/_execute";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "debug")]
@@ -311,14 +380,13 @@ impl Sender for WatcherExecuteWatch {
             let query_params = QueryParamsStruct { debug: self.debug };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct WatcherGetWatch {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -333,7 +401,11 @@ impl WatcherGetWatch {
         WatcherGetWatch {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -366,18 +438,18 @@ impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherPutWatch {
+pub struct WatcherPutWatch<B> {
     client: Elasticsearch,
     active: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -388,17 +460,34 @@ pub struct WatcherPutWatch {
     source: Option<String>,
     version: Option<i64>,
 }
-impl WatcherPutWatch {
+impl<B> WatcherPutWatch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         WatcherPutWatch {
             client,
             id: id,
-            ..Default::default()
+            active: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            if_primary_term: None,
+            if_seq_no: None,
+            pretty: None,
+            source: None,
+            version: None,
         }
     }
     #[doc = "Specify whether the watch is in/active by default"]
     pub fn active(mut self, active: Option<bool>) -> Self {
         self.active = active;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -442,11 +531,14 @@ impl WatcherPutWatch {
         self
     }
 }
-impl Sender for WatcherPutWatch {
+impl<B> Sender for WatcherPutWatch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "active")]
@@ -466,28 +558,41 @@ impl Sender for WatcherPutWatch {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherStart {
+pub struct WatcherStart<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl WatcherStart {
+impl<B> WatcherStart<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStart {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -515,19 +620,21 @@ impl WatcherStart {
         self
     }
 }
-impl Sender for WatcherStart {
+impl<B> Sender for WatcherStart<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_start";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct WatcherStats {
     client: Elasticsearch,
     emit_stacktraces: Option<bool>,
@@ -542,7 +649,13 @@ impl WatcherStats {
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStats {
             client,
-            ..Default::default()
+            emit_stacktraces: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            metric: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Emits stack traces of currently running watches"]
@@ -585,7 +698,7 @@ impl Sender for WatcherStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "emit_stacktraces")]
@@ -599,28 +712,41 @@ impl Sender for WatcherStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct WatcherStop {
+pub struct WatcherStop<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl WatcherStop {
+impl<B> WatcherStop<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStop {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -648,15 +774,18 @@ impl WatcherStop {
         self
     }
 }
-impl Sender for WatcherStop {
+impl<B> Sender for WatcherStop<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_stop";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -669,15 +798,24 @@ impl Watcher {
         Watcher { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html"]
-    pub fn ack_watch(&self, watch_id: String) -> WatcherAckWatch {
+    pub fn ack_watch<B>(&self, watch_id: String) -> WatcherAckWatch<B>
+    where
+        B: Serialize,
+    {
         WatcherAckWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html"]
-    pub fn activate_watch(&self, watch_id: String) -> WatcherActivateWatch {
+    pub fn activate_watch<B>(&self, watch_id: String) -> WatcherActivateWatch<B>
+    where
+        B: Serialize,
+    {
         WatcherActivateWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html"]
-    pub fn deactivate_watch(&self, watch_id: String) -> WatcherDeactivateWatch {
+    pub fn deactivate_watch<B>(&self, watch_id: String) -> WatcherDeactivateWatch<B>
+    where
+        B: Serialize,
+    {
         WatcherDeactivateWatch::new(self.client.clone(), watch_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html"]
@@ -685,7 +823,10 @@ impl Watcher {
         WatcherDeleteWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html"]
-    pub fn execute_watch(&self) -> WatcherExecuteWatch {
+    pub fn execute_watch<B>(&self) -> WatcherExecuteWatch<B>
+    where
+        B: Serialize,
+    {
         WatcherExecuteWatch::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html"]
@@ -693,11 +834,17 @@ impl Watcher {
         WatcherGetWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html"]
-    pub fn put_watch(&self, id: String) -> WatcherPutWatch {
+    pub fn put_watch<B>(&self, id: String) -> WatcherPutWatch<B>
+    where
+        B: Serialize,
+    {
         WatcherPutWatch::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html"]
-    pub fn start(&self) -> WatcherStart {
+    pub fn start<B>(&self) -> WatcherStart<B>
+    where
+        B: Serialize,
+    {
         WatcherStart::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html"]
@@ -705,7 +852,10 @@ impl Watcher {
         WatcherStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html"]
-    pub fn stop(&self) -> WatcherStop {
+    pub fn stop<B>(&self) -> WatcherStop<B>
+    where
+        B: Serialize,
+    {
         WatcherStop::new(self.client.clone())
     }
 }

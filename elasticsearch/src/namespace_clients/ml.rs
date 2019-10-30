@@ -14,20 +14,19 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct MlCloseJob {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct MlCloseJob<B> {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -37,17 +36,33 @@ pub struct MlCloseJob {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlCloseJob {
+impl<B> MlCloseJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlCloseJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            allow_no_jobs: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
         self.allow_no_jobs = allow_no_jobs;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -86,11 +101,14 @@ impl MlCloseJob {
         self
     }
 }
-impl Sender for MlCloseJob {
+impl<B> Sender for MlCloseJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_close";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
@@ -107,14 +125,13 @@ impl Sender for MlCloseJob {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
     calendar_id: String,
@@ -129,7 +146,11 @@ impl MlDeleteCalendar {
         MlDeleteCalendar {
             client,
             calendar_id: calendar_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -162,15 +183,14 @@ impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
     calendar_id: String,
@@ -187,7 +207,11 @@ impl MlDeleteCalendarEvent {
             client,
             calendar_id: calendar_id,
             event_id: event_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -220,15 +244,14 @@ impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/events/{event_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
     calendar_id: String,
@@ -245,7 +268,11 @@ impl MlDeleteCalendarJob {
             client,
             calendar_id: calendar_id,
             job_id: job_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -278,15 +305,14 @@ impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteDataFrameAnalytics {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -301,7 +327,11 @@ impl MlDeleteDataFrameAnalytics {
         MlDeleteDataFrameAnalytics {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -334,15 +364,14 @@ impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
     datafeed_id: String,
@@ -358,7 +387,12 @@ impl MlDeleteDatafeed {
         MlDeleteDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -396,7 +430,7 @@ impl Sender for MlDeleteDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "force")]
@@ -405,14 +439,13 @@ impl Sender for MlDeleteDatafeed {
             let query_params = QueryParamsStruct { force: self.force };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteExpiredData {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -425,7 +458,11 @@ impl MlDeleteExpiredData {
     pub fn new(client: Elasticsearch) -> Self {
         MlDeleteExpiredData {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -458,15 +495,14 @@ impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/_delete_expired_data";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -481,7 +517,11 @@ impl MlDeleteFilter {
         MlDeleteFilter {
             client,
             filter_id: filter_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -514,15 +554,14 @@ impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteForecast {
     client: Elasticsearch,
     allow_no_forecasts: Option<bool>,
@@ -540,7 +579,14 @@ impl MlDeleteForecast {
         MlDeleteForecast {
             client,
             job_id: job_id,
-            ..Default::default()
+            allow_no_forecasts: None,
+            error_trace: None,
+            filter_path: None,
+            forecast_id: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if `_all` matches no forecasts"]
@@ -583,7 +629,7 @@ impl Sender for MlDeleteForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_forecasts")]
@@ -597,14 +643,13 @@ impl Sender for MlDeleteForecast {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteJob {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -621,7 +666,13 @@ impl MlDeleteJob {
         MlDeleteJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            pretty: None,
+            source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -664,7 +715,7 @@ impl Sender for MlDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "force")]
@@ -678,14 +729,13 @@ impl Sender for MlDeleteJob {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlDeleteModelSnapshot {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -702,7 +752,11 @@ impl MlDeleteModelSnapshot {
             client,
             job_id: job_id,
             snapshot_id: snapshot_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -735,29 +789,42 @@ impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlEvaluateDataFrame {
+pub struct MlEvaluateDataFrame<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlEvaluateDataFrame {
+impl<B> MlEvaluateDataFrame<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlEvaluateDataFrame {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -785,21 +852,24 @@ impl MlEvaluateDataFrame {
         self
     }
 }
-impl Sender for MlEvaluateDataFrame {
+impl<B> Sender for MlEvaluateDataFrame<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/_evaluate";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlFindFileStructure {
+pub struct MlFindFileStructure<B> {
     client: Elasticsearch,
+    body: Option<B>,
     charset: Option<String>,
     column_names: Option<Vec<String>>,
     delimiter: Option<String>,
@@ -820,12 +890,39 @@ pub struct MlFindFileStructure {
     timestamp_field: Option<String>,
     timestamp_format: Option<String>,
 }
-impl MlFindFileStructure {
+impl<B> MlFindFileStructure<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlFindFileStructure {
             client,
-            ..Default::default()
+            body: None,
+            charset: None,
+            column_names: None,
+            delimiter: None,
+            error_trace: None,
+            explain: None,
+            filter_path: None,
+            format: None,
+            grok_pattern: None,
+            has_header_row: None,
+            human: None,
+            line_merge_size_limit: None,
+            lines_to_sample: None,
+            pretty: None,
+            quote: None,
+            should_trim_fields: None,
+            source: None,
+            timeout: None,
+            timestamp_field: None,
+            timestamp_format: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Optional parameter to specify the character set of the file"]
     pub fn charset(mut self, charset: Option<String>) -> Self {
@@ -923,11 +1020,14 @@ impl MlFindFileStructure {
         self
     }
 }
-impl Sender for MlFindFileStructure {
+impl<B> Sender for MlFindFileStructure<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/find_file_structure";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "charset")]
@@ -977,17 +1077,17 @@ impl Sender for MlFindFileStructure {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlFlushJob {
+pub struct MlFlushJob<B> {
     client: Elasticsearch,
     advance_time: Option<String>,
+    body: Option<B>,
     calc_interim: Option<bool>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -999,17 +1099,35 @@ pub struct MlFlushJob {
     source: Option<String>,
     start: Option<String>,
 }
-impl MlFlushJob {
+impl<B> MlFlushJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlFlushJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            advance_time: None,
+            body: None,
+            calc_interim: None,
+            end: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            skip_time: None,
+            source: None,
+            start: None,
         }
     }
     #[doc = "Advances time to the given value generating results and updating the model for the advanced interval"]
     pub fn advance_time(mut self, advance_time: Option<String>) -> Self {
         self.advance_time = advance_time;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Calculates interim results for the most recent bucket or all buckets within the latency period"]
@@ -1058,11 +1176,14 @@ impl MlFlushJob {
         self
     }
 }
-impl Sender for MlFlushJob {
+impl<B> Sender for MlFlushJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_flush";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "advance_time")]
@@ -1085,16 +1206,16 @@ impl Sender for MlFlushJob {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlForecast {
+pub struct MlForecast<B> {
     client: Elasticsearch,
+    body: Option<B>,
     duration: Option<String>,
     error_trace: Option<bool>,
     expires_in: Option<String>,
@@ -1104,13 +1225,28 @@ pub struct MlForecast {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlForecast {
+impl<B> MlForecast<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlForecast {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            duration: None,
+            error_trace: None,
+            expires_in: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "The duration of the forecast"]
     pub fn duration(mut self, duration: Option<String>) -> Self {
@@ -1148,11 +1284,14 @@ impl MlForecast {
         self
     }
 }
-impl Sender for MlForecast {
+impl<B> Sender for MlForecast<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "duration")]
@@ -1166,17 +1305,17 @@ impl Sender for MlForecast {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetBuckets {
+pub struct MlGetBuckets<B> {
     client: Elasticsearch,
     anomaly_score: Option<f64>,
+    body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -1193,17 +1332,40 @@ pub struct MlGetBuckets {
     start: Option<String>,
     timestamp: Option<String>,
 }
-impl MlGetBuckets {
+impl<B> MlGetBuckets<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetBuckets {
             client,
             job_id: job_id,
-            ..Default::default()
+            anomaly_score: None,
+            body: None,
+            desc: None,
+            end: None,
+            error_trace: None,
+            exclude_interim: None,
+            expand: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            sort: None,
+            source: None,
+            start: None,
+            timestamp: None,
         }
     }
     #[doc = "Filter for the most anomalous buckets"]
     pub fn anomaly_score(mut self, anomaly_score: Option<f64>) -> Self {
         self.anomaly_score = anomaly_score;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Set the sort direction"]
@@ -1272,14 +1434,17 @@ impl MlGetBuckets {
         self
     }
 }
-impl Sender for MlGetBuckets {
+impl<B> Sender for MlGetBuckets<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/results/buckets/{timestamp}";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "anomaly_score")]
@@ -1314,14 +1479,13 @@ impl Sender for MlGetBuckets {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetCalendarEvents {
     client: Elasticsearch,
     calendar_id: String,
@@ -1341,7 +1505,16 @@ impl MlGetCalendarEvents {
         MlGetCalendarEvents {
             client,
             calendar_id: calendar_id,
-            ..Default::default()
+            end: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            job_id: None,
+            pretty: None,
+            size: None,
+            source: None,
+            start: None,
         }
     }
     #[doc = "Get events before this time"]
@@ -1399,7 +1572,7 @@ impl Sender for MlGetCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/events";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "end")]
@@ -1422,16 +1595,16 @@ impl Sender for MlGetCalendarEvents {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetCalendars {
+pub struct MlGetCalendars<B> {
     client: Elasticsearch,
+    body: Option<B>,
     calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1441,12 +1614,28 @@ pub struct MlGetCalendars {
     size: Option<i32>,
     source: Option<String>,
 }
-impl MlGetCalendars {
+impl<B> MlGetCalendars<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlGetCalendars {
             client,
-            ..Default::default()
+            body: None,
+            calendar_id: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1484,14 +1673,17 @@ impl MlGetCalendars {
         self
     }
 }
-impl Sender for MlGetCalendars {
+impl<B> Sender for MlGetCalendars<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "from")]
@@ -1505,16 +1697,16 @@ impl Sender for MlGetCalendars {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetCategories {
+pub struct MlGetCategories<B> {
     client: Elasticsearch,
+    body: Option<B>,
     category_id: Option<i64>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1525,13 +1717,29 @@ pub struct MlGetCategories {
     size: Option<i32>,
     source: Option<String>,
 }
-impl MlGetCategories {
+impl<B> MlGetCategories<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetCategories {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            category_id: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1569,14 +1777,17 @@ impl MlGetCategories {
         self
     }
 }
-impl Sender for MlGetCategories {
+impl<B> Sender for MlGetCategories<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/results/categories/{category_id}";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "from")]
@@ -1590,14 +1801,13 @@ impl Sender for MlGetCategories {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetDataFrameAnalytics {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -1614,7 +1824,15 @@ impl MlGetDataFrameAnalytics {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetDataFrameAnalytics {
             client,
-            ..Default::default()
+            allow_no_match: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            id: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
@@ -1662,7 +1880,7 @@ impl Sender for MlGetDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -1679,14 +1897,13 @@ impl Sender for MlGetDataFrameAnalytics {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetDataFrameAnalyticsStats {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -1703,7 +1920,15 @@ impl MlGetDataFrameAnalyticsStats {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetDataFrameAnalyticsStats {
             client,
-            ..Default::default()
+            allow_no_match: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            id: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
@@ -1751,7 +1976,7 @@ impl Sender for MlGetDataFrameAnalyticsStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/_stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -1768,14 +1993,13 @@ impl Sender for MlGetDataFrameAnalyticsStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetDatafeedStats {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
@@ -1790,7 +2014,13 @@ impl MlGetDatafeedStats {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetDatafeedStats {
             client,
-            ..Default::default()
+            allow_no_datafeeds: None,
+            datafeed_id: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
@@ -1828,7 +2058,7 @@ impl Sender for MlGetDatafeedStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
@@ -1839,14 +2069,13 @@ impl Sender for MlGetDatafeedStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetDatafeeds {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
@@ -1861,7 +2090,13 @@ impl MlGetDatafeeds {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetDatafeeds {
             client,
-            ..Default::default()
+            allow_no_datafeeds: None,
+            datafeed_id: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
@@ -1899,7 +2134,7 @@ impl Sender for MlGetDatafeeds {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
@@ -1910,14 +2145,13 @@ impl Sender for MlGetDatafeeds {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetFilters {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1933,7 +2167,14 @@ impl MlGetFilters {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetFilters {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_id: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1976,7 +2217,7 @@ impl Sender for MlGetFilters {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "from")]
@@ -1990,16 +2231,16 @@ impl Sender for MlGetFilters {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetInfluencers {
+pub struct MlGetInfluencers<B> {
     client: Elasticsearch,
+    body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -2015,13 +2256,34 @@ pub struct MlGetInfluencers {
     source: Option<String>,
     start: Option<String>,
 }
-impl MlGetInfluencers {
+impl<B> MlGetInfluencers<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetInfluencers {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            desc: None,
+            end: None,
+            error_trace: None,
+            exclude_interim: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            influencer_score: None,
+            pretty: None,
+            size: None,
+            sort: None,
+            source: None,
+            start: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "whether the results should be sorted in decending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -2089,14 +2351,17 @@ impl MlGetInfluencers {
         self
     }
 }
-impl Sender for MlGetInfluencers {
+impl<B> Sender for MlGetInfluencers<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/results/influencers";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "desc")]
@@ -2128,14 +2393,13 @@ impl Sender for MlGetInfluencers {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetJobStats {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -2150,7 +2414,13 @@ impl MlGetJobStats {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetJobStats {
             client,
-            ..Default::default()
+            allow_no_jobs: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            job_id: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
@@ -2188,7 +2458,7 @@ impl Sender for MlGetJobStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/_stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
@@ -2199,14 +2469,13 @@ impl Sender for MlGetJobStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlGetJobs {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -2221,7 +2490,13 @@ impl MlGetJobs {
     pub fn new(client: Elasticsearch) -> Self {
         MlGetJobs {
             client,
-            ..Default::default()
+            allow_no_jobs: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            job_id: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
@@ -2259,7 +2534,7 @@ impl Sender for MlGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
@@ -2270,16 +2545,16 @@ impl Sender for MlGetJobs {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetModelSnapshots {
+pub struct MlGetModelSnapshots<B> {
     client: Elasticsearch,
+    body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -2294,13 +2569,33 @@ pub struct MlGetModelSnapshots {
     source: Option<String>,
     start: Option<String>,
 }
-impl MlGetModelSnapshots {
+impl<B> MlGetModelSnapshots<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetModelSnapshots {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            desc: None,
+            end: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            snapshot_id: None,
+            sort: None,
+            source: None,
+            start: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "True if the results should be sorted in descending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -2358,14 +2653,17 @@ impl MlGetModelSnapshots {
         self
     }
 }
-impl Sender for MlGetModelSnapshots {
+impl<B> Sender for MlGetModelSnapshots<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "desc")]
@@ -2391,17 +2689,17 @@ impl Sender for MlGetModelSnapshots {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetOverallBuckets {
+pub struct MlGetOverallBuckets<B> {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
+    body: Option<B>,
     bucket_span: Option<String>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -2415,17 +2713,37 @@ pub struct MlGetOverallBuckets {
     start: Option<String>,
     top_n: Option<i32>,
 }
-impl MlGetOverallBuckets {
+impl<B> MlGetOverallBuckets<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetOverallBuckets {
             client,
             job_id: job_id,
-            ..Default::default()
+            allow_no_jobs: None,
+            body: None,
+            bucket_span: None,
+            end: None,
+            error_trace: None,
+            exclude_interim: None,
+            filter_path: None,
+            human: None,
+            overall_score: None,
+            pretty: None,
+            source: None,
+            start: None,
+            top_n: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
     pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
         self.allow_no_jobs = allow_no_jobs;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "The span of the overall buckets. Defaults to the longest job bucket_span"]
@@ -2484,14 +2802,17 @@ impl MlGetOverallBuckets {
         self
     }
 }
-impl Sender for MlGetOverallBuckets {
+impl<B> Sender for MlGetOverallBuckets<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/results/overall_buckets";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_jobs")]
@@ -2520,16 +2841,16 @@ impl Sender for MlGetOverallBuckets {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlGetRecords {
+pub struct MlGetRecords<B> {
     client: Elasticsearch,
+    body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -2545,13 +2866,34 @@ pub struct MlGetRecords {
     source: Option<String>,
     start: Option<String>,
 }
-impl MlGetRecords {
+impl<B> MlGetRecords<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlGetRecords {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            desc: None,
+            end: None,
+            error_trace: None,
+            exclude_interim: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            record_score: None,
+            size: None,
+            sort: None,
+            source: None,
+            start: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Set the sort direction"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -2618,14 +2960,17 @@ impl MlGetRecords {
         self
     }
 }
-impl Sender for MlGetRecords {
+impl<B> Sender for MlGetRecords<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/results/records";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "desc")]
@@ -2657,14 +3002,13 @@ impl Sender for MlGetRecords {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2677,7 +3021,11 @@ impl MlInfo {
     pub fn new(client: Elasticsearch) -> Self {
         MlInfo {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2710,17 +3058,17 @@ impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/info";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlOpenJob {
+pub struct MlOpenJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2730,13 +3078,28 @@ pub struct MlOpenJob {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlOpenJob {
+impl<B> MlOpenJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlOpenJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            ignore_downtime: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2764,21 +3127,24 @@ impl MlOpenJob {
         self
     }
 }
-impl Sender for MlOpenJob {
+impl<B> Sender for MlOpenJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_open";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPostCalendarEvents {
+pub struct MlPostCalendarEvents<B> {
     client: Elasticsearch,
+    body: Option<B>,
     calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2786,13 +3152,26 @@ pub struct MlPostCalendarEvents {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPostCalendarEvents {
+impl<B> MlPostCalendarEvents<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlPostCalendarEvents {
             client,
             calendar_id: calendar_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2820,21 +3199,24 @@ impl MlPostCalendarEvents {
         self
     }
 }
-impl Sender for MlPostCalendarEvents {
+impl<B> Sender for MlPostCalendarEvents<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/events";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPostData {
+pub struct MlPostData<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2844,13 +3226,28 @@ pub struct MlPostData {
     reset_start: Option<String>,
     source: Option<String>,
 }
-impl MlPostData {
+impl<B> MlPostData<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlPostData {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            reset_end: None,
+            reset_start: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2888,11 +3285,14 @@ impl MlPostData {
         self
     }
 }
-impl Sender for MlPostData {
+impl<B> Sender for MlPostData<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_data";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "reset_end")]
@@ -2906,14 +3306,13 @@ impl Sender for MlPostData {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
     datafeed_id: String,
@@ -2928,7 +3327,11 @@ impl MlPreviewDatafeed {
         MlPreviewDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2961,17 +3364,17 @@ impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_preview";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutCalendar {
+pub struct MlPutCalendar<B> {
     client: Elasticsearch,
+    body: Option<B>,
     calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2979,13 +3382,26 @@ pub struct MlPutCalendar {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutCalendar {
+impl<B> MlPutCalendar<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
         MlPutCalendar {
             client,
             calendar_id: calendar_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3013,21 +3429,24 @@ impl MlPutCalendar {
         self
     }
 }
-impl Sender for MlPutCalendar {
+impl<B> Sender for MlPutCalendar<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutCalendarJob {
+pub struct MlPutCalendarJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3036,14 +3455,27 @@ pub struct MlPutCalendarJob {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutCalendarJob {
+impl<B> MlPutCalendarJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, calendar_id: String, job_id: String) -> Self {
         MlPutCalendarJob {
             client,
             calendar_id: calendar_id,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3071,21 +3503,24 @@ impl MlPutCalendarJob {
         self
     }
 }
-impl Sender for MlPutCalendarJob {
+impl<B> Sender for MlPutCalendarJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutDataFrameAnalytics {
+pub struct MlPutDataFrameAnalytics<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3093,13 +3528,26 @@ pub struct MlPutDataFrameAnalytics {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutDataFrameAnalytics {
+impl<B> MlPutDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         MlPutDataFrameAnalytics {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3127,21 +3575,24 @@ impl MlPutDataFrameAnalytics {
         self
     }
 }
-impl Sender for MlPutDataFrameAnalytics {
+impl<B> Sender for MlPutDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutDatafeed {
+pub struct MlPutDatafeed<B> {
     client: Elasticsearch,
+    body: Option<B>,
     datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3149,13 +3600,26 @@ pub struct MlPutDatafeed {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutDatafeed {
+impl<B> MlPutDatafeed<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlPutDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3183,21 +3647,24 @@ impl MlPutDatafeed {
         self
     }
 }
-impl Sender for MlPutDatafeed {
+impl<B> Sender for MlPutDatafeed<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutFilter {
+pub struct MlPutFilter<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_id: String,
     filter_path: Option<Vec<String>>,
@@ -3205,13 +3672,26 @@ pub struct MlPutFilter {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutFilter {
+impl<B> MlPutFilter<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, filter_id: String) -> Self {
         MlPutFilter {
             client,
             filter_id: filter_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3239,21 +3719,24 @@ impl MlPutFilter {
         self
     }
 }
-impl Sender for MlPutFilter {
+impl<B> Sender for MlPutFilter<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlPutJob {
+pub struct MlPutJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3261,13 +3744,26 @@ pub struct MlPutJob {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlPutJob {
+impl<B> MlPutJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlPutJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3295,21 +3791,24 @@ impl MlPutJob {
         self
     }
 }
-impl Sender for MlPutJob {
+impl<B> Sender for MlPutJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlRevertModelSnapshot {
+pub struct MlRevertModelSnapshot<B> {
     client: Elasticsearch,
+    body: Option<B>,
     delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3319,14 +3818,28 @@ pub struct MlRevertModelSnapshot {
     snapshot_id: String,
     source: Option<String>,
 }
-impl MlRevertModelSnapshot {
+impl<B> MlRevertModelSnapshot<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
         MlRevertModelSnapshot {
             client,
             job_id: job_id,
             snapshot_id: snapshot_id,
-            ..Default::default()
+            body: None,
+            delete_intervening_results: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Should we reset the results back to the time of the snapshot?"]
     pub fn delete_intervening_results(mut self, delete_intervening_results: Option<bool>) -> Self {
@@ -3359,11 +3872,14 @@ impl MlRevertModelSnapshot {
         self
     }
 }
-impl Sender for MlRevertModelSnapshot {
+impl<B> Sender for MlRevertModelSnapshot<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_revert";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "delete_intervening_results")]
@@ -3374,16 +3890,16 @@ impl Sender for MlRevertModelSnapshot {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlSetUpgradeMode {
+pub struct MlSetUpgradeMode<B> {
     client: Elasticsearch,
+    body: Option<B>,
     enabled: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3392,12 +3908,27 @@ pub struct MlSetUpgradeMode {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlSetUpgradeMode {
+impl<B> MlSetUpgradeMode<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlSetUpgradeMode {
             client,
-            ..Default::default()
+            body: None,
+            enabled: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Whether to enable upgrade_mode ML setting or not. Defaults to false."]
     pub fn enabled(mut self, enabled: Option<bool>) -> Self {
@@ -3435,11 +3966,14 @@ impl MlSetUpgradeMode {
         self
     }
 }
-impl Sender for MlSetUpgradeMode {
+impl<B> Sender for MlSetUpgradeMode<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/set_upgrade_mode";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "enabled")]
@@ -3453,16 +3987,16 @@ impl Sender for MlSetUpgradeMode {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlStartDataFrameAnalytics {
+pub struct MlStartDataFrameAnalytics<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3471,13 +4005,27 @@ pub struct MlStartDataFrameAnalytics {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlStartDataFrameAnalytics {
+impl<B> MlStartDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         MlStartDataFrameAnalytics {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3510,11 +4058,14 @@ impl MlStartDataFrameAnalytics {
         self
     }
 }
-impl Sender for MlStartDataFrameAnalytics {
+impl<B> Sender for MlStartDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}/_start";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -3525,16 +4076,16 @@ impl Sender for MlStartDataFrameAnalytics {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlStartDatafeed {
+pub struct MlStartDatafeed<B> {
     client: Elasticsearch,
+    body: Option<B>,
     datafeed_id: String,
     end: Option<String>,
     error_trace: Option<bool>,
@@ -3545,13 +4096,29 @@ pub struct MlStartDatafeed {
     start: Option<String>,
     timeout: Option<String>,
 }
-impl MlStartDatafeed {
+impl<B> MlStartDatafeed<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlStartDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            body: None,
+            end: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            start: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
     pub fn end(mut self, end: Option<String>) -> Self {
@@ -3594,11 +4161,14 @@ impl MlStartDatafeed {
         self
     }
 }
-impl Sender for MlStartDatafeed {
+impl<B> Sender for MlStartDatafeed<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_start";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "end")]
@@ -3615,17 +4185,17 @@ impl Sender for MlStartDatafeed {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlStopDataFrameAnalytics {
+pub struct MlStopDataFrameAnalytics<B> {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -3635,17 +4205,33 @@ pub struct MlStopDataFrameAnalytics {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlStopDataFrameAnalytics {
+impl<B> MlStopDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         MlStopDataFrameAnalytics {
             client,
             id: id,
-            ..Default::default()
+            allow_no_match: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
         self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3684,11 +4270,14 @@ impl MlStopDataFrameAnalytics {
         self
     }
 }
-impl Sender for MlStopDataFrameAnalytics {
+impl<B> Sender for MlStopDataFrameAnalytics<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/data_frame/analytics/{id}/_stop";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -3705,17 +4294,17 @@ impl Sender for MlStopDataFrameAnalytics {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlStopDatafeed {
+pub struct MlStopDatafeed<B> {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
+    body: Option<B>,
     datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3725,17 +4314,33 @@ pub struct MlStopDatafeed {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl MlStopDatafeed {
+impl<B> MlStopDatafeed<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlStopDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            allow_no_datafeeds: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
         self.allow_no_datafeeds = allow_no_datafeeds;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3774,11 +4379,14 @@ impl MlStopDatafeed {
         self
     }
 }
-impl Sender for MlStopDatafeed {
+impl<B> Sender for MlStopDatafeed<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_stop";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_datafeeds")]
@@ -3795,16 +4403,16 @@ impl Sender for MlStopDatafeed {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlUpdateDatafeed {
+pub struct MlUpdateDatafeed<B> {
     client: Elasticsearch,
+    body: Option<B>,
     datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3812,13 +4420,26 @@ pub struct MlUpdateDatafeed {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateDatafeed {
+impl<B> MlUpdateDatafeed<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
         MlUpdateDatafeed {
             client,
             datafeed_id: datafeed_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3846,21 +4467,24 @@ impl MlUpdateDatafeed {
         self
     }
 }
-impl Sender for MlUpdateDatafeed {
+impl<B> Sender for MlUpdateDatafeed<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/datafeeds/{datafeed_id}/_update";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlUpdateFilter {
+pub struct MlUpdateFilter<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_id: String,
     filter_path: Option<Vec<String>>,
@@ -3868,13 +4492,26 @@ pub struct MlUpdateFilter {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateFilter {
+impl<B> MlUpdateFilter<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, filter_id: String) -> Self {
         MlUpdateFilter {
             client,
             filter_id: filter_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3902,21 +4539,24 @@ impl MlUpdateFilter {
         self
     }
 }
-impl Sender for MlUpdateFilter {
+impl<B> Sender for MlUpdateFilter<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/filters/{filter_id}/_update";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlUpdateJob {
+pub struct MlUpdateJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3924,13 +4564,26 @@ pub struct MlUpdateJob {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlUpdateJob {
+impl<B> MlUpdateJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String) -> Self {
         MlUpdateJob {
             client,
             job_id: job_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3958,21 +4611,24 @@ impl MlUpdateJob {
         self
     }
 }
-impl Sender for MlUpdateJob {
+impl<B> Sender for MlUpdateJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/_update";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlUpdateModelSnapshot {
+pub struct MlUpdateModelSnapshot<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3981,14 +4637,27 @@ pub struct MlUpdateModelSnapshot {
     snapshot_id: String,
     source: Option<String>,
 }
-impl MlUpdateModelSnapshot {
+impl<B> MlUpdateModelSnapshot<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
         MlUpdateModelSnapshot {
             client,
             job_id: job_id,
             snapshot_id: snapshot_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4016,33 +4685,49 @@ impl MlUpdateModelSnapshot {
         self
     }
 }
-impl Sender for MlUpdateModelSnapshot {
+impl<B> Sender for MlUpdateModelSnapshot<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_update";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlValidate {
+pub struct MlValidate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlValidate {
+impl<B> MlValidate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlValidate {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4070,33 +4755,49 @@ impl MlValidate {
         self
     }
 }
-impl Sender for MlValidate {
+impl<B> Sender for MlValidate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/_validate";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct MlValidateDetector {
+pub struct MlValidateDetector<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl MlValidateDetector {
+impl<B> MlValidateDetector<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         MlValidateDetector {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4124,15 +4825,18 @@ impl MlValidateDetector {
         self
     }
 }
-impl Sender for MlValidateDetector {
+impl<B> Sender for MlValidateDetector<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ml/anomaly_detectors/_validate/detector";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4145,7 +4849,10 @@ impl Ml {
         Ml { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
-    pub fn close_job(&self, job_id: String) -> MlCloseJob {
+    pub fn close_job<B>(&self, job_id: String) -> MlCloseJob<B>
+    where
+        B: Serialize,
+    {
         MlCloseJob::new(self.client.clone(), job_id)
     }
     pub fn delete_calendar(&self, calendar_id: String) -> MlDeleteCalendar {
@@ -4192,32 +4899,53 @@ impl Ml {
         MlDeleteModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
-    pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrame {
+    pub fn evaluate_data_frame<B>(&self) -> MlEvaluateDataFrame<B>
+    where
+        B: Serialize,
+    {
         MlEvaluateDataFrame::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html"]
-    pub fn find_file_structure(&self) -> MlFindFileStructure {
+    pub fn find_file_structure<B>(&self) -> MlFindFileStructure<B>
+    where
+        B: Serialize,
+    {
         MlFindFileStructure::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
-    pub fn flush_job(&self, job_id: String) -> MlFlushJob {
+    pub fn flush_job<B>(&self, job_id: String) -> MlFlushJob<B>
+    where
+        B: Serialize,
+    {
         MlFlushJob::new(self.client.clone(), job_id)
     }
-    pub fn forecast(&self, job_id: String) -> MlForecast {
+    pub fn forecast<B>(&self, job_id: String) -> MlForecast<B>
+    where
+        B: Serialize,
+    {
         MlForecast::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
-    pub fn get_buckets(&self, job_id: String) -> MlGetBuckets {
+    pub fn get_buckets<B>(&self, job_id: String) -> MlGetBuckets<B>
+    where
+        B: Serialize,
+    {
         MlGetBuckets::new(self.client.clone(), job_id)
     }
     pub fn get_calendar_events(&self, calendar_id: String) -> MlGetCalendarEvents {
         MlGetCalendarEvents::new(self.client.clone(), calendar_id)
     }
-    pub fn get_calendars(&self) -> MlGetCalendars {
+    pub fn get_calendars<B>(&self) -> MlGetCalendars<B>
+    where
+        B: Serialize,
+    {
         MlGetCalendars::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
-    pub fn get_categories(&self, job_id: String) -> MlGetCategories {
+    pub fn get_categories<B>(&self, job_id: String) -> MlGetCategories<B>
+    where
+        B: Serialize,
+    {
         MlGetCategories::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
@@ -4240,7 +4968,10 @@ impl Ml {
         MlGetFilters::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
-    pub fn get_influencers(&self, job_id: String) -> MlGetInfluencers {
+    pub fn get_influencers<B>(&self, job_id: String) -> MlGetInfluencers<B>
+    where
+        B: Serialize,
+    {
         MlGetInfluencers::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
@@ -4252,107 +4983,179 @@ impl Ml {
         MlGetJobs::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
-    pub fn get_model_snapshots(&self, job_id: String) -> MlGetModelSnapshots {
+    pub fn get_model_snapshots<B>(&self, job_id: String) -> MlGetModelSnapshots<B>
+    where
+        B: Serialize,
+    {
         MlGetModelSnapshots::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
-    pub fn get_overall_buckets(&self, job_id: String) -> MlGetOverallBuckets {
+    pub fn get_overall_buckets<B>(&self, job_id: String) -> MlGetOverallBuckets<B>
+    where
+        B: Serialize,
+    {
         MlGetOverallBuckets::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
-    pub fn get_records(&self, job_id: String) -> MlGetRecords {
+    pub fn get_records<B>(&self, job_id: String) -> MlGetRecords<B>
+    where
+        B: Serialize,
+    {
         MlGetRecords::new(self.client.clone(), job_id)
     }
     pub fn info(&self) -> MlInfo {
         MlInfo::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
-    pub fn open_job(&self, job_id: String) -> MlOpenJob {
+    pub fn open_job<B>(&self, job_id: String) -> MlOpenJob<B>
+    where
+        B: Serialize,
+    {
         MlOpenJob::new(self.client.clone(), job_id)
     }
-    pub fn post_calendar_events(&self, calendar_id: String) -> MlPostCalendarEvents {
+    pub fn post_calendar_events<B>(&self, calendar_id: String) -> MlPostCalendarEvents<B>
+    where
+        B: Serialize,
+    {
         MlPostCalendarEvents::new(self.client.clone(), calendar_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
-    pub fn post_data(&self, job_id: String) -> MlPostData {
+    pub fn post_data<B>(&self, job_id: String) -> MlPostData<B>
+    where
+        B: Serialize,
+    {
         MlPostData::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
     pub fn preview_datafeed(&self, datafeed_id: String) -> MlPreviewDatafeed {
         MlPreviewDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn put_calendar(&self, calendar_id: String) -> MlPutCalendar {
+    pub fn put_calendar<B>(&self, calendar_id: String) -> MlPutCalendar<B>
+    where
+        B: Serialize,
+    {
         MlPutCalendar::new(self.client.clone(), calendar_id)
     }
-    pub fn put_calendar_job(&self, calendar_id: String, job_id: String) -> MlPutCalendarJob {
+    pub fn put_calendar_job<B>(&self, calendar_id: String, job_id: String) -> MlPutCalendarJob<B>
+    where
+        B: Serialize,
+    {
         MlPutCalendarJob::new(self.client.clone(), calendar_id, job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
-    pub fn put_data_frame_analytics(&self, id: String) -> MlPutDataFrameAnalytics {
+    pub fn put_data_frame_analytics<B>(&self, id: String) -> MlPutDataFrameAnalytics<B>
+    where
+        B: Serialize,
+    {
         MlPutDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
-    pub fn put_datafeed(&self, datafeed_id: String) -> MlPutDatafeed {
+    pub fn put_datafeed<B>(&self, datafeed_id: String) -> MlPutDatafeed<B>
+    where
+        B: Serialize,
+    {
         MlPutDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn put_filter(&self, filter_id: String) -> MlPutFilter {
+    pub fn put_filter<B>(&self, filter_id: String) -> MlPutFilter<B>
+    where
+        B: Serialize,
+    {
         MlPutFilter::new(self.client.clone(), filter_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
-    pub fn put_job(&self, job_id: String) -> MlPutJob {
+    pub fn put_job<B>(&self, job_id: String) -> MlPutJob<B>
+    where
+        B: Serialize,
+    {
         MlPutJob::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
-    pub fn revert_model_snapshot(
+    pub fn revert_model_snapshot<B>(
         &self,
         job_id: String,
         snapshot_id: String,
-    ) -> MlRevertModelSnapshot {
+    ) -> MlRevertModelSnapshot<B>
+    where
+        B: Serialize,
+    {
         MlRevertModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
-    pub fn set_upgrade_mode(&self) -> MlSetUpgradeMode {
+    pub fn set_upgrade_mode<B>(&self) -> MlSetUpgradeMode<B>
+    where
+        B: Serialize,
+    {
         MlSetUpgradeMode::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
-    pub fn start_data_frame_analytics(&self, id: String) -> MlStartDataFrameAnalytics {
+    pub fn start_data_frame_analytics<B>(&self, id: String) -> MlStartDataFrameAnalytics<B>
+    where
+        B: Serialize,
+    {
         MlStartDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
-    pub fn start_datafeed(&self, datafeed_id: String) -> MlStartDatafeed {
+    pub fn start_datafeed<B>(&self, datafeed_id: String) -> MlStartDatafeed<B>
+    where
+        B: Serialize,
+    {
         MlStartDatafeed::new(self.client.clone(), datafeed_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
-    pub fn stop_data_frame_analytics(&self, id: String) -> MlStopDataFrameAnalytics {
+    pub fn stop_data_frame_analytics<B>(&self, id: String) -> MlStopDataFrameAnalytics<B>
+    where
+        B: Serialize,
+    {
         MlStopDataFrameAnalytics::new(self.client.clone(), id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
-    pub fn stop_datafeed(&self, datafeed_id: String) -> MlStopDatafeed {
+    pub fn stop_datafeed<B>(&self, datafeed_id: String) -> MlStopDatafeed<B>
+    where
+        B: Serialize,
+    {
         MlStopDatafeed::new(self.client.clone(), datafeed_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
-    pub fn update_datafeed(&self, datafeed_id: String) -> MlUpdateDatafeed {
+    pub fn update_datafeed<B>(&self, datafeed_id: String) -> MlUpdateDatafeed<B>
+    where
+        B: Serialize,
+    {
         MlUpdateDatafeed::new(self.client.clone(), datafeed_id)
     }
-    pub fn update_filter(&self, filter_id: String) -> MlUpdateFilter {
+    pub fn update_filter<B>(&self, filter_id: String) -> MlUpdateFilter<B>
+    where
+        B: Serialize,
+    {
         MlUpdateFilter::new(self.client.clone(), filter_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
-    pub fn update_job(&self, job_id: String) -> MlUpdateJob {
+    pub fn update_job<B>(&self, job_id: String) -> MlUpdateJob<B>
+    where
+        B: Serialize,
+    {
         MlUpdateJob::new(self.client.clone(), job_id)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
-    pub fn update_model_snapshot(
+    pub fn update_model_snapshot<B>(
         &self,
         job_id: String,
         snapshot_id: String,
-    ) -> MlUpdateModelSnapshot {
+    ) -> MlUpdateModelSnapshot<B>
+    where
+        B: Serialize,
+    {
         MlUpdateModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
     }
-    pub fn validate(&self) -> MlValidate {
+    pub fn validate<B>(&self) -> MlValidate<B>
+    where
+        B: Serialize,
+    {
         MlValidate::new(self.client.clone())
     }
-    pub fn validate_detector(&self) -> MlValidateDetector {
+    pub fn validate_detector<B>(&self) -> MlValidateDetector<B>
+    where
+        B: Serialize,
+    {
         MlValidateDetector::new(self.client.clone())
     }
 }

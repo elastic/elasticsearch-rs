@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct DataFrameDeleteDataFrameTransform {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -39,7 +37,11 @@ impl DataFrameDeleteDataFrameTransform {
         DataFrameDeleteDataFrameTransform {
             client,
             transform_id: transform_id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -72,15 +74,14 @@ impl Sender for DataFrameDeleteDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct DataFrameGetDataFrameTransform {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -97,7 +98,15 @@ impl DataFrameGetDataFrameTransform {
     pub fn new(client: Elasticsearch) -> Self {
         DataFrameGetDataFrameTransform {
             client,
-            ..Default::default()
+            allow_no_match: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            source: None,
+            transform_id: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
@@ -145,7 +154,7 @@ impl Sender for DataFrameGetDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -162,14 +171,13 @@ impl Sender for DataFrameGetDataFrameTransform {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct DataFrameGetDataFrameTransformStats {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -187,7 +195,14 @@ impl DataFrameGetDataFrameTransformStats {
         DataFrameGetDataFrameTransformStats {
             client,
             transform_id: transform_id,
-            ..Default::default()
+            allow_no_match: None,
+            error_trace: None,
+            filter_path: None,
+            from: None,
+            human: None,
+            pretty: None,
+            size: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
@@ -235,7 +250,7 @@ impl Sender for DataFrameGetDataFrameTransformStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -252,28 +267,41 @@ impl Sender for DataFrameGetDataFrameTransformStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DataFramePreviewDataFrameTransform {
+pub struct DataFramePreviewDataFrameTransform<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl DataFramePreviewDataFrameTransform {
+impl<B> DataFramePreviewDataFrameTransform<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         DataFramePreviewDataFrameTransform {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -301,21 +329,24 @@ impl DataFramePreviewDataFrameTransform {
         self
     }
 }
-impl Sender for DataFramePreviewDataFrameTransform {
+impl<B> Sender for DataFramePreviewDataFrameTransform<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/_preview";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DataFramePutDataFrameTransform {
+pub struct DataFramePutDataFrameTransform<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -323,13 +354,26 @@ pub struct DataFramePutDataFrameTransform {
     source: Option<String>,
     transform_id: String,
 }
-impl DataFramePutDataFrameTransform {
+impl<B> DataFramePutDataFrameTransform<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFramePutDataFrameTransform {
             client,
             transform_id: transform_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -357,21 +401,24 @@ impl DataFramePutDataFrameTransform {
         self
     }
 }
-impl Sender for DataFramePutDataFrameTransform {
+impl<B> Sender for DataFramePutDataFrameTransform<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DataFrameStartDataFrameTransform {
+pub struct DataFrameStartDataFrameTransform<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -380,13 +427,27 @@ pub struct DataFrameStartDataFrameTransform {
     timeout: Option<String>,
     transform_id: String,
 }
-impl DataFrameStartDataFrameTransform {
+impl<B> DataFrameStartDataFrameTransform<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameStartDataFrameTransform {
             client,
             transform_id: transform_id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -419,11 +480,14 @@ impl DataFrameStartDataFrameTransform {
         self
     }
 }
-impl Sender for DataFrameStartDataFrameTransform {
+impl<B> Sender for DataFrameStartDataFrameTransform<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_start";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -434,17 +498,17 @@ impl Sender for DataFrameStartDataFrameTransform {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct DataFrameStopDataFrameTransform {
+pub struct DataFrameStopDataFrameTransform<B> {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -454,17 +518,33 @@ pub struct DataFrameStopDataFrameTransform {
     transform_id: String,
     wait_for_completion: Option<bool>,
 }
-impl DataFrameStopDataFrameTransform {
+impl<B> DataFrameStopDataFrameTransform<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, transform_id: String) -> Self {
         DataFrameStopDataFrameTransform {
             client,
             transform_id: transform_id,
-            ..Default::default()
+            allow_no_match: None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
         self.allow_no_match = allow_no_match;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -503,11 +583,14 @@ impl DataFrameStopDataFrameTransform {
         self
     }
 }
-impl Sender for DataFrameStopDataFrameTransform {
+impl<B> Sender for DataFrameStopDataFrameTransform<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_stop";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_match")]
@@ -524,10 +607,10 @@ impl Sender for DataFrameStopDataFrameTransform {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -558,25 +641,40 @@ impl DataFrame {
         DataFrameGetDataFrameTransformStats::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-data-frame-transform.html"]
-    pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransform {
+    pub fn preview_data_frame_transform<B>(&self) -> DataFramePreviewDataFrameTransform<B>
+    where
+        B: Serialize,
+    {
         DataFramePreviewDataFrameTransform::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/put-data-frame-transform.html"]
-    pub fn put_data_frame_transform(&self, transform_id: String) -> DataFramePutDataFrameTransform {
+    pub fn put_data_frame_transform<B>(
+        &self,
+        transform_id: String,
+    ) -> DataFramePutDataFrameTransform<B>
+    where
+        B: Serialize,
+    {
         DataFramePutDataFrameTransform::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/start-data-frame-transform.html"]
-    pub fn start_data_frame_transform(
+    pub fn start_data_frame_transform<B>(
         &self,
         transform_id: String,
-    ) -> DataFrameStartDataFrameTransform {
+    ) -> DataFrameStartDataFrameTransform<B>
+    where
+        B: Serialize,
+    {
         DataFrameStartDataFrameTransform::new(self.client.clone(), transform_id)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/stop-data-frame-transform.html"]
-    pub fn stop_data_frame_transform(
+    pub fn stop_data_frame_transform<B>(
         &self,
         transform_id: String,
-    ) -> DataFrameStopDataFrameTransform {
+    ) -> DataFrameStopDataFrameTransform<B>
+    where
+        B: Serialize,
+    {
         DataFrameStopDataFrameTransform::new(self.client.clone(), transform_id)
     }
 }

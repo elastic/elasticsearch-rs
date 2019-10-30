@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct RollupDeleteJob {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -39,7 +37,11 @@ impl RollupDeleteJob {
         RollupDeleteJob {
             client,
             id: id,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -72,15 +74,14 @@ impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct RollupGetJobs {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -94,7 +95,12 @@ impl RollupGetJobs {
     pub fn new(client: Elasticsearch) -> Self {
         RollupGetJobs {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -127,15 +133,14 @@ impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct RollupGetRollupCaps {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -149,7 +154,12 @@ impl RollupGetRollupCaps {
     pub fn new(client: Elasticsearch) -> Self {
         RollupGetRollupCaps {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            id: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -182,15 +192,14 @@ impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/data/{id}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct RollupGetRollupIndexCaps {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -205,7 +214,11 @@ impl RollupGetRollupIndexCaps {
         RollupGetRollupIndexCaps {
             client,
             index: index,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -238,17 +251,17 @@ impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_rollup/data";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RollupPutJob {
+pub struct RollupPutJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -256,13 +269,26 @@ pub struct RollupPutJob {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupPutJob {
+impl<B> RollupPutJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupPutJob {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -290,21 +316,24 @@ impl RollupPutJob {
         self
     }
 }
-impl Sender for RollupPutJob {
+impl<B> Sender for RollupPutJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RollupRollupSearch {
+pub struct RollupRollupSearch<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -315,13 +344,29 @@ pub struct RollupRollupSearch {
     ty: Option<String>,
     typed_keys: Option<bool>,
 }
-impl RollupRollupSearch {
+impl<B> RollupRollupSearch<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         RollupRollupSearch {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            rest_total_hits_as_int: None,
+            source: None,
+            ty: None,
+            typed_keys: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -359,14 +404,17 @@ impl RollupRollupSearch {
         self
     }
 }
-impl Sender for RollupRollupSearch {
+impl<B> Sender for RollupRollupSearch<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_rollup_search";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "rest_total_hits_as_int")]
@@ -380,16 +428,16 @@ impl Sender for RollupRollupSearch {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RollupStartJob {
+pub struct RollupStartJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -397,13 +445,26 @@ pub struct RollupStartJob {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl RollupStartJob {
+impl<B> RollupStartJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupStartJob {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -431,21 +492,24 @@ impl RollupStartJob {
         self
     }
 }
-impl Sender for RollupStartJob {
+impl<B> Sender for RollupStartJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}/_start";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct RollupStopJob {
+pub struct RollupStopJob<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -455,13 +519,28 @@ pub struct RollupStopJob {
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl RollupStopJob {
+impl<B> RollupStopJob<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, id: String) -> Self {
         RollupStopJob {
             client,
             id: id,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_completion: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -499,11 +578,14 @@ impl RollupStopJob {
         self
     }
 }
-impl Sender for RollupStopJob {
+impl<B> Sender for RollupStopJob<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}/_stop";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "timeout")]
@@ -517,10 +599,10 @@ impl Sender for RollupStopJob {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -549,19 +631,31 @@ impl Rollup {
         RollupGetRollupIndexCaps::new(self.client.clone(), index)
     }
     #[doc = ""]
-    pub fn put_job(&self, id: String) -> RollupPutJob {
+    pub fn put_job<B>(&self, id: String) -> RollupPutJob<B>
+    where
+        B: Serialize,
+    {
         RollupPutJob::new(self.client.clone(), id)
     }
     #[doc = ""]
-    pub fn rollup_search(&self, index: Vec<String>) -> RollupRollupSearch {
+    pub fn rollup_search<B>(&self, index: Vec<String>) -> RollupRollupSearch<B>
+    where
+        B: Serialize,
+    {
         RollupRollupSearch::new(self.client.clone(), index)
     }
     #[doc = ""]
-    pub fn start_job(&self, id: String) -> RollupStartJob {
+    pub fn start_job<B>(&self, id: String) -> RollupStartJob<B>
+    where
+        B: Serialize,
+    {
         RollupStartJob::new(self.client.clone(), id)
     }
     #[doc = ""]
-    pub fn stop_job(&self, id: String) -> RollupStopJob {
+    pub fn stop_job<B>(&self, id: String) -> RollupStopJob<B>
+    where
+        B: Serialize,
+    {
         RollupStopJob::new(self.client.clone(), id)
     }
 }

@@ -14,19 +14,18 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct IndicesAnalyze {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct IndicesAnalyze<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -34,12 +33,26 @@ pub struct IndicesAnalyze {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IndicesAnalyze {
+impl<B> IndicesAnalyze<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesAnalyze {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -72,14 +85,17 @@ impl IndicesAnalyze {
         self
     }
 }
-impl Sender for IndicesAnalyze {
+impl<B> Sender for IndicesAnalyze<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_analyze";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "index")]
@@ -88,17 +104,17 @@ impl Sender for IndicesAnalyze {
             let query_params = QueryParamsStruct { index: self.index };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesClearCache {
+pub struct IndicesClearCache<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     fielddata: Option<bool>,
@@ -112,16 +128,37 @@ pub struct IndicesClearCache {
     request: Option<bool>,
     source: Option<String>,
 }
-impl IndicesClearCache {
+impl<B> IndicesClearCache<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesClearCache {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            fielddata: None,
+            fields: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            query: None,
+            request: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -185,11 +222,14 @@ impl IndicesClearCache {
         self
     }
 }
-impl Sender for IndicesClearCache {
+impl<B> Sender for IndicesClearCache<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cache/clear";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -221,17 +261,17 @@ impl Sender for IndicesClearCache {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesClose {
+pub struct IndicesClose<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -244,17 +284,36 @@ pub struct IndicesClose {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesClose {
+impl<B> IndicesClose<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesClose {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -308,11 +367,14 @@ impl IndicesClose {
         self
     }
 }
-impl Sender for IndicesClose {
+impl<B> Sender for IndicesClose<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_close";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -338,16 +400,16 @@ impl Sender for IndicesClose {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesCreate {
+pub struct IndicesCreate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -359,13 +421,30 @@ pub struct IndicesCreate {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesCreate {
+impl<B> IndicesCreate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesCreate {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            include_type_name: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -413,11 +492,14 @@ impl IndicesCreate {
         self
     }
 }
-impl Sender for IndicesCreate {
+impl<B> Sender for IndicesCreate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "include_type_name")]
@@ -437,14 +519,13 @@ impl Sender for IndicesCreate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesDelete {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -464,7 +545,16 @@ impl IndicesDelete {
         IndicesDelete {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
@@ -522,7 +612,7 @@ impl Sender for IndicesDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -545,14 +635,13 @@ impl Sender for IndicesDelete {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesDeleteAlias {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -571,7 +660,13 @@ impl IndicesDeleteAlias {
             client,
             index: index,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -614,7 +709,7 @@ impl Sender for IndicesDeleteAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_alias/{name}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -628,14 +723,13 @@ impl Sender for IndicesDeleteAlias {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesDeleteTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -652,7 +746,13 @@ impl IndicesDeleteTemplate {
         IndicesDeleteTemplate {
             client,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -695,7 +795,7 @@ impl Sender for IndicesDeleteTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_template/{name}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -709,14 +809,13 @@ impl Sender for IndicesDeleteTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesExists {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -737,7 +836,17 @@ impl IndicesExists {
         IndicesExists {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            ignore_unavailable: None,
+            include_defaults: None,
+            local: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
@@ -800,7 +909,7 @@ impl Sender for IndicesExists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -826,14 +935,13 @@ impl Sender for IndicesExists {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesExistsAlias {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -853,7 +961,16 @@ impl IndicesExistsAlias {
         IndicesExistsAlias {
             client,
             name: name,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            local: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -906,7 +1023,7 @@ impl Sender for IndicesExistsAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_alias/{name}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -926,14 +1043,13 @@ impl Sender for IndicesExistsAlias {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesExistsTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -951,7 +1067,14 @@ impl IndicesExistsTemplate {
         IndicesExistsTemplate {
             client,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -999,7 +1122,7 @@ impl Sender for IndicesExistsTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_template/{name}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -1016,14 +1139,13 @@ impl Sender for IndicesExistsTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesExistsType {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1044,7 +1166,15 @@ impl IndicesExistsType {
             client,
             index: index,
             ty: ty,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            local: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -1097,7 +1227,7 @@ impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_mapping/{type}";
         let method = HttpMethod::Head;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1117,17 +1247,17 @@ impl Sender for IndicesExistsType {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesFlush {
+pub struct IndicesFlush<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -1139,16 +1269,35 @@ pub struct IndicesFlush {
     source: Option<String>,
     wait_if_ongoing: Option<bool>,
 }
-impl IndicesFlush {
+impl<B> IndicesFlush<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesFlush {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            force: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
+            wait_if_ongoing: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1197,14 +1346,17 @@ impl IndicesFlush {
         self
     }
 }
-impl Sender for IndicesFlush {
+impl<B> Sender for IndicesFlush<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_flush";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1227,17 +1379,17 @@ impl Sender for IndicesFlush {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesFlushSynced {
+pub struct IndicesFlushSynced<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -1247,16 +1399,33 @@ pub struct IndicesFlushSynced {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IndicesFlushSynced {
+impl<B> IndicesFlushSynced<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesFlushSynced {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1295,14 +1464,17 @@ impl IndicesFlushSynced {
         self
     }
 }
-impl Sender for IndicesFlushSynced {
+impl<B> Sender for IndicesFlushSynced<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_flush/synced";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1319,17 +1491,17 @@ impl Sender for IndicesFlushSynced {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesForcemerge {
+pub struct IndicesForcemerge<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -1342,16 +1514,36 @@ pub struct IndicesForcemerge {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IndicesForcemerge {
+impl<B> IndicesForcemerge<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesForcemerge {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flush: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            max_num_segments: None,
+            only_expunge_deletes: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1405,11 +1597,14 @@ impl IndicesForcemerge {
         self
     }
 }
-impl Sender for IndicesForcemerge {
+impl<B> Sender for IndicesForcemerge<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_forcemerge";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1435,17 +1630,17 @@ impl Sender for IndicesForcemerge {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesFreeze {
+pub struct IndicesFreeze<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -1458,17 +1653,36 @@ pub struct IndicesFreeze {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesFreeze {
+impl<B> IndicesFreeze<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesFreeze {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1522,11 +1736,14 @@ impl IndicesFreeze {
         self
     }
 }
-impl Sender for IndicesFreeze {
+impl<B> Sender for IndicesFreeze<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_freeze";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1552,14 +1769,13 @@ impl Sender for IndicesFreeze {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGet {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1582,7 +1798,19 @@ impl IndicesGet {
         IndicesGet {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            ignore_unavailable: None,
+            include_defaults: None,
+            include_type_name: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
@@ -1655,7 +1883,7 @@ impl Sender for IndicesGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1687,14 +1915,13 @@ impl Sender for IndicesGet {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetAlias {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1713,7 +1940,17 @@ impl IndicesGetAlias {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesGetAlias {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            local: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -1766,7 +2003,7 @@ impl Sender for IndicesGetAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_alias";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1786,14 +2023,13 @@ impl Sender for IndicesGetAlias {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetFieldMapping {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1816,7 +2052,19 @@ impl IndicesGetFieldMapping {
         IndicesGetFieldMapping {
             client,
             fields: fields,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            include_defaults: None,
+            include_type_name: None,
+            index: None,
+            local: None,
+            pretty: None,
+            source: None,
+            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -1879,7 +2127,7 @@ impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_mapping/field/{fields}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -1905,14 +2153,13 @@ impl Sender for IndicesGetFieldMapping {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetMapping {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1933,7 +2180,19 @@ impl IndicesGetMapping {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesGetMapping {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            include_type_name: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -1996,7 +2255,7 @@ impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_mapping";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2022,14 +2281,13 @@ impl Sender for IndicesGetMapping {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetSettings {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2051,7 +2309,20 @@ impl IndicesGetSettings {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesGetSettings {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            ignore_unavailable: None,
+            include_defaults: None,
+            index: None,
+            local: None,
+            master_timeout: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -2119,7 +2390,7 @@ impl Sender for IndicesGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_settings";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2148,14 +2419,13 @@ impl Sender for IndicesGetSettings {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2173,7 +2443,16 @@ impl IndicesGetTemplate {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesGetTemplate {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            include_type_name: None,
+            local: None,
+            master_timeout: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2226,7 +2505,7 @@ impl Sender for IndicesGetTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_template";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "flat_settings")]
@@ -2246,14 +2525,13 @@ impl Sender for IndicesGetTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesGetUpgrade {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2270,7 +2548,15 @@ impl IndicesGetUpgrade {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesGetUpgrade {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -2318,7 +2604,7 @@ impl Sender for IndicesGetUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_upgrade";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2335,17 +2621,17 @@ impl Sender for IndicesGetUpgrade {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesOpen {
+pub struct IndicesOpen<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -2358,17 +2644,36 @@ pub struct IndicesOpen {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesOpen {
+impl<B> IndicesOpen<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesOpen {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2422,11 +2727,14 @@ impl IndicesOpen {
         self
     }
 }
-impl Sender for IndicesOpen {
+impl<B> Sender for IndicesOpen<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_open";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2452,16 +2760,16 @@ impl Sender for IndicesOpen {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesPutAlias {
+pub struct IndicesPutAlias<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2472,14 +2780,29 @@ pub struct IndicesPutAlias {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl IndicesPutAlias {
+impl<B> IndicesPutAlias<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>, name: String) -> Self {
         IndicesPutAlias {
             client,
             index: index,
             name: name,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2517,11 +2840,14 @@ impl IndicesPutAlias {
         self
     }
 }
-impl Sender for IndicesPutAlias {
+impl<B> Sender for IndicesPutAlias<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_alias/{name}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -2535,17 +2861,17 @@ impl Sender for IndicesPutAlias {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesPutMapping {
+pub struct IndicesPutMapping<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -2559,17 +2885,37 @@ pub struct IndicesPutMapping {
     timeout: Option<String>,
     ty: Option<String>,
 }
-impl IndicesPutMapping {
+impl<B> IndicesPutMapping<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesPutMapping {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            include_type_name: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2623,11 +2969,14 @@ impl IndicesPutMapping {
         self
     }
 }
-impl Sender for IndicesPutMapping {
+impl<B> Sender for IndicesPutMapping<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_mapping";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2653,17 +3002,17 @@ impl Sender for IndicesPutMapping {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesPutSettings {
+pub struct IndicesPutSettings<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -2677,16 +3026,37 @@ pub struct IndicesPutSettings {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl IndicesPutSettings {
+impl<B> IndicesPutSettings<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesPutSettings {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            master_timeout: None,
+            preserve_existing: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2745,11 +3115,14 @@ impl IndicesPutSettings {
         self
     }
 }
-impl Sender for IndicesPutSettings {
+impl<B> Sender for IndicesPutSettings<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_settings";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -2778,16 +3151,16 @@ impl Sender for IndicesPutSettings {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesPutTemplate {
+pub struct IndicesPutTemplate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     create: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2801,13 +3174,32 @@ pub struct IndicesPutTemplate {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl IndicesPutTemplate {
+impl<B> IndicesPutTemplate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, name: String) -> Self {
         IndicesPutTemplate {
             client,
             name: name,
-            ..Default::default()
+            body: None,
+            create: None,
+            error_trace: None,
+            filter_path: None,
+            flat_settings: None,
+            human: None,
+            include_type_name: None,
+            master_timeout: None,
+            order: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
     pub fn create(mut self, create: Option<bool>) -> Self {
@@ -2865,11 +3257,14 @@ impl IndicesPutTemplate {
         self
     }
 }
-impl Sender for IndicesPutTemplate {
+impl<B> Sender for IndicesPutTemplate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_template/{name}";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "create")]
@@ -2895,14 +3290,13 @@ impl Sender for IndicesPutTemplate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesRecovery {
     client: Elasticsearch,
     active_only: Option<bool>,
@@ -2918,7 +3312,14 @@ impl IndicesRecovery {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesRecovery {
             client,
-            ..Default::default()
+            active_only: None,
+            detailed: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Display only those recoveries that are currently on-going"]
@@ -2961,7 +3362,7 @@ impl Sender for IndicesRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_recovery";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "active_only")]
@@ -2975,17 +3376,17 @@ impl Sender for IndicesRecovery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesRefresh {
+pub struct IndicesRefresh<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -2995,16 +3396,33 @@ pub struct IndicesRefresh {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IndicesRefresh {
+impl<B> IndicesRefresh<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesRefresh {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3043,14 +3461,17 @@ impl IndicesRefresh {
         self
     }
 }
-impl Sender for IndicesRefresh {
+impl<B> Sender for IndicesRefresh<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_refresh";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3067,17 +3488,17 @@ impl Sender for IndicesRefresh {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesReloadSearchAnalyzers {
+pub struct IndicesReloadSearchAnalyzers<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -3087,17 +3508,33 @@ pub struct IndicesReloadSearchAnalyzers {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IndicesReloadSearchAnalyzers {
+impl<B> IndicesReloadSearchAnalyzers<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
         IndicesReloadSearchAnalyzers {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3136,14 +3573,17 @@ impl IndicesReloadSearchAnalyzers {
         self
     }
 }
-impl Sender for IndicesReloadSearchAnalyzers {
+impl<B> Sender for IndicesReloadSearchAnalyzers<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_reload_search_analyzers";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3160,17 +3600,17 @@ impl Sender for IndicesReloadSearchAnalyzers {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesRollover {
+pub struct IndicesRollover<B> {
     client: Elasticsearch,
     alias: String,
+    body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3183,13 +3623,32 @@ pub struct IndicesRollover {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesRollover {
+impl<B> IndicesRollover<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, alias: String) -> Self {
         IndicesRollover {
             client,
             alias: alias,
-            ..Default::default()
+            body: None,
+            dry_run: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            include_type_name: None,
+            master_timeout: None,
+            new_index: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "If set to true the rollover action will only be validated but not actually performed even if a condition matches. The default is false"]
     pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
@@ -3242,11 +3701,14 @@ impl IndicesRollover {
         self
     }
 }
-impl Sender for IndicesRollover {
+impl<B> Sender for IndicesRollover<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{alias}/_rollover";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "dry_run")]
@@ -3269,14 +3731,13 @@ impl Sender for IndicesRollover {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesSegments {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3294,7 +3755,16 @@ impl IndicesSegments {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesSegments {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
+            verbose: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -3347,7 +3817,7 @@ impl Sender for IndicesSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_segments";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3367,14 +3837,13 @@ impl Sender for IndicesSegments {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesShardStores {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3392,7 +3861,16 @@ impl IndicesShardStores {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesShardStores {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            pretty: None,
+            source: None,
+            status: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -3445,7 +3923,7 @@ impl Sender for IndicesShardStores {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_shard_stores";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3465,16 +3943,16 @@ impl Sender for IndicesShardStores {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesShrink {
+pub struct IndicesShrink<B> {
     client: Elasticsearch,
+    body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3487,14 +3965,31 @@ pub struct IndicesShrink {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesShrink {
+impl<B> IndicesShrink<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
         IndicesShrink {
             client,
             index: index,
             target: target,
-            ..Default::default()
+            body: None,
+            copy_settings: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
@@ -3542,11 +4037,14 @@ impl IndicesShrink {
         self
     }
 }
-impl Sender for IndicesShrink {
+impl<B> Sender for IndicesShrink<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_shrink/{target}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "copy_settings")]
@@ -3566,16 +4064,16 @@ impl Sender for IndicesShrink {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesSplit {
+pub struct IndicesSplit<B> {
     client: Elasticsearch,
+    body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -3588,14 +4086,31 @@ pub struct IndicesSplit {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesSplit {
+impl<B> IndicesSplit<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
         IndicesSplit {
             client,
             index: index,
             target: target,
-            ..Default::default()
+            body: None,
+            copy_settings: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
@@ -3643,11 +4158,14 @@ impl IndicesSplit {
         self
     }
 }
-impl Sender for IndicesSplit {
+impl<B> Sender for IndicesSplit<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_split/{target}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "copy_settings")]
@@ -3667,14 +4185,13 @@ impl Sender for IndicesSplit {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IndicesStats {
     client: Elasticsearch,
     completion_fields: Option<Vec<String>>,
@@ -3699,7 +4216,23 @@ impl IndicesStats {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesStats {
             client,
-            ..Default::default()
+            completion_fields: None,
+            error_trace: None,
+            expand_wildcards: None,
+            fielddata_fields: None,
+            fields: None,
+            filter_path: None,
+            forbid_closed_indices: None,
+            groups: None,
+            human: None,
+            include_segment_file_sizes: None,
+            include_unloaded_segments: None,
+            index: None,
+            level: None,
+            metric: None,
+            pretty: None,
+            source: None,
+            types: None,
         }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
@@ -3782,7 +4315,7 @@ impl Sender for IndicesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_stats";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "completion_fields")]
@@ -3820,17 +4353,17 @@ impl Sender for IndicesStats {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesUnfreeze {
+pub struct IndicesUnfreeze<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -3843,17 +4376,36 @@ pub struct IndicesUnfreeze {
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl IndicesUnfreeze {
+impl<B> IndicesUnfreeze<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IndicesUnfreeze {
             client,
             index: index,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -3907,11 +4459,14 @@ impl IndicesUnfreeze {
         self
     }
 }
-impl Sender for IndicesUnfreeze {
+impl<B> Sender for IndicesUnfreeze<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_unfreeze";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -3937,16 +4492,16 @@ impl Sender for IndicesUnfreeze {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesUpdateAliases {
+pub struct IndicesUpdateAliases<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3955,12 +4510,27 @@ pub struct IndicesUpdateAliases {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl IndicesUpdateAliases {
+impl<B> IndicesUpdateAliases<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpdateAliases {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3998,11 +4568,14 @@ impl IndicesUpdateAliases {
         self
     }
 }
-impl Sender for IndicesUpdateAliases {
+impl<B> Sender for IndicesUpdateAliases<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_aliases";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -4016,17 +4589,17 @@ impl Sender for IndicesUpdateAliases {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesUpgrade {
+pub struct IndicesUpgrade<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
+    body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
@@ -4038,16 +4611,35 @@ pub struct IndicesUpgrade {
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl IndicesUpgrade {
+impl<B> IndicesUpgrade<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpgrade {
             client,
-            ..Default::default()
+            allow_no_indices: None,
+            body: None,
+            error_trace: None,
+            expand_wildcards: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            only_ancient_segments: None,
+            pretty: None,
+            source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
     pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
         self.allow_no_indices = allow_no_indices;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4096,11 +4688,14 @@ impl IndicesUpgrade {
         self
     }
 }
-impl Sender for IndicesUpgrade {
+impl<B> Sender for IndicesUpgrade<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_upgrade";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices")]
@@ -4123,20 +4718,20 @@ impl Sender for IndicesUpgrade {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IndicesValidateQuery {
+pub struct IndicesValidateQuery<B> {
     client: Elasticsearch,
     all_shards: Option<bool>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
+    body: Option<B>,
     default_operator: Option<DefaultOperator>,
     df: Option<String>,
     error_trace: Option<bool>,
@@ -4153,11 +4748,33 @@ pub struct IndicesValidateQuery {
     source: Option<String>,
     ty: Option<Vec<String>>,
 }
-impl IndicesValidateQuery {
+impl<B> IndicesValidateQuery<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IndicesValidateQuery {
             client,
-            ..Default::default()
+            all_shards: None,
+            allow_no_indices: None,
+            analyze_wildcard: None,
+            analyzer: None,
+            body: None,
+            default_operator: None,
+            df: None,
+            error_trace: None,
+            expand_wildcards: None,
+            explain: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            index: None,
+            lenient: None,
+            pretty: None,
+            q: None,
+            rewrite: None,
+            source: None,
+            ty: None,
         }
     }
     #[doc = "Execute validation on all shards instead of one random shard per index"]
@@ -4178,6 +4795,11 @@ impl IndicesValidateQuery {
     #[doc = "The analyzer to use for the query string"]
     pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
         self.analyzer = analyzer;
+        self
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
         self
     }
     #[doc = "The default operator for query string query (AND or OR)"]
@@ -4246,14 +4868,17 @@ impl IndicesValidateQuery {
         self
     }
 }
-impl Sender for IndicesValidateQuery {
+impl<B> Sender for IndicesValidateQuery<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_validate/query";
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "all_shards")]
@@ -4297,10 +4922,10 @@ impl Sender for IndicesValidateQuery {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4313,19 +4938,31 @@ impl Indices {
         Indices { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html"]
-    pub fn analyze(&self) -> IndicesAnalyze {
+    pub fn analyze<B>(&self) -> IndicesAnalyze<B>
+    where
+        B: Serialize,
+    {
         IndicesAnalyze::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html"]
-    pub fn clear_cache(&self) -> IndicesClearCache {
+    pub fn clear_cache<B>(&self) -> IndicesClearCache<B>
+    where
+        B: Serialize,
+    {
         IndicesClearCache::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn close(&self, index: Vec<String>) -> IndicesClose {
+    pub fn close<B>(&self, index: Vec<String>) -> IndicesClose<B>
+    where
+        B: Serialize,
+    {
         IndicesClose::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html"]
-    pub fn create(&self, index: String) -> IndicesCreate {
+    pub fn create<B>(&self, index: String) -> IndicesCreate<B>
+    where
+        B: Serialize,
+    {
         IndicesCreate::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html"]
@@ -4357,19 +4994,31 @@ impl Indices {
         IndicesExistsType::new(self.client.clone(), index, ty)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html"]
-    pub fn flush(&self) -> IndicesFlush {
+    pub fn flush<B>(&self) -> IndicesFlush<B>
+    where
+        B: Serialize,
+    {
         IndicesFlush::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html#synced-flush-api"]
-    pub fn flush_synced(&self) -> IndicesFlushSynced {
+    pub fn flush_synced<B>(&self) -> IndicesFlushSynced<B>
+    where
+        B: Serialize,
+    {
         IndicesFlushSynced::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html"]
-    pub fn forcemerge(&self) -> IndicesForcemerge {
+    pub fn forcemerge<B>(&self) -> IndicesForcemerge<B>
+    where
+        B: Serialize,
+    {
         IndicesForcemerge::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn freeze(&self, index: String) -> IndicesFreeze {
+    pub fn freeze<B>(&self, index: String) -> IndicesFreeze<B>
+    where
+        B: Serialize,
+    {
         IndicesFreeze::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html"]
@@ -4401,23 +5050,38 @@ impl Indices {
         IndicesGetUpgrade::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn open(&self, index: Vec<String>) -> IndicesOpen {
+    pub fn open<B>(&self, index: Vec<String>) -> IndicesOpen<B>
+    where
+        B: Serialize,
+    {
         IndicesOpen::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn put_alias(&self, index: Vec<String>, name: String) -> IndicesPutAlias {
+    pub fn put_alias<B>(&self, index: Vec<String>, name: String) -> IndicesPutAlias<B>
+    where
+        B: Serialize,
+    {
         IndicesPutAlias::new(self.client.clone(), index, name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
-    pub fn put_mapping(&self, index: Vec<String>) -> IndicesPutMapping {
+    pub fn put_mapping<B>(&self, index: Vec<String>) -> IndicesPutMapping<B>
+    where
+        B: Serialize,
+    {
         IndicesPutMapping::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
-    pub fn put_settings(&self) -> IndicesPutSettings {
+    pub fn put_settings<B>(&self) -> IndicesPutSettings<B>
+    where
+        B: Serialize,
+    {
         IndicesPutSettings::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn put_template(&self, name: String) -> IndicesPutTemplate {
+    pub fn put_template<B>(&self, name: String) -> IndicesPutTemplate<B>
+    where
+        B: Serialize,
+    {
         IndicesPutTemplate::new(self.client.clone(), name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html"]
@@ -4425,15 +5089,24 @@ impl Indices {
         IndicesRecovery::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html"]
-    pub fn refresh(&self) -> IndicesRefresh {
+    pub fn refresh<B>(&self) -> IndicesRefresh<B>
+    where
+        B: Serialize,
+    {
         IndicesRefresh::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html"]
-    pub fn reload_search_analyzers(&self, index: Vec<String>) -> IndicesReloadSearchAnalyzers {
+    pub fn reload_search_analyzers<B>(&self, index: Vec<String>) -> IndicesReloadSearchAnalyzers<B>
+    where
+        B: Serialize,
+    {
         IndicesReloadSearchAnalyzers::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html"]
-    pub fn rollover(&self, alias: String) -> IndicesRollover {
+    pub fn rollover<B>(&self, alias: String) -> IndicesRollover<B>
+    where
+        B: Serialize,
+    {
         IndicesRollover::new(self.client.clone(), alias)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html"]
@@ -4445,11 +5118,17 @@ impl Indices {
         IndicesShardStores::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html"]
-    pub fn shrink(&self, index: String, target: String) -> IndicesShrink {
+    pub fn shrink<B>(&self, index: String, target: String) -> IndicesShrink<B>
+    where
+        B: Serialize,
+    {
         IndicesShrink::new(self.client.clone(), index, target)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html"]
-    pub fn split(&self, index: String, target: String) -> IndicesSplit {
+    pub fn split<B>(&self, index: String, target: String) -> IndicesSplit<B>
+    where
+        B: Serialize,
+    {
         IndicesSplit::new(self.client.clone(), index, target)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html"]
@@ -4457,19 +5136,31 @@ impl Indices {
         IndicesStats::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn unfreeze(&self, index: String) -> IndicesUnfreeze {
+    pub fn unfreeze<B>(&self, index: String) -> IndicesUnfreeze<B>
+    where
+        B: Serialize,
+    {
         IndicesUnfreeze::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn update_aliases(&self) -> IndicesUpdateAliases {
+    pub fn update_aliases<B>(&self) -> IndicesUpdateAliases<B>
+    where
+        B: Serialize,
+    {
         IndicesUpdateAliases::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
-    pub fn upgrade(&self) -> IndicesUpgrade {
+    pub fn upgrade<B>(&self) -> IndicesUpgrade<B>
+    where
+        B: Serialize,
+    {
         IndicesUpgrade::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html"]
-    pub fn validate_query(&self) -> IndicesValidateQuery {
+    pub fn validate_query<B>(&self) -> IndicesValidateQuery<B>
+    where
+        B: Serialize,
+    {
         IndicesValidateQuery::new(self.client.clone())
     }
 }

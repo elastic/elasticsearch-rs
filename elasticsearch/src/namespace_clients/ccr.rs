@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct CcrDeleteAutoFollowPattern {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -39,7 +37,11 @@ impl CcrDeleteAutoFollowPattern {
         CcrDeleteAutoFollowPattern {
             client,
             name: name,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -72,17 +74,17 @@ impl Sender for CcrDeleteAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow/{name}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrFollow {
+pub struct CcrFollow<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -91,13 +93,27 @@ pub struct CcrFollow {
     source: Option<String>,
     wait_for_active_shards: Option<String>,
 }
-impl CcrFollow {
+impl<B> CcrFollow<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrFollow {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+            wait_for_active_shards: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -130,11 +146,14 @@ impl CcrFollow {
         self
     }
 }
-impl Sender for CcrFollow {
+impl<B> Sender for CcrFollow<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/follow";
         let method = HttpMethod::Put;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "wait_for_active_shards")]
@@ -145,14 +164,13 @@ impl Sender for CcrFollow {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CcrFollowInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -167,7 +185,11 @@ impl CcrFollowInfo {
         CcrFollowInfo {
             client,
             index: index,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -200,15 +222,14 @@ impl Sender for CcrFollowInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/info";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CcrFollowStats {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -223,7 +244,11 @@ impl CcrFollowStats {
         CcrFollowStats {
             client,
             index: index,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -256,17 +281,17 @@ impl Sender for CcrFollowStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/stats";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrForgetFollower {
+pub struct CcrForgetFollower<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -274,13 +299,26 @@ pub struct CcrForgetFollower {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrForgetFollower {
+impl<B> CcrForgetFollower<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrForgetFollower {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -308,19 +346,21 @@ impl CcrForgetFollower {
         self
     }
 }
-impl Sender for CcrForgetFollower {
+impl<B> Sender for CcrForgetFollower<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/forget_follower";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CcrGetAutoFollowPattern {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -334,7 +374,12 @@ impl CcrGetAutoFollowPattern {
     pub fn new(client: Elasticsearch) -> Self {
         CcrGetAutoFollowPattern {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            name: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -367,17 +412,17 @@ impl Sender for CcrGetAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrPauseFollow {
+pub struct CcrPauseFollow<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -385,13 +430,26 @@ pub struct CcrPauseFollow {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrPauseFollow {
+impl<B> CcrPauseFollow<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrPauseFollow {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -419,21 +477,24 @@ impl CcrPauseFollow {
         self
     }
 }
-impl Sender for CcrPauseFollow {
+impl<B> Sender for CcrPauseFollow<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/pause_follow";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrPutAutoFollowPattern {
+pub struct CcrPutAutoFollowPattern<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -441,13 +502,26 @@ pub struct CcrPutAutoFollowPattern {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrPutAutoFollowPattern {
+impl<B> CcrPutAutoFollowPattern<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, name: String) -> Self {
         CcrPutAutoFollowPattern {
             client,
             name: name,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -475,21 +549,24 @@ impl CcrPutAutoFollowPattern {
         self
     }
 }
-impl Sender for CcrPutAutoFollowPattern {
+impl<B> Sender for CcrPutAutoFollowPattern<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow/{name}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrResumeFollow {
+pub struct CcrResumeFollow<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -497,13 +574,26 @@ pub struct CcrResumeFollow {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrResumeFollow {
+impl<B> CcrResumeFollow<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrResumeFollow {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -531,19 +621,21 @@ impl CcrResumeFollow {
         self
     }
 }
-impl Sender for CcrResumeFollow {
+impl<B> Sender for CcrResumeFollow<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/resume_follow";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct CcrStats {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -556,7 +648,11 @@ impl CcrStats {
     pub fn new(client: Elasticsearch) -> Self {
         CcrStats {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -589,17 +685,17 @@ impl Sender for CcrStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/stats";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct CcrUnfollow {
+pub struct CcrUnfollow<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -607,13 +703,26 @@ pub struct CcrUnfollow {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl CcrUnfollow {
+impl<B> CcrUnfollow<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         CcrUnfollow {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -641,15 +750,18 @@ impl CcrUnfollow {
         self
     }
 }
-impl Sender for CcrUnfollow {
+impl<B> Sender for CcrUnfollow<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/unfollow";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -666,7 +778,10 @@ impl Ccr {
         CcrDeleteAutoFollowPattern::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html"]
-    pub fn follow(&self, index: String) -> CcrFollow {
+    pub fn follow<B>(&self, index: String) -> CcrFollow<B>
+    where
+        B: Serialize,
+    {
         CcrFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html"]
@@ -678,7 +793,10 @@ impl Ccr {
         CcrFollowStats::new(self.client.clone(), index)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn forget_follower(&self, index: String) -> CcrForgetFollower {
+    pub fn forget_follower<B>(&self, index: String) -> CcrForgetFollower<B>
+    where
+        B: Serialize,
+    {
         CcrForgetFollower::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html"]
@@ -686,15 +804,24 @@ impl Ccr {
         CcrGetAutoFollowPattern::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html"]
-    pub fn pause_follow(&self, index: String) -> CcrPauseFollow {
+    pub fn pause_follow<B>(&self, index: String) -> CcrPauseFollow<B>
+    where
+        B: Serialize,
+    {
         CcrPauseFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html"]
-    pub fn put_auto_follow_pattern(&self, name: String) -> CcrPutAutoFollowPattern {
+    pub fn put_auto_follow_pattern<B>(&self, name: String) -> CcrPutAutoFollowPattern<B>
+    where
+        B: Serialize,
+    {
         CcrPutAutoFollowPattern::new(self.client.clone(), name)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html"]
-    pub fn resume_follow(&self, index: String) -> CcrResumeFollow {
+    pub fn resume_follow<B>(&self, index: String) -> CcrResumeFollow<B>
+    where
+        B: Serialize,
+    {
         CcrResumeFollow::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html"]
@@ -702,7 +829,10 @@ impl Ccr {
         CcrStats::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn unfollow(&self, index: String) -> CcrUnfollow {
+    pub fn unfollow<B>(&self, index: String) -> CcrUnfollow<B>
+    where
+        B: Serialize,
+    {
         CcrUnfollow::new(self.client.clone(), index)
     }
 }

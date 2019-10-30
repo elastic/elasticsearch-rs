@@ -54,7 +54,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
                 let builder_name =
                     format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
 
-                code_gen::create_builder_struct_ctor_fns(builder_name, name, endpoint)
+                code_gen::create_builder_struct_ctor_fns(builder_name, name, endpoint, false)
             })
             .collect();
 

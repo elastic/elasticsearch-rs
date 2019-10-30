@@ -1,10 +1,11 @@
 extern crate reqwest;
 
-use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
 use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
-use reqwest::Method;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
+use reqwest::{
+    header::{HeaderMap, HeaderValue, ACCEPT, CONTENT_TYPE, USER_AGENT},
+    Method,
+};
+use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
 
 #[derive(Debug, Clone)]
@@ -27,6 +28,7 @@ impl Connection {
 
     pub fn new(url: Url) -> Connection {
         Connection {
+            // client: reqwest::Client::builder().proxy(reqwest::Proxy::http("http://localhost:8888").unwrap()).build().unwrap(),
             client: reqwest::Client::new(),
             url,
         }
@@ -48,19 +50,24 @@ impl Connection {
         let reqwest_method = self.method(method);
 
         let mut headers = HeaderMap::new();
+
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
+        headers.insert(ACCEPT, HeaderValue::from_static("application/json"));
+        // TODO: autogenerate user agent with version
+        headers.insert(
+            USER_AGENT,
+            HeaderValue::from_static("elasticsearch-rs/7.3.1"),
+        );
 
         let mut request_builder = self.client.request(reqwest_method, url).headers(headers);
 
-        request_builder = match body {
-            Some(b) => request_builder.json(&b),
-            None => request_builder,
+        if let Some(b) = body {
+            request_builder = request_builder.json(&b);
         };
 
-        request_builder = match query_string {
-            Some(q) => request_builder.query(q),
-            None => request_builder,
-        };
+        if let Some(q) = query_string {
+            request_builder = request_builder.query(q);
+        }
 
         let response = request_builder.send()?;
         Ok(ElasticsearchResponse::new(response))

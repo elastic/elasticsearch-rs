@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct XpackInfo {
     client: Elasticsearch,
     categories: Option<Vec<String>>,
@@ -38,7 +36,12 @@ impl XpackInfo {
     pub fn new(client: Elasticsearch) -> Self {
         XpackInfo {
             client,
-            ..Default::default()
+            categories: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
@@ -76,7 +79,7 @@ impl Sender for XpackInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_xpack";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "categories")]
@@ -87,14 +90,13 @@ impl Sender for XpackInfo {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct XpackUsage {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -108,7 +110,12 @@ impl XpackUsage {
     pub fn new(client: Elasticsearch) -> Self {
         XpackUsage {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -146,7 +153,7 @@ impl Sender for XpackUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_xpack/usage";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -157,10 +164,10 @@ impl Sender for XpackUsage {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -138,14 +138,12 @@ impl Url {
             .filter(|p| required_parts.contains(&p.0.as_str()))
             .collect::<Vec<(&String, &Type)>>();
 
-        vec.sort_by(|&(a, _), &(b, _)| {
-            match (a.as_str(), b.as_str()) {
-                ("index", _) => Ordering::Less,
-                (_, "index") => Ordering::Greater,
-                (_, "ty") => Ordering::Greater,
-                (_, "id") => Ordering::Greater,
-                _ => a.cmp(&b),
-            }
+        vec.sort_by(|&(a, _), &(b, _)| match (a.as_str(), b.as_str()) {
+            ("index", _) => Ordering::Less,
+            (_, "index") => Ordering::Greater,
+            (_, "ty") => Ordering::Greater,
+            (_, "id") => Ordering::Greater,
+            _ => a.cmp(&b),
         });
 
         vec

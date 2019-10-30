@@ -25,7 +25,7 @@ impl ElasticsearchResponse {
     }
 
     /// Reads the response body
-    pub fn response_body<R>(&mut self) -> Result<R, ElasticsearchError>
+    pub fn read_body<R>(&mut self) -> Result<R, ElasticsearchError>
     where
         R: DeserializeOwned,
     {

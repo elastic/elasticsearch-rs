@@ -14,19 +14,18 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
-pub struct SnapshotCreate {
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
+pub struct SnapshotCreate<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -37,14 +36,29 @@ pub struct SnapshotCreate {
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl SnapshotCreate {
+impl<B> SnapshotCreate<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, repository: String, snapshot: String) -> Self {
         SnapshotCreate {
             client,
             repository: repository,
             snapshot: snapshot,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            wait_for_completion: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -82,11 +96,14 @@ impl SnapshotCreate {
         self
     }
 }
-impl Sender for SnapshotCreate {
+impl<B> Sender for SnapshotCreate<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}/{snapshot}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -100,16 +117,16 @@ impl Sender for SnapshotCreate {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SnapshotCreateRepository {
+pub struct SnapshotCreateRepository<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -120,13 +137,29 @@ pub struct SnapshotCreateRepository {
     timeout: Option<String>,
     verify: Option<bool>,
 }
-impl SnapshotCreateRepository {
+impl<B> SnapshotCreateRepository<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, repository: String) -> Self {
         SnapshotCreateRepository {
             client,
             repository: repository,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            verify: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -169,11 +202,14 @@ impl SnapshotCreateRepository {
         self
     }
 }
-impl Sender for SnapshotCreateRepository {
+impl<B> Sender for SnapshotCreateRepository<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -190,14 +226,13 @@ impl Sender for SnapshotCreateRepository {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SnapshotDelete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -215,7 +250,12 @@ impl SnapshotDelete {
             client,
             repository: repository,
             snapshot: snapshot,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -253,7 +293,7 @@ impl Sender for SnapshotDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}/{snapshot}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -264,14 +304,13 @@ impl Sender for SnapshotDelete {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SnapshotDeleteRepository {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -288,7 +327,13 @@ impl SnapshotDeleteRepository {
         SnapshotDeleteRepository {
             client,
             repository: repository,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -331,7 +376,7 @@ impl Sender for SnapshotDeleteRepository {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}";
         let method = HttpMethod::Delete;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -345,14 +390,13 @@ impl Sender for SnapshotDeleteRepository {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SnapshotGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -372,7 +416,14 @@ impl SnapshotGet {
             client,
             repository: repository,
             snapshot: snapshot,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            verbose: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -420,7 +471,7 @@ impl Sender for SnapshotGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}/{snapshot}";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "ignore_unavailable")]
@@ -437,14 +488,13 @@ impl Sender for SnapshotGet {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SnapshotGetRepository {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -460,7 +510,14 @@ impl SnapshotGetRepository {
     pub fn new(client: Elasticsearch) -> Self {
         SnapshotGetRepository {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            local: None,
+            master_timeout: None,
+            pretty: None,
+            repository: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -503,7 +560,7 @@ impl Sender for SnapshotGetRepository {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "local")]
@@ -517,16 +574,16 @@ impl Sender for SnapshotGetRepository {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SnapshotRestore {
+pub struct SnapshotRestore<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -537,14 +594,29 @@ pub struct SnapshotRestore {
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
-impl SnapshotRestore {
+impl<B> SnapshotRestore<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, repository: String, snapshot: String) -> Self {
         SnapshotRestore {
             client,
             repository: repository,
             snapshot: snapshot,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            wait_for_completion: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -582,11 +654,14 @@ impl SnapshotRestore {
         self
     }
 }
-impl Sender for SnapshotRestore {
+impl<B> Sender for SnapshotRestore<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}/{snapshot}/_restore";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -600,14 +675,13 @@ impl Sender for SnapshotRestore {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct SnapshotStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -624,7 +698,15 @@ impl SnapshotStatus {
     pub fn new(client: Elasticsearch) -> Self {
         SnapshotStatus {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            ignore_unavailable: None,
+            master_timeout: None,
+            pretty: None,
+            repository: None,
+            snapshot: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -667,7 +749,7 @@ impl Sender for SnapshotStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/_status";
         let method = HttpMethod::Get;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "ignore_unavailable")]
@@ -681,16 +763,16 @@ impl Sender for SnapshotStatus {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct SnapshotVerifyRepository {
+pub struct SnapshotVerifyRepository<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -700,13 +782,28 @@ pub struct SnapshotVerifyRepository {
     source: Option<String>,
     timeout: Option<String>,
 }
-impl SnapshotVerifyRepository {
+impl<B> SnapshotVerifyRepository<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, repository: String) -> Self {
         SnapshotVerifyRepository {
             client,
             repository: repository,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -744,11 +841,14 @@ impl SnapshotVerifyRepository {
         self
     }
 }
-impl Sender for SnapshotVerifyRepository {
+impl<B> Sender for SnapshotVerifyRepository<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_snapshot/{repository}/_verify";
         let method = HttpMethod::Post;
-        let query_params = {
+        let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
                 #[serde(rename = "master_timeout")]
@@ -762,10 +862,10 @@ impl Sender for SnapshotVerifyRepository {
             };
             Some(query_params)
         };
-        let body: Option<()> = None;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -778,11 +878,17 @@ impl Snapshot {
         Snapshot { client }
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create(&self, repository: String, snapshot: String) -> SnapshotCreate {
+    pub fn create<B>(&self, repository: String, snapshot: String) -> SnapshotCreate<B>
+    where
+        B: Serialize,
+    {
         SnapshotCreate::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn create_repository(&self, repository: String) -> SnapshotCreateRepository {
+    pub fn create_repository<B>(&self, repository: String) -> SnapshotCreateRepository<B>
+    where
+        B: Serialize,
+    {
         SnapshotCreateRepository::new(self.client.clone(), repository)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
@@ -802,7 +908,10 @@ impl Snapshot {
         SnapshotGetRepository::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn restore(&self, repository: String, snapshot: String) -> SnapshotRestore {
+    pub fn restore<B>(&self, repository: String, snapshot: String) -> SnapshotRestore<B>
+    where
+        B: Serialize,
+    {
         SnapshotRestore::new(self.client.clone(), repository, snapshot)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
@@ -810,7 +919,10 @@ impl Snapshot {
         SnapshotStatus::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html"]
-    pub fn verify_repository(&self, repository: String) -> SnapshotVerifyRepository {
+    pub fn verify_repository<B>(&self, repository: String) -> SnapshotVerifyRepository<B>
+    where
+        B: Serialize,
+    {
         SnapshotVerifyRepository::new(self.client.clone(), repository)
     }
 }

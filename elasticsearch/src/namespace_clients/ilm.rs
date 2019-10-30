@@ -14,17 +14,15 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
-use super::super::client::Elasticsearch;
-use super::super::enums::*;
-use super::super::http_method::HttpMethod;
-use crate::client::Sender;
-use crate::error::ElasticsearchError;
-use crate::response::ElasticsearchResponse;
-use reqwest::header::HeaderMap;
-use reqwest::{Error, Request, Response, StatusCode};
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-#[derive(Default)]
+use crate::{
+    client::{Elasticsearch, Sender},
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    response::ElasticsearchResponse,
+};
+use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
+use serde::{de::DeserializeOwned, Serialize};
 pub struct IlmDeleteLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -39,7 +37,11 @@ impl IlmDeleteLifecycle {
         IlmDeleteLifecycle {
             client,
             policy: policy,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -72,15 +74,14 @@ impl Sender for IlmDeleteLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Delete;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IlmExplainLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -95,7 +96,11 @@ impl IlmExplainLifecycle {
         IlmExplainLifecycle {
             client,
             index: index,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -128,15 +133,14 @@ impl Sender for IlmExplainLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/explain";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IlmGetLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -150,7 +154,12 @@ impl IlmGetLifecycle {
     pub fn new(client: Elasticsearch) -> Self {
         IlmGetLifecycle {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            policy: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -183,15 +192,14 @@ impl Sender for IlmGetLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
 pub struct IlmGetStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -204,7 +212,11 @@ impl IlmGetStatus {
     pub fn new(client: Elasticsearch) -> Self {
         IlmGetStatus {
             client,
-            ..Default::default()
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -237,17 +249,17 @@ impl Sender for IlmGetStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/status";
         let method = HttpMethod::Get;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmMoveToStep {
+pub struct IlmMoveToStep<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -255,13 +267,26 @@ pub struct IlmMoveToStep {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmMoveToStep {
+impl<B> IlmMoveToStep<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmMoveToStep {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -289,21 +314,24 @@ impl IlmMoveToStep {
         self
     }
 }
-impl Sender for IlmMoveToStep {
+impl<B> Sender for IlmMoveToStep<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/move/{index}";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmPutLifecycle {
+pub struct IlmPutLifecycle<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -311,13 +339,26 @@ pub struct IlmPutLifecycle {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmPutLifecycle {
+impl<B> IlmPutLifecycle<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, policy: String) -> Self {
         IlmPutLifecycle {
             client,
             policy: policy,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -345,21 +386,24 @@ impl IlmPutLifecycle {
         self
     }
 }
-impl Sender for IlmPutLifecycle {
+impl<B> Sender for IlmPutLifecycle<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Put;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmRemovePolicy {
+pub struct IlmRemovePolicy<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -367,13 +411,26 @@ pub struct IlmRemovePolicy {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmRemovePolicy {
+impl<B> IlmRemovePolicy<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmRemovePolicy {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -401,21 +458,24 @@ impl IlmRemovePolicy {
         self
     }
 }
-impl Sender for IlmRemovePolicy {
+impl<B> Sender for IlmRemovePolicy<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/remove";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmRetry {
+pub struct IlmRetry<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -423,13 +483,26 @@ pub struct IlmRetry {
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmRetry {
+impl<B> IlmRetry<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch, index: String) -> Self {
         IlmRetry {
             client,
             index: index,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -457,33 +530,49 @@ impl IlmRetry {
         self
     }
 }
-impl Sender for IlmRetry {
+impl<B> Sender for IlmRetry<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/retry";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmStart {
+pub struct IlmStart<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmStart {
+impl<B> IlmStart<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IlmStart {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -511,33 +600,49 @@ impl IlmStart {
         self
     }
 }
-impl Sender for IlmStart {
+impl<B> Sender for IlmStart<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/start";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
-#[derive(Default)]
-pub struct IlmStop {
+pub struct IlmStop<B> {
     client: Elasticsearch,
+    body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
-impl IlmStop {
+impl<B> IlmStop<B>
+where
+    B: Serialize,
+{
     pub fn new(client: Elasticsearch) -> Self {
         IlmStop {
             client,
-            ..Default::default()
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
         }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -565,15 +670,18 @@ impl IlmStop {
         self
     }
 }
-impl Sender for IlmStop {
+impl<B> Sender for IlmStop<B>
+where
+    B: Serialize,
+{
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/stop";
         let method = HttpMethod::Post;
-        let query_params = None::<()>;
-        let body: Option<()> = None;
+        let query_string = None::<()>;
+        let body = self.body;
         let response = self
             .client
-            .send(method, path, query_params.as_ref(), body)?;
+            .send(method, path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -602,27 +710,45 @@ impl Ilm {
         IlmGetStatus::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html"]
-    pub fn move_to_step(&self, index: String) -> IlmMoveToStep {
+    pub fn move_to_step<B>(&self, index: String) -> IlmMoveToStep<B>
+    where
+        B: Serialize,
+    {
         IlmMoveToStep::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html"]
-    pub fn put_lifecycle(&self, policy: String) -> IlmPutLifecycle {
+    pub fn put_lifecycle<B>(&self, policy: String) -> IlmPutLifecycle<B>
+    where
+        B: Serialize,
+    {
         IlmPutLifecycle::new(self.client.clone(), policy)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html"]
-    pub fn remove_policy(&self, index: String) -> IlmRemovePolicy {
+    pub fn remove_policy<B>(&self, index: String) -> IlmRemovePolicy<B>
+    where
+        B: Serialize,
+    {
         IlmRemovePolicy::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html"]
-    pub fn retry(&self, index: String) -> IlmRetry {
+    pub fn retry<B>(&self, index: String) -> IlmRetry<B>
+    where
+        B: Serialize,
+    {
         IlmRetry::new(self.client.clone(), index)
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html"]
-    pub fn start(&self) -> IlmStart {
+    pub fn start<B>(&self) -> IlmStart<B>
+    where
+        B: Serialize,
+    {
         IlmStart::new(self.client.clone())
     }
     #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html"]
-    pub fn stop(&self) -> IlmStop {
+    pub fn stop<B>(&self) -> IlmStop<B>
+    where
+        B: Serialize,
+    {
         IlmStop::new(self.client.clone())
     }
 }
