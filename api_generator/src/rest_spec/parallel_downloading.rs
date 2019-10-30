@@ -1,13 +1,13 @@
 use super::RestApiSpec;
 
-use indicatif::{MultiProgress, ProgressBar, ProgressStyle, ProgressDrawTarget};
+use indicatif::{MultiProgress, ProgressBar, ProgressDrawTarget, ProgressStyle};
 use rayon::prelude::*;
+use std::error::Error as StdError;
+use std::fmt::Formatter;
 use std::fs::File;
 use std::io::{self, copy, Read};
 use std::path::PathBuf;
 use std::thread;
-use std::error::Error as StdError;
-use failure::_core::fmt::Formatter;
 
 #[derive(Debug)]
 pub(super) enum DownloadSpecsErrors {
@@ -18,54 +18,75 @@ pub(super) enum DownloadSpecsErrors {
 
 /// Downloads the given specs to the provided director in parallel, displaying progress bars for
 /// each file.
-pub(super) fn download_specs_to_dir(specs: &[RestApiSpec], download_dir: &PathBuf) -> Result<(), DownloadSpecsErrors> {
+pub(super) fn download_specs_to_dir(
+    specs: &[RestApiSpec],
+    download_dir: &PathBuf,
+) -> Result<(), DownloadSpecsErrors> {
     let client = reqwest::Client::new();
     let sty = ProgressStyle::default_bar()
         .template("{spinner:.green} {msg} [{elapsed_precise} (ETA: {eta})] [{bar:40.cyan/blue}] {bytes}/{total_bytes}")
         .progress_chars("#>-");
 
-    let max_name = specs.iter().max_by(|a, b| a.name.len().cmp(&b.name.len())).map(|r| r.name.len()).unwrap_or(0) + 1;
+    let max_name = specs
+        .iter()
+        .max_by(|a, b| a.name.len().cmp(&b.name.len()))
+        .map(|r| r.name.len())
+        .unwrap_or(0)
+        + 1;
 
     // We need to chunk it because none of the progress bar libs offer good support for simultaneously
     // showing more progress bars than there are terminal rows.
-    let results = specs.chunks(rayon::current_num_threads()).map(|specs_group| {
-        let multibar = MultiProgress::with_draw_target(ProgressDrawTarget::stderr_with_hz(60));
-        let download_packs = specs_group.iter().map(|spec| {
-            let progress_bar = multibar.add(ProgressBar::new(spec.size as u64));
-            progress_bar.set_style(sty.clone());
-            progress_bar.set_message(&right_pad(&spec.name, max_name));
-            (spec.name.clone(),
-             spec.download_url.clone(),
-             progress_bar,
-            )
-        }).collect::<Vec<_>>();
+    let results = specs
+        .chunks(rayon::current_num_threads())
+        .map(|specs_group| {
+            let multibar = MultiProgress::with_draw_target(ProgressDrawTarget::stderr_with_hz(60));
+            let download_packs = specs_group
+                .iter()
+                .map(|spec| {
+                    let progress_bar = multibar.add(ProgressBar::new(spec.size as u64));
+                    progress_bar.set_style(sty.clone());
+                    progress_bar.set_message(&right_pad(&spec.name, max_name));
+                    (spec.name.clone(), spec.download_url.clone(), progress_bar)
+                })
+                .collect::<Vec<_>>();
 
-        let finish = thread::spawn(move || multibar.join());
+            let finish = thread::spawn(move || multibar.join());
 
-        let results = download_packs.into_par_iter().map(|(name, download_url, progress_bar)| {
-            let mut download_path = download_dir.clone();
-            download_path.push(&name);
-            let request = client.get(&download_url);
-            let mut file = File::create(download_path.to_string_lossy().into_owned())?;
-            let mut source = ReadWithProgress {
-                progress_bar: &progress_bar,
-                inner: request.send()?,
-            };
+            let results = download_packs
+                .into_par_iter()
+                .map(|(name, download_url, progress_bar)| {
+                    let mut download_path = download_dir.clone();
+                    download_path.push(&name);
+                    let request = client.get(&download_url);
+                    let mut file = File::create(download_path.to_string_lossy().into_owned())?;
+                    let mut source = ReadWithProgress {
+                        progress_bar: &progress_bar,
+                        inner: request.send()?,
+                    };
 
-            copy(&mut source, &mut file)?;
-            progress_bar.finish();
-            Ok(())
-        }).collect::<Vec<Result<(), DownloadSpecsErrors>>>();
+                    copy(&mut source, &mut file)?;
+                    progress_bar.finish();
+                    Ok(())
+                })
+                .collect::<Vec<Result<(), DownloadSpecsErrors>>>();
 
-        finish.join().expect("Failed to join a thread. Unrecoverable, so bailing.")?;
-        ok_or_accumulate(results)
-    }).collect::<Vec<Result<(), DownloadSpecsErrors>>>();
+            finish
+                .join()
+                .expect("Failed to join a thread. Unrecoverable, so bailing.")?;
+            ok_or_accumulate(results)
+        })
+        .collect::<Vec<Result<(), DownloadSpecsErrors>>>();
 
     ok_or_accumulate(results)
 }
 
-fn ok_or_accumulate(results: Vec<Result<(), DownloadSpecsErrors>>) -> Result<(), DownloadSpecsErrors> {
-    let errs = results.into_iter().filter_map(|r| r.err()).collect::<Vec<_>>();
+fn ok_or_accumulate(
+    results: Vec<Result<(), DownloadSpecsErrors>>,
+) -> Result<(), DownloadSpecsErrors> {
+    let errs = results
+        .into_iter()
+        .filter_map(|r| r.err())
+        .collect::<Vec<_>>();
     if errs.is_empty() {
         Ok(())
     } else {
@@ -91,8 +112,8 @@ struct ReadWithProgress<'bar, R> {
 }
 
 impl<'bar, R> Read for ReadWithProgress<'bar, R>
-    where
-        R: Read,
+where
+    R: Read,
 {
     fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
         self.inner.read(buf).map(|n| {
@@ -107,7 +128,7 @@ impl std::fmt::Display for DownloadSpecsErrors {
         match self {
             DownloadSpecsErrors::IoErr(err) => write!(f, "IoErr {}", err),
             DownloadSpecsErrors::HttpError(err) => write!(f, "HttpError {}", err),
-            DownloadSpecsErrors::Cumulative(errs) => write!(f, "Cumulative {:?}", errs)
+            DownloadSpecsErrors::Cumulative(errs) => write!(f, "Cumulative {:?}", errs),
         }
     }
 }
@@ -117,7 +138,7 @@ impl StdError for DownloadSpecsErrors {
         match self {
             DownloadSpecsErrors::IoErr(err) => err.description(),
             DownloadSpecsErrors::HttpError(err) => err.description(),
-            DownloadSpecsErrors::Cumulative(_) => "Cumulative errors"
+            DownloadSpecsErrors::Cumulative(_) => "Cumulative errors",
         }
     }
 }
