@@ -42,7 +42,7 @@ The [`quote`](https://docs.rs/quote/1.0.2/quote/) and [`syn`](https://docs.rs/sy
     - synchronous functions first, asynchronous later
     - Control API invariants through arguments on API function
     
-      e.g. `client.delete_script("script_id").send()?;`
+      e.g. `client.delete_script("script_id".into()).send()?;`
       
       An id must always be provided for a script, so the `delete_script()` function must accept
       it as a value.
@@ -63,17 +63,26 @@ let client = Elasticsearch::new(settings, connection);
 
 let cat_response = client.cat()
                          .indices()
-                         .send<Value>()?;
+                         .send()?;
 
-let search_response = client.search()
-                            .index("logstash-*")
-                            .body(json!({
-                                "query": {
-                                    "match_all": {}
-                                }                                           
-                            }))
-                            .pretty()
-                            .send<Value>()?;
+let mut search_response = client
+    // Value is the request body type
+    .search::<Value>()
+    .body(Some(json!({
+        "query": {
+            "match_all": {}
+        }
+    })))
+    .allow_no_indices(Some(true))
+    .send()?;
+
+let status_code = search_response.status_code();
+
+// read the response body
+let response_body = search_response.read_body::<Value>().unwrap(); 
+
+// read fields from the response body         
+let took = response_body["took"].as_i64()?;
 ```
 
 ## Development
