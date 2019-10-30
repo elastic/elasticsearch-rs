@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct IngestDeletePipeline {
     client: Elasticsearch,
@@ -83,7 +84,24 @@ impl Sender for IngestDeletePipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline/{id}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -140,7 +158,21 @@ impl Sender for IngestGetPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -190,7 +222,11 @@ impl Sender for IngestProcessorGrok {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/processor/grok";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -254,7 +290,24 @@ impl Sender for IngestPutPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ingest/pipeline/{id}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -314,7 +367,21 @@ impl Sender for IngestSimulate {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "verbose")]
+                verbose: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                verbose: self.verbose,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

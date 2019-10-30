@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct SecurityAuthenticate {
     client: Elasticsearch,
@@ -69,7 +70,11 @@ impl Sender for SecurityAuthenticate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/_authenticate";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -126,7 +131,21 @@ impl Sender for SecurityChangePassword {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_password";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -184,7 +203,21 @@ impl Sender for SecurityClearCachedRealms {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/realm/{realms}/_clear_cache";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "usernames")]
+                usernames: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                usernames: self.usernames,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -236,7 +269,11 @@ impl Sender for SecurityClearCachedRoles {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}/_clear_cache";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -292,7 +329,21 @@ impl Sender for SecurityCreateApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -352,7 +403,21 @@ impl Sender for SecurityDeletePrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/{application}/{name}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -410,7 +475,21 @@ impl Sender for SecurityDeleteRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -468,7 +547,21 @@ impl Sender for SecurityDeleteRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -526,7 +619,21 @@ impl Sender for SecurityDeleteUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -584,7 +691,21 @@ impl Sender for SecurityDisableUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_disable";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -642,7 +763,21 @@ impl Sender for SecurityEnableUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}/_enable";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -716,7 +851,30 @@ impl Sender for SecurityGetApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "id")]
+                id: Option<String>,
+                #[serde(rename = "name")]
+                name: Option<String>,
+                #[serde(rename = "realm_name")]
+                realm_name: Option<String>,
+                #[serde(rename = "username")]
+                username: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                id: self.id,
+                name: self.name,
+                realm_name: self.realm_name,
+                username: self.username,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -766,7 +924,11 @@ impl Sender for SecurityGetBuiltinPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/_builtin";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -818,7 +980,11 @@ impl Sender for SecurityGetPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -869,7 +1035,11 @@ impl Sender for SecurityGetRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -920,7 +1090,11 @@ impl Sender for SecurityGetRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -970,7 +1144,11 @@ impl Sender for SecurityGetToken {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/oauth2/token";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1021,7 +1199,11 @@ impl Sender for SecurityGetUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1071,7 +1253,11 @@ impl Sender for SecurityGetUserPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/_privileges";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1125,7 +1311,11 @@ impl Sender for SecurityHasPrivileges {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1175,7 +1365,11 @@ impl Sender for SecurityInvalidateApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/api_key";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1225,7 +1419,11 @@ impl Sender for SecurityInvalidateToken {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/oauth2/token";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1281,7 +1479,21 @@ impl Sender for SecurityPutPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/privilege/";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1339,7 +1551,21 @@ impl Sender for SecurityPutRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role/{name}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1397,7 +1623,21 @@ impl Sender for SecurityPutRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/role_mapping/{name}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1455,7 +1695,21 @@ impl Sender for SecurityPutUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_security/user/{username}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "refresh")]
+                refresh: Option<Refresh>,
+            }
+            let query_params = QueryParamsStruct {
+                refresh: self.refresh,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct WatcherAckWatch {
     client: Elasticsearch,
@@ -72,7 +73,11 @@ impl Sender for WatcherAckWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_ack";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -124,7 +129,11 @@ impl Sender for WatcherActivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_activate";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -176,7 +185,11 @@ impl Sender for WatcherDeactivateWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{watch_id}/_deactivate";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -228,7 +241,11 @@ impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -285,7 +302,19 @@ impl Sender for WatcherExecuteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}/_execute";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "debug")]
+                debug: Option<bool>,
+            }
+            let query_params = QueryParamsStruct { debug: self.debug };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -337,7 +366,11 @@ impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -413,7 +446,30 @@ impl Sender for WatcherPutWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/watch/{id}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "active")]
+                active: Option<bool>,
+                #[serde(rename = "if_primary_term")]
+                if_primary_term: Option<i64>,
+                #[serde(rename = "if_seq_no")]
+                if_seq_no: Option<i64>,
+                #[serde(rename = "version")]
+                version: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                active: self.active,
+                if_primary_term: self.if_primary_term,
+                if_seq_no: self.if_seq_no,
+                version: self.version,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -463,7 +519,11 @@ impl Sender for WatcherStart {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_start";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -525,7 +585,24 @@ impl Sender for WatcherStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/stats";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "emit_stacktraces")]
+                emit_stacktraces: Option<bool>,
+                #[serde(rename = "metric")]
+                metric: Option<Vec<String>>,
+            }
+            let query_params = QueryParamsStruct {
+                emit_stacktraces: self.emit_stacktraces,
+                metric: self.metric,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -575,7 +652,11 @@ impl Sender for WatcherStop {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_watcher/_stop";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
