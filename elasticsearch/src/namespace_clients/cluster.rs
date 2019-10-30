@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct ClusterAllocationExplain {
     client: Elasticsearch,
@@ -84,7 +85,24 @@ impl Sender for ClusterAllocationExplain {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "include_disk_info")]
+                include_disk_info: Option<bool>,
+                #[serde(rename = "include_yes_decisions")]
+                include_yes_decisions: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                include_disk_info: self.include_disk_info,
+                include_yes_decisions: self.include_yes_decisions,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -158,7 +176,30 @@ impl Sender for ClusterGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/settings";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "include_defaults")]
+                include_defaults: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                include_defaults: self.include_defaults,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -281,7 +322,51 @@ impl Sender for ClusterHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/health";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "level")]
+                level: Option<Level>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+                #[serde(rename = "wait_for_events")]
+                wait_for_events: Option<WaitForEvents>,
+                #[serde(rename = "wait_for_no_initializing_shards")]
+                wait_for_no_initializing_shards: Option<bool>,
+                #[serde(rename = "wait_for_no_relocating_shards")]
+                wait_for_no_relocating_shards: Option<bool>,
+                #[serde(rename = "wait_for_nodes")]
+                wait_for_nodes: Option<String>,
+                #[serde(rename = "wait_for_status")]
+                wait_for_status: Option<WaitForStatus>,
+            }
+            let query_params = QueryParamsStruct {
+                expand_wildcards: self.expand_wildcards,
+                level: self.level,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+                wait_for_events: self.wait_for_events,
+                wait_for_no_initializing_shards: self.wait_for_no_initializing_shards,
+                wait_for_no_relocating_shards: self.wait_for_no_relocating_shards,
+                wait_for_nodes: self.wait_for_nodes,
+                wait_for_status: self.wait_for_status,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -343,7 +428,24 @@ impl Sender for ClusterPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/pending_tasks";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                local: self.local,
+                master_timeout: self.master_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -411,7 +513,27 @@ impl Sender for ClusterPutSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/settings";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                master_timeout: self.master_timeout,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -461,7 +583,11 @@ impl Sender for ClusterRemoteInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_remote/info";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -547,7 +673,36 @@ impl Sender for ClusterReroute {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/reroute";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "dry_run")]
+                dry_run: Option<bool>,
+                #[serde(rename = "explain")]
+                explain: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "metric")]
+                metric: Option<Vec<String>>,
+                #[serde(rename = "retry_failed")]
+                retry_failed: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                dry_run: self.dry_run,
+                explain: self.explain,
+                master_timeout: self.master_timeout,
+                metric: self.metric,
+                retry_failed: self.retry_failed,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -647,7 +802,42 @@ impl Sender for ClusterState {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/state";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_indices")]
+                allow_no_indices: Option<bool>,
+                #[serde(rename = "expand_wildcards")]
+                expand_wildcards: Option<ExpandWildcards>,
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "ignore_unavailable")]
+                ignore_unavailable: Option<bool>,
+                #[serde(rename = "local")]
+                local: Option<bool>,
+                #[serde(rename = "master_timeout")]
+                master_timeout: Option<String>,
+                #[serde(rename = "wait_for_metadata_version")]
+                wait_for_metadata_version: Option<i64>,
+                #[serde(rename = "wait_for_timeout")]
+                wait_for_timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_indices: self.allow_no_indices,
+                expand_wildcards: self.expand_wildcards,
+                flat_settings: self.flat_settings,
+                ignore_unavailable: self.ignore_unavailable,
+                local: self.local,
+                master_timeout: self.master_timeout,
+                wait_for_metadata_version: self.wait_for_metadata_version,
+                wait_for_timeout: self.wait_for_timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -710,7 +900,24 @@ impl Sender for ClusterStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_cluster/stats";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "flat_settings")]
+                flat_settings: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                flat_settings: self.flat_settings,
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

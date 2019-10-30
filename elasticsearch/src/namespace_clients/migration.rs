@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct MigrationDeprecations {
     client: Elasticsearch,
@@ -70,7 +71,11 @@ impl Sender for MigrationDeprecations {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_migration/deprecations";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

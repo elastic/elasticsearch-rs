@@ -423,9 +423,8 @@ where
         output.drain(0..stdin.len());
     }
 
-    // trim whitespace
-    output.trim();
-
     let s = String::from_utf8(output)?;
-    Ok(s)
+
+    // trim whitespace
+    Ok(s.trim().into())
 }

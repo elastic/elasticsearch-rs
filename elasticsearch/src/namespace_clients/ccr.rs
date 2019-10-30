@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct CcrDeleteAutoFollowPattern {
     client: Elasticsearch,
@@ -71,7 +72,11 @@ impl Sender for CcrDeleteAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow/{name}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -129,7 +134,21 @@ impl Sender for CcrFollow {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/follow";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "wait_for_active_shards")]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -181,7 +200,11 @@ impl Sender for CcrFollowInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/info";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -233,7 +256,11 @@ impl Sender for CcrFollowStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/stats";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -285,7 +312,11 @@ impl Sender for CcrForgetFollower {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/forget_follower";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -336,7 +367,11 @@ impl Sender for CcrGetAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -388,7 +423,11 @@ impl Sender for CcrPauseFollow {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/pause_follow";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -440,7 +479,11 @@ impl Sender for CcrPutAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/auto_follow/{name}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -492,7 +535,11 @@ impl Sender for CcrResumeFollow {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/resume_follow";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -542,7 +589,11 @@ impl Sender for CcrStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ccr/stats";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -594,7 +645,11 @@ impl Sender for CcrUnfollow {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ccr/unfollow";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

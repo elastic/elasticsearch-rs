@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct TasksCancel {
     client: Elasticsearch,
@@ -88,7 +89,27 @@ impl Sender for TasksCancel {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks/_cancel";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "actions")]
+                actions: Option<Vec<String>>,
+                #[serde(rename = "nodes")]
+                nodes: Option<Vec<String>>,
+                #[serde(rename = "parent_task_id")]
+                parent_task_id: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                actions: self.actions,
+                nodes: self.nodes,
+                parent_task_id: self.parent_task_id,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -152,7 +173,24 @@ impl Sender for TasksGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks/{task_id}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -244,7 +282,39 @@ impl Sender for TasksList {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_tasks";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "actions")]
+                actions: Option<Vec<String>>,
+                #[serde(rename = "detailed")]
+                detailed: Option<bool>,
+                #[serde(rename = "group_by")]
+                group_by: Option<GroupBy>,
+                #[serde(rename = "nodes")]
+                nodes: Option<Vec<String>>,
+                #[serde(rename = "parent_task_id")]
+                parent_task_id: Option<String>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                actions: self.actions,
+                detailed: self.detailed,
+                group_by: self.group_by,
+                nodes: self.nodes,
+                parent_task_id: self.parent_task_id,
+                timeout: self.timeout,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

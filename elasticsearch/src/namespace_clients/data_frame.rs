@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct DataFrameDeleteDataFrameTransform {
     client: Elasticsearch,
@@ -71,7 +72,11 @@ impl Sender for DataFrameDeleteDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -140,7 +145,27 @@ impl Sender for DataFrameGetDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i32>,
+                #[serde(rename = "size")]
+                size: Option<i32>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -210,7 +235,27 @@ impl Sender for DataFrameGetDataFrameTransformStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_stats";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "from")]
+                from: Option<i64>,
+                #[serde(rename = "size")]
+                size: Option<i64>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                from: self.from,
+                size: self.size,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -260,7 +305,11 @@ impl Sender for DataFramePreviewDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/_preview";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -312,7 +361,11 @@ impl Sender for DataFramePutDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -370,7 +423,21 @@ impl Sender for DataFrameStartDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_start";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -440,7 +507,27 @@ impl Sender for DataFrameStopDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_data_frame/transforms/{transform_id}/_stop";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "allow_no_match")]
+                allow_no_match: Option<bool>,
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                allow_no_match: self.allow_no_match,
+                timeout: self.timeout,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

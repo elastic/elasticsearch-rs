@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct IlmDeleteLifecycle {
     client: Elasticsearch,
@@ -71,7 +72,11 @@ impl Sender for IlmDeleteLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -123,7 +128,11 @@ impl Sender for IlmExplainLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/explain";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -174,7 +183,11 @@ impl Sender for IlmGetLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -224,7 +237,11 @@ impl Sender for IlmGetStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/status";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -276,7 +293,11 @@ impl Sender for IlmMoveToStep {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/move/{index}";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -328,7 +349,11 @@ impl Sender for IlmPutLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/policy/{policy}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -380,7 +405,11 @@ impl Sender for IlmRemovePolicy {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/remove";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -432,7 +461,11 @@ impl Sender for IlmRetry {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_ilm/retry";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -482,7 +515,11 @@ impl Sender for IlmStart {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/start";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -532,7 +569,11 @@ impl Sender for IlmStop {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_ilm/stop";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

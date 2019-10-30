@@ -29,7 +29,7 @@ fn generate_enum(tokens: &mut Tokens, e: &ApiEnum) {
         .collect();
 
     let generated_enum_tokens = quote!(
-        #[derive(Debug, PartialEq, Deserialize, Clone, Copy)]
+        #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
         pub enum #name {
             #(#[serde(rename = #renames)] #values),*
         }

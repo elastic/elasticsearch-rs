@@ -23,6 +23,7 @@ use crate::response::ElasticsearchResponse;
 use reqwest::header::HeaderMap;
 use reqwest::{Error, Request, Response, StatusCode};
 use serde::de::DeserializeOwned;
+use serde::Serialize;
 #[derive(Default)]
 pub struct RollupDeleteJob {
     client: Elasticsearch,
@@ -71,7 +72,11 @@ impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Delete;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -122,7 +127,11 @@ impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -173,7 +182,11 @@ impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/data/{id}";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -225,7 +238,11 @@ impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/{index}/_rollup/data";
         let method = HttpMethod::Get;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -277,7 +294,11 @@ impl Sender for RollupPutJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}";
         let method = HttpMethod::Put;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -345,7 +366,24 @@ impl Sender for RollupRollupSearch {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
         };
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "rest_total_hits_as_int")]
+                rest_total_hits_as_int: Option<bool>,
+                #[serde(rename = "typed_keys")]
+                typed_keys: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                rest_total_hits_as_int: self.rest_total_hits_as_int,
+                typed_keys: self.typed_keys,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -397,7 +435,11 @@ impl Sender for RollupStartJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}/_start";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = None::<()>;
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -461,7 +503,24 @@ impl Sender for RollupStopJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = "/_rollup/job/{id}/_stop";
         let method = HttpMethod::Post;
-        let response = self.client.send::<()>(method, path, None, None)?;
+        let query_params = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "timeout")]
+                timeout: Option<String>,
+                #[serde(rename = "wait_for_completion")]
+                wait_for_completion: Option<bool>,
+            }
+            let query_params = QueryParamsStruct {
+                timeout: self.timeout,
+                wait_for_completion: self.wait_for_completion,
+            };
+            Some(query_params)
+        };
+        let body: Option<()> = None;
+        let response = self
+            .client
+            .send(method, path, query_params.as_ref(), body)?;
         Ok(response)
     }
 }

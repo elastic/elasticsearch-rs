@@ -8,6 +8,7 @@ use inflector::Inflector;
 use quote::{Tokens, ToTokens};
 use std::str;
 use syn::{Field, FieldValue, FnArg, ImplItem};
+use std::collections::BTreeMap;
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -251,6 +252,7 @@ pub fn use_declarations() -> Tokens {
         use crate::response::ElasticsearchResponse;
         use crate::error::ElasticsearchError;
         use serde::de::DeserializeOwned;
+        use serde::Serialize;
         use reqwest::header::HeaderMap;
     )
 }
@@ -374,7 +376,8 @@ pub fn create_builder_struct(
     let path_expr = create_path_expression(&endpoint);
     let method = create_method_expression(&builder_name, &endpoint);
     let supports_body = endpoint.supports_body();
-
+    let query_params_expr = build_query_params_expr(&endpoint.url.params);
+	
     quote!(
         #[derive(Default)]
         pub struct #builder_ident {
@@ -391,9 +394,11 @@ pub fn create_builder_struct(
             fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
                   let path = #path_expr;
                   let method = #method;
-
-                  // TODO: build up the url based on parameters passed, and execute request
-                  let response = self.client.send::<()>(method, path, None, None)?;
+                  let query_params = #query_params_expr;
+				  // TODO: get the body from self, if sender supports body
+				  let body: Option<()> = None;
+                  // TODO: build up the path based on parameters passed, and execute request
+                  let response = self.client.send(method, path, query_params.as_ref(), body)?;
                   Ok(response)
             }
         }
@@ -549,5 +554,39 @@ pub fn shift(i: &[u8], c: usize) -> &[u8] {
     match c {
         c if c >= i.len() => &[],
         _ => &i[c..],
+    }
+}
+
+fn build_query_params_expr(endpoint_params: &BTreeMap<String, Type>) -> Tokens {
+    if endpoint_params.is_empty() {
+        quote!(None::<()>)
+    } else {
+        let query_struct_typ = ident("QueryParamsStruct");
+        let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
+            let field = create_optional_field((param_name, param_type));
+            let field_rename = lit(param_name);
+            quote! {
+                #[serde(rename = #field_rename)]
+                #field
+            }
+        });
+        let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
+            let field_name = ident(valid_name(param_name).to_lowercase());
+            quote! {
+                #field_name: self.#field_name
+            }
+        });
+        quote! {
+            {
+                #[derive(Serialize)]
+                struct #query_struct_typ {
+                    #(#struct_fields,)*
+                }
+                let query_params = #query_struct_typ {
+                    #(#query_ctor,)*
+                };
+                Some(query_params)
+            }
+        }
     }
 }
