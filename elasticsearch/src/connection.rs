@@ -35,15 +35,15 @@ impl Connection {
     }
 
     /// Sends a request to the Elasticsearch node
-    pub fn send<S, Q>(
+    pub fn send<B, Q>(
         &self,
         method: HttpMethod,
         path: &str,
         query_string: Option<&Q>,
-        body: Option<S>,
+        body: Option<B>,
     ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
-        S: Serialize,
+        B: Serialize,
         Q: Serialize + ?Sized,
     {
         let url = self.url.join(path).unwrap();
@@ -53,10 +53,10 @@ impl Connection {
 
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
         headers.insert(ACCEPT, HeaderValue::from_static("application/json"));
-        // TODO: autogenerate user agent with version
+        // TODO: autogenerate user agent with version, based on version in Cargo.toml, which will align with the REST spec version of Elasticsearch
         headers.insert(
             USER_AGENT,
-            HeaderValue::from_static("elasticsearch-rs/7.3.1"),
+            HeaderValue::from_static("elasticsearch-rs/0.1.0"),
         );
 
         let mut request_builder = self.client.request(reqwest_method, url).headers(headers);
