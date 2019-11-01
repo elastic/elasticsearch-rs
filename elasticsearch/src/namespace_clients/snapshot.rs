@@ -111,7 +111,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}/{snapshot}";
+        let path = {
+            let repository = self.repository;
+            let snapshot = self.snapshot;
+            let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            p.push_str("/");
+            p.push_str(snapshot.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -145,7 +154,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -237,7 +246,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}";
+        let path = {
+            let repository = self.repository;
+            let mut p = String::with_capacity(11usize + repository.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -274,7 +289,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -346,7 +361,16 @@ impl SnapshotDelete {
 }
 impl Sender for SnapshotDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}/{snapshot}";
+        let path = {
+            let repository = self.repository;
+            let snapshot = self.snapshot;
+            let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            p.push_str("/");
+            p.push_str(snapshot.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -377,7 +401,7 @@ impl Sender for SnapshotDelete {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -449,7 +473,13 @@ impl SnapshotDeleteRepository {
 }
 impl Sender for SnapshotDeleteRepository {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}";
+        let path = {
+            let repository_str = self.repository.join(",");
+            let mut p = String::with_capacity(11usize + repository_str.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -483,7 +513,7 @@ impl Sender for SnapshotDeleteRepository {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -569,7 +599,16 @@ impl SnapshotGet {
 }
 impl Sender for SnapshotGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}/{snapshot}";
+        let path = {
+            let repository = self.repository;
+            let snapshot_str = self.snapshot.join(",");
+            let mut p = String::with_capacity(12usize + repository.len() + snapshot_str.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            p.push_str("/");
+            p.push_str(snapshot_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -606,7 +645,7 @@ impl Sender for SnapshotGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -678,7 +717,16 @@ impl SnapshotGetRepository {
 }
 impl Sender for SnapshotGetRepository {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot";
+        let path = match &self.repository {
+            Some(repository) => {
+                let repository_str = repository.join(",");
+                let mut p = String::with_capacity(11usize + repository_str.len());
+                p.push_str("/_snapshot/");
+                p.push_str(repository_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_snapshot"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -712,7 +760,7 @@ impl Sender for SnapshotGetRepository {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -804,7 +852,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}/{snapshot}/_restore";
+        let path = {
+            let repository = self.repository;
+            let snapshot = self.snapshot;
+            let mut p = String::with_capacity(21usize + repository.len() + snapshot.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            p.push_str("/");
+            p.push_str(snapshot.as_ref());
+            p.push_str("/_restore");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -838,7 +896,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -917,7 +975,29 @@ impl SnapshotStatus {
 }
 impl Sender for SnapshotStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/_status";
+        let path = match (&self.repository, &self.snapshot) {
+            (Some(repository), Some(snapshot)) => {
+                let repository = repository;
+                let snapshot_str = snapshot.join(",");
+                let mut p = String::with_capacity(20usize + repository.len() + snapshot_str.len());
+                p.push_str("/_snapshot/");
+                p.push_str(repository.as_ref());
+                p.push_str("/");
+                p.push_str(snapshot_str.as_ref());
+                p.push_str("/_status");
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(repository), None) => {
+                let repository = repository;
+                let mut p = String::with_capacity(19usize + repository.len());
+                p.push_str("/_snapshot/");
+                p.push_str(repository.as_ref());
+                p.push_str("/_status");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(_)) => panic!("repository must be specified"),
+            (None, None) => std::borrow::Cow::Borrowed("/_snapshot/_status"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -951,7 +1031,7 @@ impl Sender for SnapshotStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1036,7 +1116,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_snapshot/{repository}/_verify";
+        let path = {
+            let repository = self.repository;
+            let mut p = String::with_capacity(19usize + repository.len());
+            p.push_str("/_snapshot/");
+            p.push_str(repository.as_ref());
+            p.push_str("/_verify");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1070,7 +1157,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

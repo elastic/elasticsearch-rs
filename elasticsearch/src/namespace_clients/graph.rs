@@ -111,7 +111,27 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_graph/explore";
+        let path = match &self.ty {
+            Some(ty) => {
+                let index_str = self.index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_graph/explore");
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let index_str = self.index.join(",");
+                let mut p = String::with_capacity(16usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_graph/explore");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -148,7 +168,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -77,7 +77,13 @@ impl RollupDeleteJob {
 }
 impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/job/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(13usize + id.len());
+            p.push_str("/_rollup/job/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -105,7 +111,7 @@ impl Sender for RollupDeleteJob {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -163,7 +169,16 @@ impl RollupGetJobs {
 }
 impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/job/{id}";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(13usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_rollup/job/"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -191,7 +206,7 @@ impl Sender for RollupGetJobs {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -249,7 +264,16 @@ impl RollupGetRollupCaps {
 }
 impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/data/{id}";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(14usize + id.len());
+                p.push_str("/_rollup/data/");
+                p.push_str(id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_rollup/data/"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -277,7 +301,7 @@ impl Sender for RollupGetRollupCaps {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -335,7 +359,14 @@ impl RollupGetRollupIndexCaps {
 }
 impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_rollup/data";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(14usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_rollup/data");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -363,7 +394,7 @@ impl Sender for RollupGetRollupIndexCaps {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -434,7 +465,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/job/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(13usize + id.len());
+            p.push_str("/_rollup/job/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -462,7 +499,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -554,7 +591,27 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_rollup_search";
+        let path = match &self.ty {
+            Some(ty) => {
+                let index_str = self.index.join(",");
+                let ty = ty;
+                let mut p = String::with_capacity(17usize + index_str.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_rollup_search");
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let index_str = self.index.join(",");
+                let mut p = String::with_capacity(16usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_rollup_search");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -591,7 +648,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -662,7 +719,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/job/{id}/_start";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(20usize + id.len());
+            p.push_str("/_rollup/job/");
+            p.push_str(id.as_ref());
+            p.push_str("/_start");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -690,7 +754,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -775,7 +839,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_rollup/job/{id}/_stop";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(19usize + id.len());
+            p.push_str("/_rollup/job/");
+            p.push_str(id.as_ref());
+            p.push_str("/_stop");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -809,7 +880,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -111,7 +111,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_tasks/_cancel";
+        let path = match &self.task_id {
+            Some(task_id) => {
+                let task_id = task_id;
+                let mut p = String::with_capacity(16usize + task_id.len());
+                p.push_str("/_tasks/");
+                p.push_str(task_id.as_ref());
+                p.push_str("/_cancel");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_tasks/_cancel"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -148,7 +158,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -220,7 +230,13 @@ impl TasksGet {
 }
 impl Sender for TasksGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_tasks/{task_id}";
+        let path = {
+            let task_id = self.task_id;
+            let mut p = String::with_capacity(8usize + task_id.len());
+            p.push_str("/_tasks/");
+            p.push_str(task_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -254,7 +270,7 @@ impl Sender for TasksGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -354,7 +370,7 @@ impl TasksList {
 }
 impl Sender for TasksList {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_tasks";
+        let path = std::borrow::Cow::Borrowed("/_tasks");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -403,7 +419,7 @@ impl Sender for TasksList {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

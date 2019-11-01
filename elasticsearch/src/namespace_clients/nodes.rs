@@ -119,7 +119,17 @@ impl NodesHotThreads {
 }
 impl Sender for NodesHotThreads {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_nodes/hot_threads";
+        let path = match &self.node_id {
+            Some(node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(20usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/hot_threads");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_nodes/hot_threads"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -165,7 +175,7 @@ impl Sender for NodesHotThreads {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -244,7 +254,33 @@ impl NodesInfo {
 }
 impl Sender for NodesInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_nodes";
+        let path = match (&self.metric, &self.node_id) {
+            (Some(metric), Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(9usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(8usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(metric), None) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(8usize + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_nodes"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -278,7 +314,7 @@ impl Sender for NodesInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -356,7 +392,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_nodes/reload_secure_settings";
+        let path = match &self.node_id {
+            Some(node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(31usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/reload_secure_settings");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_nodes/reload_secure_settings"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -387,7 +433,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -515,7 +561,78 @@ impl NodesStats {
 }
 impl Sender for NodesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_nodes/stats";
+        let path = match (&self.index_metric, &self.metric, &self.node_id) {
+            (Some(index_metric), Some(metric), Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let index_metric_str = index_metric.join(",");
+                let mut p = String::with_capacity(
+                    16usize + node_id_str.len() + metric_str.len() + index_metric_str.len(),
+                );
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(metric), Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index_metric), Some(metric), None) => {
+                let metric_str = metric.join(",");
+                let index_metric_str = index_metric.join(",");
+                let mut p =
+                    String::with_capacity(15usize + metric_str.len() + index_metric_str.len());
+                p.push_str("/_nodes/stats/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None, Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(14usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(metric), None) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(14usize + metric_str.len());
+                p.push_str("/_nodes/stats/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index_metric), None, Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let index_metric_str = index_metric.join(",");
+                let mut p =
+                    String::with_capacity(19usize + node_id_str.len() + index_metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats/all/");
+                p.push_str(index_metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index_metric), None, None) => {
+                let index_metric_str = index_metric.join(",");
+                let mut p = String::with_capacity(18usize + index_metric_str.len());
+                p.push_str("/_nodes/stats/all/");
+                p.push_str(index_metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None, None) => std::borrow::Cow::Borrowed("/_nodes/stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -567,7 +684,7 @@ impl Sender for NodesStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -639,7 +756,34 @@ impl NodesUsage {
 }
 impl Sender for NodesUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_nodes/usage";
+        let path = match (&self.metric, &self.node_id) {
+            (Some(metric), Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/usage/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(node_id)) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(14usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/usage");
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(metric), None) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(14usize + metric_str.len());
+                p.push_str("/_nodes/usage/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_nodes/usage"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -670,7 +814,7 @@ impl Sender for NodesUsage {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

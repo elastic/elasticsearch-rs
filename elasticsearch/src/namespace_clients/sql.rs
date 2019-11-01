@@ -83,7 +83,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_sql/close";
+        let path = std::borrow::Cow::Borrowed("/_sql/close");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -111,7 +111,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -182,7 +182,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_sql";
+        let path = std::borrow::Cow::Borrowed("/_sql");
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -216,7 +216,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -280,7 +280,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_sql/translate";
+        let path = std::borrow::Cow::Borrowed("/_sql/translate");
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -311,7 +311,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -126,7 +126,16 @@ impl CatAliases {
 }
 impl Sender for CatAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/aliases";
+        let path = match &self.name {
+            Some(name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(14usize + name_str.len());
+                p.push_str("/_cat/aliases/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/aliases"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -175,7 +184,7 @@ impl Sender for CatAliases {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -289,7 +298,16 @@ impl CatAllocation {
 }
 impl Sender for CatAllocation {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/allocation";
+        let path = match &self.node_id {
+            Some(node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(17usize + node_id_str.len());
+                p.push_str("/_cat/allocation/");
+                p.push_str(node_id_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/allocation"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -341,7 +359,7 @@ impl Sender for CatAllocation {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -448,7 +466,16 @@ impl CatCount {
 }
 impl Sender for CatCount {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/count";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len());
+                p.push_str("/_cat/count/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/count"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -497,7 +524,7 @@ impl Sender for CatCount {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -611,7 +638,16 @@ impl CatFielddata {
 }
 impl Sender for CatFielddata {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/fielddata";
+        let path = match &self.fields {
+            Some(fields) => {
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(16usize + fields_str.len());
+                p.push_str("/_cat/fielddata/");
+                p.push_str(fields_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/fielddata"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -666,7 +702,7 @@ impl Sender for CatFielddata {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -773,7 +809,7 @@ impl CatHealth {
 }
 impl Sender for CatHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/health";
+        let path = std::borrow::Cow::Borrowed("/_cat/health");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -825,7 +861,7 @@ impl Sender for CatHealth {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -890,7 +926,7 @@ impl CatHelp {
 }
 impl Sender for CatHelp {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat";
+        let path = std::borrow::Cow::Borrowed("/_cat");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -924,7 +960,7 @@ impl Sender for CatHelp {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1059,7 +1095,16 @@ impl CatIndices {
 }
 impl Sender for CatIndices {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/indices";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(14usize + index_str.len());
+                p.push_str("/_cat/indices/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/indices"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1120,7 +1165,7 @@ impl Sender for CatIndices {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1220,7 +1265,7 @@ impl CatMaster {
 }
 impl Sender for CatMaster {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/master";
+        let path = std::borrow::Cow::Borrowed("/_cat/master");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1269,7 +1314,7 @@ impl Sender for CatMaster {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1369,7 +1414,7 @@ impl CatNodeattrs {
 }
 impl Sender for CatNodeattrs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/nodeattrs";
+        let path = std::borrow::Cow::Borrowed("/_cat/nodeattrs");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1418,7 +1463,7 @@ impl Sender for CatNodeattrs {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1525,7 +1570,7 @@ impl CatNodes {
 }
 impl Sender for CatNodes {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/nodes";
+        let path = std::borrow::Cow::Borrowed("/_cat/nodes");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1577,7 +1622,7 @@ impl Sender for CatNodes {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1677,7 +1722,7 @@ impl CatPendingTasks {
 }
 impl Sender for CatPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/pending_tasks";
+        let path = std::borrow::Cow::Borrowed("/_cat/pending_tasks");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1726,7 +1771,7 @@ impl Sender for CatPendingTasks {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1826,7 +1871,7 @@ impl CatPlugins {
 }
 impl Sender for CatPlugins {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/plugins";
+        let path = std::borrow::Cow::Borrowed("/_cat/plugins");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1875,7 +1920,7 @@ impl Sender for CatPlugins {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1982,7 +2027,16 @@ impl CatRecovery {
 }
 impl Sender for CatRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/recovery";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/_cat/recovery/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/recovery"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2031,7 +2085,7 @@ impl Sender for CatRecovery {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2131,7 +2185,7 @@ impl CatRepositories {
 }
 impl Sender for CatRepositories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/repositories";
+        let path = std::borrow::Cow::Borrowed("/_cat/repositories");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2180,7 +2234,7 @@ impl Sender for CatRepositories {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2280,7 +2334,16 @@ impl CatSegments {
 }
 impl Sender for CatSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/segments";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/_cat/segments/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/segments"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2326,7 +2389,7 @@ impl Sender for CatSegments {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2440,7 +2503,16 @@ impl CatShards {
 }
 impl Sender for CatShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/shards";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(13usize + index_str.len());
+                p.push_str("/_cat/shards/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/shards"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2492,7 +2564,7 @@ impl Sender for CatShards {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2599,7 +2671,16 @@ impl CatSnapshots {
 }
 impl Sender for CatSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/snapshots";
+        let path = match &self.repository {
+            Some(repository) => {
+                let repository_str = repository.join(",");
+                let mut p = String::with_capacity(16usize + repository_str.len());
+                p.push_str("/_cat/snapshots/");
+                p.push_str(repository_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/snapshots"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2648,7 +2729,7 @@ impl Sender for CatSnapshots {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2762,7 +2843,7 @@ impl CatTasks {
 }
 impl Sender for CatTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/tasks";
+        let path = std::borrow::Cow::Borrowed("/_cat/tasks");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2817,7 +2898,7 @@ impl Sender for CatTasks {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2924,7 +3005,16 @@ impl CatTemplates {
 }
 impl Sender for CatTemplates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/templates";
+        let path = match &self.name {
+            Some(name) => {
+                let name = name;
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_cat/templates/");
+                p.push_str(name.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/templates"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2973,7 +3063,7 @@ impl Sender for CatTemplates {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3087,7 +3177,16 @@ impl CatThreadPool {
 }
 impl Sender for CatThreadPool {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cat/thread_pool";
+        let path = match &self.thread_pool_patterns {
+            Some(thread_pool_patterns) => {
+                let thread_pool_patterns_str = thread_pool_patterns.join(",");
+                let mut p = String::with_capacity(18usize + thread_pool_patterns_str.len());
+                p.push_str("/_cat/thread_pool/");
+                p.push_str(thread_pool_patterns_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cat/thread_pool"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3139,7 +3238,7 @@ impl Sender for CatThreadPool {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -70,7 +70,7 @@ impl SslCertificates {
 }
 impl Sender for SslCertificates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ssl/certificates";
+        let path = std::borrow::Cow::Borrowed("/_ssl/certificates");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -98,7 +98,7 @@ impl Sender for SslCertificates {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

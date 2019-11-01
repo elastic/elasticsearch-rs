@@ -111,7 +111,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_close";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(30usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_close");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -148,7 +155,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -206,7 +213,13 @@ impl MlDeleteCalendar {
 }
 impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let mut p = String::with_capacity(15usize + calendar_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -234,7 +247,7 @@ impl Sender for MlDeleteCalendar {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -299,7 +312,16 @@ impl MlDeleteCalendarEvent {
 }
 impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}/events/{event_id}";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let event_id = self.event_id;
+            let mut p = String::with_capacity(23usize + calendar_id.len() + event_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            p.push_str("/events/");
+            p.push_str(event_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -327,7 +349,7 @@ impl Sender for MlDeleteCalendarEvent {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -392,7 +414,16 @@ impl MlDeleteCalendarJob {
 }
 impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            p.push_str("/jobs/");
+            p.push_str(job_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -420,7 +451,7 @@ impl Sender for MlDeleteCalendarJob {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -478,7 +509,13 @@ impl MlDeleteDataFrameAnalytics {
 }
 impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(26usize + id.len());
+            p.push_str("/_ml/data_frame/analytics/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -506,7 +543,7 @@ impl Sender for MlDeleteDataFrameAnalytics {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -571,7 +608,13 @@ impl MlDeleteDatafeed {
 }
 impl Sender for MlDeleteDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(15usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -602,7 +645,7 @@ impl Sender for MlDeleteDatafeed {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -653,7 +696,7 @@ impl MlDeleteExpiredData {
 }
 impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/_delete_expired_data";
+        let path = std::borrow::Cow::Borrowed("/_ml/_delete_expired_data");
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -681,7 +724,7 @@ impl Sender for MlDeleteExpiredData {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -739,7 +782,13 @@ impl MlDeleteFilter {
 }
 impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/filters/{filter_id}";
+        let path = {
+            let filter_id = self.filter_id;
+            let mut p = String::with_capacity(13usize + filter_id.len());
+            p.push_str("/_ml/filters/");
+            p.push_str(filter_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -767,7 +816,7 @@ impl Sender for MlDeleteFilter {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -846,7 +895,26 @@ impl MlDeleteForecast {
 }
 impl Sender for MlDeleteForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
+        let path = match &self.forecast_id {
+            Some(forecast_id) => {
+                let job_id = self.job_id;
+                let forecast_id = forecast_id;
+                let mut p = String::with_capacity(34usize + job_id.len() + forecast_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_forecast/");
+                p.push_str(forecast_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let job_id = self.job_id;
+                let mut p = String::with_capacity(33usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_forecast");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -880,7 +948,7 @@ impl Sender for MlDeleteForecast {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -952,7 +1020,13 @@ impl MlDeleteJob {
 }
 impl Sender for MlDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(23usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -986,7 +1060,7 @@ impl Sender for MlDeleteJob {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1051,7 +1125,16 @@ impl MlDeleteModelSnapshot {
 }
 impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
+        let path = {
+            let job_id = self.job_id;
+            let snapshot_id = self.snapshot_id;
+            let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/model_snapshots/");
+            p.push_str(snapshot_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1079,7 +1162,7 @@ impl Sender for MlDeleteModelSnapshot {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1143,7 +1226,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/_evaluate";
+        let path = std::borrow::Cow::Borrowed("/_ml/data_frame/_evaluate");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1171,7 +1254,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1333,7 +1416,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/find_file_structure";
+        let path = std::borrow::Cow::Borrowed("/_ml/find_file_structure");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1403,7 +1486,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1509,7 +1592,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_flush";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(30usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_flush");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1552,7 +1642,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1637,7 +1727,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_forecast";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(33usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_forecast");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1671,7 +1768,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1812,7 +1909,26 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/results/buckets/{timestamp}";
+        let path = match &self.timestamp {
+            Some(timestamp) => {
+                let job_id = self.job_id;
+                let timestamp = timestamp;
+                let mut p = String::with_capacity(40usize + job_id.len() + timestamp.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/buckets/");
+                p.push_str(timestamp.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let job_id = self.job_id;
+                let mut p = String::with_capacity(39usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/buckets");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1870,7 +1986,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1963,7 +2079,14 @@ impl MlGetCalendarEvents {
 }
 impl Sender for MlGetCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}/events";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let mut p = String::with_capacity(22usize + calendar_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            p.push_str("/events");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2006,7 +2129,7 @@ impl Sender for MlGetCalendarEvents {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2091,7 +2214,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars";
+        let path = match &self.calendar_id {
+            Some(calendar_id) => {
+                let calendar_id = calendar_id;
+                let mut p = String::with_capacity(15usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/calendars"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2128,7 +2260,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2220,7 +2352,26 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/results/categories/{category_id}";
+        let path = match &self.category_id {
+            Some(category_id) => {
+                let job_id = self.job_id;
+                let category_id_str = category_id.to_string();
+                let mut p = String::with_capacity(43usize + job_id.len() + category_id_str.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/categories/");
+                p.push_str(category_id_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let job_id = self.job_id;
+                let mut p = String::with_capacity(43usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/categories/");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2257,7 +2408,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2336,7 +2487,16 @@ impl MlGetDataFrameAnalytics {
 }
 impl Sender for MlGetDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/{id}";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(26usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/data_frame/analytics"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2373,7 +2533,7 @@ impl Sender for MlGetDataFrameAnalytics {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2452,7 +2612,17 @@ impl MlGetDataFrameAnalyticsStats {
 }
 impl Sender for MlGetDataFrameAnalyticsStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/_stats";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(33usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.push_str("/_stats");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/data_frame/analytics/_stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2489,7 +2659,7 @@ impl Sender for MlGetDataFrameAnalyticsStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2554,7 +2724,17 @@ impl MlGetDatafeedStats {
 }
 impl Sender for MlGetDatafeedStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}/_stats";
+        let path = match &self.datafeed_id {
+            Some(datafeed_id) => {
+                let datafeed_id = datafeed_id;
+                let mut p = String::with_capacity(22usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_stats");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/datafeeds/_stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2585,7 +2765,7 @@ impl Sender for MlGetDatafeedStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2650,7 +2830,16 @@ impl MlGetDatafeeds {
 }
 impl Sender for MlGetDatafeeds {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}";
+        let path = match &self.datafeed_id {
+            Some(datafeed_id) => {
+                let datafeed_id = datafeed_id;
+                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/datafeeds"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2681,7 +2870,7 @@ impl Sender for MlGetDatafeeds {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2753,7 +2942,16 @@ impl MlGetFilters {
 }
 impl Sender for MlGetFilters {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/filters";
+        let path = match &self.filter_id {
+            Some(filter_id) => {
+                let filter_id = filter_id;
+                let mut p = String::with_capacity(13usize + filter_id.len());
+                p.push_str("/_ml/filters/");
+                p.push_str(filter_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/filters"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2787,7 +2985,7 @@ impl Sender for MlGetFilters {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2913,7 +3111,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/results/influencers";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(43usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/results/influencers");
+            std::borrow::Cow::Owned(p)
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2968,7 +3173,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3033,7 +3238,17 @@ impl MlGetJobStats {
 }
 impl Sender for MlGetJobStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/_stats";
+        let path = match &self.job_id {
+            Some(job_id) => {
+                let job_id = job_id;
+                let mut p = String::with_capacity(30usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_stats");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3064,7 +3279,7 @@ impl Sender for MlGetJobStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3129,7 +3344,16 @@ impl MlGetJobs {
 }
 impl Sender for MlGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}";
+        let path = match &self.job_id {
+            Some(job_id) => {
+                let job_id = job_id;
+                let mut p = String::with_capacity(23usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ml/anomaly_detectors"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3160,7 +3384,7 @@ impl Sender for MlGetJobs {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3280,7 +3504,26 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}";
+        let path = match &self.snapshot_id {
+            Some(snapshot_id) => {
+                let job_id = self.job_id;
+                let snapshot_id = snapshot_id;
+                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(snapshot_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let job_id = self.job_id;
+                let mut p = String::with_capacity(39usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3329,7 +3572,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3449,7 +3692,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/results/overall_buckets";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(47usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/results/overall_buckets");
+            std::borrow::Cow::Owned(p)
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3501,7 +3751,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3626,7 +3876,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/results/records";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(39usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/results/records");
+            std::borrow::Cow::Owned(p)
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3681,7 +3938,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3732,7 +3989,7 @@ impl MlInfo {
 }
 impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/info";
+        let path = std::borrow::Cow::Borrowed("/_ml/info");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3760,7 +4017,7 @@ impl Sender for MlInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3845,7 +4102,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_open";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(29usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_open");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -3873,7 +4137,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3944,7 +4208,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}/events";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let mut p = String::with_capacity(22usize + calendar_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            p.push_str("/events");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -3972,7 +4243,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4057,7 +4328,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_data";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(29usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_data");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4091,7 +4369,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4149,7 +4427,14 @@ impl MlPreviewDatafeed {
 }
 impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}/_preview";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(24usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            p.push_str("/_preview");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4177,7 +4462,7 @@ impl Sender for MlPreviewDatafeed {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4248,7 +4533,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let mut p = String::with_capacity(15usize + calendar_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4276,7 +4567,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4354,7 +4645,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/calendars/{calendar_id}/jobs/{job_id}";
+        let path = {
+            let calendar_id = self.calendar_id;
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+            p.push_str("/_ml/calendars/");
+            p.push_str(calendar_id.as_ref());
+            p.push_str("/jobs/");
+            p.push_str(job_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4382,7 +4682,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4453,7 +4753,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(26usize + id.len());
+            p.push_str("/_ml/data_frame/analytics/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4481,7 +4787,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4552,7 +4858,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(15usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4580,7 +4892,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4651,7 +4963,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/filters/{filter_id}";
+        let path = {
+            let filter_id = self.filter_id;
+            let mut p = String::with_capacity(13usize + filter_id.len());
+            p.push_str("/_ml/filters/");
+            p.push_str(filter_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4679,7 +4997,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4750,7 +5068,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(23usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4778,7 +5102,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4863,7 +5187,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_revert";
+        let path = {
+            let job_id = self.job_id;
+            let snapshot_id = self.snapshot_id;
+            let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/model_snapshots/");
+            p.push_str(snapshot_id.as_ref());
+            p.push_str("/_revert");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4894,7 +5228,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4972,7 +5306,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/set_upgrade_mode";
+        let path = std::borrow::Cow::Borrowed("/_ml/set_upgrade_mode");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5006,7 +5340,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5084,7 +5418,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/{id}/_start";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(33usize + id.len());
+            p.push_str("/_ml/data_frame/analytics/");
+            p.push_str(id.as_ref());
+            p.push_str("/_start");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5115,7 +5456,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5207,7 +5548,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}/_start";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(22usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            p.push_str("/_start");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5244,7 +5592,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5336,7 +5684,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/data_frame/analytics/{id}/_stop";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(32usize + id.len());
+            p.push_str("/_ml/data_frame/analytics/");
+            p.push_str(id.as_ref());
+            p.push_str("/_stop");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5373,7 +5728,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5465,7 +5820,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}/_stop";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(21usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            p.push_str("/_stop");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5502,7 +5864,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5573,7 +5935,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/datafeeds/{datafeed_id}/_update";
+        let path = {
+            let datafeed_id = self.datafeed_id;
+            let mut p = String::with_capacity(23usize + datafeed_id.len());
+            p.push_str("/_ml/datafeeds/");
+            p.push_str(datafeed_id.as_ref());
+            p.push_str("/_update");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5601,7 +5970,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5672,7 +6041,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/filters/{filter_id}/_update";
+        let path = {
+            let filter_id = self.filter_id;
+            let mut p = String::with_capacity(21usize + filter_id.len());
+            p.push_str("/_ml/filters/");
+            p.push_str(filter_id.as_ref());
+            p.push_str("/_update");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5700,7 +6076,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5771,7 +6147,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/_update";
+        let path = {
+            let job_id = self.job_id;
+            let mut p = String::with_capacity(31usize + job_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/_update");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5799,7 +6182,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5877,7 +6260,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/{job_id}/model_snapshots/{snapshot_id}/_update";
+        let path = {
+            let job_id = self.job_id;
+            let snapshot_id = self.snapshot_id;
+            let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+            p.push_str("/_ml/anomaly_detectors/");
+            p.push_str(job_id.as_ref());
+            p.push_str("/model_snapshots/");
+            p.push_str(snapshot_id.as_ref());
+            p.push_str("/_update");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5905,7 +6298,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5969,7 +6362,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/_validate";
+        let path = std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_validate");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5997,7 +6390,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -6061,7 +6454,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ml/anomaly_detectors/_validate/detector";
+        let path = std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_validate/detector");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6089,7 +6482,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

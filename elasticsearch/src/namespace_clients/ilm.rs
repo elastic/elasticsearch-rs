@@ -77,7 +77,13 @@ impl IlmDeleteLifecycle {
 }
 impl Sender for IlmDeleteLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/policy/{policy}";
+        let path = {
+            let policy = self.policy;
+            let mut p = String::with_capacity(13usize + policy.len());
+            p.push_str("/_ilm/policy/");
+            p.push_str(policy.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -105,7 +111,7 @@ impl Sender for IlmDeleteLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -163,7 +169,14 @@ impl IlmExplainLifecycle {
 }
 impl Sender for IlmExplainLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ilm/explain";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(14usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ilm/explain");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -191,7 +204,7 @@ impl Sender for IlmExplainLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -249,7 +262,16 @@ impl IlmGetLifecycle {
 }
 impl Sender for IlmGetLifecycle {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/policy/{policy}";
+        let path = match &self.policy {
+            Some(policy) => {
+                let policy = policy;
+                let mut p = String::with_capacity(13usize + policy.len());
+                p.push_str("/_ilm/policy/");
+                p.push_str(policy.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ilm/policy"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -277,7 +299,7 @@ impl Sender for IlmGetLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -328,7 +350,7 @@ impl IlmGetStatus {
 }
 impl Sender for IlmGetStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/status";
+        let path = std::borrow::Cow::Borrowed("/_ilm/status");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -356,7 +378,7 @@ impl Sender for IlmGetStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -427,7 +449,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/move/{index}";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(11usize + index.len());
+            p.push_str("/_ilm/move/");
+            p.push_str(index.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -455,7 +483,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -526,7 +554,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/policy/{policy}";
+        let path = {
+            let policy = self.policy;
+            let mut p = String::with_capacity(13usize + policy.len());
+            p.push_str("/_ilm/policy/");
+            p.push_str(policy.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -554,7 +588,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -625,7 +659,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ilm/remove";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(13usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ilm/remove");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -653,7 +694,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -724,7 +765,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ilm/retry";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(12usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ilm/retry");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -752,7 +800,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -816,7 +864,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/start";
+        let path = std::borrow::Cow::Borrowed("/_ilm/start");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -844,7 +892,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -908,7 +956,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ilm/stop";
+        let path = std::borrow::Cow::Borrowed("/_ilm/stop");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -936,7 +984,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

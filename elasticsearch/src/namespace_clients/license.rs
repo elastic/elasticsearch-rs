@@ -70,7 +70,7 @@ impl LicenseDelete {
 }
 impl Sender for LicenseDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license";
+        let path = std::borrow::Cow::Borrowed("/_license");
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -98,7 +98,7 @@ impl Sender for LicenseDelete {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -156,7 +156,7 @@ impl LicenseGet {
 }
 impl Sender for LicenseGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license";
+        let path = std::borrow::Cow::Borrowed("/_license");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -187,7 +187,7 @@ impl Sender for LicenseGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -238,7 +238,7 @@ impl LicenseGetBasicStatus {
 }
 impl Sender for LicenseGetBasicStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license/basic_status";
+        let path = std::borrow::Cow::Borrowed("/_license/basic_status");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -266,7 +266,7 @@ impl Sender for LicenseGetBasicStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -317,7 +317,7 @@ impl LicenseGetTrialStatus {
 }
 impl Sender for LicenseGetTrialStatus {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license/trial_status";
+        let path = std::borrow::Cow::Borrowed("/_license/trial_status");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -345,7 +345,7 @@ impl Sender for LicenseGetTrialStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -416,7 +416,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license";
+        let path = std::borrow::Cow::Borrowed("/_license");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -447,7 +447,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -518,7 +518,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license/start_basic";
+        let path = std::borrow::Cow::Borrowed("/_license/start_basic");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -549,7 +549,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -627,7 +627,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_license/start_trial";
+        let path = std::borrow::Cow::Borrowed("/_license/start_trial");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -661,7 +661,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

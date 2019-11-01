@@ -72,7 +72,7 @@ pub struct Type {
 }
 
 /// The kind of type
-#[derive(Debug, PartialEq, Deserialize, Clone)]
+#[derive(Debug, PartialEq, Deserialize, Copy, Clone)]
 pub enum TypeKind {
     None,
     #[serde(rename = "list")]
@@ -107,10 +107,22 @@ impl Default for TypeKind {
     }
 }
 
+/// A deprecated API url path
+#[derive(Debug, PartialEq, Deserialize, Clone)]
+pub struct DeprecatedPath {
+    pub version: String,
+
+    pub path: Path,
+
+    pub description: String,
+}
+
 /// The URL components of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
     pub paths: Vec<Path>,
+    #[serde(default = "Vec::new")]
+    pub deprecated_paths: Vec<DeprecatedPath>,
     #[serde(default = "BTreeMap::new")]
     pub parts: BTreeMap<String, Type>,
     #[serde(default = "BTreeMap::new")]
@@ -118,35 +130,79 @@ pub struct Url {
 }
 
 impl Url {
+
+    /// Gets all API paths, including deprecated paths
+    pub fn all_paths(&self) -> Vec<&Path> {
+
+        let mut paths = self.paths
+            .iter()
+            .map(|p| p)
+            .collect::<Vec<_>>();
+
+        if !self.deprecated_paths.is_empty() {
+            let mut deprecated_paths = self.deprecated_paths
+                .iter()
+                .map(|d| &d.path)
+                .collect::<Vec<_>>();
+            paths.append(&mut deprecated_paths);
+        };
+
+        // sort by most params to least
+        paths.sort_by(|a,b| b.params().len().cmp(&a.params().len()));
+
+        // deduplicate paths that have exactly the same params e.g. DELETE index aliases
+        paths.dedup_by(|a, b| {
+            a.params().is_empty() && b.params().is_empty() || {
+                let a: HashSet<String> = a.params().iter().map(|&p| p.into()).collect();
+                let b: HashSet<String> = b.params().iter().map(|&p| p.into()).collect();
+                a == b
+            }
+        });
+
+        paths
+    }
+
     /// Required url part names that are common across all url variants of an API endpoint
     pub fn required_part_names(&self) -> Vec<&str> {
-        self.paths
+        self.all_paths()
             .iter()
             .map(|p| p.params())
             .reduce(|a, b| a.intersect(b))
             .unwrap()
     }
 
-    /// Required url part names that are common across all url variants of an API endpoint,
-    /// ordered by index, ty, id then lexicographically
     pub fn required_parts(&self) -> Vec<(&String, &Type)> {
+        self.required_and_optional_parts().0
+    }
+
+    pub fn optional_parts(&self) -> Vec<(&String, &Type)> {
+        self.required_and_optional_parts().1
+    }
+
+    /// Url parts partitioned by whether they are optional or required.
+    /// ordered by index, ty, id then lexicographically
+    pub fn required_and_optional_parts(&self) -> (Vec<(&String, &Type)>, Vec<(&String, &Type)>) {
         let required_parts = self.required_part_names();
 
-        let mut vec = self
+        let (mut required, mut optional): (Vec<_>, Vec<_>) = self
             .parts
             .iter()
-            .filter(|p| required_parts.contains(&p.0.as_str()))
-            .collect::<Vec<(&String, &Type)>>();
+            .partition(|&p| required_parts.contains(&p.0.as_str()));
 
-        vec.sort_by(|&(a, _), &(b, _)| match (a.as_str(), b.as_str()) {
+        required.sort_by(Self::sort_by_index_ty_id);
+        optional.sort_by(Self::sort_by_index_ty_id);
+
+        (required, optional)
+    }
+
+    fn sort_by_index_ty_id(a: &(&String, &Type), b: &(&String, &Type)) -> Ordering {
+        match (a.0.as_str(), b.0.as_str()) {
             ("index", _) => Ordering::Less,
             (_, "index") => Ordering::Greater,
             (_, "ty") => Ordering::Greater,
             (_, "id") => Ordering::Greater,
-            _ => a.cmp(&b),
-        });
-
-        vec
+            _ => a.0.cmp(&b.0),
+        }
     }
 }
 

@@ -77,7 +77,13 @@ impl CcrDeleteAutoFollowPattern {
 }
 impl Sender for CcrDeleteAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ccr/auto_follow/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(18usize + name.len());
+            p.push_str("/_ccr/auto_follow/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -105,7 +111,7 @@ impl Sender for CcrDeleteAutoFollowPattern {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -183,7 +189,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/follow";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(13usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ccr/follow");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -214,7 +227,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -272,7 +285,14 @@ impl CcrFollowInfo {
 }
 impl Sender for CcrFollowInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/info";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(11usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_ccr/info");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -300,7 +320,7 @@ impl Sender for CcrFollowInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -358,7 +378,14 @@ impl CcrFollowStats {
 }
 impl Sender for CcrFollowStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/stats";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(12usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_ccr/stats");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -386,7 +413,7 @@ impl Sender for CcrFollowStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -457,7 +484,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/forget_follower";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(22usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ccr/forget_follower");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -485,7 +519,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -543,7 +577,16 @@ impl CcrGetAutoFollowPattern {
 }
 impl Sender for CcrGetAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ccr/auto_follow";
+        let path = match &self.name {
+            Some(name) => {
+                let name = name;
+                let mut p = String::with_capacity(18usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ccr/auto_follow"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -571,7 +614,7 @@ impl Sender for CcrGetAutoFollowPattern {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -642,7 +685,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/pause_follow";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(19usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ccr/pause_follow");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -670,7 +720,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -741,7 +791,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ccr/auto_follow/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(18usize + name.len());
+            p.push_str("/_ccr/auto_follow/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -769,7 +825,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -840,7 +896,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/resume_follow";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(20usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ccr/resume_follow");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -868,7 +931,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -919,7 +982,7 @@ impl CcrStats {
 }
 impl Sender for CcrStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ccr/stats";
+        let path = std::borrow::Cow::Borrowed("/_ccr/stats");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -947,7 +1010,7 @@ impl Sender for CcrStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1018,7 +1081,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_ccr/unfollow";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(15usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_ccr/unfollow");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1046,7 +1116,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

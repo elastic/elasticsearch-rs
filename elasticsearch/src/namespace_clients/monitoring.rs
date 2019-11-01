@@ -111,7 +111,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_monitoring/bulk";
+        let path = match &self.ty {
+            Some(ty) => {
+                let ty = ty;
+                let mut p = String::with_capacity(18usize + ty.len());
+                p.push_str("/_monitoring/");
+                p.push_str(ty.as_ref());
+                p.push_str("/bulk");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_monitoring/bulk"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -148,7 +158,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

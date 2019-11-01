@@ -91,7 +91,13 @@ impl IngestDeletePipeline {
 }
 impl Sender for IngestDeletePipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ingest/pipeline/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(18usize + id.len());
+            p.push_str("/_ingest/pipeline/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -125,7 +131,7 @@ impl Sender for IngestDeletePipeline {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -190,7 +196,16 @@ impl IngestGetPipeline {
 }
 impl Sender for IngestGetPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ingest/pipeline";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(18usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ingest/pipeline"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -221,7 +236,7 @@ impl Sender for IngestGetPipeline {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -272,7 +287,7 @@ impl IngestProcessorGrok {
 }
 impl Sender for IngestProcessorGrok {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ingest/processor/grok";
+        let path = std::borrow::Cow::Borrowed("/_ingest/processor/grok");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -300,7 +315,7 @@ impl Sender for IngestProcessorGrok {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -385,7 +400,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ingest/pipeline/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(18usize + id.len());
+            p.push_str("/_ingest/pipeline/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -419,7 +440,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -497,7 +518,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_ingest/pipeline/_simulate";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(28usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                p.push_str("/_simulate");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_ingest/pipeline/_simulate"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -531,7 +562,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

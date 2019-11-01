@@ -90,7 +90,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_analyze";
+        let path = match &self.index {
+            Some(index) => {
+                let index = index;
+                let mut p = String::with_capacity(10usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_analyze");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_analyze"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -124,7 +134,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -244,7 +254,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cache/clear";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(14usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_cache/clear");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cache/clear"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -296,7 +316,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -409,7 +429,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_close";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(8usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_close");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -455,7 +482,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -554,7 +581,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(1usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -594,7 +627,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -687,7 +720,13 @@ impl IndicesDelete {
 }
 impl Sender for IndicesDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(1usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -730,7 +769,7 @@ impl Sender for IndicesDelete {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -809,7 +848,16 @@ impl IndicesDeleteAlias {
 }
 impl Sender for IndicesDeleteAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_alias/{name}";
+        let path = {
+            let index_str = self.index.join(",");
+            let name_str = self.name.join(",");
+            let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_alias/");
+            p.push_str(name_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -843,7 +891,7 @@ impl Sender for IndicesDeleteAlias {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -915,7 +963,13 @@ impl IndicesDeleteTemplate {
 }
 impl Sender for IndicesDeleteTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_template/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(11usize + name.len());
+            p.push_str("/_template/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -949,7 +1003,7 @@ impl Sender for IndicesDeleteTemplate {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1049,7 +1103,13 @@ impl IndicesExists {
 }
 impl Sender for IndicesExists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(1usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1095,7 +1155,7 @@ impl Sender for IndicesExists {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1188,7 +1248,25 @@ impl IndicesExistsAlias {
 }
 impl Sender for IndicesExistsAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_alias/{name}";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let name_str = self.name.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let name_str = self.name.join(",");
+                let mut p = String::with_capacity(8usize + name_str.len());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1228,7 +1306,7 @@ impl Sender for IndicesExistsAlias {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1307,7 +1385,13 @@ impl IndicesExistsTemplate {
 }
 impl Sender for IndicesExistsTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_template/{name}";
+        let path = {
+            let name_str = self.name.join(",");
+            let mut p = String::with_capacity(11usize + name_str.len());
+            p.push_str("/_template/");
+            p.push_str(name_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1344,7 +1428,7 @@ impl Sender for IndicesExistsTemplate {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1437,7 +1521,16 @@ impl IndicesExistsType {
 }
 impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_mapping/{type}";
+        let path = {
+            let index_str = self.index.join(",");
+            let ty_str = self.ty.join(",");
+            let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_mapping/");
+            p.push_str(ty_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1477,7 +1570,7 @@ impl Sender for IndicesExistsType {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1583,7 +1676,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_flush";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_flush");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_flush"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1629,7 +1732,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1721,7 +1824,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_flush/synced";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_flush/synced");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_flush/synced"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1761,7 +1874,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1874,7 +1987,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_forcemerge";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(13usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_forcemerge");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_forcemerge"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1920,7 +2043,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2033,7 +2156,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_freeze";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(9usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_freeze");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -2079,7 +2209,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2193,7 +2323,13 @@ impl IndicesGet {
 }
 impl Sender for IndicesGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(1usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2245,7 +2381,7 @@ impl Sender for IndicesGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2338,7 +2474,34 @@ impl IndicesGetAlias {
 }
 impl Sender for IndicesGetAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_alias";
+        let path = match (&self.index, &self.name) {
+            (Some(index), Some(name)) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(name)) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(8usize + name_str.len());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_alias"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2378,7 +2541,7 @@ impl Sender for IndicesGetAlias {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2492,7 +2655,50 @@ impl IndicesGetFieldMapping {
 }
 impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_mapping/field/{fields}";
+        let path = match (&self.index, &self.ty) {
+            (Some(index), Some(ty)) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let fields_str = self.fields.join(",");
+                let mut p = String::with_capacity(
+                    18usize + index_str.len() + ty_str.len() + fields_str.len(),
+                );
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/field/");
+                p.push_str(fields_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let fields_str = self.fields.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len() + fields_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/field/");
+                p.push_str(fields_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(ty)) => {
+                let ty_str = ty.join(",");
+                let fields_str = self.fields.join(",");
+                let mut p = String::with_capacity(17usize + ty_str.len() + fields_str.len());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/field/");
+                p.push_str(fields_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => {
+                let fields_str = self.fields.join(",");
+                let mut p = String::with_capacity(16usize + fields_str.len());
+                p.push_str("/_mapping/field/");
+                p.push_str(fields_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2538,7 +2744,7 @@ impl Sender for IndicesGetFieldMapping {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2645,7 +2851,34 @@ impl IndicesGetMapping {
 }
 impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_mapping";
+        let path = match (&self.index, &self.ty) {
+            (Some(index), Some(ty)) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(ty)) => {
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(10usize + ty_str.len());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_mapping"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2691,7 +2924,7 @@ impl Sender for IndicesGetMapping {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2805,7 +3038,34 @@ impl IndicesGetSettings {
 }
 impl Sender for IndicesGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_settings";
+        let path = match (&self.index, &self.name) {
+            (Some(index), Some(name)) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(name)) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(11usize + name_str.len());
+                p.push_str("/_settings/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_settings"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2854,7 +3114,7 @@ impl Sender for IndicesGetSettings {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2940,7 +3200,16 @@ impl IndicesGetTemplate {
 }
 impl Sender for IndicesGetTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_template";
+        let path = match &self.name {
+            Some(name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(11usize + name_str.len());
+                p.push_str("/_template/");
+                p.push_str(name_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_template"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2980,7 +3249,7 @@ impl Sender for IndicesGetTemplate {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3059,7 +3328,17 @@ impl IndicesGetUpgrade {
 }
 impl Sender for IndicesGetUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_upgrade";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_upgrade");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_upgrade"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3096,7 +3375,7 @@ impl Sender for IndicesGetUpgrade {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3209,7 +3488,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_open";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(7usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_open");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -3255,7 +3541,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3347,7 +3633,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_alias/{name}";
+        let path = {
+            let index_str = self.index.join(",");
+            let name = self.name;
+            let mut p = String::with_capacity(9usize + index_str.len() + name.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_alias/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -3381,7 +3676,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3395,7 +3690,7 @@ pub struct IndicesPutMapping<B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
-    index: Vec<String>,
+    index: Option<Vec<String>>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -3406,10 +3701,9 @@ impl<B> IndicesPutMapping<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch) -> Self {
         IndicesPutMapping {
             client,
-            index: index,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -3418,6 +3712,7 @@ where
             human: None,
             ignore_unavailable: None,
             include_type_name: None,
+            index: None,
             master_timeout: None,
             pretty: None,
             source: None,
@@ -3466,7 +3761,7 @@ where
         self
     }
     #[doc = "A comma-separated list of index names the mapping should be added to (supports wildcards); use `_all` or omit to add the mapping on all indices."]
-    pub fn index(mut self, index: Vec<String>) -> Self {
+    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
         self.index = index;
         self
     }
@@ -3501,7 +3796,35 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_mapping";
+        let path = match (&self.index, &self.ty) {
+            (Some(index), Some(ty)) => {
+                let index_str = index.join(",");
+                let ty = ty;
+                let mut p = String::with_capacity(11usize + index_str.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_mapping");
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(ty)) => {
+                let ty = ty;
+                let mut p = String::with_capacity(10usize + ty.len());
+                p.push_str("/_mapping/");
+                p.push_str(ty.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_all/_mapping"),
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -3547,7 +3870,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3667,7 +3990,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_settings";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_settings"),
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -3716,7 +4049,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3829,7 +4162,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_template/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(11usize + name.len());
+            p.push_str("/_template/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -3875,7 +4214,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -3947,7 +4286,17 @@ impl IndicesRecovery {
 }
 impl Sender for IndicesRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_recovery";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_recovery");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_recovery"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3981,7 +4330,7 @@ impl Sender for IndicesRecovery {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4073,7 +4422,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_refresh";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_refresh");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_refresh"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4113,7 +4472,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4205,7 +4564,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_reload_search_analyzers";
+        let path = {
+            let index_str = self.index.join(",");
+            let mut p = String::with_capacity(26usize + index_str.len());
+            p.push_str("/");
+            p.push_str(index_str.as_ref());
+            p.push_str("/_reload_search_analyzers");
+            std::borrow::Cow::Owned(p)
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4245,7 +4611,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4358,7 +4724,26 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{alias}/_rollover";
+        let path = match &self.new_index {
+            Some(new_index) => {
+                let alias = self.alias;
+                let new_index = new_index;
+                let mut p = String::with_capacity(12usize + alias.len() + new_index.len());
+                p.push_str("/");
+                p.push_str(alias.as_ref());
+                p.push_str("/_rollover/");
+                p.push_str(new_index.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let alias = self.alias;
+                let mut p = String::with_capacity(11usize + alias.len());
+                p.push_str("/");
+                p.push_str(alias.as_ref());
+                p.push_str("/_rollover");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4401,7 +4786,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4487,7 +4872,17 @@ impl IndicesSegments {
 }
 impl Sender for IndicesSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_segments";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_segments");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_segments"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4527,7 +4922,7 @@ impl Sender for IndicesSegments {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4613,7 +5008,17 @@ impl IndicesShardStores {
 }
 impl Sender for IndicesShardStores {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_shard_stores";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_shard_stores");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_shard_stores"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4653,7 +5058,7 @@ impl Sender for IndicesShardStores {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4759,7 +5164,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_shrink/{target}";
+        let path = {
+            let index = self.index;
+            let target = self.target;
+            let mut p = String::with_capacity(10usize + index.len() + target.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_shrink/");
+            p.push_str(target.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4799,7 +5213,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -4905,7 +5319,16 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_split/{target}";
+        let path = {
+            let index = self.index;
+            let target = self.target;
+            let mut p = String::with_capacity(9usize + index.len() + target.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_split/");
+            p.push_str(target.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4945,7 +5368,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5080,7 +5503,34 @@ impl IndicesStats {
 }
 impl Sender for IndicesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_stats";
+        let path = match (&self.index, &self.metric) {
+            (Some(index), Some(metric)) => {
+                let index_str = index.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + metric_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_stats/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(metric)) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(8usize + metric_str.len());
+                p.push_str("/_stats/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_stats");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -5138,7 +5588,7 @@ impl Sender for IndicesStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5251,7 +5701,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/{index}/_unfreeze";
+        let path = {
+            let index = self.index;
+            let mut p = String::with_capacity(11usize + index.len());
+            p.push_str("/");
+            p.push_str(index.as_ref());
+            p.push_str("/_unfreeze");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5297,7 +5754,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5375,7 +5832,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_aliases";
+        let path = std::borrow::Cow::Borrowed("/_aliases");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5409,7 +5866,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5515,7 +5972,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_upgrade";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_upgrade");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_upgrade"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5558,7 +6025,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5720,7 +6187,36 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_validate/query";
+        let path = match (&self.index, &self.ty) {
+            (Some(index), Some(ty)) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(18usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_validate/query");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(ty)) => {
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(22usize + ty_str.len());
+                p.push_str("/_all/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_validate/query");
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_validate/query");
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_validate/query"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -5787,7 +6283,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -5926,11 +6422,11 @@ impl Indices {
         IndicesPutAlias::new(self.client.clone(), index, name)
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
-    pub fn put_mapping<B>(&self, index: Vec<String>) -> IndicesPutMapping<B>
+    pub fn put_mapping<B>(&self) -> IndicesPutMapping<B>
     where
         B: Serialize,
     {
-        IndicesPutMapping::new(self.client.clone(), index)
+        IndicesPutMapping::new(self.client.clone())
     }
     #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
     pub fn put_settings<B>(&self) -> IndicesPutSettings<B>

@@ -77,7 +77,13 @@ impl DataFrameDeleteDataFrameTransform {
 }
 impl Sender for DataFrameDeleteDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}";
+        let path = {
+            let transform_id = self.transform_id;
+            let mut p = String::with_capacity(24usize + transform_id.len());
+            p.push_str("/_data_frame/transforms/");
+            p.push_str(transform_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -105,7 +111,7 @@ impl Sender for DataFrameDeleteDataFrameTransform {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -184,7 +190,16 @@ impl DataFrameGetDataFrameTransform {
 }
 impl Sender for DataFrameGetDataFrameTransform {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}";
+        let path = match &self.transform_id {
+            Some(transform_id) => {
+                let transform_id = transform_id;
+                let mut p = String::with_capacity(24usize + transform_id.len());
+                p.push_str("/_data_frame/transforms/");
+                p.push_str(transform_id.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_data_frame/transforms"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -221,7 +236,7 @@ impl Sender for DataFrameGetDataFrameTransform {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -300,7 +315,14 @@ impl DataFrameGetDataFrameTransformStats {
 }
 impl Sender for DataFrameGetDataFrameTransformStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}/_stats";
+        let path = {
+            let transform_id = self.transform_id;
+            let mut p = String::with_capacity(31usize + transform_id.len());
+            p.push_str("/_data_frame/transforms/");
+            p.push_str(transform_id.as_ref());
+            p.push_str("/_stats");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -337,7 +359,7 @@ impl Sender for DataFrameGetDataFrameTransformStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -401,7 +423,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/_preview";
+        let path = std::borrow::Cow::Borrowed("/_data_frame/transforms/_preview");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -429,7 +451,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -500,7 +522,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}";
+        let path = {
+            let transform_id = self.transform_id;
+            let mut p = String::with_capacity(24usize + transform_id.len());
+            p.push_str("/_data_frame/transforms/");
+            p.push_str(transform_id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -528,7 +556,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -606,7 +634,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}/_start";
+        let path = {
+            let transform_id = self.transform_id;
+            let mut p = String::with_capacity(31usize + transform_id.len());
+            p.push_str("/_data_frame/transforms/");
+            p.push_str(transform_id.as_ref());
+            p.push_str("/_start");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -637,7 +672,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -729,7 +764,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_data_frame/transforms/{transform_id}/_stop";
+        let path = {
+            let transform_id = self.transform_id;
+            let mut p = String::with_capacity(30usize + transform_id.len());
+            p.push_str("/_data_frame/transforms/");
+            p.push_str(transform_id.as_ref());
+            p.push_str("/_stop");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -766,7 +808,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

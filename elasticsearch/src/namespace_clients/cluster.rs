@@ -97,7 +97,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/allocation/explain";
+        let path = std::borrow::Cow::Borrowed("/_cluster/allocation/explain");
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -134,7 +134,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -213,7 +213,7 @@ impl ClusterGetSettings {
 }
 impl Sender for ClusterGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/settings";
+        let path = std::borrow::Cow::Borrowed("/_cluster/settings");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -253,7 +253,7 @@ impl Sender for ClusterGetSettings {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -394,7 +394,16 @@ impl ClusterHealth {
 }
 impl Sender for ClusterHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/health";
+        let path = match &self.index {
+            Some(index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len());
+                p.push_str("/_cluster/health/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cluster/health"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -455,7 +464,7 @@ impl Sender for ClusterHealth {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -520,7 +529,7 @@ impl ClusterPendingTasks {
 }
 impl Sender for ClusterPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/pending_tasks";
+        let path = std::borrow::Cow::Borrowed("/_cluster/pending_tasks");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -554,7 +563,7 @@ impl Sender for ClusterPendingTasks {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -639,7 +648,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/settings";
+        let path = std::borrow::Cow::Borrowed("/_cluster/settings");
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -676,7 +685,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -727,7 +736,7 @@ impl ClusterRemoteInfo {
 }
 impl Sender for ClusterRemoteInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_remote/info";
+        let path = std::borrow::Cow::Borrowed("/_remote/info");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -755,7 +764,7 @@ impl Sender for ClusterRemoteInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -861,7 +870,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/reroute";
+        let path = std::borrow::Cow::Borrowed("/_cluster/reroute");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -907,7 +916,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1028,7 +1037,33 @@ impl ClusterState {
 }
 impl Sender for ClusterState {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/state";
+        let path = match (&self.index, &self.metric) {
+            (Some(index), Some(metric)) => {
+                let metric_str = metric.join(",");
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + metric_str.len() + index_str.len());
+                p.push_str("/_cluster/state/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(index), None) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(21usize + index_str.len());
+                p.push_str("/_cluster/state/_all/");
+                p.push_str(index_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(metric)) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(16usize + metric_str.len());
+                p.push_str("/_cluster/state/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, None) => std::borrow::Cow::Borrowed("/_cluster/state"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1080,7 +1115,7 @@ impl Sender for ClusterState {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1152,7 +1187,16 @@ impl ClusterStats {
 }
 impl Sender for ClusterStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_cluster/stats";
+        let path = match &self.node_id {
+            Some(node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(22usize + node_id_str.len());
+                p.push_str("/_cluster/stats/nodes/");
+                p.push_str(node_id_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_cluster/stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1186,7 +1230,7 @@ impl Sender for ClusterStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

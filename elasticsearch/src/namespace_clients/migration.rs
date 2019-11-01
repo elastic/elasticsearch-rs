@@ -77,7 +77,17 @@ impl MigrationDeprecations {
 }
 impl Sender for MigrationDeprecations {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_migration/deprecations";
+        let path = match &self.index {
+            Some(index) => {
+                let index = index;
+                let mut p = String::with_capacity(25usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_migration/deprecations");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_migration/deprecations"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -105,7 +115,7 @@ impl Sender for MigrationDeprecations {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

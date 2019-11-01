@@ -70,7 +70,7 @@ impl SecurityAuthenticate {
 }
 impl Sender for SecurityAuthenticate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/_authenticate";
+        let path = std::borrow::Cow::Borrowed("/_security/_authenticate");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -98,7 +98,7 @@ impl Sender for SecurityAuthenticate {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -176,7 +176,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}/_password";
+        let path = match &self.username {
+            Some(username) => {
+                let username = username;
+                let mut p = String::with_capacity(26usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.push_str("/_password");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_security/user/_password"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -207,7 +217,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -285,7 +295,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/realm/{realms}/_clear_cache";
+        let path = {
+            let realms_str = self.realms.join(",");
+            let mut p = String::with_capacity(30usize + realms_str.len());
+            p.push_str("/_security/realm/");
+            p.push_str(realms_str.as_ref());
+            p.push_str("/_clear_cache");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -316,7 +333,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -387,7 +404,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role/{name}/_clear_cache";
+        let path = {
+            let name_str = self.name.join(",");
+            let mut p = String::with_capacity(29usize + name_str.len());
+            p.push_str("/_security/role/");
+            p.push_str(name_str.as_ref());
+            p.push_str("/_clear_cache");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -415,7 +439,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -486,7 +510,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/api_key";
+        let path = std::borrow::Cow::Borrowed("/_security/api_key");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -517,7 +541,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -589,7 +613,16 @@ impl SecurityDeletePrivileges {
 }
 impl Sender for SecurityDeletePrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/privilege/{application}/{name}";
+        let path = {
+            let application = self.application;
+            let name = self.name;
+            let mut p = String::with_capacity(22usize + application.len() + name.len());
+            p.push_str("/_security/privilege/");
+            p.push_str(application.as_ref());
+            p.push_str("/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -620,7 +653,7 @@ impl Sender for SecurityDeletePrivileges {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -685,7 +718,13 @@ impl SecurityDeleteRole {
 }
 impl Sender for SecurityDeleteRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(16usize + name.len());
+            p.push_str("/_security/role/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -716,7 +755,7 @@ impl Sender for SecurityDeleteRole {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -781,7 +820,13 @@ impl SecurityDeleteRoleMapping {
 }
 impl Sender for SecurityDeleteRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role_mapping/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(24usize + name.len());
+            p.push_str("/_security/role_mapping/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -812,7 +857,7 @@ impl Sender for SecurityDeleteRoleMapping {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -877,7 +922,13 @@ impl SecurityDeleteUser {
 }
 impl Sender for SecurityDeleteUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}";
+        let path = {
+            let username = self.username;
+            let mut p = String::with_capacity(16usize + username.len());
+            p.push_str("/_security/user/");
+            p.push_str(username.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -908,7 +959,7 @@ impl Sender for SecurityDeleteUser {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -986,7 +1037,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}/_disable";
+        let path = {
+            let username = self.username;
+            let mut p = String::with_capacity(25usize + username.len());
+            p.push_str("/_security/user/");
+            p.push_str(username.as_ref());
+            p.push_str("/_disable");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1017,7 +1075,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1095,7 +1153,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}/_enable";
+        let path = {
+            let username = self.username;
+            let mut p = String::with_capacity(24usize + username.len());
+            p.push_str("/_security/user/");
+            p.push_str(username.as_ref());
+            p.push_str("/_enable");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1126,7 +1191,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1205,7 +1270,7 @@ impl SecurityGetApiKey {
 }
 impl Sender for SecurityGetApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/api_key";
+        let path = std::borrow::Cow::Borrowed("/_security/api_key");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1245,7 +1310,7 @@ impl Sender for SecurityGetApiKey {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1296,7 +1361,7 @@ impl SecurityGetBuiltinPrivileges {
 }
 impl Sender for SecurityGetBuiltinPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/privilege/_builtin";
+        let path = std::borrow::Cow::Borrowed("/_security/privilege/_builtin");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1324,7 +1389,7 @@ impl Sender for SecurityGetBuiltinPrivileges {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1389,7 +1454,27 @@ impl SecurityGetPrivileges {
 }
 impl Sender for SecurityGetPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/privilege";
+        let path = match (&self.application, &self.name) {
+            (Some(application), Some(name)) => {
+                let application = application;
+                let name = name;
+                let mut p = String::with_capacity(22usize + application.len() + name.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(application.as_ref());
+                p.push_str("/");
+                p.push_str(name.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (Some(application), None) => {
+                let application = application;
+                let mut p = String::with_capacity(21usize + application.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(application.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            (None, Some(_)) => panic!("application must be specified"),
+            (None, None) => std::borrow::Cow::Borrowed("/_security/privilege"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1417,7 +1502,7 @@ impl Sender for SecurityGetPrivileges {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1475,7 +1560,16 @@ impl SecurityGetRole {
 }
 impl Sender for SecurityGetRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role/{name}";
+        let path = match &self.name {
+            Some(name) => {
+                let name = name;
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_security/role/");
+                p.push_str(name.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_security/role"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1503,7 +1597,7 @@ impl Sender for SecurityGetRole {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1561,7 +1655,16 @@ impl SecurityGetRoleMapping {
 }
 impl Sender for SecurityGetRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role_mapping/{name}";
+        let path = match &self.name {
+            Some(name) => {
+                let name = name;
+                let mut p = String::with_capacity(24usize + name.len());
+                p.push_str("/_security/role_mapping/");
+                p.push_str(name.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_security/role_mapping"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1589,7 +1692,7 @@ impl Sender for SecurityGetRoleMapping {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1653,7 +1756,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/oauth2/token";
+        let path = std::borrow::Cow::Borrowed("/_security/oauth2/token");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1681,7 +1784,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1739,7 +1842,16 @@ impl SecurityGetUser {
 }
 impl Sender for SecurityGetUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}";
+        let path = match &self.username {
+            Some(username) => {
+                let username_str = username.join(",");
+                let mut p = String::with_capacity(16usize + username_str.len());
+                p.push_str("/_security/user/");
+                p.push_str(username_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_security/user"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1767,7 +1879,7 @@ impl Sender for SecurityGetUser {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1818,7 +1930,7 @@ impl SecurityGetUserPrivileges {
 }
 impl Sender for SecurityGetUserPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/_privileges";
+        let path = std::borrow::Cow::Borrowed("/_security/user/_privileges");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1846,7 +1958,7 @@ impl Sender for SecurityGetUserPrivileges {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -1917,7 +2029,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/_has_privileges";
+        let path = match &self.user {
+            Some(user) => {
+                let user = user;
+                let mut p = String::with_capacity(32usize + user.len());
+                p.push_str("/_security/user/");
+                p.push_str(user.as_ref());
+                p.push_str("/_has_privileges");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_security/user/_has_privileges"),
+        };
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1948,7 +2070,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2012,7 +2134,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/api_key";
+        let path = std::borrow::Cow::Borrowed("/_security/api_key");
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -2040,7 +2162,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2104,7 +2226,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/oauth2/token";
+        let path = std::borrow::Cow::Borrowed("/_security/oauth2/token");
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -2132,7 +2254,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2203,7 +2325,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/privilege/";
+        let path = std::borrow::Cow::Borrowed("/_security/privilege/");
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2234,7 +2356,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2312,7 +2434,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(16usize + name.len());
+            p.push_str("/_security/role/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2343,7 +2471,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2421,7 +2549,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/role_mapping/{name}";
+        let path = {
+            let name = self.name;
+            let mut p = String::with_capacity(24usize + name.len());
+            p.push_str("/_security/role_mapping/");
+            p.push_str(name.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2452,7 +2586,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -2530,7 +2664,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_security/user/{username}";
+        let path = {
+            let username = self.username;
+            let mut p = String::with_capacity(16usize + username.len());
+            p.push_str("/_security/user/");
+            p.push_str(username.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2561,7 +2701,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

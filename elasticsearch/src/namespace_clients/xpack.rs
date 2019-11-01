@@ -77,7 +77,7 @@ impl XpackInfo {
 }
 impl Sender for XpackInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_xpack";
+        let path = std::borrow::Cow::Borrowed("/_xpack");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -108,7 +108,7 @@ impl Sender for XpackInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -166,7 +166,7 @@ impl XpackUsage {
 }
 impl Sender for XpackUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_xpack/usage";
+        let path = std::borrow::Cow::Borrowed("/_xpack/usage");
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -197,7 +197,7 @@ impl Sender for XpackUsage {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

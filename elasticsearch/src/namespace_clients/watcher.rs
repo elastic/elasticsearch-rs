@@ -97,7 +97,26 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{watch_id}/_ack";
+        let path = match &self.action_id {
+            Some(action_id) => {
+                let watch_id = self.watch_id;
+                let action_id_str = action_id.join(",");
+                let mut p = String::with_capacity(22usize + watch_id.len() + action_id_str.len());
+                p.push_str("/_watcher/watch/");
+                p.push_str(watch_id.as_ref());
+                p.push_str("/_ack/");
+                p.push_str(action_id_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => {
+                let watch_id = self.watch_id;
+                let mut p = String::with_capacity(21usize + watch_id.len());
+                p.push_str("/_watcher/watch/");
+                p.push_str(watch_id.as_ref());
+                p.push_str("/_ack");
+                std::borrow::Cow::Owned(p)
+            }
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -125,7 +144,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -196,7 +215,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{watch_id}/_activate";
+        let path = {
+            let watch_id = self.watch_id;
+            let mut p = String::with_capacity(26usize + watch_id.len());
+            p.push_str("/_watcher/watch/");
+            p.push_str(watch_id.as_ref());
+            p.push_str("/_activate");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -224,7 +250,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -295,7 +321,14 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{watch_id}/_deactivate";
+        let path = {
+            let watch_id = self.watch_id;
+            let mut p = String::with_capacity(28usize + watch_id.len());
+            p.push_str("/_watcher/watch/");
+            p.push_str(watch_id.as_ref());
+            p.push_str("/_deactivate");
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -323,7 +356,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -381,7 +414,13 @@ impl WatcherDeleteWatch {
 }
 impl Sender for WatcherDeleteWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(16usize + id.len());
+            p.push_str("/_watcher/watch/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -409,7 +448,7 @@ impl Sender for WatcherDeleteWatch {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -487,7 +526,17 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{id}/_execute";
+        let path = match &self.id {
+            Some(id) => {
+                let id = id;
+                let mut p = String::with_capacity(25usize + id.len());
+                p.push_str("/_watcher/watch/");
+                p.push_str(id.as_ref());
+                p.push_str("/_execute");
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_watcher/watch/_execute"),
+        };
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -518,7 +567,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -576,7 +625,13 @@ impl WatcherGetWatch {
 }
 impl Sender for WatcherGetWatch {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(16usize + id.len());
+            p.push_str("/_watcher/watch/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -604,7 +659,7 @@ impl Sender for WatcherGetWatch {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -703,7 +758,13 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/watch/{id}";
+        let path = {
+            let id = self.id;
+            let mut p = String::with_capacity(16usize + id.len());
+            p.push_str("/_watcher/watch/");
+            p.push_str(id.as_ref());
+            std::borrow::Cow::Owned(p)
+        };
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -743,7 +804,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -807,7 +868,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/_start";
+        let path = std::borrow::Cow::Borrowed("/_watcher/_start");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -835,7 +896,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -900,7 +961,16 @@ impl WatcherStats {
 }
 impl Sender for WatcherStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/stats";
+        let path = match &self.metric {
+            Some(metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(16usize + metric_str.len());
+                p.push_str("/_watcher/stats/");
+                p.push_str(metric_str.as_ref());
+                std::borrow::Cow::Owned(p)
+            }
+            None => std::borrow::Cow::Borrowed("/_watcher/stats"),
+        };
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -934,7 +1004,7 @@ impl Sender for WatcherStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }
@@ -998,7 +1068,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = "/_watcher/_stop";
+        let path = std::borrow::Cow::Borrowed("/_watcher/_stop");
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1026,7 +1096,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)?;
         Ok(response)
     }
 }

@@ -9,6 +9,9 @@ use syn;
 use serde::{Deserialize, Deserializer};
 
 use crate::api_generator::code_gen::*;
+use std::collections::BTreeMap;
+use crate::api_generator::{Type, TypeKind, Url};
+use quote::ToTokens;
 
 /// A URL path
 #[derive(Debug, Deserialize, PartialEq, Clone)]
@@ -123,44 +126,58 @@ impl<'a> PathParams<'a> for Vec<PathPart<'a>> {
     }
 }
 
-/// Builder for an efficient url value replacer.
-///
-/// The inputs are expected to be `AsRef<str>` and the output is a `UrlPath<'a>`.
-struct ReplaceBuilder<'a> {
-    url: Vec<PathPart<'a>>,
+/// Builder for a match expression over URL parts
+pub struct MatchBuilder<'a> {
+    url: &'a Url,
+    arms: Vec<syn::Arm>
 }
 
-impl<'a> ReplaceBuilder<'a> {
-    pub fn new(url: Vec<PathPart<'a>>) -> Self {
-        ReplaceBuilder { url }
+/// Builder for an efficient url value replacer.
+pub struct UrlBuilder<'a> {
+    url: Vec<PathPart<'a>>,
+    required_parts: &'a BTreeMap<String, Type>,
+    optional_parts: &'a BTreeMap<String, Type>,
+}
+
+impl<'a> UrlBuilder<'a> {
+    pub fn new(url: Vec<PathPart<'a>>, required_parts: &'a BTreeMap<String, Type>, optional_parts: &'a BTreeMap<String, Type>) -> Self {
+        UrlBuilder { url, required_parts, optional_parts }
     }
 
     /// Build an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
         let lit_len_expr = Self::literal_length_expr(&self.url);
 
-        let mut params_len_exprs = Self::parameter_length_exprs(&self.url);
+        let parts : BTreeMap<String, Type> = self.required_parts
+            .clone()
+            .into_iter()
+            .chain(self.optional_parts.clone())
+            .collect();
+
+        // collection of let {name}_str = [self.]{name}.[join(",")|to_string()];
+        let let_params_exprs = Self::let_parameters_exprs(&self.url, &parts, self.required_parts);
+
+        let mut params_len_exprs = Self::parameter_length_exprs(&self.url, &parts);
+
         let mut len_exprs = vec![lit_len_expr];
         len_exprs.append(&mut params_len_exprs);
-
         let len_expr = Self::summed_length_expr(len_exprs);
-        let url_ident = ident("url");
-        let url_ty = ident("UrlPath");
-        let let_stmt = Self::let_url_stmt(url_ident.clone(), len_expr);
 
-        let mut push_stmts = Self::push_part_stmts(url_ident.clone(), &self.url);
-        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(#url_ty::from(#url_ident)))));
+        let url_ident = ident("p");
+        let let_stmt = Self::let_p_stmt(url_ident.clone(), len_expr);
 
-        let mut stmts = vec![let_stmt];
+        let mut push_stmts = Self::push_str_stmts(url_ident.clone(), &self.url, &parts);
+        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(std::borrow::Cow::Owned(#url_ident)))));
 
+        let mut stmts = let_params_exprs;
+        stmts.push(let_stmt);
         stmts.append(&mut push_stmts);
         stmts.push(return_expr);
-
         syn::Block { stmts }
     }
 
-    /// Build a non-allocated url from the path literals.
-    fn build_borrowed(self) -> syn::Block {
+    /// Build a literal path
+    fn build_borrowed_literal(self) -> syn::Expr {
         let path: Vec<&'a str> = self
             .url
             .iter()
@@ -171,15 +188,8 @@ impl<'a> ReplaceBuilder<'a> {
             .collect();
 
         let path = path.join("");
-
         let lit = syn::Lit::Str(path, syn::StrStyle::Cooked);
-        let url_ty = ident("UrlPath");
-
-        let expr = parse_expr(quote!(#url_ty ::from(#lit)));
-
-        syn::Block {
-            stmts: vec![syn::Stmt::Expr(Box::new(expr))],
-        }
+        parse_expr(quote!(std::borrow::Cow::Borrowed(#lit)))
     }
 
     /// Get the number of chars in all literal parts for the url.
@@ -195,18 +205,85 @@ impl<'a> ReplaceBuilder<'a> {
         syn::ExprKind::Lit(syn::Lit::Int(len as u64, syn::IntTy::Usize)).into()
     }
 
-    /// Get an expression to find the number of chars in each parameter part for the url.
-    fn parameter_length_exprs(url: &[PathPart<'a>]) -> Vec<syn::Expr> {
+    /// Creates the AST for a let expression for path parts
+    fn let_parameters_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String,Type>, required_parts: &BTreeMap<String,Type>) -> Vec<syn::Stmt> {
         url.iter()
             .filter_map(|p| match *p {
-                PathPart::Param(p) => Some(
-                    syn::ExprKind::MethodCall(
-                        ident("len"),
-                        vec![],
-                        vec![syn::ExprKind::Path(None, path_none(p)).into()],
+                PathPart::Param(p) => {
+                    let name = valid_name(p);
+                    let name_ident = ident(&name);
+                    let tokens = if required_parts.contains_key(p) {
+                        quote!(self.#name_ident)
+                    } else {
+                        quote!(#name_ident)
+                    };
+
+                    let (ident, init) = match parts[p].ty {
+                        TypeKind::List => {
+                            // Join list values together
+                            let name_str = format!("{}_str", &name);
+                            let name_str_ident = ident(&name_str);
+                            let join_call = syn::ExprKind::MethodCall(
+                                ident("join"),
+                                vec![],
+                                vec![parse_expr(tokens), syn::ExprKind::Lit(syn::Lit::Str(",".into(), syn::StrStyle::Cooked)).into()],
+                            ).into();
+
+                            (name_str_ident, join_call)
+                        },
+                        TypeKind::String => {
+                            // Assign string value directly
+                            let name_ident = ident(name);
+
+                            (ident(name), parse_expr(tokens))
+                        },
+                        _ => {
+                            // Handle enums, long, int, etc. by calling to_string()
+                            let to_string_call = syn::ExprKind::MethodCall(
+                                ident("to_string"),
+                                vec![],
+                                vec![parse_expr(tokens)],
+                            ).into();
+
+                            (ident(format!("{}_str", name)), to_string_call)
+                        },
+                    };
+
+                    Some(syn::Stmt::Local(Box::new(syn::Local {
+                        pat: Box::new(syn::Pat::Ident(
+                            syn::BindingMode::ByValue(syn::Mutability::Immutable),
+                            ident,
+                            None,
+                        )),
+                        ty: None,
+                        init: Some(Box::new(init)),
+                        attrs: vec![],
+                    })))
+                },
+                _ => None,
+            })
+            .collect()
+    }
+
+    /// Get an expression to find the number of chars in each parameter part for the url.
+    fn parameter_length_exprs(url: &[PathPart<'a>], required_parts: &BTreeMap<String, Type>) -> Vec<syn::Expr> {
+        url.iter()
+            .filter_map(|p| match *p {
+                PathPart::Param(p) => {
+                    let name = match required_parts[p].ty {
+                        TypeKind::String => valid_name(p).into(),
+                        // handle lists and enums
+                        _ => format!("{}_str", valid_name(p)),
+                    };
+                    Some(
+                        syn::ExprKind::MethodCall(
+                            ident("len"),
+                            vec![],
+                            vec![syn::ExprKind::Path(None, path_none(name.as_ref())).into()],
+                        )
+                            .into(),
                     )
-                    .into(),
-                ),
+                },
                 _ => None,
             })
             .collect()
@@ -229,7 +306,7 @@ impl<'a> ReplaceBuilder<'a> {
     }
 
     /// Get a statement to build a `String` with a capacity of the given expression.
-    fn let_url_stmt(url_ident: syn::Ident, len_expr: syn::Expr) -> syn::Stmt {
+    fn let_p_stmt(url_ident: syn::Ident, len_expr: syn::Expr) -> syn::Stmt {
         let string_with_capacity = syn::ExprKind::Call(
             Box::new(
                 syn::ExprKind::Path(None, {
@@ -258,17 +335,20 @@ impl<'a> ReplaceBuilder<'a> {
     }
 
     /// Get a list of statements that append each part to a `String` in order.
-    fn push_part_stmts(url_ident: syn::Ident, url: &[PathPart<'a>]) -> Vec<syn::Stmt> {
+    fn push_str_stmts(url_ident: syn::Ident, url: &[PathPart<'a>], parts: &BTreeMap<String,Type>) -> Vec<syn::Stmt> {
         url.iter()
             .map(|p| match *p {
                 PathPart::Literal(p) => {
                     let lit = syn::Lit::Str(p.to_string(), syn::StrStyle::Cooked);
-
                     syn::Stmt::Semi(Box::new(parse_expr(quote!(#url_ident.push_str(#lit)))))
                 }
                 PathPart::Param(p) => {
-                    let ident = ident(p);
-
+                    let name = match parts[p].ty {
+                        TypeKind::String => valid_name(p).into(),
+                        // handle lists and enums
+                        _ => format!("{}_str", valid_name(p)),
+                    };
+                    let ident = ident(name);
                     syn::Stmt::Semi(Box::new(parse_expr(
                         quote!(#url_ident.push_str(#ident.as_ref())),
                     )))
@@ -277,22 +357,51 @@ impl<'a> ReplaceBuilder<'a> {
             .collect()
     }
 
-    pub fn build(self) -> syn::Block {
+    pub fn build(self) -> syn::Expr {
         let has_params = self.url.iter().any(|p| match *p {
             PathPart::Param(_) => true,
             _ => false,
         });
 
         if has_params {
-            self.build_owned()
+            self.build_owned().into_expr()
         } else {
-            self.build_borrowed()
+            self.build_borrowed_literal()
         }
     }
 }
 
-impl<'a, I: IntoIterator<Item = PathPart<'a>>> From<I> for ReplaceBuilder<'a> {
-    fn from(value: I) -> Self {
-        ReplaceBuilder::new(value.into_iter().collect())
+/// Helper for wrapping a value as a quotable expression.
+pub trait IntoExpr {
+    fn into_expr(self) -> syn::Expr;
+}
+
+impl IntoExpr for syn::Path {
+    fn into_expr(self) -> syn::Expr {
+        syn::ExprKind::Path(None, self).into()
+    }
+}
+
+impl IntoExpr for syn::Block {
+    fn into_expr(self) -> syn::Expr {
+        syn::ExprKind::Block(syn::Unsafety::Normal, self).into()
+    }
+}
+
+impl IntoExpr for syn::Ty {
+    fn into_expr(self) -> syn::Expr {
+        // TODO: Must be a nicer conversion than this
+        let mut tokens = quote::Tokens::new();
+        self.to_tokens(&mut tokens);
+        parse_expr(tokens)
+    }
+}
+
+impl IntoExpr for syn::Pat {
+    fn into_expr(self) -> syn::Expr {
+        // TODO: Must be a nicer conversion than this
+        let mut tokens = quote::Tokens::new();
+        self.to_tokens(&mut tokens);
+        parse_expr(tokens)
     }
 }
