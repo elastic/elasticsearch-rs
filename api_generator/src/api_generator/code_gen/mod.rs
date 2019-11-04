@@ -587,13 +587,12 @@ fn create_match_arm_pat(path_url_params: &[&str], name: &str) -> syn::Pat {
 }
 
 fn create_some_match_arm(name: &str) -> syn::Pat {
-    let ident = ident(valid_name(name));
-    let t = syn::Pat::Ident(
+    let pat_ident = syn::Pat::Ident(
         syn::BindingMode::ByValue(syn::Mutability::Immutable),
-        ident,
+        ident(valid_name(name)),
         None,
     );
-    syn::Pat::TupleStruct(path_none("Some"), vec![t], None)
+    syn::Pat::TupleStruct(path_none("Some"), vec![pat_ident], None)
 }
 
 fn create_none_match_arm() -> syn::Pat {
