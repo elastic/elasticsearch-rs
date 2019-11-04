@@ -79,11 +79,7 @@ fn main() {
                 .default(String::from("y"))
                 .show_default(false)
                 .with_prompt(
-                    format!(
-                        "Generate code from rest specifications {} [Y/n]",
-                        branch
-                    )
-                    .as_str(),
+                    format!("Generate code from rest specifications {} [Y/n]", branch).as_str(),
                 )
                 .interact()
                 .unwrap()

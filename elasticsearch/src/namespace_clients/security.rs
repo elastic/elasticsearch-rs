@@ -1472,7 +1472,7 @@ impl Sender for SecurityGetPrivileges {
                 p.push_str(application.as_ref());
                 std::borrow::Cow::Owned(p)
             }
-            (None, Some(_)) => panic!("application must be specified"),
+            (None, Some(_)) => panic!("application must also be specified"),
             (None, None) => std::borrow::Cow::Borrowed("/_security/privilege"),
         };
         let method = HttpMethod::Get;

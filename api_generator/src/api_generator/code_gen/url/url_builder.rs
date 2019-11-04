@@ -1,17 +1,17 @@
-// From https://github.com/elastic-rs/elastic
+// Parts modified from https://github.com/elastic-rs/elastic
 // Licensed under Apache 2.0: https://github.com/elastic-rs/elastic/blob/51298dd64278f34d2db911bd1a35eb757c336198/LICENSE-APACHE
 
-use std::fmt;
-use std::iter::Iterator;
-use std::str;
-use syn;
-
-use serde::{Deserialize, Deserializer};
-
-use crate::api_generator::code_gen::*;
-use std::collections::BTreeMap;
-use crate::api_generator::{Type, TypeKind, Url};
+use std::{
+    collections::BTreeMap,
+    fmt,
+    iter::Iterator,
+    str,
+};
 use quote::ToTokens;
+use syn;
+use serde::{Deserialize, Deserializer};
+use crate::api_generator::code_gen::*;
+use crate::api_generator::{Type, TypeKind};
 
 /// A URL path
 #[derive(Debug, Deserialize, PartialEq, Clone)]
@@ -126,29 +126,32 @@ impl<'a> PathParams<'a> for Vec<PathPart<'a>> {
     }
 }
 
-/// Builder for a match expression over URL parts
-pub struct MatchBuilder<'a> {
-    url: &'a Url,
-    arms: Vec<syn::Arm>
-}
-
 /// Builder for an efficient url value replacer.
 pub struct UrlBuilder<'a> {
     url: Vec<PathPart<'a>>,
-    required_parts: &'a BTreeMap<String, Type>,
-    optional_parts: &'a BTreeMap<String, Type>,
+    required_parts: &'a BTreeMap<&'a String, &'a Type>,
+    optional_parts: &'a BTreeMap<&'a String, &'a Type>,
 }
 
 impl<'a> UrlBuilder<'a> {
-    pub fn new(url: Vec<PathPart<'a>>, required_parts: &'a BTreeMap<String, Type>, optional_parts: &'a BTreeMap<String, Type>) -> Self {
-        UrlBuilder { url, required_parts, optional_parts }
+    pub fn new(
+        url: Vec<PathPart<'a>>,
+        required_parts: &'a BTreeMap<&'a String, &'a Type>,
+        optional_parts: &'a BTreeMap<&'a String, &'a Type>,
+    ) -> Self {
+        UrlBuilder {
+            url,
+            required_parts,
+            optional_parts,
+        }
     }
 
     /// Build an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
         let lit_len_expr = Self::literal_length_expr(&self.url);
 
-        let parts : BTreeMap<String, Type> = self.required_parts
+        let parts: BTreeMap<&String, &Type> = self
+            .required_parts
             .clone()
             .into_iter()
             .chain(self.optional_parts.clone())
@@ -167,7 +170,9 @@ impl<'a> UrlBuilder<'a> {
         let let_stmt = Self::let_p_stmt(url_ident.clone(), len_expr);
 
         let mut push_stmts = Self::push_str_stmts(url_ident.clone(), &self.url, &parts);
-        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(quote!(std::borrow::Cow::Owned(#url_ident)))));
+        let return_expr = syn::Stmt::Expr(Box::new(parse_expr(
+            quote!(std::borrow::Cow::Owned(#url_ident)),
+        )));
 
         let mut stmts = let_params_exprs;
         stmts.push(let_stmt);
@@ -206,19 +211,24 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Creates the AST for a let expression for path parts
-    fn let_parameters_exprs(url: &[PathPart<'a>], parts: &BTreeMap<String,Type>, required_parts: &BTreeMap<String,Type>) -> Vec<syn::Stmt> {
+    fn let_parameters_exprs(
+        url: &[PathPart<'a>],
+        parts: &BTreeMap<&String, &Type>,
+        required_parts: &BTreeMap<&String, &Type>,
+    ) -> Vec<syn::Stmt> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
                     let name = valid_name(p);
                     let name_ident = ident(&name);
-                    let tokens = if required_parts.contains_key(p) {
+                    let k = p.to_string();
+                    let tokens = if required_parts.contains_key(&k) {
                         quote!(self.#name_ident)
                     } else {
                         quote!(#name_ident)
                     };
 
-                    let (ident, init) = match parts[p].ty {
+                    let (ident, init) = match parts[&k].ty {
                         TypeKind::List => {
                             // Join list values together
                             let name_str = format!("{}_str", &name);
@@ -226,27 +236,33 @@ impl<'a> UrlBuilder<'a> {
                             let join_call = syn::ExprKind::MethodCall(
                                 ident("join"),
                                 vec![],
-                                vec![parse_expr(tokens), syn::ExprKind::Lit(syn::Lit::Str(",".into(), syn::StrStyle::Cooked)).into()],
-                            ).into();
+                                vec![
+                                    parse_expr(tokens),
+                                    syn::ExprKind::Lit(syn::Lit::Str(
+                                        ",".into(),
+                                        syn::StrStyle::Cooked,
+                                    ))
+                                    .into(),
+                                ],
+                            )
+                            .into();
 
                             (name_str_ident, join_call)
-                        },
-                        TypeKind::String => {
+                        }
+                        TypeKind::String =>
                             // Assign string value directly
-                            let name_ident = ident(name);
-
-                            (ident(name), parse_expr(tokens))
-                        },
+                            (ident(name), parse_expr(tokens)),
                         _ => {
                             // Handle enums, long, int, etc. by calling to_string()
                             let to_string_call = syn::ExprKind::MethodCall(
                                 ident("to_string"),
                                 vec![],
                                 vec![parse_expr(tokens)],
-                            ).into();
+                            )
+                            .into();
 
                             (ident(format!("{}_str", name)), to_string_call)
-                        },
+                        }
                     };
 
                     Some(syn::Stmt::Local(Box::new(syn::Local {
@@ -259,18 +275,21 @@ impl<'a> UrlBuilder<'a> {
                         init: Some(Box::new(init)),
                         attrs: vec![],
                     })))
-                },
+                }
                 _ => None,
             })
             .collect()
     }
 
     /// Get an expression to find the number of chars in each parameter part for the url.
-    fn parameter_length_exprs(url: &[PathPart<'a>], required_parts: &BTreeMap<String, Type>) -> Vec<syn::Expr> {
+    fn parameter_length_exprs(
+        url: &[PathPart<'a>],
+        required_parts: &BTreeMap<&String, &Type>,
+    ) -> Vec<syn::Expr> {
         url.iter()
             .filter_map(|p| match *p {
                 PathPart::Param(p) => {
-                    let name = match required_parts[p].ty {
+                    let name = match required_parts[&p.to_string()].ty {
                         TypeKind::String => valid_name(p).into(),
                         // handle lists and enums
                         _ => format!("{}_str", valid_name(p)),
@@ -281,9 +300,9 @@ impl<'a> UrlBuilder<'a> {
                             vec![],
                             vec![syn::ExprKind::Path(None, path_none(name.as_ref())).into()],
                         )
-                            .into(),
+                        .into(),
                     )
-                },
+                }
                 _ => None,
             })
             .collect()
@@ -335,7 +354,11 @@ impl<'a> UrlBuilder<'a> {
     }
 
     /// Get a list of statements that append each part to a `String` in order.
-    fn push_str_stmts(url_ident: syn::Ident, url: &[PathPart<'a>], parts: &BTreeMap<String,Type>) -> Vec<syn::Stmt> {
+    fn push_str_stmts(
+        url_ident: syn::Ident,
+        url: &[PathPart<'a>],
+        parts: &BTreeMap<&String, &Type>,
+    ) -> Vec<syn::Stmt> {
         url.iter()
             .map(|p| match *p {
                 PathPart::Literal(p) => {
@@ -343,7 +366,7 @@ impl<'a> UrlBuilder<'a> {
                     syn::Stmt::Semi(Box::new(parse_expr(quote!(#url_ident.push_str(#lit)))))
                 }
                 PathPart::Param(p) => {
-                    let name = match parts[p].ty {
+                    let name = match parts[&p.to_string()].ty {
                         TypeKind::String => valid_name(p).into(),
                         // handle lists and enums
                         _ => format!("{}_str", valid_name(p)),

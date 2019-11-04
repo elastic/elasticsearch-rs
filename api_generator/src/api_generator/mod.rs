@@ -130,17 +130,13 @@ pub struct Url {
 }
 
 impl Url {
-
     /// Gets all API paths, including deprecated paths
     pub fn all_paths(&self) -> Vec<&Path> {
-
-        let mut paths = self.paths
-            .iter()
-            .map(|p| p)
-            .collect::<Vec<_>>();
+        let mut paths = self.paths.iter().map(|p| p).collect::<Vec<_>>();
 
         if !self.deprecated_paths.is_empty() {
-            let mut deprecated_paths = self.deprecated_paths
+            let mut deprecated_paths = self
+                .deprecated_paths
                 .iter()
                 .map(|d| &d.path)
                 .collect::<Vec<_>>();
@@ -148,7 +144,7 @@ impl Url {
         };
 
         // sort by most params to least
-        paths.sort_by(|a,b| b.params().len().cmp(&a.params().len()));
+        paths.sort_by(|a, b| b.params().len().cmp(&a.params().len()));
 
         // deduplicate paths that have exactly the same params e.g. DELETE index aliases
         paths.dedup_by(|a, b| {
@@ -172,27 +168,25 @@ impl Url {
     }
 
     pub fn required_parts(&self) -> Vec<(&String, &Type)> {
-        self.required_and_optional_parts().0
+        self.filter_parts(true)
     }
 
     pub fn optional_parts(&self) -> Vec<(&String, &Type)> {
-        self.required_and_optional_parts().1
+        self.filter_parts(false)
     }
 
     /// Url parts partitioned by whether they are optional or required.
     /// ordered by index, ty, id then lexicographically
-    pub fn required_and_optional_parts(&self) -> (Vec<(&String, &Type)>, Vec<(&String, &Type)>) {
+    fn filter_parts(&self, required: bool) -> Vec<(&String, &Type)> {
         let required_parts = self.required_part_names();
-
-        let (mut required, mut optional): (Vec<_>, Vec<_>) = self
+        let mut filtered_parts = self
             .parts
             .iter()
-            .partition(|&p| required_parts.contains(&p.0.as_str()));
+            .filter(|&(p, _)| required_parts.contains(&p.as_str()) == required)
+            .collect::<Vec<_>>();
 
-        required.sort_by(Self::sort_by_index_ty_id);
-        optional.sort_by(Self::sort_by_index_ty_id);
-
-        (required, optional)
+        filtered_parts.sort_by(Self::sort_by_index_ty_id);
+        filtered_parts
     }
 
     fn sort_by_index_ty_id(a: &(&String, &Type), b: &(&String, &Type)) -> Ordering {

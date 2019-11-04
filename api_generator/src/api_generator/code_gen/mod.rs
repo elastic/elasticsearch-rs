@@ -9,7 +9,7 @@ use quote::{ToTokens, Tokens};
 use std::collections::BTreeMap;
 use std::str;
 use syn::{Field, FieldValue, FnArg, ImplItem};
-use crate::api_generator::code_gen::url::url_builder::IntoExpr;
+use url::url_builder::{IntoExpr, Path, UrlBuilder};
 
 /// AST for a literal
 fn lit<I: Into<String>>(lit: I) -> syn::Lit {
@@ -392,12 +392,13 @@ pub fn create_builder_struct(
         .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
         .collect();
 
-    builder_fns.append(&mut endpoint
-        .url
-        .parts
-        .iter()
-        .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
-        .collect(),
+    builder_fns.append(
+        &mut endpoint
+            .url
+            .parts
+            .iter()
+            .map(|f| create_fn(f, required_parts.contains(&&**f.0)))
+            .collect(),
     );
 
     if supports_body {
@@ -458,7 +459,7 @@ pub fn create_builder_struct(
 
     let new_fn = create_new_fn(
         &builder_ident,
-        &endpoint.url.required_and_optional_parts().0,
+        &endpoint.url.required_parts(),
         &default_fields,
     );
 
@@ -534,15 +535,9 @@ pub fn create_builder_struct_ctor_fns(
         let i = ident(name.to_string());
         let b = ident(builder_name.to_pascal_case());
         if endpoint.supports_body() {
-            (
-                quote!(#i<B>),
-                quote!(#b<B> where B: Serialize)
-            )
+            (quote!(#i<B>), quote!(#b<B> where B: Serialize))
         } else {
-            (
-                quote!(#i),
-                quote!(#b)
-            )
+            (quote!(#i), quote!(#b))
         }
     };
 
@@ -551,7 +546,7 @@ pub fn create_builder_struct_ctor_fns(
         _ => None,
     };
 
-    let fn_args = create_new_fn_args(&endpoint.url.required_and_optional_parts().0);
+    let fn_args = create_new_fn_args(&endpoint.url.required_parts());
     let builder_args: Vec<syn::Pat> = fn_args
         .clone()
         .into_iter()
@@ -584,7 +579,7 @@ fn create_self_path_pat(name: &str) -> syn::Pat {
 }
 
 fn create_match_arm_pat(path_url_params: &[&str], name: &str) -> syn::Pat {
-    if path_url_params.contains( &name) {
+    if path_url_params.contains(&name) {
         create_some_match_arm(name)
     } else {
         create_none_match_arm()
@@ -593,7 +588,11 @@ fn create_match_arm_pat(path_url_params: &[&str], name: &str) -> syn::Pat {
 
 fn create_some_match_arm(name: &str) -> syn::Pat {
     let ident = ident(valid_name(name));
-    let t = syn::Pat::Ident(syn::BindingMode::ByValue(syn::Mutability::Immutable), ident, None);
+    let t = syn::Pat::Ident(
+        syn::BindingMode::ByValue(syn::Mutability::Immutable),
+        ident,
+        None,
+    );
     syn::Pat::TupleStruct(path_none("Some"), vec![t], None)
 }
 
@@ -603,54 +602,51 @@ fn create_none_match_arm() -> syn::Pat {
 
 /// Creates the AST for the expression to select the correct API url path, based on inputs
 pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
-    let (required_parts, optional_parts) = endpoint.url.required_and_optional_parts();
-    let required_map: BTreeMap<String, Type> = required_parts.iter().cloned().map(|(s,t)| (s.clone(), t.clone())).collect();
-    let optional_map: BTreeMap<String, Type> = optional_parts.iter().cloned().map(|(s,t)| (s.clone(), t.clone())).collect();
+    let required_parts = endpoint.url.required_part_names();
+    let (required_map, optional_map): (BTreeMap<_,_>, BTreeMap<_,_>) = endpoint.url.parts
+        .iter()
+        .partition(|&(p, _)| required_parts.contains(&p.as_str()));
 
     match endpoint.url.all_paths().len() {
         1 => {
             let single_path = *endpoint.url.all_paths().iter().next().unwrap();
-            url::url_builder::UrlBuilder::new(single_path.split(),&required_map, &optional_map).build()
+            url::url_builder::UrlBuilder::new(single_path.split(), &required_map, &optional_map)
+                .build()
         }
         _ => {
-
             // generates the <expr> part in a "match <expr>"
+            let optional_parts = endpoint.url.optional_parts();
             let match_expr = match optional_parts.len() {
                 1 => {
                     let (name, _) = optional_parts[0];
                     create_self_path_pat(name)
-                },
+                }
                 _ => {
                     let pats: Vec<syn::Pat> = optional_parts
                         .iter()
-                        .map(|&(name, _)| {
-                            create_self_path_pat(name)
-                        })
+                        .map(|&(name, _)| create_self_path_pat(name))
                         .collect();
                     syn::Pat::Tuple(pats, None)
                 }
             };
 
-            let mut arms: Vec<syn::Arm> = vec![];
-
-            for path in &endpoint.url.all_paths() {
-
+            let mut arms = vec![];
+            for path in endpoint.url.all_paths() {
                 // deprecated paths that duplicate all the _mapping paths
                 if path.0.contains("_mappings") {
                     continue;
                 }
 
                 let path_url_params = path.params();
-
                 let pat = match optional_parts.len() {
-                    0 => syn::Pat::Path(None, path_none("None")),
+                    0 => create_none_match_arm(),
                     1 => {
-                        // generate single value match arm expression
+                        // single value match arm expression
                         let (name, _) = optional_parts[0];
                         create_match_arm_pat(&path_url_params, name)
-                    },
+                    }
                     _ => {
-                        // generate tuple match arm expression
+                        // tuple match arm expression
                         let tuple_pats = optional_parts
                             .iter()
                             .map(|&(name, _)| create_match_arm_pat(&path_url_params, name))
@@ -659,8 +655,9 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
                     }
                 };
 
-                let body = url::url_builder::UrlBuilder::new(path.split(), &required_map, &optional_map).build();
-
+                let body =
+                    url::url_builder::UrlBuilder::new(path.split(), &required_map, &optional_map)
+                        .build();
                 arms.push(syn::Arm {
                     attrs: vec![],
                     pats: vec![pat],
@@ -668,18 +665,18 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
                     body: Box::new(body),
                 });
 
-
                 // HACK: to add additional match arms for exhaustive matching.
                 // TODO: These will go away with the move to enums
-                if path.0.contains(&"{index}") && path.0.contains(&"{type}")
+                if path.0.contains(&"{index}")
+                    && path.0.contains(&"{type}")
                     && !path.0.contains(&"{index}/{type}/{id}")
                     && !path.0.contains(&"_mapping")
-                    && !required_map.contains_key("index")  {
-
+                    && !required_map.contains_key(&"index".to_string())
+                {
                     let mut path_string = path.0.clone();
                     path_string = path_string.replace("{index}", "_all");
 
-                    let sub_path = url::url_builder::Path(path_string);
+                    let sub_path = Path(path_string);
                     let sub_params = sub_path.params();
                     let tuple_pats = optional_parts
                         .iter()
@@ -687,7 +684,8 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
                         .collect();
 
                     let pat = syn::Pat::Tuple(tuple_pats, None);
-                    let body = url::url_builder::UrlBuilder::new(sub_path.split(), &required_map, &optional_map).build();
+                    let body =
+                        UrlBuilder::new(sub_path.split(), &required_map, &optional_map).build();
 
                     arms.push(syn::Arm {
                         attrs: vec![],
@@ -695,21 +693,19 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
                         guard: None,
                         body: Box::new(body),
                     });
-
                 } else if path.0.contains(&"{metric}/{index}") {
-                    let mut path_string = path.0.clone();
-                    path_string = path_string.replace("{metric}", "_all");
-
-                    let sub_path = url::url_builder::Path(path_string);
-                    let sub_params = sub_path.params();
+                    let mut path_string_clone = path.0.clone();
+                    path_string_clone = path_string_clone.replace("{metric}", "_all");
+                    let path_clone = Path(path_string_clone);
+                    let path_clone_params = path_clone.params();
                     let tuple_pats = optional_parts
                         .iter()
-                        .map(|&(name, _)| create_match_arm_pat(&sub_params, name))
+                        .map(|&(name, _)| create_match_arm_pat(&path_clone_params, name))
                         .collect();
 
                     let pat = syn::Pat::Tuple(tuple_pats, None);
-                    let body = url::url_builder::UrlBuilder::new(sub_path.split(), &required_map, &optional_map).build();
-
+                    let body =
+                        UrlBuilder::new(path_clone.split(), &required_map, &optional_map).build();
                     arms.push(syn::Arm {
                         attrs: vec![],
                         pats: vec![pat],
@@ -717,57 +713,69 @@ pub fn create_path_expression(endpoint: &ApiEndpoint) -> syn::Expr {
                         body: Box::new(body),
                     });
                 } else if path.0 == "/_nodes/stats/{metric}" {
-
                     let mut path_string_clone = path.0.clone();
-                    path_string_clone = path_string_clone.replace("stats/{metric}", "{node_id}/stats/all/{index_metric}");
-                    let path_clone = url::url_builder::Path(path_string_clone);
-
-                    let body = url::url_builder::UrlBuilder::new(path_clone.split(), &required_map, &optional_map).build();
+                    path_string_clone = path_string_clone
+                        .replace("stats/{metric}", "{node_id}/stats/all/{index_metric}");
+                    let path_clone = Path(path_string_clone);
+                    let body =
+                        UrlBuilder::new(path_clone.split(), &required_map, &optional_map).build();
                     arms.push(syn::Arm {
                         attrs: vec![],
-                        pats: vec![syn::Pat::Tuple(vec![
-                            create_some_match_arm("index_metric"),
-                            create_none_match_arm(),
-                            create_some_match_arm("node_id")
-                        ], None)],
+                        pats: vec![syn::Pat::Tuple(
+                            vec![
+                                create_some_match_arm("index_metric"),
+                                create_none_match_arm(),
+                                create_some_match_arm("node_id"),
+                            ],
+                            None,
+                        )],
                         guard: None,
                         body: Box::new(body),
                     });
 
                     let mut path_string_clone = path.0.clone();
                     path_string_clone = path_string_clone.replace("{metric}", "all/{index_metric}");
-                    let path_clone = url::url_builder::Path(path_string_clone);
-
-                    let body = url::url_builder::UrlBuilder::new(path_clone.split(), &required_map, &optional_map).build();
+                    let path_clone = Path(path_string_clone);
+                    let body =
+                        UrlBuilder::new(path_clone.split(), &required_map, &optional_map).build();
                     arms.push(syn::Arm {
                         attrs: vec![],
-                        pats: vec![syn::Pat::Tuple(vec![
-                            create_some_match_arm("index_metric"),
-                            create_none_match_arm(),
-                            create_none_match_arm()
-                        ], None)],
+                        pats: vec![syn::Pat::Tuple(
+                            vec![
+                                create_some_match_arm("index_metric"),
+                                create_none_match_arm(),
+                                create_none_match_arm(),
+                            ],
+                            None,
+                        )],
                         guard: None,
                         body: Box::new(body),
                     });
-
-                } else if path.0 == "/_snapshot/{repository}/_status" || path.0 == "/_security/privilege/{application}" {
-                    let message = lit(format!("{} must be specified", path_url_params.first().unwrap()));
+                } else if path.0 == "/_snapshot/{repository}/_status"
+                    || path.0 == "/_security/privilege/{application}"
+                {
+                    let message = lit(format!("{} must also be specified", path_url_params[0]));
                     arms.push(syn::Arm {
                         attrs: vec![],
-                        pats: vec![syn::Pat::Tuple(vec![
-                            create_none_match_arm(),
-                            create_some_match_arm("_")], None)],
+                        pats: vec![syn::Pat::Tuple(
+                            vec![create_none_match_arm(), create_some_match_arm("_")],
+                            None,
+                        )],
                         guard: None,
                         body: Box::new(parse_expr(quote!(panic!(#message)))),
                     });
-                } else if path.0 == "/_mapping/{type}" && endpoint.methods != vec![HttpMethod::Get] {
+                } else if path.0 == "/_mapping/{type}" && endpoint.methods != vec![HttpMethod::Get]
+                {
                     arms.push(syn::Arm {
                         attrs: vec![],
-                        pats: vec![syn::Pat::Tuple(vec![
-                            create_none_match_arm(),
-                            create_none_match_arm()], None)],
+                        pats: vec![syn::Pat::Tuple(
+                            vec![create_none_match_arm(), create_none_match_arm()],
+                            None,
+                        )],
                         guard: None,
-                        body: Box::new(parse_expr(quote!(std::borrow::Cow::Borrowed("/_all/_mapping")))),
+                        body: Box::new(parse_expr(quote!(std::borrow::Cow::Borrowed(
+                            "/_all/_mapping"
+                        )))),
                     });
                 }
             }

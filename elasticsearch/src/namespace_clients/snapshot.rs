@@ -995,7 +995,7 @@ impl Sender for SnapshotStatus {
                 p.push_str("/_status");
                 std::borrow::Cow::Owned(p)
             }
-            (None, Some(_)) => panic!("repository must be specified"),
+            (None, Some(_)) => panic!("repository must also be specified"),
             (None, None) => std::borrow::Cow::Borrowed("/_snapshot/_status"),
         };
         let method = HttpMethod::Get;

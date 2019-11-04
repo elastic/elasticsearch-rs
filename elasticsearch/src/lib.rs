@@ -18,13 +18,8 @@ mod root;
 mod settings;
 
 pub use crate::{
-    client::Elasticsearch,
-    connection::Connection,
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
-    response::ElasticsearchResponse,
-    settings::ConnectionSettings,
+    client::Elasticsearch, connection::Connection, enums::*, error::ElasticsearchError,
+    http_method::HttpMethod, response::ElasticsearchResponse, settings::ConnectionSettings,
 };
 
 #[cfg(test)]
