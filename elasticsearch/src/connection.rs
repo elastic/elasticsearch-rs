@@ -8,13 +8,13 @@ use reqwest::{
 use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
 
+/// A connection to an Elasticsearch node, used to send an API request
 #[derive(Debug, Clone)]
 pub struct Connection {
     client: reqwest::Client,
     url: Url,
 }
 
-/// A connection to an Elasticsearch node, used to send a request
 impl Connection {
     fn method(&self, method: HttpMethod) -> Method {
         match method {
@@ -34,7 +34,7 @@ impl Connection {
         }
     }
 
-    /// Sends a request to the Elasticsearch node
+    /// Sends a synchronous API request to the Elasticsearch node
     pub fn send<B, Q>(
         &self,
         method: HttpMethod,

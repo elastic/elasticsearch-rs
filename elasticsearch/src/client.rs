@@ -8,12 +8,12 @@ use serde::de::DeserializeOwned;
 use serde::Serialize;
 use url::Url;
 
-/// Sender trait for terminal method to send a synchronous request to Elasticsearch
+/// Sends a synchronous API request to Elasticsearch
 pub trait Sender {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError>;
 }
 
-/// Client used to make API calls to Elasticsearch
+/// Client used to make API requests to Elasticsearch
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
     settings: ConnectionSettings,
@@ -21,6 +21,7 @@ pub struct Elasticsearch {
 }
 
 impl Elasticsearch {
+    /// Creates a new instance of Elasticsearch
     pub fn new(settings: ConnectionSettings, connection: Connection) -> Self {
         Elasticsearch {
             settings,
@@ -28,7 +29,7 @@ impl Elasticsearch {
         }
     }
 
-    /// Sends an API request to Elasticsearch
+    /// Sends a synchronous API request to Elasticsearch
     pub fn send<B, Q>(
         &self,
         method: HttpMethod,

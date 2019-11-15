@@ -25,7 +25,7 @@ pub enum ElasticsearchError {
     /// An internal error from this library
     LibError(String),
 
-    /// An error reported in a JSON response from the ElasticSearch server
+    /// An error reported in a JSON response from Elasticsearch
     ServerError(String),
 
     /// HTTP library error
