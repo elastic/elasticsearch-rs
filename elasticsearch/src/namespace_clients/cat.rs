@@ -140,29 +140,41 @@ impl Sender for CatAliases {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -312,31 +324,43 @@ impl Sender for CatAllocation {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -480,29 +504,41 @@ impl Sender for CatCount {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -652,33 +688,49 @@ impl Sender for CatFielddata {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "fields")]
+                #[serde(
+                    rename = "fields",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 fields: Option<Vec<String>>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -814,31 +866,43 @@ impl Sender for CatHealth {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "ts")]
+                #[serde(rename = "ts", skip_serializing_if = "Option::is_none")]
                 ts: Option<bool>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -931,19 +995,27 @@ impl Sender for CatHelp {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
             }
             let query_params = QueryParamsStruct {
@@ -1109,37 +1181,52 @@ impl Sender for CatIndices {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "health")]
+                #[serde(rename = "health", skip_serializing_if = "Option::is_none")]
                 health: Option<Health>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "include_unloaded_segments")]
+                #[serde(
+                    rename = "include_unloaded_segments",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 include_unloaded_segments: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "pri")]
+                #[serde(rename = "pri", skip_serializing_if = "Option::is_none")]
                 pri: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -1270,29 +1357,41 @@ impl Sender for CatMaster {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -1419,29 +1518,41 @@ impl Sender for CatNodeattrs {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -1575,31 +1686,43 @@ impl Sender for CatNodes {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "full_id")]
+                #[serde(rename = "full_id", skip_serializing_if = "Option::is_none")]
                 full_id: Option<bool>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -1727,29 +1850,41 @@ impl Sender for CatPendingTasks {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -1876,29 +2011,41 @@ impl Sender for CatPlugins {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2041,29 +2188,41 @@ impl Sender for CatRecovery {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2190,29 +2349,41 @@ impl Sender for CatRepositories {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2348,27 +2519,39 @@ impl Sender for CatSegments {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2517,31 +2700,43 @@ impl Sender for CatShards {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "bytes")]
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2685,29 +2880,41 @@ impl Sender for CatSnapshots {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "ignore_unavailable")]
+                #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
                 ignore_unavailable: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -2848,33 +3055,53 @@ impl Sender for CatTasks {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "actions")]
+                #[serde(
+                    rename = "actions",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 actions: Option<Vec<String>>,
-                #[serde(rename = "detailed")]
+                #[serde(rename = "detailed", skip_serializing_if = "Option::is_none")]
                 detailed: Option<bool>,
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "node_id")]
+                #[serde(
+                    rename = "node_id",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 node_id: Option<Vec<String>>,
-                #[serde(rename = "parent_task")]
+                #[serde(rename = "parent_task", skip_serializing_if = "Option::is_none")]
                 parent_task: Option<i64>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -3019,29 +3246,41 @@ impl Sender for CatTemplates {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
@@ -3191,31 +3430,43 @@ impl Sender for CatThreadPool {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "error_trace")]
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 filter_path: Option<Vec<String>>,
-                #[serde(rename = "format")]
+                #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(
+                    rename = "h",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 h: Option<Vec<String>>,
-                #[serde(rename = "help")]
+                #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
-                #[serde(rename = "human")]
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local")]
+                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout")]
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
                 master_timeout: Option<String>,
-                #[serde(rename = "pretty")]
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(
+                    rename = "s",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
                 s: Option<Vec<String>>,
-                #[serde(rename = "size")]
+                #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
                 size: Option<Size>,
-                #[serde(rename = "source")]
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
-                #[serde(rename = "v")]
+                #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {

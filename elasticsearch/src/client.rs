@@ -5,12 +5,21 @@ use crate::{
 
 use reqwest::{header::HeaderMap, Response, StatusCode};
 use serde::de::DeserializeOwned;
-use serde::Serialize;
+use serde::{Serialize, Serializer};
 use url::Url;
 
 /// Sends a synchronous API request to Elasticsearch
 pub trait Sender {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError>;
+}
+
+/// Serializes an Option<Vec<String>> with some value to a comma separated string of values.
+/// Used to serialize values within the query string
+pub fn serialize_vec_qs<S>(value: &Option<Vec<String>>, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error> where
+    S: Serializer {
+    let vec = value.as_ref().expect("attempt to serialize Option::None value");
+    let joined = vec.join(",");
+    serializer.serialize_str(joined.as_ref())
 }
 
 /// Client used to make API requests to Elasticsearch

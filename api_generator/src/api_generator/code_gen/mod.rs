@@ -820,9 +820,19 @@ fn create_query_string_expression(endpoint_params: &BTreeMap<String, Type>) -> T
         let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
             let field = create_optional_field((param_name, param_type));
             let field_rename = lit(param_name);
-            quote! {
-                #[serde(rename = #field_rename)]
-                #field
+
+            if param_type.ty == TypeKind::List {
+                let serialize_with = lit("crate::client::serialize_vec_qs");
+                quote! {
+                    #[serde(rename = #field_rename, serialize_with = #serialize_with, skip_serializing_if = "Option::is_none")]
+                    #field
+                }
+            }
+            else {
+                quote! {
+                    #[serde(rename = #field_rename, skip_serializing_if = "Option::is_none")]
+                    #field
+                }
             }
         });
         let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
