@@ -824,13 +824,13 @@ fn create_query_string_expression(endpoint_params: &BTreeMap<String, Type>) -> T
             if param_type.ty == TypeKind::List {
                 let serialize_with = lit("crate::client::serialize_vec_qs");
                 quote! {
-                    #[serde(rename = #field_rename, serialize_with = #serialize_with)]
+                    #[serde(rename = #field_rename, serialize_with = #serialize_with, skip_serializing_if = "Option::is_none")]
                     #field
                 }
             }
             else {
                 quote! {
-                    #[serde(rename = #field_rename)]
+                    #[serde(rename = #field_rename, skip_serializing_if = "Option::is_none")]
                     #field
                 }
             }

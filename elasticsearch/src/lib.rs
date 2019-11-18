@@ -74,4 +74,23 @@ pub mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
+        let client = Elasticsearch::default();
+        let mut response = client
+            .search::<()>()
+            .pretty(Some(true))
+            .filter_path(Some(vec!["took".into()]))
+            .q(Some("title:Elasticsearch".into()))
+            .send()?;
+
+        assert_eq!(response.status_code(), StatusCode::OK);
+        let response_body = response.read_body::<Value>()?;
+
+        assert!(response_body["took"].as_i64().unwrap() > 0);
+        assert!(response_body.get("hits").is_none());
+
+        Ok(())
+    }
 }

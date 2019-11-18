@@ -17,13 +17,9 @@ pub trait Sender {
 /// Used to serialize values within the query string
 pub fn serialize_vec_qs<S>(value: &Option<Vec<String>>, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error> where
     S: Serializer {
-    match value {
-        Some(v) => {
-            let joined = v.join(",");
-            serializer.serialize_str(joined.as_ref())
-        }
-        None => serializer.serialize_none()
-    }
+    let vec = value.as_ref().expect("attempt to serialize Option::None value");
+    let joined = vec.join(",");
+    serializer.serialize_str(joined.as_ref())
 }
 
 /// Client used to make API requests to Elasticsearch
