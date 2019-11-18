@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct IlmDeleteLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -119,6 +120,7 @@ impl Sender for IlmDeleteLifecycle {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmExplainLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -216,6 +218,7 @@ impl Sender for IlmExplainLifecycle {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmGetLifecycle {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -315,6 +318,7 @@ impl Sender for IlmGetLifecycle {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmGetStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -398,6 +402,7 @@ impl Sender for IlmGetStatus {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmMoveToStep<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -507,6 +512,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmPutLifecycle<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -616,6 +622,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmRemovePolicy<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -726,6 +733,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmRetry<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -836,6 +844,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmStart<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -932,6 +941,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IlmStop<B> {
     client: Elasticsearch,
     body: Option<B>,

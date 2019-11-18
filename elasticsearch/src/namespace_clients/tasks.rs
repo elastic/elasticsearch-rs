@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct TasksCancel<B> {
     client: Elasticsearch,
     actions: Option<Vec<String>>,
@@ -174,6 +175,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct TasksGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -293,6 +295,7 @@ impl Sender for TasksGet {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct TasksList {
     client: Elasticsearch,
     actions: Option<Vec<String>>,

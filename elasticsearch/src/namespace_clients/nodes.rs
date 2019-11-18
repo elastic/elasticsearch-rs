@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct NodesHotThreads {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -186,6 +187,7 @@ impl Sender for NodesHotThreads {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct NodesInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -329,6 +331,7 @@ impl Sender for NodesInfo {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -452,6 +455,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct NodesStats {
     client: Elasticsearch,
     completion_fields: Option<Vec<String>>,
@@ -726,6 +730,7 @@ impl Sender for NodesStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct NodesUsage {
     client: Elasticsearch,
     error_trace: Option<bool>,

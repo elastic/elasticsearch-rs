@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct Bulk<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -260,6 +261,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClearScroll<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -372,6 +374,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Count<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -658,6 +661,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Create<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -873,6 +877,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Delete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1084,6 +1089,7 @@ impl Sender for Delete {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DeleteByQuery<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -1577,6 +1583,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DeleteByQueryRethrottle<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1700,6 +1707,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DeleteScript {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1816,6 +1824,7 @@ impl Sender for DeleteScript {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Exists {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -2060,6 +2069,7 @@ impl Sender for Exists {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ExistsSource {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -2291,6 +2301,7 @@ impl Sender for ExistsSource {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Explain<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -2572,6 +2583,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct FieldCaps<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2742,6 +2754,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Get {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -2986,6 +2999,7 @@ impl Sender for Get {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct GetScript {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -3092,6 +3106,7 @@ impl Sender for GetScript {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct GetSource {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -3323,6 +3338,7 @@ impl Sender for GetSource {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Index<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -3585,6 +3601,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Info {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -3668,6 +3685,7 @@ impl Sender for Info {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Mget<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -3906,6 +3924,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Msearch<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4136,6 +4155,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MsearchTemplate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4337,6 +4357,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Mtermvectors<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4607,6 +4628,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Ping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -4690,6 +4712,7 @@ impl Sender for Ping {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct PutScript<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4841,6 +4864,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RankEval<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -4987,6 +5011,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Reindex<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5172,6 +5197,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ReindexRethrottle<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5295,6 +5321,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RenderSearchTemplate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5410,6 +5437,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ScriptsPainlessExecute<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5509,6 +5537,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Scroll<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5650,6 +5679,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Search<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -6271,6 +6301,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SearchShards<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -6447,6 +6478,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SearchTemplate<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -6729,6 +6761,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Termvectors<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -7007,6 +7040,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct Update<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -7274,6 +7308,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct UpdateByQuery<B> {
     client: Elasticsearch,
     _source: Option<Vec<String>>,
@@ -7787,6 +7822,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct UpdateByQueryRethrottle<B> {
     client: Elasticsearch,
     body: Option<B>,

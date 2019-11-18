@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct RollupDeleteJob {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -119,6 +120,7 @@ impl Sender for RollupDeleteJob {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupGetJobs {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -218,6 +220,7 @@ impl Sender for RollupGetJobs {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupGetRollupCaps {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -317,6 +320,7 @@ impl Sender for RollupGetRollupCaps {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupGetRollupIndexCaps {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -414,6 +418,7 @@ impl Sender for RollupGetRollupIndexCaps {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupPutJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -523,6 +528,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupRollupSearch<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -679,6 +685,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupStartJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -789,6 +796,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct RollupStopJob<B> {
     client: Elasticsearch,
     body: Option<B>,

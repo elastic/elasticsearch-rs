@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct SecurityAuthenticate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -106,6 +107,7 @@ impl Sender for SecurityAuthenticate {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityChangePassword<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -229,6 +231,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityClearCachedRealms<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -353,6 +356,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityClearCachedRoles<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -463,6 +467,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityCreateApiKey<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -569,6 +574,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
     application: String,
@@ -685,6 +691,7 @@ impl Sender for SecurityDeletePrivileges {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteRole {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -791,6 +798,7 @@ impl Sender for SecurityDeleteRole {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteRoleMapping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -897,6 +905,7 @@ impl Sender for SecurityDeleteRoleMapping {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityDeleteUser {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1003,6 +1012,7 @@ impl Sender for SecurityDeleteUser {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityDisableUser<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1123,6 +1133,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityEnableUser<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1243,6 +1254,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetApiKey {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1366,6 +1378,7 @@ impl Sender for SecurityGetApiKey {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetBuiltinPrivileges {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1449,6 +1462,7 @@ impl Sender for SecurityGetBuiltinPrivileges {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetPrivileges {
     client: Elasticsearch,
     application: Option<String>,
@@ -1566,6 +1580,7 @@ impl Sender for SecurityGetPrivileges {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetRole {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1665,6 +1680,7 @@ impl Sender for SecurityGetRole {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetRoleMapping {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1764,6 +1780,7 @@ impl Sender for SecurityGetRoleMapping {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetToken<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1860,6 +1877,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetUser {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1959,6 +1977,7 @@ impl Sender for SecurityGetUser {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityGetUserPrivileges {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2042,6 +2061,7 @@ impl Sender for SecurityGetUserPrivileges {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityHasPrivileges<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2158,6 +2178,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityInvalidateApiKey<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2254,6 +2275,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityInvalidateToken<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2350,6 +2372,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityPutPrivileges<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2456,6 +2479,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityPutRole<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2575,6 +2599,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityPutRoleMapping<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2694,6 +2719,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SecurityPutUser<B> {
     client: Elasticsearch,
     body: Option<B>,

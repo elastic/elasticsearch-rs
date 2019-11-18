@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct IndicesAnalyze<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -142,6 +143,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesClearCache<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -336,6 +338,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesClose<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -509,6 +512,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesCreate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -661,6 +665,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesDelete {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -807,6 +812,7 @@ impl Sender for IndicesDelete {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesDeleteAlias {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -933,6 +939,7 @@ impl Sender for IndicesDeleteAlias {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesDeleteTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1049,6 +1056,7 @@ impl Sender for IndicesDeleteTemplate {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesExists {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1205,6 +1213,7 @@ impl Sender for IndicesExists {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesExistsAlias {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1360,6 +1369,7 @@ impl Sender for IndicesExistsAlias {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesExistsTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1486,6 +1496,7 @@ impl Sender for IndicesExistsTemplate {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesExistsType {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1632,6 +1643,7 @@ impl Sender for IndicesExistsType {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesFlush<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1798,6 +1810,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesFlushSynced<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1944,6 +1957,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesForcemerge<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2120,6 +2134,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesFreeze<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2293,6 +2308,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGet {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2469,6 +2485,7 @@ impl Sender for IndicesGet {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetAlias {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2633,6 +2650,7 @@ impl Sender for IndicesGetAlias {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetFieldMapping {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -2840,6 +2858,7 @@ impl Sender for IndicesGetFieldMapping {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetMapping {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3024,6 +3043,7 @@ impl Sender for IndicesGetMapping {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetSettings {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3218,6 +3238,7 @@ impl Sender for IndicesGetSettings {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetTemplate {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -3357,6 +3378,7 @@ impl Sender for IndicesGetTemplate {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesGetUpgrade {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3487,6 +3509,7 @@ impl Sender for IndicesGetUpgrade {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesOpen<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3660,6 +3683,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesPutAlias<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -3799,6 +3823,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesPutMapping<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -3997,6 +4022,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesPutSettings<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -4180,6 +4206,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesPutTemplate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4349,6 +4376,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesRecovery {
     client: Elasticsearch,
     active_only: Option<bool>,
@@ -4469,6 +4497,7 @@ impl Sender for IndicesRecovery {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesRefresh<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -4615,6 +4644,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesReloadSearchAnalyzers<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -4758,6 +4788,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesRollover<B> {
     client: Elasticsearch,
     alias: String,
@@ -4940,6 +4971,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesSegments {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -5080,6 +5112,7 @@ impl Sender for IndicesSegments {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesShardStores {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -5224,6 +5257,7 @@ impl Sender for IndicesShardStores {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesShrink<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5386,6 +5420,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesSplit<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5548,6 +5583,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesStats {
     client: Elasticsearch,
     completion_fields: Option<Vec<String>>,
@@ -5801,6 +5837,7 @@ impl Sender for IndicesStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesUnfreeze<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -5974,6 +6011,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesUpdateAliases<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6090,6 +6128,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesUpgrade<B> {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -6259,6 +6298,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IndicesValidateQuery<B> {
     client: Elasticsearch,
     all_shards: Option<bool>,

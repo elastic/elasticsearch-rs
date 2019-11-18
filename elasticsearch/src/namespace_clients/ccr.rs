@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct CcrDeleteAutoFollowPattern {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -119,6 +120,7 @@ impl Sender for CcrDeleteAutoFollowPattern {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrFollow<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -242,6 +244,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrFollowInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -339,6 +342,7 @@ impl Sender for CcrFollowInfo {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrFollowStats {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -436,6 +440,7 @@ impl Sender for CcrFollowStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrForgetFollower<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -546,6 +551,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrGetAutoFollowPattern {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -645,6 +651,7 @@ impl Sender for CcrGetAutoFollowPattern {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrPauseFollow<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -755,6 +762,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrPutAutoFollowPattern<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -864,6 +872,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrResumeFollow<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -974,6 +983,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrStats {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1057,6 +1067,7 @@ impl Sender for CcrStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CcrUnfollow<B> {
     client: Elasticsearch,
     body: Option<B>,

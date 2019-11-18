@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct SnapshotCreate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -165,6 +166,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotCreateRepository<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -304,6 +306,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotDelete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -420,6 +423,7 @@ impl Sender for SnapshotDelete {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotDeleteRepository {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -536,6 +540,7 @@ impl Sender for SnapshotDeleteRepository {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -672,6 +677,7 @@ impl Sender for SnapshotGet {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotGetRepository {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -791,6 +797,7 @@ impl Sender for SnapshotGetRepository {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotRestore<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -934,6 +941,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1073,6 +1081,7 @@ impl Sender for SnapshotStatus {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SnapshotVerifyRepository<B> {
     client: Elasticsearch,
     body: Option<B>,

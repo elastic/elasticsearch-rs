@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct MlCloseJob<B> {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -163,6 +164,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
     calendar_id: String,
@@ -259,6 +261,7 @@ impl Sender for MlDeleteCalendar {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
     calendar_id: String,
@@ -365,6 +368,7 @@ impl Sender for MlDeleteCalendarEvent {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
     calendar_id: String,
@@ -471,6 +475,7 @@ impl Sender for MlDeleteCalendarJob {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteDataFrameAnalytics {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -567,6 +572,7 @@ impl Sender for MlDeleteDataFrameAnalytics {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
     datafeed_id: String,
@@ -673,6 +679,7 @@ impl Sender for MlDeleteDatafeed {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteExpiredData {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -756,6 +763,7 @@ impl Sender for MlDeleteExpiredData {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteFilter {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -852,6 +860,7 @@ impl Sender for MlDeleteFilter {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteForecast {
     client: Elasticsearch,
     allow_no_forecasts: Option<bool>,
@@ -988,6 +997,7 @@ impl Sender for MlDeleteForecast {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteJob {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1107,6 +1117,7 @@ impl Sender for MlDeleteJob {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlDeleteModelSnapshot {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1213,6 +1224,7 @@ impl Sender for MlDeleteModelSnapshot {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlEvaluateDataFrame<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1309,6 +1321,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlFindFileStructure<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1552,6 +1565,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlFlushJob<B> {
     client: Elasticsearch,
     advance_time: Option<String>,
@@ -1712,6 +1726,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlForecast<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -1842,6 +1857,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetBuckets<B> {
     client: Elasticsearch,
     anomaly_score: Option<f64>,
@@ -2064,6 +2080,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetCalendarEvents {
     client: Elasticsearch,
     calendar_id: String,
@@ -2211,6 +2228,7 @@ impl Sender for MlGetCalendarEvents {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetCalendars<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2346,6 +2364,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetCategories<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -2498,6 +2517,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalytics {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -2627,6 +2647,7 @@ impl Sender for MlGetDataFrameAnalytics {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetDataFrameAnalyticsStats {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -2757,6 +2778,7 @@ impl Sender for MlGetDataFrameAnalyticsStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetDatafeedStats {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
@@ -2867,6 +2889,7 @@ impl Sender for MlGetDatafeedStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetDatafeeds {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
@@ -2976,6 +2999,7 @@ impl Sender for MlGetDatafeeds {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetFilters {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -3095,6 +3119,7 @@ impl Sender for MlGetFilters {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetInfluencers<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -3287,6 +3312,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetJobStats {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -3397,6 +3423,7 @@ impl Sender for MlGetJobStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetJobs {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -3506,6 +3533,7 @@ impl Sender for MlGetJobs {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetModelSnapshots<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -3698,6 +3726,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetOverallBuckets<B> {
     client: Elasticsearch,
     allow_no_jobs: Option<bool>,
@@ -3881,6 +3910,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlGetRecords<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4072,6 +4102,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -4155,6 +4186,7 @@ impl Sender for MlInfo {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlOpenJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4279,6 +4311,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPostCalendarEvents<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4389,6 +4422,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPostData<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4519,6 +4553,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
     datafeed_id: String,
@@ -4616,6 +4651,7 @@ impl Sender for MlPreviewDatafeed {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutCalendar<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4725,6 +4761,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutCalendarJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4844,6 +4881,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutDataFrameAnalytics<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -4953,6 +4991,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutDatafeed<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5062,6 +5101,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutFilter<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5171,6 +5211,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlPutJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5280,6 +5321,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlRevertModelSnapshot<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5413,6 +5455,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlSetUpgradeMode<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5529,6 +5572,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlStartDataFrameAnalytics<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5649,6 +5693,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlStartDatafeed<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -5789,6 +5834,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlStopDataFrameAnalytics<B> {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -5929,6 +5975,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlStopDatafeed<B> {
     client: Elasticsearch,
     allow_no_datafeeds: Option<bool>,
@@ -6069,6 +6116,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlUpdateDatafeed<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6179,6 +6227,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlUpdateFilter<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6289,6 +6338,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlUpdateJob<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6399,6 +6449,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlUpdateModelSnapshot<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6519,6 +6570,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlValidate<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -6615,6 +6667,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct MlValidateDetector<B> {
     client: Elasticsearch,
     body: Option<B>,

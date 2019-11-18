@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct SqlClearCursor<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -119,6 +120,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SqlQuery<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -228,6 +230,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct SqlTranslate<B> {
     client: Elasticsearch,
     body: Option<B>,

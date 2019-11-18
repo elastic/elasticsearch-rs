@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct IngestDeletePipeline {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -139,6 +140,7 @@ impl Sender for IngestDeletePipeline {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IngestGetPipeline {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -248,6 +250,7 @@ impl Sender for IngestGetPipeline {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IngestProcessorGrok {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -331,6 +334,7 @@ impl Sender for IngestProcessorGrok {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IngestPutPipeline<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -460,6 +464,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct IngestSimulate<B> {
     client: Elasticsearch,
     body: Option<B>,

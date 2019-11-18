@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct WatcherAckWatch<B> {
     client: Elasticsearch,
     action_id: Option<Vec<String>>,
@@ -152,6 +153,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherActivateWatch<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -262,6 +264,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherDeactivateWatch<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -372,6 +375,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherDeleteWatch {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -468,6 +472,7 @@ impl Sender for WatcherDeleteWatch {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherExecuteWatch<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -591,6 +596,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherGetWatch {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -687,6 +693,7 @@ impl Sender for WatcherGetWatch {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherPutWatch<B> {
     client: Elasticsearch,
     active: Option<bool>,
@@ -836,6 +843,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherStart<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -932,6 +940,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherStats {
     client: Elasticsearch,
     emit_stacktraces: Option<bool>,
@@ -1048,6 +1057,7 @@ impl Sender for WatcherStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct WatcherStop<B> {
     client: Elasticsearch,
     body: Option<B>,

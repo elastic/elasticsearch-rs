@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct ClusterAllocationExplain<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -145,6 +146,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterGetSettings {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -268,6 +270,7 @@ impl Sender for ClusterGetSettings {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterHealth {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -492,6 +495,7 @@ impl Sender for ClusterHealth {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterPendingTasks {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -595,6 +599,7 @@ impl Sender for ClusterPendingTasks {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterPutSettings<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -721,6 +726,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterRemoteInfo {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -804,6 +810,7 @@ impl Sender for ClusterRemoteInfo {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterReroute<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -964,6 +971,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterState {
     client: Elasticsearch,
     allow_no_indices: Option<bool>,
@@ -1170,6 +1178,7 @@ impl Sender for ClusterState {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct ClusterStats {
     client: Elasticsearch,
     error_trace: Option<bool>,

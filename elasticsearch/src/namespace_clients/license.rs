@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct LicenseDelete {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -106,6 +107,7 @@ impl Sender for LicenseDelete {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicenseGet {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -199,6 +201,7 @@ impl Sender for LicenseGet {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicenseGetBasicStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -282,6 +285,7 @@ impl Sender for LicenseGetBasicStatus {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicenseGetTrialStatus {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -365,6 +369,7 @@ impl Sender for LicenseGetTrialStatus {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicensePost<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,
@@ -471,6 +476,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicensePostStartBasic<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,
@@ -577,6 +583,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct LicensePostStartTrial<B> {
     client: Elasticsearch,
     acknowledge: Option<bool>,

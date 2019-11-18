@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct DataFrameDeleteDataFrameTransform {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -119,6 +120,7 @@ impl Sender for DataFrameDeleteDataFrameTransform {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFrameGetDataFrameTransform {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -248,6 +250,7 @@ impl Sender for DataFrameGetDataFrameTransform {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFrameGetDataFrameTransformStats {
     client: Elasticsearch,
     allow_no_match: Option<bool>,
@@ -375,6 +378,7 @@ impl Sender for DataFrameGetDataFrameTransformStats {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFramePreviewDataFrameTransform<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -471,6 +475,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFramePutDataFrameTransform<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -580,6 +585,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFrameStartDataFrameTransform<B> {
     client: Elasticsearch,
     body: Option<B>,
@@ -700,6 +706,7 @@ where
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct DataFrameStopDataFrameTransform<B> {
     client: Elasticsearch,
     allow_no_match: Option<bool>,

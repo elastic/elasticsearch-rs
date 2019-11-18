@@ -93,4 +93,36 @@ pub mod tests {
 
         Ok(())
     }
+
+    #[test]
+    fn test_clone_search_with_body() -> Result<(), failure::Error> {
+        let client = Elasticsearch::default();
+
+        let mut request = client
+            .search::<Value>()
+            .body(Some(json!({
+                "query": {
+                    "match_all": {}
+                }
+            })))
+            .allow_no_indices(Some(true));
+
+        let mut request_clone = request.clone()
+            .body(Some(json!({
+                "query": {
+                    "match_all": {}
+                },
+                "size": 1
+            })))
+            .allow_no_indices(None);
+
+        let mut response = request_clone.send()?;
+
+        assert_eq!(response.status_code(), StatusCode::OK);
+        let response_body = response.read_body::<Value>()?;
+
+        assert_eq!(response_body["hits"]["hits"].as_array().unwrap().len(), 1);
+
+        Ok(())
+    }
 }

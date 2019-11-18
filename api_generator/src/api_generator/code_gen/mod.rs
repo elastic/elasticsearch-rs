@@ -499,6 +499,7 @@ pub fn create_builder_struct(
     };
 
     quote!(
+        #[derive(Clone, Debug)]
         pub struct #builder_expr {
             client: Elasticsearch,
             #(#fields),*,

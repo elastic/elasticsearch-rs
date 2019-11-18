@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct XpackInfo {
     client: Elasticsearch,
     categories: Option<Vec<String>>,
@@ -120,6 +121,7 @@ impl Sender for XpackInfo {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct XpackUsage {
     client: Elasticsearch,
     error_trace: Option<bool>,

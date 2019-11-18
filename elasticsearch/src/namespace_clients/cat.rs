@@ -23,6 +23,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+#[derive(Clone, Debug)]
 pub struct CatAliases {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -200,6 +201,7 @@ impl Sender for CatAliases {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatAllocation {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -387,6 +389,7 @@ impl Sender for CatAllocation {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatCount {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -564,6 +567,7 @@ impl Sender for CatCount {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatFielddata {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -758,6 +762,7 @@ impl Sender for CatFielddata {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatHealth {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -929,6 +934,7 @@ impl Sender for CatHealth {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatHelp {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1036,6 +1042,7 @@ impl Sender for CatHelp {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatIndices {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -1256,6 +1263,7 @@ impl Sender for CatIndices {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatMaster {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1417,6 +1425,7 @@ impl Sender for CatMaster {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatNodeattrs {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1578,6 +1587,7 @@ impl Sender for CatNodeattrs {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatNodes {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1749,6 +1759,7 @@ impl Sender for CatNodes {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatPendingTasks {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -1910,6 +1921,7 @@ impl Sender for CatPendingTasks {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatPlugins {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2071,6 +2083,7 @@ impl Sender for CatPlugins {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatRecovery {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -2248,6 +2261,7 @@ impl Sender for CatRecovery {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatRepositories {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2409,6 +2423,7 @@ impl Sender for CatRepositories {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatSegments {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -2576,6 +2591,7 @@ impl Sender for CatSegments {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatShards {
     client: Elasticsearch,
     bytes: Option<Bytes>,
@@ -2763,6 +2779,7 @@ impl Sender for CatShards {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatSnapshots {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -2940,6 +2957,7 @@ impl Sender for CatSnapshots {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatTasks {
     client: Elasticsearch,
     actions: Option<Vec<String>>,
@@ -3129,6 +3147,7 @@ impl Sender for CatTasks {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatTemplates {
     client: Elasticsearch,
     error_trace: Option<bool>,
@@ -3306,6 +3325,7 @@ impl Sender for CatTemplates {
         Ok(response)
     }
 }
+#[derive(Clone, Debug)]
 pub struct CatThreadPool {
     client: Elasticsearch,
     error_trace: Option<bool>,
