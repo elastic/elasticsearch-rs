@@ -187,15 +187,24 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -324,7 +333,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -572,7 +584,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -590,7 +605,7 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "q")]
                 q: Option<String>,
-                #[serde(rename = "routing")]
+                #[serde(rename = "routing", serialize_with = "crate::client::serialize_vec_qs")]
                 routing: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -789,7 +804,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -990,7 +1008,10 @@ impl Sender for Delete {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -1369,11 +1390,17 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
@@ -1391,7 +1418,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
@@ -1415,7 +1445,7 @@ where
                 request_cache: Option<bool>,
                 #[serde(rename = "requests_per_second")]
                 requests_per_second: Option<i64>,
-                #[serde(rename = "routing")]
+                #[serde(rename = "routing", serialize_with = "crate::client::serialize_vec_qs")]
                 routing: Option<Vec<String>>,
                 #[serde(rename = "scroll")]
                 scroll: Option<String>,
@@ -1429,11 +1459,11 @@ where
                 size: Option<i64>,
                 #[serde(rename = "slices")]
                 slices: Option<i64>,
-                #[serde(rename = "sort")]
+                #[serde(rename = "sort", serialize_with = "crate::client::serialize_vec_qs")]
                 sort: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stats")]
+                #[serde(rename = "stats", serialize_with = "crate::client::serialize_vec_qs")]
                 stats: Option<Vec<String>>,
                 #[serde(rename = "terminate_after")]
                 terminate_after: Option<i64>,
@@ -1583,7 +1613,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -1692,7 +1725,10 @@ impl Sender for DeleteScript {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -1890,15 +1926,24 @@ impl Sender for Exists {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -1914,7 +1959,10 @@ impl Sender for Exists {
                 routing: Option<String>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stored_fields")]
+                #[serde(
+                    rename = "stored_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 stored_fields: Option<Vec<String>>,
                 #[serde(rename = "version")]
                 version: Option<i64>,
@@ -2108,15 +2156,24 @@ impl Sender for ExistsSource {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -2360,11 +2417,17 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "analyze_wildcard")]
                 analyze_wildcard: Option<bool>,
@@ -2376,7 +2439,10 @@ where
                 df: Option<String>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -2392,7 +2458,10 @@ where
                 routing: Option<String>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stored_fields")]
+                #[serde(
+                    rename = "stored_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 stored_fields: Option<Vec<String>>,
             }
             let query_params = QueryParamsStruct {
@@ -2549,9 +2618,12 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "fields")]
+                #[serde(rename = "fields", serialize_with = "crate::client::serialize_vec_qs")]
                 fields: Option<Vec<String>>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -2752,15 +2824,24 @@ impl Sender for Get {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -2776,7 +2857,10 @@ impl Sender for Get {
                 routing: Option<String>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stored_fields")]
+                #[serde(
+                    rename = "stored_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 stored_fields: Option<Vec<String>>,
                 #[serde(rename = "version")]
                 version: Option<i64>,
@@ -2883,7 +2967,10 @@ impl Sender for GetScript {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -3072,15 +3159,24 @@ impl Sender for GetSource {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -3326,7 +3422,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -3435,7 +3534,10 @@ impl Sender for Info {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -3627,15 +3729,24 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -3651,7 +3762,10 @@ where
                 routing: Option<String>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stored_fields")]
+                #[serde(
+                    rename = "stored_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 stored_fields: Option<Vec<String>>,
             }
             let query_params = QueryParamsStruct {
@@ -3845,7 +3959,10 @@ where
                 ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4039,7 +4156,10 @@ where
                 ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4276,13 +4396,16 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "field_statistics")]
                 field_statistics: Option<bool>,
-                #[serde(rename = "fields")]
+                #[serde(rename = "fields", serialize_with = "crate::client::serialize_vec_qs")]
                 fields: Option<Vec<String>>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "ids")]
+                #[serde(rename = "ids", serialize_with = "crate::client::serialize_vec_qs")]
                 ids: Option<Vec<String>>,
                 #[serde(rename = "offsets")]
                 offsets: Option<bool>,
@@ -4389,7 +4512,10 @@ impl Sender for Ping {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4529,7 +4655,10 @@ where
                 context: Option<String>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4673,7 +4802,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4826,7 +4958,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -4963,7 +5098,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -5077,7 +5215,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -5172,7 +5313,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -5297,7 +5441,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -5742,11 +5889,17 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
@@ -5764,7 +5917,10 @@ where
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df")]
                 df: Option<String>,
-                #[serde(rename = "docvalue_fields")]
+                #[serde(
+                    rename = "docvalue_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 docvalue_fields: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
@@ -5772,7 +5928,10 @@ where
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
@@ -5798,7 +5957,7 @@ where
                 request_cache: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
-                #[serde(rename = "routing")]
+                #[serde(rename = "routing", serialize_with = "crate::client::serialize_vec_qs")]
                 routing: Option<Vec<String>>,
                 #[serde(rename = "scroll")]
                 scroll: Option<String>,
@@ -5808,13 +5967,16 @@ where
                 seq_no_primary_term: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i64>,
-                #[serde(rename = "sort")]
+                #[serde(rename = "sort", serialize_with = "crate::client::serialize_vec_qs")]
                 sort: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stats")]
+                #[serde(rename = "stats", serialize_with = "crate::client::serialize_vec_qs")]
                 stats: Option<Vec<String>>,
-                #[serde(rename = "stored_fields")]
+                #[serde(
+                    rename = "stored_fields",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 stored_fields: Option<Vec<String>>,
                 #[serde(rename = "suggest_field")]
                 suggest_field: Option<String>,
@@ -6028,7 +6190,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -6279,7 +6444,10 @@ where
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -6295,7 +6463,7 @@ where
                 profile: Option<bool>,
                 #[serde(rename = "rest_total_hits_as_int")]
                 rest_total_hits_as_int: Option<bool>,
-                #[serde(rename = "routing")]
+                #[serde(rename = "routing", serialize_with = "crate::client::serialize_vec_qs")]
                 routing: Option<Vec<String>>,
                 #[serde(rename = "scroll")]
                 scroll: Option<String>,
@@ -6549,9 +6717,12 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "field_statistics")]
                 field_statistics: Option<bool>,
-                #[serde(rename = "fields")]
+                #[serde(rename = "fields", serialize_with = "crate::client::serialize_vec_qs")]
                 fields: Option<Vec<String>>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -6793,15 +6964,24 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -7197,11 +7377,17 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "_source")]
+                #[serde(rename = "_source", serialize_with = "crate::client::serialize_vec_qs")]
                 _source: Option<Vec<String>>,
-                #[serde(rename = "_source_excludes")]
+                #[serde(
+                    rename = "_source_excludes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_excludes: Option<Vec<String>>,
-                #[serde(rename = "_source_includes")]
+                #[serde(
+                    rename = "_source_includes",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 _source_includes: Option<Vec<String>>,
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
@@ -7219,7 +7405,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "from")]
                 from: Option<i64>,
@@ -7245,7 +7434,7 @@ where
                 request_cache: Option<bool>,
                 #[serde(rename = "requests_per_second")]
                 requests_per_second: Option<i64>,
-                #[serde(rename = "routing")]
+                #[serde(rename = "routing", serialize_with = "crate::client::serialize_vec_qs")]
                 routing: Option<Vec<String>>,
                 #[serde(rename = "scroll")]
                 scroll: Option<String>,
@@ -7259,11 +7448,11 @@ where
                 size: Option<i64>,
                 #[serde(rename = "slices")]
                 slices: Option<i64>,
-                #[serde(rename = "sort")]
+                #[serde(rename = "sort", serialize_with = "crate::client::serialize_vec_qs")]
                 sort: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
-                #[serde(rename = "stats")]
+                #[serde(rename = "stats", serialize_with = "crate::client::serialize_vec_qs")]
                 stats: Option<Vec<String>>,
                 #[serde(rename = "terminate_after")]
                 terminate_after: Option<i64>,
@@ -7417,7 +7606,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,

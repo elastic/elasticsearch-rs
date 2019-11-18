@@ -90,7 +90,10 @@ impl Sender for RollupDeleteJob {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -185,7 +188,10 @@ impl Sender for RollupGetJobs {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -280,7 +286,10 @@ impl Sender for RollupGetRollupCaps {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -373,7 +382,10 @@ impl Sender for RollupGetRollupIndexCaps {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -478,7 +490,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -621,7 +636,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -733,7 +751,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -853,7 +874,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,

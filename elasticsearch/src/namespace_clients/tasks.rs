@@ -126,15 +126,18 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "actions")]
+                #[serde(rename = "actions", serialize_with = "crate::client::serialize_vec_qs")]
                 actions: Option<Vec<String>>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "nodes")]
+                #[serde(rename = "nodes", serialize_with = "crate::client::serialize_vec_qs")]
                 nodes: Option<Vec<String>>,
                 #[serde(rename = "parent_task_id")]
                 parent_task_id: Option<String>,
@@ -243,7 +246,10 @@ impl Sender for TasksGet {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -375,19 +381,22 @@ impl Sender for TasksList {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "actions")]
+                #[serde(rename = "actions", serialize_with = "crate::client::serialize_vec_qs")]
                 actions: Option<Vec<String>>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "group_by")]
                 group_by: Option<GroupBy>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "nodes")]
+                #[serde(rename = "nodes", serialize_with = "crate::client::serialize_vec_qs")]
                 nodes: Option<Vec<String>>,
                 #[serde(rename = "parent_task_id")]
                 parent_task_id: Option<String>,

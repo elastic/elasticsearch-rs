@@ -123,7 +123,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -229,7 +232,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -335,7 +341,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -427,7 +436,10 @@ impl Sender for WatcherDeleteWatch {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -545,7 +557,10 @@ where
                 debug: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -638,7 +653,10 @@ impl Sender for WatcherGetWatch {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -773,7 +791,10 @@ where
                 active: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -875,7 +896,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -979,11 +1003,14 @@ impl Sender for WatcherStats {
                 emit_stacktraces: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "metric")]
+                #[serde(rename = "metric", serialize_with = "crate::client::serialize_vec_qs")]
                 metric: Option<Vec<String>>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
@@ -1075,7 +1102,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,

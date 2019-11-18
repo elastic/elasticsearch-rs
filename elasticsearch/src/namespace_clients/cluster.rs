@@ -107,7 +107,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -220,7 +223,10 @@ impl Sender for ClusterGetSettings {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
@@ -412,7 +418,10 @@ impl Sender for ClusterHealth {
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -536,7 +545,10 @@ impl Sender for ClusterPendingTasks {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -655,7 +667,10 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
@@ -743,7 +758,10 @@ impl Sender for ClusterRemoteInfo {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
@@ -881,13 +899,16 @@ where
                 error_trace: Option<bool>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
                 master_timeout: Option<String>,
-                #[serde(rename = "metric")]
+                #[serde(rename = "metric", serialize_with = "crate::client::serialize_vec_qs")]
                 metric: Option<Vec<String>>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
@@ -1074,7 +1095,10 @@ impl Sender for ClusterState {
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
                 expand_wildcards: Option<ExpandWildcards>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
@@ -1203,7 +1227,10 @@ impl Sender for ClusterStats {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,

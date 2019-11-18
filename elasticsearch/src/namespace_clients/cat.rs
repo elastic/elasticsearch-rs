@@ -142,11 +142,14 @@ impl Sender for CatAliases {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -158,7 +161,7 @@ impl Sender for CatAliases {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -316,11 +319,14 @@ impl Sender for CatAllocation {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -332,7 +338,7 @@ impl Sender for CatAllocation {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -482,11 +488,14 @@ impl Sender for CatCount {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -498,7 +507,7 @@ impl Sender for CatCount {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -656,13 +665,16 @@ impl Sender for CatFielddata {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "fields")]
+                #[serde(rename = "fields", serialize_with = "crate::client::serialize_vec_qs")]
                 fields: Option<Vec<String>>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -674,7 +686,7 @@ impl Sender for CatFielddata {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -816,11 +828,14 @@ impl Sender for CatHealth {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -832,7 +847,7 @@ impl Sender for CatHealth {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -933,7 +948,10 @@ impl Sender for CatHelp {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -941,7 +959,7 @@ impl Sender for CatHelp {
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1113,11 +1131,14 @@ impl Sender for CatIndices {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "health")]
                 health: Option<Health>,
@@ -1135,7 +1156,7 @@ impl Sender for CatIndices {
                 pretty: Option<bool>,
                 #[serde(rename = "pri")]
                 pri: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1272,11 +1293,14 @@ impl Sender for CatMaster {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -1288,7 +1312,7 @@ impl Sender for CatMaster {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1421,11 +1445,14 @@ impl Sender for CatNodeattrs {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -1437,7 +1464,7 @@ impl Sender for CatNodeattrs {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1577,13 +1604,16 @@ impl Sender for CatNodes {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
                 #[serde(rename = "full_id")]
                 full_id: Option<bool>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -1595,7 +1625,7 @@ impl Sender for CatNodes {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1729,11 +1759,14 @@ impl Sender for CatPendingTasks {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -1745,7 +1778,7 @@ impl Sender for CatPendingTasks {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -1878,11 +1911,14 @@ impl Sender for CatPlugins {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -1894,7 +1930,7 @@ impl Sender for CatPlugins {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2045,11 +2081,14 @@ impl Sender for CatRecovery {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -2059,7 +2098,7 @@ impl Sender for CatRecovery {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2192,11 +2231,14 @@ impl Sender for CatRepositories {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -2208,7 +2250,7 @@ impl Sender for CatRepositories {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2352,11 +2394,14 @@ impl Sender for CatSegments {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -2364,7 +2409,7 @@ impl Sender for CatSegments {
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2521,11 +2566,14 @@ impl Sender for CatShards {
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -2537,7 +2585,7 @@ impl Sender for CatShards {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2687,11 +2735,14 @@ impl Sender for CatSnapshots {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -2703,7 +2754,7 @@ impl Sender for CatSnapshots {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -2848,29 +2899,32 @@ impl Sender for CatTasks {
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(rename = "actions")]
+                #[serde(rename = "actions", serialize_with = "crate::client::serialize_vec_qs")]
                 actions: Option<Vec<String>>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "node_id")]
+                #[serde(rename = "node_id", serialize_with = "crate::client::serialize_vec_qs")]
                 node_id: Option<Vec<String>>,
                 #[serde(rename = "parent_task")]
                 parent_task: Option<i64>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -3021,11 +3075,14 @@ impl Sender for CatTemplates {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -3037,7 +3094,7 @@ impl Sender for CatTemplates {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "source")]
                 source: Option<String>,
@@ -3193,11 +3250,14 @@ impl Sender for CatThreadPool {
             struct QueryParamsStruct {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "filter_path")]
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs"
+                )]
                 filter_path: Option<Vec<String>>,
                 #[serde(rename = "format")]
                 format: Option<String>,
-                #[serde(rename = "h")]
+                #[serde(rename = "h", serialize_with = "crate::client::serialize_vec_qs")]
                 h: Option<Vec<String>>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
@@ -3209,7 +3269,7 @@ impl Sender for CatThreadPool {
                 master_timeout: Option<String>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "s")]
+                #[serde(rename = "s", serialize_with = "crate::client::serialize_vec_qs")]
                 s: Option<Vec<String>>,
                 #[serde(rename = "size")]
                 size: Option<Size>,
