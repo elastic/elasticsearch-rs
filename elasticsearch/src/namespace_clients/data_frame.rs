@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Delete Data Frame Transform API"]
 pub enum DataFrameDeleteDataFrameTransformUrlParts {
     TransformId(String),
 }
@@ -41,6 +42,7 @@ impl DataFrameDeleteDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Delete Data Frame Transform API"]
 pub struct DataFrameDeleteDataFrameTransform {
     client: Elasticsearch,
     parts: DataFrameDeleteDataFrameTransformUrlParts,
@@ -137,6 +139,7 @@ impl Sender for DataFrameDeleteDataFrameTransform {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Get Data Frame Transform API"]
 pub enum DataFrameGetDataFrameTransformUrlParts {
     TransformId(String),
     None,
@@ -155,6 +158,7 @@ impl DataFrameGetDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Get Data Frame Transform API"]
 pub struct DataFrameGetDataFrameTransform {
     client: Elasticsearch,
     parts: DataFrameGetDataFrameTransformUrlParts,
@@ -271,6 +275,7 @@ impl Sender for DataFrameGetDataFrameTransform {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Get Data Frame Transform Stats API"]
 pub enum DataFrameGetDataFrameTransformStatsUrlParts {
     TransformId(String),
 }
@@ -288,6 +293,7 @@ impl DataFrameGetDataFrameTransformStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Get Data Frame Transform Stats API"]
 pub struct DataFrameGetDataFrameTransformStats {
     client: Elasticsearch,
     parts: DataFrameGetDataFrameTransformStatsUrlParts,
@@ -404,6 +410,7 @@ impl Sender for DataFrameGetDataFrameTransformStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Preview Data Frame Transform API"]
 pub enum DataFramePreviewDataFrameTransformUrlParts {
     None,
 }
@@ -417,6 +424,7 @@ impl DataFramePreviewDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Preview Data Frame Transform API"]
 pub struct DataFramePreviewDataFrameTransform<B> {
     client: Elasticsearch,
     parts: DataFramePreviewDataFrameTransformUrlParts,
@@ -516,6 +524,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Put Data Frame Transform API"]
 pub enum DataFramePutDataFrameTransformUrlParts {
     TransformId(String),
 }
@@ -532,6 +541,7 @@ impl DataFramePutDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Put Data Frame Transform API"]
 pub struct DataFramePutDataFrameTransform<B> {
     client: Elasticsearch,
     parts: DataFramePutDataFrameTransformUrlParts,
@@ -641,6 +651,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Start Data Frame Transform API"]
 pub enum DataFrameStartDataFrameTransformUrlParts {
     TransformId(String),
 }
@@ -658,6 +669,7 @@ impl DataFrameStartDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Start Data Frame Transform API"]
 pub struct DataFrameStartDataFrameTransform<B> {
     client: Elasticsearch,
     parts: DataFrameStartDataFrameTransformUrlParts,
@@ -767,6 +779,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Stop Data Frame Transform API"]
 pub enum DataFrameStopDataFrameTransformUrlParts {
     TransformId(String),
 }
@@ -784,6 +797,7 @@ impl DataFrameStopDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Stop Data Frame Transform API"]
 pub struct DataFrameStopDataFrameTransform<B> {
     client: Elasticsearch,
     parts: DataFrameStopDataFrameTransformUrlParts,
@@ -916,6 +930,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Data Frame Update Data Frame Transform API"]
 pub enum DataFrameUpdateDataFrameTransformUrlParts {
     TransformId(String),
 }
@@ -933,6 +948,7 @@ impl DataFrameUpdateDataFrameTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Data Frame Update Data Frame Transform API"]
 pub struct DataFrameUpdateDataFrameTransform<B> {
     client: Elasticsearch,
     parts: DataFrameUpdateDataFrameTransformUrlParts,

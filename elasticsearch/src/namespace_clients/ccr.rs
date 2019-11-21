@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Delete Auto Follow Pattern API"]
 pub enum CcrDeleteAutoFollowPatternUrlParts {
     Name(String),
 }
@@ -41,6 +42,7 @@ impl CcrDeleteAutoFollowPatternUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Delete Auto Follow Pattern API"]
 pub struct CcrDeleteAutoFollowPattern {
     client: Elasticsearch,
     parts: CcrDeleteAutoFollowPatternUrlParts,
@@ -127,6 +129,7 @@ impl Sender for CcrDeleteAutoFollowPattern {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow API"]
 pub enum CcrFollowUrlParts {
     Index(String),
 }
@@ -144,6 +147,7 @@ impl CcrFollowUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow API"]
 pub struct CcrFollow<B> {
     client: Elasticsearch,
     parts: CcrFollowUrlParts,
@@ -256,6 +260,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow Info API"]
 pub enum CcrFollowInfoUrlParts {
     Index(Vec<String>),
 }
@@ -274,6 +279,7 @@ impl CcrFollowInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow Info API"]
 pub struct CcrFollowInfo {
     client: Elasticsearch,
     parts: CcrFollowInfoUrlParts,
@@ -360,6 +366,7 @@ impl Sender for CcrFollowInfo {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow Stats API"]
 pub enum CcrFollowStatsUrlParts {
     Index(Vec<String>),
 }
@@ -378,6 +385,7 @@ impl CcrFollowStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow Stats API"]
 pub struct CcrFollowStats {
     client: Elasticsearch,
     parts: CcrFollowStatsUrlParts,
@@ -464,6 +472,7 @@ impl Sender for CcrFollowStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Forget Follower API"]
 pub enum CcrForgetFollowerUrlParts {
     Index(String),
 }
@@ -481,6 +490,7 @@ impl CcrForgetFollowerUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Forget Follower API"]
 pub struct CcrForgetFollower<B> {
     client: Elasticsearch,
     parts: CcrForgetFollowerUrlParts,
@@ -580,6 +590,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Get Auto Follow Pattern API"]
 pub enum CcrGetAutoFollowPatternUrlParts {
     None,
     Name(String),
@@ -598,6 +609,7 @@ impl CcrGetAutoFollowPatternUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Get Auto Follow Pattern API"]
 pub struct CcrGetAutoFollowPattern {
     client: Elasticsearch,
     parts: CcrGetAutoFollowPatternUrlParts,
@@ -684,6 +696,7 @@ impl Sender for CcrGetAutoFollowPattern {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Pause Follow API"]
 pub enum CcrPauseFollowUrlParts {
     Index(String),
 }
@@ -701,6 +714,7 @@ impl CcrPauseFollowUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Pause Follow API"]
 pub struct CcrPauseFollow<B> {
     client: Elasticsearch,
     parts: CcrPauseFollowUrlParts,
@@ -800,6 +814,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Put Auto Follow Pattern API"]
 pub enum CcrPutAutoFollowPatternUrlParts {
     Name(String),
 }
@@ -816,6 +831,7 @@ impl CcrPutAutoFollowPatternUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Put Auto Follow Pattern API"]
 pub struct CcrPutAutoFollowPattern<B> {
     client: Elasticsearch,
     parts: CcrPutAutoFollowPatternUrlParts,
@@ -915,6 +931,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Resume Follow API"]
 pub enum CcrResumeFollowUrlParts {
     Index(String),
 }
@@ -932,6 +949,7 @@ impl CcrResumeFollowUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Resume Follow API"]
 pub struct CcrResumeFollow<B> {
     client: Elasticsearch,
     parts: CcrResumeFollowUrlParts,
@@ -1031,6 +1049,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Stats API"]
 pub enum CcrStatsUrlParts {
     None,
 }
@@ -1042,6 +1061,7 @@ impl CcrStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Stats API"]
 pub struct CcrStats {
     client: Elasticsearch,
     parts: CcrStatsUrlParts,
@@ -1128,6 +1148,7 @@ impl Sender for CcrStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Unfollow API"]
 pub enum CcrUnfollowUrlParts {
     Index(String),
 }
@@ -1145,6 +1166,7 @@ impl CcrUnfollowUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Unfollow API"]
 pub struct CcrUnfollow<B> {
     client: Elasticsearch,
     parts: CcrUnfollowUrlParts,

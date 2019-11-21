@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Delete API"]
 pub enum LicenseDeleteUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl LicenseDeleteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Delete API"]
 pub struct LicenseDelete {
     client: Elasticsearch,
     parts: LicenseDeleteUrlParts,
@@ -122,6 +124,7 @@ impl Sender for LicenseDelete {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Get API"]
 pub enum LicenseGetUrlParts {
     None,
 }
@@ -133,6 +136,7 @@ impl LicenseGetUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Get API"]
 pub struct LicenseGet {
     client: Elasticsearch,
     parts: LicenseGetUrlParts,
@@ -229,6 +233,7 @@ impl Sender for LicenseGet {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Get Basic Status API"]
 pub enum LicenseGetBasicStatusUrlParts {
     None,
 }
@@ -240,6 +245,7 @@ impl LicenseGetBasicStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Get Basic Status API"]
 pub struct LicenseGetBasicStatus {
     client: Elasticsearch,
     parts: LicenseGetBasicStatusUrlParts,
@@ -326,6 +332,7 @@ impl Sender for LicenseGetBasicStatus {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Get Trial Status API"]
 pub enum LicenseGetTrialStatusUrlParts {
     None,
 }
@@ -337,6 +344,7 @@ impl LicenseGetTrialStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Get Trial Status API"]
 pub struct LicenseGetTrialStatus {
     client: Elasticsearch,
     parts: LicenseGetTrialStatusUrlParts,
@@ -423,6 +431,7 @@ impl Sender for LicenseGetTrialStatus {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Post API"]
 pub enum LicensePostUrlParts {
     None,
 }
@@ -434,6 +443,7 @@ impl LicensePostUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Post API"]
 pub struct LicensePost<B> {
     client: Elasticsearch,
     parts: LicensePostUrlParts,
@@ -543,6 +553,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Post Start Basic API"]
 pub enum LicensePostStartBasicUrlParts {
     None,
 }
@@ -554,6 +565,7 @@ impl LicensePostStartBasicUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Post Start Basic API"]
 pub struct LicensePostStartBasic<B> {
     client: Elasticsearch,
     parts: LicensePostStartBasicUrlParts,
@@ -663,6 +675,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the License Post Start Trial API"]
 pub enum LicensePostStartTrialUrlParts {
     None,
 }
@@ -674,6 +687,7 @@ impl LicensePostStartTrialUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the License Post Start Trial API"]
 pub struct LicensePostStartTrial<B> {
     client: Elasticsearch,
     parts: LicensePostStartTrialUrlParts,

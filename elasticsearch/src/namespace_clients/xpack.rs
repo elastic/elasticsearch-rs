@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Xpack Info API"]
 pub enum XpackInfoUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl XpackInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Xpack Info API"]
 pub struct XpackInfo {
     client: Elasticsearch,
     parts: XpackInfoUrlParts,
@@ -136,6 +138,7 @@ impl Sender for XpackInfo {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Xpack Usage API"]
 pub enum XpackUsageUrlParts {
     None,
 }
@@ -147,6 +150,7 @@ impl XpackUsageUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Xpack Usage API"]
 pub struct XpackUsage {
     client: Elasticsearch,
     parts: XpackUsageUrlParts,

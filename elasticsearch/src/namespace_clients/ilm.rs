@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Delete Lifecycle API"]
 pub enum IlmDeleteLifecycleUrlParts {
     Policy(String),
 }
@@ -41,6 +42,7 @@ impl IlmDeleteLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Delete Lifecycle API"]
 pub struct IlmDeleteLifecycle {
     client: Elasticsearch,
     parts: IlmDeleteLifecycleUrlParts,
@@ -127,6 +129,7 @@ impl Sender for IlmDeleteLifecycle {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Explain Lifecycle API"]
 pub enum IlmExplainLifecycleUrlParts {
     Index(String),
 }
@@ -144,6 +147,7 @@ impl IlmExplainLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Explain Lifecycle API"]
 pub struct IlmExplainLifecycle {
     client: Elasticsearch,
     parts: IlmExplainLifecycleUrlParts,
@@ -250,6 +254,7 @@ impl Sender for IlmExplainLifecycle {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Get Lifecycle API"]
 pub enum IlmGetLifecycleUrlParts {
     Policy(String),
     None,
@@ -268,6 +273,7 @@ impl IlmGetLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Get Lifecycle API"]
 pub struct IlmGetLifecycle {
     client: Elasticsearch,
     parts: IlmGetLifecycleUrlParts,
@@ -354,6 +360,7 @@ impl Sender for IlmGetLifecycle {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Get Status API"]
 pub enum IlmGetStatusUrlParts {
     None,
 }
@@ -365,6 +372,7 @@ impl IlmGetStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Get Status API"]
 pub struct IlmGetStatus {
     client: Elasticsearch,
     parts: IlmGetStatusUrlParts,
@@ -451,6 +459,7 @@ impl Sender for IlmGetStatus {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Move To Step API"]
 pub enum IlmMoveToStepUrlParts {
     Index(String),
 }
@@ -467,6 +476,7 @@ impl IlmMoveToStepUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Move To Step API"]
 pub struct IlmMoveToStep<B> {
     client: Elasticsearch,
     parts: IlmMoveToStepUrlParts,
@@ -566,6 +576,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Put Lifecycle API"]
 pub enum IlmPutLifecycleUrlParts {
     Policy(String),
 }
@@ -582,6 +593,7 @@ impl IlmPutLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Put Lifecycle API"]
 pub struct IlmPutLifecycle<B> {
     client: Elasticsearch,
     parts: IlmPutLifecycleUrlParts,
@@ -681,6 +693,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Remove Policy API"]
 pub enum IlmRemovePolicyUrlParts {
     Index(String),
 }
@@ -698,6 +711,7 @@ impl IlmRemovePolicyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Remove Policy API"]
 pub struct IlmRemovePolicy<B> {
     client: Elasticsearch,
     parts: IlmRemovePolicyUrlParts,
@@ -797,6 +811,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Retry API"]
 pub enum IlmRetryUrlParts {
     Index(String),
 }
@@ -814,6 +829,7 @@ impl IlmRetryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Retry API"]
 pub struct IlmRetry<B> {
     client: Elasticsearch,
     parts: IlmRetryUrlParts,
@@ -913,6 +929,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Start API"]
 pub enum IlmStartUrlParts {
     None,
 }
@@ -924,6 +941,7 @@ impl IlmStartUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Start API"]
 pub struct IlmStart<B> {
     client: Elasticsearch,
     parts: IlmStartUrlParts,
@@ -1023,6 +1041,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ilm Stop API"]
 pub enum IlmStopUrlParts {
     None,
 }
@@ -1034,6 +1053,7 @@ impl IlmStopUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ilm Stop API"]
 pub struct IlmStop<B> {
     client: Elasticsearch,
     parts: IlmStopUrlParts,

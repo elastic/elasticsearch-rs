@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Delete Pipeline API"]
 pub enum IngestDeletePipelineUrlParts {
     Id(String),
 }
@@ -41,6 +42,7 @@ impl IngestDeletePipelineUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Delete Pipeline API"]
 pub struct IngestDeletePipeline {
     client: Elasticsearch,
     parts: IngestDeletePipelineUrlParts,
@@ -147,6 +149,7 @@ impl Sender for IngestDeletePipeline {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Get Pipeline API"]
 pub enum IngestGetPipelineUrlParts {
     None,
     Id(String),
@@ -165,6 +168,7 @@ impl IngestGetPipelineUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Get Pipeline API"]
 pub struct IngestGetPipeline {
     client: Elasticsearch,
     parts: IngestGetPipelineUrlParts,
@@ -261,6 +265,7 @@ impl Sender for IngestGetPipeline {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Processor Grok API"]
 pub enum IngestProcessorGrokUrlParts {
     None,
 }
@@ -272,6 +277,7 @@ impl IngestProcessorGrokUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Processor Grok API"]
 pub struct IngestProcessorGrok {
     client: Elasticsearch,
     parts: IngestProcessorGrokUrlParts,
@@ -358,6 +364,7 @@ impl Sender for IngestProcessorGrok {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Put Pipeline API"]
 pub enum IngestPutPipelineUrlParts {
     Id(String),
 }
@@ -374,6 +381,7 @@ impl IngestPutPipelineUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Put Pipeline API"]
 pub struct IngestPutPipeline<B> {
     client: Elasticsearch,
     parts: IngestPutPipelineUrlParts,
@@ -493,6 +501,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Simulate API"]
 pub enum IngestSimulateUrlParts {
     None,
     Id(String),
@@ -512,6 +521,7 @@ impl IngestSimulateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Simulate API"]
 pub struct IngestSimulate<B> {
     client: Elasticsearch,
     parts: IngestSimulateUrlParts,

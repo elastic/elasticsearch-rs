@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Graph Explore API"]
 pub enum GraphExploreUrlParts {
     Index(Vec<String>),
     IndexType(Vec<String>, Vec<String>),
@@ -55,6 +56,7 @@ impl GraphExploreUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Graph Explore API"]
 pub struct GraphExplore<B> {
     client: Elasticsearch,
     parts: GraphExploreUrlParts,

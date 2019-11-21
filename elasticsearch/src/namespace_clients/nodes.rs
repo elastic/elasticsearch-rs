@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Nodes Hot Threads API"]
 pub enum NodesHotThreadsUrlParts {
     None,
     NodeId(Vec<String>),
@@ -45,6 +46,7 @@ impl NodesHotThreadsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Nodes Hot Threads API"]
 pub struct NodesHotThreads {
     client: Elasticsearch,
     parts: NodesHotThreadsUrlParts,
@@ -194,6 +196,7 @@ impl Sender for NodesHotThreads {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Nodes Info API"]
 pub enum NodesInfoUrlParts {
     None,
     NodeId(Vec<String>),
@@ -232,6 +235,7 @@ impl NodesInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Nodes Info API"]
 pub struct NodesInfo {
     client: Elasticsearch,
     parts: NodesInfoUrlParts,
@@ -338,6 +342,7 @@ impl Sender for NodesInfo {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Nodes Reload Secure Settings API"]
 pub enum NodesReloadSecureSettingsUrlParts {
     None,
     NodeId(Vec<String>),
@@ -358,6 +363,7 @@ impl NodesReloadSecureSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Nodes Reload Secure Settings API"]
 pub struct NodesReloadSecureSettings<B> {
     client: Elasticsearch,
     parts: NodesReloadSecureSettingsUrlParts,
@@ -467,6 +473,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Nodes Stats API"]
 pub enum NodesStatsUrlParts {
     None,
     NodeId(Vec<String>),
@@ -538,6 +545,7 @@ impl NodesStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Nodes Stats API"]
 pub struct NodesStats {
     client: Elasticsearch,
     parts: NodesStatsUrlParts,
@@ -723,6 +731,7 @@ impl Sender for NodesStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Nodes Usage API"]
 pub enum NodesUsageUrlParts {
     None,
     NodeId(Vec<String>),
@@ -762,6 +771,7 @@ impl NodesUsageUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Nodes Usage API"]
 pub struct NodesUsage {
     client: Elasticsearch,
     parts: NodesUsageUrlParts,

@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Tasks Cancel API"]
 pub enum TasksCancelUrlParts {
     None,
     TaskId(String),
@@ -44,6 +45,7 @@ impl TasksCancelUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Tasks Cancel API"]
 pub struct TasksCancel<B> {
     client: Elasticsearch,
     parts: TasksCancelUrlParts,
@@ -181,6 +183,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Tasks Get API"]
 pub enum TasksGetUrlParts {
     TaskId(String),
 }
@@ -197,6 +200,7 @@ impl TasksGetUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Tasks Get API"]
 pub struct TasksGet {
     client: Elasticsearch,
     parts: TasksGetUrlParts,
@@ -306,6 +310,7 @@ impl Sender for TasksGet {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Tasks List API"]
 pub enum TasksListUrlParts {
     None,
 }
@@ -317,6 +322,7 @@ impl TasksListUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Tasks List API"]
 pub struct TasksList {
     client: Elasticsearch,
     parts: TasksListUrlParts,

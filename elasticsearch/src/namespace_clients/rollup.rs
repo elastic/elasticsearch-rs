@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Delete Job API"]
 pub enum RollupDeleteJobUrlParts {
     Id(String),
 }
@@ -41,6 +42,7 @@ impl RollupDeleteJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Delete Job API"]
 pub struct RollupDeleteJob {
     client: Elasticsearch,
     parts: RollupDeleteJobUrlParts,
@@ -127,6 +129,7 @@ impl Sender for RollupDeleteJob {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Jobs API"]
 pub enum RollupGetJobsUrlParts {
     Id(String),
     None,
@@ -145,6 +148,7 @@ impl RollupGetJobsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Jobs API"]
 pub struct RollupGetJobs {
     client: Elasticsearch,
     parts: RollupGetJobsUrlParts,
@@ -231,6 +235,7 @@ impl Sender for RollupGetJobs {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Rollup Caps API"]
 pub enum RollupGetRollupCapsUrlParts {
     Id(String),
     None,
@@ -249,6 +254,7 @@ impl RollupGetRollupCapsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Rollup Caps API"]
 pub struct RollupGetRollupCaps {
     client: Elasticsearch,
     parts: RollupGetRollupCapsUrlParts,
@@ -335,6 +341,7 @@ impl Sender for RollupGetRollupCaps {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Rollup Index Caps API"]
 pub enum RollupGetRollupIndexCapsUrlParts {
     Index(String),
 }
@@ -352,6 +359,7 @@ impl RollupGetRollupIndexCapsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Rollup Index Caps API"]
 pub struct RollupGetRollupIndexCaps {
     client: Elasticsearch,
     parts: RollupGetRollupIndexCapsUrlParts,
@@ -438,6 +446,7 @@ impl Sender for RollupGetRollupIndexCaps {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Put Job API"]
 pub enum RollupPutJobUrlParts {
     Id(String),
 }
@@ -454,6 +463,7 @@ impl RollupPutJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Put Job API"]
 pub struct RollupPutJob<B> {
     client: Elasticsearch,
     parts: RollupPutJobUrlParts,
@@ -553,6 +563,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Rollup Search API"]
 pub enum RollupRollupSearchUrlParts {
     Index(Vec<String>),
     IndexType(Vec<String>, String),
@@ -582,6 +593,7 @@ impl RollupRollupSearchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Rollup Search API"]
 pub struct RollupRollupSearch<B> {
     client: Elasticsearch,
     parts: RollupRollupSearchUrlParts,
@@ -707,6 +719,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Start Job API"]
 pub enum RollupStartJobUrlParts {
     Id(String),
 }
@@ -724,6 +737,7 @@ impl RollupStartJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Start Job API"]
 pub struct RollupStartJob<B> {
     client: Elasticsearch,
     parts: RollupStartJobUrlParts,
@@ -823,6 +837,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Stop Job API"]
 pub enum RollupStopJobUrlParts {
     Id(String),
 }
@@ -840,6 +855,7 @@ impl RollupStopJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Stop Job API"]
 pub struct RollupStopJob<B> {
     client: Elasticsearch,
     parts: RollupStopJobUrlParts,

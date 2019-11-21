@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Authenticate API"]
 pub enum SecurityAuthenticateUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl SecurityAuthenticateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Authenticate API"]
 pub struct SecurityAuthenticate {
     client: Elasticsearch,
     parts: SecurityAuthenticateUrlParts,
@@ -122,6 +124,7 @@ impl Sender for SecurityAuthenticate {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Change Password API"]
 pub enum SecurityChangePasswordUrlParts {
     Username(String),
     None,
@@ -141,6 +144,7 @@ impl SecurityChangePasswordUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Change Password API"]
 pub struct SecurityChangePassword<B> {
     client: Elasticsearch,
     parts: SecurityChangePasswordUrlParts,
@@ -250,6 +254,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Clear Cached Realms API"]
 pub enum SecurityClearCachedRealmsUrlParts {
     Realms(Vec<String>),
 }
@@ -268,6 +273,7 @@ impl SecurityClearCachedRealmsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Clear Cached Realms API"]
 pub struct SecurityClearCachedRealms<B> {
     client: Elasticsearch,
     parts: SecurityClearCachedRealmsUrlParts,
@@ -381,6 +387,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Clear Cached Roles API"]
 pub enum SecurityClearCachedRolesUrlParts {
     Name(Vec<String>),
 }
@@ -399,6 +406,7 @@ impl SecurityClearCachedRolesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Clear Cached Roles API"]
 pub struct SecurityClearCachedRoles<B> {
     client: Elasticsearch,
     parts: SecurityClearCachedRolesUrlParts,
@@ -498,6 +506,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Create Api Key API"]
 pub enum SecurityCreateApiKeyUrlParts {
     None,
 }
@@ -509,6 +518,7 @@ impl SecurityCreateApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Create Api Key API"]
 pub struct SecurityCreateApiKey<B> {
     client: Elasticsearch,
     parts: SecurityCreateApiKeyUrlParts,
@@ -618,6 +628,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Delete Privileges API"]
 pub enum SecurityDeletePrivilegesUrlParts {
     ApplicationName(String, String),
 }
@@ -636,6 +647,7 @@ impl SecurityDeletePrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Delete Privileges API"]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
     parts: SecurityDeletePrivilegesUrlParts,
@@ -732,6 +744,7 @@ impl Sender for SecurityDeletePrivileges {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Delete Role API"]
 pub enum SecurityDeleteRoleUrlParts {
     Name(String),
 }
@@ -748,6 +761,7 @@ impl SecurityDeleteRoleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Delete Role API"]
 pub struct SecurityDeleteRole {
     client: Elasticsearch,
     parts: SecurityDeleteRoleUrlParts,
@@ -844,6 +858,7 @@ impl Sender for SecurityDeleteRole {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Delete Role Mapping API"]
 pub enum SecurityDeleteRoleMappingUrlParts {
     Name(String),
 }
@@ -860,6 +875,7 @@ impl SecurityDeleteRoleMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Delete Role Mapping API"]
 pub struct SecurityDeleteRoleMapping {
     client: Elasticsearch,
     parts: SecurityDeleteRoleMappingUrlParts,
@@ -956,6 +972,7 @@ impl Sender for SecurityDeleteRoleMapping {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Delete User API"]
 pub enum SecurityDeleteUserUrlParts {
     Username(String),
 }
@@ -972,6 +989,7 @@ impl SecurityDeleteUserUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Delete User API"]
 pub struct SecurityDeleteUser {
     client: Elasticsearch,
     parts: SecurityDeleteUserUrlParts,
@@ -1068,6 +1086,7 @@ impl Sender for SecurityDeleteUser {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Disable User API"]
 pub enum SecurityDisableUserUrlParts {
     Username(String),
 }
@@ -1085,6 +1104,7 @@ impl SecurityDisableUserUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Disable User API"]
 pub struct SecurityDisableUser<B> {
     client: Elasticsearch,
     parts: SecurityDisableUserUrlParts,
@@ -1194,6 +1214,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Enable User API"]
 pub enum SecurityEnableUserUrlParts {
     Username(String),
 }
@@ -1211,6 +1232,7 @@ impl SecurityEnableUserUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Enable User API"]
 pub struct SecurityEnableUser<B> {
     client: Elasticsearch,
     parts: SecurityEnableUserUrlParts,
@@ -1320,6 +1342,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Api Key API"]
 pub enum SecurityGetApiKeyUrlParts {
     None,
 }
@@ -1331,6 +1354,7 @@ impl SecurityGetApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Api Key API"]
 pub struct SecurityGetApiKey {
     client: Elasticsearch,
     parts: SecurityGetApiKeyUrlParts,
@@ -1457,6 +1481,7 @@ impl Sender for SecurityGetApiKey {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Builtin Privileges API"]
 pub enum SecurityGetBuiltinPrivilegesUrlParts {
     None,
 }
@@ -1468,6 +1493,7 @@ impl SecurityGetBuiltinPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Builtin Privileges API"]
 pub struct SecurityGetBuiltinPrivileges {
     client: Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesUrlParts,
@@ -1554,6 +1580,7 @@ impl Sender for SecurityGetBuiltinPrivileges {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Privileges API"]
 pub enum SecurityGetPrivilegesUrlParts {
     None,
     Application(String),
@@ -1581,6 +1608,7 @@ impl SecurityGetPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Privileges API"]
 pub struct SecurityGetPrivileges {
     client: Elasticsearch,
     parts: SecurityGetPrivilegesUrlParts,
@@ -1667,6 +1695,7 @@ impl Sender for SecurityGetPrivileges {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Role API"]
 pub enum SecurityGetRoleUrlParts {
     Name(String),
     None,
@@ -1685,6 +1714,7 @@ impl SecurityGetRoleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Role API"]
 pub struct SecurityGetRole {
     client: Elasticsearch,
     parts: SecurityGetRoleUrlParts,
@@ -1771,6 +1801,7 @@ impl Sender for SecurityGetRole {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Role Mapping API"]
 pub enum SecurityGetRoleMappingUrlParts {
     Name(String),
     None,
@@ -1789,6 +1820,7 @@ impl SecurityGetRoleMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Role Mapping API"]
 pub struct SecurityGetRoleMapping {
     client: Elasticsearch,
     parts: SecurityGetRoleMappingUrlParts,
@@ -1875,6 +1907,7 @@ impl Sender for SecurityGetRoleMapping {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get Token API"]
 pub enum SecurityGetTokenUrlParts {
     None,
 }
@@ -1886,6 +1919,7 @@ impl SecurityGetTokenUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get Token API"]
 pub struct SecurityGetToken<B> {
     client: Elasticsearch,
     parts: SecurityGetTokenUrlParts,
@@ -1985,6 +2019,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get User API"]
 pub enum SecurityGetUserUrlParts {
     Username(Vec<String>),
     None,
@@ -2004,6 +2039,7 @@ impl SecurityGetUserUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get User API"]
 pub struct SecurityGetUser {
     client: Elasticsearch,
     parts: SecurityGetUserUrlParts,
@@ -2090,6 +2126,7 @@ impl Sender for SecurityGetUser {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Get User Privileges API"]
 pub enum SecurityGetUserPrivilegesUrlParts {
     None,
 }
@@ -2101,6 +2138,7 @@ impl SecurityGetUserPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Get User Privileges API"]
 pub struct SecurityGetUserPrivileges {
     client: Elasticsearch,
     parts: SecurityGetUserPrivilegesUrlParts,
@@ -2187,6 +2225,7 @@ impl Sender for SecurityGetUserPrivileges {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Has Privileges API"]
 pub enum SecurityHasPrivilegesUrlParts {
     None,
     User(String),
@@ -2206,6 +2245,7 @@ impl SecurityHasPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Has Privileges API"]
 pub struct SecurityHasPrivileges<B> {
     client: Elasticsearch,
     parts: SecurityHasPrivilegesUrlParts,
@@ -2308,6 +2348,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Invalidate Api Key API"]
 pub enum SecurityInvalidateApiKeyUrlParts {
     None,
 }
@@ -2319,6 +2360,7 @@ impl SecurityInvalidateApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Invalidate Api Key API"]
 pub struct SecurityInvalidateApiKey<B> {
     client: Elasticsearch,
     parts: SecurityInvalidateApiKeyUrlParts,
@@ -2418,6 +2460,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Invalidate Token API"]
 pub enum SecurityInvalidateTokenUrlParts {
     None,
 }
@@ -2429,6 +2472,7 @@ impl SecurityInvalidateTokenUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Invalidate Token API"]
 pub struct SecurityInvalidateToken<B> {
     client: Elasticsearch,
     parts: SecurityInvalidateTokenUrlParts,
@@ -2528,6 +2572,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Put Privileges API"]
 pub enum SecurityPutPrivilegesUrlParts {
     None,
 }
@@ -2539,6 +2584,7 @@ impl SecurityPutPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Put Privileges API"]
 pub struct SecurityPutPrivileges<B> {
     client: Elasticsearch,
     parts: SecurityPutPrivilegesUrlParts,
@@ -2648,6 +2694,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Put Role API"]
 pub enum SecurityPutRoleUrlParts {
     Name(String),
 }
@@ -2664,6 +2711,7 @@ impl SecurityPutRoleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Put Role API"]
 pub struct SecurityPutRole<B> {
     client: Elasticsearch,
     parts: SecurityPutRoleUrlParts,
@@ -2773,6 +2821,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Put Role Mapping API"]
 pub enum SecurityPutRoleMappingUrlParts {
     Name(String),
 }
@@ -2789,6 +2838,7 @@ impl SecurityPutRoleMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Put Role Mapping API"]
 pub struct SecurityPutRoleMapping<B> {
     client: Elasticsearch,
     parts: SecurityPutRoleMappingUrlParts,
@@ -2898,6 +2948,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Security Put User API"]
 pub enum SecurityPutUserUrlParts {
     Username(String),
 }
@@ -2914,6 +2965,7 @@ impl SecurityPutUserUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Security Put User API"]
 pub struct SecurityPutUser<B> {
     client: Elasticsearch,
     parts: SecurityPutUserUrlParts,

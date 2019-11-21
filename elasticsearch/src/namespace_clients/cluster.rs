@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Allocation Explain API"]
 pub enum ClusterAllocationExplainUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl ClusterAllocationExplainUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Allocation Explain API"]
 pub struct ClusterAllocationExplain<B> {
     client: Elasticsearch,
     parts: ClusterAllocationExplainUrlParts,
@@ -161,6 +163,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Get Settings API"]
 pub enum ClusterGetSettingsUrlParts {
     None,
 }
@@ -172,6 +175,7 @@ impl ClusterGetSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Get Settings API"]
 pub struct ClusterGetSettings {
     client: Elasticsearch,
     parts: ClusterGetSettingsUrlParts,
@@ -298,6 +302,7 @@ impl Sender for ClusterGetSettings {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Health API"]
 pub enum ClusterHealthUrlParts {
     None,
     Index(Vec<String>),
@@ -317,6 +322,7 @@ impl ClusterHealthUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Health API"]
 pub struct ClusterHealth {
     client: Elasticsearch,
     parts: ClusterHealthUrlParts,
@@ -528,6 +534,7 @@ impl Sender for ClusterHealth {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Pending Tasks API"]
 pub enum ClusterPendingTasksUrlParts {
     None,
 }
@@ -539,6 +546,7 @@ impl ClusterPendingTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Pending Tasks API"]
 pub struct ClusterPendingTasks {
     client: Elasticsearch,
     parts: ClusterPendingTasksUrlParts,
@@ -645,6 +653,7 @@ impl Sender for ClusterPendingTasks {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Put Settings API"]
 pub enum ClusterPutSettingsUrlParts {
     None,
 }
@@ -656,6 +665,7 @@ impl ClusterPutSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Put Settings API"]
 pub struct ClusterPutSettings<B> {
     client: Elasticsearch,
     parts: ClusterPutSettingsUrlParts,
@@ -785,6 +795,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Remote Info API"]
 pub enum ClusterRemoteInfoUrlParts {
     None,
 }
@@ -796,6 +807,7 @@ impl ClusterRemoteInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Remote Info API"]
 pub struct ClusterRemoteInfo {
     client: Elasticsearch,
     parts: ClusterRemoteInfoUrlParts,
@@ -882,6 +894,7 @@ impl Sender for ClusterRemoteInfo {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Reroute API"]
 pub enum ClusterRerouteUrlParts {
     None,
 }
@@ -893,6 +906,7 @@ impl ClusterRerouteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Reroute API"]
 pub struct ClusterReroute<B> {
     client: Elasticsearch,
     parts: ClusterRerouteUrlParts,
@@ -1056,6 +1070,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster State API"]
 pub enum ClusterStateUrlParts {
     None,
     Metric(Vec<String>),
@@ -1086,6 +1101,7 @@ impl ClusterStateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster State API"]
 pub struct ClusterState {
     client: Elasticsearch,
     parts: ClusterStateUrlParts,
@@ -1255,6 +1271,7 @@ impl Sender for ClusterState {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Stats API"]
 pub enum ClusterStatsUrlParts {
     None,
     NodeId(Vec<String>),
@@ -1274,6 +1291,7 @@ impl ClusterStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Stats API"]
 pub struct ClusterStats {
     client: Elasticsearch,
     parts: ClusterStatsUrlParts,

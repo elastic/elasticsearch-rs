@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Analyze API"]
 pub enum IndicesAnalyzeUrlParts {
     None,
     Index(String),
@@ -44,6 +45,7 @@ impl IndicesAnalyzeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Analyze API"]
 pub struct IndicesAnalyze<B> {
     client: Elasticsearch,
     parts: IndicesAnalyzeUrlParts,
@@ -156,6 +158,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Clear Cache API"]
 pub enum IndicesClearCacheUrlParts {
     None,
     Index(Vec<String>),
@@ -176,6 +179,7 @@ impl IndicesClearCacheUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Clear Cache API"]
 pub struct IndicesClearCache<B> {
     client: Elasticsearch,
     parts: IndicesClearCacheUrlParts,
@@ -363,6 +367,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Clone API"]
 pub enum IndicesCloneUrlParts {
     IndexTarget(String, String),
 }
@@ -381,6 +386,7 @@ impl IndicesCloneUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Clone API"]
 pub struct IndicesClone<B> {
     client: Elasticsearch,
     parts: IndicesCloneUrlParts,
@@ -513,6 +519,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Close API"]
 pub enum IndicesCloseUrlParts {
     Index(Vec<String>),
 }
@@ -531,6 +538,7 @@ impl IndicesCloseUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Close API"]
 pub struct IndicesClose<B> {
     client: Elasticsearch,
     parts: IndicesCloseUrlParts,
@@ -693,6 +701,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Create API"]
 pub enum IndicesCreateUrlParts {
     Index(String),
 }
@@ -709,6 +718,7 @@ impl IndicesCreateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Create API"]
 pub struct IndicesCreate<B> {
     client: Elasticsearch,
     parts: IndicesCreateUrlParts,
@@ -851,6 +861,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete API"]
 pub enum IndicesDeleteUrlParts {
     Index(Vec<String>),
 }
@@ -868,6 +879,7 @@ impl IndicesDeleteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete API"]
 pub struct IndicesDelete {
     client: Elasticsearch,
     parts: IndicesDeleteUrlParts,
@@ -1004,6 +1016,7 @@ impl Sender for IndicesDelete {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete Alias API"]
 pub enum IndicesDeleteAliasUrlParts {
     IndexName(Vec<String>, Vec<String>),
 }
@@ -1024,6 +1037,7 @@ impl IndicesDeleteAliasUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete Alias API"]
 pub struct IndicesDeleteAlias {
     client: Elasticsearch,
     parts: IndicesDeleteAliasUrlParts,
@@ -1130,6 +1144,7 @@ impl Sender for IndicesDeleteAlias {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete Template API"]
 pub enum IndicesDeleteTemplateUrlParts {
     Name(String),
 }
@@ -1146,6 +1161,7 @@ impl IndicesDeleteTemplateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete Template API"]
 pub struct IndicesDeleteTemplate {
     client: Elasticsearch,
     parts: IndicesDeleteTemplateUrlParts,
@@ -1252,6 +1268,7 @@ impl Sender for IndicesDeleteTemplate {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists API"]
 pub enum IndicesExistsUrlParts {
     Index(Vec<String>),
 }
@@ -1269,6 +1286,7 @@ impl IndicesExistsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists API"]
 pub struct IndicesExists {
     client: Elasticsearch,
     parts: IndicesExistsUrlParts,
@@ -1415,6 +1433,7 @@ impl Sender for IndicesExists {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Alias API"]
 pub enum IndicesExistsAliasUrlParts {
     Name(Vec<String>),
     IndexName(Vec<String>, Vec<String>),
@@ -1443,6 +1462,7 @@ impl IndicesExistsAliasUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Alias API"]
 pub struct IndicesExistsAlias {
     client: Elasticsearch,
     parts: IndicesExistsAliasUrlParts,
@@ -1569,6 +1589,7 @@ impl Sender for IndicesExistsAlias {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Template API"]
 pub enum IndicesExistsTemplateUrlParts {
     Name(Vec<String>),
 }
@@ -1586,6 +1607,7 @@ impl IndicesExistsTemplateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Template API"]
 pub struct IndicesExistsTemplate {
     client: Elasticsearch,
     parts: IndicesExistsTemplateUrlParts,
@@ -1702,6 +1724,7 @@ impl Sender for IndicesExistsTemplate {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Type API"]
 pub enum IndicesExistsTypeUrlParts {
     IndexType(Vec<String>, Vec<String>),
 }
@@ -1722,6 +1745,7 @@ impl IndicesExistsTypeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Type API"]
 pub struct IndicesExistsType {
     client: Elasticsearch,
     parts: IndicesExistsTypeUrlParts,
@@ -1848,6 +1872,7 @@ impl Sender for IndicesExistsType {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Flush API"]
 pub enum IndicesFlushUrlParts {
     None,
     Index(Vec<String>),
@@ -1868,6 +1893,7 @@ impl IndicesFlushUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Flush API"]
 pub struct IndicesFlush<B> {
     client: Elasticsearch,
     parts: IndicesFlushUrlParts,
@@ -2020,6 +2046,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Flush Synced API"]
 pub enum IndicesFlushSyncedUrlParts {
     None,
     Index(Vec<String>),
@@ -2040,6 +2067,7 @@ impl IndicesFlushSyncedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Flush Synced API"]
 pub struct IndicesFlushSynced<B> {
     client: Elasticsearch,
     parts: IndicesFlushSyncedUrlParts,
@@ -2172,6 +2200,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Forcemerge API"]
 pub enum IndicesForcemergeUrlParts {
     None,
     Index(Vec<String>),
@@ -2192,6 +2221,7 @@ impl IndicesForcemergeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Forcemerge API"]
 pub struct IndicesForcemerge<B> {
     client: Elasticsearch,
     parts: IndicesForcemergeUrlParts,
@@ -2354,6 +2384,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Freeze API"]
 pub enum IndicesFreezeUrlParts {
     Index(String),
 }
@@ -2371,6 +2402,7 @@ impl IndicesFreezeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Freeze API"]
 pub struct IndicesFreeze<B> {
     client: Elasticsearch,
     parts: IndicesFreezeUrlParts,
@@ -2533,6 +2565,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get API"]
 pub enum IndicesGetUrlParts {
     Index(Vec<String>),
 }
@@ -2550,6 +2583,7 @@ impl IndicesGetUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get API"]
 pub struct IndicesGet {
     client: Elasticsearch,
     parts: IndicesGetUrlParts,
@@ -2716,6 +2750,7 @@ impl Sender for IndicesGet {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Alias API"]
 pub enum IndicesGetAliasUrlParts {
     None,
     Name(Vec<String>),
@@ -2755,6 +2790,7 @@ impl IndicesGetAliasUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Alias API"]
 pub struct IndicesGetAlias {
     client: Elasticsearch,
     parts: IndicesGetAliasUrlParts,
@@ -2881,6 +2917,7 @@ impl Sender for IndicesGetAlias {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Field Mapping API"]
 pub enum IndicesGetFieldMappingUrlParts {
     Fields(Vec<String>),
     IndexFields(Vec<String>, Vec<String>),
@@ -2936,6 +2973,7 @@ impl IndicesGetFieldMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Field Mapping API"]
 pub struct IndicesGetFieldMapping {
     client: Elasticsearch,
     parts: IndicesGetFieldMappingUrlParts,
@@ -3082,6 +3120,7 @@ impl Sender for IndicesGetFieldMapping {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Mapping API"]
 pub enum IndicesGetMappingUrlParts {
     None,
     Index(Vec<String>),
@@ -3121,6 +3160,7 @@ impl IndicesGetMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Mapping API"]
 pub struct IndicesGetMapping {
     client: Elasticsearch,
     parts: IndicesGetMappingUrlParts,
@@ -3267,6 +3307,7 @@ impl Sender for IndicesGetMapping {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Settings API"]
 pub enum IndicesGetSettingsUrlParts {
     None,
     Index(Vec<String>),
@@ -3306,6 +3347,7 @@ impl IndicesGetSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Settings API"]
 pub struct IndicesGetSettings {
     client: Elasticsearch,
     parts: IndicesGetSettingsUrlParts,
@@ -3462,6 +3504,7 @@ impl Sender for IndicesGetSettings {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Template API"]
 pub enum IndicesGetTemplateUrlParts {
     None,
     Name(Vec<String>),
@@ -3481,6 +3524,7 @@ impl IndicesGetTemplateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Template API"]
 pub struct IndicesGetTemplate {
     client: Elasticsearch,
     parts: IndicesGetTemplateUrlParts,
@@ -3607,6 +3651,7 @@ impl Sender for IndicesGetTemplate {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Upgrade API"]
 pub enum IndicesGetUpgradeUrlParts {
     None,
     Index(Vec<String>),
@@ -3627,6 +3672,7 @@ impl IndicesGetUpgradeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Upgrade API"]
 pub struct IndicesGetUpgrade {
     client: Elasticsearch,
     parts: IndicesGetUpgradeUrlParts,
@@ -3743,6 +3789,7 @@ impl Sender for IndicesGetUpgrade {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Open API"]
 pub enum IndicesOpenUrlParts {
     Index(Vec<String>),
 }
@@ -3761,6 +3808,7 @@ impl IndicesOpenUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Open API"]
 pub struct IndicesOpen<B> {
     client: Elasticsearch,
     parts: IndicesOpenUrlParts,
@@ -3923,6 +3971,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Alias API"]
 pub enum IndicesPutAliasUrlParts {
     IndexName(Vec<String>, String),
 }
@@ -3942,6 +3991,7 @@ impl IndicesPutAliasUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Alias API"]
 pub struct IndicesPutAlias<B> {
     client: Elasticsearch,
     parts: IndicesPutAliasUrlParts,
@@ -4061,6 +4111,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Mapping API"]
 pub enum IndicesPutMappingUrlParts {
     Index(Vec<String>),
     IndexType(Vec<String>, String),
@@ -4097,6 +4148,7 @@ impl IndicesPutMappingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Mapping API"]
 pub struct IndicesPutMapping<B> {
     client: Elasticsearch,
     parts: IndicesPutMappingUrlParts,
@@ -4256,6 +4308,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Settings API"]
 pub enum IndicesPutSettingsUrlParts {
     None,
     Index(Vec<String>),
@@ -4276,6 +4329,7 @@ impl IndicesPutSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Settings API"]
 pub struct IndicesPutSettings<B> {
     client: Elasticsearch,
     parts: IndicesPutSettingsUrlParts,
@@ -4445,6 +4499,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Template API"]
 pub enum IndicesPutTemplateUrlParts {
     Name(String),
 }
@@ -4461,6 +4516,7 @@ impl IndicesPutTemplateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Template API"]
 pub struct IndicesPutTemplate<B> {
     client: Elasticsearch,
     parts: IndicesPutTemplateUrlParts,
@@ -4620,6 +4676,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Recovery API"]
 pub enum IndicesRecoveryUrlParts {
     None,
     Index(Vec<String>),
@@ -4640,6 +4697,7 @@ impl IndicesRecoveryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Recovery API"]
 pub struct IndicesRecovery {
     client: Elasticsearch,
     parts: IndicesRecoveryUrlParts,
@@ -4746,6 +4804,7 @@ impl Sender for IndicesRecovery {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Refresh API"]
 pub enum IndicesRefreshUrlParts {
     None,
     Index(Vec<String>),
@@ -4766,6 +4825,7 @@ impl IndicesRefreshUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Refresh API"]
 pub struct IndicesRefresh<B> {
     client: Elasticsearch,
     parts: IndicesRefreshUrlParts,
@@ -4898,6 +4958,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Reload Search Analyzers API"]
 pub enum IndicesReloadSearchAnalyzersUrlParts {
     Index(Vec<String>),
 }
@@ -4916,6 +4977,7 @@ impl IndicesReloadSearchAnalyzersUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Reload Search Analyzers API"]
 pub struct IndicesReloadSearchAnalyzers<B> {
     client: Elasticsearch,
     parts: IndicesReloadSearchAnalyzersUrlParts,
@@ -5048,6 +5110,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Rollover API"]
 pub enum IndicesRolloverUrlParts {
     Alias(String),
     AliasNewIndex(String, String),
@@ -5074,6 +5137,7 @@ impl IndicesRolloverUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Rollover API"]
 pub struct IndicesRollover<B> {
     client: Elasticsearch,
     parts: IndicesRolloverUrlParts,
@@ -5226,6 +5290,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Segments API"]
 pub enum IndicesSegmentsUrlParts {
     None,
     Index(Vec<String>),
@@ -5246,6 +5311,7 @@ impl IndicesSegmentsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Segments API"]
 pub struct IndicesSegments {
     client: Elasticsearch,
     parts: IndicesSegmentsUrlParts,
@@ -5372,6 +5438,7 @@ impl Sender for IndicesSegments {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Shard Stores API"]
 pub enum IndicesShardStoresUrlParts {
     None,
     Index(Vec<String>),
@@ -5392,6 +5459,7 @@ impl IndicesShardStoresUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Shard Stores API"]
 pub struct IndicesShardStores {
     client: Elasticsearch,
     parts: IndicesShardStoresUrlParts,
@@ -5522,6 +5590,7 @@ impl Sender for IndicesShardStores {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Shrink API"]
 pub enum IndicesShrinkUrlParts {
     IndexTarget(String, String),
 }
@@ -5540,6 +5609,7 @@ impl IndicesShrinkUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Shrink API"]
 pub struct IndicesShrink<B> {
     client: Elasticsearch,
     parts: IndicesShrinkUrlParts,
@@ -5682,6 +5752,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Split API"]
 pub enum IndicesSplitUrlParts {
     IndexTarget(String, String),
 }
@@ -5700,6 +5771,7 @@ impl IndicesSplitUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Split API"]
 pub struct IndicesSplit<B> {
     client: Elasticsearch,
     parts: IndicesSplitUrlParts,
@@ -5842,6 +5914,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Stats API"]
 pub enum IndicesStatsUrlParts {
     None,
     Metric(Vec<String>),
@@ -5881,6 +5954,7 @@ impl IndicesStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Stats API"]
 pub struct IndicesStats {
     client: Elasticsearch,
     parts: IndicesStatsUrlParts,
@@ -6096,6 +6170,7 @@ impl Sender for IndicesStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Unfreeze API"]
 pub enum IndicesUnfreezeUrlParts {
     Index(String),
 }
@@ -6113,6 +6188,7 @@ impl IndicesUnfreezeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Unfreeze API"]
 pub struct IndicesUnfreeze<B> {
     client: Elasticsearch,
     parts: IndicesUnfreezeUrlParts,
@@ -6275,6 +6351,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Update Aliases API"]
 pub enum IndicesUpdateAliasesUrlParts {
     None,
 }
@@ -6286,6 +6363,7 @@ impl IndicesUpdateAliasesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Update Aliases API"]
 pub struct IndicesUpdateAliases<B> {
     client: Elasticsearch,
     parts: IndicesUpdateAliasesUrlParts,
@@ -6405,6 +6483,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Upgrade API"]
 pub enum IndicesUpgradeUrlParts {
     None,
     Index(Vec<String>),
@@ -6425,6 +6504,7 @@ impl IndicesUpgradeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Upgrade API"]
 pub struct IndicesUpgrade<B> {
     client: Elasticsearch,
     parts: IndicesUpgradeUrlParts,
@@ -6580,6 +6660,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Validate Query API"]
 pub enum IndicesValidateQueryUrlParts {
     None,
     Index(Vec<String>),
@@ -6612,6 +6693,7 @@ impl IndicesValidateQueryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Validate Query API"]
 pub struct IndicesValidateQuery<B> {
     client: Elasticsearch,
     parts: IndicesValidateQueryUrlParts,

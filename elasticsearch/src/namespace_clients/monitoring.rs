@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Monitoring Bulk API"]
 pub enum MonitoringBulkUrlParts {
     None,
     Type(String),
@@ -44,6 +45,7 @@ impl MonitoringBulkUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Monitoring Bulk API"]
 pub struct MonitoringBulk<B> {
     client: Elasticsearch,
     parts: MonitoringBulkUrlParts,

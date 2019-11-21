@@ -51,7 +51,10 @@ pub mod tests {
 
     #[test]
     fn build_search_on_selected_indices_and_types() {
-        let parts = SearchUrlParts::IndexType(vec!["index-1".into(), "index-2".into()], vec!["type-1".into(), "type-2".into()]);
+        let parts = SearchUrlParts::IndexType(
+            vec!["index-1".into(), "index-2".into()],
+            vec!["type-1".into(), "type-2".into()],
+        );
         let url = parts.build();
         assert_eq!(url, "/index-1,index-2/type-1,type-2/_search");
     }
@@ -130,12 +133,9 @@ pub mod tests {
 
         let request_clone = request
             .clone()
-            .body(Some(json!({
-                "query": {
-                    "match_all": {}
-                },
-                "size": 1
-            })))
+            .q(Some("title:Elasticsearch".into()))
+            .size(Some(1))
+            .body(None)
             .allow_no_indices(None);
 
         let mut response = request_clone.send()?;

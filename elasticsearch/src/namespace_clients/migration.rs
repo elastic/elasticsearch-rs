@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Migration Deprecations API"]
 pub enum MigrationDeprecationsUrlParts {
     None,
     Index(String),
@@ -44,6 +45,7 @@ impl MigrationDeprecationsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Migration Deprecations API"]
 pub struct MigrationDeprecations {
     client: Elasticsearch,
     parts: MigrationDeprecationsUrlParts,

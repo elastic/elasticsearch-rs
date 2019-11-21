@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Close Job API"]
 pub enum MlCloseJobUrlParts {
     JobId(String),
 }
@@ -42,6 +43,7 @@ impl MlCloseJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Close Job API"]
 pub struct MlCloseJob<B> {
     client: Elasticsearch,
     parts: MlCloseJobUrlParts,
@@ -171,6 +173,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar API"]
 pub enum MlDeleteCalendarUrlParts {
     CalendarId(String),
 }
@@ -187,6 +190,7 @@ impl MlDeleteCalendarUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar API"]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
     parts: MlDeleteCalendarUrlParts,
@@ -273,6 +277,7 @@ impl Sender for MlDeleteCalendar {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar Event API"]
 pub enum MlDeleteCalendarEventUrlParts {
     CalendarIdEventId(String, String),
 }
@@ -291,6 +296,7 @@ impl MlDeleteCalendarEventUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar Event API"]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
     parts: MlDeleteCalendarEventUrlParts,
@@ -377,6 +383,7 @@ impl Sender for MlDeleteCalendarEvent {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar Job API"]
 pub enum MlDeleteCalendarJobUrlParts {
     CalendarIdJobId(String, String),
 }
@@ -395,6 +402,7 @@ impl MlDeleteCalendarJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar Job API"]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
     parts: MlDeleteCalendarJobUrlParts,
@@ -481,6 +489,7 @@ impl Sender for MlDeleteCalendarJob {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Data Frame Analytics API"]
 pub enum MlDeleteDataFrameAnalyticsUrlParts {
     Id(String),
 }
@@ -497,6 +506,7 @@ impl MlDeleteDataFrameAnalyticsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Data Frame Analytics API"]
 pub struct MlDeleteDataFrameAnalytics {
     client: Elasticsearch,
     parts: MlDeleteDataFrameAnalyticsUrlParts,
@@ -583,6 +593,7 @@ impl Sender for MlDeleteDataFrameAnalytics {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Datafeed API"]
 pub enum MlDeleteDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -599,6 +610,7 @@ impl MlDeleteDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Datafeed API"]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
     parts: MlDeleteDatafeedUrlParts,
@@ -695,6 +707,7 @@ impl Sender for MlDeleteDatafeed {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Expired Data API"]
 pub enum MlDeleteExpiredDataUrlParts {
     None,
 }
@@ -706,6 +719,7 @@ impl MlDeleteExpiredDataUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Expired Data API"]
 pub struct MlDeleteExpiredData {
     client: Elasticsearch,
     parts: MlDeleteExpiredDataUrlParts,
@@ -792,6 +806,7 @@ impl Sender for MlDeleteExpiredData {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Filter API"]
 pub enum MlDeleteFilterUrlParts {
     FilterId(String),
 }
@@ -808,6 +823,7 @@ impl MlDeleteFilterUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Filter API"]
 pub struct MlDeleteFilter {
     client: Elasticsearch,
     parts: MlDeleteFilterUrlParts,
@@ -894,6 +910,7 @@ impl Sender for MlDeleteFilter {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Forecast API"]
 pub enum MlDeleteForecastUrlParts {
     JobId(String),
     JobIdForecastId(String, String),
@@ -920,6 +937,7 @@ impl MlDeleteForecastUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Forecast API"]
 pub struct MlDeleteForecast {
     client: Elasticsearch,
     parts: MlDeleteForecastUrlParts,
@@ -1026,6 +1044,7 @@ impl Sender for MlDeleteForecast {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Job API"]
 pub enum MlDeleteJobUrlParts {
     JobId(String),
 }
@@ -1042,6 +1061,7 @@ impl MlDeleteJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Job API"]
 pub struct MlDeleteJob {
     client: Elasticsearch,
     parts: MlDeleteJobUrlParts,
@@ -1151,6 +1171,7 @@ impl Sender for MlDeleteJob {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Model Snapshot API"]
 pub enum MlDeleteModelSnapshotUrlParts {
     JobIdSnapshotId(String, String),
 }
@@ -1169,6 +1190,7 @@ impl MlDeleteModelSnapshotUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Model Snapshot API"]
 pub struct MlDeleteModelSnapshot {
     client: Elasticsearch,
     parts: MlDeleteModelSnapshotUrlParts,
@@ -1255,6 +1277,7 @@ impl Sender for MlDeleteModelSnapshot {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Estimate Memory Usage API"]
 pub enum MlEstimateMemoryUsageUrlParts {
     None,
 }
@@ -1268,6 +1291,7 @@ impl MlEstimateMemoryUsageUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Estimate Memory Usage API"]
 pub struct MlEstimateMemoryUsage<B> {
     client: Elasticsearch,
     parts: MlEstimateMemoryUsageUrlParts,
@@ -1367,6 +1391,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Evaluate Data Frame API"]
 pub enum MlEvaluateDataFrameUrlParts {
     None,
 }
@@ -1378,6 +1403,7 @@ impl MlEvaluateDataFrameUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Evaluate Data Frame API"]
 pub struct MlEvaluateDataFrame<B> {
     client: Elasticsearch,
     parts: MlEvaluateDataFrameUrlParts,
@@ -1477,6 +1503,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Find File Structure API"]
 pub enum MlFindFileStructureUrlParts {
     None,
 }
@@ -1488,6 +1515,7 @@ impl MlFindFileStructureUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Find File Structure API"]
 pub struct MlFindFileStructure<B> {
     client: Elasticsearch,
     parts: MlFindFileStructureUrlParts,
@@ -1734,6 +1762,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Flush Job API"]
 pub enum MlFlushJobUrlParts {
     JobId(String),
 }
@@ -1751,6 +1780,7 @@ impl MlFlushJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Flush Job API"]
 pub struct MlFlushJob<B> {
     client: Elasticsearch,
     parts: MlFlushJobUrlParts,
@@ -1900,6 +1930,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Forecast API"]
 pub enum MlForecastUrlParts {
     JobId(String),
 }
@@ -1917,6 +1948,7 @@ impl MlForecastUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Forecast API"]
 pub struct MlForecast<B> {
     client: Elasticsearch,
     parts: MlForecastUrlParts,
@@ -2036,6 +2068,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Buckets API"]
 pub enum MlGetBucketsUrlParts {
     JobIdTimestamp(String, String),
     JobId(String),
@@ -2062,6 +2095,7 @@ impl MlGetBucketsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Buckets API"]
 pub struct MlGetBuckets<B> {
     client: Elasticsearch,
     parts: MlGetBucketsUrlParts,
@@ -2254,6 +2288,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Calendar Events API"]
 pub enum MlGetCalendarEventsUrlParts {
     CalendarId(String),
 }
@@ -2271,6 +2306,7 @@ impl MlGetCalendarEventsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Calendar Events API"]
 pub struct MlGetCalendarEvents {
     client: Elasticsearch,
     parts: MlGetCalendarEventsUrlParts,
@@ -2407,6 +2443,7 @@ impl Sender for MlGetCalendarEvents {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Calendars API"]
 pub enum MlGetCalendarsUrlParts {
     None,
     CalendarId(String),
@@ -2425,6 +2462,7 @@ impl MlGetCalendarsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Calendars API"]
 pub struct MlGetCalendars<B> {
     client: Elasticsearch,
     parts: MlGetCalendarsUrlParts,
@@ -2547,6 +2585,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Categories API"]
 pub enum MlGetCategoriesUrlParts {
     JobIdCategoryId(String, i64),
     JobId(String),
@@ -2574,6 +2613,7 @@ impl MlGetCategoriesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Categories API"]
 pub struct MlGetCategories<B> {
     client: Elasticsearch,
     parts: MlGetCategoriesUrlParts,
@@ -2696,6 +2736,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Data Frame Analytics API"]
 pub enum MlGetDataFrameAnalyticsUrlParts {
     Id(String),
     None,
@@ -2714,6 +2755,7 @@ impl MlGetDataFrameAnalyticsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Data Frame Analytics API"]
 pub struct MlGetDataFrameAnalytics {
     client: Elasticsearch,
     parts: MlGetDataFrameAnalyticsUrlParts,
@@ -2830,6 +2872,7 @@ impl Sender for MlGetDataFrameAnalytics {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Data Frame Analytics Stats API"]
 pub enum MlGetDataFrameAnalyticsStatsUrlParts {
     None,
     Id(String),
@@ -2849,6 +2892,7 @@ impl MlGetDataFrameAnalyticsStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Data Frame Analytics Stats API"]
 pub struct MlGetDataFrameAnalyticsStats {
     client: Elasticsearch,
     parts: MlGetDataFrameAnalyticsStatsUrlParts,
@@ -2965,6 +3009,7 @@ impl Sender for MlGetDataFrameAnalyticsStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Datafeed Stats API"]
 pub enum MlGetDatafeedStatsUrlParts {
     DatafeedId(String),
     None,
@@ -2984,6 +3029,7 @@ impl MlGetDatafeedStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Datafeed Stats API"]
 pub struct MlGetDatafeedStats {
     client: Elasticsearch,
     parts: MlGetDatafeedStatsUrlParts,
@@ -3080,6 +3126,7 @@ impl Sender for MlGetDatafeedStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Datafeeds API"]
 pub enum MlGetDatafeedsUrlParts {
     DatafeedId(String),
     None,
@@ -3098,6 +3145,7 @@ impl MlGetDatafeedsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Datafeeds API"]
 pub struct MlGetDatafeeds {
     client: Elasticsearch,
     parts: MlGetDatafeedsUrlParts,
@@ -3194,6 +3242,7 @@ impl Sender for MlGetDatafeeds {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Filters API"]
 pub enum MlGetFiltersUrlParts {
     None,
     FilterId(String),
@@ -3212,6 +3261,7 @@ impl MlGetFiltersUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Filters API"]
 pub struct MlGetFilters {
     client: Elasticsearch,
     parts: MlGetFiltersUrlParts,
@@ -3318,6 +3368,7 @@ impl Sender for MlGetFilters {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Influencers API"]
 pub enum MlGetInfluencersUrlParts {
     JobId(String),
 }
@@ -3335,6 +3386,7 @@ impl MlGetInfluencersUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Influencers API"]
 pub struct MlGetInfluencers<B> {
     client: Elasticsearch,
     parts: MlGetInfluencersUrlParts,
@@ -3517,6 +3569,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Job Stats API"]
 pub enum MlGetJobStatsUrlParts {
     None,
     JobId(String),
@@ -3536,6 +3589,7 @@ impl MlGetJobStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Job Stats API"]
 pub struct MlGetJobStats {
     client: Elasticsearch,
     parts: MlGetJobStatsUrlParts,
@@ -3632,6 +3686,7 @@ impl Sender for MlGetJobStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Jobs API"]
 pub enum MlGetJobsUrlParts {
     JobId(String),
     None,
@@ -3650,6 +3705,7 @@ impl MlGetJobsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Jobs API"]
 pub struct MlGetJobs {
     client: Elasticsearch,
     parts: MlGetJobsUrlParts,
@@ -3746,6 +3802,7 @@ impl Sender for MlGetJobs {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Model Snapshots API"]
 pub enum MlGetModelSnapshotsUrlParts {
     JobIdSnapshotId(String, String),
     JobId(String),
@@ -3772,6 +3829,7 @@ impl MlGetModelSnapshotsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Model Snapshots API"]
 pub struct MlGetModelSnapshots<B> {
     client: Elasticsearch,
     parts: MlGetModelSnapshotsUrlParts,
@@ -3934,6 +3992,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Overall Buckets API"]
 pub enum MlGetOverallBucketsUrlParts {
     JobId(String),
 }
@@ -3951,6 +4010,7 @@ impl MlGetOverallBucketsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Overall Buckets API"]
 pub struct MlGetOverallBuckets<B> {
     client: Elasticsearch,
     parts: MlGetOverallBucketsUrlParts,
@@ -4123,6 +4183,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Records API"]
 pub enum MlGetRecordsUrlParts {
     JobId(String),
 }
@@ -4140,6 +4201,7 @@ impl MlGetRecordsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Records API"]
 pub struct MlGetRecords<B> {
     client: Elasticsearch,
     parts: MlGetRecordsUrlParts,
@@ -4321,6 +4383,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Info API"]
 pub enum MlInfoUrlParts {
     None,
 }
@@ -4332,6 +4395,7 @@ impl MlInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Info API"]
 pub struct MlInfo {
     client: Elasticsearch,
     parts: MlInfoUrlParts,
@@ -4418,6 +4482,7 @@ impl Sender for MlInfo {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Open Job API"]
 pub enum MlOpenJobUrlParts {
     JobId(String),
 }
@@ -4435,6 +4500,7 @@ impl MlOpenJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Open Job API"]
 pub struct MlOpenJob<B> {
     client: Elasticsearch,
     parts: MlOpenJobUrlParts,
@@ -4534,6 +4600,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Post Calendar Events API"]
 pub enum MlPostCalendarEventsUrlParts {
     CalendarId(String),
 }
@@ -4551,6 +4618,7 @@ impl MlPostCalendarEventsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Post Calendar Events API"]
 pub struct MlPostCalendarEvents<B> {
     client: Elasticsearch,
     parts: MlPostCalendarEventsUrlParts,
@@ -4650,6 +4718,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Post Data API"]
 pub enum MlPostDataUrlParts {
     JobId(String),
 }
@@ -4667,6 +4736,7 @@ impl MlPostDataUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Post Data API"]
 pub struct MlPostData<B> {
     client: Elasticsearch,
     parts: MlPostDataUrlParts,
@@ -4786,6 +4856,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Preview Datafeed API"]
 pub enum MlPreviewDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -4803,6 +4874,7 @@ impl MlPreviewDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Preview Datafeed API"]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
     parts: MlPreviewDatafeedUrlParts,
@@ -4889,6 +4961,7 @@ impl Sender for MlPreviewDatafeed {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Calendar API"]
 pub enum MlPutCalendarUrlParts {
     CalendarId(String),
 }
@@ -4905,6 +4978,7 @@ impl MlPutCalendarUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Calendar API"]
 pub struct MlPutCalendar<B> {
     client: Elasticsearch,
     parts: MlPutCalendarUrlParts,
@@ -5004,6 +5078,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Calendar Job API"]
 pub enum MlPutCalendarJobUrlParts {
     CalendarIdJobId(String, String),
 }
@@ -5022,6 +5097,7 @@ impl MlPutCalendarJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Calendar Job API"]
 pub struct MlPutCalendarJob<B> {
     client: Elasticsearch,
     parts: MlPutCalendarJobUrlParts,
@@ -5121,6 +5197,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Data Frame Analytics API"]
 pub enum MlPutDataFrameAnalyticsUrlParts {
     Id(String),
 }
@@ -5137,6 +5214,7 @@ impl MlPutDataFrameAnalyticsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Data Frame Analytics API"]
 pub struct MlPutDataFrameAnalytics<B> {
     client: Elasticsearch,
     parts: MlPutDataFrameAnalyticsUrlParts,
@@ -5236,6 +5314,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Datafeed API"]
 pub enum MlPutDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -5252,6 +5331,7 @@ impl MlPutDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Datafeed API"]
 pub struct MlPutDatafeed<B> {
     client: Elasticsearch,
     parts: MlPutDatafeedUrlParts,
@@ -5351,6 +5431,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Filter API"]
 pub enum MlPutFilterUrlParts {
     FilterId(String),
 }
@@ -5367,6 +5448,7 @@ impl MlPutFilterUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Filter API"]
 pub struct MlPutFilter<B> {
     client: Elasticsearch,
     parts: MlPutFilterUrlParts,
@@ -5466,6 +5548,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Job API"]
 pub enum MlPutJobUrlParts {
     JobId(String),
 }
@@ -5482,6 +5565,7 @@ impl MlPutJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Job API"]
 pub struct MlPutJob<B> {
     client: Elasticsearch,
     parts: MlPutJobUrlParts,
@@ -5581,6 +5665,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Revert Model Snapshot API"]
 pub enum MlRevertModelSnapshotUrlParts {
     JobIdSnapshotId(String, String),
 }
@@ -5600,6 +5685,7 @@ impl MlRevertModelSnapshotUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Revert Model Snapshot API"]
 pub struct MlRevertModelSnapshot<B> {
     client: Elasticsearch,
     parts: MlRevertModelSnapshotUrlParts,
@@ -5712,6 +5798,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Set Upgrade Mode API"]
 pub enum MlSetUpgradeModeUrlParts {
     None,
 }
@@ -5723,6 +5810,7 @@ impl MlSetUpgradeModeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Set Upgrade Mode API"]
 pub struct MlSetUpgradeMode<B> {
     client: Elasticsearch,
     parts: MlSetUpgradeModeUrlParts,
@@ -5842,6 +5930,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Start Data Frame Analytics API"]
 pub enum MlStartDataFrameAnalyticsUrlParts {
     Id(String),
 }
@@ -5859,6 +5948,7 @@ impl MlStartDataFrameAnalyticsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Start Data Frame Analytics API"]
 pub struct MlStartDataFrameAnalytics<B> {
     client: Elasticsearch,
     parts: MlStartDataFrameAnalyticsUrlParts,
@@ -5968,6 +6058,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Start Datafeed API"]
 pub enum MlStartDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -5985,6 +6076,7 @@ impl MlStartDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Start Datafeed API"]
 pub struct MlStartDatafeed<B> {
     client: Elasticsearch,
     parts: MlStartDatafeedUrlParts,
@@ -6114,6 +6206,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Stop Data Frame Analytics API"]
 pub enum MlStopDataFrameAnalyticsUrlParts {
     Id(String),
 }
@@ -6131,6 +6224,7 @@ impl MlStopDataFrameAnalyticsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Stop Data Frame Analytics API"]
 pub struct MlStopDataFrameAnalytics<B> {
     client: Elasticsearch,
     parts: MlStopDataFrameAnalyticsUrlParts,
@@ -6260,6 +6354,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Stop Datafeed API"]
 pub enum MlStopDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -6277,6 +6372,7 @@ impl MlStopDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Stop Datafeed API"]
 pub struct MlStopDatafeed<B> {
     client: Elasticsearch,
     parts: MlStopDatafeedUrlParts,
@@ -6406,6 +6502,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Datafeed API"]
 pub enum MlUpdateDatafeedUrlParts {
     DatafeedId(String),
 }
@@ -6423,6 +6520,7 @@ impl MlUpdateDatafeedUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Datafeed API"]
 pub struct MlUpdateDatafeed<B> {
     client: Elasticsearch,
     parts: MlUpdateDatafeedUrlParts,
@@ -6522,6 +6620,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Filter API"]
 pub enum MlUpdateFilterUrlParts {
     FilterId(String),
 }
@@ -6539,6 +6638,7 @@ impl MlUpdateFilterUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Filter API"]
 pub struct MlUpdateFilter<B> {
     client: Elasticsearch,
     parts: MlUpdateFilterUrlParts,
@@ -6638,6 +6738,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Job API"]
 pub enum MlUpdateJobUrlParts {
     JobId(String),
 }
@@ -6655,6 +6756,7 @@ impl MlUpdateJobUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Job API"]
 pub struct MlUpdateJob<B> {
     client: Elasticsearch,
     parts: MlUpdateJobUrlParts,
@@ -6754,6 +6856,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Model Snapshot API"]
 pub enum MlUpdateModelSnapshotUrlParts {
     JobIdSnapshotId(String, String),
 }
@@ -6773,6 +6876,7 @@ impl MlUpdateModelSnapshotUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Model Snapshot API"]
 pub struct MlUpdateModelSnapshot<B> {
     client: Elasticsearch,
     parts: MlUpdateModelSnapshotUrlParts,
@@ -6872,6 +6976,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Validate API"]
 pub enum MlValidateUrlParts {
     None,
 }
@@ -6883,6 +6988,7 @@ impl MlValidateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Validate API"]
 pub struct MlValidate<B> {
     client: Elasticsearch,
     parts: MlValidateUrlParts,
@@ -6982,6 +7088,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Validate Detector API"]
 pub enum MlValidateDetectorUrlParts {
     None,
 }
@@ -6993,6 +7100,7 @@ impl MlValidateDetectorUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Validate Detector API"]
 pub struct MlValidateDetector<B> {
     client: Elasticsearch,
     parts: MlValidateDetectorUrlParts,

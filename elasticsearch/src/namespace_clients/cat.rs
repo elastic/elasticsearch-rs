@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Aliases API"]
 pub enum CatAliasesUrlParts {
     None,
     Name(Vec<String>),
@@ -44,6 +45,7 @@ impl CatAliasesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Aliases API"]
 pub struct CatAliases {
     client: Elasticsearch,
     parts: CatAliasesUrlParts,
@@ -198,6 +200,7 @@ impl Sender for CatAliases {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Allocation API"]
 pub enum CatAllocationUrlParts {
     None,
     NodeId(Vec<String>),
@@ -217,6 +220,7 @@ impl CatAllocationUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Allocation API"]
 pub struct CatAllocation {
     client: Elasticsearch,
     parts: CatAllocationUrlParts,
@@ -391,6 +395,7 @@ impl Sender for CatAllocation {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Count API"]
 pub enum CatCountUrlParts {
     None,
     Index(Vec<String>),
@@ -410,6 +415,7 @@ impl CatCountUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Count API"]
 pub struct CatCount {
     client: Elasticsearch,
     parts: CatCountUrlParts,
@@ -554,6 +560,7 @@ impl Sender for CatCount {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Fielddata API"]
 pub enum CatFielddataUrlParts {
     None,
     Fields(Vec<String>),
@@ -573,6 +580,7 @@ impl CatFielddataUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Fielddata API"]
 pub struct CatFielddata {
     client: Elasticsearch,
     parts: CatFielddataUrlParts,
@@ -741,6 +749,7 @@ impl Sender for CatFielddata {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Health API"]
 pub enum CatHealthUrlParts {
     None,
 }
@@ -752,6 +761,7 @@ impl CatHealthUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Health API"]
 pub struct CatHealth {
     client: Elasticsearch,
     parts: CatHealthUrlParts,
@@ -916,6 +926,7 @@ impl Sender for CatHealth {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Help API"]
 pub enum CatHelpUrlParts {
     None,
 }
@@ -927,6 +938,7 @@ impl CatHelpUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Help API"]
 pub struct CatHelp {
     client: Elasticsearch,
     parts: CatHelpUrlParts,
@@ -1037,6 +1049,7 @@ impl Sender for CatHelp {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Indices API"]
 pub enum CatIndicesUrlParts {
     None,
     Index(Vec<String>),
@@ -1056,6 +1069,7 @@ impl CatIndicesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Indices API"]
 pub struct CatIndices {
     client: Elasticsearch,
     parts: CatIndicesUrlParts,
@@ -1273,6 +1287,7 @@ impl Sender for CatIndices {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Master API"]
 pub enum CatMasterUrlParts {
     None,
 }
@@ -1284,6 +1299,7 @@ impl CatMasterUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Master API"]
 pub struct CatMaster {
     client: Elasticsearch,
     parts: CatMasterUrlParts,
@@ -1448,6 +1464,7 @@ impl Sender for CatMaster {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Nodeattrs API"]
 pub enum CatNodeattrsUrlParts {
     None,
 }
@@ -1459,6 +1476,7 @@ impl CatNodeattrsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Nodeattrs API"]
 pub struct CatNodeattrs {
     client: Elasticsearch,
     parts: CatNodeattrsUrlParts,
@@ -1623,6 +1641,7 @@ impl Sender for CatNodeattrs {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Nodes API"]
 pub enum CatNodesUrlParts {
     None,
 }
@@ -1634,6 +1653,7 @@ impl CatNodesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Nodes API"]
 pub struct CatNodes {
     client: Elasticsearch,
     parts: CatNodesUrlParts,
@@ -1828,6 +1848,7 @@ impl Sender for CatNodes {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Pending Tasks API"]
 pub enum CatPendingTasksUrlParts {
     None,
 }
@@ -1839,6 +1860,7 @@ impl CatPendingTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Pending Tasks API"]
 pub struct CatPendingTasks {
     client: Elasticsearch,
     parts: CatPendingTasksUrlParts,
@@ -2013,6 +2035,7 @@ impl Sender for CatPendingTasks {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Plugins API"]
 pub enum CatPluginsUrlParts {
     None,
 }
@@ -2024,6 +2047,7 @@ impl CatPluginsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Plugins API"]
 pub struct CatPlugins {
     client: Elasticsearch,
     parts: CatPluginsUrlParts,
@@ -2188,6 +2212,7 @@ impl Sender for CatPlugins {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Recovery API"]
 pub enum CatRecoveryUrlParts {
     None,
     Index(Vec<String>),
@@ -2207,6 +2232,7 @@ impl CatRecoveryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Recovery API"]
 pub struct CatRecovery {
     client: Elasticsearch,
     parts: CatRecoveryUrlParts,
@@ -2405,6 +2431,7 @@ impl Sender for CatRecovery {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Repositories API"]
 pub enum CatRepositoriesUrlParts {
     None,
 }
@@ -2416,6 +2443,7 @@ impl CatRepositoriesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Repositories API"]
 pub struct CatRepositories {
     client: Elasticsearch,
     parts: CatRepositoriesUrlParts,
@@ -2580,6 +2608,7 @@ impl Sender for CatRepositories {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Segments API"]
 pub enum CatSegmentsUrlParts {
     None,
     Index(Vec<String>),
@@ -2599,6 +2628,7 @@ impl CatSegmentsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Segments API"]
 pub struct CatSegments {
     client: Elasticsearch,
     parts: CatSegmentsUrlParts,
@@ -2753,6 +2783,7 @@ impl Sender for CatSegments {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Shards API"]
 pub enum CatShardsUrlParts {
     None,
     Index(Vec<String>),
@@ -2772,6 +2803,7 @@ impl CatShardsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Shards API"]
 pub struct CatShards {
     client: Elasticsearch,
     parts: CatShardsUrlParts,
@@ -2956,6 +2988,7 @@ impl Sender for CatShards {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Snapshots API"]
 pub enum CatSnapshotsUrlParts {
     None,
     Repository(Vec<String>),
@@ -2975,6 +3008,7 @@ impl CatSnapshotsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Snapshots API"]
 pub struct CatSnapshots {
     client: Elasticsearch,
     parts: CatSnapshotsUrlParts,
@@ -3149,6 +3183,7 @@ impl Sender for CatSnapshots {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Tasks API"]
 pub enum CatTasksUrlParts {
     None,
 }
@@ -3160,6 +3195,7 @@ impl CatTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Tasks API"]
 pub struct CatTasks {
     client: Elasticsearch,
     parts: CatTasksUrlParts,
@@ -3362,6 +3398,7 @@ impl Sender for CatTasks {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Templates API"]
 pub enum CatTemplatesUrlParts {
     None,
     Name(String),
@@ -3380,6 +3417,7 @@ impl CatTemplatesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Templates API"]
 pub struct CatTemplates {
     client: Elasticsearch,
     parts: CatTemplatesUrlParts,
@@ -3544,6 +3582,7 @@ impl Sender for CatTemplates {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cat Thread Pool API"]
 pub enum CatThreadPoolUrlParts {
     None,
     ThreadPoolPatterns(Vec<String>),
@@ -3563,6 +3602,7 @@ impl CatThreadPoolUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cat Thread Pool API"]
 pub struct CatThreadPool {
     client: Elasticsearch,
     parts: CatThreadPoolUrlParts,

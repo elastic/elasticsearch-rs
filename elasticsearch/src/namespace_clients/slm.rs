@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Slm Delete Lifecycle API"]
 pub enum SlmDeleteLifecycleUrlParts {
     PolicyId(String),
 }
@@ -41,6 +42,7 @@ impl SlmDeleteLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Slm Delete Lifecycle API"]
 pub struct SlmDeleteLifecycle {
     client: Elasticsearch,
     parts: SlmDeleteLifecycleUrlParts,
@@ -127,6 +129,7 @@ impl Sender for SlmDeleteLifecycle {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Slm Execute Lifecycle API"]
 pub enum SlmExecuteLifecycleUrlParts {
     PolicyId(String),
 }
@@ -144,6 +147,7 @@ impl SlmExecuteLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Slm Execute Lifecycle API"]
 pub struct SlmExecuteLifecycle<B> {
     client: Elasticsearch,
     parts: SlmExecuteLifecycleUrlParts,
@@ -243,6 +247,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Slm Get Lifecycle API"]
 pub enum SlmGetLifecycleUrlParts {
     PolicyId(String),
     None,
@@ -261,6 +266,7 @@ impl SlmGetLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Slm Get Lifecycle API"]
 pub struct SlmGetLifecycle {
     client: Elasticsearch,
     parts: SlmGetLifecycleUrlParts,
@@ -347,6 +353,7 @@ impl Sender for SlmGetLifecycle {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Slm Put Lifecycle API"]
 pub enum SlmPutLifecycleUrlParts {
     PolicyId(String),
 }
@@ -363,6 +370,7 @@ impl SlmPutLifecycleUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Slm Put Lifecycle API"]
 pub struct SlmPutLifecycle<B> {
     client: Elasticsearch,
     parts: SlmPutLifecycleUrlParts,

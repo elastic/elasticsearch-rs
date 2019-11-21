@@ -12,7 +12,8 @@ use syn;
 /// based on what's given in the paths for an endpoint.
 #[derive(Debug, Clone)]
 pub struct EnumBuilder<'a> {
-    name: syn::Ident,
+    ident: syn::Ident,
+    api_name: String,
     variants: Vec<syn::Variant>,
     paths: Vec<&'a Path>,
 }
@@ -20,8 +21,10 @@ pub struct EnumBuilder<'a> {
 impl<'a> EnumBuilder<'a> {
     pub fn new(prefix: &str) -> Self {
         let name = Self::name(prefix);
+        let api_name = split_on_pascal_case(prefix);
         EnumBuilder {
-            name: ident(name),
+            ident: ident(name),
+            api_name,
             variants: vec![],
             paths: vec![],
         }
@@ -32,7 +35,7 @@ impl<'a> EnumBuilder<'a> {
     }
 
     pub fn ident(&self) -> &syn::Ident {
-        &self.name
+        &self.ident
     }
 
     fn contains_path_with_parts(&self, path: &'a Path) -> bool {
@@ -138,7 +141,7 @@ impl<'a> EnumBuilder<'a> {
             _ => self.variants,
         };
 
-        let (enum_ty, generics) = { (ty(self.name.as_ref()), generics_none()) };
+        let (enum_ty, generics) = { (ty(self.ident.as_ref()), generics_none()) };
 
         let enum_impl = {
             let mut arms = Vec::new();
@@ -203,20 +206,23 @@ impl<'a> EnumBuilder<'a> {
         };
 
         let enum_decl = syn::Item {
-            ident: self.name,
+            ident: self.ident,
             vis: syn::Visibility::Public,
-            attrs: vec![syn::Attribute {
-                is_sugared_doc: false,
-                style: syn::AttrStyle::Outer,
-                value: syn::MetaItem::List(
-                    ident("derive"),
-                    vec![
-                        syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Debug"))),
-                        syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Clone"))),
-                        syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("PartialEq"))),
-                    ],
-                ),
-            }],
+            attrs: vec![
+                syn::Attribute {
+                    is_sugared_doc: false,
+                    style: syn::AttrStyle::Outer,
+                    value: syn::MetaItem::List(
+                        ident("derive"),
+                        vec![
+                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Debug"))),
+                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("Clone"))),
+                            syn::NestedMetaItem::MetaItem(syn::MetaItem::Word(ident("PartialEq"))),
+                        ],
+                    ),
+                },
+                doc(format!("Url parts for the {} API", self.api_name)),
+            ],
             node: syn::ItemKind::Enum(variants, generics),
         };
 
@@ -317,6 +323,7 @@ mod tests {
 
         let expected_decl = quote!(
             #[derive(Debug, Clone, PartialEq)]
+            #[doc = "Url parts for the Search API"]
             pub enum SearchUrlParts {
                 None,
                 Index(Vec<String>),

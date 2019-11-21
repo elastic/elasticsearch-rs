@@ -4,9 +4,9 @@ pub mod request;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::{TypeKind, rust_fmt};
+use crate::api_generator::TypeKind;
 use inflector::Inflector;
-use quote::{Tokens};
+use quote::Tokens;
 use std::str;
 
 /// use declarations common across builders
@@ -289,7 +289,25 @@ pub fn shift(i: &[u8], c: usize) -> &[u8] {
     }
 }
 
+pub fn split_on_pascal_case(s: &str) -> String {
+    s.chars()
+        .enumerate()
+        .flat_map(|(i, c)| {
+            if i != 0 && c.is_uppercase() {
+                Some(' ')
+            } else {
+                None
+            }
+            .into_iter()
+            .chain(std::iter::once(c))
+        })
+        .collect()
+}
+
 #[cfg(test)]
 pub fn ast_eq<T: quote::ToTokens>(expected: quote::Tokens, actual: T) {
-    assert_eq!(rust_fmt(expected.to_string()).unwrap(), rust_fmt(quote!(#actual).to_string()).unwrap());
+    assert_eq!(
+        rust_fmt(expected.to_string()).unwrap(),
+        rust_fmt(quote!(#actual).to_string()).unwrap()
+    );
 }

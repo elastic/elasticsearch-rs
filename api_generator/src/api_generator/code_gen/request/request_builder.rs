@@ -1,16 +1,11 @@
 use crate::api_generator::{
-    code_gen,
-    code_gen::*,
-    code_gen::url::enum_builder::EnumBuilder,
-    ApiEndpoint,
-    HttpMethod,
-    Type,
+    code_gen, code_gen::url::enum_builder::EnumBuilder, code_gen::*, ApiEndpoint, HttpMethod, Type,
     TypeKind,
 };
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use std::{collections::BTreeMap, str};
-use syn::{Field, FieldValue, ImplItem, FnArg};
+use syn::{Field, FieldValue, FnArg, ImplItem};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -322,11 +317,10 @@ impl<'a> RequestBuilder<'a> {
 
         let (builder_expr, builder_impl, sender_impl) = {
             if supports_body {
-                let builder_expr = quote!(#builder_ident<B>);
                 (
-                    quote!(#builder_expr),
-                    quote!(impl<B> #builder_expr where B: Serialize),
-                    quote!(impl<B> Sender for #builder_expr where B: Serialize),
+                    quote!(#builder_ident<B>),
+                    quote!(impl<B> #builder_ident<B> where B: Serialize),
+                    quote!(impl<B> Sender for #builder_ident<B> where B: Serialize),
                 )
             } else {
                 (
@@ -337,12 +331,18 @@ impl<'a> RequestBuilder<'a> {
             }
         };
 
+        let builder_doc = lit(format!(
+            "Request builder for the {} API",
+            split_on_pascal_case(builder_name)
+        ));
+
         quote!(
             #enum_struct
 
             #enum_impl
 
             #[derive(Clone, Debug)]
+            #[doc = #builder_doc]
             pub struct #builder_expr {
                 client: Elasticsearch,
                 parts: #enum_ty,

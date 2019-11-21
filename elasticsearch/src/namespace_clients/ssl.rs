@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ssl Certificates API"]
 pub enum SslCertificatesUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl SslCertificatesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ssl Certificates API"]
 pub struct SslCertificates {
     client: Elasticsearch,
     parts: SslCertificatesUrlParts,

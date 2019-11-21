@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Ack Watch API"]
 pub enum WatcherAckWatchUrlParts {
     WatchId(String),
     WatchIdActionId(String, Vec<String>),
@@ -52,6 +53,7 @@ impl WatcherAckWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Ack Watch API"]
 pub struct WatcherAckWatch<B> {
     client: Elasticsearch,
     parts: WatcherAckWatchUrlParts,
@@ -151,6 +153,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Activate Watch API"]
 pub enum WatcherActivateWatchUrlParts {
     WatchId(String),
 }
@@ -168,6 +171,7 @@ impl WatcherActivateWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Activate Watch API"]
 pub struct WatcherActivateWatch<B> {
     client: Elasticsearch,
     parts: WatcherActivateWatchUrlParts,
@@ -267,6 +271,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Deactivate Watch API"]
 pub enum WatcherDeactivateWatchUrlParts {
     WatchId(String),
 }
@@ -284,6 +289,7 @@ impl WatcherDeactivateWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Deactivate Watch API"]
 pub struct WatcherDeactivateWatch<B> {
     client: Elasticsearch,
     parts: WatcherDeactivateWatchUrlParts,
@@ -383,6 +389,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Delete Watch API"]
 pub enum WatcherDeleteWatchUrlParts {
     Id(String),
 }
@@ -399,6 +406,7 @@ impl WatcherDeleteWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Delete Watch API"]
 pub struct WatcherDeleteWatch {
     client: Elasticsearch,
     parts: WatcherDeleteWatchUrlParts,
@@ -485,6 +493,7 @@ impl Sender for WatcherDeleteWatch {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Execute Watch API"]
 pub enum WatcherExecuteWatchUrlParts {
     Id(String),
     None,
@@ -504,6 +513,7 @@ impl WatcherExecuteWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Execute Watch API"]
 pub struct WatcherExecuteWatch<B> {
     client: Elasticsearch,
     parts: WatcherExecuteWatchUrlParts,
@@ -613,6 +623,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Get Watch API"]
 pub enum WatcherGetWatchUrlParts {
     Id(String),
 }
@@ -629,6 +640,7 @@ impl WatcherGetWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Get Watch API"]
 pub struct WatcherGetWatch {
     client: Elasticsearch,
     parts: WatcherGetWatchUrlParts,
@@ -715,6 +727,7 @@ impl Sender for WatcherGetWatch {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Put Watch API"]
 pub enum WatcherPutWatchUrlParts {
     Id(String),
 }
@@ -731,6 +744,7 @@ impl WatcherPutWatchUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Put Watch API"]
 pub struct WatcherPutWatch<B> {
     client: Elasticsearch,
     parts: WatcherPutWatchUrlParts,
@@ -870,6 +884,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Start API"]
 pub enum WatcherStartUrlParts {
     None,
 }
@@ -881,6 +896,7 @@ impl WatcherStartUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Start API"]
 pub struct WatcherStart<B> {
     client: Elasticsearch,
     parts: WatcherStartUrlParts,
@@ -980,6 +996,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Stats API"]
 pub enum WatcherStatsUrlParts {
     None,
     Metric(Vec<String>),
@@ -999,6 +1016,7 @@ impl WatcherStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Stats API"]
 pub struct WatcherStats {
     client: Elasticsearch,
     parts: WatcherStatsUrlParts,
@@ -1109,6 +1127,7 @@ impl Sender for WatcherStats {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Watcher Stop API"]
 pub enum WatcherStopUrlParts {
     None,
 }
@@ -1120,6 +1139,7 @@ impl WatcherStopUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Watcher Stop API"]
 pub struct WatcherStop<B> {
     client: Elasticsearch,
     parts: WatcherStopUrlParts,

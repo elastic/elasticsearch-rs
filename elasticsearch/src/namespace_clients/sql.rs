@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Clear Cursor API"]
 pub enum SqlClearCursorUrlParts {
     None,
 }
@@ -36,6 +37,7 @@ impl SqlClearCursorUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Clear Cursor API"]
 pub struct SqlClearCursor<B> {
     client: Elasticsearch,
     parts: SqlClearCursorUrlParts,
@@ -135,6 +137,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Query API"]
 pub enum SqlQueryUrlParts {
     None,
 }
@@ -146,6 +149,7 @@ impl SqlQueryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Query API"]
 pub struct SqlQuery<B> {
     client: Elasticsearch,
     parts: SqlQueryUrlParts,
@@ -258,6 +262,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Translate API"]
 pub enum SqlTranslateUrlParts {
     None,
 }
@@ -269,6 +274,7 @@ impl SqlTranslateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Translate API"]
 pub struct SqlTranslate<B> {
     client: Elasticsearch,
     parts: SqlTranslateUrlParts,

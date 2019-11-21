@@ -25,6 +25,7 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Cleanup Repository API"]
 pub enum SnapshotCleanupRepositoryUrlParts {
     Repository(String),
 }
@@ -42,6 +43,7 @@ impl SnapshotCleanupRepositoryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Cleanup Repository API"]
 pub struct SnapshotCleanupRepository<B> {
     client: Elasticsearch,
     parts: SnapshotCleanupRepositoryUrlParts,
@@ -161,6 +163,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Create API"]
 pub enum SnapshotCreateUrlParts {
     RepositorySnapshot(String, String),
 }
@@ -179,6 +182,7 @@ impl SnapshotCreateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Create API"]
 pub struct SnapshotCreate<B> {
     client: Elasticsearch,
     parts: SnapshotCreateUrlParts,
@@ -301,6 +305,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Create Repository API"]
 pub enum SnapshotCreateRepositoryUrlParts {
     Repository(String),
 }
@@ -317,6 +322,7 @@ impl SnapshotCreateRepositoryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Create Repository API"]
 pub struct SnapshotCreateRepository<B> {
     client: Elasticsearch,
     parts: SnapshotCreateRepositoryUrlParts,
@@ -446,6 +452,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Delete API"]
 pub enum SnapshotDeleteUrlParts {
     RepositorySnapshot(String, String),
 }
@@ -464,6 +471,7 @@ impl SnapshotDeleteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Delete API"]
 pub struct SnapshotDelete {
     client: Elasticsearch,
     parts: SnapshotDeleteUrlParts,
@@ -560,6 +568,7 @@ impl Sender for SnapshotDelete {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Delete Repository API"]
 pub enum SnapshotDeleteRepositoryUrlParts {
     Repository(Vec<String>),
 }
@@ -577,6 +586,7 @@ impl SnapshotDeleteRepositoryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Delete Repository API"]
 pub struct SnapshotDeleteRepository {
     client: Elasticsearch,
     parts: SnapshotDeleteRepositoryUrlParts,
@@ -683,6 +693,7 @@ impl Sender for SnapshotDeleteRepository {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Get API"]
 pub enum SnapshotGetUrlParts {
     RepositorySnapshot(String, Vec<String>),
 }
@@ -702,6 +713,7 @@ impl SnapshotGetUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Get API"]
 pub struct SnapshotGet {
     client: Elasticsearch,
     parts: SnapshotGetUrlParts,
@@ -818,6 +830,7 @@ impl Sender for SnapshotGet {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Get Repository API"]
 pub enum SnapshotGetRepositoryUrlParts {
     None,
     Repository(Vec<String>),
@@ -837,6 +850,7 @@ impl SnapshotGetRepositoryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Get Repository API"]
 pub struct SnapshotGetRepository {
     client: Elasticsearch,
     parts: SnapshotGetRepositoryUrlParts,
@@ -943,6 +957,7 @@ impl Sender for SnapshotGetRepository {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Restore API"]
 pub enum SnapshotRestoreUrlParts {
     RepositorySnapshot(String, String),
 }
@@ -962,6 +977,7 @@ impl SnapshotRestoreUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Restore API"]
 pub struct SnapshotRestore<B> {
     client: Elasticsearch,
     parts: SnapshotRestoreUrlParts,
@@ -1084,6 +1100,7 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Status API"]
 pub enum SnapshotStatusUrlParts {
     None,
     Repository(String),
@@ -1114,6 +1131,7 @@ impl SnapshotStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Status API"]
 pub struct SnapshotStatus {
     client: Elasticsearch,
     parts: SnapshotStatusUrlParts,
@@ -1220,6 +1238,7 @@ impl Sender for SnapshotStatus {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Snapshot Verify Repository API"]
 pub enum SnapshotVerifyRepositoryUrlParts {
     Repository(String),
 }
@@ -1237,6 +1256,7 @@ impl SnapshotVerifyRepositoryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Snapshot Verify Repository API"]
 pub struct SnapshotVerifyRepository<B> {
     client: Elasticsearch,
     parts: SnapshotVerifyRepositoryUrlParts,

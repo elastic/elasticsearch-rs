@@ -16,8 +16,7 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .iter()
         .map(|(name, endpoint)| {
             let builder_name = name.to_pascal_case();
-            RequestBuilder::new(name, &builder_name, &api.common_params, endpoint, true)
-                .build()
+            RequestBuilder::new(name, &builder_name, &api.common_params, endpoint, true).build()
         })
         .unzip();
 
