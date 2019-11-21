@@ -23,9 +23,22 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum SslCertificatesUrlParts {
+    None,
+}
+impl SslCertificatesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SslCertificatesUrlParts::None => "/_ssl/certificates".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SslCertificates {
     client: Elasticsearch,
+    parts: SslCertificatesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -36,6 +49,7 @@ impl SslCertificates {
     pub fn new(client: Elasticsearch) -> Self {
         SslCertificates {
             client,
+            parts: SslCertificatesUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -71,7 +85,7 @@ impl SslCertificates {
 }
 impl Sender for SslCertificates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ssl/certificates");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -115,7 +129,6 @@ impl Ssl {
     pub fn new(client: Elasticsearch) -> Self {
         Ssl { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html"]
     pub fn certificates(&self) -> SslCertificates {
         SslCertificates::new(self.client.clone())
     }

@@ -23,28 +23,58 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum GraphExploreUrlParts {
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl GraphExploreUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            GraphExploreUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(16usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_graph/explore");
+                p.into()
+            }
+            GraphExploreUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_graph/explore");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct GraphExplore<B> {
     client: Elasticsearch,
+    parts: GraphExploreUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     pretty: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<Vec<String>>,
 }
 impl<B> GraphExplore<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: GraphExploreUrlParts) -> Self {
         GraphExplore {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -53,7 +83,6 @@ where
             routing: None,
             source: None,
             timeout: None,
-            ty: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -76,11 +105,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -101,38 +125,13 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for GraphExplore<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index_str = self.index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_graph/explore");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index_str = self.index.join(",");
-                let mut p = String::with_capacity(16usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_graph/explore");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -185,12 +184,11 @@ impl Graph {
     pub fn new(client: Elasticsearch) -> Self {
         Graph { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html"]
-    pub fn explore<B>(&self, index: Vec<String>) -> GraphExplore<B>
+    pub fn explore<B>(&self, parts: GraphExploreUrlParts) -> GraphExplore<B>
     where
         B: Serialize,
     {
-        GraphExplore::new(self.client.clone(), index)
+        GraphExplore::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

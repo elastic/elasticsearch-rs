@@ -23,24 +23,44 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum MigrationDeprecationsUrlParts {
+    None,
+    Index(String),
+}
+impl MigrationDeprecationsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MigrationDeprecationsUrlParts::None => "/_migration/deprecations".into(),
+            MigrationDeprecationsUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(25usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_migration/deprecations");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct MigrationDeprecations {
     client: Elasticsearch,
+    parts: MigrationDeprecationsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MigrationDeprecations {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsUrlParts) -> Self {
         MigrationDeprecations {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -60,11 +80,6 @@ impl MigrationDeprecations {
         self.human = human;
         self
     }
-    #[doc = "Index pattern"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -78,17 +93,7 @@ impl MigrationDeprecations {
 }
 impl Sender for MigrationDeprecations {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index = index;
-                let mut p = String::with_capacity(25usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_migration/deprecations");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_migration/deprecations"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -132,9 +137,8 @@ impl Migration {
     pub fn new(client: Elasticsearch) -> Self {
         Migration { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html"]
-    pub fn deprecations(&self) -> MigrationDeprecations {
-        MigrationDeprecations::new(self.client.clone())
+    pub fn deprecations(&self, parts: MigrationDeprecationsUrlParts) -> MigrationDeprecations {
+        MigrationDeprecations::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

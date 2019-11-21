@@ -23,9 +23,22 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityAuthenticateUrlParts {
+    None,
+}
+impl SecurityAuthenticateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityAuthenticateUrlParts::None => "/_security/_authenticate".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityAuthenticate {
     client: Elasticsearch,
+    parts: SecurityAuthenticateUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -36,6 +49,7 @@ impl SecurityAuthenticate {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
+            parts: SecurityAuthenticateUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -71,7 +85,7 @@ impl SecurityAuthenticate {
 }
 impl Sender for SecurityAuthenticate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/_authenticate");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -107,9 +121,29 @@ impl Sender for SecurityAuthenticate {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityChangePasswordUrlParts {
+    Username(String),
+    None,
+}
+impl SecurityChangePasswordUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityChangePasswordUrlParts::Username(ref username) => {
+                let mut p = String::with_capacity(26usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.push_str("/_password");
+                p.into()
+            }
+            SecurityChangePasswordUrlParts::None => "/_security/user/_password".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityChangePassword<B> {
     client: Elasticsearch,
+    parts: SecurityChangePasswordUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -117,15 +151,15 @@ pub struct SecurityChangePassword<B> {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: Option<String>,
 }
 impl<B> SecurityChangePassword<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordUrlParts) -> Self {
         SecurityChangePassword {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -133,7 +167,6 @@ where
             pretty: None,
             refresh: None,
             source: None,
-            username: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -171,28 +204,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The username of the user to change the password for"]
-    pub fn username(mut self, username: Option<String>) -> Self {
-        self.username = username;
-        self
-    }
 }
 impl<B> Sender for SecurityChangePassword<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.username {
-            Some(username) => {
-                let username = username;
-                let mut p = String::with_capacity(26usize + username.len());
-                p.push_str("/_security/user/");
-                p.push_str(username.as_ref());
-                p.push_str("/_password");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_security/user/_password"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -231,15 +249,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityClearCachedRealmsUrlParts {
+    Realms(Vec<String>),
+}
+impl SecurityClearCachedRealmsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityClearCachedRealmsUrlParts::Realms(ref realms) => {
+                let realms_str = realms.join(",");
+                let mut p = String::with_capacity(30usize + realms_str.len());
+                p.push_str("/_security/realm/");
+                p.push_str(realms_str.as_ref());
+                p.push_str("/_clear_cache");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedRealms<B> {
     client: Elasticsearch,
+    parts: SecurityClearCachedRealmsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    realms: Vec<String>,
     source: Option<String>,
     usernames: Option<Vec<String>>,
 }
@@ -247,10 +283,10 @@ impl<B> SecurityClearCachedRealms<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, realms: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsUrlParts) -> Self {
         SecurityClearCachedRealms {
             client,
-            realms: realms,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -285,11 +321,6 @@ where
         self.pretty = pretty;
         self
     }
-    #[doc = "Comma-separated list of realms to clear"]
-    pub fn realms(mut self, realms: Vec<String>) -> Self {
-        self.realms = realms;
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -306,14 +337,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let realms_str = self.realms.join(",");
-            let mut p = String::with_capacity(30usize + realms_str.len());
-            p.push_str("/_security/realm/");
-            p.push_str(realms_str.as_ref());
-            p.push_str("/_clear_cache");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -356,14 +380,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityClearCachedRolesUrlParts {
+    Name(Vec<String>),
+}
+impl SecurityClearCachedRolesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityClearCachedRolesUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(29usize + name_str.len());
+                p.push_str("/_security/role/");
+                p.push_str(name_str.as_ref());
+                p.push_str("/_clear_cache");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityClearCachedRoles<B> {
     client: Elasticsearch,
+    parts: SecurityClearCachedRolesUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -371,10 +413,10 @@ impl<B> SecurityClearCachedRoles<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesUrlParts) -> Self {
         SecurityClearCachedRoles {
             client,
-            name: name,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -403,11 +445,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Role name"]
-    pub fn name(mut self, name: Vec<String>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -424,14 +461,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name_str = self.name.join(",");
-            let mut p = String::with_capacity(29usize + name_str.len());
-            p.push_str("/_security/role/");
-            p.push_str(name_str.as_ref());
-            p.push_str("/_clear_cache");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -467,9 +497,21 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityCreateApiKeyUrlParts {
+    None,
+}
+impl SecurityCreateApiKeyUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityCreateApiKeyUrlParts::None => "/_security/api_key".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityCreateApiKey<B> {
     client: Elasticsearch,
+    parts: SecurityCreateApiKeyUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -485,6 +527,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityCreateApiKey {
             client,
+            parts: SecurityCreateApiKeyUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -535,7 +578,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/api_key");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -574,24 +617,40 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityDeletePrivilegesUrlParts {
+    ApplicationName(String, String),
+}
+impl SecurityDeletePrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityDeletePrivilegesUrlParts::ApplicationName(ref application, ref name) => {
+                let mut p = String::with_capacity(22usize + application.len() + name.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(application.as_ref());
+                p.push_str("/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityDeletePrivileges {
     client: Elasticsearch,
-    application: String,
+    parts: SecurityDeletePrivilegesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeletePrivileges {
-    pub fn new(client: Elasticsearch, application: String, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesUrlParts) -> Self {
         SecurityDeletePrivileges {
             client,
-            application: application,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -599,11 +658,6 @@ impl SecurityDeletePrivileges {
             refresh: None,
             source: None,
         }
-    }
-    #[doc = "Application name"]
-    pub fn application(mut self, application: String) -> Self {
-        self.application = application;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -618,11 +672,6 @@ impl SecurityDeletePrivileges {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Privilege name"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -643,16 +692,7 @@ impl SecurityDeletePrivileges {
 }
 impl Sender for SecurityDeletePrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let application = self.application;
-            let name = self.name;
-            let mut p = String::with_capacity(22usize + application.len() + name.len());
-            p.push_str("/_security/privilege/");
-            p.push_str(application.as_ref());
-            p.push_str("/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -691,22 +731,38 @@ impl Sender for SecurityDeletePrivileges {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityDeleteRoleUrlParts {
+    Name(String),
+}
+impl SecurityDeleteRoleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityDeleteRoleUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_security/role/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteRole {
     client: Elasticsearch,
+    parts: SecurityDeleteRoleUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeleteRole {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleUrlParts) -> Self {
         SecurityDeleteRole {
             client,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -728,11 +784,6 @@ impl SecurityDeleteRole {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Role name"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -753,13 +804,7 @@ impl SecurityDeleteRole {
 }
 impl Sender for SecurityDeleteRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(16usize + name.len());
-            p.push_str("/_security/role/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -798,22 +843,38 @@ impl Sender for SecurityDeleteRole {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityDeleteRoleMappingUrlParts {
+    Name(String),
+}
+impl SecurityDeleteRoleMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityDeleteRoleMappingUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(24usize + name.len());
+                p.push_str("/_security/role_mapping/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteRoleMapping {
     client: Elasticsearch,
+    parts: SecurityDeleteRoleMappingUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
 }
 impl SecurityDeleteRoleMapping {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingUrlParts) -> Self {
         SecurityDeleteRoleMapping {
             client,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -835,11 +896,6 @@ impl SecurityDeleteRoleMapping {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Role-mapping name"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -860,13 +916,7 @@ impl SecurityDeleteRoleMapping {
 }
 impl Sender for SecurityDeleteRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(24usize + name.len());
-            p.push_str("/_security/role_mapping/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -905,22 +955,38 @@ impl Sender for SecurityDeleteRoleMapping {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityDeleteUserUrlParts {
+    Username(String),
+}
+impl SecurityDeleteUserUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityDeleteUserUrlParts::Username(ref username) => {
+                let mut p = String::with_capacity(16usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityDeleteUser {
     client: Elasticsearch,
+    parts: SecurityDeleteUserUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: String,
 }
 impl SecurityDeleteUser {
-    pub fn new(client: Elasticsearch, username: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserUrlParts) -> Self {
         SecurityDeleteUser {
             client,
-            username: username,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -959,21 +1025,10 @@ impl SecurityDeleteUser {
         self.source = source;
         self
     }
-    #[doc = "username"]
-    pub fn username(mut self, username: String) -> Self {
-        self.username = username;
-        self
-    }
 }
 impl Sender for SecurityDeleteUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let username = self.username;
-            let mut p = String::with_capacity(16usize + username.len());
-            p.push_str("/_security/user/");
-            p.push_str(username.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1012,9 +1067,27 @@ impl Sender for SecurityDeleteUser {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityDisableUserUrlParts {
+    Username(String),
+}
+impl SecurityDisableUserUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityDisableUserUrlParts::Username(ref username) => {
+                let mut p = String::with_capacity(25usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.push_str("/_disable");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityDisableUser<B> {
     client: Elasticsearch,
+    parts: SecurityDisableUserUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1022,16 +1095,15 @@ pub struct SecurityDisableUser<B> {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: String,
 }
 impl<B> SecurityDisableUser<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, username: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDisableUserUrlParts) -> Self {
         SecurityDisableUser {
             client,
-            username: username,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1074,11 +1146,6 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "The username of the user to disable"]
-    pub fn username(mut self, username: String) -> Self {
-        self.username = username;
         self
     }
 }
@@ -1087,14 +1154,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let username = self.username;
-            let mut p = String::with_capacity(25usize + username.len());
-            p.push_str("/_security/user/");
-            p.push_str(username.as_ref());
-            p.push_str("/_disable");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1133,9 +1193,27 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityEnableUserUrlParts {
+    Username(String),
+}
+impl SecurityEnableUserUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityEnableUserUrlParts::Username(ref username) => {
+                let mut p = String::with_capacity(24usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.push_str("/_enable");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityEnableUser<B> {
     client: Elasticsearch,
+    parts: SecurityEnableUserUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1143,16 +1221,15 @@ pub struct SecurityEnableUser<B> {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: String,
 }
 impl<B> SecurityEnableUser<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, username: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityEnableUserUrlParts) -> Self {
         SecurityEnableUser {
             client,
-            username: username,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1197,25 +1274,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The username of the user to enable"]
-    pub fn username(mut self, username: String) -> Self {
-        self.username = username;
-        self
-    }
 }
 impl<B> Sender for SecurityEnableUser<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let username = self.username;
-            let mut p = String::with_capacity(24usize + username.len());
-            p.push_str("/_security/user/");
-            p.push_str(username.as_ref());
-            p.push_str("/_enable");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1254,9 +1319,21 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetApiKeyUrlParts {
+    None,
+}
+impl SecurityGetApiKeyUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetApiKeyUrlParts::None => "/_security/api_key".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetApiKey {
     client: Elasticsearch,
+    parts: SecurityGetApiKeyUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1271,6 +1348,7 @@ impl SecurityGetApiKey {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
+            parts: SecurityGetApiKeyUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1330,7 +1408,7 @@ impl SecurityGetApiKey {
 }
 impl Sender for SecurityGetApiKey {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/api_key");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1378,9 +1456,21 @@ impl Sender for SecurityGetApiKey {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetBuiltinPrivilegesUrlParts {
+    None,
+}
+impl SecurityGetBuiltinPrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetBuiltinPrivilegesUrlParts::None => "/_security/privilege/_builtin".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetBuiltinPrivileges {
     client: Elasticsearch,
+    parts: SecurityGetBuiltinPrivilegesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1391,6 +1481,7 @@ impl SecurityGetBuiltinPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
+            parts: SecurityGetBuiltinPrivilegesUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1426,7 +1517,7 @@ impl SecurityGetBuiltinPrivileges {
 }
 impl Sender for SecurityGetBuiltinPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/privilege/_builtin");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1462,34 +1553,54 @@ impl Sender for SecurityGetBuiltinPrivileges {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetPrivilegesUrlParts {
+    None,
+    Application(String),
+    ApplicationName(String, String),
+}
+impl SecurityGetPrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetPrivilegesUrlParts::None => "/_security/privilege".into(),
+            SecurityGetPrivilegesUrlParts::Application(ref application) => {
+                let mut p = String::with_capacity(21usize + application.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(application.as_ref());
+                p.into()
+            }
+            SecurityGetPrivilegesUrlParts::ApplicationName(ref application, ref name) => {
+                let mut p = String::with_capacity(22usize + application.len() + name.len());
+                p.push_str("/_security/privilege/");
+                p.push_str(application.as_ref());
+                p.push_str("/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetPrivileges {
     client: Elasticsearch,
-    application: Option<String>,
+    parts: SecurityGetPrivilegesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl SecurityGetPrivileges {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesUrlParts) -> Self {
         SecurityGetPrivileges {
             client,
-            application: None,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            name: None,
             pretty: None,
             source: None,
         }
-    }
-    #[doc = "Application name"]
-    pub fn application(mut self, application: Option<String>) -> Self {
-        self.application = application;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1504,11 +1615,6 @@ impl SecurityGetPrivileges {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Privilege name"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1524,27 +1630,7 @@ impl SecurityGetPrivileges {
 }
 impl Sender for SecurityGetPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.application, &self.name) {
-            (Some(application), Some(name)) => {
-                let application = application;
-                let name = name;
-                let mut p = String::with_capacity(22usize + application.len() + name.len());
-                p.push_str("/_security/privilege/");
-                p.push_str(application.as_ref());
-                p.push_str("/");
-                p.push_str(name.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(application), None) => {
-                let application = application;
-                let mut p = String::with_capacity(21usize + application.len());
-                p.push_str("/_security/privilege/");
-                p.push_str(application.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(_)) => panic!("application must also be specified"),
-            (None, None) => std::borrow::Cow::Borrowed("/_security/privilege"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1580,24 +1666,42 @@ impl Sender for SecurityGetPrivileges {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetRoleUrlParts {
+    Name(String),
+    None,
+}
+impl SecurityGetRoleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetRoleUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_security/role/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+            SecurityGetRoleUrlParts::None => "/_security/role".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetRole {
     client: Elasticsearch,
+    parts: SecurityGetRoleUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl SecurityGetRole {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleUrlParts) -> Self {
         SecurityGetRole {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -1615,11 +1719,6 @@ impl SecurityGetRole {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Role name"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1635,16 +1734,7 @@ impl SecurityGetRole {
 }
 impl Sender for SecurityGetRole {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name = name;
-                let mut p = String::with_capacity(16usize + name.len());
-                p.push_str("/_security/role/");
-                p.push_str(name.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_security/role"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1680,24 +1770,42 @@ impl Sender for SecurityGetRole {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetRoleMappingUrlParts {
+    Name(String),
+    None,
+}
+impl SecurityGetRoleMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetRoleMappingUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(24usize + name.len());
+                p.push_str("/_security/role_mapping/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+            SecurityGetRoleMappingUrlParts::None => "/_security/role_mapping".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetRoleMapping {
     client: Elasticsearch,
+    parts: SecurityGetRoleMappingUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl SecurityGetRoleMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingUrlParts) -> Self {
         SecurityGetRoleMapping {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -1717,11 +1825,6 @@ impl SecurityGetRoleMapping {
         self.human = human;
         self
     }
-    #[doc = "Role-Mapping name"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1735,16 +1838,7 @@ impl SecurityGetRoleMapping {
 }
 impl Sender for SecurityGetRoleMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name = name;
-                let mut p = String::with_capacity(24usize + name.len());
-                p.push_str("/_security/role_mapping/");
-                p.push_str(name.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_security/role_mapping"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1780,9 +1874,21 @@ impl Sender for SecurityGetRoleMapping {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetTokenUrlParts {
+    None,
+}
+impl SecurityGetTokenUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetTokenUrlParts::None => "/_security/oauth2/token".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetToken<B> {
     client: Elasticsearch,
+    parts: SecurityGetTokenUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1797,6 +1903,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetToken {
             client,
+            parts: SecurityGetTokenUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1841,7 +1948,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/oauth2/token");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1877,26 +1984,45 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetUserUrlParts {
+    Username(Vec<String>),
+    None,
+}
+impl SecurityGetUserUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetUserUrlParts::Username(ref username) => {
+                let username_str = username.join(",");
+                let mut p = String::with_capacity(16usize + username_str.len());
+                p.push_str("/_security/user/");
+                p.push_str(username_str.as_ref());
+                p.into()
+            }
+            SecurityGetUserUrlParts::None => "/_security/user".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetUser {
     client: Elasticsearch,
+    parts: SecurityGetUserUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    username: Option<Vec<String>>,
 }
 impl SecurityGetUser {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetUserUrlParts) -> Self {
         SecurityGetUser {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
-            username: None,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -1924,24 +2050,10 @@ impl SecurityGetUser {
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of usernames"]
-    pub fn username(mut self, username: Option<Vec<String>>) -> Self {
-        self.username = username;
-        self
-    }
 }
 impl Sender for SecurityGetUser {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.username {
-            Some(username) => {
-                let username_str = username.join(",");
-                let mut p = String::with_capacity(16usize + username_str.len());
-                p.push_str("/_security/user/");
-                p.push_str(username_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_security/user"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1977,9 +2089,21 @@ impl Sender for SecurityGetUser {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityGetUserPrivilegesUrlParts {
+    None,
+}
+impl SecurityGetUserPrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityGetUserPrivilegesUrlParts::None => "/_security/user/_privileges".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityGetUserPrivileges {
     client: Elasticsearch,
+    parts: SecurityGetUserPrivilegesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -1990,6 +2114,7 @@ impl SecurityGetUserPrivileges {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
+            parts: SecurityGetUserPrivilegesUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2025,7 +2150,7 @@ impl SecurityGetUserPrivileges {
 }
 impl Sender for SecurityGetUserPrivileges {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/user/_privileges");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2061,31 +2186,50 @@ impl Sender for SecurityGetUserPrivileges {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityHasPrivilegesUrlParts {
+    None,
+    User(String),
+}
+impl SecurityHasPrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityHasPrivilegesUrlParts::None => "/_security/user/_has_privileges".into(),
+            SecurityHasPrivilegesUrlParts::User(ref user) => {
+                let mut p = String::with_capacity(32usize + user.len());
+                p.push_str("/_security/user/");
+                p.push_str(user.as_ref());
+                p.push_str("/_has_privileges");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityHasPrivileges<B> {
     client: Elasticsearch,
+    parts: SecurityHasPrivilegesUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    user: Option<String>,
 }
 impl<B> SecurityHasPrivileges<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesUrlParts) -> Self {
         SecurityHasPrivileges {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
-            user: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -2118,28 +2262,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "Username"]
-    pub fn user(mut self, user: Option<String>) -> Self {
-        self.user = user;
-        self
-    }
 }
 impl<B> Sender for SecurityHasPrivileges<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.user {
-            Some(user) => {
-                let user = user;
-                let mut p = String::with_capacity(32usize + user.len());
-                p.push_str("/_security/user/");
-                p.push_str(user.as_ref());
-                p.push_str("/_has_privileges");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_security/user/_has_privileges"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2178,9 +2307,21 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityInvalidateApiKeyUrlParts {
+    None,
+}
+impl SecurityInvalidateApiKeyUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityInvalidateApiKeyUrlParts::None => "/_security/api_key".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityInvalidateApiKey<B> {
     client: Elasticsearch,
+    parts: SecurityInvalidateApiKeyUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2195,6 +2336,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
             client,
+            parts: SecurityInvalidateApiKeyUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2239,7 +2381,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/api_key");
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -2275,9 +2417,21 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityInvalidateTokenUrlParts {
+    None,
+}
+impl SecurityInvalidateTokenUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityInvalidateTokenUrlParts::None => "/_security/oauth2/token".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityInvalidateToken<B> {
     client: Elasticsearch,
+    parts: SecurityInvalidateTokenUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2292,6 +2446,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateToken {
             client,
+            parts: SecurityInvalidateTokenUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2336,7 +2491,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/oauth2/token");
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -2372,9 +2527,21 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityPutPrivilegesUrlParts {
+    None,
+}
+impl SecurityPutPrivilegesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityPutPrivilegesUrlParts::None => "/_security/privilege/".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityPutPrivileges<B> {
     client: Elasticsearch,
+    parts: SecurityPutPrivilegesUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2390,6 +2557,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityPutPrivileges {
             client,
+            parts: SecurityPutPrivilegesUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2440,7 +2608,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_security/privilege/");
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2479,14 +2647,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityPutRoleUrlParts {
+    Name(String),
+}
+impl SecurityPutRoleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityPutRoleUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_security/role/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityPutRole<B> {
     client: Elasticsearch,
+    parts: SecurityPutRoleUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
@@ -2495,10 +2679,10 @@ impl<B> SecurityPutRole<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleUrlParts) -> Self {
         SecurityPutRole {
             client,
-            name: name,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2526,11 +2710,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Role name"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2554,13 +2733,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(16usize + name.len());
-            p.push_str("/_security/role/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2599,14 +2772,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityPutRoleMappingUrlParts {
+    Name(String),
+}
+impl SecurityPutRoleMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityPutRoleMappingUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(24usize + name.len());
+                p.push_str("/_security/role_mapping/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityPutRoleMapping<B> {
     client: Elasticsearch,
+    parts: SecurityPutRoleMappingUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
@@ -2615,10 +2804,10 @@ impl<B> SecurityPutRoleMapping<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingUrlParts) -> Self {
         SecurityPutRoleMapping {
             client,
-            name: name,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2646,11 +2835,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Role-mapping name"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2674,13 +2858,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(24usize + name.len());
-            p.push_str("/_security/role_mapping/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2719,9 +2897,26 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum SecurityPutUserUrlParts {
+    Username(String),
+}
+impl SecurityPutUserUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SecurityPutUserUrlParts::Username(ref username) => {
+                let mut p = String::with_capacity(16usize + username.len());
+                p.push_str("/_security/user/");
+                p.push_str(username.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct SecurityPutUser<B> {
     client: Elasticsearch,
+    parts: SecurityPutUserUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2729,16 +2924,15 @@ pub struct SecurityPutUser<B> {
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     source: Option<String>,
-    username: String,
 }
 impl<B> SecurityPutUser<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, username: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutUserUrlParts) -> Self {
         SecurityPutUser {
             client,
-            username: username,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2783,24 +2977,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The username of the User"]
-    pub fn username(mut self, username: String) -> Self {
-        self.username = username;
-        self
-    }
 }
 impl<B> Sender for SecurityPutUser<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let username = self.username;
-            let mut p = String::with_capacity(16usize + username.len());
-            p.push_str("/_security/user/");
-            p.push_str(username.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -2847,151 +3030,149 @@ impl Security {
     pub fn new(client: Elasticsearch) -> Self {
         Security { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html"]
     pub fn authenticate(&self) -> SecurityAuthenticate {
         SecurityAuthenticate::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html"]
-    pub fn change_password<B>(&self) -> SecurityChangePassword<B>
+    pub fn change_password<B>(
+        &self,
+        parts: SecurityChangePasswordUrlParts,
+    ) -> SecurityChangePassword<B>
     where
         B: Serialize,
     {
-        SecurityChangePassword::new(self.client.clone())
+        SecurityChangePassword::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html"]
-    pub fn clear_cached_realms<B>(&self, realms: Vec<String>) -> SecurityClearCachedRealms<B>
+    pub fn clear_cached_realms<B>(
+        &self,
+        parts: SecurityClearCachedRealmsUrlParts,
+    ) -> SecurityClearCachedRealms<B>
     where
         B: Serialize,
     {
-        SecurityClearCachedRealms::new(self.client.clone(), realms)
+        SecurityClearCachedRealms::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html"]
-    pub fn clear_cached_roles<B>(&self, name: Vec<String>) -> SecurityClearCachedRoles<B>
+    pub fn clear_cached_roles<B>(
+        &self,
+        parts: SecurityClearCachedRolesUrlParts,
+    ) -> SecurityClearCachedRoles<B>
     where
         B: Serialize,
     {
-        SecurityClearCachedRoles::new(self.client.clone(), name)
+        SecurityClearCachedRoles::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html"]
     pub fn create_api_key<B>(&self) -> SecurityCreateApiKey<B>
     where
         B: Serialize,
     {
         SecurityCreateApiKey::new(self.client.clone())
     }
-    #[doc = "TODO"]
-    pub fn delete_privileges(&self, application: String, name: String) -> SecurityDeletePrivileges {
-        SecurityDeletePrivileges::new(self.client.clone(), application, name)
+    pub fn delete_privileges(
+        &self,
+        parts: SecurityDeletePrivilegesUrlParts,
+    ) -> SecurityDeletePrivileges {
+        SecurityDeletePrivileges::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html"]
-    pub fn delete_role(&self, name: String) -> SecurityDeleteRole {
-        SecurityDeleteRole::new(self.client.clone(), name)
+    pub fn delete_role(&self, parts: SecurityDeleteRoleUrlParts) -> SecurityDeleteRole {
+        SecurityDeleteRole::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html"]
-    pub fn delete_role_mapping(&self, name: String) -> SecurityDeleteRoleMapping {
-        SecurityDeleteRoleMapping::new(self.client.clone(), name)
+    pub fn delete_role_mapping(
+        &self,
+        parts: SecurityDeleteRoleMappingUrlParts,
+    ) -> SecurityDeleteRoleMapping {
+        SecurityDeleteRoleMapping::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html"]
-    pub fn delete_user(&self, username: String) -> SecurityDeleteUser {
-        SecurityDeleteUser::new(self.client.clone(), username)
+    pub fn delete_user(&self, parts: SecurityDeleteUserUrlParts) -> SecurityDeleteUser {
+        SecurityDeleteUser::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html"]
-    pub fn disable_user<B>(&self, username: String) -> SecurityDisableUser<B>
+    pub fn disable_user<B>(&self, parts: SecurityDisableUserUrlParts) -> SecurityDisableUser<B>
     where
         B: Serialize,
     {
-        SecurityDisableUser::new(self.client.clone(), username)
+        SecurityDisableUser::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html"]
-    pub fn enable_user<B>(&self, username: String) -> SecurityEnableUser<B>
+    pub fn enable_user<B>(&self, parts: SecurityEnableUserUrlParts) -> SecurityEnableUser<B>
     where
         B: Serialize,
     {
-        SecurityEnableUser::new(self.client.clone(), username)
+        SecurityEnableUser::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html"]
     pub fn get_api_key(&self) -> SecurityGetApiKey {
         SecurityGetApiKey::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html"]
     pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivileges {
         SecurityGetBuiltinPrivileges::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
-    pub fn get_privileges(&self) -> SecurityGetPrivileges {
-        SecurityGetPrivileges::new(self.client.clone())
+    pub fn get_privileges(&self, parts: SecurityGetPrivilegesUrlParts) -> SecurityGetPrivileges {
+        SecurityGetPrivileges::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html"]
-    pub fn get_role(&self) -> SecurityGetRole {
-        SecurityGetRole::new(self.client.clone())
+    pub fn get_role(&self, parts: SecurityGetRoleUrlParts) -> SecurityGetRole {
+        SecurityGetRole::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html"]
-    pub fn get_role_mapping(&self) -> SecurityGetRoleMapping {
-        SecurityGetRoleMapping::new(self.client.clone())
+    pub fn get_role_mapping(
+        &self,
+        parts: SecurityGetRoleMappingUrlParts,
+    ) -> SecurityGetRoleMapping {
+        SecurityGetRoleMapping::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html"]
     pub fn get_token<B>(&self) -> SecurityGetToken<B>
     where
         B: Serialize,
     {
         SecurityGetToken::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html"]
-    pub fn get_user(&self) -> SecurityGetUser {
-        SecurityGetUser::new(self.client.clone())
+    pub fn get_user(&self, parts: SecurityGetUserUrlParts) -> SecurityGetUser {
+        SecurityGetUser::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html"]
     pub fn get_user_privileges(&self) -> SecurityGetUserPrivileges {
         SecurityGetUserPrivileges::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html"]
-    pub fn has_privileges<B>(&self) -> SecurityHasPrivileges<B>
+    pub fn has_privileges<B>(
+        &self,
+        parts: SecurityHasPrivilegesUrlParts,
+    ) -> SecurityHasPrivileges<B>
     where
         B: Serialize,
     {
-        SecurityHasPrivileges::new(self.client.clone())
+        SecurityHasPrivileges::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html"]
     pub fn invalidate_api_key<B>(&self) -> SecurityInvalidateApiKey<B>
     where
         B: Serialize,
     {
         SecurityInvalidateApiKey::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html"]
     pub fn invalidate_token<B>(&self) -> SecurityInvalidateToken<B>
     where
         B: Serialize,
     {
         SecurityInvalidateToken::new(self.client.clone())
     }
-    #[doc = "TODO"]
     pub fn put_privileges<B>(&self) -> SecurityPutPrivileges<B>
     where
         B: Serialize,
     {
         SecurityPutPrivileges::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html"]
-    pub fn put_role<B>(&self, name: String) -> SecurityPutRole<B>
+    pub fn put_role<B>(&self, parts: SecurityPutRoleUrlParts) -> SecurityPutRole<B>
     where
         B: Serialize,
     {
-        SecurityPutRole::new(self.client.clone(), name)
+        SecurityPutRole::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html"]
-    pub fn put_role_mapping<B>(&self, name: String) -> SecurityPutRoleMapping<B>
+    pub fn put_role_mapping<B>(
+        &self,
+        parts: SecurityPutRoleMappingUrlParts,
+    ) -> SecurityPutRoleMapping<B>
     where
         B: Serialize,
     {
-        SecurityPutRoleMapping::new(self.client.clone(), name)
+        SecurityPutRoleMapping::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html"]
-    pub fn put_user<B>(&self, username: String) -> SecurityPutUser<B>
+    pub fn put_user<B>(&self, parts: SecurityPutUserUrlParts) -> SecurityPutUser<B>
     where
         B: Serialize,
     {
-        SecurityPutUser::new(self.client.clone(), username)
+        SecurityPutUser::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

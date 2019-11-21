@@ -23,9 +23,30 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatAliasesUrlParts {
+    None,
+    Name(Vec<String>),
+}
+impl CatAliasesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatAliasesUrlParts::None => "/_cat/aliases".into(),
+            CatAliasesUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(14usize + name_str.len());
+                p.push_str("/_cat/aliases/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatAliases {
     client: Elasticsearch,
+    parts: CatAliasesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -33,17 +54,16 @@ pub struct CatAliases {
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
-    name: Option<Vec<String>>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatAliases {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatAliasesUrlParts) -> Self {
         CatAliases {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -51,8 +71,6 @@ impl CatAliases {
             help: None,
             human: None,
             local: None,
-            master_timeout: None,
-            name: None,
             pretty: None,
             s: None,
             source: None,
@@ -94,16 +112,6 @@ impl CatAliases {
         self.local = local;
         self
     }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "A comma-separated list of alias names to return"]
-    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -127,16 +135,7 @@ impl CatAliases {
 }
 impl Sender for CatAliases {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(14usize + name_str.len());
-                p.push_str("/_cat/aliases/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/aliases"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -163,8 +162,6 @@ impl Sender for CatAliases {
                 human: Option<bool>,
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
-                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
@@ -186,7 +183,6 @@ impl Sender for CatAliases {
                 help: self.help,
                 human: self.human,
                 local: self.local,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
@@ -201,9 +197,29 @@ impl Sender for CatAliases {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatAllocationUrlParts {
+    None,
+    NodeId(Vec<String>),
+}
+impl CatAllocationUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatAllocationUrlParts::None => "/_cat/allocation".into(),
+            CatAllocationUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(17usize + node_id_str.len());
+                p.push_str("/_cat/allocation/");
+                p.push_str(node_id_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatAllocation {
     client: Elasticsearch,
+    parts: CatAllocationUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -213,16 +229,16 @@ pub struct CatAllocation {
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatAllocation {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatAllocationUrlParts) -> Self {
         CatAllocation {
             client,
+            parts,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -232,7 +248,6 @@ impl CatAllocation {
             human: None,
             local: None,
             master_timeout: None,
-            node_id: None,
             pretty: None,
             s: None,
             source: None,
@@ -284,11 +299,6 @@ impl CatAllocation {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -312,16 +322,7 @@ impl CatAllocation {
 }
 impl Sender for CatAllocation {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.node_id {
-            Some(node_id) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(17usize + node_id_str.len());
-                p.push_str("/_cat/allocation/");
-                p.push_str(node_id_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/allocation"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -389,36 +390,51 @@ impl Sender for CatAllocation {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatCountUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl CatCountUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatCountUrlParts::None => "/_cat/count".into(),
+            CatCountUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len());
+                p.push_str("/_cat/count/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatCount {
     client: Elasticsearch,
+    parts: CatCountUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatCount {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatCountUrlParts) -> Self {
         CatCount {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             format: None,
             h: None,
             help: None,
             human: None,
-            index: None,
-            local: None,
-            master_timeout: None,
             pretty: None,
             s: None,
             source: None,
@@ -455,21 +471,6 @@ impl CatCount {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names to limit the returned information"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -493,16 +494,7 @@ impl CatCount {
 }
 impl Sender for CatCount {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len());
-                p.push_str("/_cat/count/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/count"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -527,10 +519,6 @@ impl Sender for CatCount {
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
-                local: Option<bool>,
-                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
@@ -551,8 +539,6 @@ impl Sender for CatCount {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                local: self.local,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
@@ -567,9 +553,29 @@ impl Sender for CatCount {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatFielddataUrlParts {
+    None,
+    Fields(Vec<String>),
+}
+impl CatFielddataUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatFielddataUrlParts::None => "/_cat/fielddata".into(),
+            CatFielddataUrlParts::Fields(ref fields) => {
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(16usize + fields_str.len());
+                p.push_str("/_cat/fielddata/");
+                p.push_str(fields_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatFielddata {
     client: Elasticsearch,
+    parts: CatFielddataUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     fields: Option<Vec<String>>,
@@ -578,17 +584,16 @@ pub struct CatFielddata {
     h: Option<Vec<String>>,
     help: Option<bool>,
     human: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatFielddata {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatFielddataUrlParts) -> Self {
         CatFielddata {
             client,
+            parts,
             bytes: None,
             error_trace: None,
             fields: None,
@@ -597,8 +602,6 @@ impl CatFielddata {
             h: None,
             help: None,
             human: None,
-            local: None,
-            master_timeout: None,
             pretty: None,
             s: None,
             source: None,
@@ -645,16 +648,6 @@ impl CatFielddata {
         self.human = human;
         self
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -678,16 +671,7 @@ impl CatFielddata {
 }
 impl Sender for CatFielddata {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.fields {
-            Some(fields) => {
-                let fields_str = fields.join(",");
-                let mut p = String::with_capacity(16usize + fields_str.len());
-                p.push_str("/_cat/fielddata/");
-                p.push_str(fields_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/fielddata"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -720,10 +704,6 @@ impl Sender for CatFielddata {
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
-                local: Option<bool>,
-                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
@@ -746,8 +726,6 @@ impl Sender for CatFielddata {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                local: self.local,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
@@ -762,20 +740,31 @@ impl Sender for CatFielddata {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatHealthUrlParts {
+    None,
+}
+impl CatHealthUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatHealthUrlParts::None => "/_cat/health".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatHealth {
     client: Elasticsearch,
+    parts: CatHealthUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
     h: Option<Vec<String>>,
     help: Option<bool>,
     human: Option<bool>,
-    local: Option<bool>,
-    master_timeout: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     ts: Option<bool>,
     v: Option<bool>,
 }
@@ -783,17 +772,17 @@ impl CatHealth {
     pub fn new(client: Elasticsearch) -> Self {
         CatHealth {
             client,
+            parts: CatHealthUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
             h: None,
             help: None,
             human: None,
-            local: None,
-            master_timeout: None,
             pretty: None,
             s: None,
             source: None,
+            time: None,
             ts: None,
             v: None,
         }
@@ -828,16 +817,6 @@ impl CatHealth {
         self.human = human;
         self
     }
-    #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -853,6 +832,11 @@ impl CatHealth {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Set to false to disable timestamping"]
     pub fn ts(mut self, ts: Option<bool>) -> Self {
         self.ts = ts;
@@ -866,7 +850,7 @@ impl CatHealth {
 }
 impl Sender for CatHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/health");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -891,10 +875,6 @@ impl Sender for CatHealth {
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
-                local: Option<bool>,
-                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
@@ -905,6 +885,8 @@ impl Sender for CatHealth {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "ts", skip_serializing_if = "Option::is_none")]
                 ts: Option<bool>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -917,11 +899,10 @@ impl Sender for CatHealth {
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                local: self.local,
-                master_timeout: self.master_timeout,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 ts: self.ts,
                 v: self.v,
             };
@@ -934,9 +915,21 @@ impl Sender for CatHealth {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatHelpUrlParts {
+    None,
+}
+impl CatHelpUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatHelpUrlParts::None => "/_cat".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatHelp {
     client: Elasticsearch,
+    parts: CatHelpUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     help: Option<bool>,
@@ -949,6 +942,7 @@ impl CatHelp {
     pub fn new(client: Elasticsearch) -> Self {
         CatHelp {
             client,
+            parts: CatHelpUrlParts::None,
             error_trace: None,
             filter_path: None,
             help: None,
@@ -996,7 +990,7 @@ impl CatHelp {
 }
 impl Sender for CatHelp {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1042,9 +1036,29 @@ impl Sender for CatHelp {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatIndicesUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl CatIndicesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatIndicesUrlParts::None => "/_cat/indices".into(),
+            CatIndicesUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(14usize + index_str.len());
+                p.push_str("/_cat/indices/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatIndices {
     client: Elasticsearch,
+    parts: CatIndicesUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1054,19 +1068,20 @@ pub struct CatIndices {
     help: Option<bool>,
     human: Option<bool>,
     include_unloaded_segments: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     pri: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatIndices {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatIndicesUrlParts) -> Self {
         CatIndices {
             client,
+            parts,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1076,13 +1091,13 @@ impl CatIndices {
             help: None,
             human: None,
             include_unloaded_segments: None,
-            index: None,
             local: None,
             master_timeout: None,
             pretty: None,
             pri: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -1131,11 +1146,6 @@ impl CatIndices {
         self.include_unloaded_segments = include_unloaded_segments;
         self
     }
-    #[doc = "A comma-separated list of index names to limit the returned information"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1166,6 +1176,11 @@ impl CatIndices {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -1174,16 +1189,7 @@ impl CatIndices {
 }
 impl Sender for CatIndices {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(14usize + index_str.len());
-                p.push_str("/_cat/indices/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/indices"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1233,6 +1239,8 @@ impl Sender for CatIndices {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -1252,6 +1260,7 @@ impl Sender for CatIndices {
                 pri: self.pri,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -1263,9 +1272,21 @@ impl Sender for CatIndices {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatMasterUrlParts {
+    None,
+}
+impl CatMasterUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatMasterUrlParts::None => "/_cat/master".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatMaster {
     client: Elasticsearch,
+    parts: CatMasterUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -1283,6 +1304,7 @@ impl CatMaster {
     pub fn new(client: Elasticsearch) -> Self {
         CatMaster {
             client,
+            parts: CatMasterUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1360,7 +1382,7 @@ impl CatMaster {
 }
 impl Sender for CatMaster {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/master");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1425,9 +1447,21 @@ impl Sender for CatMaster {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatNodeattrsUrlParts {
+    None,
+}
+impl CatNodeattrsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatNodeattrsUrlParts::None => "/_cat/nodeattrs".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatNodeattrs {
     client: Elasticsearch,
+    parts: CatNodeattrsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -1445,6 +1479,7 @@ impl CatNodeattrs {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodeattrs {
             client,
+            parts: CatNodeattrsUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1522,7 +1557,7 @@ impl CatNodeattrs {
 }
 impl Sender for CatNodeattrs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/nodeattrs");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1587,9 +1622,22 @@ impl Sender for CatNodeattrs {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatNodesUrlParts {
+    None,
+}
+impl CatNodesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatNodesUrlParts::None => "/_cat/nodes".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatNodes {
     client: Elasticsearch,
+    parts: CatNodesUrlParts,
+    bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -1602,12 +1650,15 @@ pub struct CatNodes {
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatNodes {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodes {
             client,
+            parts: CatNodesUrlParts::None,
+            bytes: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1620,8 +1671,14 @@ impl CatNodes {
             pretty: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "The unit in which to display byte values"]
+    pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
+        self.bytes = bytes;
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1683,6 +1740,11 @@ impl CatNodes {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -1691,11 +1753,13 @@ impl CatNodes {
 }
 impl Sender for CatNodes {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/nodes");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
+                bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -1732,10 +1796,13 @@ impl Sender for CatNodes {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                bytes: self.bytes,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
@@ -1748,6 +1815,7 @@ impl Sender for CatNodes {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -1759,9 +1827,21 @@ impl Sender for CatNodes {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatPendingTasksUrlParts {
+    None,
+}
+impl CatPendingTasksUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatPendingTasksUrlParts::None => "/_cat/pending_tasks".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatPendingTasks {
     client: Elasticsearch,
+    parts: CatPendingTasksUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -1773,12 +1853,14 @@ pub struct CatPendingTasks {
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatPendingTasks {
     pub fn new(client: Elasticsearch) -> Self {
         CatPendingTasks {
             client,
+            parts: CatPendingTasksUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1790,6 +1872,7 @@ impl CatPendingTasks {
             pretty: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -1848,6 +1931,11 @@ impl CatPendingTasks {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -1856,7 +1944,7 @@ impl CatPendingTasks {
 }
 impl Sender for CatPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/pending_tasks");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1895,6 +1983,8 @@ impl Sender for CatPendingTasks {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -1910,6 +2000,7 @@ impl Sender for CatPendingTasks {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -1921,9 +2012,21 @@ impl Sender for CatPendingTasks {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatPluginsUrlParts {
+    None,
+}
+impl CatPluginsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatPluginsUrlParts::None => "/_cat/plugins".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatPlugins {
     client: Elasticsearch,
+    parts: CatPluginsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -1941,6 +2044,7 @@ impl CatPlugins {
     pub fn new(client: Elasticsearch) -> Self {
         CatPlugins {
             client,
+            parts: CatPluginsUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2018,7 +2122,7 @@ impl CatPlugins {
 }
 impl Sender for CatPlugins {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/plugins");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2083,10 +2187,32 @@ impl Sender for CatPlugins {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatRecoveryUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl CatRecoveryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatRecoveryUrlParts::None => "/_cat/recovery".into(),
+            CatRecoveryUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/_cat/recovery/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatRecovery {
     client: Elasticsearch,
+    parts: CatRecoveryUrlParts,
+    active_only: Option<bool>,
     bytes: Option<Bytes>,
+    detailed: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -2094,17 +2220,20 @@ pub struct CatRecovery {
     help: Option<bool>,
     human: Option<bool>,
     index: Option<Vec<String>>,
-    master_timeout: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatRecovery {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatRecoveryUrlParts) -> Self {
         CatRecovery {
             client,
+            parts,
+            active_only: None,
             bytes: None,
+            detailed: None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2112,16 +2241,26 @@ impl CatRecovery {
             help: None,
             human: None,
             index: None,
-            master_timeout: None,
             pretty: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
+    }
+    #[doc = "If `true`, the response only includes ongoing shard recoveries"]
+    pub fn active_only(mut self, active_only: Option<bool>) -> Self {
+        self.active_only = active_only;
+        self
     }
     #[doc = "The unit in which to display byte values"]
     pub fn bytes(mut self, bytes: Option<Bytes>) -> Self {
         self.bytes = bytes;
+        self
+    }
+    #[doc = "If `true`, the response includes detailed information about shard recoveries"]
+    pub fn detailed(mut self, detailed: Option<bool>) -> Self {
+        self.detailed = detailed;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2154,14 +2293,9 @@ impl CatRecovery {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names to limit the returned information"]
+    #[doc = "Comma-separated list or wildcard expression of index names to limit the returned information"]
     pub fn index(mut self, index: Option<Vec<String>>) -> Self {
         self.index = index;
-        self
-    }
-    #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2179,6 +2313,11 @@ impl CatRecovery {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -2187,22 +2326,17 @@ impl CatRecovery {
 }
 impl Sender for CatRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
-                p.push_str("/_cat/recovery/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/recovery"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
+                #[serde(rename = "active_only", skip_serializing_if = "Option::is_none")]
+                active_only: Option<bool>,
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
+                #[serde(rename = "detailed", skip_serializing_if = "Option::is_none")]
+                detailed: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -2223,8 +2357,12 @@ impl Sender for CatRecovery {
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
-                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                #[serde(
+                    rename = "index",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                index: Option<Vec<String>>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
@@ -2235,21 +2373,26 @@ impl Sender for CatRecovery {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
             let query_params = QueryParamsStruct {
+                active_only: self.active_only,
                 bytes: self.bytes,
+                detailed: self.detailed,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 format: self.format,
                 h: self.h,
                 help: self.help,
                 human: self.human,
-                master_timeout: self.master_timeout,
+                index: self.index,
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -2261,9 +2404,21 @@ impl Sender for CatRecovery {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatRepositoriesUrlParts {
+    None,
+}
+impl CatRepositoriesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatRepositoriesUrlParts::None => "/_cat/repositories".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatRepositories {
     client: Elasticsearch,
+    parts: CatRepositoriesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -2281,6 +2436,7 @@ impl CatRepositories {
     pub fn new(client: Elasticsearch) -> Self {
         CatRepositories {
             client,
+            parts: CatRepositoriesUrlParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2358,7 +2514,7 @@ impl CatRepositories {
 }
 impl Sender for CatRepositories {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/repositories");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2423,9 +2579,29 @@ impl Sender for CatRepositories {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatSegmentsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl CatSegmentsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatSegmentsUrlParts::None => "/_cat/segments".into(),
+            CatSegmentsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/_cat/segments/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatSegments {
     client: Elasticsearch,
+    parts: CatSegmentsUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2433,16 +2609,16 @@ pub struct CatSegments {
     h: Option<Vec<String>>,
     help: Option<bool>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatSegments {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatSegmentsUrlParts) -> Self {
         CatSegments {
             client,
+            parts,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2450,7 +2626,6 @@ impl CatSegments {
             h: None,
             help: None,
             human: None,
-            index: None,
             pretty: None,
             s: None,
             source: None,
@@ -2492,11 +2667,6 @@ impl CatSegments {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names to limit the returned information"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2520,16 +2690,7 @@ impl CatSegments {
 }
 impl Sender for CatSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
-                p.push_str("/_cat/segments/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/segments"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2591,9 +2752,29 @@ impl Sender for CatSegments {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatShardsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl CatShardsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatShardsUrlParts::None => "/_cat/shards".into(),
+            CatShardsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(13usize + index_str.len());
+                p.push_str("/_cat/shards/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatShards {
     client: Elasticsearch,
+    parts: CatShardsUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2601,18 +2782,19 @@ pub struct CatShards {
     h: Option<Vec<String>>,
     help: Option<bool>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatShards {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatShardsUrlParts) -> Self {
         CatShards {
             client,
+            parts,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2620,12 +2802,12 @@ impl CatShards {
             h: None,
             help: None,
             human: None,
-            index: None,
             local: None,
             master_timeout: None,
             pretty: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -2662,11 +2844,6 @@ impl CatShards {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "A comma-separated list of index names to limit the returned information"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
@@ -2694,6 +2871,11 @@ impl CatShards {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -2702,16 +2884,7 @@ impl CatShards {
 }
 impl Sender for CatShards {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
-                p.push_str("/_cat/shards/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/shards"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2752,6 +2925,8 @@ impl Sender for CatShards {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -2768,6 +2943,7 @@ impl Sender for CatShards {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -2779,9 +2955,29 @@ impl Sender for CatShards {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatSnapshotsUrlParts {
+    None,
+    Repository(Vec<String>),
+}
+impl CatSnapshotsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatSnapshotsUrlParts::None => "/_cat/snapshots".into(),
+            CatSnapshotsUrlParts::Repository(ref repository) => {
+                let repository_str = repository.join(",");
+                let mut p = String::with_capacity(16usize + repository_str.len());
+                p.push_str("/_cat/snapshots/");
+                p.push_str(repository_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatSnapshots {
     client: Elasticsearch,
+    parts: CatSnapshotsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -2791,15 +2987,16 @@ pub struct CatSnapshots {
     ignore_unavailable: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
-    repository: Option<Vec<String>>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatSnapshots {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatSnapshotsUrlParts) -> Self {
         CatSnapshots {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2809,9 +3006,9 @@ impl CatSnapshots {
             ignore_unavailable: None,
             master_timeout: None,
             pretty: None,
-            repository: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -2860,11 +3057,6 @@ impl CatSnapshots {
         self.pretty = pretty;
         self
     }
-    #[doc = "Name of repository from which to fetch the snapshot information"]
-    pub fn repository(mut self, repository: Option<Vec<String>>) -> Self {
-        self.repository = repository;
-        self
-    }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
     pub fn s(mut self, s: Option<Vec<String>>) -> Self {
         self.s = s;
@@ -2875,6 +3067,11 @@ impl CatSnapshots {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -2883,16 +3080,7 @@ impl CatSnapshots {
 }
 impl Sender for CatSnapshots {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.repository {
-            Some(repository) => {
-                let repository_str = repository.join(",");
-                let mut p = String::with_capacity(16usize + repository_str.len());
-                p.push_str("/_cat/snapshots/");
-                p.push_str(repository_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/snapshots"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2931,6 +3119,8 @@ impl Sender for CatSnapshots {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -2946,6 +3136,7 @@ impl Sender for CatSnapshots {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -2957,9 +3148,21 @@ impl Sender for CatSnapshots {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatTasksUrlParts {
+    None,
+}
+impl CatTasksUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatTasksUrlParts::None => "/_cat/tasks".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatTasks {
     client: Elasticsearch,
+    parts: CatTasksUrlParts,
     actions: Option<Vec<String>>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
@@ -2973,12 +3176,14 @@ pub struct CatTasks {
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
+    time: Option<Time>,
     v: Option<bool>,
 }
 impl CatTasks {
     pub fn new(client: Elasticsearch) -> Self {
         CatTasks {
             client,
+            parts: CatTasksUrlParts::None,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -2992,6 +3197,7 @@ impl CatTasks {
             pretty: None,
             s: None,
             source: None,
+            time: None,
             v: None,
         }
     }
@@ -3060,6 +3266,11 @@ impl CatTasks {
         self.source = source;
         self
     }
+    #[doc = "The unit in which to display time values"]
+    pub fn time(mut self, time: Option<Time>) -> Self {
+        self.time = time;
+        self
+    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -3068,7 +3279,7 @@ impl CatTasks {
 }
 impl Sender for CatTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cat/tasks");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3119,6 +3330,8 @@ impl Sender for CatTasks {
                 s: Option<Vec<String>>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<String>,
+                #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
+                time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -3136,6 +3349,7 @@ impl Sender for CatTasks {
                 pretty: self.pretty,
                 s: self.s,
                 source: self.source,
+                time: self.time,
                 v: self.v,
             };
             Some(query_params)
@@ -3147,9 +3361,28 @@ impl Sender for CatTasks {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatTemplatesUrlParts {
+    None,
+    Name(String),
+}
+impl CatTemplatesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatTemplatesUrlParts::None => "/_cat/templates".into(),
+            CatTemplatesUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_cat/templates/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatTemplates {
     client: Elasticsearch,
+    parts: CatTemplatesUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -3158,16 +3391,16 @@ pub struct CatTemplates {
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<String>,
     pretty: Option<bool>,
     s: Option<Vec<String>>,
     source: Option<String>,
     v: Option<bool>,
 }
 impl CatTemplates {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatTemplatesUrlParts) -> Self {
         CatTemplates {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3176,7 +3409,6 @@ impl CatTemplates {
             human: None,
             local: None,
             master_timeout: None,
-            name: None,
             pretty: None,
             s: None,
             source: None,
@@ -3223,11 +3455,6 @@ impl CatTemplates {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "A pattern that returned template names must match"]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3251,16 +3478,7 @@ impl CatTemplates {
 }
 impl Sender for CatTemplates {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name = name;
-                let mut p = String::with_capacity(16usize + name.len());
-                p.push_str("/_cat/templates/");
-                p.push_str(name.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/templates"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3325,9 +3543,29 @@ impl Sender for CatTemplates {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum CatThreadPoolUrlParts {
+    None,
+    ThreadPoolPatterns(Vec<String>),
+}
+impl CatThreadPoolUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CatThreadPoolUrlParts::None => "/_cat/thread_pool".into(),
+            CatThreadPoolUrlParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
+                let thread_pool_patterns_str = thread_pool_patterns.join(",");
+                let mut p = String::with_capacity(18usize + thread_pool_patterns_str.len());
+                p.push_str("/_cat/thread_pool/");
+                p.push_str(thread_pool_patterns_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct CatThreadPool {
     client: Elasticsearch,
+    parts: CatThreadPoolUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     format: Option<String>,
@@ -3340,13 +3578,13 @@ pub struct CatThreadPool {
     s: Option<Vec<String>>,
     size: Option<Size>,
     source: Option<String>,
-    thread_pool_patterns: Option<Vec<String>>,
     v: Option<bool>,
 }
 impl CatThreadPool {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatThreadPoolUrlParts) -> Self {
         CatThreadPool {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3359,7 +3597,6 @@ impl CatThreadPool {
             s: None,
             size: None,
             source: None,
-            thread_pool_patterns: None,
             v: None,
         }
     }
@@ -3423,11 +3660,6 @@ impl CatThreadPool {
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of regular-expressions to filter the thread pools in the output"]
-    pub fn thread_pool_patterns(mut self, thread_pool_patterns: Option<Vec<String>>) -> Self {
-        self.thread_pool_patterns = thread_pool_patterns;
-        self
-    }
     #[doc = "Verbose mode. Display column headers"]
     pub fn v(mut self, v: Option<bool>) -> Self {
         self.v = v;
@@ -3436,16 +3668,7 @@ impl CatThreadPool {
 }
 impl Sender for CatThreadPool {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.thread_pool_patterns {
-            Some(thread_pool_patterns) => {
-                let thread_pool_patterns_str = thread_pool_patterns.join(",");
-                let mut p = String::with_capacity(18usize + thread_pool_patterns_str.len());
-                p.push_str("/_cat/thread_pool/");
-                p.push_str(thread_pool_patterns_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cat/thread_pool"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3521,85 +3744,85 @@ impl Cat {
     pub fn new(client: Elasticsearch) -> Self {
         Cat { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html"]
-    pub fn aliases(&self) -> CatAliases {
-        CatAliases::new(self.client.clone())
+    #[doc = "Shows information about currently configured aliases to indices including filter and routing infos."]
+    pub fn aliases(&self, parts: CatAliasesUrlParts) -> CatAliases {
+        CatAliases::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html"]
-    pub fn allocation(&self) -> CatAllocation {
-        CatAllocation::new(self.client.clone())
+    #[doc = "Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
+    pub fn allocation(&self, parts: CatAllocationUrlParts) -> CatAllocation {
+        CatAllocation::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html"]
-    pub fn count(&self) -> CatCount {
-        CatCount::new(self.client.clone())
+    #[doc = "Provides quick access to the document count of the entire cluster, or individual indices."]
+    pub fn count(&self, parts: CatCountUrlParts) -> CatCount {
+        CatCount::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html"]
-    pub fn fielddata(&self) -> CatFielddata {
-        CatFielddata::new(self.client.clone())
+    #[doc = "Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
+    pub fn fielddata(&self, parts: CatFielddataUrlParts) -> CatFielddata {
+        CatFielddata::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html"]
+    #[doc = "Returns a concise representation of the cluster health."]
     pub fn health(&self) -> CatHealth {
         CatHealth::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html"]
+    #[doc = "Returns help for the Cat APIs."]
     pub fn help(&self) -> CatHelp {
         CatHelp::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html"]
-    pub fn indices(&self) -> CatIndices {
-        CatIndices::new(self.client.clone())
+    #[doc = "Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
+    pub fn indices(&self, parts: CatIndicesUrlParts) -> CatIndices {
+        CatIndices::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html"]
+    #[doc = "Returns information about the master node."]
     pub fn master(&self) -> CatMaster {
         CatMaster::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html"]
+    #[doc = "Returns information about custom node attributes."]
     pub fn nodeattrs(&self) -> CatNodeattrs {
         CatNodeattrs::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html"]
+    #[doc = "Returns basic statistics about performance of cluster nodes."]
     pub fn nodes(&self) -> CatNodes {
         CatNodes::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html"]
+    #[doc = "Returns a concise representation of the cluster pending tasks."]
     pub fn pending_tasks(&self) -> CatPendingTasks {
         CatPendingTasks::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html"]
+    #[doc = "Returns information about installed plugins across nodes node."]
     pub fn plugins(&self) -> CatPlugins {
         CatPlugins::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html"]
-    pub fn recovery(&self) -> CatRecovery {
-        CatRecovery::new(self.client.clone())
+    #[doc = "Returns information about index shard recoveries, both on-going completed."]
+    pub fn recovery(&self, parts: CatRecoveryUrlParts) -> CatRecovery {
+        CatRecovery::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html"]
+    #[doc = "Returns information about snapshot repositories registered in the cluster."]
     pub fn repositories(&self) -> CatRepositories {
         CatRepositories::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html"]
-    pub fn segments(&self) -> CatSegments {
-        CatSegments::new(self.client.clone())
+    #[doc = "Provides low-level information about the segments in the shards of an index."]
+    pub fn segments(&self, parts: CatSegmentsUrlParts) -> CatSegments {
+        CatSegments::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html"]
-    pub fn shards(&self) -> CatShards {
-        CatShards::new(self.client.clone())
+    #[doc = "Provides a detailed view of shard allocation on nodes."]
+    pub fn shards(&self, parts: CatShardsUrlParts) -> CatShards {
+        CatShards::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html"]
-    pub fn snapshots(&self) -> CatSnapshots {
-        CatSnapshots::new(self.client.clone())
+    #[doc = "Returns all snapshots in a specific repository."]
+    pub fn snapshots(&self, parts: CatSnapshotsUrlParts) -> CatSnapshots {
+        CatSnapshots::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
+    #[doc = "Returns information about the tasks currently executing on one or more nodes in the cluster."]
     pub fn tasks(&self) -> CatTasks {
         CatTasks::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html"]
-    pub fn templates(&self) -> CatTemplates {
-        CatTemplates::new(self.client.clone())
+    #[doc = "Returns information about existing templates."]
+    pub fn templates(&self, parts: CatTemplatesUrlParts) -> CatTemplates {
+        CatTemplates::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html"]
-    pub fn thread_pool(&self) -> CatThreadPool {
-        CatThreadPool::new(self.client.clone())
+    #[doc = "Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
+    pub fn thread_pool(&self, parts: CatThreadPoolUrlParts) -> CatThreadPool {
+        CatThreadPool::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

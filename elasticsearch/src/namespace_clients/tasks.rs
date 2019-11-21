@@ -23,9 +23,30 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum TasksCancelUrlParts {
+    None,
+    TaskId(String),
+}
+impl TasksCancelUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            TasksCancelUrlParts::None => "/_tasks/_cancel".into(),
+            TasksCancelUrlParts::TaskId(ref task_id) => {
+                let mut p = String::with_capacity(16usize + task_id.len());
+                p.push_str("/_tasks/");
+                p.push_str(task_id.as_ref());
+                p.push_str("/_cancel");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct TasksCancel<B> {
     client: Elasticsearch,
+    parts: TasksCancelUrlParts,
     actions: Option<Vec<String>>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -35,15 +56,15 @@ pub struct TasksCancel<B> {
     parent_task_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    task_id: Option<String>,
 }
 impl<B> TasksCancel<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: TasksCancelUrlParts) -> Self {
         TasksCancel {
             client,
+            parts,
             actions: None,
             body: None,
             error_trace: None,
@@ -53,7 +74,6 @@ where
             parent_task_id: None,
             pretty: None,
             source: None,
-            task_id: None,
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
@@ -101,28 +121,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "Cancel the task with specified task id (node_id:task_number)"]
-    pub fn task_id(mut self, task_id: Option<String>) -> Self {
-        self.task_id = task_id;
-        self
-    }
 }
 impl<B> Sender for TasksCancel<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.task_id {
-            Some(task_id) => {
-                let task_id = task_id;
-                let mut p = String::with_capacity(16usize + task_id.len());
-                p.push_str("/_tasks/");
-                p.push_str(task_id.as_ref());
-                p.push_str("/_cancel");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_tasks/_cancel"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -175,23 +180,39 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum TasksGetUrlParts {
+    TaskId(String),
+}
+impl TasksGetUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            TasksGetUrlParts::TaskId(ref task_id) => {
+                let mut p = String::with_capacity(8usize + task_id.len());
+                p.push_str("/_tasks/");
+                p.push_str(task_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct TasksGet {
     client: Elasticsearch,
+    parts: TasksGetUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    task_id: String,
     timeout: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl TasksGet {
-    pub fn new(client: Elasticsearch, task_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: TasksGetUrlParts) -> Self {
         TasksGet {
             client,
-            task_id: task_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -226,11 +247,6 @@ impl TasksGet {
         self.source = source;
         self
     }
-    #[doc = "Return the task with specified id (node_id:task_number)"]
-    pub fn task_id(mut self, task_id: String) -> Self {
-        self.task_id = task_id;
-        self
-    }
     #[doc = "Explicit operation timeout"]
     pub fn timeout(mut self, timeout: Option<String>) -> Self {
         self.timeout = timeout;
@@ -244,13 +260,7 @@ impl TasksGet {
 }
 impl Sender for TasksGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let task_id = self.task_id;
-            let mut p = String::with_capacity(8usize + task_id.len());
-            p.push_str("/_tasks/");
-            p.push_str(task_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -295,9 +305,21 @@ impl Sender for TasksGet {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum TasksListUrlParts {
+    None,
+}
+impl TasksListUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            TasksListUrlParts::None => "/_tasks".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct TasksList {
     client: Elasticsearch,
+    parts: TasksListUrlParts,
     actions: Option<Vec<String>>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
@@ -315,6 +337,7 @@ impl TasksList {
     pub fn new(client: Elasticsearch) -> Self {
         TasksList {
             client,
+            parts: TasksListUrlParts::None,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -392,7 +415,7 @@ impl TasksList {
 }
 impl Sender for TasksList {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_tasks");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -468,18 +491,18 @@ impl Tasks {
     pub fn new(client: Elasticsearch) -> Self {
         Tasks { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn cancel<B>(&self) -> TasksCancel<B>
+    #[doc = "Cancels a task, if it can be cancelled through an API."]
+    pub fn cancel<B>(&self, parts: TasksCancelUrlParts) -> TasksCancel<B>
     where
         B: Serialize,
     {
-        TasksCancel::new(self.client.clone())
+        TasksCancel::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
-    pub fn get(&self, task_id: String) -> TasksGet {
-        TasksGet::new(self.client.clone(), task_id)
+    #[doc = "Returns information about a task."]
+    pub fn get(&self, parts: TasksGetUrlParts) -> TasksGet {
+        TasksGet::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html"]
+    #[doc = "Returns a list of tasks."]
     pub fn list(&self) -> TasksList {
         TasksList::new(self.client.clone())
     }

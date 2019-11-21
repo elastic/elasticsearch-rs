@@ -23,15 +23,36 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+pub enum NodesHotThreadsUrlParts {
+    None,
+    NodeId(Vec<String>),
+}
+impl NodesHotThreadsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            NodesHotThreadsUrlParts::None => "/_nodes/hot_threads".into(),
+            NodesHotThreadsUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(20usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/hot_threads");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct NodesHotThreads {
     client: Elasticsearch,
+    parts: NodesHotThreadsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_idle_threads: Option<bool>,
     interval: Option<String>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     snapshots: Option<i64>,
     source: Option<String>,
@@ -40,15 +61,15 @@ pub struct NodesHotThreads {
     ty: Option<Type>,
 }
 impl NodesHotThreads {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesHotThreadsUrlParts) -> Self {
         NodesHotThreads {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
             ignore_idle_threads: None,
             interval: None,
-            node_id: None,
             pretty: None,
             snapshots: None,
             source: None,
@@ -80,11 +101,6 @@ impl NodesHotThreads {
     #[doc = "The interval for the second sampling of threads"]
     pub fn interval(mut self, interval: Option<String>) -> Self {
         self.interval = interval;
-        self
-    }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -120,17 +136,7 @@ impl NodesHotThreads {
 }
 impl Sender for NodesHotThreads {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.node_id {
-            Some(node_id) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(20usize + node_id_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/hot_threads");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_nodes/hot_threads"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -187,29 +193,65 @@ impl Sender for NodesHotThreads {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum NodesInfoUrlParts {
+    None,
+    NodeId(Vec<String>),
+    Metric(Vec<String>),
+    NodeIdMetric(Vec<String>, Vec<String>),
+}
+impl NodesInfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            NodesInfoUrlParts::None => "/_nodes".into(),
+            NodesInfoUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(8usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.into()
+            }
+            NodesInfoUrlParts::Metric(ref metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(8usize + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            NodesInfoUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(9usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct NodesInfo {
     client: Elasticsearch,
+    parts: NodesInfoUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
     human: Option<bool>,
-    metric: Option<Vec<String>>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl NodesInfo {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesInfoUrlParts) -> Self {
         NodesInfo {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
             human: None,
-            metric: None,
-            node_id: None,
             pretty: None,
             source: None,
             timeout: None,
@@ -235,16 +277,6 @@ impl NodesInfo {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of metrics you wish returned. Leave empty to return all."]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
-        self
-    }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -263,33 +295,7 @@ impl NodesInfo {
 }
 impl Sender for NodesInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.metric, &self.node_id) {
-            (Some(metric), Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(9usize + node_id_str.len() + metric_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(8usize + node_id_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(metric), None) => {
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(8usize + metric_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_nodes"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -331,14 +337,34 @@ impl Sender for NodesInfo {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum NodesReloadSecureSettingsUrlParts {
+    None,
+    NodeId(Vec<String>),
+}
+impl NodesReloadSecureSettingsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            NodesReloadSecureSettingsUrlParts::None => "/_nodes/reload_secure_settings".into(),
+            NodesReloadSecureSettingsUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(31usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/reload_secure_settings");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct NodesReloadSecureSettings<B> {
     client: Elasticsearch,
+    parts: NodesReloadSecureSettingsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -347,14 +373,14 @@ impl<B> NodesReloadSecureSettings<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsUrlParts) -> Self {
         NodesReloadSecureSettings {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            node_id: None,
             pretty: None,
             source: None,
             timeout: None,
@@ -380,11 +406,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of node IDs to span the reload/reinit call. Should stay empty because reloading usually involves all cluster nodes."]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -406,17 +427,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.node_id {
-            Some(node_id) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(31usize + node_id_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/reload_secure_settings");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_nodes/reload_secure_settings"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -455,9 +466,81 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum NodesStatsUrlParts {
+    None,
+    NodeId(Vec<String>),
+    Metric(Vec<String>),
+    NodeIdMetric(Vec<String>, Vec<String>),
+    MetricIndexMetric(Vec<String>, Vec<String>),
+    NodeIdMetricIndexMetric(Vec<String>, Vec<String>, Vec<String>),
+}
+impl NodesStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            NodesStatsUrlParts::None => "/_nodes/stats".into(),
+            NodesStatsUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(14usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats");
+                p.into()
+            }
+            NodesStatsUrlParts::Metric(ref metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(14usize + metric_str.len());
+                p.push_str("/_nodes/stats/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            NodesStatsUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            NodesStatsUrlParts::MetricIndexMetric(ref metric, ref index_metric) => {
+                let metric_str = metric.join(",");
+                let index_metric_str = index_metric.join(",");
+                let mut p =
+                    String::with_capacity(15usize + metric_str.len() + index_metric_str.len());
+                p.push_str("/_nodes/stats/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_metric_str.as_ref());
+                p.into()
+            }
+            NodesStatsUrlParts::NodeIdMetricIndexMetric(
+                ref node_id,
+                ref metric,
+                ref index_metric,
+            ) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let index_metric_str = index_metric.join(",");
+                let mut p = String::with_capacity(
+                    16usize + node_id_str.len() + metric_str.len() + index_metric_str.len(),
+                );
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/stats/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_metric_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct NodesStats {
     client: Elasticsearch,
+    parts: NodesStatsUrlParts,
     completion_fields: Option<Vec<String>>,
     error_trace: Option<bool>,
     fielddata_fields: Option<Vec<String>>,
@@ -466,19 +549,17 @@ pub struct NodesStats {
     groups: Option<bool>,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
-    index_metric: Option<Vec<String>>,
     level: Option<Level>,
-    metric: Option<Vec<String>>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
     types: Option<Vec<String>>,
 }
 impl NodesStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesStatsUrlParts) -> Self {
         NodesStats {
             client,
+            parts,
             completion_fields: None,
             error_trace: None,
             fielddata_fields: None,
@@ -487,10 +568,7 @@ impl NodesStats {
             groups: None,
             human: None,
             include_segment_file_sizes: None,
-            index_metric: None,
             level: None,
-            metric: None,
-            node_id: None,
             pretty: None,
             source: None,
             timeout: None,
@@ -537,24 +615,9 @@ impl NodesStats {
         self.include_segment_file_sizes = include_segment_file_sizes;
         self
     }
-    #[doc = "Limit the information returned for `indices` metric to the specific index metrics. Isn't used if `indices` (or `all`) metric isn't specified."]
-    pub fn index_metric(mut self, index_metric: Option<Vec<String>>) -> Self {
-        self.index_metric = index_metric;
-        self
-    }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
     pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
-        self
-    }
-    #[doc = "Limit the information returned to the specified metrics"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
-        self
-    }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -580,78 +643,7 @@ impl NodesStats {
 }
 impl Sender for NodesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index_metric, &self.metric, &self.node_id) {
-            (Some(index_metric), Some(metric), Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let metric_str = metric.join(",");
-                let index_metric_str = index_metric.join(",");
-                let mut p = String::with_capacity(
-                    16usize + node_id_str.len() + metric_str.len() + index_metric_str.len(),
-                );
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/stats/");
-                p.push_str(metric_str.as_ref());
-                p.push_str("/");
-                p.push_str(index_metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(metric), Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/stats/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index_metric), Some(metric), None) => {
-                let metric_str = metric.join(",");
-                let index_metric_str = index_metric.join(",");
-                let mut p =
-                    String::with_capacity(15usize + metric_str.len() + index_metric_str.len());
-                p.push_str("/_nodes/stats/");
-                p.push_str(metric_str.as_ref());
-                p.push_str("/");
-                p.push_str(index_metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None, Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(14usize + node_id_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/stats");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(metric), None) => {
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(14usize + metric_str.len());
-                p.push_str("/_nodes/stats/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index_metric), None, Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let index_metric_str = index_metric.join(",");
-                let mut p =
-                    String::with_capacity(19usize + node_id_str.len() + index_metric_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/stats/all/");
-                p.push_str(index_metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index_metric), None, None) => {
-                let index_metric_str = index_metric.join(",");
-                let mut p = String::with_capacity(18usize + index_metric_str.len());
-                p.push_str("/_nodes/stats/all/");
-                p.push_str(index_metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None, None) => std::borrow::Cow::Borrowed("/_nodes/stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -730,27 +722,64 @@ impl Sender for NodesStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+pub enum NodesUsageUrlParts {
+    None,
+    NodeId(Vec<String>),
+    Metric(Vec<String>),
+    NodeIdMetric(Vec<String>, Vec<String>),
+}
+impl NodesUsageUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            NodesUsageUrlParts::None => "/_nodes/usage".into(),
+            NodesUsageUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(14usize + node_id_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/usage");
+                p.into()
+            }
+            NodesUsageUrlParts::Metric(ref metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(14usize + metric_str.len());
+                p.push_str("/_nodes/usage/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            NodesUsageUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+                let node_id_str = node_id.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
+                p.push_str("/_nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.push_str("/usage/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
 pub struct NodesUsage {
     client: Elasticsearch,
+    parts: NodesUsageUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    metric: Option<Vec<String>>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl NodesUsage {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesUsageUrlParts) -> Self {
         NodesUsage {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            metric: None,
-            node_id: None,
             pretty: None,
             source: None,
             timeout: None,
@@ -771,16 +800,6 @@ impl NodesUsage {
         self.human = human;
         self
     }
-    #[doc = "Limit the information returned to the specified metrics"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
-        self
-    }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -799,34 +818,7 @@ impl NodesUsage {
 }
 impl Sender for NodesUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.metric, &self.node_id) {
-            (Some(metric), Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/usage/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(node_id)) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(14usize + node_id_str.len());
-                p.push_str("/_nodes/");
-                p.push_str(node_id_str.as_ref());
-                p.push_str("/usage");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(metric), None) => {
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(14usize + metric_str.len());
-                p.push_str("/_nodes/usage/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_nodes/usage"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -873,28 +865,31 @@ impl Nodes {
     pub fn new(client: Elasticsearch) -> Self {
         Nodes { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-hot-threads.html"]
-    pub fn hot_threads(&self) -> NodesHotThreads {
-        NodesHotThreads::new(self.client.clone())
+    #[doc = "Returns information about hot threads on each node in the cluster."]
+    pub fn hot_threads(&self, parts: NodesHotThreadsUrlParts) -> NodesHotThreads {
+        NodesHotThreads::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-info.html"]
-    pub fn info(&self) -> NodesInfo {
-        NodesInfo::new(self.client.clone())
+    #[doc = "Returns information about nodes in the cluster."]
+    pub fn info(&self, parts: NodesInfoUrlParts) -> NodesInfo {
+        NodesInfo::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings"]
-    pub fn reload_secure_settings<B>(&self) -> NodesReloadSecureSettings<B>
+    #[doc = "Reloads secure settings."]
+    pub fn reload_secure_settings<B>(
+        &self,
+        parts: NodesReloadSecureSettingsUrlParts,
+    ) -> NodesReloadSecureSettings<B>
     where
         B: Serialize,
     {
-        NodesReloadSecureSettings::new(self.client.clone())
+        NodesReloadSecureSettings::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html"]
-    pub fn stats(&self) -> NodesStats {
-        NodesStats::new(self.client.clone())
+    #[doc = "Returns statistical information about nodes in the cluster."]
+    pub fn stats(&self, parts: NodesStatsUrlParts) -> NodesStats {
+        NodesStats::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-usage.html"]
-    pub fn usage(&self) -> NodesUsage {
-        NodesUsage::new(self.client.clone())
+    #[doc = "Returns low-level information about REST actions usage on nodes."]
+    pub fn usage(&self, parts: NodesUsageUrlParts) -> NodesUsage {
+        NodesUsage::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

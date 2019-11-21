@@ -1,10 +1,7 @@
-use crate::api_generator::code_gen::url::url_builder::Path;
-use array_tool::vec::Intersect;
-use reduce::Reduce;
+use crate::api_generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::Deserialize;
 use serde_json::Value;
-use std::cmp::Ordering;
 use std::{
     collections::{BTreeMap, HashSet},
     fs::{read_dir, File, OpenOptions},
@@ -107,122 +104,60 @@ impl Default for TypeKind {
     }
 }
 
-/// A deprecated API url path
+/// Details about a deprecated API url path
 #[derive(Debug, PartialEq, Deserialize, Clone)]
-pub struct DeprecatedPath {
+pub struct Deprecated {
     pub version: String,
-
-    pub path: Path,
-
     pub description: String,
+}
+
+/// An API url path
+#[derive(Debug, PartialEq, Deserialize, Clone)]
+pub struct Path {
+    pub path: PathString,
+    pub methods: Vec<HttpMethod>,
+    #[serde(default = "BTreeMap::new")]
+    pub parts: BTreeMap<String, Type>,
+    pub deprecated: Option<Deprecated>,
 }
 
 /// The URL components of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
-    pub paths: Vec<Path>,
-    #[serde(default = "Vec::new")]
-    pub deprecated_paths: Vec<DeprecatedPath>,
-    #[serde(default = "BTreeMap::new")]
-    pub parts: BTreeMap<String, Type>,
-    #[serde(default = "BTreeMap::new")]
-    pub params: BTreeMap<String, Type>,
-}
-
-impl Url {
-    /// Gets all API paths, including deprecated paths
-    pub fn all_paths(&self) -> Vec<&Path> {
-        let mut paths = self.paths.iter().map(|p| p).collect::<Vec<_>>();
-
-        if !self.deprecated_paths.is_empty() {
-            let mut deprecated_paths = self
-                .deprecated_paths
-                .iter()
-                .map(|d| &d.path)
-                .collect::<Vec<_>>();
-            paths.append(&mut deprecated_paths);
-        };
-
-        // sort by most params to least
-        paths.sort_by(|a, b| b.params().len().cmp(&a.params().len()));
-
-        // deduplicate paths that have exactly the same params e.g. DELETE index aliases
-        paths.dedup_by(|a, b| {
-            a.params().is_empty() && b.params().is_empty() || {
-                let a: HashSet<String> = a.params().iter().map(|&p| p.into()).collect();
-                let b: HashSet<String> = b.params().iter().map(|&p| p.into()).collect();
-                a == b
-            }
-        });
-
-        paths
-    }
-
-    /// Required url part names that are common across all url variants of an API endpoint
-    pub fn required_part_names(&self) -> Vec<&str> {
-        self.all_paths()
-            .iter()
-            .map(|p| p.params())
-            .reduce(|a, b| a.intersect(b))
-            .unwrap()
-    }
-
-    pub fn required_parts(&self) -> Vec<(&String, &Type)> {
-        self.filter_parts(true)
-    }
-
-    pub fn optional_parts(&self) -> Vec<(&String, &Type)> {
-        self.filter_parts(false)
-    }
-
-    /// Url parts partitioned by whether they are optional or required.
-    /// ordered by index, ty, id then lexicographically
-    fn filter_parts(&self, required: bool) -> Vec<(&String, &Type)> {
-        let required_parts = self.required_part_names();
-        let mut filtered_parts = self
-            .parts
-            .iter()
-            .filter(|&(p, _)| required_parts.contains(&p.as_str()) == required)
-            .collect::<Vec<_>>();
-
-        filtered_parts.sort_by(Self::sort_by_index_ty_id);
-        filtered_parts
-    }
-
-    fn sort_by_index_ty_id(a: &(&String, &Type), b: &(&String, &Type)) -> Ordering {
-        match (a.0.as_str(), b.0.as_str()) {
-            ("index", _) => Ordering::Less,
-            (_, "index") => Ordering::Greater,
-            (_, "ty") => Ordering::Greater,
-            (_, "id") => Ordering::Greater,
-            _ => a.0.cmp(&b.0),
-        }
-    }
+    paths: Vec<Path>,
 }
 
 /// Body of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Body {
-    pub description: String,
+    pub description: Option<String>,
+}
+
+/// Documentation for an API endpoint
+#[derive(Debug, PartialEq, Deserialize, Clone)]
+pub struct Documentation {
+    pub url: Option<String>,
+    pub description: Option<String>,
 }
 
 /// An API endpoint defined in the REST API specs
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct ApiEndpoint {
-    documentation: Option<String>,
+    documentation: Documentation,
     stability: String,
-    methods: Vec<HttpMethod>,
     url: Url,
+    #[serde(default = "BTreeMap::new")]
+    params: BTreeMap<String, Type>,
     body: Option<Body>,
 }
 
 impl ApiEndpoint {
     /// Whether the endpoint supports sending a body
     pub fn supports_body(&self) -> bool {
-        self.methods
-            .iter()
-            .any(|m| m == &HttpMethod::Post || m == &HttpMethod::Put)
-            || self.body.is_some()
+        self.body.is_some()
+            || self.url.paths.iter().any(|p| {
+                p.methods.contains(&HttpMethod::Post) || p.methods.contains(&HttpMethod::Put)
+            })
     }
 }
 
@@ -360,7 +295,6 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
             // collect unique enum values
             for param in api_endpoint
-                .url
                 .params
                 .iter()
                 .filter(|p| p.1.ty == TypeKind::Enum)
@@ -432,7 +366,9 @@ where
     let mut first_endpoint = endpoint.into_iter().next().unwrap();
 
     // sort the HTTP methods so that we can easily pattern match on them later
-    first_endpoint.1.methods.sort();
+    for path in first_endpoint.1.url.paths.iter_mut() {
+        path.methods.sort();
+    }
 
     Ok(first_endpoint)
 }
