@@ -247,7 +247,7 @@ mod tests {
     #![cfg_attr(rustfmt, rustfmt_skip)]
 
     use super::*;
-    use crate::api_generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation};
+    use crate::api_generator::{Url, Path, HttpMethod, Body, Deprecated, Type, TypeKind, Documentation, ast_eq};
     use std::collections::BTreeMap;
     use crate::api_generator::code_gen::url::url_builder::PathString;
 

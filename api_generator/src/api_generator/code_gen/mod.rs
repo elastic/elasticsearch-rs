@@ -303,11 +303,3 @@ pub fn split_on_pascal_case(s: &str) -> String {
         })
         .collect()
 }
-
-#[cfg(test)]
-pub fn ast_eq<T: quote::ToTokens>(expected: quote::Tokens, actual: T) {
-    assert_eq!(
-        rust_fmt(expected.to_string()).unwrap(),
-        rust_fmt(quote!(#actual).to_string()).unwrap()
-    );
-}

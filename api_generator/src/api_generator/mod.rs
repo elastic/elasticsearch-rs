@@ -10,6 +10,9 @@ use std::{
     path::PathBuf,
 };
 
+#[cfg(test)]
+use quote::{ToTokens, Tokens};
+
 mod code_gen;
 
 /// A complete API specification parsed from the REST API specs
@@ -25,6 +28,7 @@ pub struct Api {
     pub enums: Vec<ApiEnum>,
 }
 
+/// A HTTP method in the REST API spec
 #[derive(Debug, Eq, PartialEq, Deserialize, Clone, Copy, Ord, PartialOrd)]
 pub enum HttpMethod {
     #[serde(rename = "HEAD")]
@@ -68,7 +72,7 @@ pub struct Type {
     pub default: Option<Value>,
 }
 
-/// The kind of type
+/// The type of the param or part
 #[derive(Debug, PartialEq, Deserialize, Copy, Clone)]
 pub enum TypeKind {
     None,
@@ -411,4 +415,14 @@ where
 
     // trim whitespace
     Ok(s.trim().into())
+}
+
+
+/// Asserts that the expected generated AST matches the actual generated AST
+#[cfg(test)]
+pub fn ast_eq<T: ToTokens>(expected: Tokens, actual: T) {
+    assert_eq!(
+        rust_fmt(expected.to_string()).unwrap(),
+        rust_fmt(quote!(#actual).to_string()).unwrap()
+    );
 }
