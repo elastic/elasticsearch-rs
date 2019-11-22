@@ -1,11 +1,16 @@
 use crate::api_generator::{
-    code_gen, code_gen::url::enum_builder::EnumBuilder, code_gen::*, ApiEndpoint, HttpMethod, Type,
+    code_gen,
+    code_gen::url::enum_builder::EnumBuilder,
+    code_gen::*,
+    ApiEndpoint,
+    HttpMethod,
+    Type,
     TypeKind,
 };
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use std::{collections::BTreeMap, str};
-use syn::{Field, FieldValue, FnArg, ImplItem};
+use syn::{Field, FieldValue, ImplItem};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -17,6 +22,8 @@ pub struct RequestBuilder<'a> {
     common_params: &'a BTreeMap<String, Type>,
     /// The endpoint to which the API relates
     endpoint: &'a ApiEndpoint,
+    /// The builder for the Url parts enum related to the API
+    enum_builder: EnumBuilder<'a>,
     /// Whether the API exists on the root client or on a namespace client
     is_root_method: bool,
 }
@@ -29,11 +36,17 @@ impl<'a> RequestBuilder<'a> {
         endpoint: &'a ApiEndpoint,
         is_root_method: bool,
     ) -> Self {
+        let mut enum_builder = EnumBuilder::new(builder_name.to_pascal_case().as_ref());
+        for path in &endpoint.url.paths {
+            enum_builder = enum_builder.with_path(path);
+        }
+
         RequestBuilder {
             name,
             builder_name,
             common_params,
             endpoint,
+            enum_builder,
             is_root_method,
         }
     }
@@ -152,7 +165,7 @@ impl<'a> RequestBuilder<'a> {
         }
     }
 
-    /// Creates a builder fn for a builder impl
+    /// Creates the AST for a builder fn for a builder impl
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
         let impl_ident = ident(&name);
@@ -208,11 +221,22 @@ impl<'a> RequestBuilder<'a> {
     fn create_builder_struct(
         builder_name: &str,
         endpoint: &ApiEndpoint,
-        common_fields: &[Field],
-        common_builder_fns: &[ImplItem],
         common_params: &BTreeMap<String, Type>,
         enum_builder: &EnumBuilder,
     ) -> Tokens {
+
+        // TODO: lazy_static! for this?
+        let common_fields: Vec<Field> = common_params
+            .iter()
+            .map(Self::create_struct_field)
+            .collect();
+
+        // TODO: lazy_static! for this?
+        let common_builder_fns: Vec<ImplItem> = common_params
+            .iter()
+            .map(Self::create_impl_fn)
+            .collect();
+
         let supports_body = endpoint.supports_body();
         let builder_ident = ident(builder_name);
         let (enum_ty, enum_struct, enum_impl) = enum_builder.clone().build();
@@ -370,8 +394,8 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a fn that returns a new instance of a builder struct
     /// from the root or namespace client
     fn create_builder_struct_ctor_fns(
-        builder_name: &str,
         name: &str,
+        builder_name: &str,
         endpoint: &ApiEndpoint,
         is_root_method: bool,
         enum_builder: &EnumBuilder,
@@ -419,22 +443,7 @@ impl<'a> RequestBuilder<'a> {
         }
     }
 
-    /// Creates the function arguments for a builder struct new fn
-    fn create_new_fn_arg(enum_builder: &EnumBuilder) -> FnArg {
-        let (enum_ty, _, _) = enum_builder.clone().build();
-        syn::FnArg::Captured(
-            syn::Pat::Path(None, enum_ty.get_path().clone()),
-            enum_ty.clone(),
-        )
-    }
-
-    fn create_self_path_pat(name: &str) -> syn::Pat {
-        let mut s = String::from("&self.");
-        s.push_str(valid_name(name));
-        syn::Pat::Path(None, path_none(&s))
-    }
-
-    /// Creates a field for a struct
+    /// Creates the AST for a field for a struct
     fn create_struct_field(f: (&String, &Type)) -> syn::Field {
         syn::Field {
             ident: Some(ident(valid_name(&f.0).to_lowercase())),
@@ -445,7 +454,6 @@ impl<'a> RequestBuilder<'a> {
     }
 
     /// Creates the AST for field values initialized with a default value.
-    ///
     /// Since all default values are Option<T>, the default value for all is None
     fn create_default_fields(default_fields: &[&syn::Ident]) -> Vec<FieldValue> {
         default_fields
@@ -459,41 +467,22 @@ impl<'a> RequestBuilder<'a> {
             .collect()
     }
 
-    /// builds the tokens that represent the builder structs
+    /// builds the AST that represent the builder structs
     /// and the ctor function for the builder struct on the namespace client
     pub fn build(self) -> (Tokens, Tokens) {
-        let common_fields: Vec<Field> = self
-            .common_params
-            .iter()
-            .map(Self::create_struct_field)
-            .collect();
-
-        let common_builder_fns: Vec<ImplItem> = self
-            .common_params
-            .iter()
-            .map(Self::create_impl_fn)
-            .collect();
-
-        let mut enum_builder = EnumBuilder::new(self.builder_name.to_pascal_case().as_ref());
-        for path in &self.endpoint.url.paths {
-            enum_builder = enum_builder.with_path(&path);
-        }
-
         let builder_struct = Self::create_builder_struct(
             self.builder_name,
             self.endpoint,
-            &common_fields,
-            &common_builder_fns,
             self.common_params,
-            &enum_builder,
+            &self.enum_builder,
         );
 
         let ctor_fn = Self::create_builder_struct_ctor_fns(
-            self.builder_name,
             self.name,
+            self.builder_name,
             self.endpoint,
             self.is_root_method,
-            &enum_builder,
+            &self.enum_builder,
         );
 
         (builder_struct, ctor_fn)
