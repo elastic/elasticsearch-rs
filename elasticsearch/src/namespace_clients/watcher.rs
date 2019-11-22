@@ -81,9 +81,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherAckWatch<T>
+    where
+        T: Serialize,
+    {
+        WatcherAckWatch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -199,9 +210,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherActivateWatch<T>
+    where
+        T: Serialize,
+    {
+        WatcherActivateWatch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -317,9 +339,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherDeactivateWatch<T>
+    where
+        T: Serialize,
+    {
+        WatcherDeactivateWatch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -543,9 +576,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherExecuteWatch<T>
+    where
+        T: Serialize,
+    {
+        WatcherExecuteWatch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            debug: self.debug,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "indicates whether the watch should execute in debug mode"]
     pub fn debug(mut self, debug: Option<bool>) -> Self {
@@ -785,9 +830,24 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherPutWatch<T>
+    where
+        T: Serialize,
+    {
+        WatcherPutWatch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            active: self.active,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            pretty: self.pretty,
+            source: self.source,
+            version: self.version,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -924,9 +984,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherStart<T>
+    where
+        T: Serialize,
+    {
+        WatcherStart {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1167,9 +1238,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> WatcherStop<T>
+    where
+        T: Serialize,
+    {
+        WatcherStop {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1246,58 +1328,37 @@ impl Watcher {
     pub fn new(client: Elasticsearch) -> Self {
         Watcher { client }
     }
-    pub fn ack_watch<B>(&self, parts: WatcherAckWatchUrlParts) -> WatcherAckWatch<B>
-    where
-        B: Serialize,
-    {
+    pub fn ack_watch(&self, parts: WatcherAckWatchUrlParts) -> WatcherAckWatch<()> {
         WatcherAckWatch::new(self.client.clone(), parts)
     }
-    pub fn activate_watch<B>(&self, parts: WatcherActivateWatchUrlParts) -> WatcherActivateWatch<B>
-    where
-        B: Serialize,
-    {
+    pub fn activate_watch(&self, parts: WatcherActivateWatchUrlParts) -> WatcherActivateWatch<()> {
         WatcherActivateWatch::new(self.client.clone(), parts)
     }
-    pub fn deactivate_watch<B>(
+    pub fn deactivate_watch(
         &self,
         parts: WatcherDeactivateWatchUrlParts,
-    ) -> WatcherDeactivateWatch<B>
-    where
-        B: Serialize,
-    {
+    ) -> WatcherDeactivateWatch<()> {
         WatcherDeactivateWatch::new(self.client.clone(), parts)
     }
     pub fn delete_watch(&self, parts: WatcherDeleteWatchUrlParts) -> WatcherDeleteWatch {
         WatcherDeleteWatch::new(self.client.clone(), parts)
     }
-    pub fn execute_watch<B>(&self, parts: WatcherExecuteWatchUrlParts) -> WatcherExecuteWatch<B>
-    where
-        B: Serialize,
-    {
+    pub fn execute_watch(&self, parts: WatcherExecuteWatchUrlParts) -> WatcherExecuteWatch<()> {
         WatcherExecuteWatch::new(self.client.clone(), parts)
     }
     pub fn get_watch(&self, parts: WatcherGetWatchUrlParts) -> WatcherGetWatch {
         WatcherGetWatch::new(self.client.clone(), parts)
     }
-    pub fn put_watch<B>(&self, parts: WatcherPutWatchUrlParts) -> WatcherPutWatch<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_watch(&self, parts: WatcherPutWatchUrlParts) -> WatcherPutWatch<()> {
         WatcherPutWatch::new(self.client.clone(), parts)
     }
-    pub fn start<B>(&self) -> WatcherStart<B>
-    where
-        B: Serialize,
-    {
+    pub fn start(&self) -> WatcherStart<()> {
         WatcherStart::new(self.client.clone())
     }
     pub fn stats(&self, parts: WatcherStatsUrlParts) -> WatcherStats {
         WatcherStats::new(self.client.clone(), parts)
     }
-    pub fn stop<B>(&self) -> WatcherStop<B>
-    where
-        B: Serialize,
-    {
+    pub fn stop(&self) -> WatcherStop<()> {
         WatcherStop::new(self.client.clone())
     }
 }

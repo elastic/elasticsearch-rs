@@ -393,9 +393,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> NodesReloadSecureSettings<T>
+    where
+        T: Serialize,
+    {
+        NodesReloadSecureSettings {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -884,13 +896,10 @@ impl Nodes {
         NodesInfo::new(self.client.clone(), parts)
     }
     #[doc = "Reloads secure settings."]
-    pub fn reload_secure_settings<B>(
+    pub fn reload_secure_settings(
         &self,
         parts: NodesReloadSecureSettingsUrlParts,
-    ) -> NodesReloadSecureSettings<B>
-    where
-        B: Serialize,
-    {
+    ) -> NodesReloadSecureSettings<()> {
         NodesReloadSecureSettings::new(self.client.clone(), parts)
     }
     #[doc = "Returns statistical information about nodes in the cluster."]

@@ -174,9 +174,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityChangePassword<T>
+    where
+        T: Serialize,
+    {
+        SecurityChangePassword {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -303,9 +315,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityClearCachedRealms<T>
+    where
+        T: Serialize,
+    {
+        SecurityClearCachedRealms {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            usernames: self.usernames,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -434,9 +458,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityClearCachedRoles<T>
+    where
+        T: Serialize,
+    {
+        SecurityClearCachedRoles {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -548,9 +583,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityCreateApiKey<T>
+    where
+        T: Serialize,
+    {
+        SecurityCreateApiKey {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1134,9 +1181,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityDisableUser<T>
+    where
+        T: Serialize,
+    {
+        SecurityDisableUser {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1262,9 +1321,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityEnableUser<T>
+    where
+        T: Serialize,
+    {
+        SecurityEnableUser {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1947,9 +2018,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityGetToken<T>
+    where
+        T: Serialize,
+    {
+        SecurityGetToken {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2273,9 +2355,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityHasPrivileges<T>
+    where
+        T: Serialize,
+    {
+        SecurityHasPrivileges {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2388,9 +2481,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityInvalidateApiKey<T>
+    where
+        T: Serialize,
+    {
+        SecurityInvalidateApiKey {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2500,9 +2604,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityInvalidateToken<T>
+    where
+        T: Serialize,
+    {
+        SecurityInvalidateToken {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2614,9 +2729,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityPutPrivileges<T>
+    where
+        T: Serialize,
+    {
+        SecurityPutPrivileges {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2741,9 +2868,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityPutRole<T>
+    where
+        T: Serialize,
+    {
+        SecurityPutRole {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2868,9 +3007,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityPutRoleMapping<T>
+    where
+        T: Serialize,
+    {
+        SecurityPutRoleMapping {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2995,9 +3146,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SecurityPutUser<T>
+    where
+        T: Serialize,
+    {
+        SecurityPutUser {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3085,37 +3248,25 @@ impl Security {
     pub fn authenticate(&self) -> SecurityAuthenticate {
         SecurityAuthenticate::new(self.client.clone())
     }
-    pub fn change_password<B>(
+    pub fn change_password(
         &self,
         parts: SecurityChangePasswordUrlParts,
-    ) -> SecurityChangePassword<B>
-    where
-        B: Serialize,
-    {
+    ) -> SecurityChangePassword<()> {
         SecurityChangePassword::new(self.client.clone(), parts)
     }
-    pub fn clear_cached_realms<B>(
+    pub fn clear_cached_realms(
         &self,
         parts: SecurityClearCachedRealmsUrlParts,
-    ) -> SecurityClearCachedRealms<B>
-    where
-        B: Serialize,
-    {
+    ) -> SecurityClearCachedRealms<()> {
         SecurityClearCachedRealms::new(self.client.clone(), parts)
     }
-    pub fn clear_cached_roles<B>(
+    pub fn clear_cached_roles(
         &self,
         parts: SecurityClearCachedRolesUrlParts,
-    ) -> SecurityClearCachedRoles<B>
-    where
-        B: Serialize,
-    {
+    ) -> SecurityClearCachedRoles<()> {
         SecurityClearCachedRoles::new(self.client.clone(), parts)
     }
-    pub fn create_api_key<B>(&self) -> SecurityCreateApiKey<B>
-    where
-        B: Serialize,
-    {
+    pub fn create_api_key(&self) -> SecurityCreateApiKey<()> {
         SecurityCreateApiKey::new(self.client.clone())
     }
     pub fn delete_privileges(
@@ -3136,16 +3287,10 @@ impl Security {
     pub fn delete_user(&self, parts: SecurityDeleteUserUrlParts) -> SecurityDeleteUser {
         SecurityDeleteUser::new(self.client.clone(), parts)
     }
-    pub fn disable_user<B>(&self, parts: SecurityDisableUserUrlParts) -> SecurityDisableUser<B>
-    where
-        B: Serialize,
-    {
+    pub fn disable_user(&self, parts: SecurityDisableUserUrlParts) -> SecurityDisableUser<()> {
         SecurityDisableUser::new(self.client.clone(), parts)
     }
-    pub fn enable_user<B>(&self, parts: SecurityEnableUserUrlParts) -> SecurityEnableUser<B>
-    where
-        B: Serialize,
-    {
+    pub fn enable_user(&self, parts: SecurityEnableUserUrlParts) -> SecurityEnableUser<()> {
         SecurityEnableUser::new(self.client.clone(), parts)
     }
     pub fn get_api_key(&self) -> SecurityGetApiKey {
@@ -3166,10 +3311,7 @@ impl Security {
     ) -> SecurityGetRoleMapping {
         SecurityGetRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn get_token<B>(&self) -> SecurityGetToken<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_token(&self) -> SecurityGetToken<()> {
         SecurityGetToken::new(self.client.clone())
     }
     pub fn get_user(&self, parts: SecurityGetUserUrlParts) -> SecurityGetUser {
@@ -3178,52 +3320,31 @@ impl Security {
     pub fn get_user_privileges(&self) -> SecurityGetUserPrivileges {
         SecurityGetUserPrivileges::new(self.client.clone())
     }
-    pub fn has_privileges<B>(
+    pub fn has_privileges(
         &self,
         parts: SecurityHasPrivilegesUrlParts,
-    ) -> SecurityHasPrivileges<B>
-    where
-        B: Serialize,
-    {
+    ) -> SecurityHasPrivileges<()> {
         SecurityHasPrivileges::new(self.client.clone(), parts)
     }
-    pub fn invalidate_api_key<B>(&self) -> SecurityInvalidateApiKey<B>
-    where
-        B: Serialize,
-    {
+    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKey<()> {
         SecurityInvalidateApiKey::new(self.client.clone())
     }
-    pub fn invalidate_token<B>(&self) -> SecurityInvalidateToken<B>
-    where
-        B: Serialize,
-    {
+    pub fn invalidate_token(&self) -> SecurityInvalidateToken<()> {
         SecurityInvalidateToken::new(self.client.clone())
     }
-    pub fn put_privileges<B>(&self) -> SecurityPutPrivileges<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_privileges(&self) -> SecurityPutPrivileges<()> {
         SecurityPutPrivileges::new(self.client.clone())
     }
-    pub fn put_role<B>(&self, parts: SecurityPutRoleUrlParts) -> SecurityPutRole<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_role(&self, parts: SecurityPutRoleUrlParts) -> SecurityPutRole<()> {
         SecurityPutRole::new(self.client.clone(), parts)
     }
-    pub fn put_role_mapping<B>(
+    pub fn put_role_mapping(
         &self,
         parts: SecurityPutRoleMappingUrlParts,
-    ) -> SecurityPutRoleMapping<B>
-    where
-        B: Serialize,
-    {
+    ) -> SecurityPutRoleMapping<()> {
         SecurityPutRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn put_user<B>(&self, parts: SecurityPutUserUrlParts) -> SecurityPutUser<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_user(&self, parts: SecurityPutUserUrlParts) -> SecurityPutUser<()> {
         SecurityPutUser::new(self.client.clone(), parts)
     }
 }

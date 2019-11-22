@@ -175,9 +175,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SlmExecuteLifecycle<T>
+    where
+        T: Serialize,
+    {
+        SlmExecuteLifecycle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -398,9 +409,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SlmPutLifecycle<T>
+    where
+        T: Serialize,
+    {
+        SlmPutLifecycle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -480,19 +502,13 @@ impl Slm {
     pub fn delete_lifecycle(&self, parts: SlmDeleteLifecycleUrlParts) -> SlmDeleteLifecycle {
         SlmDeleteLifecycle::new(self.client.clone(), parts)
     }
-    pub fn execute_lifecycle<B>(&self, parts: SlmExecuteLifecycleUrlParts) -> SlmExecuteLifecycle<B>
-    where
-        B: Serialize,
-    {
+    pub fn execute_lifecycle(&self, parts: SlmExecuteLifecycleUrlParts) -> SlmExecuteLifecycle<()> {
         SlmExecuteLifecycle::new(self.client.clone(), parts)
     }
     pub fn get_lifecycle(&self, parts: SlmGetLifecycleUrlParts) -> SlmGetLifecycle {
         SlmGetLifecycle::new(self.client.clone(), parts)
     }
-    pub fn put_lifecycle<B>(&self, parts: SlmPutLifecycleUrlParts) -> SlmPutLifecycle<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_lifecycle(&self, parts: SlmPutLifecycleUrlParts) -> SlmPutLifecycle<()> {
         SlmPutLifecycle::new(self.client.clone(), parts)
     }
 }

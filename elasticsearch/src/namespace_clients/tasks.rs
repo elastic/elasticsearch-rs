@@ -84,9 +84,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> TasksCancel<T>
+    where
+        T: Serialize,
+    {
+        TasksCancel {
+            client: self.client,
+            parts: self.parts,
+            body,
+            actions: self.actions,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            nodes: self.nodes,
+            parent_task_id: self.parent_task_id,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -498,10 +512,7 @@ impl Tasks {
         Tasks { client }
     }
     #[doc = "Cancels a task, if it can be cancelled through an API."]
-    pub fn cancel<B>(&self, parts: TasksCancelUrlParts) -> TasksCancel<B>
-    where
-        B: Serialize,
-    {
+    pub fn cancel(&self, parts: TasksCancelUrlParts) -> TasksCancel<()> {
         TasksCancel::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about a task."]

@@ -491,9 +491,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RollupPutJob<T>
+    where
+        T: Serialize,
+    {
+        RollupPutJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -625,9 +636,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RollupRollupSearch<T>
+    where
+        T: Serialize,
+    {
+        RollupRollupSearch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            source: self.source,
+            typed_keys: self.typed_keys,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -765,9 +789,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RollupStartJob<T>
+    where
+        T: Serialize,
+    {
+        RollupStartJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -887,9 +922,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RollupStopJob<T>
+    where
+        T: Serialize,
+    {
+        RollupStopJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1000,28 +1048,16 @@ impl Rollup {
     ) -> RollupGetRollupIndexCaps {
         RollupGetRollupIndexCaps::new(self.client.clone(), parts)
     }
-    pub fn put_job<B>(&self, parts: RollupPutJobUrlParts) -> RollupPutJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_job(&self, parts: RollupPutJobUrlParts) -> RollupPutJob<()> {
         RollupPutJob::new(self.client.clone(), parts)
     }
-    pub fn rollup_search<B>(&self, parts: RollupRollupSearchUrlParts) -> RollupRollupSearch<B>
-    where
-        B: Serialize,
-    {
+    pub fn rollup_search(&self, parts: RollupRollupSearchUrlParts) -> RollupRollupSearch<()> {
         RollupRollupSearch::new(self.client.clone(), parts)
     }
-    pub fn start_job<B>(&self, parts: RollupStartJobUrlParts) -> RollupStartJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn start_job(&self, parts: RollupStartJobUrlParts) -> RollupStartJob<()> {
         RollupStartJob::new(self.client.clone(), parts)
     }
-    pub fn stop_job<B>(&self, parts: RollupStopJobUrlParts) -> RollupStopJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn stop_job(&self, parts: RollupStopJobUrlParts) -> RollupStopJob<()> {
         RollupStopJob::new(self.client.clone(), parts)
     }
 }

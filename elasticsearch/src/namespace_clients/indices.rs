@@ -75,9 +75,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesAnalyze<T>
+    where
+        T: Serialize,
+    {
+        IndicesAnalyze {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            index: self.index,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -228,9 +240,28 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesClearCache<T>
+    where
+        T: Serialize,
+    {
+        IndicesClearCache {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            fielddata: self.fielddata,
+            fields: self.fields,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            index: self.index,
+            pretty: self.pretty,
+            query: self.query,
+            request: self.request,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -420,9 +451,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesClone<T>
+    where
+        T: Serialize,
+    {
+        IndicesClone {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -583,9 +628,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesClose<T>
+    where
+        T: Serialize,
+    {
+        IndicesClose {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -754,9 +816,24 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesCreate<T>
+    where
+        T: Serialize,
+    {
+        IndicesCreate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            include_type_name: self.include_type_name,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1936,9 +2013,25 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesFlush<T>
+    where
+        T: Serialize,
+    {
+        IndicesFlush {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            force: self.force,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            source: self.source,
+            wait_if_ongoing: self.wait_if_ongoing,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2106,9 +2199,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesFlushSynced<T>
+    where
+        T: Serialize,
+    {
+        IndicesFlushSynced {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2266,9 +2373,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesForcemerge<T>
+    where
+        T: Serialize,
+    {
+        IndicesForcemerge {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            flush: self.flush,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            max_num_segments: self.max_num_segments,
+            only_expunge_deletes: self.only_expunge_deletes,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2447,9 +2571,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesFreeze<T>
+    where
+        T: Serialize,
+    {
+        IndicesFreeze {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3853,9 +3994,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesOpen<T>
+    where
+        T: Serialize,
+    {
+        IndicesOpen {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4023,9 +4181,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesPutAlias<T>
+    where
+        T: Serialize,
+    {
+        IndicesPutAlias {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4193,9 +4364,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesPutMapping<T>
+    where
+        T: Serialize,
+    {
+        IndicesPutMapping {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            include_type_name: self.include_type_name,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4376,9 +4564,27 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesPutSettings<T>
+    where
+        T: Serialize,
+    {
+        IndicesPutSettings {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            flat_settings: self.flat_settings,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            preserve_existing: self.preserve_existing,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4556,9 +4762,26 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesPutTemplate<T>
+    where
+        T: Serialize,
+    {
+        IndicesPutTemplate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            create: self.create,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            flat_settings: self.flat_settings,
+            human: self.human,
+            include_type_name: self.include_type_name,
+            master_timeout: self.master_timeout,
+            order: self.order,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
     pub fn create(mut self, create: Option<bool>) -> Self {
@@ -4864,9 +5087,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesRefresh<T>
+    where
+        T: Serialize,
+    {
+        IndicesRefresh {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5016,9 +5253,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesReloadSearchAnalyzers<T>
+    where
+        T: Serialize,
+    {
+        IndicesReloadSearchAnalyzers {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5175,9 +5426,25 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesRollover<T>
+    where
+        T: Serialize,
+    {
+        IndicesRollover {
+            client: self.client,
+            parts: self.parts,
+            body,
+            dry_run: self.dry_run,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            include_type_name: self.include_type_name,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "If set to true the rollover action will only be validated but not actually performed even if a condition matches. The default is false"]
     pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
@@ -5645,9 +5912,24 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesShrink<T>
+    where
+        T: Serialize,
+    {
+        IndicesShrink {
+            client: self.client,
+            parts: self.parts,
+            body,
+            copy_settings: self.copy_settings,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
@@ -5807,9 +6089,24 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesSplit<T>
+    where
+        T: Serialize,
+    {
+        IndicesSplit {
+            client: self.client,
+            parts: self.parts,
+            body,
+            copy_settings: self.copy_settings,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
     pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
@@ -6233,9 +6530,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesUnfreeze<T>
+    where
+        T: Serialize,
+    {
+        IndicesUnfreeze {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6395,9 +6709,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesUpdateAliases<T>
+    where
+        T: Serialize,
+    {
+        IndicesUpdateAliases {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6547,9 +6874,25 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesUpgrade<T>
+    where
+        T: Serialize,
+    {
+        IndicesUpgrade {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            only_ancient_segments: self.only_ancient_segments,
+            pretty: self.pretty,
+            source: self.source,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6765,9 +7108,32 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IndicesValidateQuery<T>
+    where
+        T: Serialize,
+    {
+        IndicesValidateQuery {
+            client: self.client,
+            parts: self.parts,
+            body,
+            all_shards: self.all_shards,
+            allow_no_indices: self.allow_no_indices,
+            analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
+            default_operator: self.default_operator,
+            df: self.df,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            explain: self.explain,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            lenient: self.lenient,
+            pretty: self.pretty,
+            q: self.q,
+            rewrite: self.rewrite,
+            source: self.source,
+        }
     }
     #[doc = "The default operator for query string query (AND or OR)"]
     pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
@@ -6924,38 +7290,23 @@ impl Indices {
         Indices { client }
     }
     #[doc = "Performs the analysis process on a text and return the tokens breakdown of the text."]
-    pub fn analyze<B>(&self, parts: IndicesAnalyzeUrlParts) -> IndicesAnalyze<B>
-    where
-        B: Serialize,
-    {
+    pub fn analyze(&self, parts: IndicesAnalyzeUrlParts) -> IndicesAnalyze<()> {
         IndicesAnalyze::new(self.client.clone(), parts)
     }
     #[doc = "Clears all or specific caches for one or more indices."]
-    pub fn clear_cache<B>(&self, parts: IndicesClearCacheUrlParts) -> IndicesClearCache<B>
-    where
-        B: Serialize,
-    {
+    pub fn clear_cache(&self, parts: IndicesClearCacheUrlParts) -> IndicesClearCache<()> {
         IndicesClearCache::new(self.client.clone(), parts)
     }
     #[doc = "Clones an index"]
-    pub fn clone<B>(&self, parts: IndicesCloneUrlParts) -> IndicesClone<B>
-    where
-        B: Serialize,
-    {
+    pub fn clone(&self, parts: IndicesCloneUrlParts) -> IndicesClone<()> {
         IndicesClone::new(self.client.clone(), parts)
     }
     #[doc = "Closes an index."]
-    pub fn close<B>(&self, parts: IndicesCloseUrlParts) -> IndicesClose<B>
-    where
-        B: Serialize,
-    {
+    pub fn close(&self, parts: IndicesCloseUrlParts) -> IndicesClose<()> {
         IndicesClose::new(self.client.clone(), parts)
     }
     #[doc = "Creates an index with optional settings and mappings."]
-    pub fn create<B>(&self, parts: IndicesCreateUrlParts) -> IndicesCreate<B>
-    where
-        B: Serialize,
-    {
+    pub fn create(&self, parts: IndicesCreateUrlParts) -> IndicesCreate<()> {
         IndicesCreate::new(self.client.clone(), parts)
     }
     #[doc = "Deletes an index."]
@@ -6987,30 +7338,18 @@ impl Indices {
         IndicesExistsType::new(self.client.clone(), parts)
     }
     #[doc = "Performs the flush operation on one or more indices."]
-    pub fn flush<B>(&self, parts: IndicesFlushUrlParts) -> IndicesFlush<B>
-    where
-        B: Serialize,
-    {
+    pub fn flush(&self, parts: IndicesFlushUrlParts) -> IndicesFlush<()> {
         IndicesFlush::new(self.client.clone(), parts)
     }
     #[doc = "Performs a synced flush operation on one or more indices."]
-    pub fn flush_synced<B>(&self, parts: IndicesFlushSyncedUrlParts) -> IndicesFlushSynced<B>
-    where
-        B: Serialize,
-    {
+    pub fn flush_synced(&self, parts: IndicesFlushSyncedUrlParts) -> IndicesFlushSynced<()> {
         IndicesFlushSynced::new(self.client.clone(), parts)
     }
     #[doc = "Performs the force merge operation on one or more indices."]
-    pub fn forcemerge<B>(&self, parts: IndicesForcemergeUrlParts) -> IndicesForcemerge<B>
-    where
-        B: Serialize,
-    {
+    pub fn forcemerge(&self, parts: IndicesForcemergeUrlParts) -> IndicesForcemerge<()> {
         IndicesForcemerge::new(self.client.clone(), parts)
     }
-    pub fn freeze<B>(&self, parts: IndicesFreezeUrlParts) -> IndicesFreeze<B>
-    where
-        B: Serialize,
-    {
+    pub fn freeze(&self, parts: IndicesFreezeUrlParts) -> IndicesFreeze<()> {
         IndicesFreeze::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about one or more indices."]
@@ -7045,38 +7384,23 @@ impl Indices {
         IndicesGetUpgrade::new(self.client.clone(), parts)
     }
     #[doc = "Opens an index."]
-    pub fn open<B>(&self, parts: IndicesOpenUrlParts) -> IndicesOpen<B>
-    where
-        B: Serialize,
-    {
+    pub fn open(&self, parts: IndicesOpenUrlParts) -> IndicesOpen<()> {
         IndicesOpen::new(self.client.clone(), parts)
     }
     #[doc = "Creates or updates an alias."]
-    pub fn put_alias<B>(&self, parts: IndicesPutAliasUrlParts) -> IndicesPutAlias<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_alias(&self, parts: IndicesPutAliasUrlParts) -> IndicesPutAlias<()> {
         IndicesPutAlias::new(self.client.clone(), parts)
     }
     #[doc = "Updates the index mappings."]
-    pub fn put_mapping<B>(&self, parts: IndicesPutMappingUrlParts) -> IndicesPutMapping<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_mapping(&self, parts: IndicesPutMappingUrlParts) -> IndicesPutMapping<()> {
         IndicesPutMapping::new(self.client.clone(), parts)
     }
     #[doc = "Updates the index settings."]
-    pub fn put_settings<B>(&self, parts: IndicesPutSettingsUrlParts) -> IndicesPutSettings<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_settings(&self, parts: IndicesPutSettingsUrlParts) -> IndicesPutSettings<()> {
         IndicesPutSettings::new(self.client.clone(), parts)
     }
     #[doc = "Creates or updates an index template."]
-    pub fn put_template<B>(&self, parts: IndicesPutTemplateUrlParts) -> IndicesPutTemplate<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_template(&self, parts: IndicesPutTemplateUrlParts) -> IndicesPutTemplate<()> {
         IndicesPutTemplate::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about ongoing index shard recoveries."]
@@ -7084,26 +7408,17 @@ impl Indices {
         IndicesRecovery::new(self.client.clone(), parts)
     }
     #[doc = "Performs the refresh operation in one or more indices."]
-    pub fn refresh<B>(&self, parts: IndicesRefreshUrlParts) -> IndicesRefresh<B>
-    where
-        B: Serialize,
-    {
+    pub fn refresh(&self, parts: IndicesRefreshUrlParts) -> IndicesRefresh<()> {
         IndicesRefresh::new(self.client.clone(), parts)
     }
-    pub fn reload_search_analyzers<B>(
+    pub fn reload_search_analyzers(
         &self,
         parts: IndicesReloadSearchAnalyzersUrlParts,
-    ) -> IndicesReloadSearchAnalyzers<B>
-    where
-        B: Serialize,
-    {
+    ) -> IndicesReloadSearchAnalyzers<()> {
         IndicesReloadSearchAnalyzers::new(self.client.clone(), parts)
     }
     #[doc = "Updates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
-    pub fn rollover<B>(&self, parts: IndicesRolloverUrlParts) -> IndicesRollover<B>
-    where
-        B: Serialize,
-    {
+    pub fn rollover(&self, parts: IndicesRolloverUrlParts) -> IndicesRollover<()> {
         IndicesRollover::new(self.client.clone(), parts)
     }
     #[doc = "Provides low-level information about segments in a Lucene index."]
@@ -7115,48 +7430,30 @@ impl Indices {
         IndicesShardStores::new(self.client.clone(), parts)
     }
     #[doc = "Allow to shrink an existing index into a new index with fewer primary shards."]
-    pub fn shrink<B>(&self, parts: IndicesShrinkUrlParts) -> IndicesShrink<B>
-    where
-        B: Serialize,
-    {
+    pub fn shrink(&self, parts: IndicesShrinkUrlParts) -> IndicesShrink<()> {
         IndicesShrink::new(self.client.clone(), parts)
     }
     #[doc = "Allows you to split an existing index into a new index with more primary shards."]
-    pub fn split<B>(&self, parts: IndicesSplitUrlParts) -> IndicesSplit<B>
-    where
-        B: Serialize,
-    {
+    pub fn split(&self, parts: IndicesSplitUrlParts) -> IndicesSplit<()> {
         IndicesSplit::new(self.client.clone(), parts)
     }
     #[doc = "Provides statistics on operations happening in an index."]
     pub fn stats(&self, parts: IndicesStatsUrlParts) -> IndicesStats {
         IndicesStats::new(self.client.clone(), parts)
     }
-    pub fn unfreeze<B>(&self, parts: IndicesUnfreezeUrlParts) -> IndicesUnfreeze<B>
-    where
-        B: Serialize,
-    {
+    pub fn unfreeze(&self, parts: IndicesUnfreezeUrlParts) -> IndicesUnfreeze<()> {
         IndicesUnfreeze::new(self.client.clone(), parts)
     }
     #[doc = "Updates index aliases."]
-    pub fn update_aliases<B>(&self) -> IndicesUpdateAliases<B>
-    where
-        B: Serialize,
-    {
+    pub fn update_aliases(&self) -> IndicesUpdateAliases<()> {
         IndicesUpdateAliases::new(self.client.clone())
     }
     #[doc = "The _upgrade API is no longer useful and will be removed."]
-    pub fn upgrade<B>(&self, parts: IndicesUpgradeUrlParts) -> IndicesUpgrade<B>
-    where
-        B: Serialize,
-    {
+    pub fn upgrade(&self, parts: IndicesUpgradeUrlParts) -> IndicesUpgrade<()> {
         IndicesUpgrade::new(self.client.clone(), parts)
     }
     #[doc = "Allows a user to validate a potentially expensive query without executing it."]
-    pub fn validate_query<B>(&self, parts: IndicesValidateQueryUrlParts) -> IndicesValidateQuery<B>
-    where
-        B: Serialize,
-    {
+    pub fn validate_query(&self, parts: IndicesValidateQueryUrlParts) -> IndicesValidateQuery<()> {
         IndicesValidateQuery::new(self.client.clone(), parts)
     }
 }

@@ -68,7 +68,7 @@ let cat_response = client.cat()
 
 let mut search_response = client
     // Value is the request body type
-    .search::<Value>(SearchUrlParts::None))
+    .search(SearchUrlParts::None)
     .body(Some(json!({
         "query": {
             "match_all": {}

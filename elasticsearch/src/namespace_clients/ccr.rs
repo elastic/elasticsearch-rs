@@ -177,9 +177,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrFollow<T>
+    where
+        T: Serialize,
+    {
+        CcrFollow {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -518,9 +530,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrForgetFollower<T>
+    where
+        T: Serialize,
+    {
+        CcrForgetFollower {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -742,9 +765,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrPauseFollow<T>
+    where
+        T: Serialize,
+    {
+        CcrPauseFollow {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -859,9 +893,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrPutAutoFollowPattern<T>
+    where
+        T: Serialize,
+    {
+        CcrPutAutoFollowPattern {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -977,9 +1022,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrResumeFollow<T>
+    where
+        T: Serialize,
+    {
+        CcrResumeFollow {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1194,9 +1250,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> CcrUnfollow<T>
+    where
+        T: Serialize,
+    {
+        CcrUnfollow {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1279,10 +1346,7 @@ impl Ccr {
     ) -> CcrDeleteAutoFollowPattern {
         CcrDeleteAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn follow<B>(&self, parts: CcrFollowUrlParts) -> CcrFollow<B>
-    where
-        B: Serialize,
-    {
+    pub fn follow(&self, parts: CcrFollowUrlParts) -> CcrFollow<()> {
         CcrFollow::new(self.client.clone(), parts)
     }
     pub fn follow_info(&self, parts: CcrFollowInfoUrlParts) -> CcrFollowInfo {
@@ -1291,10 +1355,7 @@ impl Ccr {
     pub fn follow_stats(&self, parts: CcrFollowStatsUrlParts) -> CcrFollowStats {
         CcrFollowStats::new(self.client.clone(), parts)
     }
-    pub fn forget_follower<B>(&self, parts: CcrForgetFollowerUrlParts) -> CcrForgetFollower<B>
-    where
-        B: Serialize,
-    {
+    pub fn forget_follower(&self, parts: CcrForgetFollowerUrlParts) -> CcrForgetFollower<()> {
         CcrForgetFollower::new(self.client.clone(), parts)
     }
     pub fn get_auto_follow_pattern(
@@ -1303,34 +1364,22 @@ impl Ccr {
     ) -> CcrGetAutoFollowPattern {
         CcrGetAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn pause_follow<B>(&self, parts: CcrPauseFollowUrlParts) -> CcrPauseFollow<B>
-    where
-        B: Serialize,
-    {
+    pub fn pause_follow(&self, parts: CcrPauseFollowUrlParts) -> CcrPauseFollow<()> {
         CcrPauseFollow::new(self.client.clone(), parts)
     }
-    pub fn put_auto_follow_pattern<B>(
+    pub fn put_auto_follow_pattern(
         &self,
         parts: CcrPutAutoFollowPatternUrlParts,
-    ) -> CcrPutAutoFollowPattern<B>
-    where
-        B: Serialize,
-    {
+    ) -> CcrPutAutoFollowPattern<()> {
         CcrPutAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn resume_follow<B>(&self, parts: CcrResumeFollowUrlParts) -> CcrResumeFollow<B>
-    where
-        B: Serialize,
-    {
+    pub fn resume_follow(&self, parts: CcrResumeFollowUrlParts) -> CcrResumeFollow<()> {
         CcrResumeFollow::new(self.client.clone(), parts)
     }
     pub fn stats(&self) -> CcrStats {
         CcrStats::new(self.client.clone())
     }
-    pub fn unfollow<B>(&self, parts: CcrUnfollowUrlParts) -> CcrUnfollow<B>
-    where
-        B: Serialize,
-    {
+    pub fn unfollow(&self, parts: CcrUnfollowUrlParts) -> CcrUnfollow<()> {
         CcrUnfollow::new(self.client.clone(), parts)
     }
 }

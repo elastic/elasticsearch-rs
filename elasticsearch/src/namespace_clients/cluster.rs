@@ -69,9 +69,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ClusterAllocationExplain<T>
+    where
+        T: Serialize,
+    {
+        ClusterAllocationExplain {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            include_disk_info: self.include_disk_info,
+            include_yes_decisions: self.include_yes_decisions,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -699,9 +712,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ClusterPutSettings<T>
+    where
+        T: Serialize,
+    {
+        ClusterPutSettings {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            flat_settings: self.flat_settings,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -946,9 +973,26 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ClusterReroute<T>
+    where
+        T: Serialize,
+    {
+        ClusterReroute {
+            client: self.client,
+            parts: self.parts,
+            body,
+            dry_run: self.dry_run,
+            error_trace: self.error_trace,
+            explain: self.explain,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            metric: self.metric,
+            pretty: self.pretty,
+            retry_failed: self.retry_failed,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Simulate the operation only and return the resulting state"]
     pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
@@ -1406,10 +1450,7 @@ impl Cluster {
         Cluster { client }
     }
     #[doc = "Provides explanations for shard allocations in the cluster."]
-    pub fn allocation_explain<B>(&self) -> ClusterAllocationExplain<B>
-    where
-        B: Serialize,
-    {
+    pub fn allocation_explain(&self) -> ClusterAllocationExplain<()> {
         ClusterAllocationExplain::new(self.client.clone())
     }
     #[doc = "Returns cluster settings."]
@@ -1425,10 +1466,7 @@ impl Cluster {
         ClusterPendingTasks::new(self.client.clone())
     }
     #[doc = "Updates the cluster settings."]
-    pub fn put_settings<B>(&self) -> ClusterPutSettings<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_settings(&self) -> ClusterPutSettings<()> {
         ClusterPutSettings::new(self.client.clone())
     }
     #[doc = "Returns the information about configured remote clusters."]
@@ -1436,10 +1474,7 @@ impl Cluster {
         ClusterRemoteInfo::new(self.client.clone())
     }
     #[doc = "Allows to manually change the allocation of individual shards in the cluster."]
-    pub fn reroute<B>(&self) -> ClusterReroute<B>
-    where
-        B: Serialize,
-    {
+    pub fn reroute(&self) -> ClusterReroute<()> {
         ClusterReroute::new(self.client.clone())
     }
     #[doc = "Returns a comprehensive information about the state of the cluster."]

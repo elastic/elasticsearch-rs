@@ -452,9 +452,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DataFramePreviewDataFrameTransform<T>
+    where
+        T: Serialize,
+    {
+        DataFramePreviewDataFrameTransform {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -571,9 +582,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DataFramePutDataFrameTransform<T>
+    where
+        T: Serialize,
+    {
+        DataFramePutDataFrameTransform {
+            client: self.client,
+            parts: self.parts,
+            body,
+            defer_validation: self.defer_validation,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
     pub fn defer_validation(mut self, defer_validation: Option<bool>) -> Self {
@@ -699,9 +722,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DataFrameStartDataFrameTransform<T>
+    where
+        T: Serialize,
+    {
+        DataFrameStartDataFrameTransform {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -836,9 +871,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DataFrameStopDataFrameTransform<T>
+    where
+        T: Serialize,
+    {
+        DataFrameStopDataFrameTransform {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_match: self.allow_no_match,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -978,9 +1027,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DataFrameUpdateDataFrameTransform<T>
+    where
+        T: Serialize,
+    {
+        DataFrameUpdateDataFrameTransform {
+            client: self.client,
+            parts: self.parts,
+            body,
+            defer_validation: self.defer_validation,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
     pub fn defer_validation(mut self, defer_validation: Option<bool>) -> Self {
@@ -1083,46 +1144,31 @@ impl DataFrame {
     ) -> DataFrameGetDataFrameTransformStats {
         DataFrameGetDataFrameTransformStats::new(self.client.clone(), parts)
     }
-    pub fn preview_data_frame_transform<B>(&self) -> DataFramePreviewDataFrameTransform<B>
-    where
-        B: Serialize,
-    {
+    pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransform<()> {
         DataFramePreviewDataFrameTransform::new(self.client.clone())
     }
-    pub fn put_data_frame_transform<B>(
+    pub fn put_data_frame_transform(
         &self,
         parts: DataFramePutDataFrameTransformUrlParts,
-    ) -> DataFramePutDataFrameTransform<B>
-    where
-        B: Serialize,
-    {
+    ) -> DataFramePutDataFrameTransform<()> {
         DataFramePutDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn start_data_frame_transform<B>(
+    pub fn start_data_frame_transform(
         &self,
         parts: DataFrameStartDataFrameTransformUrlParts,
-    ) -> DataFrameStartDataFrameTransform<B>
-    where
-        B: Serialize,
-    {
+    ) -> DataFrameStartDataFrameTransform<()> {
         DataFrameStartDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn stop_data_frame_transform<B>(
+    pub fn stop_data_frame_transform(
         &self,
         parts: DataFrameStopDataFrameTransformUrlParts,
-    ) -> DataFrameStopDataFrameTransform<B>
-    where
-        B: Serialize,
-    {
+    ) -> DataFrameStopDataFrameTransform<()> {
         DataFrameStopDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn update_data_frame_transform<B>(
+    pub fn update_data_frame_transform(
         &self,
         parts: DataFrameUpdateDataFrameTransformUrlParts,
-    ) -> DataFrameUpdateDataFrameTransform<B>
-    where
-        B: Serialize,
-    {
+    ) -> DataFrameUpdateDataFrameTransform<()> {
         DataFrameUpdateDataFrameTransform::new(self.client.clone(), parts)
     }
 }

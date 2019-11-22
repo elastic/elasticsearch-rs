@@ -82,9 +82,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlCloseJob<T>
+    where
+        T: Serialize,
+    {
+        MlCloseJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_jobs: self.allow_no_jobs,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            force: self.force,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1319,9 +1333,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlEstimateMemoryUsage<T>
+    where
+        T: Serialize,
+    {
+        MlEstimateMemoryUsage {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1431,9 +1456,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlEvaluateDataFrame<T>
+    where
+        T: Serialize,
+    {
+        MlEvaluateDataFrame {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1571,9 +1607,34 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlFindFileStructure<T>
+    where
+        T: Serialize,
+    {
+        MlFindFileStructure {
+            client: self.client,
+            parts: self.parts,
+            body,
+            charset: self.charset,
+            column_names: self.column_names,
+            delimiter: self.delimiter,
+            error_trace: self.error_trace,
+            explain: self.explain,
+            filter_path: self.filter_path,
+            format: self.format,
+            grok_pattern: self.grok_pattern,
+            has_header_row: self.has_header_row,
+            human: self.human,
+            line_merge_size_limit: self.line_merge_size_limit,
+            lines_to_sample: self.lines_to_sample,
+            pretty: self.pretty,
+            quote: self.quote,
+            should_trim_fields: self.should_trim_fields,
+            source: self.source,
+            timeout: self.timeout,
+            timestamp_field: self.timestamp_field,
+            timestamp_format: self.timestamp_format,
+        }
     }
     #[doc = "Optional parameter to specify the character set of the file"]
     pub fn charset(mut self, charset: Option<String>) -> Self {
@@ -1823,9 +1884,25 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlFlushJob<T>
+    where
+        T: Serialize,
+    {
+        MlFlushJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            advance_time: self.advance_time,
+            calc_interim: self.calc_interim,
+            end: self.end,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            skip_time: self.skip_time,
+            source: self.source,
+            start: self.start,
+        }
     }
     #[doc = "Calculates interim results for the most recent bucket or all buckets within the latency period"]
     pub fn calc_interim(mut self, calc_interim: Option<bool>) -> Self {
@@ -1980,9 +2057,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlForecast<T>
+    where
+        T: Serialize,
+    {
+        MlForecast {
+            client: self.client,
+            parts: self.parts,
+            body,
+            duration: self.duration,
+            error_trace: self.error_trace,
+            expires_in: self.expires_in,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "The duration of the forecast"]
     pub fn duration(mut self, duration: Option<String>) -> Self {
@@ -2146,9 +2236,29 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetBuckets<T>
+    where
+        T: Serialize,
+    {
+        MlGetBuckets {
+            client: self.client,
+            parts: self.parts,
+            body,
+            anomaly_score: self.anomaly_score,
+            desc: self.desc,
+            end: self.end,
+            error_trace: self.error_trace,
+            exclude_interim: self.exclude_interim,
+            expand: self.expand,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            pretty: self.pretty,
+            size: self.size,
+            sort: self.sort,
+            source: self.source,
+            start: self.start,
+        }
     }
     #[doc = "Set the sort direction"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -2494,9 +2604,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetCalendars<T>
+    where
+        T: Serialize,
+    {
+        MlGetCalendars {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            pretty: self.pretty,
+            size: self.size,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2645,9 +2768,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetCategories<T>
+    where
+        T: Serialize,
+    {
+        MlGetCategories {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            pretty: self.pretty,
+            size: self.size,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3430,9 +3566,28 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetInfluencers<T>
+    where
+        T: Serialize,
+    {
+        MlGetInfluencers {
+            client: self.client,
+            parts: self.parts,
+            body,
+            desc: self.desc,
+            end: self.end,
+            error_trace: self.error_trace,
+            exclude_interim: self.exclude_interim,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            influencer_score: self.influencer_score,
+            pretty: self.pretty,
+            size: self.size,
+            sort: self.sort,
+            source: self.source,
+            start: self.start,
+        }
     }
     #[doc = "whether the results should be sorted in decending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -3869,9 +4024,26 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetModelSnapshots<T>
+    where
+        T: Serialize,
+    {
+        MlGetModelSnapshots {
+            client: self.client,
+            parts: self.parts,
+            body,
+            desc: self.desc,
+            end: self.end,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            pretty: self.pretty,
+            size: self.size,
+            sort: self.sort,
+            source: self.source,
+            start: self.start,
+        }
     }
     #[doc = "True if the results should be sorted in descending order"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -4057,9 +4229,27 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetOverallBuckets<T>
+    where
+        T: Serialize,
+    {
+        MlGetOverallBuckets {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_jobs: self.allow_no_jobs,
+            bucket_span: self.bucket_span,
+            end: self.end,
+            error_trace: self.error_trace,
+            exclude_interim: self.exclude_interim,
+            filter_path: self.filter_path,
+            human: self.human,
+            overall_score: self.overall_score,
+            pretty: self.pretty,
+            source: self.source,
+            start: self.start,
+            top_n: self.top_n,
+        }
     }
     #[doc = "The span of the overall buckets. Defaults to the longest job bucket_span"]
     pub fn bucket_span(mut self, bucket_span: Option<String>) -> Self {
@@ -4245,9 +4435,28 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlGetRecords<T>
+    where
+        T: Serialize,
+    {
+        MlGetRecords {
+            client: self.client,
+            parts: self.parts,
+            body,
+            desc: self.desc,
+            end: self.end,
+            error_trace: self.error_trace,
+            exclude_interim: self.exclude_interim,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            pretty: self.pretty,
+            record_score: self.record_score,
+            size: self.size,
+            sort: self.sort,
+            source: self.source,
+            start: self.start,
+        }
     }
     #[doc = "Set the sort direction"]
     pub fn desc(mut self, desc: Option<bool>) -> Self {
@@ -4528,9 +4737,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlOpenJob<T>
+    where
+        T: Serialize,
+    {
+        MlOpenJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4646,9 +4866,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPostCalendarEvents<T>
+    where
+        T: Serialize,
+    {
+        MlPostCalendarEvents {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4768,9 +4999,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPostData<T>
+    where
+        T: Serialize,
+    {
+        MlPostData {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            reset_end: self.reset_end,
+            reset_start: self.reset_start,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5006,9 +5250,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutCalendar<T>
+    where
+        T: Serialize,
+    {
+        MlPutCalendar {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5125,9 +5380,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutCalendarJob<T>
+    where
+        T: Serialize,
+    {
+        MlPutCalendarJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5242,9 +5508,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutDataFrameAnalytics<T>
+    where
+        T: Serialize,
+    {
+        MlPutDataFrameAnalytics {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5359,9 +5636,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutDatafeed<T>
+    where
+        T: Serialize,
+    {
+        MlPutDatafeed {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5476,9 +5764,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutFilter<T>
+    where
+        T: Serialize,
+    {
+        MlPutFilter {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5593,9 +5892,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlPutJob<T>
+    where
+        T: Serialize,
+    {
+        MlPutJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5715,9 +6025,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlRevertModelSnapshot<T>
+    where
+        T: Serialize,
+    {
+        MlRevertModelSnapshot {
+            client: self.client,
+            parts: self.parts,
+            body,
+            delete_intervening_results: self.delete_intervening_results,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Should we reset the results back to the time of the snapshot?"]
     pub fn delete_intervening_results(mut self, delete_intervening_results: Option<bool>) -> Self {
@@ -5842,9 +6164,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlSetUpgradeMode<T>
+    where
+        T: Serialize,
+    {
+        MlSetUpgradeMode {
+            client: self.client,
+            parts: self.parts,
+            body,
+            enabled: self.enabled,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Whether to enable upgrade_mode ML setting or not. Defaults to false."]
     pub fn enabled(mut self, enabled: Option<bool>) -> Self {
@@ -5978,9 +6313,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlStartDataFrameAnalytics<T>
+    where
+        T: Serialize,
+    {
+        MlStartDataFrameAnalytics {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6110,9 +6457,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlStartDatafeed<T>
+    where
+        T: Serialize,
+    {
+        MlStartDatafeed {
+            client: self.client,
+            parts: self.parts,
+            body,
+            end: self.end,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            start: self.start,
+            timeout: self.timeout,
+        }
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
     pub fn end(mut self, end: Option<String>) -> Self {
@@ -6263,9 +6624,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlStopDataFrameAnalytics<T>
+    where
+        T: Serialize,
+    {
+        MlStopDataFrameAnalytics {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_match: self.allow_no_match,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            force: self.force,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6411,9 +6786,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlStopDatafeed<T>
+    where
+        T: Serialize,
+    {
+        MlStopDatafeed {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_datafeeds: self.allow_no_datafeeds,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            force: self.force,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6548,9 +6937,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlUpdateDatafeed<T>
+    where
+        T: Serialize,
+    {
+        MlUpdateDatafeed {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6666,9 +7066,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlUpdateFilter<T>
+    where
+        T: Serialize,
+    {
+        MlUpdateFilter {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6784,9 +7195,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlUpdateJob<T>
+    where
+        T: Serialize,
+    {
+        MlUpdateJob {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6904,9 +7326,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlUpdateModelSnapshot<T>
+    where
+        T: Serialize,
+    {
+        MlUpdateModelSnapshot {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7016,9 +7449,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlValidate<T>
+    where
+        T: Serialize,
+    {
+        MlValidate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7128,9 +7572,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MlValidateDetector<T>
+    where
+        T: Serialize,
+    {
+        MlValidateDetector {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7207,10 +7662,7 @@ impl Ml {
     pub fn new(client: Elasticsearch) -> Self {
         Ml { client }
     }
-    pub fn close_job<B>(&self, parts: MlCloseJobUrlParts) -> MlCloseJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn close_job(&self, parts: MlCloseJobUrlParts) -> MlCloseJob<()> {
         MlCloseJob::new(self.client.clone(), parts)
     }
     pub fn delete_calendar(&self, parts: MlDeleteCalendarUrlParts) -> MlDeleteCalendar {
@@ -7252,55 +7704,31 @@ impl Ml {
     ) -> MlDeleteModelSnapshot {
         MlDeleteModelSnapshot::new(self.client.clone(), parts)
     }
-    pub fn estimate_memory_usage<B>(&self) -> MlEstimateMemoryUsage<B>
-    where
-        B: Serialize,
-    {
+    pub fn estimate_memory_usage(&self) -> MlEstimateMemoryUsage<()> {
         MlEstimateMemoryUsage::new(self.client.clone())
     }
-    pub fn evaluate_data_frame<B>(&self) -> MlEvaluateDataFrame<B>
-    where
-        B: Serialize,
-    {
+    pub fn evaluate_data_frame(&self) -> MlEvaluateDataFrame<()> {
         MlEvaluateDataFrame::new(self.client.clone())
     }
-    pub fn find_file_structure<B>(&self) -> MlFindFileStructure<B>
-    where
-        B: Serialize,
-    {
+    pub fn find_file_structure(&self) -> MlFindFileStructure<()> {
         MlFindFileStructure::new(self.client.clone())
     }
-    pub fn flush_job<B>(&self, parts: MlFlushJobUrlParts) -> MlFlushJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn flush_job(&self, parts: MlFlushJobUrlParts) -> MlFlushJob<()> {
         MlFlushJob::new(self.client.clone(), parts)
     }
-    pub fn forecast<B>(&self, parts: MlForecastUrlParts) -> MlForecast<B>
-    where
-        B: Serialize,
-    {
+    pub fn forecast(&self, parts: MlForecastUrlParts) -> MlForecast<()> {
         MlForecast::new(self.client.clone(), parts)
     }
-    pub fn get_buckets<B>(&self, parts: MlGetBucketsUrlParts) -> MlGetBuckets<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_buckets(&self, parts: MlGetBucketsUrlParts) -> MlGetBuckets<()> {
         MlGetBuckets::new(self.client.clone(), parts)
     }
     pub fn get_calendar_events(&self, parts: MlGetCalendarEventsUrlParts) -> MlGetCalendarEvents {
         MlGetCalendarEvents::new(self.client.clone(), parts)
     }
-    pub fn get_calendars<B>(&self, parts: MlGetCalendarsUrlParts) -> MlGetCalendars<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_calendars(&self, parts: MlGetCalendarsUrlParts) -> MlGetCalendars<()> {
         MlGetCalendars::new(self.client.clone(), parts)
     }
-    pub fn get_categories<B>(&self, parts: MlGetCategoriesUrlParts) -> MlGetCategories<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_categories(&self, parts: MlGetCategoriesUrlParts) -> MlGetCategories<()> {
         MlGetCategories::new(self.client.clone(), parts)
     }
     pub fn get_data_frame_analytics(
@@ -7324,10 +7752,7 @@ impl Ml {
     pub fn get_filters(&self, parts: MlGetFiltersUrlParts) -> MlGetFilters {
         MlGetFilters::new(self.client.clone(), parts)
     }
-    pub fn get_influencers<B>(&self, parts: MlGetInfluencersUrlParts) -> MlGetInfluencers<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_influencers(&self, parts: MlGetInfluencersUrlParts) -> MlGetInfluencers<()> {
         MlGetInfluencers::new(self.client.clone(), parts)
     }
     pub fn get_job_stats(&self, parts: MlGetJobStatsUrlParts) -> MlGetJobStats {
@@ -7336,178 +7761,106 @@ impl Ml {
     pub fn get_jobs(&self, parts: MlGetJobsUrlParts) -> MlGetJobs {
         MlGetJobs::new(self.client.clone(), parts)
     }
-    pub fn get_model_snapshots<B>(
+    pub fn get_model_snapshots(
         &self,
         parts: MlGetModelSnapshotsUrlParts,
-    ) -> MlGetModelSnapshots<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlGetModelSnapshots<()> {
         MlGetModelSnapshots::new(self.client.clone(), parts)
     }
-    pub fn get_overall_buckets<B>(
+    pub fn get_overall_buckets(
         &self,
         parts: MlGetOverallBucketsUrlParts,
-    ) -> MlGetOverallBuckets<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlGetOverallBuckets<()> {
         MlGetOverallBuckets::new(self.client.clone(), parts)
     }
-    pub fn get_records<B>(&self, parts: MlGetRecordsUrlParts) -> MlGetRecords<B>
-    where
-        B: Serialize,
-    {
+    pub fn get_records(&self, parts: MlGetRecordsUrlParts) -> MlGetRecords<()> {
         MlGetRecords::new(self.client.clone(), parts)
     }
     pub fn info(&self) -> MlInfo {
         MlInfo::new(self.client.clone())
     }
-    pub fn open_job<B>(&self, parts: MlOpenJobUrlParts) -> MlOpenJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn open_job(&self, parts: MlOpenJobUrlParts) -> MlOpenJob<()> {
         MlOpenJob::new(self.client.clone(), parts)
     }
-    pub fn post_calendar_events<B>(
+    pub fn post_calendar_events(
         &self,
         parts: MlPostCalendarEventsUrlParts,
-    ) -> MlPostCalendarEvents<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlPostCalendarEvents<()> {
         MlPostCalendarEvents::new(self.client.clone(), parts)
     }
-    pub fn post_data<B>(&self, parts: MlPostDataUrlParts) -> MlPostData<B>
-    where
-        B: Serialize,
-    {
+    pub fn post_data(&self, parts: MlPostDataUrlParts) -> MlPostData<()> {
         MlPostData::new(self.client.clone(), parts)
     }
     pub fn preview_datafeed(&self, parts: MlPreviewDatafeedUrlParts) -> MlPreviewDatafeed {
         MlPreviewDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_calendar<B>(&self, parts: MlPutCalendarUrlParts) -> MlPutCalendar<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_calendar(&self, parts: MlPutCalendarUrlParts) -> MlPutCalendar<()> {
         MlPutCalendar::new(self.client.clone(), parts)
     }
-    pub fn put_calendar_job<B>(&self, parts: MlPutCalendarJobUrlParts) -> MlPutCalendarJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_calendar_job(&self, parts: MlPutCalendarJobUrlParts) -> MlPutCalendarJob<()> {
         MlPutCalendarJob::new(self.client.clone(), parts)
     }
-    pub fn put_data_frame_analytics<B>(
+    pub fn put_data_frame_analytics(
         &self,
         parts: MlPutDataFrameAnalyticsUrlParts,
-    ) -> MlPutDataFrameAnalytics<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlPutDataFrameAnalytics<()> {
         MlPutDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    pub fn put_datafeed<B>(&self, parts: MlPutDatafeedUrlParts) -> MlPutDatafeed<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_datafeed(&self, parts: MlPutDatafeedUrlParts) -> MlPutDatafeed<()> {
         MlPutDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_filter<B>(&self, parts: MlPutFilterUrlParts) -> MlPutFilter<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_filter(&self, parts: MlPutFilterUrlParts) -> MlPutFilter<()> {
         MlPutFilter::new(self.client.clone(), parts)
     }
-    pub fn put_job<B>(&self, parts: MlPutJobUrlParts) -> MlPutJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_job(&self, parts: MlPutJobUrlParts) -> MlPutJob<()> {
         MlPutJob::new(self.client.clone(), parts)
     }
-    pub fn revert_model_snapshot<B>(
+    pub fn revert_model_snapshot(
         &self,
         parts: MlRevertModelSnapshotUrlParts,
-    ) -> MlRevertModelSnapshot<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlRevertModelSnapshot<()> {
         MlRevertModelSnapshot::new(self.client.clone(), parts)
     }
-    pub fn set_upgrade_mode<B>(&self) -> MlSetUpgradeMode<B>
-    where
-        B: Serialize,
-    {
+    pub fn set_upgrade_mode(&self) -> MlSetUpgradeMode<()> {
         MlSetUpgradeMode::new(self.client.clone())
     }
-    pub fn start_data_frame_analytics<B>(
+    pub fn start_data_frame_analytics(
         &self,
         parts: MlStartDataFrameAnalyticsUrlParts,
-    ) -> MlStartDataFrameAnalytics<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlStartDataFrameAnalytics<()> {
         MlStartDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    pub fn start_datafeed<B>(&self, parts: MlStartDatafeedUrlParts) -> MlStartDatafeed<B>
-    where
-        B: Serialize,
-    {
+    pub fn start_datafeed(&self, parts: MlStartDatafeedUrlParts) -> MlStartDatafeed<()> {
         MlStartDatafeed::new(self.client.clone(), parts)
     }
-    pub fn stop_data_frame_analytics<B>(
+    pub fn stop_data_frame_analytics(
         &self,
         parts: MlStopDataFrameAnalyticsUrlParts,
-    ) -> MlStopDataFrameAnalytics<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlStopDataFrameAnalytics<()> {
         MlStopDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    pub fn stop_datafeed<B>(&self, parts: MlStopDatafeedUrlParts) -> MlStopDatafeed<B>
-    where
-        B: Serialize,
-    {
+    pub fn stop_datafeed(&self, parts: MlStopDatafeedUrlParts) -> MlStopDatafeed<()> {
         MlStopDatafeed::new(self.client.clone(), parts)
     }
-    pub fn update_datafeed<B>(&self, parts: MlUpdateDatafeedUrlParts) -> MlUpdateDatafeed<B>
-    where
-        B: Serialize,
-    {
+    pub fn update_datafeed(&self, parts: MlUpdateDatafeedUrlParts) -> MlUpdateDatafeed<()> {
         MlUpdateDatafeed::new(self.client.clone(), parts)
     }
-    pub fn update_filter<B>(&self, parts: MlUpdateFilterUrlParts) -> MlUpdateFilter<B>
-    where
-        B: Serialize,
-    {
+    pub fn update_filter(&self, parts: MlUpdateFilterUrlParts) -> MlUpdateFilter<()> {
         MlUpdateFilter::new(self.client.clone(), parts)
     }
-    pub fn update_job<B>(&self, parts: MlUpdateJobUrlParts) -> MlUpdateJob<B>
-    where
-        B: Serialize,
-    {
+    pub fn update_job(&self, parts: MlUpdateJobUrlParts) -> MlUpdateJob<()> {
         MlUpdateJob::new(self.client.clone(), parts)
     }
-    pub fn update_model_snapshot<B>(
+    pub fn update_model_snapshot(
         &self,
         parts: MlUpdateModelSnapshotUrlParts,
-    ) -> MlUpdateModelSnapshot<B>
-    where
-        B: Serialize,
-    {
+    ) -> MlUpdateModelSnapshot<()> {
         MlUpdateModelSnapshot::new(self.client.clone(), parts)
     }
-    pub fn validate<B>(&self) -> MlValidate<B>
-    where
-        B: Serialize,
-    {
+    pub fn validate(&self) -> MlValidate<()> {
         MlValidate::new(self.client.clone())
     }
-    pub fn validate_detector<B>(&self) -> MlValidateDetector<B>
-    where
-        B: Serialize,
-    {
+    pub fn validate_detector(&self) -> MlValidateDetector<()> {
         MlValidateDetector::new(self.client.clone())
     }
 }

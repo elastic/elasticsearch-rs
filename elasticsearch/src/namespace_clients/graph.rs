@@ -88,9 +88,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> GraphExplore<T>
+    where
+        T: Serialize,
+    {
+        GraphExplore {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            routing: self.routing,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -186,10 +199,7 @@ impl Graph {
     pub fn new(client: Elasticsearch) -> Self {
         Graph { client }
     }
-    pub fn explore<B>(&self, parts: GraphExploreUrlParts) -> GraphExplore<B>
-    where
-        B: Serialize,
-    {
+    pub fn explore(&self, parts: GraphExploreUrlParts) -> GraphExplore<()> {
         GraphExplore::new(self.client.clone(), parts)
     }
 }

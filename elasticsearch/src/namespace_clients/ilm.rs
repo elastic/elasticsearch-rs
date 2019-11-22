@@ -504,9 +504,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmMoveToStep<T>
+    where
+        T: Serialize,
+    {
+        IlmMoveToStep {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -621,9 +632,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmPutLifecycle<T>
+    where
+        T: Serialize,
+    {
+        IlmPutLifecycle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -739,9 +761,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmRemovePolicy<T>
+    where
+        T: Serialize,
+    {
+        IlmRemovePolicy {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -857,9 +890,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmRetry<T>
+    where
+        T: Serialize,
+    {
+        IlmRetry {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -969,9 +1013,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmStart<T>
+    where
+        T: Serialize,
+    {
+        IlmStart {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1081,9 +1136,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IlmStop<T>
+    where
+        T: Serialize,
+    {
+        IlmStop {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1172,40 +1238,22 @@ impl Ilm {
     pub fn get_status(&self) -> IlmGetStatus {
         IlmGetStatus::new(self.client.clone())
     }
-    pub fn move_to_step<B>(&self, parts: IlmMoveToStepUrlParts) -> IlmMoveToStep<B>
-    where
-        B: Serialize,
-    {
+    pub fn move_to_step(&self, parts: IlmMoveToStepUrlParts) -> IlmMoveToStep<()> {
         IlmMoveToStep::new(self.client.clone(), parts)
     }
-    pub fn put_lifecycle<B>(&self, parts: IlmPutLifecycleUrlParts) -> IlmPutLifecycle<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_lifecycle(&self, parts: IlmPutLifecycleUrlParts) -> IlmPutLifecycle<()> {
         IlmPutLifecycle::new(self.client.clone(), parts)
     }
-    pub fn remove_policy<B>(&self, parts: IlmRemovePolicyUrlParts) -> IlmRemovePolicy<B>
-    where
-        B: Serialize,
-    {
+    pub fn remove_policy(&self, parts: IlmRemovePolicyUrlParts) -> IlmRemovePolicy<()> {
         IlmRemovePolicy::new(self.client.clone(), parts)
     }
-    pub fn retry<B>(&self, parts: IlmRetryUrlParts) -> IlmRetry<B>
-    where
-        B: Serialize,
-    {
+    pub fn retry(&self, parts: IlmRetryUrlParts) -> IlmRetry<()> {
         IlmRetry::new(self.client.clone(), parts)
     }
-    pub fn start<B>(&self) -> IlmStart<B>
-    where
-        B: Serialize,
-    {
+    pub fn start(&self) -> IlmStart<()> {
         IlmStart::new(self.client.clone())
     }
-    pub fn stop<B>(&self) -> IlmStop<B>
-    where
-        B: Serialize,
-    {
+    pub fn stop(&self) -> IlmStop<()> {
         IlmStop::new(self.client.clone())
     }
 }

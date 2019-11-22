@@ -63,7 +63,7 @@ pub mod tests {
     fn test_search_with_body() -> Result<(), failure::Error> {
         let client = Elasticsearch::default();
         let mut response = client
-            .search::<Value>(SearchUrlParts::None)
+            .search(SearchUrlParts::None)
             .body(Some(json!({
                 "query": {
                     "match_all": {}
@@ -83,7 +83,7 @@ pub mod tests {
     fn test_search_no_body() -> Result<(), failure::Error> {
         let client = Elasticsearch::default();
         let mut response = client
-            .search::<()>(SearchUrlParts::None)
+            .search(SearchUrlParts::None)
             .pretty(Some(true))
             .q(Some("title:Elasticsearch".into()))
             .send()?;
@@ -103,7 +103,7 @@ pub mod tests {
     fn test_serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
         let client = Elasticsearch::default();
         let mut response = client
-            .search::<()>(SearchUrlParts::None)
+            .search(SearchUrlParts::None)
             .pretty(Some(true))
             .filter_path(Some(vec!["took".into()]))
             .q(Some("title:Elasticsearch".into()))
@@ -123,7 +123,7 @@ pub mod tests {
         let client = Elasticsearch::default();
 
         let request = client
-            .search::<Value>(SearchUrlParts::None)
+            .search(SearchUrlParts::None)
             .body(Some(json!({
                 "query": {
                     "match_all": {}
@@ -135,7 +135,7 @@ pub mod tests {
             .clone()
             .q(Some("title:Elasticsearch".into()))
             .size(Some(1))
-            .body(None)
+            .body(Option::<()>::None)
             .allow_no_indices(None);
 
         let mut response = request_clone.send()?;
