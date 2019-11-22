@@ -392,7 +392,7 @@ impl<'a> RequestBuilder<'a> {
             split_on_pascal_case(builder_name)
         ));
 
-        quote!(
+        quote! {
             #enum_struct
 
             #enum_impl
@@ -420,7 +420,7 @@ impl<'a> RequestBuilder<'a> {
                       Ok(response)
                 }
             }
-        )
+        }
     }
 
     /// Creates the AST for a fn that returns a new instance of a builder struct

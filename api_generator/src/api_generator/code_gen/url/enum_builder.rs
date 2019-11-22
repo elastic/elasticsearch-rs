@@ -34,10 +34,6 @@ impl<'a> EnumBuilder<'a> {
         format!("{}UrlParts", prefix.to_pascal_case())
     }
 
-    pub fn ident(&self) -> &syn::Ident {
-        &self.ident
-    }
-
     fn contains_path_with_parts(&self, path: &'a Path) -> bool {
         let params = path.path.params();
         self.paths.iter().any(|&p| p.path.params() == params)
