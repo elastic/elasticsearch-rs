@@ -116,9 +116,29 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Bulk<T>
+    where
+        T: Serialize,
+    {
+        Bulk {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pipeline: self.pipeline,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            routing: self.routing,
+            source: self.source,
+            timeout: self.timeout,
+            ty: self.ty,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -308,9 +328,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ClearScroll<T>
+    where
+        T: Serialize,
+    {
+        ClearScroll {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -484,9 +515,34 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Count<T>
+    where
+        T: Serialize,
+    {
+        Count {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
+            default_operator: self.default_operator,
+            df: self.df,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_throttled: self.ignore_throttled,
+            ignore_unavailable: self.ignore_unavailable,
+            lenient: self.lenient,
+            min_score: self.min_score,
+            preference: self.preference,
+            pretty: self.pretty,
+            q: self.q,
+            routing: self.routing,
+            source: self.source,
+            terminate_after: self.terminate_after,
+        }
     }
     #[doc = "The default operator for query string query (AND or OR)"]
     pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
@@ -733,9 +789,27 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Create<T>
+    where
+        T: Serialize,
+    {
+        Create {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pipeline: self.pipeline,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            routing: self.routing,
+            source: self.source,
+            timeout: self.timeout,
+            version: self.version,
+            version_type: self.version_type,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1212,9 +1286,52 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DeleteByQuery<T>
+    where
+        T: Serialize,
+    {
+        DeleteByQuery {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            allow_no_indices: self.allow_no_indices,
+            analyze_wildcard: self.analyze_wildcard,
+            conflicts: self.conflicts,
+            default_operator: self.default_operator,
+            df: self.df,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            lenient: self.lenient,
+            max_docs: self.max_docs,
+            preference: self.preference,
+            pretty: self.pretty,
+            q: self.q,
+            refresh: self.refresh,
+            request_cache: self.request_cache,
+            requests_per_second: self.requests_per_second,
+            routing: self.routing,
+            scroll: self.scroll,
+            scroll_size: self.scroll_size,
+            search_timeout: self.search_timeout,
+            search_type: self.search_type,
+            size: self.size,
+            slices: self.slices,
+            sort: self.sort,
+            source: self.source,
+            stats: self.stats,
+            terminate_after: self.terminate_after,
+            timeout: self.timeout,
+            version: self.version,
+            wait_for_active_shards: self.wait_for_active_shards,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "What to do when the delete by query hits version conflicts?"]
     pub fn conflicts(mut self, conflicts: Option<Conflicts>) -> Self {
@@ -1596,9 +1713,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> DeleteByQueryRethrottle<T>
+    where
+        T: Serialize,
+    {
+        DeleteByQueryRethrottle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            requests_per_second: self.requests_per_second,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -2364,9 +2493,32 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Explain<T>
+    where
+        T: Serialize,
+    {
+        Explain {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
+            default_operator: self.default_operator,
+            df: self.df,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            lenient: self.lenient,
+            preference: self.preference,
+            pretty: self.pretty,
+            q: self.q,
+            routing: self.routing,
+            source: self.source,
+            stored_fields: self.stored_fields,
+        }
     }
     #[doc = "The default operator for query string query (AND or OR)"]
     pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
@@ -2590,9 +2742,25 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> FieldCaps<T>
+    where
+        T: Serialize,
+    {
+        FieldCaps {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            fields: self.fields,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            include_unmapped: self.include_unmapped,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3366,9 +3534,30 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Index<T>
+    where
+        T: Serialize,
+    {
+        Index {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            op_type: self.op_type,
+            pipeline: self.pipeline,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            routing: self.routing,
+            source: self.source,
+            timeout: self.timeout,
+            version: self.version,
+            version_type: self.version_type,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3709,9 +3898,28 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Mget<T>
+    where
+        T: Serialize,
+    {
+        Mget {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            preference: self.preference,
+            pretty: self.pretty,
+            realtime: self.realtime,
+            refresh: self.refresh,
+            routing: self.routing,
+            source: self.source,
+            stored_fields: self.stored_fields,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -3924,9 +4132,27 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Msearch<T>
+    where
+        T: Serialize,
+    {
+        Msearch {
+            client: self.client,
+            parts: self.parts,
+            body,
+            ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            max_concurrent_searches: self.max_concurrent_searches,
+            max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+            pre_filter_shard_size: self.pre_filter_shard_size,
+            pretty: self.pretty,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            search_type: self.search_type,
+            source: self.source,
+            typed_keys: self.typed_keys,
+        }
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
     pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
@@ -4142,9 +4368,24 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MsearchTemplate<T>
+    where
+        T: Serialize,
+    {
+        MsearchTemplate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            max_concurrent_searches: self.max_concurrent_searches,
+            pretty: self.pretty,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            search_type: self.search_type,
+            source: self.source,
+            typed_keys: self.typed_keys,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4337,9 +4578,32 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Mtermvectors<T>
+    where
+        T: Serialize,
+    {
+        Mtermvectors {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            field_statistics: self.field_statistics,
+            fields: self.fields,
+            filter_path: self.filter_path,
+            human: self.human,
+            ids: self.ids,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            preference: self.preference,
+            pretty: self.pretty,
+            realtime: self.realtime,
+            routing: self.routing,
+            source: self.source,
+            term_statistics: self.term_statistics,
+            version: self.version,
+            version_type: self.version_type,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4675,9 +4939,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> PutScript<T>
+    where
+        T: Serialize,
+    {
+        PutScript {
+            client: self.client,
+            parts: self.parts,
+            body,
+            context: self.context,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Context name to compile script against"]
     pub fn context(mut self, context: Option<String>) -> Self {
@@ -4831,9 +5109,23 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RankEval<T>
+    where
+        T: Serialize,
+    {
+        RankEval {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4981,9 +5273,28 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Reindex<T>
+    where
+        T: Serialize,
+    {
+        Reindex {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            max_docs: self.max_docs,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            requests_per_second: self.requests_per_second,
+            scroll: self.scroll,
+            slices: self.slices,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5174,9 +5485,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ReindexRethrottle<T>
+    where
+        T: Serialize,
+    {
+        ReindexRethrottle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            requests_per_second: self.requests_per_second,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5304,9 +5627,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> RenderSearchTemplate<T>
+    where
+        T: Serialize,
+    {
+        RenderSearchTemplate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5419,9 +5753,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> ScriptsPainlessExecute<T>
+    where
+        T: Serialize,
+    {
+        ScriptsPainlessExecute {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5547,9 +5892,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Scroll<T>
+    where
+        T: Serialize,
+    {
+        Scroll {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            scroll: self.scroll,
+            scroll_id: self.scroll_id,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -5837,9 +6196,62 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Search<T>
+    where
+        T: Serialize,
+    {
+        Search {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            allow_no_indices: self.allow_no_indices,
+            allow_partial_search_results: self.allow_partial_search_results,
+            analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
+            batched_reduce_size: self.batched_reduce_size,
+            ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
+            default_operator: self.default_operator,
+            df: self.df,
+            docvalue_fields: self.docvalue_fields,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            explain: self.explain,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            ignore_throttled: self.ignore_throttled,
+            ignore_unavailable: self.ignore_unavailable,
+            lenient: self.lenient,
+            max_concurrent_shard_requests: self.max_concurrent_shard_requests,
+            pre_filter_shard_size: self.pre_filter_shard_size,
+            preference: self.preference,
+            pretty: self.pretty,
+            q: self.q,
+            request_cache: self.request_cache,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            routing: self.routing,
+            scroll: self.scroll,
+            search_type: self.search_type,
+            seq_no_primary_term: self.seq_no_primary_term,
+            size: self.size,
+            sort: self.sort,
+            source: self.source,
+            stats: self.stats,
+            stored_fields: self.stored_fields,
+            suggest_field: self.suggest_field,
+            suggest_mode: self.suggest_mode,
+            suggest_size: self.suggest_size,
+            suggest_text: self.suggest_text,
+            terminate_after: self.terminate_after,
+            timeout: self.timeout,
+            track_scores: self.track_scores,
+            track_total_hits: self.track_total_hits,
+            typed_keys: self.typed_keys,
+            version: self.version,
+        }
     }
     #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
     pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
@@ -6330,9 +6742,26 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SearchShards<T>
+    where
+        T: Serialize,
+    {
+        SearchShards {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            local: self.local,
+            preference: self.preference,
+            pretty: self.pretty,
+            routing: self.routing,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6538,9 +6967,32 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SearchTemplate<T>
+    where
+        T: Serialize,
+    {
+        SearchTemplate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            allow_no_indices: self.allow_no_indices,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            explain: self.explain,
+            filter_path: self.filter_path,
+            human: self.human,
+            ignore_throttled: self.ignore_throttled,
+            ignore_unavailable: self.ignore_unavailable,
+            preference: self.preference,
+            pretty: self.pretty,
+            profile: self.profile,
+            rest_total_hits_as_int: self.rest_total_hits_as_int,
+            routing: self.routing,
+            scroll: self.scroll,
+            search_type: self.search_type,
+            source: self.source,
+            typed_keys: self.typed_keys,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -6810,9 +7262,31 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Termvectors<T>
+    where
+        T: Serialize,
+    {
+        Termvectors {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            field_statistics: self.field_statistics,
+            fields: self.fields,
+            filter_path: self.filter_path,
+            human: self.human,
+            offsets: self.offsets,
+            payloads: self.payloads,
+            positions: self.positions,
+            preference: self.preference,
+            pretty: self.pretty,
+            realtime: self.realtime,
+            routing: self.routing,
+            source: self.source,
+            term_statistics: self.term_statistics,
+            version: self.version,
+            version_type: self.version_type,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7073,9 +7547,31 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> Update<T>
+    where
+        T: Serialize,
+    {
+        Update {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            if_primary_term: self.if_primary_term,
+            if_seq_no: self.if_seq_no,
+            lang: self.lang,
+            pretty: self.pretty,
+            refresh: self.refresh,
+            retry_on_conflict: self.retry_on_conflict,
+            routing: self.routing,
+            source: self.source,
+            timeout: self.timeout,
+            wait_for_active_shards: self.wait_for_active_shards,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7392,9 +7888,55 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> UpdateByQuery<T>
+    where
+        T: Serialize,
+    {
+        UpdateByQuery {
+            client: self.client,
+            parts: self.parts,
+            body,
+            _source: self._source,
+            _source_excludes: self._source_excludes,
+            _source_includes: self._source_includes,
+            allow_no_indices: self.allow_no_indices,
+            analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
+            conflicts: self.conflicts,
+            default_operator: self.default_operator,
+            df: self.df,
+            error_trace: self.error_trace,
+            expand_wildcards: self.expand_wildcards,
+            filter_path: self.filter_path,
+            from: self.from,
+            human: self.human,
+            ignore_unavailable: self.ignore_unavailable,
+            lenient: self.lenient,
+            max_docs: self.max_docs,
+            pipeline: self.pipeline,
+            preference: self.preference,
+            pretty: self.pretty,
+            q: self.q,
+            refresh: self.refresh,
+            request_cache: self.request_cache,
+            requests_per_second: self.requests_per_second,
+            routing: self.routing,
+            scroll: self.scroll,
+            scroll_size: self.scroll_size,
+            search_timeout: self.search_timeout,
+            search_type: self.search_type,
+            size: self.size,
+            slices: self.slices,
+            sort: self.sort,
+            source: self.source,
+            stats: self.stats,
+            terminate_after: self.terminate_after,
+            timeout: self.timeout,
+            version: self.version,
+            version_type: self.version_type,
+            wait_for_active_shards: self.wait_for_active_shards,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "What to do when the update by query hits version conflicts?"]
     pub fn conflicts(mut self, conflicts: Option<Conflicts>) -> Self {
@@ -7795,9 +8337,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> UpdateByQueryRethrottle<T>
+    where
+        T: Serialize,
+    {
+        UpdateByQueryRethrottle {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            requests_per_second: self.requests_per_second,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -7879,31 +8433,19 @@ where
 }
 impl Elasticsearch {
     #[doc = "Allows to perform multiple index/update/delete operations in a single request."]
-    pub fn bulk<B>(&self, parts: BulkUrlParts) -> Bulk<B>
-    where
-        B: Serialize,
-    {
+    pub fn bulk(&self, parts: BulkUrlParts) -> Bulk<()> {
         Bulk::new(self.clone(), parts)
     }
     #[doc = "Explicitly clears the search context for a scroll."]
-    pub fn clear_scroll<B>(&self, parts: ClearScrollUrlParts) -> ClearScroll<B>
-    where
-        B: Serialize,
-    {
+    pub fn clear_scroll(&self, parts: ClearScrollUrlParts) -> ClearScroll<()> {
         ClearScroll::new(self.clone(), parts)
     }
     #[doc = "Returns number of documents matching a query."]
-    pub fn count<B>(&self, parts: CountUrlParts) -> Count<B>
-    where
-        B: Serialize,
-    {
+    pub fn count(&self, parts: CountUrlParts) -> Count<()> {
         Count::new(self.clone(), parts)
     }
     #[doc = "Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
-    pub fn create<B>(&self, parts: CreateUrlParts) -> Create<B>
-    where
-        B: Serialize,
-    {
+    pub fn create(&self, parts: CreateUrlParts) -> Create<()> {
         Create::new(self.clone(), parts)
     }
     #[doc = "Removes a document from the index."]
@@ -7911,20 +8453,14 @@ impl Elasticsearch {
         Delete::new(self.clone(), parts)
     }
     #[doc = "Deletes documents matching the provided query."]
-    pub fn delete_by_query<B>(&self, parts: DeleteByQueryUrlParts) -> DeleteByQuery<B>
-    where
-        B: Serialize,
-    {
+    pub fn delete_by_query(&self, parts: DeleteByQueryUrlParts) -> DeleteByQuery<()> {
         DeleteByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Delete By Query operation."]
-    pub fn delete_by_query_rethrottle<B>(
+    pub fn delete_by_query_rethrottle(
         &self,
         parts: DeleteByQueryRethrottleUrlParts,
-    ) -> DeleteByQueryRethrottle<B>
-    where
-        B: Serialize,
-    {
+    ) -> DeleteByQueryRethrottle<()> {
         DeleteByQueryRethrottle::new(self.clone(), parts)
     }
     #[doc = "Deletes a script."]
@@ -7940,17 +8476,11 @@ impl Elasticsearch {
         ExistsSource::new(self.clone(), parts)
     }
     #[doc = "Returns information about why a specific matches (or doesn't match) a query."]
-    pub fn explain<B>(&self, parts: ExplainUrlParts) -> Explain<B>
-    where
-        B: Serialize,
-    {
+    pub fn explain(&self, parts: ExplainUrlParts) -> Explain<()> {
         Explain::new(self.clone(), parts)
     }
     #[doc = "Returns the information about the capabilities of fields among multiple indices."]
-    pub fn field_caps<B>(&self, parts: FieldCapsUrlParts) -> FieldCaps<B>
-    where
-        B: Serialize,
-    {
+    pub fn field_caps(&self, parts: FieldCapsUrlParts) -> FieldCaps<()> {
         FieldCaps::new(self.clone(), parts)
     }
     #[doc = "Returns a document."]
@@ -7966,10 +8496,7 @@ impl Elasticsearch {
         GetSource::new(self.clone(), parts)
     }
     #[doc = "Creates or updates a document in an index."]
-    pub fn index<B>(&self, parts: IndexUrlParts) -> Index<B>
-    where
-        B: Serialize,
-    {
+    pub fn index(&self, parts: IndexUrlParts) -> Index<()> {
         Index::new(self.clone(), parts)
     }
     #[doc = "Returns basic information about the cluster."]
@@ -7977,31 +8504,19 @@ impl Elasticsearch {
         Info::new(self.clone())
     }
     #[doc = "Allows to get multiple documents in one request."]
-    pub fn mget<B>(&self, parts: MgetUrlParts) -> Mget<B>
-    where
-        B: Serialize,
-    {
+    pub fn mget(&self, parts: MgetUrlParts) -> Mget<()> {
         Mget::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search operations in one request."]
-    pub fn msearch<B>(&self, parts: MsearchUrlParts) -> Msearch<B>
-    where
-        B: Serialize,
-    {
+    pub fn msearch(&self, parts: MsearchUrlParts) -> Msearch<()> {
         Msearch::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search template operations in one request."]
-    pub fn msearch_template<B>(&self, parts: MsearchTemplateUrlParts) -> MsearchTemplate<B>
-    where
-        B: Serialize,
-    {
+    pub fn msearch_template(&self, parts: MsearchTemplateUrlParts) -> MsearchTemplate<()> {
         MsearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns multiple termvectors in one request."]
-    pub fn mtermvectors<B>(&self, parts: MtermvectorsUrlParts) -> Mtermvectors<B>
-    where
-        B: Serialize,
-    {
+    pub fn mtermvectors(&self, parts: MtermvectorsUrlParts) -> Mtermvectors<()> {
         Mtermvectors::new(self.clone(), parts)
     }
     #[doc = "Returns whether the cluster is running."]
@@ -8009,107 +8524,65 @@ impl Elasticsearch {
         Ping::new(self.clone())
     }
     #[doc = "Creates or updates a script."]
-    pub fn put_script<B>(&self, parts: PutScriptUrlParts) -> PutScript<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_script(&self, parts: PutScriptUrlParts) -> PutScript<()> {
         PutScript::new(self.clone(), parts)
     }
     #[doc = "Allows to evaluate the quality of ranked search results over a set of typical search queries"]
-    pub fn rank_eval<B>(&self, parts: RankEvalUrlParts) -> RankEval<B>
-    where
-        B: Serialize,
-    {
+    pub fn rank_eval(&self, parts: RankEvalUrlParts) -> RankEval<()> {
         RankEval::new(self.clone(), parts)
     }
     #[doc = "Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
-    pub fn reindex<B>(&self) -> Reindex<B>
-    where
-        B: Serialize,
-    {
+    pub fn reindex(&self) -> Reindex<()> {
         Reindex::new(self.clone())
     }
     #[doc = "Changes the number of requests per second for a particular Reindex operation."]
-    pub fn reindex_rethrottle<B>(&self, parts: ReindexRethrottleUrlParts) -> ReindexRethrottle<B>
-    where
-        B: Serialize,
-    {
+    pub fn reindex_rethrottle(&self, parts: ReindexRethrottleUrlParts) -> ReindexRethrottle<()> {
         ReindexRethrottle::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
-    pub fn render_search_template<B>(
+    pub fn render_search_template(
         &self,
         parts: RenderSearchTemplateUrlParts,
-    ) -> RenderSearchTemplate<B>
-    where
-        B: Serialize,
-    {
+    ) -> RenderSearchTemplate<()> {
         RenderSearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Allows an arbitrary script to be executed and a result to be returned"]
-    pub fn scripts_painless_execute<B>(&self) -> ScriptsPainlessExecute<B>
-    where
-        B: Serialize,
-    {
+    pub fn scripts_painless_execute(&self) -> ScriptsPainlessExecute<()> {
         ScriptsPainlessExecute::new(self.clone())
     }
     #[doc = "Allows to retrieve a large numbers of results from a single search request."]
-    pub fn scroll<B>(&self, parts: ScrollUrlParts) -> Scroll<B>
-    where
-        B: Serialize,
-    {
+    pub fn scroll(&self, parts: ScrollUrlParts) -> Scroll<()> {
         Scroll::new(self.clone(), parts)
     }
     #[doc = "Returns results matching a query."]
-    pub fn search<B>(&self, parts: SearchUrlParts) -> Search<B>
-    where
-        B: Serialize,
-    {
+    pub fn search(&self, parts: SearchUrlParts) -> Search<()> {
         Search::new(self.clone(), parts)
     }
     #[doc = "Returns information about the indices and shards that a search request would be executed against."]
-    pub fn search_shards<B>(&self, parts: SearchShardsUrlParts) -> SearchShards<B>
-    where
-        B: Serialize,
-    {
+    pub fn search_shards(&self, parts: SearchShardsUrlParts) -> SearchShards<()> {
         SearchShards::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
-    pub fn search_template<B>(&self, parts: SearchTemplateUrlParts) -> SearchTemplate<B>
-    where
-        B: Serialize,
-    {
+    pub fn search_template(&self, parts: SearchTemplateUrlParts) -> SearchTemplate<()> {
         SearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns information and statistics about terms in the fields of a particular document."]
-    pub fn termvectors<B>(&self, parts: TermvectorsUrlParts) -> Termvectors<B>
-    where
-        B: Serialize,
-    {
+    pub fn termvectors(&self, parts: TermvectorsUrlParts) -> Termvectors<()> {
         Termvectors::new(self.clone(), parts)
     }
     #[doc = "Updates a document with a script or partial document."]
-    pub fn update<B>(&self, parts: UpdateUrlParts) -> Update<B>
-    where
-        B: Serialize,
-    {
+    pub fn update(&self, parts: UpdateUrlParts) -> Update<()> {
         Update::new(self.clone(), parts)
     }
     #[doc = "Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
-    pub fn update_by_query<B>(&self, parts: UpdateByQueryUrlParts) -> UpdateByQuery<B>
-    where
-        B: Serialize,
-    {
+    pub fn update_by_query(&self, parts: UpdateByQueryUrlParts) -> UpdateByQuery<()> {
         UpdateByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Update By Query operation."]
-    pub fn update_by_query_rethrottle<B>(
+    pub fn update_by_query_rethrottle(
         &self,
         parts: UpdateByQueryRethrottleUrlParts,
-    ) -> UpdateByQueryRethrottle<B>
-    where
-        B: Serialize,
-    {
+    ) -> UpdateByQueryRethrottle<()> {
         UpdateByQueryRethrottle::new(self.clone(), parts)
     }
 }

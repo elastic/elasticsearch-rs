@@ -413,9 +413,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IngestPutPipeline<T>
+    where
+        T: Serialize,
+    {
+        IngestPutPipeline {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -551,9 +564,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> IngestSimulate<T>
+    where
+        T: Serialize,
+    {
+        IngestSimulate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            verbose: self.verbose,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -654,17 +679,11 @@ impl Ingest {
         IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "Creates or updates a pipeline."]
-    pub fn put_pipeline<B>(&self, parts: IngestPutPipelineUrlParts) -> IngestPutPipeline<B>
-    where
-        B: Serialize,
-    {
+    pub fn put_pipeline(&self, parts: IngestPutPipelineUrlParts) -> IngestPutPipeline<()> {
         IngestPutPipeline::new(self.client.clone(), parts)
     }
     #[doc = "Allows to simulate a pipeline with example documents."]
-    pub fn simulate<B>(&self, parts: IngestSimulateUrlParts) -> IngestSimulate<B>
-    where
-        B: Serialize,
-    {
+    pub fn simulate(&self, parts: IngestSimulateUrlParts) -> IngestSimulate<()> {
         IngestSimulate::new(self.client.clone(), parts)
     }
 }

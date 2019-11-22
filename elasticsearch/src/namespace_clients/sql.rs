@@ -65,9 +65,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SqlClearCursor<T>
+    where
+        T: Serialize,
+    {
+        SqlClearCursor {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -179,9 +190,21 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SqlQuery<T>
+    where
+        T: Serialize,
+    {
+        SqlQuery {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            format: self.format,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -302,9 +325,20 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SqlTranslate<T>
+    where
+        T: Serialize,
+    {
+        SqlTranslate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -384,22 +418,13 @@ impl Sql {
     pub fn new(client: Elasticsearch) -> Self {
         Sql { client }
     }
-    pub fn clear_cursor<B>(&self) -> SqlClearCursor<B>
-    where
-        B: Serialize,
-    {
+    pub fn clear_cursor(&self) -> SqlClearCursor<()> {
         SqlClearCursor::new(self.client.clone())
     }
-    pub fn query<B>(&self) -> SqlQuery<B>
-    where
-        B: Serialize,
-    {
+    pub fn query(&self) -> SqlQuery<()> {
         SqlQuery::new(self.client.clone())
     }
-    pub fn translate<B>(&self) -> SqlTranslate<B>
-    where
-        B: Serialize,
-    {
+    pub fn translate(&self) -> SqlTranslate<()> {
         SqlTranslate::new(self.client.clone())
     }
 }

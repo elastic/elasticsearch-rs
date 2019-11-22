@@ -79,9 +79,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> MonitoringBulk<T>
+    where
+        T: Serialize,
+    {
+        MonitoringBulk {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            interval: self.interval,
+            pretty: self.pretty,
+            source: self.source,
+            system_api_version: self.system_api_version,
+            system_id: self.system_id,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -182,10 +196,7 @@ impl Monitoring {
     pub fn new(client: Elasticsearch) -> Self {
         Monitoring { client }
     }
-    pub fn bulk<B>(&self, parts: MonitoringBulkUrlParts) -> MonitoringBulk<B>
-    where
-        B: Serialize,
-    {
+    pub fn bulk(&self, parts: MonitoringBulkUrlParts) -> MonitoringBulk<()> {
         MonitoringBulk::new(self.client.clone(), parts)
     }
 }

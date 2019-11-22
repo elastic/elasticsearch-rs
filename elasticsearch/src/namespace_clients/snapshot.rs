@@ -75,9 +75,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SnapshotCleanupRepository<T>
+    where
+        T: Serialize,
+    {
+        SnapshotCleanupRepository {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -214,9 +227,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SnapshotCreate<T>
+    where
+        T: Serialize,
+    {
+        SnapshotCreate {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -356,9 +382,23 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SnapshotCreateRepository<T>
+    where
+        T: Serialize,
+    {
+        SnapshotCreateRepository {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+            verify: self.verify,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1009,9 +1049,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SnapshotRestore<T>
+    where
+        T: Serialize,
+    {
+        SnapshotRestore {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            wait_for_completion: self.wait_for_completion,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1288,9 +1341,22 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> SnapshotVerifyRepository<T>
+    where
+        T: Serialize,
+    {
+        SnapshotVerifyRepository {
+            client: self.client,
+            parts: self.parts,
+            body,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            master_timeout: self.master_timeout,
+            pretty: self.pretty,
+            source: self.source,
+            timeout: self.timeout,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -1384,30 +1450,21 @@ impl Snapshot {
         Snapshot { client }
     }
     #[doc = "Removes stale data from repository."]
-    pub fn cleanup_repository<B>(
+    pub fn cleanup_repository(
         &self,
         parts: SnapshotCleanupRepositoryUrlParts,
-    ) -> SnapshotCleanupRepository<B>
-    where
-        B: Serialize,
-    {
+    ) -> SnapshotCleanupRepository<()> {
         SnapshotCleanupRepository::new(self.client.clone(), parts)
     }
     #[doc = "Creates a snapshot in a repository."]
-    pub fn create<B>(&self, parts: SnapshotCreateUrlParts) -> SnapshotCreate<B>
-    where
-        B: Serialize,
-    {
+    pub fn create(&self, parts: SnapshotCreateUrlParts) -> SnapshotCreate<()> {
         SnapshotCreate::new(self.client.clone(), parts)
     }
     #[doc = "Creates a repository."]
-    pub fn create_repository<B>(
+    pub fn create_repository(
         &self,
         parts: SnapshotCreateRepositoryUrlParts,
-    ) -> SnapshotCreateRepository<B>
-    where
-        B: Serialize,
-    {
+    ) -> SnapshotCreateRepository<()> {
         SnapshotCreateRepository::new(self.client.clone(), parts)
     }
     #[doc = "Deletes a snapshot."]
@@ -1430,10 +1487,7 @@ impl Snapshot {
         SnapshotGetRepository::new(self.client.clone(), parts)
     }
     #[doc = "Restores a snapshot."]
-    pub fn restore<B>(&self, parts: SnapshotRestoreUrlParts) -> SnapshotRestore<B>
-    where
-        B: Serialize,
-    {
+    pub fn restore(&self, parts: SnapshotRestoreUrlParts) -> SnapshotRestore<()> {
         SnapshotRestore::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the status of a snapshot."]
@@ -1441,13 +1495,10 @@ impl Snapshot {
         SnapshotStatus::new(self.client.clone(), parts)
     }
     #[doc = "Verifies a repository."]
-    pub fn verify_repository<B>(
+    pub fn verify_repository(
         &self,
         parts: SnapshotVerifyRepositoryUrlParts,
-    ) -> SnapshotVerifyRepository<B>
-    where
-        B: Serialize,
-    {
+    ) -> SnapshotVerifyRepository<()> {
         SnapshotVerifyRepository::new(self.client.clone(), parts)
     }
 }

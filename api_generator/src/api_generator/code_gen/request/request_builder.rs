@@ -165,6 +165,71 @@ impl<'a> RequestBuilder<'a> {
         }
     }
 
+    /// Creates the AST for the body fn for a builder struct that supports sending a body
+    fn create_body_fn(
+        builder_name: &str,
+        builder_ident: &syn::Ident,
+        default_fields: &[&syn::Ident],
+    ) -> syn::ImplItem {
+        let fields: Vec<FieldValue> = default_fields
+            .iter()
+            .filter(|&&part| part != &ident("body"))
+            .map(|&part| syn::FieldValue {
+                attrs: vec![],
+                ident: ident(part),
+                expr: syn::ExprKind::Path(None, path_none(ident(format!("self.{}", part.as_ref())).as_ref())).into(),
+                is_shorthand: false,
+            })
+            .collect();
+
+        syn::ImplItem {
+            ident: ident("body<T>"),
+            vis: syn::Visibility::Public,
+            defaultness: syn::Defaultness::Final,
+            attrs: vec![doc("The body for the API call".into())],
+            node: syn::ImplItemKind::Method(
+                syn::MethodSig {
+                    unsafety: syn::Unsafety::Normal,
+                    constness: syn::Constness::NotConst,
+                    abi: None,
+                    decl: syn::FnDecl {
+                        inputs: vec![
+                            syn::FnArg::SelfValue(syn::Mutability::Immutable),
+                            syn::FnArg::Captured(
+                                syn::Pat::Path(None, path_none("body")),
+                                syn::parse_type("Option<T>").unwrap(),
+                            ),
+                        ],
+                        output: syn::FunctionRetTy::Ty(code_gen::ty(format!("{}<T> where T: Serialize", &builder_name).as_ref())),
+                        variadic: false,
+                    },
+                    generics: generics_none(),
+                },
+                // generates a fn body of the form
+                // --------
+                // <builder_name> {
+                //     body: body,
+                //     ... assign rest of fields
+                // }
+                // ---------
+                syn::Block {
+                    stmts: vec![
+                        syn::Stmt::Expr(Box::new(parse_expr(quote!(
+                                #builder_ident {
+                                    client: self.client,
+                                    parts: self.parts,
+                                    body,
+                                    #(#fields),*,
+                                }
+                        )))),
+                    ],
+                },
+            ),
+        }
+
+
+    }
+
     /// Creates the AST for a builder fn for a builder impl
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
@@ -263,47 +328,21 @@ impl<'a> RequestBuilder<'a> {
         fields.sort_by(|a, b| a.ident.cmp(&b.ident));
         fields.dedup_by(|a, b| a.ident.eq(&b.ident));
 
+        let default_fields = {
+            fields
+                .iter()
+                .map(|f| f.ident.as_ref().unwrap())
+                .collect::<Vec<_>>()
+        };
+
         // collect all the functions for the builder struct
         let mut builder_fns: Vec<ImplItem> =
             endpoint.params.iter().map(Self::create_impl_fn).collect();
 
+        // add a body impl if supported
         if supports_body {
-            builder_fns.push(syn::ImplItem {
-                ident: ident("body"),
-                vis: syn::Visibility::Public,
-                defaultness: syn::Defaultness::Final,
-                attrs: vec![doc("The body for the API call".into())],
-                node: syn::ImplItemKind::Method(
-                    syn::MethodSig {
-                        unsafety: syn::Unsafety::Normal,
-                        constness: syn::Constness::NotConst,
-                        abi: None,
-                        decl: syn::FnDecl {
-                            inputs: vec![
-                                syn::FnArg::SelfValue(syn::Mutability::Mutable),
-                                syn::FnArg::Captured(
-                                    syn::Pat::Path(None, path_none("body")),
-                                    syn::parse_type("Option<B>").unwrap(),
-                                ),
-                            ],
-                            output: syn::FunctionRetTy::Ty(code_gen::ty("Self")),
-                            variadic: false,
-                        },
-                        generics: generics_none(),
-                    },
-                    // generates a fn body of the form
-                    // --------
-                    // self.<field> = <field>;
-                    // self
-                    // ---------
-                    syn::Block {
-                        stmts: vec![
-                            syn::Stmt::Semi(Box::new(parse_expr(quote!(self.body = body)))),
-                            syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
-                        ],
-                    },
-                ),
-            });
+            let body_fn = Self::create_body_fn(&builder_name, &builder_ident, &default_fields);
+            builder_fns.push(body_fn);
         }
 
         // Combine common fns with builder fns, sort and deduplicate.
@@ -311,13 +350,6 @@ impl<'a> RequestBuilder<'a> {
         builder_fns.append(&mut common_builder_fns.to_vec().clone());
         builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
         builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
-
-        let default_fields = {
-            fields
-                .iter()
-                .map(|f| f.ident.as_ref().unwrap())
-                .collect::<Vec<_>>()
-        };
 
         let new_fn = Self::create_new_fn(&builder_ident, enum_builder, &default_fields);
 
@@ -406,7 +438,7 @@ impl<'a> RequestBuilder<'a> {
             let i = ident(name);
             let b = builder_ident.clone();
             if endpoint.supports_body() {
-                (quote!(#i<B>), quote!(#b<B> where B: Serialize))
+                (quote!(#i), quote!(#b<()>))
             } else {
                 (quote!(#i), quote!(#b))
             }

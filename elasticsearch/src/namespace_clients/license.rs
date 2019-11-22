@@ -478,9 +478,21 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> LicensePost<T>
+    where
+        T: Serialize,
+    {
+        LicensePost {
+            client: self.client,
+            parts: self.parts,
+            body,
+            acknowledge: self.acknowledge,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -600,9 +612,21 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> LicensePostStartBasic<T>
+    where
+        T: Serialize,
+    {
+        LicensePostStartBasic {
+            client: self.client,
+            parts: self.parts,
+            body,
+            acknowledge: self.acknowledge,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -724,9 +748,22 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body(mut self, body: Option<B>) -> Self {
-        self.body = body;
-        self
+    pub fn body<T>(self, body: Option<T>) -> LicensePostStartTrial<T>
+    where
+        T: Serialize,
+    {
+        LicensePostStartTrial {
+            client: self.client,
+            parts: self.parts,
+            body,
+            acknowledge: self.acknowledge,
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+            ty: self.ty,
+        }
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -826,22 +863,13 @@ impl License {
     pub fn get_trial_status(&self) -> LicenseGetTrialStatus {
         LicenseGetTrialStatus::new(self.client.clone())
     }
-    pub fn post<B>(&self) -> LicensePost<B>
-    where
-        B: Serialize,
-    {
+    pub fn post(&self) -> LicensePost<()> {
         LicensePost::new(self.client.clone())
     }
-    pub fn post_start_basic<B>(&self) -> LicensePostStartBasic<B>
-    where
-        B: Serialize,
-    {
+    pub fn post_start_basic(&self) -> LicensePostStartBasic<()> {
         LicensePostStartBasic::new(self.client.clone())
     }
-    pub fn post_start_trial<B>(&self) -> LicensePostStartTrial<B>
-    where
-        B: Serialize,
-    {
+    pub fn post_start_trial(&self) -> LicensePostStartTrial<()> {
         LicensePostStartTrial::new(self.client.clone())
     }
 }
