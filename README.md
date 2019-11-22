@@ -62,10 +62,6 @@ let connection = Connection::new(Url::parse("http://localhost:9200").unwrap());
 
 let client = Elasticsearch::new(settings, connection);
 
-let cat_response = client.cat()
-                         .indices()
-                         .send()?;
-
 let mut search_response = client
     // Value is the request body type
     .search(SearchUrlParts::None)
