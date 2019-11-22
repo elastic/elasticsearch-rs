@@ -23,9 +23,24 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Allocation Explain API"]
+pub enum ClusterAllocationExplainUrlParts {
+    None,
+}
+impl ClusterAllocationExplainUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterAllocationExplainUrlParts::None => "/_cluster/allocation/explain".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Allocation Explain API"]
 pub struct ClusterAllocationExplain<B> {
     client: Elasticsearch,
+    parts: ClusterAllocationExplainUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -42,6 +57,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterAllocationExplain {
             client,
+            parts: ClusterAllocationExplainUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -98,7 +114,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cluster/allocation/explain");
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -146,9 +162,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Get Settings API"]
+pub enum ClusterGetSettingsUrlParts {
+    None,
+}
+impl ClusterGetSettingsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterGetSettingsUrlParts::None => "/_cluster/settings".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Get Settings API"]
 pub struct ClusterGetSettings {
     client: Elasticsearch,
+    parts: ClusterGetSettingsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
@@ -163,6 +193,7 @@ impl ClusterGetSettings {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
+            parts: ClusterGetSettingsUrlParts::None,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -222,7 +253,7 @@ impl ClusterGetSettings {
 }
 impl Sender for ClusterGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cluster/settings");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -270,14 +301,35 @@ impl Sender for ClusterGetSettings {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Health API"]
+pub enum ClusterHealthUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl ClusterHealthUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterHealthUrlParts::None => "/_cluster/health".into(),
+            ClusterHealthUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len());
+                p.push_str("/_cluster/health/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Health API"]
 pub struct ClusterHealth {
     client: Elasticsearch,
+    parts: ClusterHealthUrlParts,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     level: Option<Level>,
     local: Option<bool>,
     master_timeout: Option<String>,
@@ -292,14 +344,14 @@ pub struct ClusterHealth {
     wait_for_status: Option<WaitForStatus>,
 }
 impl ClusterHealth {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterHealthUrlParts) -> Self {
         ClusterHealth {
             client,
+            parts,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
-            index: None,
             level: None,
             local: None,
             master_timeout: None,
@@ -332,11 +384,6 @@ impl ClusterHealth {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Limit the information returned to a specific index"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify the level of detail for returned information"]
@@ -408,16 +455,7 @@ impl ClusterHealth {
 }
 impl Sender for ClusterHealth {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len());
-                p.push_str("/_cluster/health/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cluster/health"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -495,9 +533,23 @@ impl Sender for ClusterHealth {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Pending Tasks API"]
+pub enum ClusterPendingTasksUrlParts {
+    None,
+}
+impl ClusterPendingTasksUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterPendingTasksUrlParts::None => "/_cluster/pending_tasks".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Pending Tasks API"]
 pub struct ClusterPendingTasks {
     client: Elasticsearch,
+    parts: ClusterPendingTasksUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -510,6 +562,7 @@ impl ClusterPendingTasks {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
+            parts: ClusterPendingTasksUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -557,7 +610,7 @@ impl ClusterPendingTasks {
 }
 impl Sender for ClusterPendingTasks {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cluster/pending_tasks");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -599,9 +652,23 @@ impl Sender for ClusterPendingTasks {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Put Settings API"]
+pub enum ClusterPutSettingsUrlParts {
+    None,
+}
+impl ClusterPutSettingsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterPutSettingsUrlParts::None => "/_cluster/settings".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Put Settings API"]
 pub struct ClusterPutSettings<B> {
     client: Elasticsearch,
+    parts: ClusterPutSettingsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -619,6 +686,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPutSettings {
             client,
+            parts: ClusterPutSettingsUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -681,7 +749,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cluster/settings");
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -726,9 +794,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Remote Info API"]
+pub enum ClusterRemoteInfoUrlParts {
+    None,
+}
+impl ClusterRemoteInfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterRemoteInfoUrlParts::None => "/_remote/info".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Remote Info API"]
 pub struct ClusterRemoteInfo {
     client: Elasticsearch,
+    parts: ClusterRemoteInfoUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -739,6 +821,7 @@ impl ClusterRemoteInfo {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
+            parts: ClusterRemoteInfoUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -774,7 +857,7 @@ impl ClusterRemoteInfo {
 }
 impl Sender for ClusterRemoteInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_remote/info");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -810,9 +893,23 @@ impl Sender for ClusterRemoteInfo {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Reroute API"]
+pub enum ClusterRerouteUrlParts {
+    None,
+}
+impl ClusterRerouteUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterRerouteUrlParts::None => "/_cluster/reroute".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Reroute API"]
 pub struct ClusterReroute<B> {
     client: Elasticsearch,
+    parts: ClusterRerouteUrlParts,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
@@ -833,6 +930,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterReroute {
             client,
+            parts: ClusterRerouteUrlParts::None,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -913,7 +1011,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_cluster/reroute");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -971,9 +1069,42 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster State API"]
+pub enum ClusterStateUrlParts {
+    None,
+    Metric(Vec<String>),
+    MetricIndex(Vec<String>, Vec<String>),
+}
+impl ClusterStateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterStateUrlParts::None => "/_cluster/state".into(),
+            ClusterStateUrlParts::Metric(ref metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(16usize + metric_str.len());
+                p.push_str("/_cluster/state/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            ClusterStateUrlParts::MetricIndex(ref metric, ref index) => {
+                let metric_str = metric.join(",");
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + metric_str.len() + index_str.len());
+                p.push_str("/_cluster/state/");
+                p.push_str(metric_str.as_ref());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster State API"]
 pub struct ClusterState {
     client: Elasticsearch,
+    parts: ClusterStateUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -981,19 +1112,18 @@ pub struct ClusterState {
     flat_settings: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    metric: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_metadata_version: Option<i64>,
     wait_for_timeout: Option<String>,
 }
 impl ClusterState {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterStateUrlParts) -> Self {
         ClusterState {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1001,10 +1131,8 @@ impl ClusterState {
             flat_settings: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             local: None,
             master_timeout: None,
-            metric: None,
             pretty: None,
             source: None,
             wait_for_metadata_version: None,
@@ -1046,11 +1174,6 @@ impl ClusterState {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1059,11 +1182,6 @@ impl ClusterState {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "Limit the information returned to the specified metrics"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1089,33 +1207,7 @@ impl ClusterState {
 }
 impl Sender for ClusterState {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.metric) {
-            (Some(index), Some(metric)) => {
-                let metric_str = metric.join(",");
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + metric_str.len() + index_str.len());
-                p.push_str("/_cluster/state/");
-                p.push_str(metric_str.as_ref());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(21usize + index_str.len());
-                p.push_str("/_cluster/state/_all/");
-                p.push_str(index_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(metric)) => {
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(16usize + metric_str.len());
-                p.push_str("/_cluster/state/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_cluster/state"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1178,27 +1270,48 @@ impl Sender for ClusterState {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Cluster Stats API"]
+pub enum ClusterStatsUrlParts {
+    None,
+    NodeId(Vec<String>),
+}
+impl ClusterStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClusterStatsUrlParts::None => "/_cluster/stats".into(),
+            ClusterStatsUrlParts::NodeId(ref node_id) => {
+                let node_id_str = node_id.join(",");
+                let mut p = String::with_capacity(22usize + node_id_str.len());
+                p.push_str("/_cluster/stats/nodes/");
+                p.push_str(node_id_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Cluster Stats API"]
 pub struct ClusterStats {
     client: Elasticsearch,
+    parts: ClusterStatsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
     human: Option<bool>,
-    node_id: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl ClusterStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterStatsUrlParts) -> Self {
         ClusterStats {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
             human: None,
-            node_id: None,
             pretty: None,
             source: None,
             timeout: None,
@@ -1224,11 +1337,6 @@ impl ClusterStats {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Option<Vec<String>>) -> Self {
-        self.node_id = node_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1247,16 +1355,7 @@ impl ClusterStats {
 }
 impl Sender for ClusterStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.node_id {
-            Some(node_id) => {
-                let node_id_str = node_id.join(",");
-                let mut p = String::with_capacity(22usize + node_id_str.len());
-                p.push_str("/_cluster/stats/nodes/");
-                p.push_str(node_id_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cluster/stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1306,50 +1405,50 @@ impl Cluster {
     pub fn new(client: Elasticsearch) -> Self {
         Cluster { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html"]
+    #[doc = "Provides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<B>(&self) -> ClusterAllocationExplain<B>
     where
         B: Serialize,
     {
         ClusterAllocationExplain::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
+    #[doc = "Returns cluster settings."]
     pub fn get_settings(&self) -> ClusterGetSettings {
         ClusterGetSettings::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html"]
-    pub fn health(&self) -> ClusterHealth {
-        ClusterHealth::new(self.client.clone())
+    #[doc = "Returns basic information about the health of the cluster."]
+    pub fn health(&self, parts: ClusterHealthUrlParts) -> ClusterHealth {
+        ClusterHealth::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html"]
+    #[doc = "Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks(&self) -> ClusterPendingTasks {
         ClusterPendingTasks::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html"]
+    #[doc = "Updates the cluster settings."]
     pub fn put_settings<B>(&self) -> ClusterPutSettings<B>
     where
         B: Serialize,
     {
         ClusterPutSettings::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html"]
+    #[doc = "Returns the information about configured remote clusters."]
     pub fn remote_info(&self) -> ClusterRemoteInfo {
         ClusterRemoteInfo::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html"]
+    #[doc = "Allows to manually change the allocation of individual shards in the cluster."]
     pub fn reroute<B>(&self) -> ClusterReroute<B>
     where
         B: Serialize,
     {
         ClusterReroute::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html"]
-    pub fn state(&self) -> ClusterState {
-        ClusterState::new(self.client.clone())
+    #[doc = "Returns a comprehensive information about the state of the cluster."]
+    pub fn state(&self, parts: ClusterStateUrlParts) -> ClusterState {
+        ClusterState::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html"]
-    pub fn stats(&self) -> ClusterStats {
-        ClusterStats::new(self.client.clone())
+    #[doc = "Returns high-level overview of cluster statistics."]
+    pub fn stats(&self, parts: ClusterStatsUrlParts) -> ClusterStats {
+        ClusterStats::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

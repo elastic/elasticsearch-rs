@@ -23,9 +23,32 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Analyze API"]
+pub enum IndicesAnalyzeUrlParts {
+    None,
+    Index(String),
+}
+impl IndicesAnalyzeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesAnalyzeUrlParts::None => "/_analyze".into(),
+            IndicesAnalyzeUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(10usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_analyze");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Analyze API"]
 pub struct IndicesAnalyze<B> {
     client: Elasticsearch,
+    parts: IndicesAnalyzeUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -38,9 +61,10 @@ impl<B> IndicesAnalyze<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesAnalyzeUrlParts) -> Self {
         IndicesAnalyze {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -91,17 +115,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index = index;
-                let mut p = String::with_capacity(10usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_analyze");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_analyze"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -143,9 +157,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Clear Cache API"]
+pub enum IndicesClearCacheUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesClearCacheUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesClearCacheUrlParts::None => "/_cache/clear".into(),
+            IndicesClearCacheUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(14usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_cache/clear");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Clear Cache API"]
 pub struct IndicesClearCache<B> {
     client: Elasticsearch,
+    parts: IndicesClearCacheUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -165,9 +202,10 @@ impl<B> IndicesClearCache<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesClearCacheUrlParts) -> Self {
         IndicesClearCache {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -260,17 +298,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(14usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_cache/clear");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_cache/clear"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -338,9 +366,182 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Clone API"]
+pub enum IndicesCloneUrlParts {
+    IndexTarget(String, String),
+}
+impl IndicesCloneUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesCloneUrlParts::IndexTarget(ref index, ref target) => {
+                let mut p = String::with_capacity(9usize + index.len() + target.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_clone/");
+                p.push_str(target.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Clone API"]
+pub struct IndicesClone<B> {
+    client: Elasticsearch,
+    parts: IndicesCloneUrlParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    master_timeout: Option<String>,
+    pretty: Option<bool>,
+    source: Option<String>,
+    timeout: Option<String>,
+    wait_for_active_shards: Option<String>,
+}
+impl<B> IndicesClone<B>
+where
+    B: Serialize,
+{
+    pub fn new(client: Elasticsearch, parts: IndicesCloneUrlParts) -> Self {
+        IndicesClone {
+            client,
+            parts,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            master_timeout: None,
+            pretty: None,
+            source: None,
+            timeout: None,
+            wait_for_active_shards: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Specify timeout for connection to master"]
+    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
+        self.master_timeout = master_timeout;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+    #[doc = "Explicit operation timeout"]
+    pub fn timeout(mut self, timeout: Option<String>) -> Self {
+        self.timeout = timeout;
+        self
+    }
+    #[doc = "Set the number of active shards to wait for on the cloned index before the operation returns."]
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
+        self.wait_for_active_shards = wait_for_active_shards;
+        self
+    }
+}
+impl<B> Sender for IndicesClone<B>
+where
+    B: Serialize,
+{
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let path = self.parts.build();
+        let method = HttpMethod::Post;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                human: Option<bool>,
+                #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
+                master_timeout: Option<String>,
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                pretty: Option<bool>,
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                source: Option<String>,
+                #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
+                timeout: Option<String>,
+                #[serde(
+                    rename = "wait_for_active_shards",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                wait_for_active_shards: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                master_timeout: self.master_timeout,
+                pretty: self.pretty,
+                source: self.source,
+                timeout: self.timeout,
+                wait_for_active_shards: self.wait_for_active_shards,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, query_string.as_ref(), body)?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Close API"]
+pub enum IndicesCloseUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesCloseUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesCloseUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_close");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Close API"]
 pub struct IndicesClose<B> {
     client: Elasticsearch,
+    parts: IndicesCloseUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -348,7 +549,6 @@ pub struct IndicesClose<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -359,10 +559,10 @@ impl<B> IndicesClose<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesCloseUrlParts) -> Self {
         IndicesClose {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -412,11 +612,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma separated list of indices to close"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -448,14 +643,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(8usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_close");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -512,15 +700,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Create API"]
+pub enum IndicesCreateUrlParts {
+    Index(String),
+}
+impl IndicesCreateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesCreateUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(1usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Create API"]
 pub struct IndicesCreate<B> {
     client: Elasticsearch,
+    parts: IndicesCreateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     include_type_name: Option<bool>,
-    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -531,10 +737,10 @@ impl<B> IndicesCreate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesCreateUrlParts) -> Self {
         IndicesCreate {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -572,11 +778,6 @@ where
         self.include_type_name = include_type_name;
         self
     }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -608,13 +809,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(1usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -665,26 +860,45 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete API"]
+pub enum IndicesDeleteUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesDeleteUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(1usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete API"]
 pub struct IndicesDelete {
     client: Elasticsearch,
+    parts: IndicesDeleteUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDelete {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteUrlParts) -> Self {
         IndicesDelete {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -727,11 +941,6 @@ impl IndicesDelete {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of indices to delete; use `_all` or `*` string to delete all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -755,13 +964,7 @@ impl IndicesDelete {
 }
 impl Sender for IndicesDelete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(1usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -812,25 +1015,45 @@ impl Sender for IndicesDelete {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete Alias API"]
+pub enum IndicesDeleteAliasUrlParts {
+    IndexName(Vec<String>, Vec<String>),
+}
+impl IndicesDeleteAliasUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteAliasUrlParts::IndexName(ref index, ref name) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete Alias API"]
 pub struct IndicesDeleteAlias {
     client: Elasticsearch,
+    parts: IndicesDeleteAliasUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     master_timeout: Option<String>,
-    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDeleteAlias {
-    pub fn new(client: Elasticsearch, index: Vec<String>, name: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteAliasUrlParts) -> Self {
         IndicesDeleteAlias {
             client,
-            index: index,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -855,19 +1078,9 @@ impl IndicesDeleteAlias {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names (supports wildcards); use `_all` for all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "A comma-separated list of aliases to delete (supports wildcards); use `_all` to delete all aliases for the specified indices."]
-    pub fn name(mut self, name: Vec<String>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -888,16 +1101,7 @@ impl IndicesDeleteAlias {
 }
 impl Sender for IndicesDeleteAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let name_str = self.name.join(",");
-            let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_alias/");
-            p.push_str(name_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -939,23 +1143,41 @@ impl Sender for IndicesDeleteAlias {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Delete Template API"]
+pub enum IndicesDeleteTemplateUrlParts {
+    Name(String),
+}
+impl IndicesDeleteTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesDeleteTemplateUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(11usize + name.len());
+                p.push_str("/_template/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Delete Template API"]
 pub struct IndicesDeleteTemplate {
     client: Elasticsearch,
+    parts: IndicesDeleteTemplateUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     master_timeout: Option<String>,
-    name: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IndicesDeleteTemplate {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteTemplateUrlParts) -> Self {
         IndicesDeleteTemplate {
             client,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -985,11 +1207,6 @@ impl IndicesDeleteTemplate {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "The name of the template"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1008,13 +1225,7 @@ impl IndicesDeleteTemplate {
 }
 impl Sender for IndicesDeleteTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(11usize + name.len());
-            p.push_str("/_template/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1056,9 +1267,29 @@ impl Sender for IndicesDeleteTemplate {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists API"]
+pub enum IndicesExistsUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesExistsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesExistsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(1usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists API"]
 pub struct IndicesExists {
     client: Elasticsearch,
+    parts: IndicesExistsUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -1067,16 +1298,15 @@ pub struct IndicesExists {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
-    index: Vec<String>,
     local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExists {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsUrlParts) -> Self {
         IndicesExists {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1130,11 +1360,6 @@ impl IndicesExists {
         self.include_defaults = include_defaults;
         self
     }
-    #[doc = "A comma-separated list of index names"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1153,13 +1378,7 @@ impl IndicesExists {
 }
 impl Sender for IndicesExists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(1usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1213,33 +1432,61 @@ impl Sender for IndicesExists {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Alias API"]
+pub enum IndicesExistsAliasUrlParts {
+    Name(Vec<String>),
+    IndexName(Vec<String>, Vec<String>),
+}
+impl IndicesExistsAliasUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesExistsAliasUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(8usize + name_str.len());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+            IndicesExistsAliasUrlParts::IndexName(ref index, ref name) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Alias API"]
 pub struct IndicesExistsAlias {
     client: Elasticsearch,
+    parts: IndicesExistsAliasUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
-    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExistsAlias {
-    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsAliasUrlParts) -> Self {
         IndicesExistsAlias {
             client,
-            name: name,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             local: None,
             pretty: None,
             source: None,
@@ -1275,19 +1522,9 @@ impl IndicesExistsAlias {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to filter aliases"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
-        self
-    }
-    #[doc = "A comma-separated list of alias names to return"]
-    pub fn name(mut self, name: Vec<String>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1303,25 +1540,7 @@ impl IndicesExistsAlias {
 }
 impl Sender for IndicesExistsAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let name_str = self.name.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let name_str = self.name.join(",");
-                let mut p = String::with_capacity(8usize + name_str.len());
-                p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1369,24 +1588,43 @@ impl Sender for IndicesExistsAlias {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Template API"]
+pub enum IndicesExistsTemplateUrlParts {
+    Name(Vec<String>),
+}
+impl IndicesExistsTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesExistsTemplateUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(11usize + name_str.len());
+                p.push_str("/_template/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Template API"]
 pub struct IndicesExistsTemplate {
     client: Elasticsearch,
+    parts: IndicesExistsTemplateUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    name: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesExistsTemplate {
-    pub fn new(client: Elasticsearch, name: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsTemplateUrlParts) -> Self {
         IndicesExistsTemplate {
             client,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -1427,11 +1665,6 @@ impl IndicesExistsTemplate {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "The comma separated names of the index templates"]
-    pub fn name(mut self, name: Vec<String>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1445,13 +1678,7 @@ impl IndicesExistsTemplate {
 }
 impl Sender for IndicesExistsTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name_str = self.name.join(",");
-            let mut p = String::with_capacity(11usize + name_str.len());
-            p.push_str("/_template/");
-            p.push_str(name_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1496,27 +1723,47 @@ impl Sender for IndicesExistsTemplate {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Exists Type API"]
+pub enum IndicesExistsTypeUrlParts {
+    IndexType(Vec<String>, Vec<String>),
+}
+impl IndicesExistsTypeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesExistsTypeUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Exists Type API"]
 pub struct IndicesExistsType {
     client: Elasticsearch,
+    parts: IndicesExistsTypeUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    ty: Vec<String>,
 }
 impl IndicesExistsType {
-    pub fn new(client: Elasticsearch, index: Vec<String>, ty: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsTypeUrlParts) -> Self {
         IndicesExistsType {
             client,
-            index: index,
-            ty: ty,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1558,11 +1805,6 @@ impl IndicesExistsType {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` to check the types across all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -1578,24 +1820,10 @@ impl IndicesExistsType {
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types to check"]
-    pub fn ty(mut self, ty: Vec<String>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl Sender for IndicesExistsType {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let ty_str = self.ty.join(",");
-            let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_mapping/");
-            p.push_str(ty_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -1643,9 +1871,32 @@ impl Sender for IndicesExistsType {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Flush API"]
+pub enum IndicesFlushUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesFlushUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesFlushUrlParts::None => "/_flush".into(),
+            IndicesFlushUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_flush");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Flush API"]
 pub struct IndicesFlush<B> {
     client: Elasticsearch,
+    parts: IndicesFlushUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1654,7 +1905,6 @@ pub struct IndicesFlush<B> {
     force: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     wait_if_ongoing: Option<bool>,
@@ -1663,9 +1913,10 @@ impl<B> IndicesFlush<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFlushUrlParts) -> Self {
         IndicesFlush {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -1674,7 +1925,6 @@ where
             force: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
             wait_if_ongoing: None,
@@ -1720,11 +1970,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string for all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1746,17 +1991,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_flush");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_flush"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1810,9 +2045,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Flush Synced API"]
+pub enum IndicesFlushSyncedUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesFlushSyncedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesFlushSyncedUrlParts::None => "/_flush/synced".into(),
+            IndicesFlushSyncedUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_flush/synced");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Flush Synced API"]
 pub struct IndicesFlushSynced<B> {
     client: Elasticsearch,
+    parts: IndicesFlushSyncedUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1820,7 +2078,6 @@ pub struct IndicesFlushSynced<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -1828,9 +2085,10 @@ impl<B> IndicesFlushSynced<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFlushSyncedUrlParts) -> Self {
         IndicesFlushSynced {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -1838,7 +2096,6 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -1878,11 +2135,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string for all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1899,17 +2151,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_flush/synced");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_flush/synced"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -1957,9 +2199,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Forcemerge API"]
+pub enum IndicesForcemergeUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesForcemergeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesForcemergeUrlParts::None => "/_forcemerge".into(),
+            IndicesForcemergeUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(13usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_forcemerge");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Forcemerge API"]
 pub struct IndicesForcemerge<B> {
     client: Elasticsearch,
+    parts: IndicesForcemergeUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1968,7 +2233,6 @@ pub struct IndicesForcemerge<B> {
     flush: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     max_num_segments: Option<i64>,
     only_expunge_deletes: Option<bool>,
     pretty: Option<bool>,
@@ -1978,9 +2242,10 @@ impl<B> IndicesForcemerge<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesForcemergeUrlParts) -> Self {
         IndicesForcemerge {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -1989,7 +2254,6 @@ where
             flush: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             max_num_segments: None,
             only_expunge_deletes: None,
             pretty: None,
@@ -2036,11 +2300,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "The number of segments the index should be merged into (default: dynamic)"]
     pub fn max_num_segments(mut self, max_num_segments: Option<i64>) -> Self {
         self.max_num_segments = max_num_segments;
@@ -2067,17 +2326,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_forcemerge");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_forcemerge"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -2134,9 +2383,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Freeze API"]
+pub enum IndicesFreezeUrlParts {
+    Index(String),
+}
+impl IndicesFreezeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesFreezeUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(9usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_freeze");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Freeze API"]
 pub struct IndicesFreeze<B> {
     client: Elasticsearch,
+    parts: IndicesFreezeUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2144,7 +2413,6 @@ pub struct IndicesFreeze<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -2155,10 +2423,10 @@ impl<B> IndicesFreeze<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFreezeUrlParts) -> Self {
         IndicesFreeze {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2208,11 +2476,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "The name of the index to freeze"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -2244,14 +2507,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(9usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_freeze");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -2308,9 +2564,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get API"]
+pub enum IndicesGetUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesGetUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(1usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get API"]
 pub struct IndicesGet {
     client: Elasticsearch,
+    parts: IndicesGetUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -2320,17 +2596,16 @@ pub struct IndicesGet {
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
     include_type_name: Option<bool>,
-    index: Vec<String>,
     local: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGet {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetUrlParts) -> Self {
         IndicesGet {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2391,11 +2666,6 @@ impl IndicesGet {
         self.include_type_name = include_type_name;
         self
     }
-    #[doc = "A comma-separated list of index names"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2419,13 +2689,7 @@ impl IndicesGet {
 }
 impl Sender for IndicesGet {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(1usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2485,34 +2749,73 @@ impl Sender for IndicesGet {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Alias API"]
+pub enum IndicesGetAliasUrlParts {
+    None,
+    Name(Vec<String>),
+    IndexName(Vec<String>, Vec<String>),
+    Index(Vec<String>),
+}
+impl IndicesGetAliasUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetAliasUrlParts::None => "/_alias".into(),
+            IndicesGetAliasUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(8usize + name_str.len());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+            IndicesGetAliasUrlParts::IndexName(ref index, ref name) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+            IndicesGetAliasUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Alias API"]
 pub struct IndicesGetAlias {
     client: Elasticsearch,
+    parts: IndicesGetAliasUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
-    name: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGetAlias {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetAliasUrlParts) -> Self {
         IndicesGetAlias {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             local: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -2547,19 +2850,9 @@ impl IndicesGetAlias {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to filter aliases"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
-        self
-    }
-    #[doc = "A comma-separated list of alias names to return"]
-    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2575,34 +2868,7 @@ impl IndicesGetAlias {
 }
 impl Sender for IndicesGetAlias {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.name) {
-            (Some(index), Some(name)) => {
-                let index_str = index.join(",");
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(name)) => {
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(8usize + name_str.len());
-                p.push_str("/_alias/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_alias");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_alias"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2650,29 +2916,84 @@ impl Sender for IndicesGetAlias {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Field Mapping API"]
+pub enum IndicesGetFieldMappingUrlParts {
+    Fields(Vec<String>),
+    IndexFields(Vec<String>, Vec<String>),
+    TypeFields(Vec<String>, Vec<String>),
+    IndexTypeFields(Vec<String>, Vec<String>, Vec<String>),
+}
+impl IndicesGetFieldMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetFieldMappingUrlParts::Fields(ref fields) => {
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(16usize + fields_str.len());
+                p.push_str("/_mapping/field/");
+                p.push_str(fields_str.as_ref());
+                p.into()
+            }
+            IndicesGetFieldMappingUrlParts::IndexFields(ref index, ref fields) => {
+                let index_str = index.join(",");
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len() + fields_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/field/");
+                p.push_str(fields_str.as_ref());
+                p.into()
+            }
+            IndicesGetFieldMappingUrlParts::TypeFields(ref ty, ref fields) => {
+                let ty_str = ty.join(",");
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(17usize + ty_str.len() + fields_str.len());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/field/");
+                p.push_str(fields_str.as_ref());
+                p.into()
+            }
+            IndicesGetFieldMappingUrlParts::IndexTypeFields(ref index, ref ty, ref fields) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let fields_str = fields.join(",");
+                let mut p = String::with_capacity(
+                    18usize + index_str.len() + ty_str.len() + fields_str.len(),
+                );
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/field/");
+                p.push_str(fields_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Field Mapping API"]
 pub struct IndicesGetFieldMapping {
     client: Elasticsearch,
+    parts: IndicesGetFieldMappingUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    fields: Vec<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
 }
 impl IndicesGetFieldMapping {
-    pub fn new(client: Elasticsearch, fields: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetFieldMappingUrlParts) -> Self {
         IndicesGetFieldMapping {
             client,
-            fields: fields,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2681,11 +3002,9 @@ impl IndicesGetFieldMapping {
             ignore_unavailable: None,
             include_defaults: None,
             include_type_name: None,
-            index: None,
             local: None,
             pretty: None,
             source: None,
-            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -2701,11 +3020,6 @@ impl IndicesGetFieldMapping {
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
     pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
         self.expand_wildcards = expand_wildcards;
-        self
-    }
-    #[doc = "A comma-separated list of fields"]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
-        self.fields = fields;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -2733,11 +3047,6 @@ impl IndicesGetFieldMapping {
         self.include_type_name = include_type_name;
         self
     }
-    #[doc = "A comma-separated list of index names"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2753,58 +3062,10 @@ impl IndicesGetFieldMapping {
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl Sender for IndicesGetFieldMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let fields_str = self.fields.join(",");
-                let mut p = String::with_capacity(
-                    18usize + index_str.len() + ty_str.len() + fields_str.len(),
-                );
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/field/");
-                p.push_str(fields_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let fields_str = self.fields.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len() + fields_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_mapping/field/");
-                p.push_str(fields_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let fields_str = self.fields.join(",");
-                let mut p = String::with_capacity(17usize + ty_str.len() + fields_str.len());
-                p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/field/");
-                p.push_str(fields_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => {
-                let fields_str = self.fields.join(",");
-                let mut p = String::with_capacity(16usize + fields_str.len());
-                p.push_str("/_mapping/field/");
-                p.push_str(fields_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2858,9 +3119,51 @@ impl Sender for IndicesGetFieldMapping {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Mapping API"]
+pub enum IndicesGetMappingUrlParts {
+    None,
+    Index(Vec<String>),
+    Type(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl IndicesGetMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetMappingUrlParts::None => "/_mapping".into(),
+            IndicesGetMappingUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping");
+                p.into()
+            }
+            IndicesGetMappingUrlParts::Type(ref ty) => {
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(10usize + ty_str.len());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.into()
+            }
+            IndicesGetMappingUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping/");
+                p.push_str(ty_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Mapping API"]
 pub struct IndicesGetMapping {
     client: Elasticsearch,
+    parts: IndicesGetMappingUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -2868,17 +3171,16 @@ pub struct IndicesGetMapping {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
 }
 impl IndicesGetMapping {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetMappingUrlParts) -> Self {
         IndicesGetMapping {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2886,12 +3188,10 @@ impl IndicesGetMapping {
             human: None,
             ignore_unavailable: None,
             include_type_name: None,
-            index: None,
             local: None,
             master_timeout: None,
             pretty: None,
             source: None,
-            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -2929,11 +3229,6 @@ impl IndicesGetMapping {
         self.include_type_name = include_type_name;
         self
     }
-    #[doc = "A comma-separated list of index names"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -2954,42 +3249,10 @@ impl IndicesGetMapping {
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl Sender for IndicesGetMapping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_mapping");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(10usize + ty_str.len());
-                p.push_str("/_mapping/");
-                p.push_str(ty_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_mapping"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3043,9 +3306,51 @@ impl Sender for IndicesGetMapping {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Settings API"]
+pub enum IndicesGetSettingsUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexName(Vec<String>, Vec<String>),
+    Name(Vec<String>),
+}
+impl IndicesGetSettingsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetSettingsUrlParts::None => "/_settings".into(),
+            IndicesGetSettingsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings");
+                p.into()
+            }
+            IndicesGetSettingsUrlParts::IndexName(ref index, ref name) => {
+                let index_str = index.join(",");
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len() + name_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+            IndicesGetSettingsUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(11usize + name_str.len());
+                p.push_str("/_settings/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Settings API"]
 pub struct IndicesGetSettings {
     client: Elasticsearch,
+    parts: IndicesGetSettingsUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -3054,17 +3359,16 @@ pub struct IndicesGetSettings {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGetSettings {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetSettingsUrlParts) -> Self {
         IndicesGetSettings {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3073,10 +3377,8 @@ impl IndicesGetSettings {
             human: None,
             ignore_unavailable: None,
             include_defaults: None,
-            index: None,
             local: None,
             master_timeout: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -3121,11 +3423,6 @@ impl IndicesGetSettings {
         self.include_defaults = include_defaults;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -3134,11 +3431,6 @@ impl IndicesGetSettings {
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "The name of the settings that should be included"]
-    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -3154,34 +3446,7 @@ impl IndicesGetSettings {
 }
 impl Sender for IndicesGetSettings {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.name) {
-            (Some(index), Some(name)) => {
-                let index_str = index.join(",");
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len() + name_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_settings/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_settings");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(name)) => {
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(11usize + name_str.len());
-                p.push_str("/_settings/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_settings"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3238,9 +3503,31 @@ impl Sender for IndicesGetSettings {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Template API"]
+pub enum IndicesGetTemplateUrlParts {
+    None,
+    Name(Vec<String>),
+}
+impl IndicesGetTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetTemplateUrlParts::None => "/_template".into(),
+            IndicesGetTemplateUrlParts::Name(ref name) => {
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(11usize + name_str.len());
+                p.push_str("/_template/");
+                p.push_str(name_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Template API"]
 pub struct IndicesGetTemplate {
     client: Elasticsearch,
+    parts: IndicesGetTemplateUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     flat_settings: Option<bool>,
@@ -3248,14 +3535,14 @@ pub struct IndicesGetTemplate {
     include_type_name: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<String>,
-    name: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGetTemplate {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetTemplateUrlParts) -> Self {
         IndicesGetTemplate {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -3263,7 +3550,6 @@ impl IndicesGetTemplate {
             include_type_name: None,
             local: None,
             master_timeout: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -3303,11 +3589,6 @@ impl IndicesGetTemplate {
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "The comma separated names of the index templates"]
-    pub fn name(mut self, name: Option<Vec<String>>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3321,16 +3602,7 @@ impl IndicesGetTemplate {
 }
 impl Sender for IndicesGetTemplate {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name_str = name.join(",");
-                let mut p = String::with_capacity(11usize + name_str.len());
-                p.push_str("/_template/");
-                p.push_str(name_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_template"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3378,30 +3650,52 @@ impl Sender for IndicesGetTemplate {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Get Upgrade API"]
+pub enum IndicesGetUpgradeUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesGetUpgradeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesGetUpgradeUrlParts::None => "/_upgrade".into(),
+            IndicesGetUpgradeUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_upgrade");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Get Upgrade API"]
 pub struct IndicesGetUpgrade {
     client: Elasticsearch,
+    parts: IndicesGetUpgradeUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesGetUpgrade {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetUpgradeUrlParts) -> Self {
         IndicesGetUpgrade {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -3436,11 +3730,6 @@ impl IndicesGetUpgrade {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3454,17 +3743,7 @@ impl IndicesGetUpgrade {
 }
 impl Sender for IndicesGetUpgrade {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_upgrade");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_upgrade"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3509,9 +3788,30 @@ impl Sender for IndicesGetUpgrade {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Open API"]
+pub enum IndicesOpenUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesOpenUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesOpenUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(7usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_open");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Open API"]
 pub struct IndicesOpen<B> {
     client: Elasticsearch,
+    parts: IndicesOpenUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -3519,7 +3819,6 @@ pub struct IndicesOpen<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -3530,10 +3829,10 @@ impl<B> IndicesOpen<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesOpenUrlParts) -> Self {
         IndicesOpen {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -3583,11 +3882,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma separated list of indices to open"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -3619,14 +3913,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(7usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_open");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -3683,16 +3970,36 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Alias API"]
+pub enum IndicesPutAliasUrlParts {
+    IndexName(Vec<String>, String),
+}
+impl IndicesPutAliasUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesPutAliasUrlParts::IndexName(ref index, ref name) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + name.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_alias/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Alias API"]
 pub struct IndicesPutAlias<B> {
     client: Elasticsearch,
+    parts: IndicesPutAliasUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     master_timeout: Option<String>,
-    name: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -3701,11 +4008,10 @@ impl<B> IndicesPutAlias<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutAliasUrlParts) -> Self {
         IndicesPutAlias {
             client,
-            index: index,
-            name: name,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3736,19 +4042,9 @@ where
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names the alias should point to (supports wildcards); use `_all` to perform the operation on all indices."]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
-        self
-    }
-    #[doc = "The name of the alias to be created or updated"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -3772,16 +4068,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let name = self.name;
-            let mut p = String::with_capacity(9usize + index_str.len() + name.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_alias/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -3823,9 +4110,48 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Mapping API"]
+pub enum IndicesPutMappingUrlParts {
+    Index(Vec<String>),
+    IndexType(Vec<String>, String),
+    Type(String),
+}
+impl IndicesPutMappingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesPutMappingUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_mapping");
+                p.into()
+            }
+            IndicesPutMappingUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_mapping");
+                p.into()
+            }
+            IndicesPutMappingUrlParts::Type(ref ty) => {
+                let mut p = String::with_capacity(11usize + ty.len());
+                p.push_str("/_mappings/");
+                p.push_str(ty.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Mapping API"]
 pub struct IndicesPutMapping<B> {
     client: Elasticsearch,
+    parts: IndicesPutMappingUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -3834,20 +4160,19 @@ pub struct IndicesPutMapping<B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
-    index: Option<Vec<String>>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<String>,
 }
 impl<B> IndicesPutMapping<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutMappingUrlParts) -> Self {
         IndicesPutMapping {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -3856,12 +4181,10 @@ where
             human: None,
             ignore_unavailable: None,
             include_type_name: None,
-            index: None,
             master_timeout: None,
             pretty: None,
             source: None,
             timeout: None,
-            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -3904,11 +4227,6 @@ where
         self.include_type_name = include_type_name;
         self
     }
-    #[doc = "A comma-separated list of index names the mapping should be added to (supports wildcards); use `_all` or omit to add the mapping on all indices."]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -3929,46 +4247,13 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "The name of the document type"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for IndicesPutMapping<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty = ty;
-                let mut p = String::with_capacity(11usize + index_str.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_mapping");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_mapping");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty = ty;
-                let mut p = String::with_capacity(10usize + ty.len());
-                p.push_str("/_mapping/");
-                p.push_str(ty.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_all/_mapping"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4022,9 +4307,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Settings API"]
+pub enum IndicesPutSettingsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesPutSettingsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesPutSettingsUrlParts::None => "/_settings".into(),
+            IndicesPutSettingsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_settings");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Settings API"]
 pub struct IndicesPutSettings<B> {
     client: Elasticsearch,
+    parts: IndicesPutSettingsUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4033,7 +4341,6 @@ pub struct IndicesPutSettings<B> {
     flat_settings: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     master_timeout: Option<String>,
     preserve_existing: Option<bool>,
     pretty: Option<bool>,
@@ -4044,9 +4351,10 @@ impl<B> IndicesPutSettings<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutSettingsUrlParts) -> Self {
         IndicesPutSettings {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4055,7 +4363,6 @@ where
             flat_settings: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             master_timeout: None,
             preserve_existing: None,
             pretty: None,
@@ -4103,11 +4410,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -4139,17 +4441,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_settings");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_settings"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4206,9 +4498,28 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Put Template API"]
+pub enum IndicesPutTemplateUrlParts {
+    Name(String),
+}
+impl IndicesPutTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesPutTemplateUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(11usize + name.len());
+                p.push_str("/_template/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Put Template API"]
 pub struct IndicesPutTemplate<B> {
     client: Elasticsearch,
+    parts: IndicesPutTemplateUrlParts,
     body: Option<B>,
     create: Option<bool>,
     error_trace: Option<bool>,
@@ -4217,7 +4528,6 @@ pub struct IndicesPutTemplate<B> {
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<String>,
-    name: String,
     order: Option<i64>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -4227,10 +4537,10 @@ impl<B> IndicesPutTemplate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutTemplateUrlParts) -> Self {
         IndicesPutTemplate {
             client,
-            name: name,
+            parts,
             body: None,
             create: None,
             error_trace: None,
@@ -4285,11 +4595,6 @@ where
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "The name of the template"]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "The order for this template when merging multiple matching ones (higher numbers are merged later, overriding the lower numbers)"]
     pub fn order(mut self, order: Option<i64>) -> Self {
         self.order = order;
@@ -4316,13 +4621,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(11usize + name.len());
-            p.push_str("/_template/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4376,28 +4675,50 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Recovery API"]
+pub enum IndicesRecoveryUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesRecoveryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesRecoveryUrlParts::None => "/_recovery".into(),
+            IndicesRecoveryUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_recovery");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Recovery API"]
 pub struct IndicesRecovery {
     client: Elasticsearch,
+    parts: IndicesRecoveryUrlParts,
     active_only: Option<bool>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IndicesRecovery {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRecoveryUrlParts) -> Self {
         IndicesRecovery {
             client,
+            parts,
             active_only: None,
             detailed: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -4427,11 +4748,6 @@ impl IndicesRecovery {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4445,17 +4761,7 @@ impl IndicesRecovery {
 }
 impl Sender for IndicesRecovery {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_recovery");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_recovery"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4497,9 +4803,32 @@ impl Sender for IndicesRecovery {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Refresh API"]
+pub enum IndicesRefreshUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesRefreshUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesRefreshUrlParts::None => "/_refresh".into(),
+            IndicesRefreshUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_refresh");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Refresh API"]
 pub struct IndicesRefresh<B> {
     client: Elasticsearch,
+    parts: IndicesRefreshUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4507,7 +4836,6 @@ pub struct IndicesRefresh<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -4515,9 +4843,10 @@ impl<B> IndicesRefresh<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRefreshUrlParts) -> Self {
         IndicesRefresh {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4525,7 +4854,6 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -4563,11 +4891,6 @@ where
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -4586,17 +4909,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_refresh");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_refresh"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4644,9 +4957,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Reload Search Analyzers API"]
+pub enum IndicesReloadSearchAnalyzersUrlParts {
+    Index(Vec<String>),
+}
+impl IndicesReloadSearchAnalyzersUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesReloadSearchAnalyzersUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(26usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_reload_search_analyzers");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Reload Search Analyzers API"]
 pub struct IndicesReloadSearchAnalyzers<B> {
     client: Elasticsearch,
+    parts: IndicesReloadSearchAnalyzersUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4654,7 +4988,6 @@ pub struct IndicesReloadSearchAnalyzers<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -4662,10 +4995,10 @@ impl<B> IndicesReloadSearchAnalyzers<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesReloadSearchAnalyzersUrlParts) -> Self {
         IndicesReloadSearchAnalyzers {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4712,11 +5045,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to reload analyzers for"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4733,14 +5061,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(26usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_reload_search_analyzers");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4788,10 +5109,38 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Rollover API"]
+pub enum IndicesRolloverUrlParts {
+    Alias(String),
+    AliasNewIndex(String, String),
+}
+impl IndicesRolloverUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesRolloverUrlParts::Alias(ref alias) => {
+                let mut p = String::with_capacity(11usize + alias.len());
+                p.push_str("/");
+                p.push_str(alias.as_ref());
+                p.push_str("/_rollover");
+                p.into()
+            }
+            IndicesRolloverUrlParts::AliasNewIndex(ref alias, ref new_index) => {
+                let mut p = String::with_capacity(12usize + alias.len() + new_index.len());
+                p.push_str("/");
+                p.push_str(alias.as_ref());
+                p.push_str("/_rollover/");
+                p.push_str(new_index.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Rollover API"]
 pub struct IndicesRollover<B> {
     client: Elasticsearch,
-    alias: String,
+    parts: IndicesRolloverUrlParts,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
@@ -4799,7 +5148,6 @@ pub struct IndicesRollover<B> {
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<String>,
-    new_index: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -4809,10 +5157,10 @@ impl<B> IndicesRollover<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, alias: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRolloverUrlParts) -> Self {
         IndicesRollover {
             client,
-            alias: alias,
+            parts,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -4820,17 +5168,11 @@ where
             human: None,
             include_type_name: None,
             master_timeout: None,
-            new_index: None,
             pretty: None,
             source: None,
             timeout: None,
             wait_for_active_shards: None,
         }
-    }
-    #[doc = "The name of the alias to rollover"]
-    pub fn alias(mut self, alias: String) -> Self {
-        self.alias = alias;
-        self
     }
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
@@ -4867,11 +5209,6 @@ where
         self.master_timeout = master_timeout;
         self
     }
-    #[doc = "The name of the rollover index"]
-    pub fn new_index(mut self, new_index: Option<String>) -> Self {
-        self.new_index = new_index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4898,26 +5235,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.new_index {
-            Some(new_index) => {
-                let alias = self.alias;
-                let new_index = new_index;
-                let mut p = String::with_capacity(12usize + alias.len() + new_index.len());
-                p.push_str("/");
-                p.push_str(alias.as_ref());
-                p.push_str("/_rollover/");
-                p.push_str(new_index.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let alias = self.alias;
-                let mut p = String::with_capacity(11usize + alias.len());
-                p.push_str("/");
-                p.push_str(alias.as_ref());
-                p.push_str("/_rollover");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4971,31 +5289,53 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Segments API"]
+pub enum IndicesSegmentsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesSegmentsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesSegmentsUrlParts::None => "/_segments".into(),
+            IndicesSegmentsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_segments");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Segments API"]
 pub struct IndicesSegments {
     client: Elasticsearch,
+    parts: IndicesSegmentsUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     verbose: Option<bool>,
 }
 impl IndicesSegments {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesSegmentsUrlParts) -> Self {
         IndicesSegments {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
             verbose: None,
@@ -5031,11 +5371,6 @@ impl IndicesSegments {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5054,17 +5389,7 @@ impl IndicesSegments {
 }
 impl Sender for IndicesSegments {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_segments");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_segments"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -5112,31 +5437,53 @@ impl Sender for IndicesSegments {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Shard Stores API"]
+pub enum IndicesShardStoresUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesShardStoresUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesShardStoresUrlParts::None => "/_shard_stores".into(),
+            IndicesShardStoresUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(15usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_shard_stores");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Shard Stores API"]
 pub struct IndicesShardStores {
     client: Elasticsearch,
+    parts: IndicesShardStoresUrlParts,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     status: Option<Vec<String>>,
 }
 impl IndicesShardStores {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesShardStoresUrlParts) -> Self {
         IndicesShardStores {
             client,
+            parts,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
             status: None,
@@ -5172,11 +5519,6 @@ impl IndicesShardStores {
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5195,17 +5537,7 @@ impl IndicesShardStores {
 }
 impl Sender for IndicesShardStores {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(15usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_shard_stores");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_shard_stores"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -5257,19 +5589,38 @@ impl Sender for IndicesShardStores {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Shrink API"]
+pub enum IndicesShrinkUrlParts {
+    IndexTarget(String, String),
+}
+impl IndicesShrinkUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesShrinkUrlParts::IndexTarget(ref index, ref target) => {
+                let mut p = String::with_capacity(10usize + index.len() + target.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_shrink/");
+                p.push_str(target.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Shrink API"]
 pub struct IndicesShrink<B> {
     client: Elasticsearch,
+    parts: IndicesShrinkUrlParts,
     body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    target: String,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -5277,11 +5628,10 @@ impl<B> IndicesShrink<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesShrinkUrlParts) -> Self {
         IndicesShrink {
             client,
-            index: index,
-            target: target,
+            parts,
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -5319,11 +5669,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the source index to shrink"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -5337,11 +5682,6 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "The name of the target index to shrink into"]
-    pub fn target(mut self, target: String) -> Self {
-        self.target = target;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -5360,16 +5700,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let target = self.target;
-            let mut p = String::with_capacity(10usize + index.len() + target.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_shrink/");
-            p.push_str(target.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5420,19 +5751,38 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Split API"]
+pub enum IndicesSplitUrlParts {
+    IndexTarget(String, String),
+}
+impl IndicesSplitUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesSplitUrlParts::IndexTarget(ref index, ref target) => {
+                let mut p = String::with_capacity(9usize + index.len() + target.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_split/");
+                p.push_str(target.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Split API"]
 pub struct IndicesSplit<B> {
     client: Elasticsearch,
+    parts: IndicesSplitUrlParts,
     body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
-    target: String,
     timeout: Option<String>,
     wait_for_active_shards: Option<String>,
 }
@@ -5440,11 +5790,10 @@ impl<B> IndicesSplit<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String, target: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesSplitUrlParts) -> Self {
         IndicesSplit {
             client,
-            index: index,
-            target: target,
+            parts,
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -5482,11 +5831,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the source index to split"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -5500,11 +5844,6 @@ where
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
-        self
-    }
-    #[doc = "The name of the target index to split into"]
-    pub fn target(mut self, target: String) -> Self {
-        self.target = target;
         self
     }
     #[doc = "Explicit operation timeout"]
@@ -5523,16 +5862,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let target = self.target;
-            let mut p = String::with_capacity(9usize + index.len() + target.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_split/");
-            p.push_str(target.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5583,9 +5913,51 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Stats API"]
+pub enum IndicesStatsUrlParts {
+    None,
+    Metric(Vec<String>),
+    Index(Vec<String>),
+    IndexMetric(Vec<String>, Vec<String>),
+}
+impl IndicesStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesStatsUrlParts::None => "/_stats".into(),
+            IndicesStatsUrlParts::Metric(ref metric) => {
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(8usize + metric_str.len());
+                p.push_str("/_stats/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+            IndicesStatsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+            IndicesStatsUrlParts::IndexMetric(ref index, ref metric) => {
+                let index_str = index.join(",");
+                let metric_str = metric.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + metric_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_stats/");
+                p.push_str(metric_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Stats API"]
 pub struct IndicesStats {
     client: Elasticsearch,
+    parts: IndicesStatsUrlParts,
     completion_fields: Option<Vec<String>>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -5597,17 +5969,16 @@ pub struct IndicesStats {
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
     include_unloaded_segments: Option<bool>,
-    index: Option<Vec<String>>,
     level: Option<Level>,
-    metric: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
     types: Option<Vec<String>>,
 }
 impl IndicesStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesStatsUrlParts) -> Self {
         IndicesStats {
             client,
+            parts,
             completion_fields: None,
             error_trace: None,
             expand_wildcards: None,
@@ -5619,9 +5990,7 @@ impl IndicesStats {
             human: None,
             include_segment_file_sizes: None,
             include_unloaded_segments: None,
-            index: None,
             level: None,
-            metric: None,
             pretty: None,
             source: None,
             types: None,
@@ -5682,19 +6051,9 @@ impl IndicesStats {
         self.include_unloaded_segments = include_unloaded_segments;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return stats aggregated at cluster, index or shard level"]
     pub fn level(mut self, level: Option<Level>) -> Self {
         self.level = level;
-        self
-    }
-    #[doc = "Limit the information returned the specific metrics."]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -5715,34 +6074,7 @@ impl IndicesStats {
 }
 impl Sender for IndicesStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.metric) {
-            (Some(index), Some(metric)) => {
-                let index_str = index.join(",");
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + metric_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_stats/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(metric)) => {
-                let metric_str = metric.join(",");
-                let mut p = String::with_capacity(8usize + metric_str.len());
-                p.push_str("/_stats/");
-                p.push_str(metric_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_stats");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -5837,9 +6169,29 @@ impl Sender for IndicesStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Unfreeze API"]
+pub enum IndicesUnfreezeUrlParts {
+    Index(String),
+}
+impl IndicesUnfreezeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesUnfreezeUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(11usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_unfreeze");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Unfreeze API"]
 pub struct IndicesUnfreeze<B> {
     client: Elasticsearch,
+    parts: IndicesUnfreezeUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5847,7 +6199,6 @@ pub struct IndicesUnfreeze<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -5858,10 +6209,10 @@ impl<B> IndicesUnfreeze<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesUnfreezeUrlParts) -> Self {
         IndicesUnfreeze {
             client,
-            index: index,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -5911,11 +6262,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "The name of the index to unfreeze"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -5947,14 +6293,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(11usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_unfreeze");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6011,9 +6350,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Update Aliases API"]
+pub enum IndicesUpdateAliasesUrlParts {
+    None,
+}
+impl IndicesUpdateAliasesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesUpdateAliasesUrlParts::None => "/_aliases".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Update Aliases API"]
 pub struct IndicesUpdateAliases<B> {
     client: Elasticsearch,
+    parts: IndicesUpdateAliasesUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -6030,6 +6383,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpdateAliases {
             client,
+            parts: IndicesUpdateAliasesUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6086,7 +6440,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_aliases");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6128,9 +6482,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Upgrade API"]
+pub enum IndicesUpgradeUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl IndicesUpgradeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesUpgradeUrlParts::None => "/_upgrade".into(),
+            IndicesUpgradeUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_upgrade");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Upgrade API"]
 pub struct IndicesUpgrade<B> {
     client: Elasticsearch,
+    parts: IndicesUpgradeUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6138,7 +6515,6 @@ pub struct IndicesUpgrade<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     only_ancient_segments: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -6148,9 +6524,10 @@ impl<B> IndicesUpgrade<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesUpgradeUrlParts) -> Self {
         IndicesUpgrade {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -6158,7 +6535,6 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             only_ancient_segments: None,
             pretty: None,
             source: None,
@@ -6200,11 +6576,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "If true, only ancient (an older Lucene major release) segments will be upgraded"]
     pub fn only_ancient_segments(mut self, only_ancient_segments: Option<bool>) -> Self {
         self.only_ancient_segments = only_ancient_segments;
@@ -6231,17 +6602,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_upgrade");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_upgrade"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6298,9 +6659,44 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Indices Validate Query API"]
+pub enum IndicesValidateQueryUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl IndicesValidateQueryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndicesValidateQueryUrlParts::None => "/_validate/query".into(),
+            IndicesValidateQueryUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_validate/query");
+                p.into()
+            }
+            IndicesValidateQueryUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(18usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_validate/query");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Indices Validate Query API"]
 pub struct IndicesValidateQuery<B> {
     client: Elasticsearch,
+    parts: IndicesValidateQueryUrlParts,
     all_shards: Option<bool>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
@@ -6314,21 +6710,20 @@ pub struct IndicesValidateQuery<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     lenient: Option<bool>,
     pretty: Option<bool>,
     q: Option<String>,
     rewrite: Option<bool>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
 }
 impl<B> IndicesValidateQuery<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesValidateQueryUrlParts) -> Self {
         IndicesValidateQuery {
             client,
+            parts,
             all_shards: None,
             allow_no_indices: None,
             analyze_wildcard: None,
@@ -6342,13 +6737,11 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             lenient: None,
             pretty: None,
             q: None,
             rewrite: None,
             source: None,
-            ty: None,
         }
     }
     #[doc = "Execute validation on all shards instead of one random shard per index"]
@@ -6416,11 +6809,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to restrict the operation; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -6446,47 +6834,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types to restrict the operation; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for IndicesValidateQuery<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_validate/query");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(22usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_validate/query");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(17usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_validate/query");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_validate/query"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -6569,231 +6923,241 @@ impl Indices {
     pub fn new(client: Elasticsearch) -> Self {
         Indices { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html"]
-    pub fn analyze<B>(&self) -> IndicesAnalyze<B>
+    #[doc = "Performs the analysis process on a text and return the tokens breakdown of the text."]
+    pub fn analyze<B>(&self, parts: IndicesAnalyzeUrlParts) -> IndicesAnalyze<B>
     where
         B: Serialize,
     {
-        IndicesAnalyze::new(self.client.clone())
+        IndicesAnalyze::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html"]
-    pub fn clear_cache<B>(&self) -> IndicesClearCache<B>
+    #[doc = "Clears all or specific caches for one or more indices."]
+    pub fn clear_cache<B>(&self, parts: IndicesClearCacheUrlParts) -> IndicesClearCache<B>
     where
         B: Serialize,
     {
-        IndicesClearCache::new(self.client.clone())
+        IndicesClearCache::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn close<B>(&self, index: Vec<String>) -> IndicesClose<B>
+    #[doc = "Clones an index"]
+    pub fn clone<B>(&self, parts: IndicesCloneUrlParts) -> IndicesClone<B>
     where
         B: Serialize,
     {
-        IndicesClose::new(self.client.clone(), index)
+        IndicesClone::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html"]
-    pub fn create<B>(&self, index: String) -> IndicesCreate<B>
+    #[doc = "Closes an index."]
+    pub fn close<B>(&self, parts: IndicesCloseUrlParts) -> IndicesClose<B>
     where
         B: Serialize,
     {
-        IndicesCreate::new(self.client.clone(), index)
+        IndicesClose::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html"]
-    pub fn delete(&self, index: Vec<String>) -> IndicesDelete {
-        IndicesDelete::new(self.client.clone(), index)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn delete_alias(&self, index: Vec<String>, name: Vec<String>) -> IndicesDeleteAlias {
-        IndicesDeleteAlias::new(self.client.clone(), index, name)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn delete_template(&self, name: String) -> IndicesDeleteTemplate {
-        IndicesDeleteTemplate::new(self.client.clone(), name)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html"]
-    pub fn exists(&self, index: Vec<String>) -> IndicesExists {
-        IndicesExists::new(self.client.clone(), index)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn exists_alias(&self, name: Vec<String>) -> IndicesExistsAlias {
-        IndicesExistsAlias::new(self.client.clone(), name)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn exists_template(&self, name: Vec<String>) -> IndicesExistsTemplate {
-        IndicesExistsTemplate::new(self.client.clone(), name)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html"]
-    pub fn exists_type(&self, index: Vec<String>, ty: Vec<String>) -> IndicesExistsType {
-        IndicesExistsType::new(self.client.clone(), index, ty)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html"]
-    pub fn flush<B>(&self) -> IndicesFlush<B>
+    #[doc = "Creates an index with optional settings and mappings."]
+    pub fn create<B>(&self, parts: IndicesCreateUrlParts) -> IndicesCreate<B>
     where
         B: Serialize,
     {
-        IndicesFlush::new(self.client.clone())
+        IndicesCreate::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html#synced-flush-api"]
-    pub fn flush_synced<B>(&self) -> IndicesFlushSynced<B>
+    #[doc = "Deletes an index."]
+    pub fn delete(&self, parts: IndicesDeleteUrlParts) -> IndicesDelete {
+        IndicesDelete::new(self.client.clone(), parts)
+    }
+    #[doc = "Deletes an alias."]
+    pub fn delete_alias(&self, parts: IndicesDeleteAliasUrlParts) -> IndicesDeleteAlias {
+        IndicesDeleteAlias::new(self.client.clone(), parts)
+    }
+    #[doc = "Deletes an index template."]
+    pub fn delete_template(&self, parts: IndicesDeleteTemplateUrlParts) -> IndicesDeleteTemplate {
+        IndicesDeleteTemplate::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns information about whether a particular index exists."]
+    pub fn exists(&self, parts: IndicesExistsUrlParts) -> IndicesExists {
+        IndicesExists::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns information about whether a particular alias exists."]
+    pub fn exists_alias(&self, parts: IndicesExistsAliasUrlParts) -> IndicesExistsAlias {
+        IndicesExistsAlias::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns information about whether a particular index template exists."]
+    pub fn exists_template(&self, parts: IndicesExistsTemplateUrlParts) -> IndicesExistsTemplate {
+        IndicesExistsTemplate::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns information about whether a particular document type exists. (DEPRECATED)"]
+    pub fn exists_type(&self, parts: IndicesExistsTypeUrlParts) -> IndicesExistsType {
+        IndicesExistsType::new(self.client.clone(), parts)
+    }
+    #[doc = "Performs the flush operation on one or more indices."]
+    pub fn flush<B>(&self, parts: IndicesFlushUrlParts) -> IndicesFlush<B>
     where
         B: Serialize,
     {
-        IndicesFlushSynced::new(self.client.clone())
+        IndicesFlush::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html"]
-    pub fn forcemerge<B>(&self) -> IndicesForcemerge<B>
+    #[doc = "Performs a synced flush operation on one or more indices."]
+    pub fn flush_synced<B>(&self, parts: IndicesFlushSyncedUrlParts) -> IndicesFlushSynced<B>
     where
         B: Serialize,
     {
-        IndicesForcemerge::new(self.client.clone())
+        IndicesFlushSynced::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn freeze<B>(&self, index: String) -> IndicesFreeze<B>
+    #[doc = "Performs the force merge operation on one or more indices."]
+    pub fn forcemerge<B>(&self, parts: IndicesForcemergeUrlParts) -> IndicesForcemerge<B>
     where
         B: Serialize,
     {
-        IndicesFreeze::new(self.client.clone(), index)
+        IndicesForcemerge::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html"]
-    pub fn get(&self, index: Vec<String>) -> IndicesGet {
-        IndicesGet::new(self.client.clone(), index)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn get_alias(&self) -> IndicesGetAlias {
-        IndicesGetAlias::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html"]
-    pub fn get_field_mapping(&self, fields: Vec<String>) -> IndicesGetFieldMapping {
-        IndicesGetFieldMapping::new(self.client.clone(), fields)
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html"]
-    pub fn get_mapping(&self) -> IndicesGetMapping {
-        IndicesGetMapping::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html"]
-    pub fn get_settings(&self) -> IndicesGetSettings {
-        IndicesGetSettings::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn get_template(&self) -> IndicesGetTemplate {
-        IndicesGetTemplate::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
-    pub fn get_upgrade(&self) -> IndicesGetUpgrade {
-        IndicesGetUpgrade::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html"]
-    pub fn open<B>(&self, index: Vec<String>) -> IndicesOpen<B>
+    pub fn freeze<B>(&self, parts: IndicesFreezeUrlParts) -> IndicesFreeze<B>
     where
         B: Serialize,
     {
-        IndicesOpen::new(self.client.clone(), index)
+        IndicesFreeze::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
-    pub fn put_alias<B>(&self, index: Vec<String>, name: String) -> IndicesPutAlias<B>
+    #[doc = "Returns information about one or more indices."]
+    pub fn get(&self, parts: IndicesGetUrlParts) -> IndicesGet {
+        IndicesGet::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns an alias."]
+    pub fn get_alias(&self, parts: IndicesGetAliasUrlParts) -> IndicesGetAlias {
+        IndicesGetAlias::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns mapping for one or more fields."]
+    pub fn get_field_mapping(
+        &self,
+        parts: IndicesGetFieldMappingUrlParts,
+    ) -> IndicesGetFieldMapping {
+        IndicesGetFieldMapping::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns mappings for one or more indices."]
+    pub fn get_mapping(&self, parts: IndicesGetMappingUrlParts) -> IndicesGetMapping {
+        IndicesGetMapping::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns settings for one or more indices."]
+    pub fn get_settings(&self, parts: IndicesGetSettingsUrlParts) -> IndicesGetSettings {
+        IndicesGetSettings::new(self.client.clone(), parts)
+    }
+    #[doc = "Returns an index template."]
+    pub fn get_template(&self, parts: IndicesGetTemplateUrlParts) -> IndicesGetTemplate {
+        IndicesGetTemplate::new(self.client.clone(), parts)
+    }
+    #[doc = "The _upgrade API is no longer useful and will be removed."]
+    pub fn get_upgrade(&self, parts: IndicesGetUpgradeUrlParts) -> IndicesGetUpgrade {
+        IndicesGetUpgrade::new(self.client.clone(), parts)
+    }
+    #[doc = "Opens an index."]
+    pub fn open<B>(&self, parts: IndicesOpenUrlParts) -> IndicesOpen<B>
     where
         B: Serialize,
     {
-        IndicesPutAlias::new(self.client.clone(), index, name)
+        IndicesOpen::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html"]
-    pub fn put_mapping<B>(&self) -> IndicesPutMapping<B>
+    #[doc = "Creates or updates an alias."]
+    pub fn put_alias<B>(&self, parts: IndicesPutAliasUrlParts) -> IndicesPutAlias<B>
     where
         B: Serialize,
     {
-        IndicesPutMapping::new(self.client.clone())
+        IndicesPutAlias::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html"]
-    pub fn put_settings<B>(&self) -> IndicesPutSettings<B>
+    #[doc = "Updates the index mappings."]
+    pub fn put_mapping<B>(&self, parts: IndicesPutMappingUrlParts) -> IndicesPutMapping<B>
     where
         B: Serialize,
     {
-        IndicesPutSettings::new(self.client.clone())
+        IndicesPutMapping::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html"]
-    pub fn put_template<B>(&self, name: String) -> IndicesPutTemplate<B>
+    #[doc = "Updates the index settings."]
+    pub fn put_settings<B>(&self, parts: IndicesPutSettingsUrlParts) -> IndicesPutSettings<B>
     where
         B: Serialize,
     {
-        IndicesPutTemplate::new(self.client.clone(), name)
+        IndicesPutSettings::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html"]
-    pub fn recovery(&self) -> IndicesRecovery {
-        IndicesRecovery::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html"]
-    pub fn refresh<B>(&self) -> IndicesRefresh<B>
+    #[doc = "Creates or updates an index template."]
+    pub fn put_template<B>(&self, parts: IndicesPutTemplateUrlParts) -> IndicesPutTemplate<B>
     where
         B: Serialize,
     {
-        IndicesRefresh::new(self.client.clone())
+        IndicesPutTemplate::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html"]
-    pub fn reload_search_analyzers<B>(&self, index: Vec<String>) -> IndicesReloadSearchAnalyzers<B>
+    #[doc = "Returns information about ongoing index shard recoveries."]
+    pub fn recovery(&self, parts: IndicesRecoveryUrlParts) -> IndicesRecovery {
+        IndicesRecovery::new(self.client.clone(), parts)
+    }
+    #[doc = "Performs the refresh operation in one or more indices."]
+    pub fn refresh<B>(&self, parts: IndicesRefreshUrlParts) -> IndicesRefresh<B>
     where
         B: Serialize,
     {
-        IndicesReloadSearchAnalyzers::new(self.client.clone(), index)
+        IndicesRefresh::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html"]
-    pub fn rollover<B>(&self, alias: String) -> IndicesRollover<B>
+    pub fn reload_search_analyzers<B>(
+        &self,
+        parts: IndicesReloadSearchAnalyzersUrlParts,
+    ) -> IndicesReloadSearchAnalyzers<B>
     where
         B: Serialize,
     {
-        IndicesRollover::new(self.client.clone(), alias)
+        IndicesReloadSearchAnalyzers::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html"]
-    pub fn segments(&self) -> IndicesSegments {
-        IndicesSegments::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html"]
-    pub fn shard_stores(&self) -> IndicesShardStores {
-        IndicesShardStores::new(self.client.clone())
-    }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html"]
-    pub fn shrink<B>(&self, index: String, target: String) -> IndicesShrink<B>
+    #[doc = "Updates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
+    pub fn rollover<B>(&self, parts: IndicesRolloverUrlParts) -> IndicesRollover<B>
     where
         B: Serialize,
     {
-        IndicesShrink::new(self.client.clone(), index, target)
+        IndicesRollover::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html"]
-    pub fn split<B>(&self, index: String, target: String) -> IndicesSplit<B>
+    #[doc = "Provides low-level information about segments in a Lucene index."]
+    pub fn segments(&self, parts: IndicesSegmentsUrlParts) -> IndicesSegments {
+        IndicesSegments::new(self.client.clone(), parts)
+    }
+    #[doc = "Provides store information for shard copies of indices."]
+    pub fn shard_stores(&self, parts: IndicesShardStoresUrlParts) -> IndicesShardStores {
+        IndicesShardStores::new(self.client.clone(), parts)
+    }
+    #[doc = "Allow to shrink an existing index into a new index with fewer primary shards."]
+    pub fn shrink<B>(&self, parts: IndicesShrinkUrlParts) -> IndicesShrink<B>
     where
         B: Serialize,
     {
-        IndicesSplit::new(self.client.clone(), index, target)
+        IndicesShrink::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html"]
-    pub fn stats(&self) -> IndicesStats {
-        IndicesStats::new(self.client.clone())
-    }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html"]
-    pub fn unfreeze<B>(&self, index: String) -> IndicesUnfreeze<B>
+    #[doc = "Allows you to split an existing index into a new index with more primary shards."]
+    pub fn split<B>(&self, parts: IndicesSplitUrlParts) -> IndicesSplit<B>
     where
         B: Serialize,
     {
-        IndicesUnfreeze::new(self.client.clone(), index)
+        IndicesSplit::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html"]
+    #[doc = "Provides statistics on operations happening in an index."]
+    pub fn stats(&self, parts: IndicesStatsUrlParts) -> IndicesStats {
+        IndicesStats::new(self.client.clone(), parts)
+    }
+    pub fn unfreeze<B>(&self, parts: IndicesUnfreezeUrlParts) -> IndicesUnfreeze<B>
+    where
+        B: Serialize,
+    {
+        IndicesUnfreeze::new(self.client.clone(), parts)
+    }
+    #[doc = "Updates index aliases."]
     pub fn update_aliases<B>(&self) -> IndicesUpdateAliases<B>
     where
         B: Serialize,
     {
         IndicesUpdateAliases::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html"]
-    pub fn upgrade<B>(&self) -> IndicesUpgrade<B>
+    #[doc = "The _upgrade API is no longer useful and will be removed."]
+    pub fn upgrade<B>(&self, parts: IndicesUpgradeUrlParts) -> IndicesUpgrade<B>
     where
         B: Serialize,
     {
-        IndicesUpgrade::new(self.client.clone())
+        IndicesUpgrade::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html"]
-    pub fn validate_query<B>(&self) -> IndicesValidateQuery<B>
+    #[doc = "Allows a user to validate a potentially expensive query without executing it."]
+    pub fn validate_query<B>(&self, parts: IndicesValidateQueryUrlParts) -> IndicesValidateQuery<B>
     where
         B: Serialize,
     {
-        IndicesValidateQuery::new(self.client.clone())
+        IndicesValidateQuery::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

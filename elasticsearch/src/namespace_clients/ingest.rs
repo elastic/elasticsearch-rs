@@ -23,23 +23,42 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Delete Pipeline API"]
+pub enum IngestDeletePipelineUrlParts {
+    Id(String),
+}
+impl IngestDeletePipelineUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IngestDeletePipelineUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(18usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Delete Pipeline API"]
 pub struct IngestDeletePipeline {
     client: Elasticsearch,
+    parts: IngestDeletePipelineUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl IngestDeletePipeline {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestDeletePipelineUrlParts) -> Self {
         IngestDeletePipeline {
             client,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -62,11 +81,6 @@ impl IngestDeletePipeline {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Pipeline ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
@@ -92,13 +106,7 @@ impl IngestDeletePipeline {
 }
 impl Sender for IngestDeletePipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(18usize + id.len());
-            p.push_str("/_ingest/pipeline/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -140,25 +148,45 @@ impl Sender for IngestDeletePipeline {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Get Pipeline API"]
+pub enum IngestGetPipelineUrlParts {
+    None,
+    Id(String),
+}
+impl IngestGetPipelineUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IngestGetPipelineUrlParts::None => "/_ingest/pipeline".into(),
+            IngestGetPipelineUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(18usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Get Pipeline API"]
 pub struct IngestGetPipeline {
     client: Elasticsearch,
+    parts: IngestGetPipelineUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl IngestGetPipeline {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestGetPipelineUrlParts) -> Self {
         IngestGetPipeline {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             master_timeout: None,
             pretty: None,
             source: None,
@@ -179,11 +207,6 @@ impl IngestGetPipeline {
         self.human = human;
         self
     }
-    #[doc = "Comma separated list of pipeline ids. Wildcards supported"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -202,16 +225,7 @@ impl IngestGetPipeline {
 }
 impl Sender for IngestGetPipeline {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(18usize + id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ingest/pipeline"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -250,9 +264,23 @@ impl Sender for IngestGetPipeline {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Processor Grok API"]
+pub enum IngestProcessorGrokUrlParts {
+    None,
+}
+impl IngestProcessorGrokUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IngestProcessorGrokUrlParts::None => "/_ingest/processor/grok".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Processor Grok API"]
 pub struct IngestProcessorGrok {
     client: Elasticsearch,
+    parts: IngestProcessorGrokUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -263,6 +291,7 @@ impl IngestProcessorGrok {
     pub fn new(client: Elasticsearch) -> Self {
         IngestProcessorGrok {
             client,
+            parts: IngestProcessorGrokUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -298,7 +327,7 @@ impl IngestProcessorGrok {
 }
 impl Sender for IngestProcessorGrok {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ingest/processor/grok");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -334,14 +363,32 @@ impl Sender for IngestProcessorGrok {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Put Pipeline API"]
+pub enum IngestPutPipelineUrlParts {
+    Id(String),
+}
+impl IngestPutPipelineUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IngestPutPipelineUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(18usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Put Pipeline API"]
 pub struct IngestPutPipeline<B> {
     client: Elasticsearch,
+    parts: IngestPutPipelineUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -351,10 +398,10 @@ impl<B> IngestPutPipeline<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestPutPipelineUrlParts) -> Self {
         IngestPutPipeline {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -385,11 +432,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Pipeline ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Explicit operation timeout for connection to master node"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -416,13 +458,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(18usize + id.len());
-            p.push_str("/_ingest/pipeline/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -464,14 +500,35 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ingest Simulate API"]
+pub enum IngestSimulateUrlParts {
+    None,
+    Id(String),
+}
+impl IngestSimulateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IngestSimulateUrlParts::None => "/_ingest/pipeline/_simulate".into(),
+            IngestSimulateUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(28usize + id.len());
+                p.push_str("/_ingest/pipeline/");
+                p.push_str(id.as_ref());
+                p.push_str("/_simulate");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ingest Simulate API"]
 pub struct IngestSimulate<B> {
     client: Elasticsearch,
+    parts: IngestSimulateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     verbose: Option<bool>,
@@ -480,14 +537,14 @@ impl<B> IngestSimulate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestSimulateUrlParts) -> Self {
         IngestSimulate {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             pretty: None,
             source: None,
             verbose: None,
@@ -513,11 +570,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Pipeline ID"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -539,17 +591,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(28usize + id.len());
-                p.push_str("/_ingest/pipeline/");
-                p.push_str(id.as_ref());
-                p.push_str("/_simulate");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ingest/pipeline/_simulate"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -599,31 +641,31 @@ impl Ingest {
     pub fn new(client: Elasticsearch) -> Self {
         Ingest { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html"]
-    pub fn delete_pipeline(&self, id: String) -> IngestDeletePipeline {
-        IngestDeletePipeline::new(self.client.clone(), id)
+    #[doc = "Deletes a pipeline."]
+    pub fn delete_pipeline(&self, parts: IngestDeletePipelineUrlParts) -> IngestDeletePipeline {
+        IngestDeletePipeline::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html"]
-    pub fn get_pipeline(&self) -> IngestGetPipeline {
-        IngestGetPipeline::new(self.client.clone())
+    #[doc = "Returns a pipeline."]
+    pub fn get_pipeline(&self, parts: IngestGetPipelineUrlParts) -> IngestGetPipeline {
+        IngestGetPipeline::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get"]
+    #[doc = "Returns a list of the built-in patterns."]
     pub fn processor_grok(&self) -> IngestProcessorGrok {
         IngestProcessorGrok::new(self.client.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html"]
-    pub fn put_pipeline<B>(&self, id: String) -> IngestPutPipeline<B>
+    #[doc = "Creates or updates a pipeline."]
+    pub fn put_pipeline<B>(&self, parts: IngestPutPipelineUrlParts) -> IngestPutPipeline<B>
     where
         B: Serialize,
     {
-        IngestPutPipeline::new(self.client.clone(), id)
+        IngestPutPipeline::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html"]
-    pub fn simulate<B>(&self) -> IngestSimulate<B>
+    #[doc = "Allows to simulate a pipeline with example documents."]
+    pub fn simulate<B>(&self, parts: IngestSimulateUrlParts) -> IngestSimulate<B>
     where
         B: Serialize,
     {
-        IngestSimulate::new(self.client.clone())
+        IngestSimulate::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

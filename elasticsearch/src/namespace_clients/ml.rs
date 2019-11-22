@@ -23,16 +23,36 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Close Job API"]
+pub enum MlCloseJobUrlParts {
+    JobId(String),
+}
+impl MlCloseJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlCloseJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(30usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_close");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Close Job API"]
 pub struct MlCloseJob<B> {
     client: Elasticsearch,
+    parts: MlCloseJobUrlParts,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -41,10 +61,10 @@ impl<B> MlCloseJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlCloseJobUrlParts) -> Self {
         MlCloseJob {
             client,
-            job_id: job_id,
+            parts,
             allow_no_jobs: None,
             body: None,
             error_trace: None,
@@ -86,11 +106,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the job to close"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -112,14 +127,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(30usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_close");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -164,10 +172,28 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar API"]
+pub enum MlDeleteCalendarUrlParts {
+    CalendarId(String),
+}
+impl MlDeleteCalendarUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteCalendarUrlParts::CalendarId(ref calendar_id) => {
+                let mut p = String::with_capacity(15usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar API"]
 pub struct MlDeleteCalendar {
     client: Elasticsearch,
-    calendar_id: String,
+    parts: MlDeleteCalendarUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -175,21 +201,16 @@ pub struct MlDeleteCalendar {
     source: Option<String>,
 }
 impl MlDeleteCalendar {
-    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarUrlParts) -> Self {
         MlDeleteCalendar {
             client,
-            calendar_id: calendar_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
         }
-    }
-    #[doc = "The ID of the calendar to delete"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -219,13 +240,7 @@ impl MlDeleteCalendar {
 }
 impl Sender for MlDeleteCalendar {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let mut p = String::with_capacity(15usize + calendar_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -261,23 +276,41 @@ impl Sender for MlDeleteCalendar {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar Event API"]
+pub enum MlDeleteCalendarEventUrlParts {
+    CalendarIdEventId(String, String),
+}
+impl MlDeleteCalendarEventUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteCalendarEventUrlParts::CalendarIdEventId(ref calendar_id, ref event_id) => {
+                let mut p = String::with_capacity(23usize + calendar_id.len() + event_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.push_str("/events/");
+                p.push_str(event_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar Event API"]
 pub struct MlDeleteCalendarEvent {
     client: Elasticsearch,
-    calendar_id: String,
+    parts: MlDeleteCalendarEventUrlParts,
     error_trace: Option<bool>,
-    event_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteCalendarEvent {
-    pub fn new(client: Elasticsearch, calendar_id: String, event_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarEventUrlParts) -> Self {
         MlDeleteCalendarEvent {
             client,
-            calendar_id: calendar_id,
-            event_id: event_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -285,19 +318,9 @@ impl MlDeleteCalendarEvent {
             source: None,
         }
     }
-    #[doc = "The ID of the calendar to modify"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
-        self
-    }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
-        self
-    }
-    #[doc = "The ID of the event to remove from the calendar"]
-    pub fn event_id(mut self, event_id: String) -> Self {
-        self.event_id = event_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -323,16 +346,7 @@ impl MlDeleteCalendarEvent {
 }
 impl Sender for MlDeleteCalendarEvent {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let event_id = self.event_id;
-            let mut p = String::with_capacity(23usize + calendar_id.len() + event_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            p.push_str("/events/");
-            p.push_str(event_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -368,34 +382,47 @@ impl Sender for MlDeleteCalendarEvent {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Calendar Job API"]
+pub enum MlDeleteCalendarJobUrlParts {
+    CalendarIdJobId(String, String),
+}
+impl MlDeleteCalendarJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteCalendarJobUrlParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+                let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.push_str("/jobs/");
+                p.push_str(job_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Calendar Job API"]
 pub struct MlDeleteCalendarJob {
     client: Elasticsearch,
-    calendar_id: String,
+    parts: MlDeleteCalendarJobUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteCalendarJob {
-    pub fn new(client: Elasticsearch, calendar_id: String, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarJobUrlParts) -> Self {
         MlDeleteCalendarJob {
             client,
-            calendar_id: calendar_id,
-            job_id: job_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
         }
-    }
-    #[doc = "The ID of the calendar to modify"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -410,11 +437,6 @@ impl MlDeleteCalendarJob {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the job to remove from the calendar"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -430,16 +452,7 @@ impl MlDeleteCalendarJob {
 }
 impl Sender for MlDeleteCalendarJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            p.push_str("/jobs/");
-            p.push_str(job_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -475,21 +488,39 @@ impl Sender for MlDeleteCalendarJob {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Data Frame Analytics API"]
+pub enum MlDeleteDataFrameAnalyticsUrlParts {
+    Id(String),
+}
+impl MlDeleteDataFrameAnalyticsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteDataFrameAnalyticsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(26usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Data Frame Analytics API"]
 pub struct MlDeleteDataFrameAnalytics {
     client: Elasticsearch,
+    parts: MlDeleteDataFrameAnalyticsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteDataFrameAnalytics {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteDataFrameAnalyticsUrlParts) -> Self {
         MlDeleteDataFrameAnalytics {
             client,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -512,11 +543,6 @@ impl MlDeleteDataFrameAnalytics {
         self.human = human;
         self
     }
-    #[doc = "The ID of the data frame analytics to delete"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -530,13 +556,7 @@ impl MlDeleteDataFrameAnalytics {
 }
 impl Sender for MlDeleteDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(26usize + id.len());
-            p.push_str("/_ml/data_frame/analytics/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -572,10 +592,28 @@ impl Sender for MlDeleteDataFrameAnalytics {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Datafeed API"]
+pub enum MlDeleteDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlDeleteDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Datafeed API"]
 pub struct MlDeleteDatafeed {
     client: Elasticsearch,
-    datafeed_id: String,
+    parts: MlDeleteDatafeedUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -584,10 +622,10 @@ pub struct MlDeleteDatafeed {
     source: Option<String>,
 }
 impl MlDeleteDatafeed {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteDatafeedUrlParts) -> Self {
         MlDeleteDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -595,11 +633,6 @@ impl MlDeleteDatafeed {
             pretty: None,
             source: None,
         }
-    }
-    #[doc = "The ID of the datafeed to delete"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -634,13 +667,7 @@ impl MlDeleteDatafeed {
 }
 impl Sender for MlDeleteDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(15usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -679,9 +706,23 @@ impl Sender for MlDeleteDatafeed {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Expired Data API"]
+pub enum MlDeleteExpiredDataUrlParts {
+    None,
+}
+impl MlDeleteExpiredDataUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteExpiredDataUrlParts::None => "/_ml/_delete_expired_data".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Expired Data API"]
 pub struct MlDeleteExpiredData {
     client: Elasticsearch,
+    parts: MlDeleteExpiredDataUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -692,6 +733,7 @@ impl MlDeleteExpiredData {
     pub fn new(client: Elasticsearch) -> Self {
         MlDeleteExpiredData {
             client,
+            parts: MlDeleteExpiredDataUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -727,7 +769,7 @@ impl MlDeleteExpiredData {
 }
 impl Sender for MlDeleteExpiredData {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/_delete_expired_data");
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -763,21 +805,39 @@ impl Sender for MlDeleteExpiredData {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Filter API"]
+pub enum MlDeleteFilterUrlParts {
+    FilterId(String),
+}
+impl MlDeleteFilterUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteFilterUrlParts::FilterId(ref filter_id) => {
+                let mut p = String::with_capacity(13usize + filter_id.len());
+                p.push_str("/_ml/filters/");
+                p.push_str(filter_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Filter API"]
 pub struct MlDeleteFilter {
     client: Elasticsearch,
+    parts: MlDeleteFilterUrlParts,
     error_trace: Option<bool>,
-    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlDeleteFilter {
-    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteFilterUrlParts) -> Self {
         MlDeleteFilter {
             client,
-            filter_id: filter_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -788,11 +848,6 @@ impl MlDeleteFilter {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
-        self
-    }
-    #[doc = "The ID of the filter to delete"]
-    pub fn filter_id(mut self, filter_id: String) -> Self {
-        self.filter_id = filter_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -818,13 +873,7 @@ impl MlDeleteFilter {
 }
 impl Sender for MlDeleteFilter {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let filter_id = self.filter_id;
-            let mut p = String::with_capacity(13usize + filter_id.len());
-            p.push_str("/_ml/filters/");
-            p.push_str(filter_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -860,28 +909,54 @@ impl Sender for MlDeleteFilter {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Forecast API"]
+pub enum MlDeleteForecastUrlParts {
+    JobId(String),
+    JobIdForecastId(String, String),
+}
+impl MlDeleteForecastUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteForecastUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(33usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_forecast");
+                p.into()
+            }
+            MlDeleteForecastUrlParts::JobIdForecastId(ref job_id, ref forecast_id) => {
+                let mut p = String::with_capacity(34usize + job_id.len() + forecast_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_forecast/");
+                p.push_str(forecast_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Forecast API"]
 pub struct MlDeleteForecast {
     client: Elasticsearch,
+    parts: MlDeleteForecastUrlParts,
     allow_no_forecasts: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
-    forecast_id: Option<String>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl MlDeleteForecast {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteForecastUrlParts) -> Self {
         MlDeleteForecast {
             client,
-            job_id: job_id,
+            parts,
             allow_no_forecasts: None,
             error_trace: None,
             filter_path: None,
-            forecast_id: None,
             human: None,
             pretty: None,
             source: None,
@@ -903,19 +978,9 @@ impl MlDeleteForecast {
         self.filter_path = filter_path;
         self
     }
-    #[doc = "The ID of the forecast to delete, can be comma delimited list. Leaving blank implies `_all`"]
-    pub fn forecast_id(mut self, forecast_id: Option<String>) -> Self {
-        self.forecast_id = forecast_id;
-        self
-    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the job from which to delete forecasts"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -936,26 +1001,7 @@ impl MlDeleteForecast {
 }
 impl Sender for MlDeleteForecast {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.forecast_id {
-            Some(forecast_id) => {
-                let job_id = self.job_id;
-                let forecast_id = forecast_id;
-                let mut p = String::with_capacity(34usize + job_id.len() + forecast_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/_forecast/");
-                p.push_str(forecast_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let job_id = self.job_id;
-                let mut p = String::with_capacity(33usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/_forecast");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -997,23 +1043,41 @@ impl Sender for MlDeleteForecast {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Job API"]
+pub enum MlDeleteJobUrlParts {
+    JobId(String),
+}
+impl MlDeleteJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(23usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Job API"]
 pub struct MlDeleteJob {
     client: Elasticsearch,
+    parts: MlDeleteJobUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_completion: Option<bool>,
 }
 impl MlDeleteJob {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteJobUrlParts) -> Self {
         MlDeleteJob {
             client,
-            job_id: job_id,
+            parts,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -1043,11 +1107,6 @@ impl MlDeleteJob {
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to delete"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1066,13 +1125,7 @@ impl MlDeleteJob {
 }
 impl Sender for MlDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(23usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1117,23 +1170,41 @@ impl Sender for MlDeleteJob {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Delete Model Snapshot API"]
+pub enum MlDeleteModelSnapshotUrlParts {
+    JobIdSnapshotId(String, String),
+}
+impl MlDeleteModelSnapshotUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlDeleteModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(snapshot_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Delete Model Snapshot API"]
 pub struct MlDeleteModelSnapshot {
     client: Elasticsearch,
+    parts: MlDeleteModelSnapshotUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: String,
     source: Option<String>,
 }
 impl MlDeleteModelSnapshot {
-    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteModelSnapshotUrlParts) -> Self {
         MlDeleteModelSnapshot {
             client,
-            job_id: job_id,
-            snapshot_id: snapshot_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1156,19 +1227,9 @@ impl MlDeleteModelSnapshot {
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to fetch"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
-        self
-    }
-    #[doc = "The ID of the snapshot to delete"]
-    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
-        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -1179,16 +1240,7 @@ impl MlDeleteModelSnapshot {
 }
 impl Sender for MlDeleteModelSnapshot {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let snapshot_id = self.snapshot_id;
-            let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/model_snapshots/");
-            p.push_str(snapshot_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1224,9 +1276,137 @@ impl Sender for MlDeleteModelSnapshot {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Estimate Memory Usage API"]
+pub enum MlEstimateMemoryUsageUrlParts {
+    None,
+}
+impl MlEstimateMemoryUsageUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlEstimateMemoryUsageUrlParts::None => {
+                "/_ml/data_frame/analytics/_estimate_memory_usage".into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Estimate Memory Usage API"]
+pub struct MlEstimateMemoryUsage<B> {
+    client: Elasticsearch,
+    parts: MlEstimateMemoryUsageUrlParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<Vec<String>>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<String>,
+}
+impl<B> MlEstimateMemoryUsage<B>
+where
+    B: Serialize,
+{
+    pub fn new(client: Elasticsearch) -> Self {
+        MlEstimateMemoryUsage {
+            client,
+            parts: MlEstimateMemoryUsageUrlParts::None,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body(mut self, body: Option<B>) -> Self {
+        self.body = body;
+        self
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
+        self.error_trace = error_trace;
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
+        self.filter_path = filter_path;
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: Option<bool>) -> Self {
+        self.human = human;
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
+        self.pretty = pretty;
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: Option<String>) -> Self {
+        self.source = source;
+        self
+    }
+}
+impl<B> Sender for MlEstimateMemoryUsage<B>
+where
+    B: Serialize,
+{
+    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let path = self.parts.build();
+        let method = HttpMethod::Post;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct {
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_vec_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                filter_path: Option<Vec<String>>,
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                human: Option<bool>,
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                pretty: Option<bool>,
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                source: Option<String>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, query_string.as_ref(), body)?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Evaluate Data Frame API"]
+pub enum MlEvaluateDataFrameUrlParts {
+    None,
+}
+impl MlEvaluateDataFrameUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlEvaluateDataFrameUrlParts::None => "/_ml/data_frame/_evaluate".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Evaluate Data Frame API"]
 pub struct MlEvaluateDataFrame<B> {
     client: Elasticsearch,
+    parts: MlEvaluateDataFrameUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1241,6 +1421,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlEvaluateDataFrame {
             client,
+            parts: MlEvaluateDataFrameUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1285,7 +1466,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/data_frame/_evaluate");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1321,9 +1502,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Find File Structure API"]
+pub enum MlFindFileStructureUrlParts {
+    None,
+}
+impl MlFindFileStructureUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlFindFileStructureUrlParts::None => "/_ml/find_file_structure".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Find File Structure API"]
 pub struct MlFindFileStructure<B> {
     client: Elasticsearch,
+    parts: MlFindFileStructureUrlParts,
     body: Option<B>,
     charset: Option<String>,
     column_names: Option<Vec<String>>,
@@ -1352,6 +1547,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlFindFileStructure {
             client,
+            parts: MlFindFileStructureUrlParts::None,
             body: None,
             charset: None,
             column_names: None,
@@ -1480,7 +1676,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/find_file_structure");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1565,9 +1761,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Flush Job API"]
+pub enum MlFlushJobUrlParts {
+    JobId(String),
+}
+impl MlFlushJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlFlushJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(30usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_flush");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Flush Job API"]
 pub struct MlFlushJob<B> {
     client: Elasticsearch,
+    parts: MlFlushJobUrlParts,
     advance_time: Option<String>,
     body: Option<B>,
     calc_interim: Option<bool>,
@@ -1575,7 +1791,6 @@ pub struct MlFlushJob<B> {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     skip_time: Option<String>,
     source: Option<String>,
@@ -1585,10 +1800,10 @@ impl<B> MlFlushJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlFlushJobUrlParts) -> Self {
         MlFlushJob {
             client,
-            job_id: job_id,
+            parts,
             advance_time: None,
             body: None,
             calc_interim: None,
@@ -1637,11 +1852,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the job to flush"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1668,14 +1878,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(30usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_flush");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1726,16 +1929,35 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Forecast API"]
+pub enum MlForecastUrlParts {
+    JobId(String),
+}
+impl MlForecastUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlForecastUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(33usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_forecast");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Forecast API"]
 pub struct MlForecast<B> {
     client: Elasticsearch,
+    parts: MlForecastUrlParts,
     body: Option<B>,
     duration: Option<String>,
     error_trace: Option<bool>,
     expires_in: Option<String>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -1743,10 +1965,10 @@ impl<B> MlForecast<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlForecastUrlParts) -> Self {
         MlForecast {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             duration: None,
             error_trace: None,
@@ -1787,11 +2009,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to forecast for"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1808,14 +2025,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(33usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_forecast");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1857,9 +2067,38 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Buckets API"]
+pub enum MlGetBucketsUrlParts {
+    JobIdTimestamp(String, String),
+    JobId(String),
+}
+impl MlGetBucketsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetBucketsUrlParts::JobIdTimestamp(ref job_id, ref timestamp) => {
+                let mut p = String::with_capacity(40usize + job_id.len() + timestamp.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/buckets/");
+                p.push_str(timestamp.as_ref());
+                p.into()
+            }
+            MlGetBucketsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(39usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/buckets");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Buckets API"]
 pub struct MlGetBuckets<B> {
     client: Elasticsearch,
+    parts: MlGetBucketsUrlParts,
     anomaly_score: Option<f64>,
     body: Option<B>,
     desc: Option<bool>,
@@ -1870,22 +2109,20 @@ pub struct MlGetBuckets<B> {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
     source: Option<String>,
     start: Option<String>,
-    timestamp: Option<String>,
 }
 impl<B> MlGetBuckets<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetBucketsUrlParts) -> Self {
         MlGetBuckets {
             client,
-            job_id: job_id,
+            parts,
             anomaly_score: None,
             body: None,
             desc: None,
@@ -1901,7 +2138,6 @@ where
             sort: None,
             source: None,
             start: None,
-            timestamp: None,
         }
     }
     #[doc = "Filter for the most anomalous buckets"]
@@ -1954,11 +2190,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "ID of the job to get bucket results from"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1984,37 +2215,13 @@ where
         self.start = start;
         self
     }
-    #[doc = "The timestamp of the desired single bucket result"]
-    pub fn timestamp(mut self, timestamp: Option<String>) -> Self {
-        self.timestamp = timestamp;
-        self
-    }
 }
 impl<B> Sender for MlGetBuckets<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.timestamp {
-            Some(timestamp) => {
-                let job_id = self.job_id;
-                let timestamp = timestamp;
-                let mut p = String::with_capacity(40usize + job_id.len() + timestamp.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/results/buckets/");
-                p.push_str(timestamp.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let job_id = self.job_id;
-                let mut p = String::with_capacity(39usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/results/buckets");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2080,10 +2287,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Calendar Events API"]
+pub enum MlGetCalendarEventsUrlParts {
+    CalendarId(String),
+}
+impl MlGetCalendarEventsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetCalendarEventsUrlParts::CalendarId(ref calendar_id) => {
+                let mut p = String::with_capacity(22usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.push_str("/events");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Calendar Events API"]
 pub struct MlGetCalendarEvents {
     client: Elasticsearch,
-    calendar_id: String,
+    parts: MlGetCalendarEventsUrlParts,
     end: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -2096,10 +2322,10 @@ pub struct MlGetCalendarEvents {
     start: Option<String>,
 }
 impl MlGetCalendarEvents {
-    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCalendarEventsUrlParts) -> Self {
         MlGetCalendarEvents {
             client,
-            calendar_id: calendar_id,
+            parts,
             end: None,
             error_trace: None,
             filter_path: None,
@@ -2111,11 +2337,6 @@ impl MlGetCalendarEvents {
             source: None,
             start: None,
         }
-    }
-    #[doc = "The ID of the calendar containing the events"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
-        self
     }
     #[doc = "Get events before this time"]
     pub fn end(mut self, end: Option<String>) -> Self {
@@ -2170,14 +2391,7 @@ impl MlGetCalendarEvents {
 }
 impl Sender for MlGetCalendarEvents {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let mut p = String::with_capacity(22usize + calendar_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            p.push_str("/events");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2228,11 +2442,31 @@ impl Sender for MlGetCalendarEvents {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Calendars API"]
+pub enum MlGetCalendarsUrlParts {
+    None,
+    CalendarId(String),
+}
+impl MlGetCalendarsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetCalendarsUrlParts::None => "/_ml/calendars".into(),
+            MlGetCalendarsUrlParts::CalendarId(ref calendar_id) => {
+                let mut p = String::with_capacity(15usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Calendars API"]
 pub struct MlGetCalendars<B> {
     client: Elasticsearch,
+    parts: MlGetCalendarsUrlParts,
     body: Option<B>,
-    calendar_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
@@ -2245,11 +2479,11 @@ impl<B> MlGetCalendars<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCalendarsUrlParts) -> Self {
         MlGetCalendars {
             client,
+            parts,
             body: None,
-            calendar_id: None,
             error_trace: None,
             filter_path: None,
             from: None,
@@ -2262,11 +2496,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the calendar to fetch"]
-    pub fn calendar_id(mut self, calendar_id: Option<String>) -> Self {
-        self.calendar_id = calendar_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2310,16 +2539,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.calendar_id {
-            Some(calendar_id) => {
-                let calendar_id = calendar_id;
-                let mut p = String::with_capacity(15usize + calendar_id.len());
-                p.push_str("/_ml/calendars/");
-                p.push_str(calendar_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/calendars"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2364,16 +2584,44 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Categories API"]
+pub enum MlGetCategoriesUrlParts {
+    JobIdCategoryId(String, i64),
+    JobId(String),
+}
+impl MlGetCategoriesUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetCategoriesUrlParts::JobIdCategoryId(ref job_id, ref category_id) => {
+                let category_id_str = category_id.to_string();
+                let mut p = String::with_capacity(43usize + job_id.len() + category_id_str.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/categories/");
+                p.push_str(category_id_str.as_ref());
+                p.into()
+            }
+            MlGetCategoriesUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(43usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/categories/");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Categories API"]
 pub struct MlGetCategories<B> {
     client: Elasticsearch,
+    parts: MlGetCategoriesUrlParts,
     body: Option<B>,
-    category_id: Option<i64>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<String>,
@@ -2382,12 +2630,11 @@ impl<B> MlGetCategories<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCategoriesUrlParts) -> Self {
         MlGetCategories {
             client,
-            job_id: job_id,
+            parts,
             body: None,
-            category_id: None,
             error_trace: None,
             filter_path: None,
             from: None,
@@ -2400,11 +2647,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The identifier of the category definition of interest"]
-    pub fn category_id(mut self, category_id: Option<i64>) -> Self {
-        self.category_id = category_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2425,11 +2667,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The name of the job"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2453,26 +2690,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.category_id {
-            Some(category_id) => {
-                let job_id = self.job_id;
-                let category_id_str = category_id.to_string();
-                let mut p = String::with_capacity(43usize + job_id.len() + category_id_str.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/results/categories/");
-                p.push_str(category_id_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let job_id = self.job_id;
-                let mut p = String::with_capacity(43usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/results/categories/");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2517,29 +2735,49 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Data Frame Analytics API"]
+pub enum MlGetDataFrameAnalyticsUrlParts {
+    Id(String),
+    None,
+}
+impl MlGetDataFrameAnalyticsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetDataFrameAnalyticsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(26usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            MlGetDataFrameAnalyticsUrlParts::None => "/_ml/data_frame/analytics".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Data Frame Analytics API"]
 pub struct MlGetDataFrameAnalytics {
     client: Elasticsearch,
+    parts: MlGetDataFrameAnalyticsUrlParts,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<String>,
 }
 impl MlGetDataFrameAnalytics {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDataFrameAnalyticsUrlParts) -> Self {
         MlGetDataFrameAnalytics {
             client,
+            parts,
             allow_no_match: None,
             error_trace: None,
             filter_path: None,
             from: None,
             human: None,
-            id: None,
             pretty: None,
             size: None,
             source: None,
@@ -2568,11 +2806,6 @@ impl MlGetDataFrameAnalytics {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the data frame analytics to fetch"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -2593,16 +2826,7 @@ impl MlGetDataFrameAnalytics {
 }
 impl Sender for MlGetDataFrameAnalytics {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(26usize + id.len());
-                p.push_str("/_ml/data_frame/analytics/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/data_frame/analytics"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2647,29 +2871,50 @@ impl Sender for MlGetDataFrameAnalytics {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Data Frame Analytics Stats API"]
+pub enum MlGetDataFrameAnalyticsStatsUrlParts {
+    None,
+    Id(String),
+}
+impl MlGetDataFrameAnalyticsStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetDataFrameAnalyticsStatsUrlParts::None => "/_ml/data_frame/analytics/_stats".into(),
+            MlGetDataFrameAnalyticsStatsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(33usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Data Frame Analytics Stats API"]
 pub struct MlGetDataFrameAnalyticsStats {
     client: Elasticsearch,
+    parts: MlGetDataFrameAnalyticsStatsUrlParts,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     size: Option<i32>,
     source: Option<String>,
 }
 impl MlGetDataFrameAnalyticsStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDataFrameAnalyticsStatsUrlParts) -> Self {
         MlGetDataFrameAnalyticsStats {
             client,
+            parts,
             allow_no_match: None,
             error_trace: None,
             filter_path: None,
             from: None,
             human: None,
-            id: None,
             pretty: None,
             size: None,
             source: None,
@@ -2700,11 +2945,6 @@ impl MlGetDataFrameAnalyticsStats {
         self.human = human;
         self
     }
-    #[doc = "The ID of the data frame analytics stats to fetch"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2723,17 +2963,7 @@ impl MlGetDataFrameAnalyticsStats {
 }
 impl Sender for MlGetDataFrameAnalyticsStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(33usize + id.len());
-                p.push_str("/_ml/data_frame/analytics/");
-                p.push_str(id.as_ref());
-                p.push_str("/_stats");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/data_frame/analytics/_stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2778,11 +3008,32 @@ impl Sender for MlGetDataFrameAnalyticsStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Datafeed Stats API"]
+pub enum MlGetDatafeedStatsUrlParts {
+    DatafeedId(String),
+    None,
+}
+impl MlGetDatafeedStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetDatafeedStatsUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(22usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+            MlGetDatafeedStatsUrlParts::None => "/_ml/datafeeds/_stats".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Datafeed Stats API"]
 pub struct MlGetDatafeedStats {
     client: Elasticsearch,
+    parts: MlGetDatafeedStatsUrlParts,
     allow_no_datafeeds: Option<bool>,
-    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2790,11 +3041,11 @@ pub struct MlGetDatafeedStats {
     source: Option<String>,
 }
 impl MlGetDatafeedStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDatafeedStatsUrlParts) -> Self {
         MlGetDatafeedStats {
             client,
+            parts,
             allow_no_datafeeds: None,
-            datafeed_id: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2805,11 +3056,6 @@ impl MlGetDatafeedStats {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
         self.allow_no_datafeeds = allow_no_datafeeds;
-        self
-    }
-    #[doc = "The ID of the datafeeds stats to fetch"]
-    pub fn datafeed_id(mut self, datafeed_id: Option<String>) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2840,17 +3086,7 @@ impl MlGetDatafeedStats {
 }
 impl Sender for MlGetDatafeedStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.datafeed_id {
-            Some(datafeed_id) => {
-                let datafeed_id = datafeed_id;
-                let mut p = String::with_capacity(22usize + datafeed_id.len());
-                p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
-                p.push_str("/_stats");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/datafeeds/_stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2889,11 +3125,31 @@ impl Sender for MlGetDatafeedStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Datafeeds API"]
+pub enum MlGetDatafeedsUrlParts {
+    DatafeedId(String),
+    None,
+}
+impl MlGetDatafeedsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetDatafeedsUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.into()
+            }
+            MlGetDatafeedsUrlParts::None => "/_ml/datafeeds".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Datafeeds API"]
 pub struct MlGetDatafeeds {
     client: Elasticsearch,
+    parts: MlGetDatafeedsUrlParts,
     allow_no_datafeeds: Option<bool>,
-    datafeed_id: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -2901,11 +3157,11 @@ pub struct MlGetDatafeeds {
     source: Option<String>,
 }
 impl MlGetDatafeeds {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDatafeedsUrlParts) -> Self {
         MlGetDatafeeds {
             client,
+            parts,
             allow_no_datafeeds: None,
-            datafeed_id: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2916,11 +3172,6 @@ impl MlGetDatafeeds {
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
     pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
         self.allow_no_datafeeds = allow_no_datafeeds;
-        self
-    }
-    #[doc = "The ID of the datafeeds to fetch"]
-    pub fn datafeed_id(mut self, datafeed_id: Option<String>) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -2951,16 +3202,7 @@ impl MlGetDatafeeds {
 }
 impl Sender for MlGetDatafeeds {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.datafeed_id {
-            Some(datafeed_id) => {
-                let datafeed_id = datafeed_id;
-                let mut p = String::with_capacity(15usize + datafeed_id.len());
-                p.push_str("/_ml/datafeeds/");
-                p.push_str(datafeed_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/datafeeds"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2999,11 +3241,31 @@ impl Sender for MlGetDatafeeds {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Filters API"]
+pub enum MlGetFiltersUrlParts {
+    None,
+    FilterId(String),
+}
+impl MlGetFiltersUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetFiltersUrlParts::None => "/_ml/filters".into(),
+            MlGetFiltersUrlParts::FilterId(ref filter_id) => {
+                let mut p = String::with_capacity(13usize + filter_id.len());
+                p.push_str("/_ml/filters/");
+                p.push_str(filter_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Filters API"]
 pub struct MlGetFilters {
     client: Elasticsearch,
+    parts: MlGetFiltersUrlParts,
     error_trace: Option<bool>,
-    filter_id: Option<String>,
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
@@ -3012,11 +3274,11 @@ pub struct MlGetFilters {
     source: Option<String>,
 }
 impl MlGetFilters {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetFiltersUrlParts) -> Self {
         MlGetFilters {
             client,
+            parts,
             error_trace: None,
-            filter_id: None,
             filter_path: None,
             from: None,
             human: None,
@@ -3028,11 +3290,6 @@ impl MlGetFilters {
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
-        self
-    }
-    #[doc = "The ID of the filter to fetch"]
-    pub fn filter_id(mut self, filter_id: Option<String>) -> Self {
-        self.filter_id = filter_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -3068,16 +3325,7 @@ impl MlGetFilters {
 }
 impl Sender for MlGetFilters {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.filter_id {
-            Some(filter_id) => {
-                let filter_id = filter_id;
-                let mut p = String::with_capacity(13usize + filter_id.len());
-                p.push_str("/_ml/filters/");
-                p.push_str(filter_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/filters"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3119,9 +3367,29 @@ impl Sender for MlGetFilters {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Influencers API"]
+pub enum MlGetInfluencersUrlParts {
+    JobId(String),
+}
+impl MlGetInfluencersUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetInfluencersUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(43usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/influencers");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Influencers API"]
 pub struct MlGetInfluencers<B> {
     client: Elasticsearch,
+    parts: MlGetInfluencersUrlParts,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
@@ -3131,7 +3399,6 @@ pub struct MlGetInfluencers<B> {
     from: Option<i32>,
     human: Option<bool>,
     influencer_score: Option<f64>,
-    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
     sort: Option<String>,
@@ -3142,10 +3409,10 @@ impl<B> MlGetInfluencers<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetInfluencersUrlParts) -> Self {
         MlGetInfluencers {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             desc: None,
             end: None,
@@ -3207,10 +3474,6 @@ where
         self.influencer_score = influencer_score;
         self
     }
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3242,14 +3505,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(43usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/results/influencers");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3312,26 +3568,47 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Job Stats API"]
+pub enum MlGetJobStatsUrlParts {
+    None,
+    JobId(String),
+}
+impl MlGetJobStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetJobStatsUrlParts::None => "/_ml/anomaly_detectors/_stats".into(),
+            MlGetJobStatsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(30usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_stats");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Job Stats API"]
 pub struct MlGetJobStats {
     client: Elasticsearch,
+    parts: MlGetJobStatsUrlParts,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlGetJobStats {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetJobStatsUrlParts) -> Self {
         MlGetJobStats {
             client,
+            parts,
             allow_no_jobs: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            job_id: None,
             pretty: None,
             source: None,
         }
@@ -3354,11 +3631,6 @@ impl MlGetJobStats {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the jobs stats to fetch"]
-    pub fn job_id(mut self, job_id: Option<String>) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -3374,17 +3646,7 @@ impl MlGetJobStats {
 }
 impl Sender for MlGetJobStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.job_id {
-            Some(job_id) => {
-                let job_id = job_id;
-                let mut p = String::with_capacity(30usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/_stats");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_stats"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3423,26 +3685,46 @@ impl Sender for MlGetJobStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Jobs API"]
+pub enum MlGetJobsUrlParts {
+    JobId(String),
+    None,
+}
+impl MlGetJobsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetJobsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(23usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.into()
+            }
+            MlGetJobsUrlParts::None => "/_ml/anomaly_detectors".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Jobs API"]
 pub struct MlGetJobs {
     client: Elasticsearch,
+    parts: MlGetJobsUrlParts,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl MlGetJobs {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetJobsUrlParts) -> Self {
         MlGetJobs {
             client,
+            parts,
             allow_no_jobs: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            job_id: None,
             pretty: None,
             source: None,
         }
@@ -3467,11 +3749,6 @@ impl MlGetJobs {
         self.human = human;
         self
     }
-    #[doc = "The ID of the jobs to fetch"]
-    pub fn job_id(mut self, job_id: Option<String>) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3485,16 +3762,7 @@ impl MlGetJobs {
 }
 impl Sender for MlGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.job_id {
-            Some(job_id) => {
-                let job_id = job_id;
-                let mut p = String::with_capacity(23usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ml/anomaly_detectors"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3533,9 +3801,38 @@ impl Sender for MlGetJobs {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Model Snapshots API"]
+pub enum MlGetModelSnapshotsUrlParts {
+    JobIdSnapshotId(String, String),
+    JobId(String),
+}
+impl MlGetModelSnapshotsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetModelSnapshotsUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(snapshot_id.as_ref());
+                p.into()
+            }
+            MlGetModelSnapshotsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(39usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Model Snapshots API"]
 pub struct MlGetModelSnapshots<B> {
     client: Elasticsearch,
+    parts: MlGetModelSnapshotsUrlParts,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
@@ -3543,10 +3840,8 @@ pub struct MlGetModelSnapshots<B> {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     size: Option<i32>,
-    snapshot_id: Option<String>,
     sort: Option<String>,
     source: Option<String>,
     start: Option<String>,
@@ -3555,10 +3850,10 @@ impl<B> MlGetModelSnapshots<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsUrlParts) -> Self {
         MlGetModelSnapshots {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             desc: None,
             end: None,
@@ -3568,7 +3863,6 @@ where
             human: None,
             pretty: None,
             size: None,
-            snapshot_id: None,
             sort: None,
             source: None,
             start: None,
@@ -3609,11 +3903,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to fetch"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -3622,11 +3911,6 @@ where
     #[doc = "The default number of documents returned in queries as a string."]
     pub fn size(mut self, size: Option<i32>) -> Self {
         self.size = size;
-        self
-    }
-    #[doc = "The ID of the snapshot to fetch"]
-    pub fn snapshot_id(mut self, snapshot_id: Option<String>) -> Self {
-        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "Name of the field to sort on"]
@@ -3650,26 +3934,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.snapshot_id {
-            Some(snapshot_id) => {
-                let job_id = self.job_id;
-                let snapshot_id = snapshot_id;
-                let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/model_snapshots/");
-                p.push_str(snapshot_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let job_id = self.job_id;
-                let mut p = String::with_capacity(39usize + job_id.len());
-                p.push_str("/_ml/anomaly_detectors/");
-                p.push_str(job_id.as_ref());
-                p.push_str("/model_snapshots");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3726,9 +3991,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Overall Buckets API"]
+pub enum MlGetOverallBucketsUrlParts {
+    JobId(String),
+}
+impl MlGetOverallBucketsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetOverallBucketsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(47usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/overall_buckets");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Overall Buckets API"]
 pub struct MlGetOverallBuckets<B> {
     client: Elasticsearch,
+    parts: MlGetOverallBucketsUrlParts,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
     bucket_span: Option<String>,
@@ -3737,7 +4022,6 @@ pub struct MlGetOverallBuckets<B> {
     exclude_interim: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     overall_score: Option<f64>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -3748,10 +4032,10 @@ impl<B> MlGetOverallBuckets<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsUrlParts) -> Self {
         MlGetOverallBuckets {
             client,
-            job_id: job_id,
+            parts,
             allow_no_jobs: None,
             body: None,
             bucket_span: None,
@@ -3807,11 +4091,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The job IDs for which to calculate overall bucket results"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Returns overall buckets with overall scores higher than this value"]
     pub fn overall_score(mut self, overall_score: Option<f64>) -> Self {
         self.overall_score = overall_score;
@@ -3843,14 +4122,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(47usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/results/overall_buckets");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3910,9 +4182,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Get Records API"]
+pub enum MlGetRecordsUrlParts {
+    JobId(String),
+}
+impl MlGetRecordsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlGetRecordsUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(39usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/results/records");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Get Records API"]
 pub struct MlGetRecords<B> {
     client: Elasticsearch,
+    parts: MlGetRecordsUrlParts,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<String>,
@@ -3921,7 +4213,6 @@ pub struct MlGetRecords<B> {
     filter_path: Option<Vec<String>>,
     from: Option<i32>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     record_score: Option<f64>,
     size: Option<i32>,
@@ -3933,10 +4224,10 @@ impl<B> MlGetRecords<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetRecordsUrlParts) -> Self {
         MlGetRecords {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             desc: None,
             end: None,
@@ -3993,10 +4284,6 @@ where
         self.human = human;
         self
     }
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4032,14 +4319,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(39usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/results/records");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4102,9 +4382,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Info API"]
+pub enum MlInfoUrlParts {
+    None,
+}
+impl MlInfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlInfoUrlParts::None => "/_ml/info".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Info API"]
 pub struct MlInfo {
     client: Elasticsearch,
+    parts: MlInfoUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4115,6 +4409,7 @@ impl MlInfo {
     pub fn new(client: Elasticsearch) -> Self {
         MlInfo {
             client,
+            parts: MlInfoUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4150,7 +4445,7 @@ impl MlInfo {
 }
 impl Sender for MlInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/info");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4186,35 +4481,50 @@ impl Sender for MlInfo {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Open Job API"]
+pub enum MlOpenJobUrlParts {
+    JobId(String),
+}
+impl MlOpenJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlOpenJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(29usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_open");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Open Job API"]
 pub struct MlOpenJob<B> {
     client: Elasticsearch,
+    parts: MlOpenJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    ignore_downtime: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
-    timeout: Option<String>,
 }
 impl<B> MlOpenJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlOpenJobUrlParts) -> Self {
         MlOpenJob {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            ignore_downtime: None,
             pretty: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -4237,16 +4547,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Controls if gaps in data are treated as anomalous or as a maintenance window after a job re-start"]
-    pub fn ignore_downtime(mut self, ignore_downtime: Option<bool>) -> Self {
-        self.ignore_downtime = ignore_downtime;
-        self
-    }
-    #[doc = "The ID of the job to open"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4257,25 +4557,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "Controls the time to wait until a job has opened. Default to 30 minutes"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
-        self
-    }
 }
 impl<B> Sender for MlOpenJob<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(29usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_open");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4311,11 +4599,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Post Calendar Events API"]
+pub enum MlPostCalendarEventsUrlParts {
+    CalendarId(String),
+}
+impl MlPostCalendarEventsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPostCalendarEventsUrlParts::CalendarId(ref calendar_id) => {
+                let mut p = String::with_capacity(22usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.push_str("/events");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Post Calendar Events API"]
 pub struct MlPostCalendarEvents<B> {
     client: Elasticsearch,
+    parts: MlPostCalendarEventsUrlParts,
     body: Option<B>,
-    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4326,10 +4633,10 @@ impl<B> MlPostCalendarEvents<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsUrlParts) -> Self {
         MlPostCalendarEvents {
             client,
-            calendar_id: calendar_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4341,11 +4648,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the calendar to modify"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4379,14 +4681,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let mut p = String::with_capacity(22usize + calendar_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            p.push_str("/events");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4422,14 +4717,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Post Data API"]
+pub enum MlPostDataUrlParts {
+    JobId(String),
+}
+impl MlPostDataUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPostDataUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(29usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_data");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Post Data API"]
 pub struct MlPostData<B> {
     client: Elasticsearch,
+    parts: MlPostDataUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     reset_end: Option<String>,
     reset_start: Option<String>,
@@ -4439,10 +4753,10 @@ impl<B> MlPostData<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPostDataUrlParts) -> Self {
         MlPostData {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4473,11 +4787,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the job receiving the data"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4504,14 +4813,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(29usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_data");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -4553,10 +4855,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Preview Datafeed API"]
+pub enum MlPreviewDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlPreviewDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPreviewDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(24usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_preview");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Preview Datafeed API"]
 pub struct MlPreviewDatafeed {
     client: Elasticsearch,
-    datafeed_id: String,
+    parts: MlPreviewDatafeedUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4564,21 +4885,16 @@ pub struct MlPreviewDatafeed {
     source: Option<String>,
 }
 impl MlPreviewDatafeed {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPreviewDatafeedUrlParts) -> Self {
         MlPreviewDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
             source: None,
         }
-    }
-    #[doc = "The ID of the datafeed to preview"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
-        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
@@ -4608,14 +4924,7 @@ impl MlPreviewDatafeed {
 }
 impl Sender for MlPreviewDatafeed {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(24usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            p.push_str("/_preview");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -4651,11 +4960,29 @@ impl Sender for MlPreviewDatafeed {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Calendar API"]
+pub enum MlPutCalendarUrlParts {
+    CalendarId(String),
+}
+impl MlPutCalendarUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutCalendarUrlParts::CalendarId(ref calendar_id) => {
+                let mut p = String::with_capacity(15usize + calendar_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Calendar API"]
 pub struct MlPutCalendar<B> {
     client: Elasticsearch,
+    parts: MlPutCalendarUrlParts,
     body: Option<B>,
-    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4666,10 +4993,10 @@ impl<B> MlPutCalendar<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, calendar_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutCalendarUrlParts) -> Self {
         MlPutCalendar {
             client,
-            calendar_id: calendar_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4681,11 +5008,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the calendar to create"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4719,13 +5041,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let mut p = String::with_capacity(15usize + calendar_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4761,15 +5077,34 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Calendar Job API"]
+pub enum MlPutCalendarJobUrlParts {
+    CalendarIdJobId(String, String),
+}
+impl MlPutCalendarJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutCalendarJobUrlParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+                let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
+                p.push_str("/_ml/calendars/");
+                p.push_str(calendar_id.as_ref());
+                p.push_str("/jobs/");
+                p.push_str(job_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Calendar Job API"]
 pub struct MlPutCalendarJob<B> {
     client: Elasticsearch,
+    parts: MlPutCalendarJobUrlParts,
     body: Option<B>,
-    calendar_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -4777,11 +5112,10 @@ impl<B> MlPutCalendarJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, calendar_id: String, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutCalendarJobUrlParts) -> Self {
         MlPutCalendarJob {
             client,
-            calendar_id: calendar_id,
-            job_id: job_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4793,11 +5127,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the calendar to modify"]
-    pub fn calendar_id(mut self, calendar_id: String) -> Self {
-        self.calendar_id = calendar_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4813,11 +5142,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the job to add to the calendar"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -4836,16 +5160,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let calendar_id = self.calendar_id;
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
-            p.push_str("/_ml/calendars/");
-            p.push_str(calendar_id.as_ref());
-            p.push_str("/jobs/");
-            p.push_str(job_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4881,14 +5196,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Data Frame Analytics API"]
+pub enum MlPutDataFrameAnalyticsUrlParts {
+    Id(String),
+}
+impl MlPutDataFrameAnalyticsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutDataFrameAnalyticsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(26usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Data Frame Analytics API"]
 pub struct MlPutDataFrameAnalytics<B> {
     client: Elasticsearch,
+    parts: MlPutDataFrameAnalyticsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -4896,10 +5229,10 @@ impl<B> MlPutDataFrameAnalytics<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutDataFrameAnalyticsUrlParts) -> Self {
         MlPutDataFrameAnalytics {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4928,11 +5261,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the data frame analytics to create"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4949,13 +5277,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(26usize + id.len());
-            p.push_str("/_ml/data_frame/analytics/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4991,11 +5313,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Datafeed API"]
+pub enum MlPutDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlPutDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(15usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Datafeed API"]
 pub struct MlPutDatafeed<B> {
     client: Elasticsearch,
+    parts: MlPutDatafeedUrlParts,
     body: Option<B>,
-    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -5006,10 +5346,10 @@ impl<B> MlPutDatafeed<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutDatafeedUrlParts) -> Self {
         MlPutDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5021,11 +5361,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the datafeed to create"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -5059,13 +5394,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(15usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -5101,12 +5430,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Filter API"]
+pub enum MlPutFilterUrlParts {
+    FilterId(String),
+}
+impl MlPutFilterUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutFilterUrlParts::FilterId(ref filter_id) => {
+                let mut p = String::with_capacity(13usize + filter_id.len());
+                p.push_str("/_ml/filters/");
+                p.push_str(filter_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Filter API"]
 pub struct MlPutFilter<B> {
     client: Elasticsearch,
+    parts: MlPutFilterUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -5116,10 +5463,10 @@ impl<B> MlPutFilter<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutFilterUrlParts) -> Self {
         MlPutFilter {
             client,
-            filter_id: filter_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5136,11 +5483,6 @@ where
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
-        self
-    }
-    #[doc = "The ID of the filter to create"]
-    pub fn filter_id(mut self, filter_id: String) -> Self {
-        self.filter_id = filter_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -5169,13 +5511,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let filter_id = self.filter_id;
-            let mut p = String::with_capacity(13usize + filter_id.len());
-            p.push_str("/_ml/filters/");
-            p.push_str(filter_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -5211,14 +5547,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Put Job API"]
+pub enum MlPutJobUrlParts {
+    JobId(String),
+}
+impl MlPutJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlPutJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(23usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Put Job API"]
 pub struct MlPutJob<B> {
     client: Elasticsearch,
+    parts: MlPutJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -5226,10 +5580,10 @@ impl<B> MlPutJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutJobUrlParts) -> Self {
         MlPutJob {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5258,11 +5612,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to create"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5279,13 +5628,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(23usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -5321,28 +5664,47 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Revert Model Snapshot API"]
+pub enum MlRevertModelSnapshotUrlParts {
+    JobIdSnapshotId(String, String),
+}
+impl MlRevertModelSnapshotUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlRevertModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+                let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(snapshot_id.as_ref());
+                p.push_str("/_revert");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Revert Model Snapshot API"]
 pub struct MlRevertModelSnapshot<B> {
     client: Elasticsearch,
+    parts: MlRevertModelSnapshotUrlParts,
     body: Option<B>,
     delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: String,
     source: Option<String>,
 }
 impl<B> MlRevertModelSnapshot<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotUrlParts) -> Self {
         MlRevertModelSnapshot {
             client,
-            job_id: job_id,
-            snapshot_id: snapshot_id,
+            parts,
             body: None,
             delete_intervening_results: None,
             error_trace: None,
@@ -5377,19 +5739,9 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to fetch"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
-        self
-    }
-    #[doc = "The ID of the snapshot to revert to"]
-    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
-        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -5403,17 +5755,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let snapshot_id = self.snapshot_id;
-            let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/model_snapshots/");
-            p.push_str(snapshot_id.as_ref());
-            p.push_str("/_revert");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5455,9 +5797,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Set Upgrade Mode API"]
+pub enum MlSetUpgradeModeUrlParts {
+    None,
+}
+impl MlSetUpgradeModeUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlSetUpgradeModeUrlParts::None => "/_ml/set_upgrade_mode".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Set Upgrade Mode API"]
 pub struct MlSetUpgradeMode<B> {
     client: Elasticsearch,
+    parts: MlSetUpgradeModeUrlParts,
     body: Option<B>,
     enabled: Option<bool>,
     error_trace: Option<bool>,
@@ -5474,6 +5830,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlSetUpgradeMode {
             client,
+            parts: MlSetUpgradeModeUrlParts::None,
             body: None,
             enabled: None,
             error_trace: None,
@@ -5530,7 +5887,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/set_upgrade_mode");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5572,14 +5929,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Start Data Frame Analytics API"]
+pub enum MlStartDataFrameAnalyticsUrlParts {
+    Id(String),
+}
+impl MlStartDataFrameAnalyticsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlStartDataFrameAnalyticsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(33usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.push_str("/_start");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Start Data Frame Analytics API"]
 pub struct MlStartDataFrameAnalytics<B> {
     client: Elasticsearch,
+    parts: MlStartDataFrameAnalyticsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -5588,10 +5964,10 @@ impl<B> MlStartDataFrameAnalytics<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStartDataFrameAnalyticsUrlParts) -> Self {
         MlStartDataFrameAnalytics {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5621,11 +5997,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the data frame analytics to start"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5647,14 +6018,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(33usize + id.len());
-            p.push_str("/_ml/data_frame/analytics/");
-            p.push_str(id.as_ref());
-            p.push_str("/_start");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5693,11 +6057,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Start Datafeed API"]
+pub enum MlStartDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlStartDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlStartDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(22usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_start");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Start Datafeed API"]
 pub struct MlStartDatafeed<B> {
     client: Elasticsearch,
+    parts: MlStartDatafeedUrlParts,
     body: Option<B>,
-    datafeed_id: String,
     end: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -5711,10 +6094,10 @@ impl<B> MlStartDatafeed<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStartDatafeedUrlParts) -> Self {
         MlStartDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             body: None,
             end: None,
             error_trace: None,
@@ -5729,11 +6112,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the datafeed to start"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
@@ -5782,14 +6160,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(22usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            p.push_str("/_start");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5834,16 +6205,35 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Stop Data Frame Analytics API"]
+pub enum MlStopDataFrameAnalyticsUrlParts {
+    Id(String),
+}
+impl MlStopDataFrameAnalyticsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlStopDataFrameAnalyticsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(32usize + id.len());
+                p.push_str("/_ml/data_frame/analytics/");
+                p.push_str(id.as_ref());
+                p.push_str("/_stop");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Stop Data Frame Analytics API"]
 pub struct MlStopDataFrameAnalytics<B> {
     client: Elasticsearch,
+    parts: MlStopDataFrameAnalyticsUrlParts,
     allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -5852,10 +6242,10 @@ impl<B> MlStopDataFrameAnalytics<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStopDataFrameAnalyticsUrlParts) -> Self {
         MlStopDataFrameAnalytics {
             client,
-            id: id,
+            parts,
             allow_no_match: None,
             body: None,
             error_trace: None,
@@ -5897,11 +6287,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the data frame analytics to stop"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5923,14 +6308,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(32usize + id.len());
-            p.push_str("/_ml/data_frame/analytics/");
-            p.push_str(id.as_ref());
-            p.push_str("/_stop");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5975,12 +6353,31 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Stop Datafeed API"]
+pub enum MlStopDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlStopDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlStopDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(21usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_stop");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Stop Datafeed API"]
 pub struct MlStopDatafeed<B> {
     client: Elasticsearch,
+    parts: MlStopDatafeedUrlParts,
     allow_no_datafeeds: Option<bool>,
     body: Option<B>,
-    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     force: Option<bool>,
@@ -5993,10 +6390,10 @@ impl<B> MlStopDatafeed<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStopDatafeedUrlParts) -> Self {
         MlStopDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             allow_no_datafeeds: None,
             body: None,
             error_trace: None,
@@ -6016,11 +6413,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the datafeed to stop"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -6064,14 +6456,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(21usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            p.push_str("/_stop");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6116,11 +6501,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Datafeed API"]
+pub enum MlUpdateDatafeedUrlParts {
+    DatafeedId(String),
+}
+impl MlUpdateDatafeedUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlUpdateDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+                let mut p = String::with_capacity(23usize + datafeed_id.len());
+                p.push_str("/_ml/datafeeds/");
+                p.push_str(datafeed_id.as_ref());
+                p.push_str("/_update");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Datafeed API"]
 pub struct MlUpdateDatafeed<B> {
     client: Elasticsearch,
+    parts: MlUpdateDatafeedUrlParts,
     body: Option<B>,
-    datafeed_id: String,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -6131,10 +6535,10 @@ impl<B> MlUpdateDatafeed<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, datafeed_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedUrlParts) -> Self {
         MlUpdateDatafeed {
             client,
-            datafeed_id: datafeed_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6146,11 +6550,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "The ID of the datafeed to update"]
-    pub fn datafeed_id(mut self, datafeed_id: String) -> Self {
-        self.datafeed_id = datafeed_id;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -6184,14 +6583,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let datafeed_id = self.datafeed_id;
-            let mut p = String::with_capacity(23usize + datafeed_id.len());
-            p.push_str("/_ml/datafeeds/");
-            p.push_str(datafeed_id.as_ref());
-            p.push_str("/_update");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6227,12 +6619,31 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Filter API"]
+pub enum MlUpdateFilterUrlParts {
+    FilterId(String),
+}
+impl MlUpdateFilterUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlUpdateFilterUrlParts::FilterId(ref filter_id) => {
+                let mut p = String::with_capacity(21usize + filter_id.len());
+                p.push_str("/_ml/filters/");
+                p.push_str(filter_id.as_ref());
+                p.push_str("/_update");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Filter API"]
 pub struct MlUpdateFilter<B> {
     client: Elasticsearch,
+    parts: MlUpdateFilterUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_id: String,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -6242,10 +6653,10 @@ impl<B> MlUpdateFilter<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, filter_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateFilterUrlParts) -> Self {
         MlUpdateFilter {
             client,
-            filter_id: filter_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6262,11 +6673,6 @@ where
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
         self.error_trace = error_trace;
-        self
-    }
-    #[doc = "The ID of the filter to update"]
-    pub fn filter_id(mut self, filter_id: String) -> Self {
-        self.filter_id = filter_id;
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
@@ -6295,14 +6701,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let filter_id = self.filter_id;
-            let mut p = String::with_capacity(21usize + filter_id.len());
-            p.push_str("/_ml/filters/");
-            p.push_str(filter_id.as_ref());
-            p.push_str("/_update");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6338,14 +6737,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Job API"]
+pub enum MlUpdateJobUrlParts {
+    JobId(String),
+}
+impl MlUpdateJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlUpdateJobUrlParts::JobId(ref job_id) => {
+                let mut p = String::with_capacity(31usize + job_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/_update");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Job API"]
 pub struct MlUpdateJob<B> {
     client: Elasticsearch,
+    parts: MlUpdateJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -6353,10 +6771,10 @@ impl<B> MlUpdateJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateJobUrlParts) -> Self {
         MlUpdateJob {
             client,
-            job_id: job_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6383,11 +6801,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the job to create"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -6406,14 +6819,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let mut p = String::with_capacity(31usize + job_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/_update");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6449,27 +6855,46 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Update Model Snapshot API"]
+pub enum MlUpdateModelSnapshotUrlParts {
+    JobIdSnapshotId(String, String),
+}
+impl MlUpdateModelSnapshotUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlUpdateModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+                let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
+                p.push_str("/_ml/anomaly_detectors/");
+                p.push_str(job_id.as_ref());
+                p.push_str("/model_snapshots/");
+                p.push_str(snapshot_id.as_ref());
+                p.push_str("/_update");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Update Model Snapshot API"]
 pub struct MlUpdateModelSnapshot<B> {
     client: Elasticsearch,
+    parts: MlUpdateModelSnapshotUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    job_id: String,
     pretty: Option<bool>,
-    snapshot_id: String,
     source: Option<String>,
 }
 impl<B> MlUpdateModelSnapshot<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, job_id: String, snapshot_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotUrlParts) -> Self {
         MlUpdateModelSnapshot {
             client,
-            job_id: job_id,
-            snapshot_id: snapshot_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6498,19 +6923,9 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to fetch"]
-    pub fn job_id(mut self, job_id: String) -> Self {
-        self.job_id = job_id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
-        self
-    }
-    #[doc = "The ID of the snapshot to update"]
-    pub fn snapshot_id(mut self, snapshot_id: String) -> Self {
-        self.snapshot_id = snapshot_id;
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
@@ -6524,17 +6939,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let job_id = self.job_id;
-            let snapshot_id = self.snapshot_id;
-            let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
-            p.push_str("/_ml/anomaly_detectors/");
-            p.push_str(job_id.as_ref());
-            p.push_str("/model_snapshots/");
-            p.push_str(snapshot_id.as_ref());
-            p.push_str("/_update");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6570,9 +6975,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Validate API"]
+pub enum MlValidateUrlParts {
+    None,
+}
+impl MlValidateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlValidateUrlParts::None => "/_ml/anomaly_detectors/_validate".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Validate API"]
 pub struct MlValidate<B> {
     client: Elasticsearch,
+    parts: MlValidateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -6587,6 +7006,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlValidate {
             client,
+            parts: MlValidateUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6631,7 +7051,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_validate");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6667,9 +7087,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ml Validate Detector API"]
+pub enum MlValidateDetectorUrlParts {
+    None,
+}
+impl MlValidateDetectorUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MlValidateDetectorUrlParts::None => "/_ml/anomaly_detectors/_validate/detector".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ml Validate Detector API"]
 pub struct MlValidateDetector<B> {
     client: Elasticsearch,
+    parts: MlValidateDetectorUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -6684,6 +7118,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlValidateDetector {
             client,
+            parts: MlValidateDetectorUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6728,7 +7163,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ml/anomaly_detectors/_validate/detector");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -6772,303 +7207,296 @@ impl Ml {
     pub fn new(client: Elasticsearch) -> Self {
         Ml { client }
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html"]
-    pub fn close_job<B>(&self, job_id: String) -> MlCloseJob<B>
+    pub fn close_job<B>(&self, parts: MlCloseJobUrlParts) -> MlCloseJob<B>
     where
         B: Serialize,
     {
-        MlCloseJob::new(self.client.clone(), job_id)
+        MlCloseJob::new(self.client.clone(), parts)
     }
-    pub fn delete_calendar(&self, calendar_id: String) -> MlDeleteCalendar {
-        MlDeleteCalendar::new(self.client.clone(), calendar_id)
+    pub fn delete_calendar(&self, parts: MlDeleteCalendarUrlParts) -> MlDeleteCalendar {
+        MlDeleteCalendar::new(self.client.clone(), parts)
     }
     pub fn delete_calendar_event(
         &self,
-        calendar_id: String,
-        event_id: String,
+        parts: MlDeleteCalendarEventUrlParts,
     ) -> MlDeleteCalendarEvent {
-        MlDeleteCalendarEvent::new(self.client.clone(), calendar_id, event_id)
+        MlDeleteCalendarEvent::new(self.client.clone(), parts)
     }
-    pub fn delete_calendar_job(&self, calendar_id: String, job_id: String) -> MlDeleteCalendarJob {
-        MlDeleteCalendarJob::new(self.client.clone(), calendar_id, job_id)
+    pub fn delete_calendar_job(&self, parts: MlDeleteCalendarJobUrlParts) -> MlDeleteCalendarJob {
+        MlDeleteCalendarJob::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html"]
-    pub fn delete_data_frame_analytics(&self, id: String) -> MlDeleteDataFrameAnalytics {
-        MlDeleteDataFrameAnalytics::new(self.client.clone(), id)
+    pub fn delete_data_frame_analytics(
+        &self,
+        parts: MlDeleteDataFrameAnalyticsUrlParts,
+    ) -> MlDeleteDataFrameAnalytics {
+        MlDeleteDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html"]
-    pub fn delete_datafeed(&self, datafeed_id: String) -> MlDeleteDatafeed {
-        MlDeleteDatafeed::new(self.client.clone(), datafeed_id)
+    pub fn delete_datafeed(&self, parts: MlDeleteDatafeedUrlParts) -> MlDeleteDatafeed {
+        MlDeleteDatafeed::new(self.client.clone(), parts)
     }
     pub fn delete_expired_data(&self) -> MlDeleteExpiredData {
         MlDeleteExpiredData::new(self.client.clone())
     }
-    pub fn delete_filter(&self, filter_id: String) -> MlDeleteFilter {
-        MlDeleteFilter::new(self.client.clone(), filter_id)
+    pub fn delete_filter(&self, parts: MlDeleteFilterUrlParts) -> MlDeleteFilter {
+        MlDeleteFilter::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html"]
-    pub fn delete_forecast(&self, job_id: String) -> MlDeleteForecast {
-        MlDeleteForecast::new(self.client.clone(), job_id)
+    pub fn delete_forecast(&self, parts: MlDeleteForecastUrlParts) -> MlDeleteForecast {
+        MlDeleteForecast::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html"]
-    pub fn delete_job(&self, job_id: String) -> MlDeleteJob {
-        MlDeleteJob::new(self.client.clone(), job_id)
+    pub fn delete_job(&self, parts: MlDeleteJobUrlParts) -> MlDeleteJob {
+        MlDeleteJob::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html"]
     pub fn delete_model_snapshot(
         &self,
-        job_id: String,
-        snapshot_id: String,
+        parts: MlDeleteModelSnapshotUrlParts,
     ) -> MlDeleteModelSnapshot {
-        MlDeleteModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
+        MlDeleteModelSnapshot::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html"]
+    pub fn estimate_memory_usage<B>(&self) -> MlEstimateMemoryUsage<B>
+    where
+        B: Serialize,
+    {
+        MlEstimateMemoryUsage::new(self.client.clone())
+    }
     pub fn evaluate_data_frame<B>(&self) -> MlEvaluateDataFrame<B>
     where
         B: Serialize,
     {
         MlEvaluateDataFrame::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html"]
     pub fn find_file_structure<B>(&self) -> MlFindFileStructure<B>
     where
         B: Serialize,
     {
         MlFindFileStructure::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html"]
-    pub fn flush_job<B>(&self, job_id: String) -> MlFlushJob<B>
+    pub fn flush_job<B>(&self, parts: MlFlushJobUrlParts) -> MlFlushJob<B>
     where
         B: Serialize,
     {
-        MlFlushJob::new(self.client.clone(), job_id)
+        MlFlushJob::new(self.client.clone(), parts)
     }
-    pub fn forecast<B>(&self, job_id: String) -> MlForecast<B>
+    pub fn forecast<B>(&self, parts: MlForecastUrlParts) -> MlForecast<B>
     where
         B: Serialize,
     {
-        MlForecast::new(self.client.clone(), job_id)
+        MlForecast::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html"]
-    pub fn get_buckets<B>(&self, job_id: String) -> MlGetBuckets<B>
+    pub fn get_buckets<B>(&self, parts: MlGetBucketsUrlParts) -> MlGetBuckets<B>
     where
         B: Serialize,
     {
-        MlGetBuckets::new(self.client.clone(), job_id)
+        MlGetBuckets::new(self.client.clone(), parts)
     }
-    pub fn get_calendar_events(&self, calendar_id: String) -> MlGetCalendarEvents {
-        MlGetCalendarEvents::new(self.client.clone(), calendar_id)
+    pub fn get_calendar_events(&self, parts: MlGetCalendarEventsUrlParts) -> MlGetCalendarEvents {
+        MlGetCalendarEvents::new(self.client.clone(), parts)
     }
-    pub fn get_calendars<B>(&self) -> MlGetCalendars<B>
+    pub fn get_calendars<B>(&self, parts: MlGetCalendarsUrlParts) -> MlGetCalendars<B>
     where
         B: Serialize,
     {
-        MlGetCalendars::new(self.client.clone())
+        MlGetCalendars::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html"]
-    pub fn get_categories<B>(&self, job_id: String) -> MlGetCategories<B>
+    pub fn get_categories<B>(&self, parts: MlGetCategoriesUrlParts) -> MlGetCategories<B>
     where
         B: Serialize,
     {
-        MlGetCategories::new(self.client.clone(), job_id)
+        MlGetCategories::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html"]
-    pub fn get_data_frame_analytics(&self) -> MlGetDataFrameAnalytics {
-        MlGetDataFrameAnalytics::new(self.client.clone())
+    pub fn get_data_frame_analytics(
+        &self,
+        parts: MlGetDataFrameAnalyticsUrlParts,
+    ) -> MlGetDataFrameAnalytics {
+        MlGetDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html"]
-    pub fn get_data_frame_analytics_stats(&self) -> MlGetDataFrameAnalyticsStats {
-        MlGetDataFrameAnalyticsStats::new(self.client.clone())
+    pub fn get_data_frame_analytics_stats(
+        &self,
+        parts: MlGetDataFrameAnalyticsStatsUrlParts,
+    ) -> MlGetDataFrameAnalyticsStats {
+        MlGetDataFrameAnalyticsStats::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html"]
-    pub fn get_datafeed_stats(&self) -> MlGetDatafeedStats {
-        MlGetDatafeedStats::new(self.client.clone())
+    pub fn get_datafeed_stats(&self, parts: MlGetDatafeedStatsUrlParts) -> MlGetDatafeedStats {
+        MlGetDatafeedStats::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html"]
-    pub fn get_datafeeds(&self) -> MlGetDatafeeds {
-        MlGetDatafeeds::new(self.client.clone())
+    pub fn get_datafeeds(&self, parts: MlGetDatafeedsUrlParts) -> MlGetDatafeeds {
+        MlGetDatafeeds::new(self.client.clone(), parts)
     }
-    pub fn get_filters(&self) -> MlGetFilters {
-        MlGetFilters::new(self.client.clone())
+    pub fn get_filters(&self, parts: MlGetFiltersUrlParts) -> MlGetFilters {
+        MlGetFilters::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html"]
-    pub fn get_influencers<B>(&self, job_id: String) -> MlGetInfluencers<B>
+    pub fn get_influencers<B>(&self, parts: MlGetInfluencersUrlParts) -> MlGetInfluencers<B>
     where
         B: Serialize,
     {
-        MlGetInfluencers::new(self.client.clone(), job_id)
+        MlGetInfluencers::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html"]
-    pub fn get_job_stats(&self) -> MlGetJobStats {
-        MlGetJobStats::new(self.client.clone())
+    pub fn get_job_stats(&self, parts: MlGetJobStatsUrlParts) -> MlGetJobStats {
+        MlGetJobStats::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html"]
-    pub fn get_jobs(&self) -> MlGetJobs {
-        MlGetJobs::new(self.client.clone())
+    pub fn get_jobs(&self, parts: MlGetJobsUrlParts) -> MlGetJobs {
+        MlGetJobs::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html"]
-    pub fn get_model_snapshots<B>(&self, job_id: String) -> MlGetModelSnapshots<B>
+    pub fn get_model_snapshots<B>(
+        &self,
+        parts: MlGetModelSnapshotsUrlParts,
+    ) -> MlGetModelSnapshots<B>
     where
         B: Serialize,
     {
-        MlGetModelSnapshots::new(self.client.clone(), job_id)
+        MlGetModelSnapshots::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html"]
-    pub fn get_overall_buckets<B>(&self, job_id: String) -> MlGetOverallBuckets<B>
+    pub fn get_overall_buckets<B>(
+        &self,
+        parts: MlGetOverallBucketsUrlParts,
+    ) -> MlGetOverallBuckets<B>
     where
         B: Serialize,
     {
-        MlGetOverallBuckets::new(self.client.clone(), job_id)
+        MlGetOverallBuckets::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html"]
-    pub fn get_records<B>(&self, job_id: String) -> MlGetRecords<B>
+    pub fn get_records<B>(&self, parts: MlGetRecordsUrlParts) -> MlGetRecords<B>
     where
         B: Serialize,
     {
-        MlGetRecords::new(self.client.clone(), job_id)
+        MlGetRecords::new(self.client.clone(), parts)
     }
     pub fn info(&self) -> MlInfo {
         MlInfo::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html"]
-    pub fn open_job<B>(&self, job_id: String) -> MlOpenJob<B>
+    pub fn open_job<B>(&self, parts: MlOpenJobUrlParts) -> MlOpenJob<B>
     where
         B: Serialize,
     {
-        MlOpenJob::new(self.client.clone(), job_id)
+        MlOpenJob::new(self.client.clone(), parts)
     }
-    pub fn post_calendar_events<B>(&self, calendar_id: String) -> MlPostCalendarEvents<B>
+    pub fn post_calendar_events<B>(
+        &self,
+        parts: MlPostCalendarEventsUrlParts,
+    ) -> MlPostCalendarEvents<B>
     where
         B: Serialize,
     {
-        MlPostCalendarEvents::new(self.client.clone(), calendar_id)
+        MlPostCalendarEvents::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html"]
-    pub fn post_data<B>(&self, job_id: String) -> MlPostData<B>
+    pub fn post_data<B>(&self, parts: MlPostDataUrlParts) -> MlPostData<B>
     where
         B: Serialize,
     {
-        MlPostData::new(self.client.clone(), job_id)
+        MlPostData::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html"]
-    pub fn preview_datafeed(&self, datafeed_id: String) -> MlPreviewDatafeed {
-        MlPreviewDatafeed::new(self.client.clone(), datafeed_id)
+    pub fn preview_datafeed(&self, parts: MlPreviewDatafeedUrlParts) -> MlPreviewDatafeed {
+        MlPreviewDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_calendar<B>(&self, calendar_id: String) -> MlPutCalendar<B>
+    pub fn put_calendar<B>(&self, parts: MlPutCalendarUrlParts) -> MlPutCalendar<B>
     where
         B: Serialize,
     {
-        MlPutCalendar::new(self.client.clone(), calendar_id)
+        MlPutCalendar::new(self.client.clone(), parts)
     }
-    pub fn put_calendar_job<B>(&self, calendar_id: String, job_id: String) -> MlPutCalendarJob<B>
+    pub fn put_calendar_job<B>(&self, parts: MlPutCalendarJobUrlParts) -> MlPutCalendarJob<B>
     where
         B: Serialize,
     {
-        MlPutCalendarJob::new(self.client.clone(), calendar_id, job_id)
+        MlPutCalendarJob::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html"]
-    pub fn put_data_frame_analytics<B>(&self, id: String) -> MlPutDataFrameAnalytics<B>
+    pub fn put_data_frame_analytics<B>(
+        &self,
+        parts: MlPutDataFrameAnalyticsUrlParts,
+    ) -> MlPutDataFrameAnalytics<B>
     where
         B: Serialize,
     {
-        MlPutDataFrameAnalytics::new(self.client.clone(), id)
+        MlPutDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html"]
-    pub fn put_datafeed<B>(&self, datafeed_id: String) -> MlPutDatafeed<B>
+    pub fn put_datafeed<B>(&self, parts: MlPutDatafeedUrlParts) -> MlPutDatafeed<B>
     where
         B: Serialize,
     {
-        MlPutDatafeed::new(self.client.clone(), datafeed_id)
+        MlPutDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_filter<B>(&self, filter_id: String) -> MlPutFilter<B>
+    pub fn put_filter<B>(&self, parts: MlPutFilterUrlParts) -> MlPutFilter<B>
     where
         B: Serialize,
     {
-        MlPutFilter::new(self.client.clone(), filter_id)
+        MlPutFilter::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html"]
-    pub fn put_job<B>(&self, job_id: String) -> MlPutJob<B>
+    pub fn put_job<B>(&self, parts: MlPutJobUrlParts) -> MlPutJob<B>
     where
         B: Serialize,
     {
-        MlPutJob::new(self.client.clone(), job_id)
+        MlPutJob::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html"]
     pub fn revert_model_snapshot<B>(
         &self,
-        job_id: String,
-        snapshot_id: String,
+        parts: MlRevertModelSnapshotUrlParts,
     ) -> MlRevertModelSnapshot<B>
     where
         B: Serialize,
     {
-        MlRevertModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
+        MlRevertModelSnapshot::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html"]
     pub fn set_upgrade_mode<B>(&self) -> MlSetUpgradeMode<B>
     where
         B: Serialize,
     {
         MlSetUpgradeMode::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html"]
-    pub fn start_data_frame_analytics<B>(&self, id: String) -> MlStartDataFrameAnalytics<B>
+    pub fn start_data_frame_analytics<B>(
+        &self,
+        parts: MlStartDataFrameAnalyticsUrlParts,
+    ) -> MlStartDataFrameAnalytics<B>
     where
         B: Serialize,
     {
-        MlStartDataFrameAnalytics::new(self.client.clone(), id)
+        MlStartDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html"]
-    pub fn start_datafeed<B>(&self, datafeed_id: String) -> MlStartDatafeed<B>
+    pub fn start_datafeed<B>(&self, parts: MlStartDatafeedUrlParts) -> MlStartDatafeed<B>
     where
         B: Serialize,
     {
-        MlStartDatafeed::new(self.client.clone(), datafeed_id)
+        MlStartDatafeed::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html"]
-    pub fn stop_data_frame_analytics<B>(&self, id: String) -> MlStopDataFrameAnalytics<B>
+    pub fn stop_data_frame_analytics<B>(
+        &self,
+        parts: MlStopDataFrameAnalyticsUrlParts,
+    ) -> MlStopDataFrameAnalytics<B>
     where
         B: Serialize,
     {
-        MlStopDataFrameAnalytics::new(self.client.clone(), id)
+        MlStopDataFrameAnalytics::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html"]
-    pub fn stop_datafeed<B>(&self, datafeed_id: String) -> MlStopDatafeed<B>
+    pub fn stop_datafeed<B>(&self, parts: MlStopDatafeedUrlParts) -> MlStopDatafeed<B>
     where
         B: Serialize,
     {
-        MlStopDatafeed::new(self.client.clone(), datafeed_id)
+        MlStopDatafeed::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html"]
-    pub fn update_datafeed<B>(&self, datafeed_id: String) -> MlUpdateDatafeed<B>
+    pub fn update_datafeed<B>(&self, parts: MlUpdateDatafeedUrlParts) -> MlUpdateDatafeed<B>
     where
         B: Serialize,
     {
-        MlUpdateDatafeed::new(self.client.clone(), datafeed_id)
+        MlUpdateDatafeed::new(self.client.clone(), parts)
     }
-    pub fn update_filter<B>(&self, filter_id: String) -> MlUpdateFilter<B>
+    pub fn update_filter<B>(&self, parts: MlUpdateFilterUrlParts) -> MlUpdateFilter<B>
     where
         B: Serialize,
     {
-        MlUpdateFilter::new(self.client.clone(), filter_id)
+        MlUpdateFilter::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html"]
-    pub fn update_job<B>(&self, job_id: String) -> MlUpdateJob<B>
+    pub fn update_job<B>(&self, parts: MlUpdateJobUrlParts) -> MlUpdateJob<B>
     where
         B: Serialize,
     {
-        MlUpdateJob::new(self.client.clone(), job_id)
+        MlUpdateJob::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html"]
     pub fn update_model_snapshot<B>(
         &self,
-        job_id: String,
-        snapshot_id: String,
+        parts: MlUpdateModelSnapshotUrlParts,
     ) -> MlUpdateModelSnapshot<B>
     where
         B: Serialize,
     {
-        MlUpdateModelSnapshot::new(self.client.clone(), job_id, snapshot_id)
+        MlUpdateModelSnapshot::new(self.client.clone(), parts)
     }
     pub fn validate<B>(&self) -> MlValidate<B>
     where

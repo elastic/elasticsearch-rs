@@ -23,9 +23,32 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Monitoring Bulk API"]
+pub enum MonitoringBulkUrlParts {
+    None,
+    Type(String),
+}
+impl MonitoringBulkUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MonitoringBulkUrlParts::None => "/_monitoring/bulk".into(),
+            MonitoringBulkUrlParts::Type(ref ty) => {
+                let mut p = String::with_capacity(18usize + ty.len());
+                p.push_str("/_monitoring/");
+                p.push_str(ty.as_ref());
+                p.push_str("/bulk");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Monitoring Bulk API"]
 pub struct MonitoringBulk<B> {
     client: Elasticsearch,
+    parts: MonitoringBulkUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -35,15 +58,15 @@ pub struct MonitoringBulk<B> {
     source: Option<String>,
     system_api_version: Option<String>,
     system_id: Option<String>,
-    ty: Option<String>,
 }
 impl<B> MonitoringBulk<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MonitoringBulkUrlParts) -> Self {
         MonitoringBulk {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -53,7 +76,6 @@ where
             source: None,
             system_api_version: None,
             system_id: None,
-            ty: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -101,28 +123,13 @@ where
         self.system_id = system_id;
         self
     }
-    #[doc = "Default document type for items which don't provide one"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for MonitoringBulk<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let ty = ty;
-                let mut p = String::with_capacity(18usize + ty.len());
-                p.push_str("/_monitoring/");
-                p.push_str(ty.as_ref());
-                p.push_str("/bulk");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_monitoring/bulk"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -175,12 +182,11 @@ impl Monitoring {
     pub fn new(client: Elasticsearch) -> Self {
         Monitoring { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html"]
-    pub fn bulk<B>(&self) -> MonitoringBulk<B>
+    pub fn bulk<B>(&self, parts: MonitoringBulkUrlParts) -> MonitoringBulk<B>
     where
         B: Serialize,
     {
-        MonitoringBulk::new(self.client.clone())
+        MonitoringBulk::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

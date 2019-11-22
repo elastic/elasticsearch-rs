@@ -1,65 +1,35 @@
 use crate::api_generator::*;
 
+use crate::api_generator::code_gen::request::request_builder::RequestBuilder;
+use crate::api_generator::code_gen::*;
 use inflector::Inflector;
 use quote::Tokens;
-use syn::{Field, ImplItem};
 
 /// Generates the source code for a namespaced client
 pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
-    let common_fields: Vec<Field> = api
-        .common_params
-        .iter()
-        .map(code_gen::create_optional_field)
-        .collect();
-
-    let common_builder_fns: Vec<ImplItem> = api
-        .common_params
-        .iter()
-        .map(code_gen::create_optional_fn)
-        .collect();
-
     for (namespace, namespace_methods) in &api.namespaces {
-        let mut tokens = quote::Tokens::new();
-        tokens.append(code_gen::use_declarations());
+        let mut tokens = Tokens::new();
+        tokens.append(use_declarations());
 
-        let namespace_client_name = code_gen::ident(namespace.to_pascal_case());
-        let namespace_doc = code_gen::doc(format!(
+        let namespace_pascal_case = namespace.to_pascal_case();
+        let namespace_client_name = ident(&namespace_pascal_case);
+        let namespace_doc = doc(format!(
             "{} APIs",
             namespace.replace("_", " ").to_pascal_case()
         ));
-        let namespace_name = code_gen::ident(namespace.to_string());
+        let namespace_name = ident(namespace.to_string());
 
-        // AST for builder structs
-        let builders: Vec<Tokens> = namespace_methods
+        let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = namespace_methods
             .iter()
             .map(|(name, endpoint)| {
-                let builder_name =
-                    format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
-
-                code_gen::create_builder_struct(
-                    builder_name,
-                    endpoint,
-                    &common_fields,
-                    &common_builder_fns,
-                    &api.common_params,
-                )
+                let builder_name = format!("{}{}", &namespace_pascal_case, name.to_pascal_case());
+                RequestBuilder::new(name, &builder_name, &api.common_params, &endpoint, false)
+                    .build()
             })
-            .collect();
+            .unzip();
 
-        // AST for methods on namespace client that return builder types
-        let methods: Vec<Tokens> = namespace_methods
-            .iter()
-            .map(|(name, endpoint)| {
-                let builder_name =
-                    format!("{}{}", namespace.to_pascal_case(), name.to_pascal_case());
-
-                code_gen::create_builder_struct_ctor_fns(builder_name, name, endpoint, false)
-            })
-            .collect();
-
-        // namespace client method on Elasticsearch
         tokens.append(quote!(
             #(#builders)*
 

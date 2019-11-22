@@ -23,9 +23,24 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Clear Cursor API"]
+pub enum SqlClearCursorUrlParts {
+    None,
+}
+impl SqlClearCursorUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SqlClearCursorUrlParts::None => "/_sql/close".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Clear Cursor API"]
 pub struct SqlClearCursor<B> {
     client: Elasticsearch,
+    parts: SqlClearCursorUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -40,6 +55,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlClearCursor {
             client,
+            parts: SqlClearCursorUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -84,7 +100,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_sql/close");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -120,9 +136,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Query API"]
+pub enum SqlQueryUrlParts {
+    None,
+}
+impl SqlQueryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SqlQueryUrlParts::None => "/_sql".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Query API"]
 pub struct SqlQuery<B> {
     client: Elasticsearch,
+    parts: SqlQueryUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -138,6 +168,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlQuery {
             client,
+            parts: SqlQueryUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -188,7 +219,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_sql");
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -230,9 +261,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Sql Translate API"]
+pub enum SqlTranslateUrlParts {
+    None,
+}
+impl SqlTranslateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SqlTranslateUrlParts::None => "/_sql/translate".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Sql Translate API"]
 pub struct SqlTranslate<B> {
     client: Elasticsearch,
+    parts: SqlTranslateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -247,6 +292,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlTranslate {
             client,
+            parts: SqlTranslateUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -291,7 +337,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_sql/translate");
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -338,21 +384,18 @@ impl Sql {
     pub fn new(client: Elasticsearch) -> Self {
         Sql { client }
     }
-    #[doc = "Clear SQL cursor"]
     pub fn clear_cursor<B>(&self) -> SqlClearCursor<B>
     where
         B: Serialize,
     {
         SqlClearCursor::new(self.client.clone())
     }
-    #[doc = "Execute SQL"]
     pub fn query<B>(&self) -> SqlQuery<B>
     where
         B: Serialize,
     {
         SqlQuery::new(self.client.clone())
     }
-    #[doc = "Translate SQL into Elasticsearch queries"]
     pub fn translate<B>(&self) -> SqlTranslate<B>
     where
         B: Serialize,

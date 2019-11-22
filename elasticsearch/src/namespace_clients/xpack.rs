@@ -23,9 +23,24 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Xpack Info API"]
+pub enum XpackInfoUrlParts {
+    None,
+}
+impl XpackInfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            XpackInfoUrlParts::None => "/_xpack".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Xpack Info API"]
 pub struct XpackInfo {
     client: Elasticsearch,
+    parts: XpackInfoUrlParts,
     categories: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -37,6 +52,7 @@ impl XpackInfo {
     pub fn new(client: Elasticsearch) -> Self {
         XpackInfo {
             client,
+            parts: XpackInfoUrlParts::None,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -78,7 +94,7 @@ impl XpackInfo {
 }
 impl Sender for XpackInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_xpack");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -121,9 +137,23 @@ impl Sender for XpackInfo {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Xpack Usage API"]
+pub enum XpackUsageUrlParts {
+    None,
+}
+impl XpackUsageUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            XpackUsageUrlParts::None => "/_xpack/usage".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Xpack Usage API"]
 pub struct XpackUsage {
     client: Elasticsearch,
+    parts: XpackUsageUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -135,6 +165,7 @@ impl XpackUsage {
     pub fn new(client: Elasticsearch) -> Self {
         XpackUsage {
             client,
+            parts: XpackUsageUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -176,7 +207,7 @@ impl XpackUsage {
 }
 impl Sender for XpackUsage {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_xpack/usage");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -223,11 +254,9 @@ impl Xpack {
     pub fn new(client: Elasticsearch) -> Self {
         Xpack { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html"]
     pub fn info(&self) -> XpackInfo {
         XpackInfo::new(self.client.clone())
     }
-    #[doc = "Retrieve information about xpack features usage"]
     pub fn usage(&self) -> XpackUsage {
         XpackUsage::new(self.client.clone())
     }

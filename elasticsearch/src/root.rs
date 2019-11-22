@@ -23,9 +23,42 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Bulk API"]
+pub enum BulkUrlParts {
+    None,
+    Index(String),
+    IndexType(String, String),
+}
+impl BulkUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            BulkUrlParts::None => "/_bulk".into(),
+            BulkUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(7usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_bulk");
+                p.into()
+            }
+            BulkUrlParts::IndexType(ref index, ref ty) => {
+                let mut p = String::with_capacity(8usize + index.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_bulk");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Bulk API"]
 pub struct Bulk<B> {
     client: Elasticsearch,
+    parts: BulkUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -33,7 +66,6 @@ pub struct Bulk<B> {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
     pipeline: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -47,9 +79,10 @@ impl<B> Bulk<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: BulkUrlParts) -> Self {
         Bulk {
             client,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -57,7 +90,6 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             pipeline: None,
             pretty: None,
             refresh: None,
@@ -101,11 +133,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Default index for items which don't provide one"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with"]
@@ -154,36 +181,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index = index;
-                let ty = ty;
-                let mut p = String::with_capacity(8usize + index.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_bulk");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty = ty;
-                let mut p = String::with_capacity(12usize + ty.len());
-                p.push_str("/_all/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_bulk");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index = index;
-                let mut p = String::with_capacity(7usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_bulk");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_bulk"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -261,30 +259,51 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Clear Scroll API"]
+pub enum ClearScrollUrlParts {
+    None,
+    ScrollId(Vec<String>),
+}
+impl ClearScrollUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ClearScrollUrlParts::None => "/_search/scroll".into(),
+            ClearScrollUrlParts::ScrollId(ref scroll_id) => {
+                let scroll_id_str = scroll_id.join(",");
+                let mut p = String::with_capacity(16usize + scroll_id_str.len());
+                p.push_str("/_search/scroll/");
+                p.push_str(scroll_id_str.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Clear Scroll API"]
 pub struct ClearScroll<B> {
     client: Elasticsearch,
+    parts: ClearScrollUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     pretty: Option<bool>,
-    scroll_id: Option<Vec<String>>,
     source: Option<String>,
 }
 impl<B> ClearScroll<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClearScrollUrlParts) -> Self {
         ClearScroll {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
             pretty: None,
-            scroll_id: None,
             source: None,
         }
     }
@@ -313,11 +332,6 @@ where
         self.pretty = pretty;
         self
     }
-    #[doc = "A comma-separated list of scroll IDs to clear"]
-    pub fn scroll_id(mut self, scroll_id: Option<Vec<String>>) -> Self {
-        self.scroll_id = scroll_id;
-        self
-    }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
     pub fn source(mut self, source: Option<String>) -> Self {
         self.source = source;
@@ -329,16 +343,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.scroll_id {
-            Some(scroll_id) => {
-                let scroll_id_str = scroll_id.join(",");
-                let mut p = String::with_capacity(16usize + scroll_id_str.len());
-                p.push_str("/_search/scroll/");
-                p.push_str(scroll_id_str.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_search/scroll"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -374,9 +379,44 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Count API"]
+pub enum CountUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl CountUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CountUrlParts::None => "/_count".into(),
+            CountUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(8usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_count");
+                p.into()
+            }
+            CountUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_count");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Count API"]
 pub struct Count<B> {
     client: Elasticsearch,
+    parts: CountUrlParts,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<String>,
@@ -389,7 +429,6 @@ pub struct Count<B> {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     lenient: Option<bool>,
     min_score: Option<i64>,
     preference: Option<String>,
@@ -398,15 +437,15 @@ pub struct Count<B> {
     routing: Option<Vec<String>>,
     source: Option<String>,
     terminate_after: Option<i64>,
-    ty: Option<Vec<String>>,
 }
 impl<B> Count<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CountUrlParts) -> Self {
         Count {
             client,
+            parts,
             allow_no_indices: None,
             analyze_wildcard: None,
             analyzer: None,
@@ -419,7 +458,6 @@ where
             human: None,
             ignore_throttled: None,
             ignore_unavailable: None,
-            index: None,
             lenient: None,
             min_score: None,
             preference: None,
@@ -428,7 +466,6 @@ where
             routing: None,
             source: None,
             terminate_after: None,
-            ty: None,
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
@@ -491,11 +528,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of indices to restrict the results"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -536,47 +568,13 @@ where
         self.terminate_after = terminate_after;
         self
     }
-    #[doc = "A comma-separated list of types to restrict the results"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for Count<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_count");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(13usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_count");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(8usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_count");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_count"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -661,22 +659,52 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Create API"]
+pub enum CreateUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl CreateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CreateUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_create/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            CreateUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_create");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Create API"]
 pub struct Create<B> {
     client: Elasticsearch,
+    parts: CreateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     pipeline: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
@@ -685,11 +713,10 @@ impl<B> Create<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CreateUrlParts) -> Self {
         Create {
             client,
-            index: index,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -700,7 +727,6 @@ where
             routing: None,
             source: None,
             timeout: None,
-            ty: None,
             version: None,
             version_type: None,
             wait_for_active_shards: None,
@@ -724,16 +750,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with"]
@@ -766,11 +782,6 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -792,32 +803,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_create");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_create/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -877,32 +863,60 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Delete API"]
+pub enum DeleteUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl DeleteUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            DeleteUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_doc/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            DeleteUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Delete API"]
 pub struct Delete {
     client: Elasticsearch,
+    parts: DeleteUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: String,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
 }
 impl Delete {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteUrlParts) -> Self {
         Delete {
             client,
-            index: index,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -913,7 +927,6 @@ impl Delete {
             routing: None,
             source: None,
             timeout: None,
-            ty: None,
             version: None,
             version_type: None,
             wait_for_active_shards: None,
@@ -934,11 +947,6 @@ impl Delete {
         self.human = human;
         self
     }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "only perform the delete operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -947,11 +955,6 @@ impl Delete {
     #[doc = "only perform the delete operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -979,11 +982,6 @@ impl Delete {
         self.timeout = timeout;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -1002,31 +1000,7 @@ impl Delete {
 }
 impl Sender for Delete {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_doc/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1089,15 +1063,47 @@ impl Sender for Delete {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Delete By Query API"]
+pub enum DeleteByQueryUrlParts {
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl DeleteByQueryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            DeleteByQueryUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(18usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_delete_by_query");
+                p.into()
+            }
+            DeleteByQueryUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_delete_by_query");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Delete By Query API"]
 pub struct DeleteByQuery<B> {
     client: Elasticsearch,
+    parts: DeleteByQueryUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
     body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
@@ -1108,7 +1114,6 @@ pub struct DeleteByQuery<B> {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     preference: Option<String>,
@@ -1129,7 +1134,6 @@ pub struct DeleteByQuery<B> {
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
-    ty: Option<Vec<String>>,
     version: Option<bool>,
     wait_for_active_shards: Option<String>,
     wait_for_completion: Option<bool>,
@@ -1138,16 +1142,15 @@ impl<B> DeleteByQuery<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryUrlParts) -> Self {
         DeleteByQuery {
             client,
-            index: index,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
             allow_no_indices: None,
             analyze_wildcard: None,
-            analyzer: None,
             body: None,
             conflicts: None,
             default_operator: None,
@@ -1178,7 +1181,6 @@ where
             stats: None,
             terminate_after: None,
             timeout: None,
-            ty: None,
             version: None,
             wait_for_active_shards: None,
             wait_for_completion: None,
@@ -1207,11 +1209,6 @@ where
     #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
     pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
         self.analyze_wildcard = analyze_wildcard;
-        self
-    }
-    #[doc = "The analyzer to use for the query string"]
-    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
-        self.analyzer = analyzer;
         self
     }
     #[doc = "The body for the API call"]
@@ -1262,11 +1259,6 @@ where
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
@@ -1369,11 +1361,6 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether to return document version as part of a hit"]
     pub fn version(mut self, version: Option<bool>) -> Self {
         self.version = version;
@@ -1395,27 +1382,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index_str = self.index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_delete_by_query");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index_str = self.index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_delete_by_query");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1442,8 +1409,6 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
                 analyze_wildcard: Option<bool>,
-                #[serde(rename = "analyzer", skip_serializing_if = "Option::is_none")]
-                analyzer: Option<String>,
                 #[serde(rename = "conflicts", skip_serializing_if = "Option::is_none")]
                 conflicts: Option<Conflicts>,
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
@@ -1540,7 +1505,6 @@ where
                 _source_includes: self._source_includes,
                 allow_no_indices: self.allow_no_indices,
                 analyze_wildcard: self.analyze_wildcard,
-                analyzer: self.analyzer,
                 conflicts: self.conflicts,
                 default_operator: self.default_operator,
                 df: self.df,
@@ -1583,9 +1547,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Delete By Query Rethrottle API"]
+pub enum DeleteByQueryRethrottleUrlParts {
+    TaskId(String),
+}
+impl DeleteByQueryRethrottleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            DeleteByQueryRethrottleUrlParts::TaskId(ref task_id) => {
+                let mut p = String::with_capacity(30usize + task_id.len());
+                p.push_str("/_delete_by_query/");
+                p.push_str(task_id.as_ref());
+                p.push_str("/_rethrottle");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Delete By Query Rethrottle API"]
 pub struct DeleteByQueryRethrottle<B> {
     client: Elasticsearch,
+    parts: DeleteByQueryRethrottleUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -1593,16 +1577,15 @@ pub struct DeleteByQueryRethrottle<B> {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: String,
 }
 impl<B> DeleteByQueryRethrottle<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, task_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleUrlParts) -> Self {
         DeleteByQueryRethrottle {
             client,
-            task_id: task_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1647,25 +1630,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The task id to rethrottle"]
-    pub fn task_id(mut self, task_id: String) -> Self {
-        self.task_id = task_id;
-        self
-    }
 }
 impl<B> Sender for DeleteByQueryRethrottle<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let task_id = self.task_id;
-            let mut p = String::with_capacity(30usize + task_id.len());
-            p.push_str("/_delete_by_query/");
-            p.push_str(task_id.as_ref());
-            p.push_str("/_rethrottle");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1707,23 +1678,41 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Delete Script API"]
+pub enum DeleteScriptUrlParts {
+    Id(String),
+}
+impl DeleteScriptUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            DeleteScriptUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(10usize + id.len());
+                p.push_str("/_scripts/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Delete Script API"]
 pub struct DeleteScript {
     client: Elasticsearch,
+    parts: DeleteScriptUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
 }
 impl DeleteScript {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteScriptUrlParts) -> Self {
         DeleteScript {
             client,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1746,11 +1735,6 @@ impl DeleteScript {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "Script ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
         self
     }
     #[doc = "Specify timeout for connection to master"]
@@ -1776,13 +1760,7 @@ impl DeleteScript {
 }
 impl Sender for DeleteScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(10usize + id.len());
-            p.push_str("/_scripts/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -1824,17 +1802,47 @@ impl Sender for DeleteScript {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Exists API"]
+pub enum ExistsUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl ExistsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ExistsUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_doc/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            ExistsUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Exists API"]
 pub struct Exists {
     client: Elasticsearch,
+    parts: ExistsUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -1842,16 +1850,14 @@ pub struct Exists {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
 impl Exists {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExistsUrlParts) -> Self {
         Exists {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -1865,7 +1871,6 @@ impl Exists {
             routing: None,
             source: None,
             stored_fields: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -1898,16 +1903,6 @@ impl Exists {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
@@ -1945,11 +1940,6 @@ impl Exists {
         self.stored_fields = stored_fields;
         self
     }
-    #[doc = "The type of the document (use `_all` to fetch the first document matching the ID across all types)"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -1963,31 +1953,7 @@ impl Exists {
 }
 impl Sender for Exists {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_doc/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -2069,33 +2035,62 @@ impl Sender for Exists {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Exists Source API"]
+pub enum ExistsSourceUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl ExistsSourceUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ExistsSourceUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_source/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            ExistsSourceUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_source");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Exists Source API"]
 pub struct ExistsSource {
     client: Elasticsearch,
+    parts: ExistsSourceUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
 impl ExistsSource {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExistsSourceUrlParts) -> Self {
         ExistsSource {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -2108,7 +2103,6 @@ impl ExistsSource {
             refresh: None,
             routing: None,
             source: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -2143,16 +2137,6 @@ impl ExistsSource {
         self.human = human;
         self
     }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -2183,11 +2167,6 @@ impl ExistsSource {
         self.source = source;
         self
     }
-    #[doc = "The type of the document; deprecated and optional starting with 7.0"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -2201,32 +2180,7 @@ impl ExistsSource {
 }
 impl Sender for ExistsSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_source");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_source/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -2301,9 +2255,42 @@ impl Sender for ExistsSource {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Explain API"]
+pub enum ExplainUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl ExplainUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ExplainUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(11usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_explain/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            ExplainUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(12usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_explain");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Explain API"]
 pub struct Explain<B> {
     client: Elasticsearch,
+    parts: ExplainUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -2315,8 +2302,6 @@ pub struct Explain<B> {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     lenient: Option<bool>,
     preference: Option<String>,
     pretty: Option<bool>,
@@ -2324,17 +2309,15 @@ pub struct Explain<B> {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
-    ty: Option<String>,
 }
 impl<B> Explain<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExplainUrlParts) -> Self {
         Explain {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -2353,7 +2336,6 @@ where
             routing: None,
             source: None,
             stored_fields: None,
-            ty: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -2411,16 +2393,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
     pub fn lenient(mut self, lenient: Option<bool>) -> Self {
         self.lenient = lenient;
@@ -2456,43 +2428,13 @@ where
         self.stored_fields = stored_fields;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for Explain<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(12usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_explain");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(11usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_explain/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2583,9 +2525,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Field Caps API"]
+pub enum FieldCapsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl FieldCapsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            FieldCapsUrlParts::None => "/_field_caps".into(),
+            FieldCapsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(13usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_field_caps");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Field Caps API"]
 pub struct FieldCaps<B> {
     client: Elasticsearch,
+    parts: FieldCapsUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2595,7 +2560,6 @@ pub struct FieldCaps<B> {
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -2603,9 +2567,10 @@ impl<B> FieldCaps<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: FieldCapsUrlParts) -> Self {
         FieldCaps {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2615,7 +2580,6 @@ where
             human: None,
             ignore_unavailable: None,
             include_unmapped: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -2665,11 +2629,6 @@ where
         self.include_unmapped = include_unmapped;
         self
     }
-    #[doc = "A comma-separated list of index names; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -2686,17 +2645,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(13usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_field_caps");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_field_caps"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -2754,17 +2703,47 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Get API"]
+pub enum GetUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl GetUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            GetUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_doc/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            GetUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Get API"]
 pub struct Get {
     client: Elasticsearch,
+    parts: GetUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -2772,16 +2751,14 @@ pub struct Get {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
 impl Get {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetUrlParts) -> Self {
         Get {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -2795,7 +2772,6 @@ impl Get {
             routing: None,
             source: None,
             stored_fields: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -2828,16 +2804,6 @@ impl Get {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
@@ -2875,11 +2841,6 @@ impl Get {
         self.stored_fields = stored_fields;
         self
     }
-    #[doc = "The type of the document (use `_all` to fetch the first document matching the ID across all types)"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -2893,31 +2854,7 @@ impl Get {
 }
 impl Sender for Get {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_doc/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -2999,22 +2936,40 @@ impl Sender for Get {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Get Script API"]
+pub enum GetScriptUrlParts {
+    Id(String),
+}
+impl GetScriptUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            GetScriptUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(10usize + id.len());
+                p.push_str("/_scripts/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Get Script API"]
 pub struct GetScript {
     client: Elasticsearch,
+    parts: GetScriptUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl GetScript {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetScriptUrlParts) -> Self {
         GetScript {
             client,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3038,11 +2993,6 @@ impl GetScript {
         self.human = human;
         self
     }
-    #[doc = "Script ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -3061,13 +3011,7 @@ impl GetScript {
 }
 impl Sender for GetScript {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(10usize + id.len());
-            p.push_str("/_scripts/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3106,33 +3050,62 @@ impl Sender for GetScript {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Get Source API"]
+pub enum GetSourceUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl GetSourceUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            GetSourceUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_source/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            GetSourceUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_source");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Get Source API"]
 pub struct GetSource {
     client: Elasticsearch,
+    parts: GetSourceUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
-    index: String,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
     routing: Option<String>,
     source: Option<String>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
 impl GetSource {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetSourceUrlParts) -> Self {
         GetSource {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -3145,7 +3118,6 @@ impl GetSource {
             refresh: None,
             routing: None,
             source: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -3180,16 +3152,6 @@ impl GetSource {
         self.human = human;
         self
     }
-    #[doc = "The document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -3220,11 +3182,6 @@ impl GetSource {
         self.source = source;
         self
     }
-    #[doc = "The type of the document; deprecated and optional starting with 7.0"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -3238,32 +3195,7 @@ impl GetSource {
 }
 impl Sender for GetSource {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_source");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_source/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3338,17 +3270,64 @@ impl Sender for GetSource {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Index API"]
+pub enum IndexUrlParts {
+    IndexId(String, String),
+    Index(String),
+    IndexType(String, String),
+    IndexTypeId(String, String, String),
+}
+impl IndexUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            IndexUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(7usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_doc/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            IndexUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(6usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_doc");
+                p.into()
+            }
+            IndexUrlParts::IndexType(ref index, ref ty) => {
+                let mut p = String::with_capacity(2usize + index.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.into()
+            }
+            IndexUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Index API"]
 pub struct Index<B> {
     client: Elasticsearch,
+    parts: IndexUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: String,
     op_type: Option<OpType>,
     pipeline: Option<String>,
     pretty: Option<bool>,
@@ -3356,7 +3335,6 @@ pub struct Index<B> {
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
     wait_for_active_shards: Option<String>,
@@ -3365,15 +3343,14 @@ impl<B> Index<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndexUrlParts) -> Self {
         Index {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             if_primary_term: None,
             if_seq_no: None,
             op_type: None,
@@ -3383,7 +3360,6 @@ where
             routing: None,
             source: None,
             timeout: None,
-            ty: None,
             version: None,
             version_type: None,
             wait_for_active_shards: None,
@@ -3409,11 +3385,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Document ID"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "only perform the index operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -3422,11 +3393,6 @@ where
     #[doc = "only perform the index operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Explicit operation type"]
@@ -3464,11 +3430,6 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -3490,49 +3451,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.id, &self.ty) {
-            (Some(id), Some(ty)) => {
-                let index = self.index;
-                let ty = ty;
-                let id = id;
-                let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(id), None) => {
-                let index = self.index;
-                let id = id;
-                let mut p = String::with_capacity(7usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_doc/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let index = self.index;
-                let ty = ty;
-                let mut p = String::with_capacity(2usize + index.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => {
-                let index = self.index;
-                let mut p = String::with_capacity(6usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_doc");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -3601,9 +3520,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Info API"]
+pub enum InfoUrlParts {
+    None,
+}
+impl InfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            InfoUrlParts::None => "/".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Info API"]
 pub struct Info {
     client: Elasticsearch,
+    parts: InfoUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -3614,6 +3547,7 @@ impl Info {
     pub fn new(client: Elasticsearch) -> Self {
         Info {
             client,
+            parts: InfoUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3649,7 +3583,7 @@ impl Info {
 }
 impl Sender for Info {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -3685,9 +3619,41 @@ impl Sender for Info {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Mget API"]
+pub enum MgetUrlParts {
+    None,
+    Index(String),
+    IndexType(String, String),
+}
+impl MgetUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MgetUrlParts::None => "/_mget".into(),
+            MgetUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(7usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_mget");
+                p.into()
+            }
+            MgetUrlParts::IndexType(ref index, ref ty) => {
+                let mut p = String::with_capacity(8usize + index.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_mget");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Mget API"]
 pub struct Mget<B> {
     client: Elasticsearch,
+    parts: MgetUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -3695,7 +3661,6 @@ pub struct Mget<B> {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<String>,
     preference: Option<String>,
     pretty: Option<bool>,
     realtime: Option<bool>,
@@ -3703,15 +3668,15 @@ pub struct Mget<B> {
     routing: Option<String>,
     source: Option<String>,
     stored_fields: Option<Vec<String>>,
-    ty: Option<String>,
 }
 impl<B> Mget<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MgetUrlParts) -> Self {
         Mget {
             client,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -3719,7 +3684,6 @@ where
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             preference: None,
             pretty: None,
             realtime: None,
@@ -3727,7 +3691,6 @@ where
             routing: None,
             source: None,
             stored_fields: None,
-            ty: None,
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
@@ -3765,11 +3728,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
     pub fn preference(mut self, preference: Option<String>) -> Self {
         self.preference = preference;
@@ -3805,47 +3763,13 @@ where
         self.stored_fields = stored_fields;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
 }
 impl<B> Sender for Mget<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index = index;
-                let ty = ty;
-                let mut p = String::with_capacity(8usize + index.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_mget");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty = ty;
-                let mut p = String::with_capacity(12usize + ty.len());
-                p.push_str("/_all/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_mget");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index = index;
-                let mut p = String::with_capacity(7usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_mget");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_mget"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -3924,15 +3848,49 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Msearch API"]
+pub enum MsearchUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl MsearchUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MsearchUrlParts::None => "/_msearch".into(),
+            MsearchUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_msearch");
+                p.into()
+            }
+            MsearchUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_msearch");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Msearch API"]
 pub struct Msearch<B> {
     client: Elasticsearch,
+    parts: MsearchUrlParts,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     max_concurrent_searches: Option<i64>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
@@ -3940,22 +3898,21 @@ pub struct Msearch<B> {
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl<B> Msearch<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchUrlParts) -> Self {
         Msearch {
             client,
+            parts,
             body: None,
             ccs_minimize_roundtrips: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             max_concurrent_searches: None,
             max_concurrent_shard_requests: None,
             pre_filter_shard_size: None,
@@ -3963,7 +3920,6 @@ where
             rest_total_hits_as_int: None,
             search_type: None,
             source: None,
-            ty: None,
             typed_keys: None,
         }
     }
@@ -3990,11 +3946,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "A comma-separated list of index names to use as default"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
@@ -4035,11 +3986,6 @@ where
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types to use as default"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -4051,36 +3997,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_msearch");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(15usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_msearch");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_msearch");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_msearch"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4155,53 +4072,78 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Msearch Template API"]
+pub enum MsearchTemplateUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl MsearchTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MsearchTemplateUrlParts::None => "/_msearch/template".into(),
+            MsearchTemplateUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(19usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_msearch/template");
+                p.into()
+            }
+            MsearchTemplateUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(20usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_msearch/template");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Msearch Template API"]
 pub struct MsearchTemplate<B> {
     client: Elasticsearch,
+    parts: MsearchTemplateUrlParts,
     body: Option<B>,
-    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
     max_concurrent_searches: Option<i64>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl<B> MsearchTemplate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchTemplateUrlParts) -> Self {
         MsearchTemplate {
             client,
+            parts,
             body: None,
-            ccs_minimize_roundtrips: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            index: None,
             max_concurrent_searches: None,
             pretty: None,
             rest_total_hits_as_int: None,
             search_type: None,
             source: None,
-            ty: None,
             typed_keys: None,
         }
     }
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
-    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
-        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -4217,11 +4159,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "A comma-separated list of index names to use as default"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Controls the maximum number of concurrent searches the multi search api will execute"]
@@ -4249,11 +4186,6 @@ where
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types to use as default"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -4265,36 +4197,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(20usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_msearch/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(24usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_msearch/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_msearch/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_msearch/template"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4302,11 +4205,6 @@ where
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct {
-                #[serde(
-                    rename = "ccs_minimize_roundtrips",
-                    skip_serializing_if = "Option::is_none"
-                )]
-                ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -4337,7 +4235,6 @@ where
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParamsStruct {
-                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -4357,9 +4254,41 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Mtermvectors API"]
+pub enum MtermvectorsUrlParts {
+    None,
+    Index(String),
+    IndexType(String, String),
+}
+impl MtermvectorsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            MtermvectorsUrlParts::None => "/_mtermvectors".into(),
+            MtermvectorsUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(15usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_mtermvectors");
+                p.into()
+            }
+            MtermvectorsUrlParts::IndexType(ref index, ref ty) => {
+                let mut p = String::with_capacity(16usize + index.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_mtermvectors");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Mtermvectors API"]
 pub struct Mtermvectors<B> {
     client: Elasticsearch,
+    parts: MtermvectorsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
@@ -4367,7 +4296,6 @@ pub struct Mtermvectors<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ids: Option<Vec<String>>,
-    index: Option<String>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
@@ -4377,7 +4305,6 @@ pub struct Mtermvectors<B> {
     routing: Option<String>,
     source: Option<String>,
     term_statistics: Option<bool>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -4385,9 +4312,10 @@ impl<B> Mtermvectors<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: MtermvectorsUrlParts) -> Self {
         Mtermvectors {
             client,
+            parts,
             body: None,
             error_trace: None,
             field_statistics: None,
@@ -4395,7 +4323,6 @@ where
             filter_path: None,
             human: None,
             ids: None,
-            index: None,
             offsets: None,
             payloads: None,
             positions: None,
@@ -4405,7 +4332,6 @@ where
             routing: None,
             source: None,
             term_statistics: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -4443,11 +4369,6 @@ where
     #[doc = "A comma-separated list of documents ids. You must define ids as parameter or set \"ids\" or \"docs\" in the request body"]
     pub fn ids(mut self, ids: Option<Vec<String>>) -> Self {
         self.ids = ids;
-        self
-    }
-    #[doc = "The index in which the document resides."]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specifies if term offsets should be returned. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
@@ -4495,11 +4416,6 @@ where
         self.term_statistics = term_statistics;
         self
     }
-    #[doc = "The type of the document."]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -4516,36 +4432,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index = index;
-                let ty = ty;
-                let mut p = String::with_capacity(16usize + index.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_mtermvectors");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty = ty;
-                let mut p = String::with_capacity(20usize + ty.len());
-                p.push_str("/_all/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_mtermvectors");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index = index;
-                let mut p = String::with_capacity(15usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_mtermvectors");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_mtermvectors"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -4628,9 +4515,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ping API"]
+pub enum PingUrlParts {
+    None,
+}
+impl PingUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            PingUrlParts::None => "/".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ping API"]
 pub struct Ping {
     client: Elasticsearch,
+    parts: PingUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -4641,6 +4542,7 @@ impl Ping {
     pub fn new(client: Elasticsearch) -> Self {
         Ping {
             client,
+            parts: PingUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4676,7 +4578,7 @@ impl Ping {
 }
 impl Sender for Ping {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/");
+        let path = self.parts.build();
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
@@ -4712,15 +4614,42 @@ impl Sender for Ping {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Put Script API"]
+pub enum PutScriptUrlParts {
+    Id(String),
+    IdContext(String, String),
+}
+impl PutScriptUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            PutScriptUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(10usize + id.len());
+                p.push_str("/_scripts/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            PutScriptUrlParts::IdContext(ref id, ref context) => {
+                let mut p = String::with_capacity(11usize + id.len() + context.len());
+                p.push_str("/_scripts/");
+                p.push_str(id.as_ref());
+                p.push_str("/");
+                p.push_str(context.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Put Script API"]
 pub struct PutScript<B> {
     client: Elasticsearch,
+    parts: PutScriptUrlParts,
     body: Option<B>,
     context: Option<String>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     master_timeout: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
@@ -4730,10 +4659,10 @@ impl<B> PutScript<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: PutScriptUrlParts) -> Self {
         PutScript {
             client,
-            id: id,
+            parts,
             body: None,
             context: None,
             error_trace: None,
@@ -4770,11 +4699,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Script ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Specify timeout for connection to master"]
     pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
         self.master_timeout = master_timeout;
@@ -4801,25 +4725,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.context {
-            Some(context) => {
-                let id = self.id;
-                let context = context;
-                let mut p = String::with_capacity(11usize + id.len() + context.len());
-                p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
-                p.push_str("/");
-                p.push_str(context.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let id = self.id;
-                let mut p = String::with_capacity(10usize + id.len());
-                p.push_str("/_scripts/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -4864,9 +4770,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rank Eval API"]
+pub enum RankEvalUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl RankEvalUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RankEvalUrlParts::None => "/_rank_eval".into(),
+            RankEvalUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_rank_eval");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rank Eval API"]
 pub struct RankEval<B> {
     client: Elasticsearch,
+    parts: RankEvalUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4874,7 +4803,6 @@ pub struct RankEval<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -4882,9 +4810,10 @@ impl<B> RankEval<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: RankEvalUrlParts) -> Self {
         RankEval {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4892,7 +4821,6 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             pretty: None,
             source: None,
         }
@@ -4932,11 +4860,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -4953,17 +4876,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(12usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_rank_eval");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_rank_eval"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -5011,9 +4924,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Reindex API"]
+pub enum ReindexUrlParts {
+    None,
+}
+impl ReindexUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ReindexUrlParts::None => "/_reindex".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Reindex API"]
 pub struct Reindex<B> {
     client: Elasticsearch,
+    parts: ReindexUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -5036,6 +4963,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         Reindex {
             client,
+            parts: ReindexUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5128,7 +5056,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_reindex");
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5197,9 +5125,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Reindex Rethrottle API"]
+pub enum ReindexRethrottleUrlParts {
+    TaskId(String),
+}
+impl ReindexRethrottleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ReindexRethrottleUrlParts::TaskId(ref task_id) => {
+                let mut p = String::with_capacity(22usize + task_id.len());
+                p.push_str("/_reindex/");
+                p.push_str(task_id.as_ref());
+                p.push_str("/_rethrottle");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Reindex Rethrottle API"]
 pub struct ReindexRethrottle<B> {
     client: Elasticsearch,
+    parts: ReindexRethrottleUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -5207,16 +5155,15 @@ pub struct ReindexRethrottle<B> {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: String,
 }
 impl<B> ReindexRethrottle<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, task_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: ReindexRethrottleUrlParts) -> Self {
         ReindexRethrottle {
             client,
-            task_id: task_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5261,25 +5208,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The task id to rethrottle"]
-    pub fn task_id(mut self, task_id: String) -> Self {
-        self.task_id = task_id;
-        self
-    }
 }
 impl<B> Sender for ReindexRethrottle<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let task_id = self.task_id;
-            let mut p = String::with_capacity(22usize + task_id.len());
-            p.push_str("/_reindex/");
-            p.push_str(task_id.as_ref());
-            p.push_str("/_rethrottle");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -5321,14 +5256,34 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Render Search Template API"]
+pub enum RenderSearchTemplateUrlParts {
+    None,
+    Id(String),
+}
+impl RenderSearchTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RenderSearchTemplateUrlParts::None => "/_render/template".into(),
+            RenderSearchTemplateUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(18usize + id.len());
+                p.push_str("/_render/template/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Render Search Template API"]
 pub struct RenderSearchTemplate<B> {
     client: Elasticsearch,
+    parts: RenderSearchTemplateUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -5336,14 +5291,14 @@ impl<B> RenderSearchTemplate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: RenderSearchTemplateUrlParts) -> Self {
         RenderSearchTemplate {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             pretty: None,
             source: None,
         }
@@ -5368,11 +5323,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The id of the stored search template"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -5389,16 +5339,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(18usize + id.len());
-                p.push_str("/_render/template/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_render/template"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -5437,9 +5378,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Scripts Painless Execute API"]
+pub enum ScriptsPainlessExecuteUrlParts {
+    None,
+}
+impl ScriptsPainlessExecuteUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ScriptsPainlessExecuteUrlParts::None => "/_scripts/painless/_execute".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Scripts Painless Execute API"]
 pub struct ScriptsPainlessExecute<B> {
     client: Elasticsearch,
+    parts: ScriptsPainlessExecuteUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -5454,6 +5409,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ScriptsPainlessExecute {
             client,
+            parts: ScriptsPainlessExecuteUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5498,7 +5454,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_scripts/painless/_execute");
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -5537,9 +5493,30 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Scroll API"]
+pub enum ScrollUrlParts {
+    None,
+    ScrollId(String),
+}
+impl ScrollUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            ScrollUrlParts::None => "/_search/scroll".into(),
+            ScrollUrlParts::ScrollId(ref scroll_id) => {
+                let mut p = String::with_capacity(16usize + scroll_id.len());
+                p.push_str("/_search/scroll/");
+                p.push_str(scroll_id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Scroll API"]
 pub struct Scroll<B> {
     client: Elasticsearch,
+    parts: ScrollUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -5554,9 +5531,10 @@ impl<B> Scroll<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: ScrollUrlParts) -> Self {
         Scroll {
             client,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5619,16 +5597,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.scroll_id {
-            Some(scroll_id) => {
-                let scroll_id = scroll_id;
-                let mut p = String::with_capacity(16usize + scroll_id.len());
-                p.push_str("/_search/scroll/");
-                p.push_str(scroll_id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_search/scroll"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -5679,9 +5648,44 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Search API"]
+pub enum SearchUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl SearchUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SearchUrlParts::None => "/_search".into(),
+            SearchUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(9usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_search");
+                p.into()
+            }
+            SearchUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_search");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Search API"]
 pub struct Search<B> {
     client: Elasticsearch,
+    parts: SearchUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -5703,7 +5707,6 @@ pub struct Search<B> {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
@@ -5729,7 +5732,6 @@ pub struct Search<B> {
     timeout: Option<String>,
     track_scores: Option<bool>,
     track_total_hits: Option<bool>,
-    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
     version: Option<bool>,
 }
@@ -5737,9 +5739,10 @@ impl<B> Search<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchUrlParts) -> Self {
         Search {
             client,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -5761,7 +5764,6 @@ where
             human: None,
             ignore_throttled: None,
             ignore_unavailable: None,
-            index: None,
             lenient: None,
             max_concurrent_shard_requests: None,
             pre_filter_shard_size: None,
@@ -5787,7 +5789,6 @@ where
             timeout: None,
             track_scores: None,
             track_total_hits: None,
-            ty: None,
             typed_keys: None,
             version: None,
         }
@@ -5898,11 +5899,6 @@ where
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
@@ -6033,11 +6029,6 @@ where
         self.track_total_hits = track_total_hits;
         self
     }
-    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -6054,36 +6045,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_search");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(14usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_search");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(9usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_search");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_search"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -6301,9 +6263,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Search Shards API"]
+pub enum SearchShardsUrlParts {
+    None,
+    Index(Vec<String>),
+}
+impl SearchShardsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SearchShardsUrlParts::None => "/_search_shards".into(),
+            SearchShardsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(16usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_search_shards");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Search Shards API"]
 pub struct SearchShards<B> {
     client: Elasticsearch,
+    parts: SearchShardsUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6311,7 +6296,6 @@ pub struct SearchShards<B> {
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     local: Option<bool>,
     preference: Option<String>,
     pretty: Option<bool>,
@@ -6322,9 +6306,10 @@ impl<B> SearchShards<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchShardsUrlParts) -> Self {
         SearchShards {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -6332,7 +6317,6 @@ where
             filter_path: None,
             human: None,
             ignore_unavailable: None,
-            index: None,
             local: None,
             preference: None,
             pretty: None,
@@ -6375,11 +6359,6 @@ where
         self.ignore_unavailable = ignore_unavailable;
         self
     }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
     pub fn local(mut self, local: Option<bool>) -> Self {
         self.local = local;
@@ -6411,17 +6390,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.index {
-            Some(index) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(16usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_search_shards");
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_search_shards"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -6478,12 +6447,46 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Search Template API"]
+pub enum SearchTemplateUrlParts {
+    None,
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl SearchTemplateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            SearchTemplateUrlParts::None => "/_search/template".into(),
+            SearchTemplateUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(18usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_search/template");
+                p.into()
+            }
+            SearchTemplateUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_search/template");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Search Template API"]
 pub struct SearchTemplate<B> {
     client: Elasticsearch,
+    parts: SearchTemplateUrlParts,
     allow_no_indices: Option<bool>,
     body: Option<B>,
-    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
@@ -6491,7 +6494,6 @@ pub struct SearchTemplate<B> {
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Option<Vec<String>>,
     preference: Option<String>,
     pretty: Option<bool>,
     profile: Option<bool>,
@@ -6500,19 +6502,18 @@ pub struct SearchTemplate<B> {
     scroll: Option<String>,
     search_type: Option<SearchType>,
     source: Option<String>,
-    ty: Option<Vec<String>>,
     typed_keys: Option<bool>,
 }
 impl<B> SearchTemplate<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchTemplateUrlParts) -> Self {
         SearchTemplate {
             client,
+            parts,
             allow_no_indices: None,
             body: None,
-            ccs_minimize_roundtrips: None,
             error_trace: None,
             expand_wildcards: None,
             explain: None,
@@ -6520,7 +6521,6 @@ where
             human: None,
             ignore_throttled: None,
             ignore_unavailable: None,
-            index: None,
             preference: None,
             pretty: None,
             profile: None,
@@ -6529,7 +6529,6 @@ where
             scroll: None,
             search_type: None,
             source: None,
-            ty: None,
             typed_keys: None,
         }
     }
@@ -6541,11 +6540,6 @@ where
     #[doc = "The body for the API call"]
     pub fn body(mut self, body: Option<B>) -> Self {
         self.body = body;
-        self
-    }
-    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
-    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: Option<bool>) -> Self {
-        self.ccs_minimize_roundtrips = ccs_minimize_roundtrips;
         self
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -6581,11 +6575,6 @@ where
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
@@ -6628,11 +6617,6 @@ where
         self.source = source;
         self
     }
-    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -6644,36 +6628,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.index, &self.ty) {
-            (Some(index), Some(ty)) => {
-                let index_str = index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_search/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(23usize + ty_str.len());
-                p.push_str("/_all/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_search/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(index), None) => {
-                let index_str = index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_search/template");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => std::borrow::Cow::Borrowed("/_search/template"),
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -6683,11 +6638,6 @@ where
             struct QueryParamsStruct {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
-                #[serde(
-                    rename = "ccs_minimize_roundtrips",
-                    skip_serializing_if = "Option::is_none"
-                )]
-                ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
@@ -6734,7 +6684,6 @@ where
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
-                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
                 error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,
@@ -6761,17 +6710,66 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Termvectors API"]
+pub enum TermvectorsUrlParts {
+    IndexId(String, String),
+    Index(String),
+    IndexTypeId(String, String, String),
+    IndexType(String, String),
+}
+impl TermvectorsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            TermvectorsUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(15usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_termvectors/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            TermvectorsUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(14usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_termvectors");
+                p.into()
+            }
+            TermvectorsUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(16usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_termvectors");
+                p.into()
+            }
+            TermvectorsUrlParts::IndexType(ref index, ref ty) => {
+                let mut p = String::with_capacity(15usize + index.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_termvectors");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Termvectors API"]
 pub struct Termvectors<B> {
     client: Elasticsearch,
+    parts: TermvectorsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
     fields: Option<Vec<String>>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
-    index: String,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
@@ -6781,7 +6779,6 @@ pub struct Termvectors<B> {
     routing: Option<String>,
     source: Option<String>,
     term_statistics: Option<bool>,
-    ty: Option<String>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -6789,17 +6786,16 @@ impl<B> Termvectors<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: TermvectorsUrlParts) -> Self {
         Termvectors {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             field_statistics: None,
             fields: None,
             filter_path: None,
             human: None,
-            id: None,
             offsets: None,
             payloads: None,
             positions: None,
@@ -6809,7 +6805,6 @@ where
             routing: None,
             source: None,
             term_statistics: None,
-            ty: None,
             version: None,
             version_type: None,
         }
@@ -6842,16 +6837,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The id of the document, when not specified a doc param should be supplied."]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
-        self
-    }
-    #[doc = "The index in which the document resides."]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specifies if term offsets should be returned."]
@@ -6899,11 +6884,6 @@ where
         self.term_statistics = term_statistics;
         self
     }
-    #[doc = "The type of the document."]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Explicit version number for concurrency control"]
     pub fn version(mut self, version: Option<i64>) -> Self {
         self.version = version;
@@ -6920,51 +6900,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match (&self.id, &self.ty) {
-            (Some(id), Some(ty)) => {
-                let index = self.index;
-                let ty = ty;
-                let id = id;
-                let mut p = String::with_capacity(16usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_termvectors");
-                std::borrow::Cow::Owned(p)
-            }
-            (Some(id), None) => {
-                let index = self.index;
-                let id = id;
-                let mut p = String::with_capacity(15usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_termvectors/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            (None, Some(ty)) => {
-                let index = self.index;
-                let ty = ty;
-                let mut p = String::with_capacity(15usize + index.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_termvectors");
-                std::borrow::Cow::Owned(p)
-            }
-            (None, None) => {
-                let index = self.index;
-                let mut p = String::with_capacity(14usize + index.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_termvectors");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -7040,9 +6976,42 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Update API"]
+pub enum UpdateUrlParts {
+    IndexId(String, String),
+    IndexTypeId(String, String, String),
+}
+impl UpdateUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            UpdateUrlParts::IndexId(ref index, ref id) => {
+                let mut p = String::with_capacity(10usize + index.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_update/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            UpdateUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/");
+                p.push_str(id.as_ref());
+                p.push_str("/_update");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Update API"]
 pub struct Update<B> {
     client: Elasticsearch,
+    parts: UpdateUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -7050,10 +7019,8 @@ pub struct Update<B> {
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    index: String,
     lang: Option<String>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
@@ -7061,18 +7028,16 @@ pub struct Update<B> {
     routing: Option<String>,
     source: Option<String>,
     timeout: Option<String>,
-    ty: Option<String>,
     wait_for_active_shards: Option<String>,
 }
 impl<B> Update<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateUrlParts) -> Self {
         Update {
             client,
-            index: index,
-            id: id,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -7089,7 +7054,6 @@ where
             routing: None,
             source: None,
             timeout: None,
-            ty: None,
             wait_for_active_shards: None,
         }
     }
@@ -7128,11 +7092,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "Document ID"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "only perform the update operation if the last operation that has changed the document has the specified primary term"]
     pub fn if_primary_term(mut self, if_primary_term: Option<i64>) -> Self {
         self.if_primary_term = if_primary_term;
@@ -7141,11 +7100,6 @@ where
     #[doc = "only perform the update operation if the last operation that has changed the document has the specified sequence number"]
     pub fn if_seq_no(mut self, if_seq_no: Option<i64>) -> Self {
         self.if_seq_no = if_seq_no;
-        self
-    }
-    #[doc = "The name of the index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "The script language (default: painless)"]
@@ -7183,11 +7137,6 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "The type of the document"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the update operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
     pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
         self.wait_for_active_shards = wait_for_active_shards;
@@ -7199,32 +7148,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index = self.index;
-                let ty = ty;
-                let id = self.id;
-                let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/");
-                p.push_str(id.as_ref());
-                p.push_str("/_update");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index = self.index;
-                let id = self.id;
-                let mut p = String::with_capacity(10usize + index.len() + id.len());
-                p.push_str("/");
-                p.push_str(index.as_ref());
-                p.push_str("/_update/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -7308,9 +7232,42 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Update By Query API"]
+pub enum UpdateByQueryUrlParts {
+    Index(Vec<String>),
+    IndexType(Vec<String>, Vec<String>),
+}
+impl UpdateByQueryUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            UpdateByQueryUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(18usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_update_by_query");
+                p.into()
+            }
+            UpdateByQueryUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let ty_str = ty.join(",");
+                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty_str.as_ref());
+                p.push_str("/_update_by_query");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Update By Query API"]
 pub struct UpdateByQuery<B> {
     client: Elasticsearch,
+    parts: UpdateByQueryUrlParts,
     _source: Option<Vec<String>>,
     _source_excludes: Option<Vec<String>>,
     _source_includes: Option<Vec<String>>,
@@ -7327,7 +7284,6 @@ pub struct UpdateByQuery<B> {
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    index: Vec<String>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
     pipeline: Option<String>,
@@ -7349,7 +7305,6 @@ pub struct UpdateByQuery<B> {
     stats: Option<Vec<String>>,
     terminate_after: Option<i64>,
     timeout: Option<String>,
-    ty: Option<Vec<String>>,
     version: Option<bool>,
     version_type: Option<bool>,
     wait_for_active_shards: Option<String>,
@@ -7359,10 +7314,10 @@ impl<B> UpdateByQuery<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryUrlParts) -> Self {
         UpdateByQuery {
             client,
-            index: index,
+            parts,
             _source: None,
             _source_excludes: None,
             _source_includes: None,
@@ -7400,7 +7355,6 @@ where
             stats: None,
             terminate_after: None,
             timeout: None,
-            ty: None,
             version: None,
             version_type: None,
             wait_for_active_shards: None,
@@ -7485,11 +7439,6 @@ where
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
     pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
         self.ignore_unavailable = ignore_unavailable;
-        self
-    }
-    #[doc = "A comma-separated list of index names to search; use `_all` or empty string to perform the operation on all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
@@ -7597,11 +7546,6 @@ where
         self.timeout = timeout;
         self
     }
-    #[doc = "A comma-separated list of document types to search; leave empty to perform the operation on all types"]
-    pub fn ty(mut self, ty: Option<Vec<String>>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether to return document version as part of a hit"]
     pub fn version(mut self, version: Option<bool>) -> Self {
         self.version = version;
@@ -7628,27 +7572,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index_str = self.index.join(",");
-                let ty_str = ty.join(",");
-                let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty_str.as_ref());
-                p.push_str("/_update_by_query");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index_str = self.index.join(",");
-                let mut p = String::with_capacity(18usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_update_by_query");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -7822,9 +7746,29 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Update By Query Rethrottle API"]
+pub enum UpdateByQueryRethrottleUrlParts {
+    TaskId(String),
+}
+impl UpdateByQueryRethrottleUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            UpdateByQueryRethrottleUrlParts::TaskId(ref task_id) => {
+                let mut p = String::with_capacity(30usize + task_id.len());
+                p.push_str("/_update_by_query/");
+                p.push_str(task_id.as_ref());
+                p.push_str("/_rethrottle");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Update By Query Rethrottle API"]
 pub struct UpdateByQueryRethrottle<B> {
     client: Elasticsearch,
+    parts: UpdateByQueryRethrottleUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
@@ -7832,16 +7776,15 @@ pub struct UpdateByQueryRethrottle<B> {
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
     source: Option<String>,
-    task_id: String,
 }
 impl<B> UpdateByQueryRethrottle<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, task_id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleUrlParts) -> Self {
         UpdateByQueryRethrottle {
             client,
-            task_id: task_id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -7886,25 +7829,13 @@ where
         self.source = source;
         self
     }
-    #[doc = "The task id to rethrottle"]
-    pub fn task_id(mut self, task_id: String) -> Self {
-        self.task_id = task_id;
-        self
-    }
 }
 impl<B> Sender for UpdateByQueryRethrottle<B>
 where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let task_id = self.task_id;
-            let mut p = String::with_capacity(30usize + task_id.len());
-            p.push_str("/_update_by_query/");
-            p.push_str(task_id.as_ref());
-            p.push_str("/_rethrottle");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -7947,229 +7878,238 @@ where
     }
 }
 impl Elasticsearch {
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html"]
-    pub fn bulk<B>(&self) -> Bulk<B>
+    #[doc = "Allows to perform multiple index/update/delete operations in a single request."]
+    pub fn bulk<B>(&self, parts: BulkUrlParts) -> Bulk<B>
     where
         B: Serialize,
     {
-        Bulk::new(self.clone())
+        Bulk::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn clear_scroll<B>(&self) -> ClearScroll<B>
+    #[doc = "Explicitly clears the search context for a scroll."]
+    pub fn clear_scroll<B>(&self, parts: ClearScrollUrlParts) -> ClearScroll<B>
     where
         B: Serialize,
     {
-        ClearScroll::new(self.clone())
+        ClearScroll::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html"]
-    pub fn count<B>(&self) -> Count<B>
+    #[doc = "Returns number of documents matching a query."]
+    pub fn count<B>(&self, parts: CountUrlParts) -> Count<B>
     where
         B: Serialize,
     {
-        Count::new(self.clone())
+        Count::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn create<B>(&self, index: String, id: String) -> Create<B>
+    #[doc = "Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+    pub fn create<B>(&self, parts: CreateUrlParts) -> Create<B>
     where
         B: Serialize,
     {
-        Create::new(self.clone(), index, id)
+        Create::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html"]
-    pub fn delete(&self, index: String, id: String) -> Delete {
-        Delete::new(self.clone(), index, id)
+    #[doc = "Removes a document from the index."]
+    pub fn delete(&self, parts: DeleteUrlParts) -> Delete {
+        Delete::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html"]
-    pub fn delete_by_query<B>(&self, index: Vec<String>) -> DeleteByQuery<B>
+    #[doc = "Deletes documents matching the provided query."]
+    pub fn delete_by_query<B>(&self, parts: DeleteByQueryUrlParts) -> DeleteByQuery<B>
     where
         B: Serialize,
     {
-        DeleteByQuery::new(self.clone(), index)
+        DeleteByQuery::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html"]
-    pub fn delete_by_query_rethrottle<B>(&self, task_id: String) -> DeleteByQueryRethrottle<B>
+    #[doc = "Changes the number of requests per second for a particular Delete By Query operation."]
+    pub fn delete_by_query_rethrottle<B>(
+        &self,
+        parts: DeleteByQueryRethrottleUrlParts,
+    ) -> DeleteByQueryRethrottle<B>
     where
         B: Serialize,
     {
-        DeleteByQueryRethrottle::new(self.clone(), task_id)
+        DeleteByQueryRethrottle::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn delete_script(&self, id: String) -> DeleteScript {
-        DeleteScript::new(self.clone(), id)
+    #[doc = "Deletes a script."]
+    pub fn delete_script(&self, parts: DeleteScriptUrlParts) -> DeleteScript {
+        DeleteScript::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists(&self, index: String, id: String) -> Exists {
-        Exists::new(self.clone(), index, id)
+    #[doc = "Returns information about whether a document exists in an index."]
+    pub fn exists(&self, parts: ExistsUrlParts) -> Exists {
+        Exists::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn exists_source(&self, index: String, id: String) -> ExistsSource {
-        ExistsSource::new(self.clone(), index, id)
+    #[doc = "Returns information about whether a document source exists in an index."]
+    pub fn exists_source(&self, parts: ExistsSourceUrlParts) -> ExistsSource {
+        ExistsSource::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html"]
-    pub fn explain<B>(&self, index: String, id: String) -> Explain<B>
+    #[doc = "Returns information about why a specific matches (or doesn't match) a query."]
+    pub fn explain<B>(&self, parts: ExplainUrlParts) -> Explain<B>
     where
         B: Serialize,
     {
-        Explain::new(self.clone(), index, id)
+        Explain::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html"]
-    pub fn field_caps<B>(&self) -> FieldCaps<B>
+    #[doc = "Returns the information about the capabilities of fields among multiple indices."]
+    pub fn field_caps<B>(&self, parts: FieldCapsUrlParts) -> FieldCaps<B>
     where
         B: Serialize,
     {
-        FieldCaps::new(self.clone())
+        FieldCaps::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get(&self, index: String, id: String) -> Get {
-        Get::new(self.clone(), index, id)
+    #[doc = "Returns a document."]
+    pub fn get(&self, parts: GetUrlParts) -> Get {
+        Get::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn get_script(&self, id: String) -> GetScript {
-        GetScript::new(self.clone(), id)
+    #[doc = "Returns a script."]
+    pub fn get_script(&self, parts: GetScriptUrlParts) -> GetScript {
+        GetScript::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html"]
-    pub fn get_source(&self, index: String, id: String) -> GetSource {
-        GetSource::new(self.clone(), index, id)
+    #[doc = "Returns the source of a document."]
+    pub fn get_source(&self, parts: GetSourceUrlParts) -> GetSource {
+        GetSource::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html"]
-    pub fn index<B>(&self, index: String) -> Index<B>
+    #[doc = "Creates or updates a document in an index."]
+    pub fn index<B>(&self, parts: IndexUrlParts) -> Index<B>
     where
         B: Serialize,
     {
-        Index::new(self.clone(), index)
+        Index::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/"]
+    #[doc = "Returns basic information about the cluster."]
     pub fn info(&self) -> Info {
         Info::new(self.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html"]
-    pub fn mget<B>(&self) -> Mget<B>
+    #[doc = "Allows to get multiple documents in one request."]
+    pub fn mget<B>(&self, parts: MgetUrlParts) -> Mget<B>
     where
         B: Serialize,
     {
-        Mget::new(self.clone())
+        Mget::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html"]
-    pub fn msearch<B>(&self) -> Msearch<B>
+    #[doc = "Allows to execute several search operations in one request."]
+    pub fn msearch<B>(&self, parts: MsearchUrlParts) -> Msearch<B>
     where
         B: Serialize,
     {
-        Msearch::new(self.clone())
+        Msearch::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html"]
-    pub fn msearch_template<B>(&self) -> MsearchTemplate<B>
+    #[doc = "Allows to execute several search template operations in one request."]
+    pub fn msearch_template<B>(&self, parts: MsearchTemplateUrlParts) -> MsearchTemplate<B>
     where
         B: Serialize,
     {
-        MsearchTemplate::new(self.clone())
+        MsearchTemplate::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html"]
-    pub fn mtermvectors<B>(&self) -> Mtermvectors<B>
+    #[doc = "Returns multiple termvectors in one request."]
+    pub fn mtermvectors<B>(&self, parts: MtermvectorsUrlParts) -> Mtermvectors<B>
     where
         B: Serialize,
     {
-        Mtermvectors::new(self.clone())
+        Mtermvectors::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/"]
+    #[doc = "Returns whether the cluster is running."]
     pub fn ping(&self) -> Ping {
         Ping::new(self.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html"]
-    pub fn put_script<B>(&self, id: String) -> PutScript<B>
+    #[doc = "Creates or updates a script."]
+    pub fn put_script<B>(&self, parts: PutScriptUrlParts) -> PutScript<B>
     where
         B: Serialize,
     {
-        PutScript::new(self.clone(), id)
+        PutScript::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html"]
-    pub fn rank_eval<B>(&self) -> RankEval<B>
+    #[doc = "Allows to evaluate the quality of ranked search results over a set of typical search queries"]
+    pub fn rank_eval<B>(&self, parts: RankEvalUrlParts) -> RankEval<B>
     where
         B: Serialize,
     {
-        RankEval::new(self.clone())
+        RankEval::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
+    #[doc = "Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<B>(&self) -> Reindex<B>
     where
         B: Serialize,
     {
         Reindex::new(self.clone())
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html"]
-    pub fn reindex_rethrottle<B>(&self, task_id: String) -> ReindexRethrottle<B>
+    #[doc = "Changes the number of requests per second for a particular Reindex operation."]
+    pub fn reindex_rethrottle<B>(&self, parts: ReindexRethrottleUrlParts) -> ReindexRethrottle<B>
     where
         B: Serialize,
     {
-        ReindexRethrottle::new(self.clone(), task_id)
+        ReindexRethrottle::new(self.clone(), parts)
     }
-    #[doc = "http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/search-template.html"]
-    pub fn render_search_template<B>(&self) -> RenderSearchTemplate<B>
+    #[doc = "Allows to use the Mustache language to pre-render a search definition."]
+    pub fn render_search_template<B>(
+        &self,
+        parts: RenderSearchTemplateUrlParts,
+    ) -> RenderSearchTemplate<B>
     where
         B: Serialize,
     {
-        RenderSearchTemplate::new(self.clone())
+        RenderSearchTemplate::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html"]
+    #[doc = "Allows an arbitrary script to be executed and a result to be returned"]
     pub fn scripts_painless_execute<B>(&self) -> ScriptsPainlessExecute<B>
     where
         B: Serialize,
     {
         ScriptsPainlessExecute::new(self.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll"]
-    pub fn scroll<B>(&self) -> Scroll<B>
+    #[doc = "Allows to retrieve a large numbers of results from a single search request."]
+    pub fn scroll<B>(&self, parts: ScrollUrlParts) -> Scroll<B>
     where
         B: Serialize,
     {
-        Scroll::new(self.clone())
+        Scroll::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html"]
-    pub fn search<B>(&self) -> Search<B>
+    #[doc = "Returns results matching a query."]
+    pub fn search<B>(&self, parts: SearchUrlParts) -> Search<B>
     where
         B: Serialize,
     {
-        Search::new(self.clone())
+        Search::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html"]
-    pub fn search_shards<B>(&self) -> SearchShards<B>
+    #[doc = "Returns information about the indices and shards that a search request would be executed against."]
+    pub fn search_shards<B>(&self, parts: SearchShardsUrlParts) -> SearchShards<B>
     where
         B: Serialize,
     {
-        SearchShards::new(self.clone())
+        SearchShards::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html"]
-    pub fn search_template<B>(&self) -> SearchTemplate<B>
+    #[doc = "Allows to use the Mustache language to pre-render a search definition."]
+    pub fn search_template<B>(&self, parts: SearchTemplateUrlParts) -> SearchTemplate<B>
     where
         B: Serialize,
     {
-        SearchTemplate::new(self.clone())
+        SearchTemplate::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html"]
-    pub fn termvectors<B>(&self, index: String) -> Termvectors<B>
+    #[doc = "Returns information and statistics about terms in the fields of a particular document."]
+    pub fn termvectors<B>(&self, parts: TermvectorsUrlParts) -> Termvectors<B>
     where
         B: Serialize,
     {
-        Termvectors::new(self.clone(), index)
+        Termvectors::new(self.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html"]
-    pub fn update<B>(&self, index: String, id: String) -> Update<B>
+    #[doc = "Updates a document with a script or partial document."]
+    pub fn update<B>(&self, parts: UpdateUrlParts) -> Update<B>
     where
         B: Serialize,
     {
-        Update::new(self.clone(), index, id)
+        Update::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html"]
-    pub fn update_by_query<B>(&self, index: Vec<String>) -> UpdateByQuery<B>
+    #[doc = "Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+    pub fn update_by_query<B>(&self, parts: UpdateByQueryUrlParts) -> UpdateByQuery<B>
     where
         B: Serialize,
     {
-        UpdateByQuery::new(self.clone(), index)
+        UpdateByQuery::new(self.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html"]
-    pub fn update_by_query_rethrottle<B>(&self, task_id: String) -> UpdateByQueryRethrottle<B>
+    #[doc = "Changes the number of requests per second for a particular Update By Query operation."]
+    pub fn update_by_query_rethrottle<B>(
+        &self,
+        parts: UpdateByQueryRethrottleUrlParts,
+    ) -> UpdateByQueryRethrottle<B>
     where
         B: Serialize,
     {
-        UpdateByQueryRethrottle::new(self.clone(), task_id)
+        UpdateByQueryRethrottle::new(self.clone(), parts)
     }
 }

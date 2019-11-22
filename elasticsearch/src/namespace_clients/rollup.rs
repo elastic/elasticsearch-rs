@@ -23,21 +23,40 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Delete Job API"]
+pub enum RollupDeleteJobUrlParts {
+    Id(String),
+}
+impl RollupDeleteJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupDeleteJobUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(13usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Delete Job API"]
 pub struct RollupDeleteJob {
     client: Elasticsearch,
+    parts: RollupDeleteJobUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupDeleteJob {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupDeleteJobUrlParts) -> Self {
         RollupDeleteJob {
             client,
-            id: id,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -60,11 +79,6 @@ impl RollupDeleteJob {
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to delete"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -78,13 +92,7 @@ impl RollupDeleteJob {
 }
 impl Sender for RollupDeleteJob {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(13usize + id.len());
-            p.push_str("/_rollup/job/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -120,24 +128,44 @@ impl Sender for RollupDeleteJob {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Jobs API"]
+pub enum RollupGetJobsUrlParts {
+    Id(String),
+    None,
+}
+impl RollupGetJobsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupGetJobsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(13usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            RollupGetJobsUrlParts::None => "/_rollup/job/".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Jobs API"]
 pub struct RollupGetJobs {
     client: Elasticsearch,
+    parts: RollupGetJobsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupGetJobs {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupGetJobsUrlParts) -> Self {
         RollupGetJobs {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             pretty: None,
             source: None,
         }
@@ -155,11 +183,6 @@ impl RollupGetJobs {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the job(s) to fetch. Accepts glob patterns, or left blank for all jobs"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -175,16 +198,7 @@ impl RollupGetJobs {
 }
 impl Sender for RollupGetJobs {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(13usize + id.len());
-                p.push_str("/_rollup/job/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_rollup/job/"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -220,24 +234,44 @@ impl Sender for RollupGetJobs {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Rollup Caps API"]
+pub enum RollupGetRollupCapsUrlParts {
+    Id(String),
+    None,
+}
+impl RollupGetRollupCapsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupGetRollupCapsUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(14usize + id.len());
+                p.push_str("/_rollup/data/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+            RollupGetRollupCapsUrlParts::None => "/_rollup/data/".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Rollup Caps API"]
 pub struct RollupGetRollupCaps {
     client: Elasticsearch,
+    parts: RollupGetRollupCapsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupGetRollupCaps {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupGetRollupCapsUrlParts) -> Self {
         RollupGetRollupCaps {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            id: None,
             pretty: None,
             source: None,
         }
@@ -255,11 +289,6 @@ impl RollupGetRollupCaps {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "The ID of the index to check rollup capabilities on, or left blank for all jobs"]
-    pub fn id(mut self, id: Option<String>) -> Self {
-        self.id = id;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -275,16 +304,7 @@ impl RollupGetRollupCaps {
 }
 impl Sender for RollupGetRollupCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.id {
-            Some(id) => {
-                let id = id;
-                let mut p = String::with_capacity(14usize + id.len());
-                p.push_str("/_rollup/data/");
-                p.push_str(id.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_rollup/data/"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -320,21 +340,40 @@ impl Sender for RollupGetRollupCaps {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Get Rollup Index Caps API"]
+pub enum RollupGetRollupIndexCapsUrlParts {
+    Index(String),
+}
+impl RollupGetRollupIndexCapsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupGetRollupIndexCapsUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(14usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_rollup/data");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Get Rollup Index Caps API"]
 pub struct RollupGetRollupIndexCaps {
     client: Elasticsearch,
+    parts: RollupGetRollupIndexCapsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl RollupGetRollupIndexCaps {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupGetRollupIndexCapsUrlParts) -> Self {
         RollupGetRollupIndexCaps {
             client,
-            index: index,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -357,11 +396,6 @@ impl RollupGetRollupIndexCaps {
         self.human = human;
         self
     }
-    #[doc = "The rollup index or index pattern to obtain rollup capabilities from."]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -375,14 +409,7 @@ impl RollupGetRollupIndexCaps {
 }
 impl Sender for RollupGetRollupIndexCaps {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(14usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_rollup/data");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -418,14 +445,32 @@ impl Sender for RollupGetRollupIndexCaps {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Put Job API"]
+pub enum RollupPutJobUrlParts {
+    Id(String),
+}
+impl RollupPutJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupPutJobUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(13usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Put Job API"]
 pub struct RollupPutJob<B> {
     client: Elasticsearch,
+    parts: RollupPutJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -433,10 +478,10 @@ impl<B> RollupPutJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupPutJobUrlParts) -> Self {
         RollupPutJob {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -465,11 +510,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to create"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -486,13 +526,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(13usize + id.len());
-            p.push_str("/_rollup/job/");
-            p.push_str(id.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -528,28 +562,58 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Rollup Search API"]
+pub enum RollupRollupSearchUrlParts {
+    Index(Vec<String>),
+    IndexType(Vec<String>, String),
+}
+impl RollupRollupSearchUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupRollupSearchUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(16usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_rollup_search");
+                p.into()
+            }
+            RollupRollupSearchUrlParts::IndexType(ref index, ref ty) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(17usize + index_str.len() + ty.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/");
+                p.push_str(ty.as_ref());
+                p.push_str("/_rollup_search");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Rollup Search API"]
 pub struct RollupRollupSearch<B> {
     client: Elasticsearch,
+    parts: RollupRollupSearchUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     source: Option<String>,
-    ty: Option<String>,
     typed_keys: Option<bool>,
 }
 impl<B> RollupRollupSearch<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupRollupSearchUrlParts) -> Self {
         RollupRollupSearch {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -557,7 +621,6 @@ where
             pretty: None,
             rest_total_hits_as_int: None,
             source: None,
-            ty: None,
             typed_keys: None,
         }
     }
@@ -581,11 +644,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The indices or index-pattern(s) (containing rollup or regular data) that should be searched"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -601,11 +659,6 @@ where
         self.source = source;
         self
     }
-    #[doc = "The doc type inside the index"]
-    pub fn ty(mut self, ty: Option<String>) -> Self {
-        self.ty = ty;
-        self
-    }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]
     pub fn typed_keys(mut self, typed_keys: Option<bool>) -> Self {
         self.typed_keys = typed_keys;
@@ -617,27 +670,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.ty {
-            Some(ty) => {
-                let index_str = self.index.join(",");
-                let ty = ty;
-                let mut p = String::with_capacity(17usize + index_str.len() + ty.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/");
-                p.push_str(ty.as_ref());
-                p.push_str("/_rollup_search");
-                std::borrow::Cow::Owned(p)
-            }
-            None => {
-                let index_str = self.index.join(",");
-                let mut p = String::with_capacity(16usize + index_str.len());
-                p.push_str("/");
-                p.push_str(index_str.as_ref());
-                p.push_str("/_rollup_search");
-                std::borrow::Cow::Owned(p)
-            }
-        };
+        let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
             None => HttpMethod::Get,
@@ -685,14 +718,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Start Job API"]
+pub enum RollupStartJobUrlParts {
+    Id(String),
+}
+impl RollupStartJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupStartJobUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(20usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                p.push_str("/_start");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Start Job API"]
 pub struct RollupStartJob<B> {
     client: Elasticsearch,
+    parts: RollupStartJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -700,10 +752,10 @@ impl<B> RollupStartJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupStartJobUrlParts) -> Self {
         RollupStartJob {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -732,11 +784,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to start"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -753,14 +800,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(20usize + id.len());
-            p.push_str("/_rollup/job/");
-            p.push_str(id.as_ref());
-            p.push_str("/_start");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -796,14 +836,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Rollup Stop Job API"]
+pub enum RollupStopJobUrlParts {
+    Id(String),
+}
+impl RollupStopJobUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            RollupStopJobUrlParts::Id(ref id) => {
+                let mut p = String::with_capacity(19usize + id.len());
+                p.push_str("/_rollup/job/");
+                p.push_str(id.as_ref());
+                p.push_str("/_stop");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Rollup Stop Job API"]
 pub struct RollupStopJob<B> {
     client: Elasticsearch,
+    parts: RollupStopJobUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    id: String,
     pretty: Option<bool>,
     source: Option<String>,
     timeout: Option<String>,
@@ -813,10 +872,10 @@ impl<B> RollupStopJob<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, id: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupStopJobUrlParts) -> Self {
         RollupStopJob {
             client,
-            id: id,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -847,11 +906,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The ID of the job to stop"]
-    pub fn id(mut self, id: String) -> Self {
-        self.id = id;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -878,14 +932,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let id = self.id;
-            let mut p = String::with_capacity(19usize + id.len());
-            p.push_str("/_rollup/job/");
-            p.push_str(id.as_ref());
-            p.push_str("/_stop");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -938,49 +985,44 @@ impl Rollup {
     pub fn new(client: Elasticsearch) -> Self {
         Rollup { client }
     }
-    #[doc = ""]
-    pub fn delete_job(&self, id: String) -> RollupDeleteJob {
-        RollupDeleteJob::new(self.client.clone(), id)
+    pub fn delete_job(&self, parts: RollupDeleteJobUrlParts) -> RollupDeleteJob {
+        RollupDeleteJob::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn get_jobs(&self) -> RollupGetJobs {
-        RollupGetJobs::new(self.client.clone())
+    pub fn get_jobs(&self, parts: RollupGetJobsUrlParts) -> RollupGetJobs {
+        RollupGetJobs::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn get_rollup_caps(&self) -> RollupGetRollupCaps {
-        RollupGetRollupCaps::new(self.client.clone())
+    pub fn get_rollup_caps(&self, parts: RollupGetRollupCapsUrlParts) -> RollupGetRollupCaps {
+        RollupGetRollupCaps::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn get_rollup_index_caps(&self, index: String) -> RollupGetRollupIndexCaps {
-        RollupGetRollupIndexCaps::new(self.client.clone(), index)
+    pub fn get_rollup_index_caps(
+        &self,
+        parts: RollupGetRollupIndexCapsUrlParts,
+    ) -> RollupGetRollupIndexCaps {
+        RollupGetRollupIndexCaps::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn put_job<B>(&self, id: String) -> RollupPutJob<B>
+    pub fn put_job<B>(&self, parts: RollupPutJobUrlParts) -> RollupPutJob<B>
     where
         B: Serialize,
     {
-        RollupPutJob::new(self.client.clone(), id)
+        RollupPutJob::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn rollup_search<B>(&self, index: Vec<String>) -> RollupRollupSearch<B>
+    pub fn rollup_search<B>(&self, parts: RollupRollupSearchUrlParts) -> RollupRollupSearch<B>
     where
         B: Serialize,
     {
-        RollupRollupSearch::new(self.client.clone(), index)
+        RollupRollupSearch::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn start_job<B>(&self, id: String) -> RollupStartJob<B>
+    pub fn start_job<B>(&self, parts: RollupStartJobUrlParts) -> RollupStartJob<B>
     where
         B: Serialize,
     {
-        RollupStartJob::new(self.client.clone(), id)
+        RollupStartJob::new(self.client.clone(), parts)
     }
-    #[doc = ""]
-    pub fn stop_job<B>(&self, id: String) -> RollupStopJob<B>
+    pub fn stop_job<B>(&self, parts: RollupStopJobUrlParts) -> RollupStopJob<B>
     where
         B: Serialize,
     {
-        RollupStopJob::new(self.client.clone(), id)
+        RollupStopJob::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

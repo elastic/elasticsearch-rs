@@ -29,6 +29,7 @@ pub mod monitoring;
 pub mod nodes;
 pub mod rollup;
 pub mod security;
+pub mod slm;
 pub mod snapshot;
 pub mod sql;
 pub mod ssl;

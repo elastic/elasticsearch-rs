@@ -16,7 +16,8 @@ A small executable to download REST API specs from GitHub and generate much of t
 cargo run -p api_generator
 ```
 
-from the repository root directory
+from the repository root directory. The minimum REST API spec version compatible with the 
+generator is `v7.4.0`.
 
 ### elasticsearch
 
@@ -67,7 +68,7 @@ let cat_response = client.cat()
 
 let mut search_response = client
     // Value is the request body type
-    .search::<Value>()
+    .search::<Value>(SearchUrlParts::None))
     .body(Some(json!({
         "query": {
             "match_all": {}

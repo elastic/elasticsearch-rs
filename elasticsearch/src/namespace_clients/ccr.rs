@@ -23,21 +23,40 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use std::borrow::Cow;
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Delete Auto Follow Pattern API"]
+pub enum CcrDeleteAutoFollowPatternUrlParts {
+    Name(String),
+}
+impl CcrDeleteAutoFollowPatternUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrDeleteAutoFollowPatternUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(18usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Delete Auto Follow Pattern API"]
 pub struct CcrDeleteAutoFollowPattern {
     client: Elasticsearch,
+    parts: CcrDeleteAutoFollowPatternUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrDeleteAutoFollowPattern {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrDeleteAutoFollowPatternUrlParts) -> Self {
         CcrDeleteAutoFollowPattern {
             client,
-            name: name,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -60,11 +79,6 @@ impl CcrDeleteAutoFollowPattern {
         self.human = human;
         self
     }
-    #[doc = "The name of the auto follow pattern."]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -78,13 +92,7 @@ impl CcrDeleteAutoFollowPattern {
 }
 impl Sender for CcrDeleteAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(18usize + name.len());
-            p.push_str("/_ccr/auto_follow/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
@@ -120,14 +128,33 @@ impl Sender for CcrDeleteAutoFollowPattern {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow API"]
+pub enum CcrFollowUrlParts {
+    Index(String),
+}
+impl CcrFollowUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrFollowUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(13usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_ccr/follow");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow API"]
 pub struct CcrFollow<B> {
     client: Elasticsearch,
+    parts: CcrFollowUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
     wait_for_active_shards: Option<String>,
@@ -136,10 +163,10 @@ impl<B> CcrFollow<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrFollowUrlParts) -> Self {
         CcrFollow {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -169,11 +196,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the follower index"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -195,14 +217,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(13usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_ccr/follow");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -244,21 +259,41 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow Info API"]
+pub enum CcrFollowInfoUrlParts {
+    Index(Vec<String>),
+}
+impl CcrFollowInfoUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrFollowInfoUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(11usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_ccr/info");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow Info API"]
 pub struct CcrFollowInfo {
     client: Elasticsearch,
+    parts: CcrFollowInfoUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrFollowInfo {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrFollowInfoUrlParts) -> Self {
         CcrFollowInfo {
             client,
-            index: index,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -279,11 +314,6 @@ impl CcrFollowInfo {
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "A comma-separated list of index patterns; use `_all` to perform the operation on all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -299,14 +329,7 @@ impl CcrFollowInfo {
 }
 impl Sender for CcrFollowInfo {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(11usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_ccr/info");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -342,21 +365,41 @@ impl Sender for CcrFollowInfo {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Follow Stats API"]
+pub enum CcrFollowStatsUrlParts {
+    Index(Vec<String>),
+}
+impl CcrFollowStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrFollowStatsUrlParts::Index(ref index) => {
+                let index_str = index.join(",");
+                let mut p = String::with_capacity(12usize + index_str.len());
+                p.push_str("/");
+                p.push_str(index_str.as_ref());
+                p.push_str("/_ccr/stats");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Follow Stats API"]
 pub struct CcrFollowStats {
     client: Elasticsearch,
+    parts: CcrFollowStatsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: Vec<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrFollowStats {
-    pub fn new(client: Elasticsearch, index: Vec<String>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrFollowStatsUrlParts) -> Self {
         CcrFollowStats {
             client,
-            index: index,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -379,11 +422,6 @@ impl CcrFollowStats {
         self.human = human;
         self
     }
-    #[doc = "A comma-separated list of index patterns; use `_all` to perform the operation on all indices"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -397,14 +435,7 @@ impl CcrFollowStats {
 }
 impl Sender for CcrFollowStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index_str = self.index.join(",");
-            let mut p = String::with_capacity(12usize + index_str.len());
-            p.push_str("/");
-            p.push_str(index_str.as_ref());
-            p.push_str("/_ccr/stats");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -440,14 +471,33 @@ impl Sender for CcrFollowStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Forget Follower API"]
+pub enum CcrForgetFollowerUrlParts {
+    Index(String),
+}
+impl CcrForgetFollowerUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrForgetFollowerUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(22usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_ccr/forget_follower");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Forget Follower API"]
 pub struct CcrForgetFollower<B> {
     client: Elasticsearch,
+    parts: CcrForgetFollowerUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -455,10 +505,10 @@ impl<B> CcrForgetFollower<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrForgetFollowerUrlParts) -> Self {
         CcrForgetFollower {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -485,11 +535,6 @@ where
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: Option<bool>) -> Self {
         self.human = human;
-        self
-    }
-    #[doc = "the name of the leader index for which specified follower retention leases should be removed"]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -508,14 +553,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(22usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_ccr/forget_follower");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -551,24 +589,44 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Get Auto Follow Pattern API"]
+pub enum CcrGetAutoFollowPatternUrlParts {
+    None,
+    Name(String),
+}
+impl CcrGetAutoFollowPatternUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrGetAutoFollowPatternUrlParts::None => "/_ccr/auto_follow".into(),
+            CcrGetAutoFollowPatternUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(18usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Get Auto Follow Pattern API"]
 pub struct CcrGetAutoFollowPattern {
     client: Elasticsearch,
+    parts: CcrGetAutoFollowPatternUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: Option<String>,
     pretty: Option<bool>,
     source: Option<String>,
 }
 impl CcrGetAutoFollowPattern {
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrGetAutoFollowPatternUrlParts) -> Self {
         CcrGetAutoFollowPattern {
             client,
+            parts,
             error_trace: None,
             filter_path: None,
             human: None,
-            name: None,
             pretty: None,
             source: None,
         }
@@ -588,11 +646,6 @@ impl CcrGetAutoFollowPattern {
         self.human = human;
         self
     }
-    #[doc = "The name of the auto follow pattern."]
-    pub fn name(mut self, name: Option<String>) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -606,16 +659,7 @@ impl CcrGetAutoFollowPattern {
 }
 impl Sender for CcrGetAutoFollowPattern {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = match &self.name {
-            Some(name) => {
-                let name = name;
-                let mut p = String::with_capacity(18usize + name.len());
-                p.push_str("/_ccr/auto_follow/");
-                p.push_str(name.as_ref());
-                std::borrow::Cow::Owned(p)
-            }
-            None => std::borrow::Cow::Borrowed("/_ccr/auto_follow"),
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -651,14 +695,33 @@ impl Sender for CcrGetAutoFollowPattern {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Pause Follow API"]
+pub enum CcrPauseFollowUrlParts {
+    Index(String),
+}
+impl CcrPauseFollowUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrPauseFollowUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(19usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_ccr/pause_follow");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Pause Follow API"]
 pub struct CcrPauseFollow<B> {
     client: Elasticsearch,
+    parts: CcrPauseFollowUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -666,10 +729,10 @@ impl<B> CcrPauseFollow<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrPauseFollowUrlParts) -> Self {
         CcrPauseFollow {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -698,11 +761,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the follower index that should pause following its leader index."]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -719,14 +777,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(19usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_ccr/pause_follow");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -762,14 +813,32 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Put Auto Follow Pattern API"]
+pub enum CcrPutAutoFollowPatternUrlParts {
+    Name(String),
+}
+impl CcrPutAutoFollowPatternUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrPutAutoFollowPatternUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(18usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Put Auto Follow Pattern API"]
 pub struct CcrPutAutoFollowPattern<B> {
     client: Elasticsearch,
+    parts: CcrPutAutoFollowPatternUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    name: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -777,10 +846,10 @@ impl<B> CcrPutAutoFollowPattern<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, name: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrPutAutoFollowPatternUrlParts) -> Self {
         CcrPutAutoFollowPattern {
             client,
-            name: name,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -809,11 +878,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the auto follow pattern."]
-    pub fn name(mut self, name: String) -> Self {
-        self.name = name;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -830,13 +894,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let name = self.name;
-            let mut p = String::with_capacity(18usize + name.len());
-            p.push_str("/_ccr/auto_follow/");
-            p.push_str(name.as_ref());
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
@@ -872,14 +930,33 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Resume Follow API"]
+pub enum CcrResumeFollowUrlParts {
+    Index(String),
+}
+impl CcrResumeFollowUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrResumeFollowUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(20usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_ccr/resume_follow");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Resume Follow API"]
 pub struct CcrResumeFollow<B> {
     client: Elasticsearch,
+    parts: CcrResumeFollowUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -887,10 +964,10 @@ impl<B> CcrResumeFollow<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrResumeFollowUrlParts) -> Self {
         CcrResumeFollow {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -919,11 +996,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the follow index to resume following."]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -940,14 +1012,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(20usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_ccr/resume_follow");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -983,9 +1048,23 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Stats API"]
+pub enum CcrStatsUrlParts {
+    None,
+}
+impl CcrStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrStatsUrlParts::None => "/_ccr/stats".into(),
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Stats API"]
 pub struct CcrStats {
     client: Elasticsearch,
+    parts: CcrStatsUrlParts,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
@@ -996,6 +1075,7 @@ impl CcrStats {
     pub fn new(client: Elasticsearch) -> Self {
         CcrStats {
             client,
+            parts: CcrStatsUrlParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1031,7 +1111,7 @@ impl CcrStats {
 }
 impl Sender for CcrStats {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = std::borrow::Cow::Borrowed("/_ccr/stats");
+        let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
@@ -1067,14 +1147,33 @@ impl Sender for CcrStats {
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Unfollow API"]
+pub enum CcrUnfollowUrlParts {
+    Index(String),
+}
+impl CcrUnfollowUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrUnfollowUrlParts::Index(ref index) => {
+                let mut p = String::with_capacity(15usize + index.len());
+                p.push_str("/");
+                p.push_str(index.as_ref());
+                p.push_str("/_ccr/unfollow");
+                p.into()
+            }
+        }
+    }
+}
 #[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Unfollow API"]
 pub struct CcrUnfollow<B> {
     client: Elasticsearch,
+    parts: CcrUnfollowUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<Vec<String>>,
     human: Option<bool>,
-    index: String,
     pretty: Option<bool>,
     source: Option<String>,
 }
@@ -1082,10 +1181,10 @@ impl<B> CcrUnfollow<B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, index: String) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrUnfollowUrlParts) -> Self {
         CcrUnfollow {
             client,
-            index: index,
+            parts,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1114,11 +1213,6 @@ where
         self.human = human;
         self
     }
-    #[doc = "The name of the follower index that should be turned into a regular index."]
-    pub fn index(mut self, index: String) -> Self {
-        self.index = index;
-        self
-    }
     #[doc = "Pretty format the returned JSON response."]
     pub fn pretty(mut self, pretty: Option<bool>) -> Self {
         self.pretty = pretty;
@@ -1135,14 +1229,7 @@ where
     B: Serialize,
 {
     fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = {
-            let index = self.index;
-            let mut p = String::with_capacity(15usize + index.len());
-            p.push_str("/");
-            p.push_str(index.as_ref());
-            p.push_str("/_ccr/unfollow");
-            std::borrow::Cow::Owned(p)
-        };
+        let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
@@ -1186,67 +1273,65 @@ impl Ccr {
     pub fn new(client: Elasticsearch) -> Self {
         Ccr { client }
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-delete-auto-follow-pattern.html"]
-    pub fn delete_auto_follow_pattern(&self, name: String) -> CcrDeleteAutoFollowPattern {
-        CcrDeleteAutoFollowPattern::new(self.client.clone(), name)
+    pub fn delete_auto_follow_pattern(
+        &self,
+        parts: CcrDeleteAutoFollowPatternUrlParts,
+    ) -> CcrDeleteAutoFollowPattern {
+        CcrDeleteAutoFollowPattern::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html"]
-    pub fn follow<B>(&self, index: String) -> CcrFollow<B>
+    pub fn follow<B>(&self, parts: CcrFollowUrlParts) -> CcrFollow<B>
     where
         B: Serialize,
     {
-        CcrFollow::new(self.client.clone(), index)
+        CcrFollow::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html"]
-    pub fn follow_info(&self, index: Vec<String>) -> CcrFollowInfo {
-        CcrFollowInfo::new(self.client.clone(), index)
+    pub fn follow_info(&self, parts: CcrFollowInfoUrlParts) -> CcrFollowInfo {
+        CcrFollowInfo::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-stats.html"]
-    pub fn follow_stats(&self, index: Vec<String>) -> CcrFollowStats {
-        CcrFollowStats::new(self.client.clone(), index)
+    pub fn follow_stats(&self, parts: CcrFollowStatsUrlParts) -> CcrFollowStats {
+        CcrFollowStats::new(self.client.clone(), parts)
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn forget_follower<B>(&self, index: String) -> CcrForgetFollower<B>
+    pub fn forget_follower<B>(&self, parts: CcrForgetFollowerUrlParts) -> CcrForgetFollower<B>
     where
         B: Serialize,
     {
-        CcrForgetFollower::new(self.client.clone(), index)
+        CcrForgetFollower::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html"]
-    pub fn get_auto_follow_pattern(&self) -> CcrGetAutoFollowPattern {
-        CcrGetAutoFollowPattern::new(self.client.clone())
+    pub fn get_auto_follow_pattern(
+        &self,
+        parts: CcrGetAutoFollowPatternUrlParts,
+    ) -> CcrGetAutoFollowPattern {
+        CcrGetAutoFollowPattern::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html"]
-    pub fn pause_follow<B>(&self, index: String) -> CcrPauseFollow<B>
+    pub fn pause_follow<B>(&self, parts: CcrPauseFollowUrlParts) -> CcrPauseFollow<B>
     where
         B: Serialize,
     {
-        CcrPauseFollow::new(self.client.clone(), index)
+        CcrPauseFollow::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html"]
-    pub fn put_auto_follow_pattern<B>(&self, name: String) -> CcrPutAutoFollowPattern<B>
+    pub fn put_auto_follow_pattern<B>(
+        &self,
+        parts: CcrPutAutoFollowPatternUrlParts,
+    ) -> CcrPutAutoFollowPattern<B>
     where
         B: Serialize,
     {
-        CcrPutAutoFollowPattern::new(self.client.clone(), name)
+        CcrPutAutoFollowPattern::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html"]
-    pub fn resume_follow<B>(&self, index: String) -> CcrResumeFollow<B>
+    pub fn resume_follow<B>(&self, parts: CcrResumeFollowUrlParts) -> CcrResumeFollow<B>
     where
         B: Serialize,
     {
-        CcrResumeFollow::new(self.client.clone(), index)
+        CcrResumeFollow::new(self.client.clone(), parts)
     }
-    #[doc = "https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html"]
     pub fn stats(&self) -> CcrStats {
         CcrStats::new(self.client.clone())
     }
-    #[doc = "http://www.elastic.co/guide/en/elasticsearch/reference/current"]
-    pub fn unfollow<B>(&self, index: String) -> CcrUnfollow<B>
+    pub fn unfollow<B>(&self, parts: CcrUnfollowUrlParts) -> CcrUnfollow<B>
     where
         B: Serialize,
     {
-        CcrUnfollow::new(self.client.clone(), index)
+        CcrUnfollow::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {

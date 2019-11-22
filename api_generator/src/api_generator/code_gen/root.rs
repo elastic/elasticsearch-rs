@@ -1,49 +1,24 @@
 use crate::api_generator::*;
 
+use crate::api_generator::code_gen::request::request_builder::RequestBuilder;
+use crate::api_generator::code_gen::*;
 use inflector::Inflector;
 use quote::Tokens;
-use syn::{Field, ImplItem};
 
 /// Generates the source code for the methods on the root of Elasticsearch
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
-    let mut tokens = quote::Tokens::new();
-    tokens.append(code_gen::use_declarations());
+    let mut tokens = Tokens::new();
+    tokens.append(use_declarations());
 
-    let common_fields: Vec<Field> = api
-        .common_params
-        .iter()
-        .map(code_gen::create_optional_field)
-        .collect();
-
-    let common_builder_fns: Vec<ImplItem> = api
-        .common_params
-        .iter()
-        .map(code_gen::create_optional_fn)
-        .collect();
-
-    // AST for builder structs
-    let builders: Vec<Tokens> = api
+    // AST for builder structs and methods
+    let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = api
         .root
         .iter()
         .map(|(name, endpoint)| {
-            code_gen::create_builder_struct(
-                name.to_pascal_case(),
-                endpoint,
-                &common_fields,
-                &common_builder_fns,
-                &api.common_params,
-            )
+            let builder_name = name.to_pascal_case();
+            RequestBuilder::new(name, &builder_name, &api.common_params, endpoint, true).build()
         })
-        .collect();
-
-    // AST for methods on Elasticsearch that return builder types
-    let methods: Vec<Tokens> = api
-        .root
-        .iter()
-        .map(|(name, endpoint)| {
-            code_gen::create_builder_struct_ctor_fns(name.to_pascal_case(), name, endpoint, true)
-        })
-        .collect();
+        .unzip();
 
     tokens.append(quote!(
         #(#builders)*
