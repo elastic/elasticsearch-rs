@@ -16,39 +16,19 @@ A small executable to download REST API specs from GitHub and generate much of t
 cargo run -p api_generator
 ```
 
-from the repository root directory. The minimum REST API spec version compatible with the 
+from the repository root directory, and follow the prompts. The minimum REST API spec version compatible with the 
 generator is `v7.4.0`.
+
+The api_generator makes heavy use of the [`syn`](https://docs.rs/syn/1.0.5/syn/) and [`quote`](https://docs.rs/quote/1.0.2/quote/) crates to generate Rust code from the REST API specs.
+The `quote!` macro is particularly useful as it accepts Rust code that can include placeholder tokens (prefixed with `#`)
+that will be interpolated during expansion. Unlike procedural macros, the token stream returned by the `quote!` macro
+can be `to_string()`'ed and written to disk, and this is used to create much of the client scaffolding.
 
 ### elasticsearch
 
-The client package crate
-
-## Design principles
-
-1. Generate as much of the client as feasible from the REST API specs
-
-    The REST API specs contain information about
-    - the URL parts e.g. `{index}/{type}/_search` and variants
-    - accepted HTTP methods e.g. `GET`, `POST`
-    - the URL query string parameters
-    - whether the API accepts a body
-    
-2. Prefer generation methods that produce ASTs and token streams over strings. 
-The [`quote`](https://docs.rs/quote/1.0.2/quote/) and [`syn`](https://docs.rs/syn/1.0.5/syn/) crates can help
-
-3. Get it working, then refine/refactor
-
-    - Start simple and iterate
-    - Design of the API is conducive to ease of use
-    - synchronous functions first, asynchronous later
-    - Control API invariants through arguments on API function
-    
-      e.g. `client.delete_script("script_id".into()).send()?;`
-      
-      An id must always be provided for a script, so the `delete_script()` function must accept
-      it as a value.
-
-### Usage
+The client package crate. The client exposes all Elasticsearch APIs as an associated function, either on
+the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as `Cat`. The _namespaced clients_
+are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/master/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
 
 The general usage of the client is envisioned as
 
@@ -76,10 +56,73 @@ let mut search_response = client
 let status_code = search_response.status_code();
 
 // read the response body
-let response_body = search_response.read_body::<Value>().unwrap(); 
+let response_body = search_response.read_body::<Value>()?; 
 
 // read fields from the response body         
 let took = response_body["took"].as_i64()?;
+```
+
+## Design principles
+
+1. Generate as much of the client as feasible from the REST API specs
+
+    The REST API specs contain information about
+    - the URL parts e.g. `{index}/{type}/_search` and variants
+    - accepted HTTP methods e.g. `GET`, `POST`
+    - the URL query string parameters
+    - whether the API accepts a body
+    
+2. Prefer generation methods that produce ASTs and token streams over strings. 
+The `quote` and `syn` crates help
+
+3. Get it working, then refine/refactor
+
+    - Start simple and iterate
+    - Design of the API is conducive to ease of use
+    - synchronous functions first, asynchronous later
+    - Control API invariants through arguments on API function
+    
+      e.g. `client.delete_script("script_id".into()).send()?;`
+      
+      An id must always be provided for a script, so the `delete_script()` function must accept
+      it as a value.
+
+## Contributing
+
+Contributing to the client is very much appreciated, no pull request (PR) is too big or too small!
+We ask that before opening a PR however, you check to see if there is an issue that discusses the change that you
+wish to make. If there isn't, it's best to open a new issue first to discuss it first, to save time
+and help further ascertain the crux of an issue.
+
+Once an issue has been discussed and agreed that it should be acted upon, if you wish to work on a PR
+to address it, please assign the issue to yourself, so that others know that it is being worked on.
+
+### Sign the Contributor License Agreement
+
+We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement) before we can accept pull requests from you.
+
+### Coding styleguide
+
+#### Formatting
+
+Rust code can be formatted using [`rustfmt`](https://github.com/rust-lang/rustfmt). Follow the instructions to install.
+
+To format all packages in a workspace, from the workspace root
+
+```sh
+cargo fmt
+```
+
+It is strongly recommended to run this before opening a PR.
+
+#### Clippy
+
+[Clippy](https://github.com/rust-lang/rust-clippy) is a bunch of lints to catch common mistakes and improve your Rust code! Follow the instructions to install.
+
+Run clippy before opening a PR
+
+```sh
+cargo clippy
 ```
 
 ## Development
