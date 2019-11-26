@@ -91,8 +91,8 @@ The `quote` and `syn` crates help
 
 Contributing to the client is very much appreciated, no pull request (PR) is too big or too small!
 We ask that before opening a PR however, you check to see if there is an issue that discusses the change that you
-wish to make. If there isn't, it's best to open a new issue first to discuss it first, to save time
-and help further ascertain the crux of an issue.
+wish to make. If there isn't, it's best to open a new issue first to discuss it, to save you time in future
+and help us further ascertain the crux of the issue. If an issue already exists, please add to the discussion there.
 
 Once an issue has been discussed and agreed that it should be acted upon, if you wish to work on a PR
 to address it, please assign the issue to yourself, so that others know that it is being worked on.
