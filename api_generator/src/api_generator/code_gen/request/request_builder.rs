@@ -1,10 +1,5 @@
 use crate::api_generator::{
-    code_gen,
-    code_gen::url::enum_builder::EnumBuilder,
-    code_gen::*,
-    ApiEndpoint,
-    HttpMethod,
-    Type,
+    code_gen, code_gen::url::enum_builder::EnumBuilder, code_gen::*, ApiEndpoint, HttpMethod, Type,
     TypeKind,
 };
 use inflector::Inflector;
@@ -177,7 +172,11 @@ impl<'a> RequestBuilder<'a> {
             .map(|&part| syn::FieldValue {
                 attrs: vec![],
                 ident: ident(part),
-                expr: syn::ExprKind::Path(None, path_none(ident(format!("self.{}", part.as_ref())).as_ref())).into(),
+                expr: syn::ExprKind::Path(
+                    None,
+                    path_none(ident(format!("self.{}", part.as_ref())).as_ref()),
+                )
+                .into(),
                 is_shorthand: false,
             })
             .collect();
@@ -200,7 +199,9 @@ impl<'a> RequestBuilder<'a> {
                                 syn::parse_type("Option<T>").unwrap(),
                             ),
                         ],
-                        output: syn::FunctionRetTy::Ty(code_gen::ty(format!("{}<T> where T: Serialize", &builder_name).as_ref())),
+                        output: syn::FunctionRetTy::Ty(code_gen::ty(
+                            format!("{}<T> where T: Serialize", &builder_name).as_ref(),
+                        )),
                         variadic: false,
                     },
                     generics: generics_none(),
@@ -213,21 +214,17 @@ impl<'a> RequestBuilder<'a> {
                 // }
                 // ---------
                 syn::Block {
-                    stmts: vec![
-                        syn::Stmt::Expr(Box::new(parse_expr(quote!(
-                                #builder_ident {
-                                    client: self.client,
-                                    parts: self.parts,
-                                    body,
-                                    #(#fields),*,
-                                }
-                        )))),
-                    ],
+                    stmts: vec![syn::Stmt::Expr(Box::new(parse_expr(quote!(
+                            #builder_ident {
+                                client: self.client,
+                                parts: self.parts,
+                                body,
+                                #(#fields),*,
+                            }
+                    ))))],
                 },
             ),
         }
-
-
     }
 
     /// Creates the AST for a builder fn for a builder impl
@@ -289,7 +286,6 @@ impl<'a> RequestBuilder<'a> {
         common_params: &BTreeMap<String, Type>,
         enum_builder: &EnumBuilder,
     ) -> Tokens {
-
         // TODO: lazy_static! for this?
         let common_fields: Vec<Field> = common_params
             .iter()
@@ -297,10 +293,8 @@ impl<'a> RequestBuilder<'a> {
             .collect();
 
         // TODO: lazy_static! for this?
-        let common_builder_fns: Vec<ImplItem> = common_params
-            .iter()
-            .map(Self::create_impl_fn)
-            .collect();
+        let common_builder_fns: Vec<ImplItem> =
+            common_params.iter().map(Self::create_impl_fn).collect();
 
         let supports_body = endpoint.supports_body();
         let builder_ident = ident(builder_name);
