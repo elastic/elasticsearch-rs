@@ -15,10 +15,7 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::{Elasticsearch, Sender},
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
+    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -121,12 +118,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for ClusterAllocationExplain<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Allocation Explain API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -171,7 +164,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -263,9 +257,8 @@ impl ClusterGetSettings {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for ClusterGetSettings {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Get Settings API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -310,7 +303,8 @@ impl Sender for ClusterGetSettings {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -465,9 +459,8 @@ impl ClusterHealth {
         self.wait_for_status = wait_for_status;
         self
     }
-}
-impl Sender for ClusterHealth {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Health API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -542,7 +535,8 @@ impl Sender for ClusterHealth {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -620,9 +614,8 @@ impl ClusterPendingTasks {
         self.source = source;
         self
     }
-}
-impl Sender for ClusterPendingTasks {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Pending Tasks API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -661,7 +654,8 @@ impl Sender for ClusterPendingTasks {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -770,12 +764,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for ClusterPutSettings<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Put Settings API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -817,7 +807,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -881,9 +872,8 @@ impl ClusterRemoteInfo {
         self.source = source;
         self
     }
-}
-impl Sender for ClusterRemoteInfo {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Remote Info API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -916,7 +906,8 @@ impl Sender for ClusterRemoteInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1049,12 +1040,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for ClusterReroute<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Reroute API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1109,7 +1096,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1248,9 +1236,8 @@ impl ClusterState {
         self.wait_for_timeout = wait_for_timeout;
         self
     }
-}
-impl Sender for ClusterState {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster State API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -1310,7 +1297,8 @@ impl Sender for ClusterState {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1396,9 +1384,8 @@ impl ClusterStats {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for ClusterStats {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Cluster Stats API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -1437,7 +1424,8 @@ impl Sender for ClusterStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }

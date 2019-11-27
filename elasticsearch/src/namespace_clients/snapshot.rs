@@ -15,10 +15,7 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::{Elasticsearch, Sender},
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
+    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -127,12 +124,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for SnapshotCleanupRepository<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Cleanup Repository API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -171,7 +164,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -279,12 +273,8 @@ where
         self.wait_for_completion = wait_for_completion;
         self
     }
-}
-impl<B> Sender for SnapshotCreate<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Create API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -326,7 +316,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -440,12 +431,8 @@ where
         self.verify = verify;
         self
     }
-}
-impl<B> Sender for SnapshotCreateRepository<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Create Repository API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -487,7 +474,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -565,9 +553,8 @@ impl SnapshotDelete {
         self.source = source;
         self
     }
-}
-impl Sender for SnapshotDelete {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Delete API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -603,7 +590,8 @@ impl Sender for SnapshotDelete {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -687,9 +675,8 @@ impl SnapshotDeleteRepository {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for SnapshotDeleteRepository {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Delete Repository API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -728,7 +715,8 @@ impl Sender for SnapshotDeleteRepository {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -821,9 +809,8 @@ impl SnapshotGet {
         self.verbose = verbose;
         self
     }
-}
-impl Sender for SnapshotGet {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Get API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -865,7 +852,8 @@ impl Sender for SnapshotGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -951,9 +939,8 @@ impl SnapshotGetRepository {
         self.source = source;
         self
     }
-}
-impl Sender for SnapshotGetRepository {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Get Repository API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -992,7 +979,8 @@ impl Sender for SnapshotGetRepository {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1101,12 +1089,8 @@ where
         self.wait_for_completion = wait_for_completion;
         self
     }
-}
-impl<B> Sender for SnapshotRestore<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Restore API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1148,7 +1132,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1245,9 +1230,8 @@ impl SnapshotStatus {
         self.source = source;
         self
     }
-}
-impl Sender for SnapshotStatus {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Status API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -1286,7 +1270,8 @@ impl Sender for SnapshotStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1393,12 +1378,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for SnapshotVerifyRepository<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Snapshot Verify Repository API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1437,7 +1418,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }

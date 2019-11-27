@@ -15,10 +15,7 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::{Elasticsearch, Sender},
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
+    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -84,9 +81,8 @@ impl LicenseDelete {
         self.source = source;
         self
     }
-}
-impl Sender for LicenseDelete {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Delete API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -119,7 +115,8 @@ impl Sender for LicenseDelete {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -190,9 +187,8 @@ impl LicenseGet {
         self.source = source;
         self
     }
-}
-impl Sender for LicenseGet {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Get API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -228,7 +224,8 @@ impl Sender for LicenseGet {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -292,9 +289,8 @@ impl LicenseGetBasicStatus {
         self.source = source;
         self
     }
-}
-impl Sender for LicenseGetBasicStatus {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Get Basic Status API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -327,7 +323,8 @@ impl Sender for LicenseGetBasicStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -391,9 +388,8 @@ impl LicenseGetTrialStatus {
         self.source = source;
         self
     }
-}
-impl Sender for LicenseGetTrialStatus {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Get Trial Status API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -426,7 +422,8 @@ impl Sender for LicenseGetTrialStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -519,12 +516,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for LicensePost<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Post API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -560,7 +553,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -653,12 +647,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for LicensePostStartBasic<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Post Start Basic API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -694,7 +684,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -795,12 +786,8 @@ where
         self.ty = ty;
         self
     }
-}
-impl<B> Sender for LicensePostStartTrial<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the License Post Start Trial API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -839,7 +826,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }

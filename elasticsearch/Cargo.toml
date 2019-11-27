@@ -9,10 +9,11 @@ license = "Apache-2.0"
 edition = "2018"
 
 [dependencies]
-reqwest = "0.9.14"
+reqwest = { version = "0.10.0-alpha.2", features = ["json"] }
 url = "1.7.2"
 serde = "~1"
 serde_json = "~1"
 
 [dev-dependencies]
 failure = "0.1.5"
+tokio = "=0.2.0-alpha.6"

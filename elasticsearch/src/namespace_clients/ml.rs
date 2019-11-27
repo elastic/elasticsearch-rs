@@ -15,10 +15,7 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::{Elasticsearch, Sender},
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
+    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -135,12 +132,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlCloseJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Close Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -182,7 +175,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -251,9 +245,8 @@ impl MlDeleteCalendar {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteCalendar {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Calendar API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -286,7 +279,8 @@ impl Sender for MlDeleteCalendar {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -357,9 +351,8 @@ impl MlDeleteCalendarEvent {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteCalendarEvent {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Calendar Event API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -392,7 +385,8 @@ impl Sender for MlDeleteCalendarEvent {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -463,9 +457,8 @@ impl MlDeleteCalendarJob {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteCalendarJob {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Calendar Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -498,7 +491,8 @@ impl Sender for MlDeleteCalendarJob {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -567,9 +561,8 @@ impl MlDeleteDataFrameAnalytics {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteDataFrameAnalytics {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Data Frame Analytics API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -602,7 +595,8 @@ impl Sender for MlDeleteDataFrameAnalytics {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -678,9 +672,8 @@ impl MlDeleteDatafeed {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteDatafeed {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -716,7 +709,8 @@ impl Sender for MlDeleteDatafeed {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -780,9 +774,8 @@ impl MlDeleteExpiredData {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteExpiredData {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Expired Data API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -815,7 +808,8 @@ impl Sender for MlDeleteExpiredData {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -884,9 +878,8 @@ impl MlDeleteFilter {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteFilter {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Filter API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -919,7 +912,8 @@ impl Sender for MlDeleteFilter {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1012,9 +1006,8 @@ impl MlDeleteForecast {
         self.timeout = timeout;
         self
     }
-}
-impl Sender for MlDeleteForecast {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Forecast API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -1053,7 +1046,8 @@ impl Sender for MlDeleteForecast {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1136,9 +1130,8 @@ impl MlDeleteJob {
         self.wait_for_completion = wait_for_completion;
         self
     }
-}
-impl Sender for MlDeleteJob {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -1180,7 +1173,8 @@ impl Sender for MlDeleteJob {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1251,9 +1245,8 @@ impl MlDeleteModelSnapshot {
         self.source = source;
         self
     }
-}
-impl Sender for MlDeleteModelSnapshot {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Delete Model Snapshot API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -1286,7 +1279,8 @@ impl Sender for MlDeleteModelSnapshot {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1373,12 +1367,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlEstimateMemoryUsage<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Estimate Memory Usage API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1411,7 +1401,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1496,12 +1487,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlEvaluateDataFrame<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Evaluate Data Frame API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1534,7 +1521,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1731,12 +1719,8 @@ where
         self.timestamp_format = timestamp_format;
         self
     }
-}
-impl<B> Sender for MlFindFileStructure<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Find File Structure API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1818,7 +1802,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1949,12 +1934,8 @@ where
         self.start = start;
         self
     }
-}
-impl<B> Sender for MlFlushJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Flush Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -2002,7 +1983,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2109,12 +2091,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlForecast<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Forecast API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -2153,7 +2131,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2325,12 +2304,8 @@ where
         self.start = start;
         self
     }
-}
-impl<B> Sender for MlGetBuckets<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Buckets API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -2393,7 +2368,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2498,9 +2474,8 @@ impl MlGetCalendarEvents {
         self.start = start;
         self
     }
-}
-impl Sender for MlGetCalendarEvents {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Calendar Events API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -2548,7 +2523,8 @@ impl Sender for MlGetCalendarEvents {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2656,12 +2632,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlGetCalendars<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Calendars API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -2703,7 +2675,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2820,12 +2793,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlGetCategories<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Categories API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -2867,7 +2836,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -2959,9 +2929,8 @@ impl MlGetDataFrameAnalytics {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetDataFrameAnalytics {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3003,7 +2972,8 @@ impl Sender for MlGetDataFrameAnalytics {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3096,9 +3066,8 @@ impl MlGetDataFrameAnalyticsStats {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetDataFrameAnalyticsStats {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics Stats API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3140,7 +3109,8 @@ impl Sender for MlGetDataFrameAnalyticsStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3219,9 +3189,8 @@ impl MlGetDatafeedStats {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetDatafeedStats {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Datafeed Stats API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3257,7 +3226,8 @@ impl Sender for MlGetDatafeedStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3335,9 +3305,8 @@ impl MlGetDatafeeds {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetDatafeeds {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Datafeeds API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3373,7 +3342,8 @@ impl Sender for MlGetDatafeeds {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3458,9 +3428,8 @@ impl MlGetFilters {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetFilters {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Filters API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3499,7 +3468,8 @@ impl Sender for MlGetFilters {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3654,12 +3624,8 @@ where
         self.start = start;
         self
     }
-}
-impl<B> Sender for MlGetInfluencers<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Influencers API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -3719,7 +3685,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3798,9 +3765,8 @@ impl MlGetJobStats {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetJobStats {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Job Stats API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3836,7 +3802,8 @@ impl Sender for MlGetJobStats {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -3914,9 +3881,8 @@ impl MlGetJobs {
         self.source = source;
         self
     }
-}
-impl Sender for MlGetJobs {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Jobs API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -3952,7 +3918,8 @@ impl Sender for MlGetJobs {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4100,12 +4067,8 @@ where
         self.start = start;
         self
     }
-}
-impl<B> Sender for MlGetModelSnapshots<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Model Snapshots API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -4159,7 +4122,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4306,12 +4270,8 @@ where
         self.top_n = top_n;
         self
     }
-}
-impl<B> Sender for MlGetOverallBuckets<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Overall Buckets API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -4368,7 +4328,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4522,12 +4483,8 @@ where
         self.start = start;
         self
     }
-}
-impl<B> Sender for MlGetRecords<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Get Records API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
             Some(_) => HttpMethod::Post,
@@ -4587,7 +4544,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4651,9 +4609,8 @@ impl MlInfo {
         self.source = source;
         self
     }
-}
-impl Sender for MlInfo {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Info API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -4686,7 +4643,8 @@ impl Sender for MlInfo {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4777,12 +4735,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlOpenJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Open Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -4815,7 +4769,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -4906,12 +4861,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPostCalendarEvents<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Post Calendar Events API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -4944,7 +4895,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5051,12 +5003,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPostData<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Post Data API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -5095,7 +5043,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5165,9 +5114,8 @@ impl MlPreviewDatafeed {
         self.source = source;
         self
     }
-}
-impl Sender for MlPreviewDatafeed {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Preview Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -5200,7 +5148,8 @@ impl Sender for MlPreviewDatafeed {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5290,12 +5239,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutCalendar<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Calendar API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5328,7 +5273,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5420,12 +5366,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutCalendarJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Calendar Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5458,7 +5400,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5548,12 +5491,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutDataFrameAnalytics<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Data Frame Analytics API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5586,7 +5525,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5676,12 +5616,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutDatafeed<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5714,7 +5650,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5804,12 +5741,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutFilter<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Filter API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5842,7 +5775,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -5932,12 +5866,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlPutJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Put Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -5970,7 +5900,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6071,12 +6002,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlRevertModelSnapshot<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Revert Model Snapshot API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6115,7 +6042,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6216,12 +6144,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlSetUpgradeMode<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Set Upgrade Mode API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6260,7 +6184,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6359,12 +6284,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlStartDataFrameAnalytics<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Start Data Frame Analytics API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6400,7 +6321,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6515,12 +6437,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlStartDatafeed<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Start Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6562,7 +6480,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6677,12 +6596,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlStopDataFrameAnalytics<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Stop Data Frame Analytics API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6724,7 +6639,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6839,12 +6755,8 @@ where
         self.timeout = timeout;
         self
     }
-}
-impl<B> Sender for MlStopDatafeed<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Stop Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -6886,7 +6798,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -6977,12 +6890,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlUpdateDatafeed<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Update Datafeed API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7015,7 +6924,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -7106,12 +7016,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlUpdateFilter<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Update Filter API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7144,7 +7050,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -7235,12 +7142,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlUpdateJob<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Update Job API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7273,7 +7176,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -7366,12 +7270,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlUpdateModelSnapshot<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Update Model Snapshot API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7404,7 +7304,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -7489,12 +7390,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlValidate<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Validate API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7527,7 +7424,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -7612,12 +7510,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for MlValidateDetector<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ml Validate Detector API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -7650,7 +7544,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }

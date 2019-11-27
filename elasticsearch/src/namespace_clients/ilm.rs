@@ -15,10 +15,7 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::{Elasticsearch, Sender},
-    enums::*,
-    error::ElasticsearchError,
-    http_method::HttpMethod,
+    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -89,9 +86,8 @@ impl IlmDeleteLifecycle {
         self.source = source;
         self
     }
-}
-impl Sender for IlmDeleteLifecycle {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Delete Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
@@ -124,7 +120,8 @@ impl Sender for IlmDeleteLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -208,9 +205,8 @@ impl IlmExplainLifecycle {
         self.source = source;
         self
     }
-}
-impl Sender for IlmExplainLifecycle {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Explain Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -249,7 +245,8 @@ impl Sender for IlmExplainLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -320,9 +317,8 @@ impl IlmGetLifecycle {
         self.source = source;
         self
     }
-}
-impl Sender for IlmGetLifecycle {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Get Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -355,7 +351,8 @@ impl Sender for IlmGetLifecycle {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -419,9 +416,8 @@ impl IlmGetStatus {
         self.source = source;
         self
     }
-}
-impl Sender for IlmGetStatus {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Get Status API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
@@ -454,7 +450,8 @@ impl Sender for IlmGetStatus {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -544,12 +541,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmMoveToStep<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Move To Step API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -582,7 +575,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -672,12 +666,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmPutLifecycle<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Put Lifecycle API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
@@ -710,7 +700,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -801,12 +792,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmRemovePolicy<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Remove Policy API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -839,7 +826,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -930,12 +918,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmRetry<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Retry API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -968,7 +952,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1053,12 +1038,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmStart<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Start API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1091,7 +1072,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }
@@ -1176,12 +1158,8 @@ where
         self.source = source;
         self
     }
-}
-impl<B> Sender for IlmStop<B>
-where
-    B: Serialize,
-{
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+    #[doc = "Creates an asynchronous request to the Ilm Stop API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
@@ -1214,7 +1192,8 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)?;
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
         Ok(response)
     }
 }

@@ -13,7 +13,7 @@ use std::str;
 pub fn use_declarations() -> Tokens {
     quote!(
         use crate::{
-            client::{Elasticsearch, Sender},
+            client::{Elasticsearch},
             enums::*,
             error::ElasticsearchError,
             http_method::HttpMethod,

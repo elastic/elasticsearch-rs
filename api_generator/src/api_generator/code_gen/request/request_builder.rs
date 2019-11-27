@@ -347,7 +347,7 @@ impl<'a> RequestBuilder<'a> {
 
         let new_fn = Self::create_new_fn(&builder_ident, enum_builder, &default_fields);
 
-        let method = Self::create_method_expression(&builder_name, &endpoint);
+        let method_expr = Self::create_method_expression(&builder_name, &endpoint);
 
         let query_string_params = {
             let mut p = endpoint.params.clone();
@@ -365,25 +365,22 @@ impl<'a> RequestBuilder<'a> {
             }
         };
 
-        let (builder_expr, builder_impl, sender_impl) = {
+        let (builder_expr, builder_impl) = {
             if supports_body {
                 (
                     quote!(#builder_ident<B>),
                     quote!(impl<B> #builder_ident<B> where B: Serialize),
-                    quote!(impl<B> Sender for #builder_ident<B> where B: Serialize),
                 )
             } else {
-                (
-                    quote!(#builder_ident),
-                    quote!(impl #builder_ident),
-                    quote!(impl Sender for #builder_ident),
-                )
+                (quote!(#builder_ident), quote!(impl #builder_ident))
             }
         };
 
-        let builder_doc = lit(format!(
-            "Request builder for the {} API",
-            split_on_pascal_case(builder_name)
+        let api_name_for_docs = split_on_pascal_case(builder_name);
+        let builder_doc = lit(format!("Request builder for the {} API", api_name_for_docs));
+        let send_doc = lit(format!(
+            "Creates an asynchronous request to the {} API that can be awaited",
+            api_name_for_docs
         ));
 
         quote! {
@@ -402,15 +399,14 @@ impl<'a> RequestBuilder<'a> {
             #builder_impl {
                 #new_fn
                 #(#builder_fns)*
-            }
 
-            #sender_impl {
-                fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+                #[doc = #send_doc]
+                pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
                       let path = self.parts.build();
-                      let method = #method;
+                      let method = #method_expr;
                       let query_string = #query_string_expr;
                       let body = #body_expr;
-                      let response = self.client.send(method, &path, query_string.as_ref(), body)?;
+                      let response = self.client.send(method, &path, query_string.as_ref(), body).await?;
                       Ok(response)
                 }
             }

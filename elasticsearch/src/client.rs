@@ -8,11 +8,6 @@ use serde::de::DeserializeOwned;
 use serde::{Serialize, Serializer};
 use url::Url;
 
-/// Sends a synchronous API request to Elasticsearch
-pub trait Sender {
-    fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError>;
-}
-
 /// Serializes an Option<Vec<String>> with some value to a comma separated string of values.
 /// Used to serialize values within the query string
 pub fn serialize_vec_qs<S>(
@@ -45,8 +40,8 @@ impl Elasticsearch {
         }
     }
 
-    /// Sends a synchronous API request to Elasticsearch
-    pub fn send<B, Q>(
+    /// Sends an asynchronous API request to Elasticsearch
+    pub async fn send<B, Q>(
         &self,
         method: HttpMethod,
         path: &str,
@@ -57,6 +52,6 @@ impl Elasticsearch {
         B: Serialize,
         Q: Serialize + ?Sized,
     {
-        self.connection.send(method, path, query_string, body)
+        self.connection.send(method, path, query_string, body).await
     }
 }

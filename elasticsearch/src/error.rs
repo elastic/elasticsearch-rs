@@ -1,4 +1,5 @@
-/*
+/* Error type based on error type from es-rs:
+ *
  * Copyright 2015-2018 Ben Ashford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 use serde_json;
 use std::error::Error;
@@ -56,20 +58,17 @@ impl From<serde_json::error::Error> for ElasticsearchError {
     }
 }
 
+impl From<url::ParseError> for ElasticsearchError {
+    fn from(err: url::ParseError) -> ElasticsearchError {
+        ElasticsearchError::LibError(err.to_string())
+    }
+}
+
 impl<'a> From<&'a mut reqwest::Response> for ElasticsearchError {
     fn from(err: &'a mut reqwest::Response) -> ElasticsearchError {
-        let mut body = String::new();
-        match err.read_to_string(&mut body) {
-            Ok(_) => (),
-            Err(_) => {
-                return ElasticsearchError::ServerError(format!(
-                    "{} - cannot read response - {:?}",
-                    err.status(),
-                    err
-                ));
-            }
-        }
-        ElasticsearchError::ServerError(format!("{} - {}", err.status(), body))
+        // TODO: figure out how to read the response body synchronously
+        //let body = err.text().await?;
+        ElasticsearchError::ServerError(format!("{} status code received", err.status()))
     }
 }
 
