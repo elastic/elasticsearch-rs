@@ -25,10 +25,11 @@ impl ElasticsearchResponse {
     }
 
     /// Reads the response body
-    pub fn read_body<R>(&mut self) -> Result<R, ElasticsearchError>
+    pub async fn read_body<R>(self) -> Result<R, ElasticsearchError>
     where
         R: DeserializeOwned,
     {
-        Ok(self.0.json::<R>()?)
+        let body = self.0.json::<R>().await?;
+        Ok(body)
     }
 }

@@ -42,21 +42,22 @@ let connection = Connection::new(Url::parse("http://localhost:9200").unwrap());
 
 let client = Elasticsearch::new(settings, connection);
 
-let mut search_response = client
-    // Value is the request body type
+let search_response = client
     .search(SearchUrlParts::None)
+    // Type of body inferred from argument
     .body(Some(json!({
         "query": {
             "match_all": {}
         }
     })))
     .allow_no_indices(Some(true))
-    .send()?;
+    .send()
+    .await?;
 
 let status_code = search_response.status_code();
 
-// read the response body
-let response_body = search_response.read_body::<Value>()?; 
+// read the response body. Consumes search_response
+let response_body = search_response.read_body::<Value>().await?; 
 
 // read fields from the response body         
 let took = response_body["took"].as_i64()?;
@@ -79,7 +80,7 @@ The `quote` and `syn` crates help
 
     - Start simple and iterate
     - Design of the API is conducive to ease of use
-    - synchronous functions first, asynchronous later
+    - Asynchronous only
     - Control API invariants through arguments on API function
     
       e.g. `client.delete_script("script_id".into()).send()?;`

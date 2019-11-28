@@ -1,9 +1,8 @@
-extern crate reqwest;
-
 use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
+
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, CONTENT_TYPE, USER_AGENT},
-    Method,
+    Client, Method,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
@@ -34,8 +33,8 @@ impl Connection {
         }
     }
 
-    /// Sends a synchronous API request to the Elasticsearch node
-    pub fn send<B, Q>(
+    /// Creates an asynchronous request that can be awaited
+    pub async fn send<B, Q>(
         &self,
         method: HttpMethod,
         path: &str,
@@ -46,9 +45,9 @@ impl Connection {
         B: Serialize,
         Q: Serialize + ?Sized,
     {
-        let url = self.url.join(path).unwrap();
+        let url = self.url.join(path)?;
         let reqwest_method = self.method(method);
-
+        let mut request_builder = self.client.request(reqwest_method, &url.to_string());
         let mut headers = HeaderMap::new();
 
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
@@ -59,7 +58,7 @@ impl Connection {
             HeaderValue::from_static("elasticsearch-rs/0.1.0"),
         );
 
-        let mut request_builder = self.client.request(reqwest_method, url).headers(headers);
+        request_builder = request_builder.headers(headers);
 
         if let Some(b) = body {
             request_builder = request_builder.json(&b);
@@ -69,7 +68,7 @@ impl Connection {
             request_builder = request_builder.query(q);
         }
 
-        let response = request_builder.send()?;
+        let response = request_builder.send().await?;
         Ok(ElasticsearchResponse::new(response))
     }
 }
