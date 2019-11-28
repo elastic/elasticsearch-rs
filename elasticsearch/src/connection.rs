@@ -33,7 +33,7 @@ impl Connection {
         }
     }
 
-    /// Sends a synchronous API request to the Elasticsearch node
+    /// Creates an asynchronous request that can be awaited
     pub async fn send<B, Q>(
         &self,
         method: HttpMethod,
