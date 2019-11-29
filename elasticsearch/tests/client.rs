@@ -63,7 +63,7 @@ async fn cat_count() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
+async fn serialize_slice_collection_on_querystring() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
     let response = client
         .search(SearchUrlParts::None)

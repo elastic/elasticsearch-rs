@@ -121,20 +121,21 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
         v.push_str("Option<");
     }
 
+    let str_type = "&'a str";
     match kind {
-        TypeKind::None => v.push_str("&'a str"),
-        TypeKind::List => v.push_str("&'a [&'a str]"),
+        TypeKind::None => v.push_str(str_type),
+        TypeKind::List => v.push_str(format!("&'a [{}]", str_type).as_ref()),
         TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
-        TypeKind::String => v.push_str("&'a str"),
-        TypeKind::Text => v.push_str("&'a str"),
+        TypeKind::String => v.push_str(str_type),
+        TypeKind::Text => v.push_str(str_type),
         TypeKind::Boolean => v.push_str("bool"),
         TypeKind::Number => v.push_str("i64"),
         TypeKind::Float => v.push_str("f32"),
         TypeKind::Double => v.push_str("f64"),
         TypeKind::Integer => v.push_str("i32"),
         TypeKind::Long => v.push_str("i64"),
-        TypeKind::Date => v.push_str("&'a str"),
-        TypeKind::Time => v.push_str("&'a str"),
+        TypeKind::Date => v.push_str(str_type),
+        TypeKind::Time => v.push_str(str_type),
     };
 
     if !required {
