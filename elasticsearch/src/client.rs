@@ -1,6 +1,6 @@
 use crate::{
     connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse,
-    settings::ConnectionSettings, ElasticsearchError,
+    ElasticsearchError,
 };
 
 use reqwest::{header::HeaderMap, Response, StatusCode};
@@ -27,15 +27,13 @@ where
 /// Client used to make API requests to Elasticsearch
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
-    settings: ConnectionSettings,
     connection: Connection,
 }
 
 impl Elasticsearch {
     /// Creates a new instance of Elasticsearch
-    pub fn new(settings: ConnectionSettings, connection: Connection) -> Self {
+    pub fn new(connection: Connection) -> Self {
         Elasticsearch {
-            settings,
             connection,
         }
     }

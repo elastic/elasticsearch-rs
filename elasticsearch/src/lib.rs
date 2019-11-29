@@ -18,19 +18,17 @@ mod http_method;
 mod namespace_clients;
 mod response;
 mod root;
-mod settings;
 
 pub use crate::{
-    client::Elasticsearch, connection::Connection, enums::*, error::ElasticsearchError,
+    client::Elasticsearch, connection::*, enums::*, error::ElasticsearchError,
     http_method::HttpMethod, response::ElasticsearchResponse, root::*,
-    settings::ConnectionSettings,
 };
 pub use reqwest::Client;
 
 #[cfg(test)]
 pub mod tests {
     use crate::root::SearchUrlParts;
-    use crate::{client::Elasticsearch, Connection, ConnectionSettings};
+    use crate::{client::Elasticsearch, Connection};
     use failure;
     use reqwest::StatusCode;
     use serde_json::Value;
