@@ -57,7 +57,7 @@ async fn cat_count() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let _response_body = response.read_body::<Value>().await?;
 
     Ok(())
 }
@@ -94,7 +94,7 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
         .q("title:Elasticsearch")
         .size(1);
 
-    let request = base_request
+    let _request = base_request
         .body(json!({
             "query": {
                 "match_all": {}
