@@ -72,14 +72,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesAnalyze<T>
+    pub fn body<T>(self, body: T) -> IndicesAnalyze<T>
     where
         T: Serialize,
     {
         IndicesAnalyze {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -89,33 +89,33 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "The name of the index to scope the operation"]
-    pub fn index(mut self, index: Option<String>) -> Self {
-        self.index = index;
+    pub fn index(mut self, index: String) -> Self {
+        self.index = Some(index);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Analyze API that can be awaited"]
@@ -229,19 +229,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesClearCache<T>
+    pub fn body<T>(self, body: T) -> IndicesClearCache<T>
     where
         T: Serialize,
     {
         IndicesClearCache {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -258,63 +258,63 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "Clear field data"]
-    pub fn fielddata(mut self, fielddata: Option<bool>) -> Self {
-        self.fielddata = fielddata;
+    pub fn fielddata(mut self, fielddata: bool) -> Self {
+        self.fielddata = Some(fielddata);
         self
     }
     #[doc = "A comma-separated list of fields to clear when using the `fielddata` parameter (default: all)"]
-    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
-        self.fields = fields;
+    pub fn fields(mut self, fields: Vec<String>) -> Self {
+        self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "A comma-separated list of index name to limit the operation"]
-    pub fn index(mut self, index: Option<Vec<String>>) -> Self {
-        self.index = index;
+    pub fn index(mut self, index: Vec<String>) -> Self {
+        self.index = Some(index);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Clear query caches"]
-    pub fn query(mut self, query: Option<bool>) -> Self {
-        self.query = query;
+    pub fn query(mut self, query: bool) -> Self {
+        self.query = Some(query);
         self
     }
     #[doc = "Clear request cache"]
-    pub fn request(mut self, request: Option<bool>) -> Self {
-        self.request = request;
+    pub fn request(mut self, request: bool) -> Self {
+        self.request = Some(request);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Clear Cache API that can be awaited"]
@@ -442,14 +442,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesClone<T>
+    pub fn body<T>(self, body: T) -> IndicesClone<T>
     where
         T: Serialize,
     {
         IndicesClone {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -461,43 +461,43 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Set the number of active shards to wait for on the cloned index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Clone API that can be awaited"]
@@ -611,19 +611,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesClose<T>
+    pub fn body<T>(self, body: T) -> IndicesClose<T>
     where
         T: Serialize,
     {
         IndicesClose {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -638,53 +638,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Close API that can be awaited"]
@@ -801,14 +801,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesCreate<T>
+    pub fn body<T>(self, body: T) -> IndicesCreate<T>
     where
         T: Serialize,
     {
         IndicesCreate {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -821,48 +821,48 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether a type should be expected in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Set the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Create API that can be awaited"]
@@ -971,53 +971,53 @@ impl IndicesDelete {
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Ignore unavailable indexes (default: false)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Delete API that can be awaited"]
@@ -1123,38 +1123,38 @@ impl IndicesDeleteAlias {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit timestamp for the document"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Delete Alias API that can be awaited"]
@@ -1247,38 +1247,38 @@ impl IndicesDeleteTemplate {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Delete Template API that can be awaited"]
@@ -1380,58 +1380,58 @@ impl IndicesExists {
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Ignore unavailable indexes (default: false)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether to return all default setting for each of the indices."]
-    pub fn include_defaults(mut self, include_defaults: Option<bool>) -> Self {
-        self.include_defaults = include_defaults;
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Exists API that can be awaited"]
@@ -1552,48 +1552,48 @@ impl IndicesExistsAlias {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Exists Alias API that can be awaited"]
@@ -1695,43 +1695,43 @@ impl IndicesExistsTemplate {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Exists Template API that can be awaited"]
@@ -1835,48 +1835,48 @@ impl IndicesExistsType {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Exists Type API that can be awaited"]
@@ -1990,19 +1990,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesFlush<T>
+    pub fn body<T>(self, body: T) -> IndicesFlush<T>
     where
         T: Serialize,
     {
         IndicesFlush {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2016,48 +2016,48 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Whether a flush should be forced even if it is not necessarily needed ie. if no changes will be committed to the index. This is useful if transaction log IDs should be incremented even if no uncommitted changes are present. (This setting can be considered as internal)"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "If set to true the flush operation will block until the flush can be executed if another flush operation is already executing. The default is true. If set to false the flush will be skipped iff if another flush operation is already running."]
-    pub fn wait_if_ongoing(mut self, wait_if_ongoing: Option<bool>) -> Self {
-        self.wait_if_ongoing = wait_if_ongoing;
+    pub fn wait_if_ongoing(mut self, wait_if_ongoing: bool) -> Self {
+        self.wait_if_ongoing = Some(wait_if_ongoing);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Flush API that can be awaited"]
@@ -2173,19 +2173,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesFlushSynced<T>
+    pub fn body<T>(self, body: T) -> IndicesFlushSynced<T>
     where
         T: Serialize,
     {
         IndicesFlushSynced {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2197,38 +2197,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Flush Synced API that can be awaited"]
@@ -2344,19 +2344,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesForcemerge<T>
+    pub fn body<T>(self, body: T) -> IndicesForcemerge<T>
     where
         T: Serialize,
     {
         IndicesForcemerge {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2371,53 +2371,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Specify whether the index should be flushed after performing the operation (default: true)"]
-    pub fn flush(mut self, flush: Option<bool>) -> Self {
-        self.flush = flush;
+    pub fn flush(mut self, flush: bool) -> Self {
+        self.flush = Some(flush);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "The number of segments the index should be merged into (default: dynamic)"]
-    pub fn max_num_segments(mut self, max_num_segments: Option<i64>) -> Self {
-        self.max_num_segments = max_num_segments;
+    pub fn max_num_segments(mut self, max_num_segments: i64) -> Self {
+        self.max_num_segments = Some(max_num_segments);
         self
     }
     #[doc = "Specify whether the operation should only expunge deleted documents"]
-    pub fn only_expunge_deletes(mut self, only_expunge_deletes: Option<bool>) -> Self {
-        self.only_expunge_deletes = only_expunge_deletes;
+    pub fn only_expunge_deletes(mut self, only_expunge_deletes: bool) -> Self {
+        self.only_expunge_deletes = Some(only_expunge_deletes);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Forcemerge API that can be awaited"]
@@ -2539,19 +2539,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesFreeze<T>
+    pub fn body<T>(self, body: T) -> IndicesFreeze<T>
     where
         T: Serialize,
     {
         IndicesFreeze {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2566,53 +2566,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Freeze API that can be awaited"]
@@ -2733,68 +2733,68 @@ impl IndicesGet {
         }
     }
     #[doc = "Ignore if a wildcard expression resolves to no concrete indices (default: false)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether wildcard expressions should get expanded to open or closed indices (default: open)"]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Ignore unavailable indexes (default: false)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether to return all default setting for each of the indices."]
-    pub fn include_defaults(mut self, include_defaults: Option<bool>) -> Self {
-        self.include_defaults = include_defaults;
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
         self
     }
     #[doc = "Whether to add the type name to the response (default: false)"]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get API that can be awaited"]
@@ -2932,48 +2932,48 @@ impl IndicesGetAlias {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Alias API that can be awaited"]
@@ -3119,58 +3119,58 @@ impl IndicesGetFieldMapping {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether the default mapping values should be returned as well"]
-    pub fn include_defaults(mut self, include_defaults: Option<bool>) -> Self {
-        self.include_defaults = include_defaults;
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
         self
     }
     #[doc = "Whether a type should be returned in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Field Mapping API that can be awaited"]
@@ -3306,58 +3306,58 @@ impl IndicesGetMapping {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether to add the type name to the response (default: false)"]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Mapping API that can be awaited"]
@@ -3495,63 +3495,63 @@ impl IndicesGetSettings {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether to return all default setting for each of the indices."]
-    pub fn include_defaults(mut self, include_defaults: Option<bool>) -> Self {
-        self.include_defaults = include_defaults;
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Settings API that can be awaited"]
@@ -3666,48 +3666,48 @@ impl IndicesGetTemplate {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether a type should be returned in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Template API that can be awaited"]
@@ -3812,43 +3812,43 @@ impl IndicesGetUpgrade {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Get Upgrade API that can be awaited"]
@@ -3959,19 +3959,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesOpen<T>
+    pub fn body<T>(self, body: T) -> IndicesOpen<T>
     where
         T: Serialize,
     {
         IndicesOpen {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -3986,53 +3986,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Open API that can be awaited"]
@@ -4148,14 +4148,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesPutAlias<T>
+    pub fn body<T>(self, body: T) -> IndicesPutAlias<T>
     where
         T: Serialize,
     {
         IndicesPutAlias {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4166,38 +4166,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit timestamp for the document"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Put Alias API that can be awaited"]
@@ -4323,19 +4323,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesPutMapping<T>
+    pub fn body<T>(self, body: T) -> IndicesPutMapping<T>
     where
         T: Serialize,
     {
         IndicesPutMapping {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -4350,53 +4350,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Whether a type should be expected in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Put Mapping API that can be awaited"]
@@ -4520,19 +4520,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesPutSettings<T>
+    pub fn body<T>(self, body: T) -> IndicesPutSettings<T>
     where
         T: Serialize,
     {
         IndicesPutSettings {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -4548,58 +4548,58 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Whether to update existing settings. If set to `true` existing settings on an index remain unchanged, the default is `false`"]
-    pub fn preserve_existing(mut self, preserve_existing: Option<bool>) -> Self {
-        self.preserve_existing = preserve_existing;
+    pub fn preserve_existing(mut self, preserve_existing: bool) -> Self {
+        self.preserve_existing = Some(preserve_existing);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Put Settings API that can be awaited"]
@@ -4720,14 +4720,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesPutTemplate<T>
+    pub fn body<T>(self, body: T) -> IndicesPutTemplate<T>
     where
         T: Serialize,
     {
         IndicesPutTemplate {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             create: self.create,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -4742,58 +4742,58 @@ where
         }
     }
     #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
-    pub fn create(mut self, create: Option<bool>) -> Self {
-        self.create = create;
+    pub fn create(mut self, create: bool) -> Self {
+        self.create = Some(create);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether a type should be returned in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "The order for this template when merging multiple matching ones (higher numbers are merged later, overriding the lower numbers)"]
-    pub fn order(mut self, order: Option<i64>) -> Self {
-        self.order = order;
+    pub fn order(mut self, order: i64) -> Self {
+        self.order = Some(order);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Put Template API that can be awaited"]
@@ -4902,38 +4902,38 @@ impl IndicesRecovery {
         }
     }
     #[doc = "Display only those recoveries that are currently on-going"]
-    pub fn active_only(mut self, active_only: Option<bool>) -> Self {
-        self.active_only = active_only;
+    pub fn active_only(mut self, active_only: bool) -> Self {
+        self.active_only = Some(active_only);
         self
     }
     #[doc = "Whether to display detailed information about shard recovery"]
-    pub fn detailed(mut self, detailed: Option<bool>) -> Self {
-        self.detailed = detailed;
+    pub fn detailed(mut self, detailed: bool) -> Self {
+        self.detailed = Some(detailed);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Recovery API that can be awaited"]
@@ -5037,19 +5037,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesRefresh<T>
+    pub fn body<T>(self, body: T) -> IndicesRefresh<T>
     where
         T: Serialize,
     {
         IndicesRefresh {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -5061,38 +5061,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Refresh API that can be awaited"]
@@ -5200,19 +5200,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesReloadSearchAnalyzers<T>
+    pub fn body<T>(self, body: T) -> IndicesReloadSearchAnalyzers<T>
     where
         T: Serialize,
     {
         IndicesReloadSearchAnalyzers {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -5224,38 +5224,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Reload Search Analyzers API that can be awaited"]
@@ -5375,14 +5375,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesRollover<T>
+    pub fn body<T>(self, body: T) -> IndicesRollover<T>
     where
         T: Serialize,
     {
         IndicesRollover {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             dry_run: self.dry_run,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -5396,53 +5396,53 @@ where
         }
     }
     #[doc = "If set to true the rollover action will only be validated but not actually performed even if a condition matches. The default is false"]
-    pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
-        self.dry_run = dry_run;
+    pub fn dry_run(mut self, dry_run: bool) -> Self {
+        self.dry_run = Some(dry_run);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether a type should be included in the body of the mappings."]
-    pub fn include_type_name(mut self, include_type_name: Option<bool>) -> Self {
-        self.include_type_name = include_type_name;
+    pub fn include_type_name(mut self, include_type_name: bool) -> Self {
+        self.include_type_name = Some(include_type_name);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Set the number of active shards to wait for on the newly created rollover index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Rollover API that can be awaited"]
@@ -5555,48 +5555,48 @@ impl IndicesSegments {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Includes detailed memory usage by Lucene."]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
+    pub fn verbose(mut self, verbose: bool) -> Self {
+        self.verbose = Some(verbose);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Segments API that can be awaited"]
@@ -5703,48 +5703,48 @@ impl IndicesShardStores {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of statuses used to filter on shards to get store information for"]
-    pub fn status(mut self, status: Option<Vec<String>>) -> Self {
-        self.status = status;
+    pub fn status(mut self, status: Vec<String>) -> Self {
+        self.status = Some(status);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Shard Stores API that can be awaited"]
@@ -5858,14 +5858,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesShrink<T>
+    pub fn body<T>(self, body: T) -> IndicesShrink<T>
     where
         T: Serialize,
     {
         IndicesShrink {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -5878,48 +5878,48 @@ where
         }
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
-    pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
-        self.copy_settings = copy_settings;
+    pub fn copy_settings(mut self, copy_settings: bool) -> Self {
+        self.copy_settings = Some(copy_settings);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Shrink API that can be awaited"]
@@ -6032,14 +6032,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesSplit<T>
+    pub fn body<T>(self, body: T) -> IndicesSplit<T>
     where
         T: Serialize,
     {
         IndicesSplit {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6052,48 +6052,48 @@ where
         }
     }
     #[doc = "whether or not to copy settings from the source index (defaults to false)"]
-    pub fn copy_settings(mut self, copy_settings: Option<bool>) -> Self {
-        self.copy_settings = copy_settings;
+    pub fn copy_settings(mut self, copy_settings: bool) -> Self {
+        self.copy_settings = Some(copy_settings);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Set the number of active shards to wait for on the shrunken index before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Split API that can be awaited"]
@@ -6234,78 +6234,78 @@ impl IndicesStats {
         }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
-    pub fn completion_fields(mut self, completion_fields: Option<Vec<String>>) -> Self {
-        self.completion_fields = completion_fields;
+    pub fn completion_fields(mut self, completion_fields: Vec<String>) -> Self {
+        self.completion_fields = Some(completion_fields);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` index metric (supports wildcards)"]
-    pub fn fielddata_fields(mut self, fielddata_fields: Option<Vec<String>>) -> Self {
-        self.fielddata_fields = fielddata_fields;
+    pub fn fielddata_fields(mut self, fielddata_fields: Vec<String>) -> Self {
+        self.fielddata_fields = Some(fielddata_fields);
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `completion` index metric (supports wildcards)"]
-    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
-        self.fields = fields;
+    pub fn fields(mut self, fields: Vec<String>) -> Self {
+        self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "If set to false stats will also collected from closed indices if explicitly specified or if expand_wildcards expands to closed indices"]
-    pub fn forbid_closed_indices(mut self, forbid_closed_indices: Option<bool>) -> Self {
-        self.forbid_closed_indices = forbid_closed_indices;
+    pub fn forbid_closed_indices(mut self, forbid_closed_indices: bool) -> Self {
+        self.forbid_closed_indices = Some(forbid_closed_indices);
         self
     }
     #[doc = "A comma-separated list of search groups for `search` index metric"]
-    pub fn groups(mut self, groups: Option<Vec<String>>) -> Self {
-        self.groups = groups;
+    pub fn groups(mut self, groups: Vec<String>) -> Self {
+        self.groups = Some(groups);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
-    pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: Option<bool>) -> Self {
-        self.include_segment_file_sizes = include_segment_file_sizes;
+    pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: bool) -> Self {
+        self.include_segment_file_sizes = Some(include_segment_file_sizes);
         self
     }
     #[doc = "If set to true segment stats will include stats for segments that are not currently loaded into memory"]
-    pub fn include_unloaded_segments(mut self, include_unloaded_segments: Option<bool>) -> Self {
-        self.include_unloaded_segments = include_unloaded_segments;
+    pub fn include_unloaded_segments(mut self, include_unloaded_segments: bool) -> Self {
+        self.include_unloaded_segments = Some(include_unloaded_segments);
         self
     }
     #[doc = "Return stats aggregated at cluster, index or shard level"]
-    pub fn level(mut self, level: Option<Level>) -> Self {
-        self.level = level;
+    pub fn level(mut self, level: Level) -> Self {
+        self.level = Some(level);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of document types for the `indexing` index metric"]
-    pub fn types(mut self, types: Option<Vec<String>>) -> Self {
-        self.types = types;
+    pub fn types(mut self, types: Vec<String>) -> Self {
+        self.types = Some(types);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Stats API that can be awaited"]
@@ -6465,19 +6465,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesUnfreeze<T>
+    pub fn body<T>(self, body: T) -> IndicesUnfreeze<T>
     where
         T: Serialize,
     {
         IndicesUnfreeze {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -6492,53 +6492,53 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of active shards to wait for before the operation returns."]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Unfreeze API that can be awaited"]
@@ -6646,14 +6646,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesUpdateAliases<T>
+    pub fn body<T>(self, body: T) -> IndicesUpdateAliases<T>
     where
         T: Serialize,
     {
         IndicesUpdateAliases {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6664,38 +6664,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Request timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Update Aliases API that can be awaited"]
@@ -6803,19 +6803,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesUpgrade<T>
+    pub fn body<T>(self, body: T) -> IndicesUpgrade<T>
     where
         T: Serialize,
     {
         IndicesUpgrade {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -6829,48 +6829,48 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "If true, only ancient (an older Lucene major release) segments will be upgraded"]
-    pub fn only_ancient_segments(mut self, only_ancient_segments: Option<bool>) -> Self {
-        self.only_ancient_segments = only_ancient_segments;
+    pub fn only_ancient_segments(mut self, only_ancient_segments: bool) -> Self {
+        self.only_ancient_segments = Some(only_ancient_segments);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Specify whether the request should block until the all segments are upgraded (default: false)"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Upgrade API that can be awaited"]
@@ -7019,34 +7019,34 @@ where
         }
     }
     #[doc = "Execute validation on all shards instead of one random shard per index"]
-    pub fn all_shards(mut self, all_shards: Option<bool>) -> Self {
-        self.all_shards = all_shards;
+    pub fn all_shards(mut self, all_shards: bool) -> Self {
+        self.all_shards = Some(all_shards);
         self
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Specify whether wildcard and prefix queries should be analyzed (default: false)"]
-    pub fn analyze_wildcard(mut self, analyze_wildcard: Option<bool>) -> Self {
-        self.analyze_wildcard = analyze_wildcard;
+    pub fn analyze_wildcard(mut self, analyze_wildcard: bool) -> Self {
+        self.analyze_wildcard = Some(analyze_wildcard);
         self
     }
     #[doc = "The analyzer to use for the query string"]
-    pub fn analyzer(mut self, analyzer: Option<String>) -> Self {
-        self.analyzer = analyzer;
+    pub fn analyzer(mut self, analyzer: String) -> Self {
+        self.analyzer = Some(analyzer);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IndicesValidateQuery<T>
+    pub fn body<T>(self, body: T) -> IndicesValidateQuery<T>
     where
         T: Serialize,
     {
         IndicesValidateQuery {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             all_shards: self.all_shards,
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,
@@ -7067,68 +7067,68 @@ where
         }
     }
     #[doc = "The default operator for query string query (AND or OR)"]
-    pub fn default_operator(mut self, default_operator: Option<DefaultOperator>) -> Self {
-        self.default_operator = default_operator;
+    pub fn default_operator(mut self, default_operator: DefaultOperator) -> Self {
+        self.default_operator = Some(default_operator);
         self
     }
     #[doc = "The field to use as default where no field prefix is given in the query string"]
-    pub fn df(mut self, df: Option<String>) -> Self {
-        self.df = df;
+    pub fn df(mut self, df: String) -> Self {
+        self.df = Some(df);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "Return detailed information about the error"]
-    pub fn explain(mut self, explain: Option<bool>) -> Self {
-        self.explain = explain;
+    pub fn explain(mut self, explain: bool) -> Self {
+        self.explain = Some(explain);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Specify whether format-based query failures (such as providing text to a numeric field) should be ignored"]
-    pub fn lenient(mut self, lenient: Option<bool>) -> Self {
-        self.lenient = lenient;
+    pub fn lenient(mut self, lenient: bool) -> Self {
+        self.lenient = Some(lenient);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: Option<String>) -> Self {
-        self.q = q;
+    pub fn q(mut self, q: String) -> Self {
+        self.q = Some(q);
         self
     }
     #[doc = "Provide a more detailed explanation showing the actual Lucene query that will be executed."]
-    pub fn rewrite(mut self, rewrite: Option<bool>) -> Self {
-        self.rewrite = rewrite;
+    pub fn rewrite(mut self, rewrite: bool) -> Self {
+        self.rewrite = Some(rewrite);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Indices Validate Query API that can be awaited"]

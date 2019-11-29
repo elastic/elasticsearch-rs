@@ -5,16 +5,16 @@ use serde_json::json;
 use serde_json::Value;
 
 #[tokio::test]
-async fn test_search_with_body() -> Result<(), failure::Error> {
+async fn search_with_body() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
     let response = client
         .search(SearchUrlParts::None)
-        .body(Some(json!({
+        .body(json!({
             "query": {
                 "match_all": {}
             }
-        })))
-        .allow_no_indices(Some(true))
+        }))
+        .allow_no_indices(true)
         .send()
         .await?;
 
@@ -26,12 +26,12 @@ async fn test_search_with_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn test_search_no_body() -> Result<(), failure::Error> {
+async fn search_with_no_body() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
     let response = client
         .search(SearchUrlParts::None)
-        .pretty(Some(true))
-        .q(Some("title:Elasticsearch".into()))
+        .pretty(true)
+        .q("title:Elasticsearch".into())
         .send()
         .await?;
 
@@ -47,13 +47,13 @@ async fn test_search_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn test_serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
+async fn serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
     let response = client
         .search(SearchUrlParts::None)
-        .pretty(Some(true))
-        .filter_path(Some(vec!["took".into()]))
-        .q(Some("title:Elasticsearch".into()))
+        .pretty(true)
+        .filter_path(vec!["took".into()])
+        .q("title:Elasticsearch".into())
         .send()
         .await?;
 
@@ -67,24 +67,24 @@ async fn test_serialize_vec_string_on_querystring() -> Result<(), failure::Error
 }
 
 #[tokio::test]
-async fn test_clone_search_with_body() -> Result<(), failure::Error> {
+async fn clone_search_with_body() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
 
-    let request = client
-        .search(SearchUrlParts::None)
-        .body(Some(json!({
+    let base_request = client
+        .search(SearchUrlParts::None);
+
+    let request_clone = base_request
+        .clone()
+        .q("title:Elasticsearch".into())
+        .size(1);
+
+    let request = base_request
+        .body(json!({
             "query": {
                 "match_all": {}
             }
-        })))
-        .allow_no_indices(Some(true));
-
-    let request_clone = request
-        .clone()
-        .q(Some("title:Elasticsearch".into()))
-        .size(Some(1))
-        .body(Option::<()>::None)
-        .allow_no_indices(None);
+        }))
+        .allow_no_indices(true);
 
     let response = request_clone.send().await?;
 

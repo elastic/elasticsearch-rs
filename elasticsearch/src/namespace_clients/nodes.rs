@@ -78,58 +78,58 @@ impl NodesHotThreads {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Don't show threads that are in known-idle places, such as waiting on a socket select or pulling from an empty task queue (default: true)"]
-    pub fn ignore_idle_threads(mut self, ignore_idle_threads: Option<bool>) -> Self {
-        self.ignore_idle_threads = ignore_idle_threads;
+    pub fn ignore_idle_threads(mut self, ignore_idle_threads: bool) -> Self {
+        self.ignore_idle_threads = Some(ignore_idle_threads);
         self
     }
     #[doc = "The interval for the second sampling of threads"]
-    pub fn interval(mut self, interval: Option<String>) -> Self {
-        self.interval = interval;
+    pub fn interval(mut self, interval: String) -> Self {
+        self.interval = Some(interval);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Number of samples of thread stacktrace (default: 10)"]
-    pub fn snapshots(mut self, snapshots: Option<i64>) -> Self {
-        self.snapshots = snapshots;
+    pub fn snapshots(mut self, snapshots: i64) -> Self {
+        self.snapshots = Some(snapshots);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Specify the number of threads to provide information for (default: 3)"]
-    pub fn threads(mut self, threads: Option<i64>) -> Self {
-        self.threads = threads;
+    pub fn threads(mut self, threads: i64) -> Self {
+        self.threads = Some(threads);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "The type to sample (default: cpu)"]
-    pub fn ty(mut self, ty: Option<Type>) -> Self {
-        self.ty = ty;
+    pub fn ty(mut self, ty: Type) -> Self {
+        self.ty = Some(ty);
         self
     }
     #[doc = "Creates an asynchronous request to the Nodes Hot Threads API that can be awaited"]
@@ -259,38 +259,38 @@ impl NodesInfo {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Nodes Info API that can be awaited"]
@@ -390,14 +390,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> NodesReloadSecureSettings<T>
+    pub fn body<T>(self, body: T) -> NodesReloadSecureSettings<T>
     where
         T: Serialize,
     {
         NodesReloadSecureSettings {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -407,33 +407,33 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Nodes Reload Secure Settings API that can be awaited"]
@@ -590,68 +590,68 @@ impl NodesStats {
         }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
-    pub fn completion_fields(mut self, completion_fields: Option<Vec<String>>) -> Self {
-        self.completion_fields = completion_fields;
+    pub fn completion_fields(mut self, completion_fields: Vec<String>) -> Self {
+        self.completion_fields = Some(completion_fields);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` index metric (supports wildcards)"]
-    pub fn fielddata_fields(mut self, fielddata_fields: Option<Vec<String>>) -> Self {
-        self.fielddata_fields = fielddata_fields;
+    pub fn fielddata_fields(mut self, fielddata_fields: Vec<String>) -> Self {
+        self.fielddata_fields = Some(fielddata_fields);
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `completion` index metric (supports wildcards)"]
-    pub fn fields(mut self, fields: Option<Vec<String>>) -> Self {
-        self.fields = fields;
+    pub fn fields(mut self, fields: Vec<String>) -> Self {
+        self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "A comma-separated list of search groups for `search` index metric"]
-    pub fn groups(mut self, groups: Option<bool>) -> Self {
-        self.groups = groups;
+    pub fn groups(mut self, groups: bool) -> Self {
+        self.groups = Some(groups);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether to report the aggregated disk usage of each one of the Lucene index files (only applies if segment stats are requested)"]
-    pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: Option<bool>) -> Self {
-        self.include_segment_file_sizes = include_segment_file_sizes;
+    pub fn include_segment_file_sizes(mut self, include_segment_file_sizes: bool) -> Self {
+        self.include_segment_file_sizes = Some(include_segment_file_sizes);
         self
     }
     #[doc = "Return indices stats aggregated at index, node or shard level"]
-    pub fn level(mut self, level: Option<Level>) -> Self {
-        self.level = level;
+    pub fn level(mut self, level: Level) -> Self {
+        self.level = Some(level);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "A comma-separated list of document types for the `indexing` index metric"]
-    pub fn types(mut self, types: Option<Vec<String>>) -> Self {
-        self.types = types;
+    pub fn types(mut self, types: Vec<String>) -> Self {
+        self.types = Some(types);
         self
     }
     #[doc = "Creates an asynchronous request to the Nodes Stats API that can be awaited"]
@@ -802,33 +802,33 @@ impl NodesUsage {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Nodes Usage API that can be awaited"]
