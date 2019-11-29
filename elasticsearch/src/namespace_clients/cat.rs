@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Aliases API"]
-pub enum CatAliasesUrlParts {
+pub enum CatAliasesUrlParts<'a> {
     None,
-    Name(Vec<String>),
+    Name(&'a [&'a str]),
 }
-impl CatAliasesUrlParts {
+impl<'a> CatAliasesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatAliasesUrlParts::None => "/_cat/aliases".into(),
@@ -43,23 +43,23 @@ impl CatAliasesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Aliases API"]
-pub struct CatAliases {
+pub struct CatAliases<'a> {
     client: Elasticsearch,
-    parts: CatAliasesUrlParts,
+    parts: CatAliasesUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatAliases {
-    pub fn new(client: Elasticsearch, parts: CatAliasesUrlParts) -> Self {
+impl<'a> CatAliases<'a> {
+    pub fn new(client: Elasticsearch, parts: CatAliasesUrlParts<'a>) -> Self {
         CatAliases {
             client,
             parts,
@@ -82,17 +82,17 @@ impl CatAliases {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -117,12 +117,12 @@ impl CatAliases {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -137,23 +137,23 @@ impl CatAliases {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -164,12 +164,12 @@ impl CatAliases {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -198,11 +198,11 @@ impl CatAliases {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Allocation API"]
-pub enum CatAllocationUrlParts {
+pub enum CatAllocationUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
+    NodeId(&'a [&'a str]),
 }
-impl CatAllocationUrlParts {
+impl<'a> CatAllocationUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatAllocationUrlParts::None => "/_cat/allocation".into(),
@@ -218,25 +218,25 @@ impl CatAllocationUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Allocation API"]
-pub struct CatAllocation {
+pub struct CatAllocation<'a> {
     client: Elasticsearch,
-    parts: CatAllocationUrlParts,
+    parts: CatAllocationUrlParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatAllocation {
-    pub fn new(client: Elasticsearch, parts: CatAllocationUrlParts) -> Self {
+impl<'a> CatAllocation<'a> {
+    pub fn new(client: Elasticsearch, parts: CatAllocationUrlParts<'a>) -> Self {
         CatAllocation {
             client,
             parts,
@@ -266,17 +266,17 @@ impl CatAllocation {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -296,7 +296,7 @@ impl CatAllocation {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -306,12 +306,12 @@ impl CatAllocation {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -326,25 +326,25 @@ impl CatAllocation {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -352,17 +352,17 @@ impl CatAllocation {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -393,11 +393,11 @@ impl CatAllocation {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Count API"]
-pub enum CatCountUrlParts {
+pub enum CatCountUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl CatCountUrlParts {
+impl<'a> CatCountUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatCountUrlParts::None => "/_cat/count".into(),
@@ -413,22 +413,22 @@ impl CatCountUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Count API"]
-pub struct CatCount {
+pub struct CatCount<'a> {
     client: Elasticsearch,
-    parts: CatCountUrlParts,
+    parts: CatCountUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatCount {
-    pub fn new(client: Elasticsearch, parts: CatCountUrlParts) -> Self {
+impl<'a> CatCount<'a> {
+    pub fn new(client: Elasticsearch, parts: CatCountUrlParts<'a>) -> Self {
         CatCount {
             client,
             parts,
@@ -450,17 +450,17 @@ impl CatCount {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -480,12 +480,12 @@ impl CatCount {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -500,23 +500,23 @@ impl CatCount {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -525,12 +525,12 @@ impl CatCount {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -558,11 +558,11 @@ impl CatCount {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Fielddata API"]
-pub enum CatFielddataUrlParts {
+pub enum CatFielddataUrlParts<'a> {
     None,
-    Fields(Vec<String>),
+    Fields(&'a [&'a str]),
 }
-impl CatFielddataUrlParts {
+impl<'a> CatFielddataUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatFielddataUrlParts::None => "/_cat/fielddata".into(),
@@ -578,24 +578,24 @@ impl CatFielddataUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Fielddata API"]
-pub struct CatFielddata {
+pub struct CatFielddata<'a> {
     client: Elasticsearch,
-    parts: CatFielddataUrlParts,
+    parts: CatFielddataUrlParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    fields: Option<Vec<String>>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    fields: Option<&'a [&'a str]>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatFielddata {
-    pub fn new(client: Elasticsearch, parts: CatFielddataUrlParts) -> Self {
+impl<'a> CatFielddata<'a> {
+    pub fn new(client: Elasticsearch, parts: CatFielddataUrlParts<'a>) -> Self {
         CatFielddata {
             client,
             parts,
@@ -624,22 +624,22 @@ impl CatFielddata {
         self
     }
     #[doc = "A comma-separated list of fields to return in the output"]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
+    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -659,12 +659,12 @@ impl CatFielddata {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -679,31 +679,31 @@ impl CatFielddata {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fields: Option<Vec<String>>,
+                fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -712,12 +712,12 @@ impl CatFielddata {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -759,23 +759,23 @@ impl CatHealthUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Health API"]
-pub struct CatHealth {
+pub struct CatHealth<'a> {
     client: Elasticsearch,
     parts: CatHealthUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     ts: Option<bool>,
     v: Option<bool>,
 }
-impl CatHealth {
+impl<'a> CatHealth<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatHealth {
             client,
@@ -800,17 +800,17 @@ impl CatHealth {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -830,12 +830,12 @@ impl CatHealth {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -860,23 +860,23 @@ impl CatHealth {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -885,12 +885,12 @@ impl CatHealth {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "ts", skip_serializing_if = "Option::is_none")]
@@ -936,18 +936,18 @@ impl CatHelpUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Help API"]
-pub struct CatHelp {
+pub struct CatHelp<'a> {
     client: Elasticsearch,
     parts: CatHelpUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
 }
-impl CatHelp {
+impl<'a> CatHelp<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatHelp {
             client,
@@ -967,7 +967,7 @@ impl CatHelp {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -987,12 +987,12 @@ impl CatHelp {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1002,15 +1002,15 @@ impl CatHelp {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1019,12 +1019,12 @@ impl CatHelp {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1047,11 +1047,11 @@ impl CatHelp {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Indices API"]
-pub enum CatIndicesUrlParts {
+pub enum CatIndicesUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl CatIndicesUrlParts {
+impl<'a> CatIndicesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatIndicesUrlParts::None => "/_cat/indices".into(),
@@ -1067,29 +1067,29 @@ impl CatIndicesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Indices API"]
-pub struct CatIndices {
+pub struct CatIndices<'a> {
     client: Elasticsearch,
-    parts: CatIndicesUrlParts,
+    parts: CatIndicesUrlParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     health: Option<Health>,
     help: Option<bool>,
     human: Option<bool>,
     include_unloaded_segments: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
     pri: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatIndices {
-    pub fn new(client: Elasticsearch, parts: CatIndicesUrlParts) -> Self {
+impl<'a> CatIndices<'a> {
+    pub fn new(client: Elasticsearch, parts: CatIndicesUrlParts<'a>) -> Self {
         CatIndices {
             client,
             parts,
@@ -1123,17 +1123,17 @@ impl CatIndices {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1163,7 +1163,7 @@ impl CatIndices {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1178,12 +1178,12 @@ impl CatIndices {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1203,25 +1203,25 @@ impl CatIndices {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "health", skip_serializing_if = "Option::is_none")]
                 health: Option<Health>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
@@ -1236,19 +1236,19 @@ impl CatIndices {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "pri", skip_serializing_if = "Option::is_none")]
                 pri: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -1297,23 +1297,23 @@ impl CatMasterUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Master API"]
-pub struct CatMaster {
+pub struct CatMaster<'a> {
     client: Elasticsearch,
     parts: CatMasterUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatMaster {
+impl<'a> CatMaster<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatMaster {
             client,
@@ -1338,17 +1338,17 @@ impl CatMaster {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1368,7 +1368,7 @@ impl CatMaster {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1378,12 +1378,12 @@ impl CatMaster {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1398,23 +1398,23 @@ impl CatMaster {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1422,17 +1422,17 @@ impl CatMaster {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -1474,23 +1474,23 @@ impl CatNodeattrsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Nodeattrs API"]
-pub struct CatNodeattrs {
+pub struct CatNodeattrs<'a> {
     client: Elasticsearch,
     parts: CatNodeattrsUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatNodeattrs {
+impl<'a> CatNodeattrs<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodeattrs {
             client,
@@ -1515,17 +1515,17 @@ impl CatNodeattrs {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1545,7 +1545,7 @@ impl CatNodeattrs {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1555,12 +1555,12 @@ impl CatNodeattrs {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1575,23 +1575,23 @@ impl CatNodeattrs {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1599,17 +1599,17 @@ impl CatNodeattrs {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -1651,26 +1651,26 @@ impl CatNodesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Nodes API"]
-pub struct CatNodes {
+pub struct CatNodes<'a> {
     client: Elasticsearch,
     parts: CatNodesUrlParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
     full_id: Option<bool>,
-    h: Option<Vec<String>>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatNodes {
+impl<'a> CatNodes<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodes {
             client,
@@ -1703,12 +1703,12 @@ impl CatNodes {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
@@ -1718,7 +1718,7 @@ impl CatNodes {
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1738,7 +1738,7 @@ impl CatNodes {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1748,12 +1748,12 @@ impl CatNodes {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1773,27 +1773,27 @@ impl CatNodes {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(rename = "full_id", skip_serializing_if = "Option::is_none")]
                 full_id: Option<bool>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1801,17 +1801,17 @@ impl CatNodes {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -1858,24 +1858,24 @@ impl CatPendingTasksUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Pending Tasks API"]
-pub struct CatPendingTasks {
+pub struct CatPendingTasks<'a> {
     client: Elasticsearch,
     parts: CatPendingTasksUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatPendingTasks {
+impl<'a> CatPendingTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatPendingTasks {
             client,
@@ -1901,17 +1901,17 @@ impl CatPendingTasks {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1931,7 +1931,7 @@ impl CatPendingTasks {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1941,12 +1941,12 @@ impl CatPendingTasks {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1966,23 +1966,23 @@ impl CatPendingTasks {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1990,17 +1990,17 @@ impl CatPendingTasks {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -2045,23 +2045,23 @@ impl CatPluginsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Plugins API"]
-pub struct CatPlugins {
+pub struct CatPlugins<'a> {
     client: Elasticsearch,
     parts: CatPluginsUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatPlugins {
+impl<'a> CatPlugins<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatPlugins {
             client,
@@ -2086,17 +2086,17 @@ impl CatPlugins {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2116,7 +2116,7 @@ impl CatPlugins {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2126,12 +2126,12 @@ impl CatPlugins {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2146,23 +2146,23 @@ impl CatPlugins {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -2170,17 +2170,17 @@ impl CatPlugins {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -2210,11 +2210,11 @@ impl CatPlugins {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Recovery API"]
-pub enum CatRecoveryUrlParts {
+pub enum CatRecoveryUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl CatRecoveryUrlParts {
+impl<'a> CatRecoveryUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatRecoveryUrlParts::None => "/_cat/recovery".into(),
@@ -2230,27 +2230,27 @@ impl CatRecoveryUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Recovery API"]
-pub struct CatRecovery {
+pub struct CatRecovery<'a> {
     client: Elasticsearch,
-    parts: CatRecoveryUrlParts,
+    parts: CatRecoveryUrlParts<'a>,
     active_only: Option<bool>,
     bytes: Option<Bytes>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
-    index: Option<Vec<String>>,
+    index: Option<&'a [&'a str]>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatRecovery {
-    pub fn new(client: Elasticsearch, parts: CatRecoveryUrlParts) -> Self {
+impl<'a> CatRecovery<'a> {
+    pub fn new(client: Elasticsearch, parts: CatRecoveryUrlParts<'a>) -> Self {
         CatRecovery {
             client,
             parts,
@@ -2292,17 +2292,17 @@ impl CatRecovery {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2317,7 +2317,7 @@ impl CatRecovery {
         self
     }
     #[doc = "Comma-separated list or wildcard expression of index names to limit the returned information"]
-    pub fn index(mut self, index: Vec<String>) -> Self {
+    pub fn index(mut self, index: &'a [&'a str]) -> Self {
         self.index = Some(index);
         self
     }
@@ -2327,12 +2327,12 @@ impl CatRecovery {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2352,7 +2352,7 @@ impl CatRecovery {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "active_only", skip_serializing_if = "Option::is_none")]
                 active_only: Option<bool>,
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
@@ -2363,38 +2363,38 @@ impl CatRecovery {
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "index",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                index: Option<Vec<String>>,
+                index: Option<&'a [&'a str]>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -2441,23 +2441,23 @@ impl CatRepositoriesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Repositories API"]
-pub struct CatRepositories {
+pub struct CatRepositories<'a> {
     client: Elasticsearch,
     parts: CatRepositoriesUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatRepositories {
+impl<'a> CatRepositories<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatRepositories {
             client,
@@ -2482,17 +2482,17 @@ impl CatRepositories {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2512,7 +2512,7 @@ impl CatRepositories {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2522,12 +2522,12 @@ impl CatRepositories {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2542,23 +2542,23 @@ impl CatRepositories {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -2566,17 +2566,17 @@ impl CatRepositories {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -2606,11 +2606,11 @@ impl CatRepositories {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Segments API"]
-pub enum CatSegmentsUrlParts {
+pub enum CatSegmentsUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl CatSegmentsUrlParts {
+impl<'a> CatSegmentsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatSegmentsUrlParts::None => "/_cat/segments".into(),
@@ -2626,23 +2626,23 @@ impl CatSegmentsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Segments API"]
-pub struct CatSegments {
+pub struct CatSegments<'a> {
     client: Elasticsearch,
-    parts: CatSegmentsUrlParts,
+    parts: CatSegmentsUrlParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatSegments {
-    pub fn new(client: Elasticsearch, parts: CatSegmentsUrlParts) -> Self {
+impl<'a> CatSegments<'a> {
+    pub fn new(client: Elasticsearch, parts: CatSegmentsUrlParts<'a>) -> Self {
         CatSegments {
             client,
             parts,
@@ -2670,17 +2670,17 @@ impl CatSegments {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2700,12 +2700,12 @@ impl CatSegments {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2720,25 +2720,25 @@ impl CatSegments {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -2747,12 +2747,12 @@ impl CatSegments {
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -2781,11 +2781,11 @@ impl CatSegments {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Shards API"]
-pub enum CatShardsUrlParts {
+pub enum CatShardsUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl CatShardsUrlParts {
+impl<'a> CatShardsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatShardsUrlParts::None => "/_cat/shards".into(),
@@ -2801,26 +2801,26 @@ impl CatShardsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Shards API"]
-pub struct CatShards {
+pub struct CatShards<'a> {
     client: Elasticsearch,
-    parts: CatShardsUrlParts,
+    parts: CatShardsUrlParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatShards {
-    pub fn new(client: Elasticsearch, parts: CatShardsUrlParts) -> Self {
+impl<'a> CatShards<'a> {
+    pub fn new(client: Elasticsearch, parts: CatShardsUrlParts<'a>) -> Self {
         CatShards {
             client,
             parts,
@@ -2851,17 +2851,17 @@ impl CatShards {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2881,7 +2881,7 @@ impl CatShards {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2891,12 +2891,12 @@ impl CatShards {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2916,25 +2916,25 @@ impl CatShards {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "bytes", skip_serializing_if = "Option::is_none")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -2942,17 +2942,17 @@ impl CatShards {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -2986,11 +2986,11 @@ impl CatShards {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Snapshots API"]
-pub enum CatSnapshotsUrlParts {
+pub enum CatSnapshotsUrlParts<'a> {
     None,
-    Repository(Vec<String>),
+    Repository(&'a [&'a str]),
 }
-impl CatSnapshotsUrlParts {
+impl<'a> CatSnapshotsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatSnapshotsUrlParts::None => "/_cat/snapshots".into(),
@@ -3006,25 +3006,25 @@ impl CatSnapshotsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Snapshots API"]
-pub struct CatSnapshots {
+pub struct CatSnapshots<'a> {
     client: Elasticsearch,
-    parts: CatSnapshotsUrlParts,
+    parts: CatSnapshotsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatSnapshots {
-    pub fn new(client: Elasticsearch, parts: CatSnapshotsUrlParts) -> Self {
+impl<'a> CatSnapshots<'a> {
+    pub fn new(client: Elasticsearch, parts: CatSnapshotsUrlParts<'a>) -> Self {
         CatSnapshots {
             client,
             parts,
@@ -3049,17 +3049,17 @@ impl CatSnapshots {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3079,7 +3079,7 @@ impl CatSnapshots {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3089,12 +3089,12 @@ impl CatSnapshots {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3114,23 +3114,23 @@ impl CatSnapshots {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -3138,17 +3138,17 @@ impl CatSnapshots {
                 #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -3193,26 +3193,26 @@ impl CatTasksUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Tasks API"]
-pub struct CatTasks {
+pub struct CatTasks<'a> {
     client: Elasticsearch,
     parts: CatTasksUrlParts,
-    actions: Option<Vec<String>>,
+    actions: Option<&'a [&'a str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
-    node_id: Option<Vec<String>>,
+    node_id: Option<&'a [&'a str]>,
     parent_task: Option<i64>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl CatTasks {
+impl<'a> CatTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatTasks {
             client,
@@ -3235,7 +3235,7 @@ impl CatTasks {
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
-    pub fn actions(mut self, actions: Vec<String>) -> Self {
+    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
         self.actions = Some(actions);
         self
     }
@@ -3250,17 +3250,17 @@ impl CatTasks {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3275,7 +3275,7 @@ impl CatTasks {
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: Vec<String>) -> Self {
+    pub fn node_id(mut self, node_id: &'a [&'a str]) -> Self {
         self.node_id = Some(node_id);
         self
     }
@@ -3290,12 +3290,12 @@ impl CatTasks {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3315,53 +3315,53 @@ impl CatTasks {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "actions",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                actions: Option<Vec<String>>,
+                actions: Option<&'a [&'a str]>,
                 #[serde(rename = "detailed", skip_serializing_if = "Option::is_none")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "node_id",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                node_id: Option<Vec<String>>,
+                node_id: Option<&'a [&'a str]>,
                 #[serde(rename = "parent_task", skip_serializing_if = "Option::is_none")]
                 parent_task: Option<i64>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "time", skip_serializing_if = "Option::is_none")]
                 time: Option<Time>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
@@ -3396,11 +3396,11 @@ impl CatTasks {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Templates API"]
-pub enum CatTemplatesUrlParts {
+pub enum CatTemplatesUrlParts<'a> {
     None,
-    Name(String),
+    Name(&'a str),
 }
-impl CatTemplatesUrlParts {
+impl<'a> CatTemplatesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatTemplatesUrlParts::None => "/_cat/templates".into(),
@@ -3415,24 +3415,24 @@ impl CatTemplatesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Templates API"]
-pub struct CatTemplates {
+pub struct CatTemplates<'a> {
     client: Elasticsearch,
-    parts: CatTemplatesUrlParts,
+    parts: CatTemplatesUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
-    source: Option<String>,
+    s: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatTemplates {
-    pub fn new(client: Elasticsearch, parts: CatTemplatesUrlParts) -> Self {
+impl<'a> CatTemplates<'a> {
+    pub fn new(client: Elasticsearch, parts: CatTemplatesUrlParts<'a>) -> Self {
         CatTemplates {
             client,
             parts,
@@ -3456,17 +3456,17 @@ impl CatTemplates {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3486,7 +3486,7 @@ impl CatTemplates {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3496,12 +3496,12 @@ impl CatTemplates {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3516,23 +3516,23 @@ impl CatTemplates {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -3540,17 +3540,17 @@ impl CatTemplates {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -3580,11 +3580,11 @@ impl CatTemplates {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cat Thread Pool API"]
-pub enum CatThreadPoolUrlParts {
+pub enum CatThreadPoolUrlParts<'a> {
     None,
-    ThreadPoolPatterns(Vec<String>),
+    ThreadPoolPatterns(&'a [&'a str]),
 }
-impl CatThreadPoolUrlParts {
+impl<'a> CatThreadPoolUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CatThreadPoolUrlParts::None => "/_cat/thread_pool".into(),
@@ -3600,25 +3600,25 @@ impl CatThreadPoolUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cat Thread Pool API"]
-pub struct CatThreadPool {
+pub struct CatThreadPool<'a> {
     client: Elasticsearch,
-    parts: CatThreadPoolUrlParts,
+    parts: CatThreadPoolUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
-    format: Option<String>,
-    h: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
+    format: Option<&'a str>,
+    h: Option<&'a [&'a str]>,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    s: Option<Vec<String>>,
+    s: Option<&'a [&'a str]>,
     size: Option<Size>,
-    source: Option<String>,
+    source: Option<&'a str>,
     v: Option<bool>,
 }
-impl CatThreadPool {
-    pub fn new(client: Elasticsearch, parts: CatThreadPoolUrlParts) -> Self {
+impl<'a> CatThreadPool<'a> {
+    pub fn new(client: Elasticsearch, parts: CatThreadPoolUrlParts<'a>) -> Self {
         CatThreadPool {
             client,
             parts,
@@ -3643,17 +3643,17 @@ impl CatThreadPool {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: String) -> Self {
+    pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: Vec<String>) -> Self {
+    pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3673,7 +3673,7 @@ impl CatThreadPool {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3683,7 +3683,7 @@ impl CatThreadPool {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: Vec<String>) -> Self {
+    pub fn s(mut self, s: &'a [&'a str]) -> Self {
         self.s = Some(s);
         self
     }
@@ -3693,7 +3693,7 @@ impl CatThreadPool {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3708,23 +3708,23 @@ impl CatThreadPool {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "format", skip_serializing_if = "Option::is_none")]
-                format: Option<String>,
+                format: Option<&'a str>,
                 #[serde(
                     rename = "h",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                h: Option<Vec<String>>,
+                h: Option<&'a [&'a str]>,
                 #[serde(rename = "help", skip_serializing_if = "Option::is_none")]
                 help: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -3732,19 +3732,19 @@ impl CatThreadPool {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(
                     rename = "s",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                s: Option<Vec<String>>,
+                s: Option<&'a [&'a str]>,
                 #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
                 size: Option<Size>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "v", skip_serializing_if = "Option::is_none")]
                 v: Option<bool>,
             }
@@ -3782,83 +3782,83 @@ impl Cat {
         Cat { client }
     }
     #[doc = "Shows information about currently configured aliases to indices including filter and routing infos."]
-    pub fn aliases(&self, parts: CatAliasesUrlParts) -> CatAliases {
+    pub fn aliases<'a>(&self, parts: CatAliasesUrlParts<'a>) -> CatAliases<'a> {
         CatAliases::new(self.client.clone(), parts)
     }
     #[doc = "Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
-    pub fn allocation(&self, parts: CatAllocationUrlParts) -> CatAllocation {
+    pub fn allocation<'a>(&self, parts: CatAllocationUrlParts<'a>) -> CatAllocation<'a> {
         CatAllocation::new(self.client.clone(), parts)
     }
     #[doc = "Provides quick access to the document count of the entire cluster, or individual indices."]
-    pub fn count(&self, parts: CatCountUrlParts) -> CatCount {
+    pub fn count<'a>(&self, parts: CatCountUrlParts<'a>) -> CatCount<'a> {
         CatCount::new(self.client.clone(), parts)
     }
     #[doc = "Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
-    pub fn fielddata(&self, parts: CatFielddataUrlParts) -> CatFielddata {
+    pub fn fielddata<'a>(&self, parts: CatFielddataUrlParts<'a>) -> CatFielddata<'a> {
         CatFielddata::new(self.client.clone(), parts)
     }
     #[doc = "Returns a concise representation of the cluster health."]
-    pub fn health(&self) -> CatHealth {
+    pub fn health<'a>(&self) -> CatHealth<'a> {
         CatHealth::new(self.client.clone())
     }
     #[doc = "Returns help for the Cat APIs."]
-    pub fn help(&self) -> CatHelp {
+    pub fn help<'a>(&self) -> CatHelp<'a> {
         CatHelp::new(self.client.clone())
     }
     #[doc = "Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
-    pub fn indices(&self, parts: CatIndicesUrlParts) -> CatIndices {
+    pub fn indices<'a>(&self, parts: CatIndicesUrlParts<'a>) -> CatIndices<'a> {
         CatIndices::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the master node."]
-    pub fn master(&self) -> CatMaster {
+    pub fn master<'a>(&self) -> CatMaster<'a> {
         CatMaster::new(self.client.clone())
     }
     #[doc = "Returns information about custom node attributes."]
-    pub fn nodeattrs(&self) -> CatNodeattrs {
+    pub fn nodeattrs<'a>(&self) -> CatNodeattrs<'a> {
         CatNodeattrs::new(self.client.clone())
     }
     #[doc = "Returns basic statistics about performance of cluster nodes."]
-    pub fn nodes(&self) -> CatNodes {
+    pub fn nodes<'a>(&self) -> CatNodes<'a> {
         CatNodes::new(self.client.clone())
     }
     #[doc = "Returns a concise representation of the cluster pending tasks."]
-    pub fn pending_tasks(&self) -> CatPendingTasks {
+    pub fn pending_tasks<'a>(&self) -> CatPendingTasks<'a> {
         CatPendingTasks::new(self.client.clone())
     }
     #[doc = "Returns information about installed plugins across nodes node."]
-    pub fn plugins(&self) -> CatPlugins {
+    pub fn plugins<'a>(&self) -> CatPlugins<'a> {
         CatPlugins::new(self.client.clone())
     }
     #[doc = "Returns information about index shard recoveries, both on-going completed."]
-    pub fn recovery(&self, parts: CatRecoveryUrlParts) -> CatRecovery {
+    pub fn recovery<'a>(&self, parts: CatRecoveryUrlParts<'a>) -> CatRecovery<'a> {
         CatRecovery::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about snapshot repositories registered in the cluster."]
-    pub fn repositories(&self) -> CatRepositories {
+    pub fn repositories<'a>(&self) -> CatRepositories<'a> {
         CatRepositories::new(self.client.clone())
     }
     #[doc = "Provides low-level information about the segments in the shards of an index."]
-    pub fn segments(&self, parts: CatSegmentsUrlParts) -> CatSegments {
+    pub fn segments<'a>(&self, parts: CatSegmentsUrlParts<'a>) -> CatSegments<'a> {
         CatSegments::new(self.client.clone(), parts)
     }
     #[doc = "Provides a detailed view of shard allocation on nodes."]
-    pub fn shards(&self, parts: CatShardsUrlParts) -> CatShards {
+    pub fn shards<'a>(&self, parts: CatShardsUrlParts<'a>) -> CatShards<'a> {
         CatShards::new(self.client.clone(), parts)
     }
     #[doc = "Returns all snapshots in a specific repository."]
-    pub fn snapshots(&self, parts: CatSnapshotsUrlParts) -> CatSnapshots {
+    pub fn snapshots<'a>(&self, parts: CatSnapshotsUrlParts<'a>) -> CatSnapshots<'a> {
         CatSnapshots::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the tasks currently executing on one or more nodes in the cluster."]
-    pub fn tasks(&self) -> CatTasks {
+    pub fn tasks<'a>(&self) -> CatTasks<'a> {
         CatTasks::new(self.client.clone())
     }
     #[doc = "Returns information about existing templates."]
-    pub fn templates(&self, parts: CatTemplatesUrlParts) -> CatTemplates {
+    pub fn templates<'a>(&self, parts: CatTemplatesUrlParts<'a>) -> CatTemplates<'a> {
         CatTemplates::new(self.client.clone(), parts)
     }
     #[doc = "Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
-    pub fn thread_pool(&self, parts: CatThreadPoolUrlParts) -> CatThreadPool {
+    pub fn thread_pool<'a>(&self, parts: CatThreadPoolUrlParts<'a>) -> CatThreadPool<'a> {
         CatThreadPool::new(self.client.clone(), parts)
     }
 }

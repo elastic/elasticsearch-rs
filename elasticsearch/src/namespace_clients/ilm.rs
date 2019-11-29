@@ -23,10 +23,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Delete Lifecycle API"]
-pub enum IlmDeleteLifecycleUrlParts {
-    Policy(String),
+pub enum IlmDeleteLifecycleUrlParts<'a> {
+    Policy(&'a str),
 }
-impl IlmDeleteLifecycleUrlParts {
+impl<'a> IlmDeleteLifecycleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmDeleteLifecycleUrlParts::Policy(ref policy) => {
@@ -40,17 +40,17 @@ impl IlmDeleteLifecycleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Delete Lifecycle API"]
-pub struct IlmDeleteLifecycle {
+pub struct IlmDeleteLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmDeleteLifecycleUrlParts,
+    parts: IlmDeleteLifecycleUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IlmDeleteLifecycle {
-    pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleUrlParts) -> Self {
+impl<'a> IlmDeleteLifecycle<'a> {
+    pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleUrlParts<'a>) -> Self {
         IlmDeleteLifecycle {
             client,
             parts,
@@ -67,7 +67,7 @@ impl IlmDeleteLifecycle {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -82,7 +82,7 @@ impl IlmDeleteLifecycle {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -92,21 +92,21 @@ impl IlmDeleteLifecycle {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -127,10 +127,10 @@ impl IlmDeleteLifecycle {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Explain Lifecycle API"]
-pub enum IlmExplainLifecycleUrlParts {
-    Index(String),
+pub enum IlmExplainLifecycleUrlParts<'a> {
+    Index(&'a str),
 }
-impl IlmExplainLifecycleUrlParts {
+impl<'a> IlmExplainLifecycleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmExplainLifecycleUrlParts::Index(ref index) => {
@@ -145,19 +145,19 @@ impl IlmExplainLifecycleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Explain Lifecycle API"]
-pub struct IlmExplainLifecycle {
+pub struct IlmExplainLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmExplainLifecycleUrlParts,
+    parts: IlmExplainLifecycleUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     only_errors: Option<bool>,
     only_managed: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IlmExplainLifecycle {
-    pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleUrlParts) -> Self {
+impl<'a> IlmExplainLifecycle<'a> {
+    pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleUrlParts<'a>) -> Self {
         IlmExplainLifecycle {
             client,
             parts,
@@ -176,7 +176,7 @@ impl IlmExplainLifecycle {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -201,7 +201,7 @@ impl IlmExplainLifecycle {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -211,15 +211,15 @@ impl IlmExplainLifecycle {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "only_errors", skip_serializing_if = "Option::is_none")]
@@ -229,7 +229,7 @@ impl IlmExplainLifecycle {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -252,11 +252,11 @@ impl IlmExplainLifecycle {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Get Lifecycle API"]
-pub enum IlmGetLifecycleUrlParts {
-    Policy(String),
+pub enum IlmGetLifecycleUrlParts<'a> {
+    Policy(&'a str),
     None,
 }
-impl IlmGetLifecycleUrlParts {
+impl<'a> IlmGetLifecycleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmGetLifecycleUrlParts::Policy(ref policy) => {
@@ -271,17 +271,17 @@ impl IlmGetLifecycleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Get Lifecycle API"]
-pub struct IlmGetLifecycle {
+pub struct IlmGetLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmGetLifecycleUrlParts,
+    parts: IlmGetLifecycleUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IlmGetLifecycle {
-    pub fn new(client: Elasticsearch, parts: IlmGetLifecycleUrlParts) -> Self {
+impl<'a> IlmGetLifecycle<'a> {
+    pub fn new(client: Elasticsearch, parts: IlmGetLifecycleUrlParts<'a>) -> Self {
         IlmGetLifecycle {
             client,
             parts,
@@ -298,7 +298,7 @@ impl IlmGetLifecycle {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -313,7 +313,7 @@ impl IlmGetLifecycle {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -323,21 +323,21 @@ impl IlmGetLifecycle {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -370,16 +370,16 @@ impl IlmGetStatusUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Get Status API"]
-pub struct IlmGetStatus {
+pub struct IlmGetStatus<'a> {
     client: Elasticsearch,
     parts: IlmGetStatusUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IlmGetStatus {
+impl<'a> IlmGetStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         IlmGetStatus {
             client,
@@ -397,7 +397,7 @@ impl IlmGetStatus {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -412,7 +412,7 @@ impl IlmGetStatus {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -422,21 +422,21 @@ impl IlmGetStatus {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -457,10 +457,10 @@ impl IlmGetStatus {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Move To Step API"]
-pub enum IlmMoveToStepUrlParts {
-    Index(String),
+pub enum IlmMoveToStepUrlParts<'a> {
+    Index(&'a str),
 }
-impl IlmMoveToStepUrlParts {
+impl<'a> IlmMoveToStepUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmMoveToStepUrlParts::Index(ref index) => {
@@ -474,21 +474,21 @@ impl IlmMoveToStepUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Move To Step API"]
-pub struct IlmMoveToStep<B> {
+pub struct IlmMoveToStep<'a, B> {
     client: Elasticsearch,
-    parts: IlmMoveToStepUrlParts,
+    parts: IlmMoveToStepUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmMoveToStep<B>
+impl<'a, B> IlmMoveToStep<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IlmMoveToStepUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmMoveToStepUrlParts<'a>) -> Self {
         IlmMoveToStep {
             client,
             parts,
@@ -501,7 +501,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmMoveToStep<T>
+    pub fn body<T>(self, body: T) -> IlmMoveToStep<'a, T>
     where
         T: Serialize,
     {
@@ -522,7 +522,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -537,7 +537,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -547,21 +547,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -582,10 +582,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Put Lifecycle API"]
-pub enum IlmPutLifecycleUrlParts {
-    Policy(String),
+pub enum IlmPutLifecycleUrlParts<'a> {
+    Policy(&'a str),
 }
-impl IlmPutLifecycleUrlParts {
+impl<'a> IlmPutLifecycleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmPutLifecycleUrlParts::Policy(ref policy) => {
@@ -599,21 +599,21 @@ impl IlmPutLifecycleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Put Lifecycle API"]
-pub struct IlmPutLifecycle<B> {
+pub struct IlmPutLifecycle<'a, B> {
     client: Elasticsearch,
-    parts: IlmPutLifecycleUrlParts,
+    parts: IlmPutLifecycleUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmPutLifecycle<B>
+impl<'a, B> IlmPutLifecycle<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IlmPutLifecycleUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmPutLifecycleUrlParts<'a>) -> Self {
         IlmPutLifecycle {
             client,
             parts,
@@ -626,7 +626,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmPutLifecycle<T>
+    pub fn body<T>(self, body: T) -> IlmPutLifecycle<'a, T>
     where
         T: Serialize,
     {
@@ -647,7 +647,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -662,7 +662,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -672,21 +672,21 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -707,10 +707,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Remove Policy API"]
-pub enum IlmRemovePolicyUrlParts {
-    Index(String),
+pub enum IlmRemovePolicyUrlParts<'a> {
+    Index(&'a str),
 }
-impl IlmRemovePolicyUrlParts {
+impl<'a> IlmRemovePolicyUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmRemovePolicyUrlParts::Index(ref index) => {
@@ -725,21 +725,21 @@ impl IlmRemovePolicyUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Remove Policy API"]
-pub struct IlmRemovePolicy<B> {
+pub struct IlmRemovePolicy<'a, B> {
     client: Elasticsearch,
-    parts: IlmRemovePolicyUrlParts,
+    parts: IlmRemovePolicyUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmRemovePolicy<B>
+impl<'a, B> IlmRemovePolicy<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IlmRemovePolicyUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmRemovePolicyUrlParts<'a>) -> Self {
         IlmRemovePolicy {
             client,
             parts,
@@ -752,7 +752,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRemovePolicy<T>
+    pub fn body<T>(self, body: T) -> IlmRemovePolicy<'a, T>
     where
         T: Serialize,
     {
@@ -773,7 +773,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -788,7 +788,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -798,21 +798,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -833,10 +833,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ilm Retry API"]
-pub enum IlmRetryUrlParts {
-    Index(String),
+pub enum IlmRetryUrlParts<'a> {
+    Index(&'a str),
 }
-impl IlmRetryUrlParts {
+impl<'a> IlmRetryUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IlmRetryUrlParts::Index(ref index) => {
@@ -851,21 +851,21 @@ impl IlmRetryUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Retry API"]
-pub struct IlmRetry<B> {
+pub struct IlmRetry<'a, B> {
     client: Elasticsearch,
-    parts: IlmRetryUrlParts,
+    parts: IlmRetryUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmRetry<B>
+impl<'a, B> IlmRetry<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IlmRetryUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmRetryUrlParts<'a>) -> Self {
         IlmRetry {
             client,
             parts,
@@ -878,7 +878,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRetry<T>
+    pub fn body<T>(self, body: T) -> IlmRetry<'a, T>
     where
         T: Serialize,
     {
@@ -899,7 +899,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -914,7 +914,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -924,21 +924,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -971,17 +971,17 @@ impl IlmStartUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Start API"]
-pub struct IlmStart<B> {
+pub struct IlmStart<'a, B> {
     client: Elasticsearch,
     parts: IlmStartUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmStart<B>
+impl<'a, B> IlmStart<'a, B>
 where
     B: Serialize,
 {
@@ -998,7 +998,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStart<T>
+    pub fn body<T>(self, body: T) -> IlmStart<'a, T>
     where
         T: Serialize,
     {
@@ -1019,7 +1019,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1034,7 +1034,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1044,21 +1044,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1091,17 +1091,17 @@ impl IlmStopUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ilm Stop API"]
-pub struct IlmStop<B> {
+pub struct IlmStop<'a, B> {
     client: Elasticsearch,
     parts: IlmStopUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> IlmStop<B>
+impl<'a, B> IlmStop<'a, B>
 where
     B: Serialize,
 {
@@ -1118,7 +1118,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStop<T>
+    pub fn body<T>(self, body: T) -> IlmStop<'a, T>
     where
         T: Serialize,
     {
@@ -1139,7 +1139,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1154,7 +1154,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1164,21 +1164,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1205,34 +1205,40 @@ impl Ilm {
     pub fn new(client: Elasticsearch) -> Self {
         Ilm { client }
     }
-    pub fn delete_lifecycle(&self, parts: IlmDeleteLifecycleUrlParts) -> IlmDeleteLifecycle {
+    pub fn delete_lifecycle<'a>(
+        &self,
+        parts: IlmDeleteLifecycleUrlParts<'a>,
+    ) -> IlmDeleteLifecycle<'a> {
         IlmDeleteLifecycle::new(self.client.clone(), parts)
     }
-    pub fn explain_lifecycle(&self, parts: IlmExplainLifecycleUrlParts) -> IlmExplainLifecycle {
+    pub fn explain_lifecycle<'a>(
+        &self,
+        parts: IlmExplainLifecycleUrlParts<'a>,
+    ) -> IlmExplainLifecycle<'a> {
         IlmExplainLifecycle::new(self.client.clone(), parts)
     }
-    pub fn get_lifecycle(&self, parts: IlmGetLifecycleUrlParts) -> IlmGetLifecycle {
+    pub fn get_lifecycle<'a>(&self, parts: IlmGetLifecycleUrlParts<'a>) -> IlmGetLifecycle<'a> {
         IlmGetLifecycle::new(self.client.clone(), parts)
     }
-    pub fn get_status(&self) -> IlmGetStatus {
+    pub fn get_status<'a>(&self) -> IlmGetStatus<'a> {
         IlmGetStatus::new(self.client.clone())
     }
-    pub fn move_to_step(&self, parts: IlmMoveToStepUrlParts) -> IlmMoveToStep<()> {
+    pub fn move_to_step<'a>(&self, parts: IlmMoveToStepUrlParts<'a>) -> IlmMoveToStep<'a, ()> {
         IlmMoveToStep::new(self.client.clone(), parts)
     }
-    pub fn put_lifecycle(&self, parts: IlmPutLifecycleUrlParts) -> IlmPutLifecycle<()> {
+    pub fn put_lifecycle<'a>(&self, parts: IlmPutLifecycleUrlParts<'a>) -> IlmPutLifecycle<'a, ()> {
         IlmPutLifecycle::new(self.client.clone(), parts)
     }
-    pub fn remove_policy(&self, parts: IlmRemovePolicyUrlParts) -> IlmRemovePolicy<()> {
+    pub fn remove_policy<'a>(&self, parts: IlmRemovePolicyUrlParts<'a>) -> IlmRemovePolicy<'a, ()> {
         IlmRemovePolicy::new(self.client.clone(), parts)
     }
-    pub fn retry(&self, parts: IlmRetryUrlParts) -> IlmRetry<()> {
+    pub fn retry<'a>(&self, parts: IlmRetryUrlParts<'a>) -> IlmRetry<'a, ()> {
         IlmRetry::new(self.client.clone(), parts)
     }
-    pub fn start(&self) -> IlmStart<()> {
+    pub fn start<'a>(&self) -> IlmStart<'a, ()> {
         IlmStart::new(self.client.clone())
     }
-    pub fn stop(&self) -> IlmStop<()> {
+    pub fn stop<'a>(&self) -> IlmStop<'a, ()> {
         IlmStop::new(self.client.clone())
     }
 }

@@ -35,19 +35,19 @@ impl ClusterAllocationExplainUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Allocation Explain API"]
-pub struct ClusterAllocationExplain<B> {
+pub struct ClusterAllocationExplain<'a, B> {
     client: Elasticsearch,
     parts: ClusterAllocationExplainUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> ClusterAllocationExplain<B>
+impl<'a, B> ClusterAllocationExplain<'a, B>
 where
     B: Serialize,
 {
@@ -66,7 +66,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<T>
+    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<'a, T>
     where
         T: Serialize,
     {
@@ -89,7 +89,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -114,7 +114,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -127,15 +127,15 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "include_disk_info", skip_serializing_if = "Option::is_none")]
@@ -148,7 +148,7 @@ where
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -183,20 +183,20 @@ impl ClusterGetSettingsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Get Settings API"]
-pub struct ClusterGetSettings {
+pub struct ClusterGetSettings<'a> {
     client: Elasticsearch,
     parts: ClusterGetSettingsUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
     human: Option<bool>,
     include_defaults: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl ClusterGetSettings {
+impl<'a> ClusterGetSettings<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
@@ -218,7 +218,7 @@ impl ClusterGetSettings {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -238,7 +238,7 @@ impl ClusterGetSettings {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -248,12 +248,12 @@ impl ClusterGetSettings {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -263,15 +263,15 @@ impl ClusterGetSettings {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "flat_settings", skip_serializing_if = "Option::is_none")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -279,13 +279,13 @@ impl ClusterGetSettings {
                 #[serde(rename = "include_defaults", skip_serializing_if = "Option::is_none")]
                 include_defaults: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -310,11 +310,11 @@ impl ClusterGetSettings {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cluster Health API"]
-pub enum ClusterHealthUrlParts {
+pub enum ClusterHealthUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl ClusterHealthUrlParts {
+impl<'a> ClusterHealthUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ClusterHealthUrlParts::None => "/_cluster/health".into(),
@@ -330,28 +330,28 @@ impl ClusterHealthUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Health API"]
-pub struct ClusterHealth {
+pub struct ClusterHealth<'a> {
     client: Elasticsearch,
-    parts: ClusterHealthUrlParts,
+    parts: ClusterHealthUrlParts<'a>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     level: Option<Level>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
+    wait_for_active_shards: Option<&'a str>,
     wait_for_events: Option<WaitForEvents>,
     wait_for_no_initializing_shards: Option<bool>,
     wait_for_no_relocating_shards: Option<bool>,
-    wait_for_nodes: Option<String>,
+    wait_for_nodes: Option<&'a str>,
     wait_for_status: Option<WaitForStatus>,
 }
-impl ClusterHealth {
-    pub fn new(client: Elasticsearch, parts: ClusterHealthUrlParts) -> Self {
+impl<'a> ClusterHealth<'a> {
+    pub fn new(client: Elasticsearch, parts: ClusterHealthUrlParts<'a>) -> Self {
         ClusterHealth {
             client,
             parts,
@@ -384,7 +384,7 @@ impl ClusterHealth {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -404,7 +404,7 @@ impl ClusterHealth {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -414,17 +414,17 @@ impl ClusterHealth {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "Wait until the specified number of shards is active"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -447,7 +447,7 @@ impl ClusterHealth {
         self
     }
     #[doc = "Wait until the specified number of nodes is available"]
-    pub fn wait_for_nodes(mut self, wait_for_nodes: String) -> Self {
+    pub fn wait_for_nodes(mut self, wait_for_nodes: &'a str) -> Self {
         self.wait_for_nodes = Some(wait_for_nodes);
         self
     }
@@ -462,17 +462,17 @@ impl ClusterHealth {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "level", skip_serializing_if = "Option::is_none")]
@@ -480,18 +480,18 @@ impl ClusterHealth {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
                 #[serde(rename = "wait_for_events", skip_serializing_if = "Option::is_none")]
                 wait_for_events: Option<WaitForEvents>,
                 #[serde(
@@ -505,7 +505,7 @@ impl ClusterHealth {
                 )]
                 wait_for_no_relocating_shards: Option<bool>,
                 #[serde(rename = "wait_for_nodes", skip_serializing_if = "Option::is_none")]
-                wait_for_nodes: Option<String>,
+                wait_for_nodes: Option<&'a str>,
                 #[serde(rename = "wait_for_status", skip_serializing_if = "Option::is_none")]
                 wait_for_status: Option<WaitForStatus>,
             }
@@ -551,18 +551,18 @@ impl ClusterPendingTasksUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Pending Tasks API"]
-pub struct ClusterPendingTasks {
+pub struct ClusterPendingTasks<'a> {
     client: Elasticsearch,
     parts: ClusterPendingTasksUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl ClusterPendingTasks {
+impl<'a> ClusterPendingTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
@@ -582,7 +582,7 @@ impl ClusterPendingTasks {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -597,7 +597,7 @@ impl ClusterPendingTasks {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -607,7 +607,7 @@ impl ClusterPendingTasks {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -617,25 +617,25 @@ impl ClusterPendingTasks {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -670,20 +670,20 @@ impl ClusterPutSettingsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Put Settings API"]
-pub struct ClusterPutSettings<B> {
+pub struct ClusterPutSettings<'a, B> {
     client: Elasticsearch,
     parts: ClusterPutSettingsUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> ClusterPutSettings<B>
+impl<'a, B> ClusterPutSettings<'a, B>
 where
     B: Serialize,
 {
@@ -703,7 +703,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterPutSettings<T>
+    pub fn body<T>(self, body: T) -> ClusterPutSettings<'a, T>
     where
         T: Serialize,
     {
@@ -727,7 +727,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -742,7 +742,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -752,12 +752,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -767,27 +767,27 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "flat_settings", skip_serializing_if = "Option::is_none")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -823,16 +823,16 @@ impl ClusterRemoteInfoUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Remote Info API"]
-pub struct ClusterRemoteInfo {
+pub struct ClusterRemoteInfo<'a> {
     client: Elasticsearch,
     parts: ClusterRemoteInfoUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl ClusterRemoteInfo {
+impl<'a> ClusterRemoteInfo<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
@@ -850,7 +850,7 @@ impl ClusterRemoteInfo {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -865,7 +865,7 @@ impl ClusterRemoteInfo {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -875,21 +875,21 @@ impl ClusterRemoteInfo {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -922,23 +922,23 @@ impl ClusterRerouteUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Reroute API"]
-pub struct ClusterReroute<B> {
+pub struct ClusterReroute<'a, B> {
     client: Elasticsearch,
     parts: ClusterRerouteUrlParts,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     explain: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
-    metric: Option<Vec<String>>,
+    master_timeout: Option<&'a str>,
+    metric: Option<&'a [&'a str]>,
     pretty: Option<bool>,
     retry_failed: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> ClusterReroute<B>
+impl<'a, B> ClusterReroute<'a, B>
 where
     B: Serialize,
 {
@@ -961,7 +961,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterReroute<T>
+    pub fn body<T>(self, body: T) -> ClusterReroute<'a, T>
     where
         T: Serialize,
     {
@@ -998,7 +998,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1008,12 +1008,12 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Limit the information returned to the specified metrics. Defaults to all but metadata"]
-    pub fn metric(mut self, metric: Vec<String>) -> Self {
+    pub fn metric(mut self, metric: &'a [&'a str]) -> Self {
         self.metric = Some(metric);
         self
     }
@@ -1028,12 +1028,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1043,7 +1043,7 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "dry_run", skip_serializing_if = "Option::is_none")]
                 dry_run: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -1052,28 +1052,28 @@ where
                 explain: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(
                     rename = "metric",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                metric: Option<Vec<String>>,
+                metric: Option<&'a [&'a str]>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "retry_failed", skip_serializing_if = "Option::is_none")]
                 retry_failed: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 dry_run: self.dry_run,
@@ -1100,12 +1100,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cluster State API"]
-pub enum ClusterStateUrlParts {
+pub enum ClusterStateUrlParts<'a> {
     None,
-    Metric(Vec<String>),
-    MetricIndex(Vec<String>, Vec<String>),
+    Metric(&'a [&'a str]),
+    MetricIndex(&'a [&'a str], &'a [&'a str]),
 }
-impl ClusterStateUrlParts {
+impl<'a> ClusterStateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ClusterStateUrlParts::None => "/_cluster/state".into(),
@@ -1131,25 +1131,25 @@ impl ClusterStateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster State API"]
-pub struct ClusterState {
+pub struct ClusterState<'a> {
     client: Elasticsearch,
-    parts: ClusterStateUrlParts,
+    parts: ClusterStateUrlParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
     wait_for_metadata_version: Option<i64>,
-    wait_for_timeout: Option<String>,
+    wait_for_timeout: Option<&'a str>,
 }
-impl ClusterState {
-    pub fn new(client: Elasticsearch, parts: ClusterStateUrlParts) -> Self {
+impl<'a> ClusterState<'a> {
+    pub fn new(client: Elasticsearch, parts: ClusterStateUrlParts<'a>) -> Self {
         ClusterState {
             client,
             parts,
@@ -1184,7 +1184,7 @@ impl ClusterState {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1209,7 +1209,7 @@ impl ClusterState {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1219,7 +1219,7 @@ impl ClusterState {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1229,7 +1229,7 @@ impl ClusterState {
         self
     }
     #[doc = "The maximum time to wait for wait_for_metadata_version before timing out"]
-    pub fn wait_for_timeout(mut self, wait_for_timeout: String) -> Self {
+    pub fn wait_for_timeout(mut self, wait_for_timeout: &'a str) -> Self {
         self.wait_for_timeout = Some(wait_for_timeout);
         self
     }
@@ -1239,7 +1239,7 @@ impl ClusterState {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -1248,10 +1248,10 @@ impl ClusterState {
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "flat_settings", skip_serializing_if = "Option::is_none")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1261,18 +1261,18 @@ impl ClusterState {
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_metadata_version",
                     skip_serializing_if = "Option::is_none"
                 )]
                 wait_for_metadata_version: Option<i64>,
                 #[serde(rename = "wait_for_timeout", skip_serializing_if = "Option::is_none")]
-                wait_for_timeout: Option<String>,
+                wait_for_timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
@@ -1301,11 +1301,11 @@ impl ClusterState {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Cluster Stats API"]
-pub enum ClusterStatsUrlParts {
+pub enum ClusterStatsUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
+    NodeId(&'a [&'a str]),
 }
-impl ClusterStatsUrlParts {
+impl<'a> ClusterStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ClusterStatsUrlParts::None => "/_cluster/stats".into(),
@@ -1321,19 +1321,19 @@ impl ClusterStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Cluster Stats API"]
-pub struct ClusterStats {
+pub struct ClusterStats<'a> {
     client: Elasticsearch,
-    parts: ClusterStatsUrlParts,
+    parts: ClusterStatsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl ClusterStats {
-    pub fn new(client: Elasticsearch, parts: ClusterStatsUrlParts) -> Self {
+impl<'a> ClusterStats<'a> {
+    pub fn new(client: Elasticsearch, parts: ClusterStatsUrlParts<'a>) -> Self {
         ClusterStats {
             client,
             parts,
@@ -1352,7 +1352,7 @@ impl ClusterStats {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1372,12 +1372,12 @@ impl ClusterStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1387,15 +1387,15 @@ impl ClusterStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "flat_settings", skip_serializing_if = "Option::is_none")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1403,9 +1403,9 @@ impl ClusterStats {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1435,39 +1435,39 @@ impl Cluster {
         Cluster { client }
     }
     #[doc = "Provides explanations for shard allocations in the cluster."]
-    pub fn allocation_explain(&self) -> ClusterAllocationExplain<()> {
+    pub fn allocation_explain<'a>(&self) -> ClusterAllocationExplain<'a, ()> {
         ClusterAllocationExplain::new(self.client.clone())
     }
     #[doc = "Returns cluster settings."]
-    pub fn get_settings(&self) -> ClusterGetSettings {
+    pub fn get_settings<'a>(&self) -> ClusterGetSettings<'a> {
         ClusterGetSettings::new(self.client.clone())
     }
     #[doc = "Returns basic information about the health of the cluster."]
-    pub fn health(&self, parts: ClusterHealthUrlParts) -> ClusterHealth {
+    pub fn health<'a>(&self, parts: ClusterHealthUrlParts<'a>) -> ClusterHealth<'a> {
         ClusterHealth::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
-    pub fn pending_tasks(&self) -> ClusterPendingTasks {
+    pub fn pending_tasks<'a>(&self) -> ClusterPendingTasks<'a> {
         ClusterPendingTasks::new(self.client.clone())
     }
     #[doc = "Updates the cluster settings."]
-    pub fn put_settings(&self) -> ClusterPutSettings<()> {
+    pub fn put_settings<'a>(&self) -> ClusterPutSettings<'a, ()> {
         ClusterPutSettings::new(self.client.clone())
     }
     #[doc = "Returns the information about configured remote clusters."]
-    pub fn remote_info(&self) -> ClusterRemoteInfo {
+    pub fn remote_info<'a>(&self) -> ClusterRemoteInfo<'a> {
         ClusterRemoteInfo::new(self.client.clone())
     }
     #[doc = "Allows to manually change the allocation of individual shards in the cluster."]
-    pub fn reroute(&self) -> ClusterReroute<()> {
+    pub fn reroute<'a>(&self) -> ClusterReroute<'a, ()> {
         ClusterReroute::new(self.client.clone())
     }
     #[doc = "Returns a comprehensive information about the state of the cluster."]
-    pub fn state(&self, parts: ClusterStateUrlParts) -> ClusterState {
+    pub fn state<'a>(&self, parts: ClusterStateUrlParts<'a>) -> ClusterState<'a> {
         ClusterState::new(self.client.clone(), parts)
     }
     #[doc = "Returns high-level overview of cluster statistics."]
-    pub fn stats(&self, parts: ClusterStatsUrlParts) -> ClusterStats {
+    pub fn stats<'a>(&self, parts: ClusterStatsUrlParts<'a>) -> ClusterStats<'a> {
         ClusterStats::new(self.client.clone(), parts)
     }
 }

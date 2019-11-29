@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Nodes Hot Threads API"]
-pub enum NodesHotThreadsUrlParts {
+pub enum NodesHotThreadsUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
+    NodeId(&'a [&'a str]),
 }
-impl NodesHotThreadsUrlParts {
+impl<'a> NodesHotThreadsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             NodesHotThreadsUrlParts::None => "/_nodes/hot_threads".into(),
@@ -44,23 +44,23 @@ impl NodesHotThreadsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Nodes Hot Threads API"]
-pub struct NodesHotThreads {
+pub struct NodesHotThreads<'a> {
     client: Elasticsearch,
-    parts: NodesHotThreadsUrlParts,
+    parts: NodesHotThreadsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_idle_threads: Option<bool>,
-    interval: Option<String>,
+    interval: Option<&'a str>,
     pretty: Option<bool>,
     snapshots: Option<i64>,
-    source: Option<String>,
+    source: Option<&'a str>,
     threads: Option<i64>,
-    timeout: Option<String>,
+    timeout: Option<&'a str>,
     ty: Option<Type>,
 }
-impl NodesHotThreads {
-    pub fn new(client: Elasticsearch, parts: NodesHotThreadsUrlParts) -> Self {
+impl<'a> NodesHotThreads<'a> {
+    pub fn new(client: Elasticsearch, parts: NodesHotThreadsUrlParts<'a>) -> Self {
         NodesHotThreads {
             client,
             parts,
@@ -83,7 +83,7 @@ impl NodesHotThreads {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -98,7 +98,7 @@ impl NodesHotThreads {
         self
     }
     #[doc = "The interval for the second sampling of threads"]
-    pub fn interval(mut self, interval: String) -> Self {
+    pub fn interval(mut self, interval: &'a str) -> Self {
         self.interval = Some(interval);
         self
     }
@@ -113,7 +113,7 @@ impl NodesHotThreads {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -123,7 +123,7 @@ impl NodesHotThreads {
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -138,15 +138,15 @@ impl NodesHotThreads {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
@@ -155,17 +155,17 @@ impl NodesHotThreads {
                 )]
                 ignore_idle_threads: Option<bool>,
                 #[serde(rename = "interval", skip_serializing_if = "Option::is_none")]
-                interval: Option<String>,
+                interval: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "snapshots", skip_serializing_if = "Option::is_none")]
                 snapshots: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "threads", skip_serializing_if = "Option::is_none")]
                 threads: Option<i64>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
                 ty: Option<Type>,
             }
@@ -194,13 +194,13 @@ impl NodesHotThreads {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Nodes Info API"]
-pub enum NodesInfoUrlParts {
+pub enum NodesInfoUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
-    Metric(Vec<String>),
-    NodeIdMetric(Vec<String>, Vec<String>),
+    NodeId(&'a [&'a str]),
+    Metric(&'a [&'a str]),
+    NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
-impl NodesInfoUrlParts {
+impl<'a> NodesInfoUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             NodesInfoUrlParts::None => "/_nodes".into(),
@@ -233,19 +233,19 @@ impl NodesInfoUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Nodes Info API"]
-pub struct NodesInfo {
+pub struct NodesInfo<'a> {
     client: Elasticsearch,
-    parts: NodesInfoUrlParts,
+    parts: NodesInfoUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl NodesInfo {
-    pub fn new(client: Elasticsearch, parts: NodesInfoUrlParts) -> Self {
+impl<'a> NodesInfo<'a> {
+    pub fn new(client: Elasticsearch, parts: NodesInfoUrlParts<'a>) -> Self {
         NodesInfo {
             client,
             parts,
@@ -264,7 +264,7 @@ impl NodesInfo {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -284,12 +284,12 @@ impl NodesInfo {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -299,15 +299,15 @@ impl NodesInfo {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "flat_settings", skip_serializing_if = "Option::is_none")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -315,9 +315,9 @@ impl NodesInfo {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -340,11 +340,11 @@ impl NodesInfo {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Nodes Reload Secure Settings API"]
-pub enum NodesReloadSecureSettingsUrlParts {
+pub enum NodesReloadSecureSettingsUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
+    NodeId(&'a [&'a str]),
 }
-impl NodesReloadSecureSettingsUrlParts {
+impl<'a> NodesReloadSecureSettingsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             NodesReloadSecureSettingsUrlParts::None => "/_nodes/reload_secure_settings".into(),
@@ -361,22 +361,22 @@ impl NodesReloadSecureSettingsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Nodes Reload Secure Settings API"]
-pub struct NodesReloadSecureSettings<B> {
+pub struct NodesReloadSecureSettings<'a, B> {
     client: Elasticsearch,
-    parts: NodesReloadSecureSettingsUrlParts,
+    parts: NodesReloadSecureSettingsUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> NodesReloadSecureSettings<B>
+impl<'a, B> NodesReloadSecureSettings<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsUrlParts<'a>) -> Self {
         NodesReloadSecureSettings {
             client,
             parts,
@@ -390,7 +390,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> NodesReloadSecureSettings<T>
+    pub fn body<T>(self, body: T) -> NodesReloadSecureSettings<'a, T>
     where
         T: Serialize,
     {
@@ -412,7 +412,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -427,12 +427,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -442,23 +442,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -480,15 +480,15 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Nodes Stats API"]
-pub enum NodesStatsUrlParts {
+pub enum NodesStatsUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
-    Metric(Vec<String>),
-    NodeIdMetric(Vec<String>, Vec<String>),
-    MetricIndexMetric(Vec<String>, Vec<String>),
-    NodeIdMetricIndexMetric(Vec<String>, Vec<String>, Vec<String>),
+    NodeId(&'a [&'a str]),
+    Metric(&'a [&'a str]),
+    NodeIdMetric(&'a [&'a str], &'a [&'a str]),
+    MetricIndexMetric(&'a [&'a str], &'a [&'a str]),
+    NodeIdMetricIndexMetric(&'a [&'a str], &'a [&'a str], &'a [&'a str]),
 }
-impl NodesStatsUrlParts {
+impl<'a> NodesStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             NodesStatsUrlParts::None => "/_nodes/stats".into(),
@@ -552,25 +552,25 @@ impl NodesStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Nodes Stats API"]
-pub struct NodesStats {
+pub struct NodesStats<'a> {
     client: Elasticsearch,
-    parts: NodesStatsUrlParts,
-    completion_fields: Option<Vec<String>>,
+    parts: NodesStatsUrlParts<'a>,
+    completion_fields: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    fielddata_fields: Option<Vec<String>>,
-    fields: Option<Vec<String>>,
-    filter_path: Option<Vec<String>>,
+    fielddata_fields: Option<&'a [&'a str]>,
+    fields: Option<&'a [&'a str]>,
+    filter_path: Option<&'a [&'a str]>,
     groups: Option<bool>,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
     level: Option<Level>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
-    types: Option<Vec<String>>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
+    types: Option<&'a [&'a str]>,
 }
-impl NodesStats {
-    pub fn new(client: Elasticsearch, parts: NodesStatsUrlParts) -> Self {
+impl<'a> NodesStats<'a> {
+    pub fn new(client: Elasticsearch, parts: NodesStatsUrlParts<'a>) -> Self {
         NodesStats {
             client,
             parts,
@@ -590,7 +590,7 @@ impl NodesStats {
         }
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `suggest` index metric (supports wildcards)"]
-    pub fn completion_fields(mut self, completion_fields: Vec<String>) -> Self {
+    pub fn completion_fields(mut self, completion_fields: &'a [&'a str]) -> Self {
         self.completion_fields = Some(completion_fields);
         self
     }
@@ -600,17 +600,17 @@ impl NodesStats {
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` index metric (supports wildcards)"]
-    pub fn fielddata_fields(mut self, fielddata_fields: Vec<String>) -> Self {
+    pub fn fielddata_fields(mut self, fielddata_fields: &'a [&'a str]) -> Self {
         self.fielddata_fields = Some(fielddata_fields);
         self
     }
     #[doc = "A comma-separated list of fields for `fielddata` and `completion` index metric (supports wildcards)"]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
+    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -640,17 +640,17 @@ impl NodesStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "A comma-separated list of document types for the `indexing` index metric"]
-    pub fn types(mut self, types: Vec<String>) -> Self {
+    pub fn types(mut self, types: &'a [&'a str]) -> Self {
         self.types = Some(types);
         self
     }
@@ -660,33 +660,33 @@ impl NodesStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "completion_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                completion_fields: Option<Vec<String>>,
+                completion_fields: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "fielddata_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fielddata_fields: Option<Vec<String>>,
+                fielddata_fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fields: Option<Vec<String>>,
+                fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "groups", skip_serializing_if = "Option::is_none")]
                 groups: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -701,15 +701,15 @@ impl NodesStats {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "types",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                types: Option<Vec<String>>,
+                types: Option<&'a [&'a str]>,
             }
             let query_params = QueryParamsStruct {
                 completion_fields: self.completion_fields,
@@ -738,13 +738,13 @@ impl NodesStats {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Nodes Usage API"]
-pub enum NodesUsageUrlParts {
+pub enum NodesUsageUrlParts<'a> {
     None,
-    NodeId(Vec<String>),
-    Metric(Vec<String>),
-    NodeIdMetric(Vec<String>, Vec<String>),
+    NodeId(&'a [&'a str]),
+    Metric(&'a [&'a str]),
+    NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
-impl NodesUsageUrlParts {
+impl<'a> NodesUsageUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             NodesUsageUrlParts::None => "/_nodes/usage".into(),
@@ -778,18 +778,18 @@ impl NodesUsageUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Nodes Usage API"]
-pub struct NodesUsage {
+pub struct NodesUsage<'a> {
     client: Elasticsearch,
-    parts: NodesUsageUrlParts,
+    parts: NodesUsageUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl NodesUsage {
-    pub fn new(client: Elasticsearch, parts: NodesUsageUrlParts) -> Self {
+impl<'a> NodesUsage<'a> {
+    pub fn new(client: Elasticsearch, parts: NodesUsageUrlParts<'a>) -> Self {
         NodesUsage {
             client,
             parts,
@@ -807,7 +807,7 @@ impl NodesUsage {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -822,12 +822,12 @@ impl NodesUsage {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -837,23 +837,23 @@ impl NodesUsage {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -882,26 +882,26 @@ impl Nodes {
         Nodes { client }
     }
     #[doc = "Returns information about hot threads on each node in the cluster."]
-    pub fn hot_threads(&self, parts: NodesHotThreadsUrlParts) -> NodesHotThreads {
+    pub fn hot_threads<'a>(&self, parts: NodesHotThreadsUrlParts<'a>) -> NodesHotThreads<'a> {
         NodesHotThreads::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about nodes in the cluster."]
-    pub fn info(&self, parts: NodesInfoUrlParts) -> NodesInfo {
+    pub fn info<'a>(&self, parts: NodesInfoUrlParts<'a>) -> NodesInfo<'a> {
         NodesInfo::new(self.client.clone(), parts)
     }
     #[doc = "Reloads secure settings."]
-    pub fn reload_secure_settings(
+    pub fn reload_secure_settings<'a>(
         &self,
-        parts: NodesReloadSecureSettingsUrlParts,
-    ) -> NodesReloadSecureSettings<()> {
+        parts: NodesReloadSecureSettingsUrlParts<'a>,
+    ) -> NodesReloadSecureSettings<'a, ()> {
         NodesReloadSecureSettings::new(self.client.clone(), parts)
     }
     #[doc = "Returns statistical information about nodes in the cluster."]
-    pub fn stats(&self, parts: NodesStatsUrlParts) -> NodesStats {
+    pub fn stats<'a>(&self, parts: NodesStatsUrlParts<'a>) -> NodesStats<'a> {
         NodesStats::new(self.client.clone(), parts)
     }
     #[doc = "Returns low-level information about REST actions usage on nodes."]
-    pub fn usage(&self, parts: NodesUsageUrlParts) -> NodesUsage {
+    pub fn usage<'a>(&self, parts: NodesUsageUrlParts<'a>) -> NodesUsage<'a> {
         NodesUsage::new(self.client.clone(), parts)
     }
 }

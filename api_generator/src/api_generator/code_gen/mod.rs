@@ -122,19 +122,19 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
     }
 
     match kind {
-        TypeKind::None => v.push_str("String"),
-        TypeKind::List => v.push_str("Vec<String>"),
+        TypeKind::None => v.push_str("&'a str"),
+        TypeKind::List => v.push_str("&'a [&'a str]"),
         TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
-        TypeKind::String => v.push_str("String"),
-        TypeKind::Text => v.push_str("String"),
+        TypeKind::String => v.push_str("&'a str"),
+        TypeKind::Text => v.push_str("&'a str"),
         TypeKind::Boolean => v.push_str("bool"),
         TypeKind::Number => v.push_str("i64"),
         TypeKind::Float => v.push_str("f32"),
         TypeKind::Double => v.push_str("f64"),
         TypeKind::Integer => v.push_str("i32"),
         TypeKind::Long => v.push_str("i64"),
-        TypeKind::Date => v.push_str("String"),
-        TypeKind::Time => v.push_str("String"),
+        TypeKind::Date => v.push_str("&'a str"),
+        TypeKind::Time => v.push_str("&'a str"),
     };
 
     if !required {

@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Tasks Cancel API"]
-pub enum TasksCancelUrlParts {
+pub enum TasksCancelUrlParts<'a> {
     None,
-    TaskId(String),
+    TaskId(&'a str),
 }
-impl TasksCancelUrlParts {
+impl<'a> TasksCancelUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             TasksCancelUrlParts::None => "/_tasks/_cancel".into(),
@@ -43,24 +43,24 @@ impl TasksCancelUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Tasks Cancel API"]
-pub struct TasksCancel<B> {
+pub struct TasksCancel<'a, B> {
     client: Elasticsearch,
-    parts: TasksCancelUrlParts,
-    actions: Option<Vec<String>>,
+    parts: TasksCancelUrlParts<'a>,
+    actions: Option<&'a [&'a str]>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    nodes: Option<Vec<String>>,
-    parent_task_id: Option<String>,
+    nodes: Option<&'a [&'a str]>,
+    parent_task_id: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> TasksCancel<B>
+impl<'a, B> TasksCancel<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: TasksCancelUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: TasksCancelUrlParts<'a>) -> Self {
         TasksCancel {
             client,
             parts,
@@ -76,12 +76,12 @@ where
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
-    pub fn actions(mut self, actions: Vec<String>) -> Self {
+    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
         self.actions = Some(actions);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TasksCancel<T>
+    pub fn body<T>(self, body: T) -> TasksCancel<'a, T>
     where
         T: Serialize,
     {
@@ -105,7 +105,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -115,12 +115,12 @@ where
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn nodes(mut self, nodes: Vec<String>) -> Self {
+    pub fn nodes(mut self, nodes: &'a [&'a str]) -> Self {
         self.nodes = Some(nodes);
         self
     }
     #[doc = "Cancel tasks with specified parent task id (node_id:task_number). Set to -1 to cancel all."]
-    pub fn parent_task_id(mut self, parent_task_id: String) -> Self {
+    pub fn parent_task_id(mut self, parent_task_id: &'a str) -> Self {
         self.parent_task_id = Some(parent_task_id);
         self
     }
@@ -130,7 +130,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -140,35 +140,35 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "actions",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                actions: Option<Vec<String>>,
+                actions: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "nodes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                nodes: Option<Vec<String>>,
+                nodes: Option<&'a [&'a str]>,
                 #[serde(rename = "parent_task_id", skip_serializing_if = "Option::is_none")]
-                parent_task_id: Option<String>,
+                parent_task_id: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 actions: self.actions,
@@ -192,10 +192,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Tasks Get API"]
-pub enum TasksGetUrlParts {
-    TaskId(String),
+pub enum TasksGetUrlParts<'a> {
+    TaskId(&'a str),
 }
-impl TasksGetUrlParts {
+impl<'a> TasksGetUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             TasksGetUrlParts::TaskId(ref task_id) => {
@@ -209,19 +209,19 @@ impl TasksGetUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Tasks Get API"]
-pub struct TasksGet {
+pub struct TasksGet<'a> {
     client: Elasticsearch,
-    parts: TasksGetUrlParts,
+    parts: TasksGetUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl TasksGet {
-    pub fn new(client: Elasticsearch, parts: TasksGetUrlParts) -> Self {
+impl<'a> TasksGet<'a> {
+    pub fn new(client: Elasticsearch, parts: TasksGetUrlParts<'a>) -> Self {
         TasksGet {
             client,
             parts,
@@ -240,7 +240,7 @@ impl TasksGet {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -255,12 +255,12 @@ impl TasksGet {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -275,23 +275,23 @@ impl TasksGet {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -331,23 +331,23 @@ impl TasksListUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Tasks List API"]
-pub struct TasksList {
+pub struct TasksList<'a> {
     client: Elasticsearch,
     parts: TasksListUrlParts,
-    actions: Option<Vec<String>>,
+    actions: Option<&'a [&'a str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     group_by: Option<GroupBy>,
     human: Option<bool>,
-    nodes: Option<Vec<String>>,
-    parent_task_id: Option<String>,
+    nodes: Option<&'a [&'a str]>,
+    parent_task_id: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl TasksList {
+impl<'a> TasksList<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         TasksList {
             client,
@@ -367,7 +367,7 @@ impl TasksList {
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
-    pub fn actions(mut self, actions: Vec<String>) -> Self {
+    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
         self.actions = Some(actions);
         self
     }
@@ -382,7 +382,7 @@ impl TasksList {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -397,12 +397,12 @@ impl TasksList {
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn nodes(mut self, nodes: Vec<String>) -> Self {
+    pub fn nodes(mut self, nodes: &'a [&'a str]) -> Self {
         self.nodes = Some(nodes);
         self
     }
     #[doc = "Return tasks with specified parent task id (node_id:task_number). Set to -1 to return all."]
-    pub fn parent_task_id(mut self, parent_task_id: String) -> Self {
+    pub fn parent_task_id(mut self, parent_task_id: &'a str) -> Self {
         self.parent_task_id = Some(parent_task_id);
         self
     }
@@ -412,12 +412,12 @@ impl TasksList {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -432,41 +432,41 @@ impl TasksList {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "actions",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                actions: Option<Vec<String>>,
+                actions: Option<&'a [&'a str]>,
                 #[serde(rename = "detailed", skip_serializing_if = "Option::is_none")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "group_by", skip_serializing_if = "Option::is_none")]
                 group_by: Option<GroupBy>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "nodes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                nodes: Option<Vec<String>>,
+                nodes: Option<&'a [&'a str]>,
                 #[serde(rename = "parent_task_id", skip_serializing_if = "Option::is_none")]
-                parent_task_id: Option<String>,
+                parent_task_id: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -506,15 +506,15 @@ impl Tasks {
         Tasks { client }
     }
     #[doc = "Cancels a task, if it can be cancelled through an API."]
-    pub fn cancel(&self, parts: TasksCancelUrlParts) -> TasksCancel<()> {
+    pub fn cancel<'a>(&self, parts: TasksCancelUrlParts<'a>) -> TasksCancel<'a, ()> {
         TasksCancel::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about a task."]
-    pub fn get(&self, parts: TasksGetUrlParts) -> TasksGet {
+    pub fn get<'a>(&self, parts: TasksGetUrlParts<'a>) -> TasksGet<'a> {
         TasksGet::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of tasks."]
-    pub fn list(&self) -> TasksList {
+    pub fn list<'a>(&self) -> TasksList<'a> {
         TasksList::new(self.client.clone())
     }
 }
