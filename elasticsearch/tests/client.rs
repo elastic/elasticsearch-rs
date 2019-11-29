@@ -1,8 +1,33 @@
-use elasticsearch::{Elasticsearch, SearchUrlParts};
+mod support;
+use support::*;
+
+use elasticsearch::{Elasticsearch, SearchUrlParts, Connection, ConnectionSettings};
 
 use reqwest::StatusCode;
 use serde_json::json;
 use serde_json::Value;
+use url::Url;
+
+#[tokio::test]
+async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
+    let server = server::http(move |req| {
+        async move {
+            assert_eq!(req.headers()["user-agent"], DEFAULT_USER_AGENT);
+            assert_eq!(req.headers()["content-type"], "application/json");
+            assert_eq!(req.headers()["accept"], "application/json");
+            http::Response::default()
+        }
+    });
+
+    let url = Url::parse(format!("http://{}", server.addr()).as_ref())?;
+    let client = Elasticsearch::new(ConnectionSettings, Connection::new(url));
+    let response = client
+        .search(SearchUrlParts::None)
+        .send()
+        .await?;
+
+    Ok(())
+}
 
 #[tokio::test]
 async fn search_with_body() -> Result<(), failure::Error> {
