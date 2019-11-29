@@ -66,38 +66,38 @@ impl IngestDeletePipeline {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ingest Delete Pipeline API that can be awaited"]
@@ -190,33 +190,33 @@ impl IngestGetPipeline {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ingest Get Pipeline API that can be awaited"]
@@ -297,28 +297,28 @@ impl IngestProcessorGrok {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ingest Processor Grok API that can be awaited"]
@@ -410,14 +410,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IngestPutPipeline<T>
+    pub fn body<T>(self, body: T) -> IngestPutPipeline<T>
     where
         T: Serialize,
     {
         IngestPutPipeline {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -428,38 +428,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ingest Put Pipeline API that can be awaited"]
@@ -558,14 +558,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> IngestSimulate<T>
+    pub fn body<T>(self, body: T) -> IngestSimulate<T>
     where
         T: Serialize,
     {
         IngestSimulate {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -575,33 +575,33 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Verbose mode. Display data output for each processor in executed pipeline"]
-    pub fn verbose(mut self, verbose: Option<bool>) -> Self {
-        self.verbose = verbose;
+    pub fn verbose(mut self, verbose: bool) -> Self {
+        self.verbose = Some(verbose);
         self
     }
     #[doc = "Creates an asynchronous request to the Ingest Simulate API that can be awaited"]

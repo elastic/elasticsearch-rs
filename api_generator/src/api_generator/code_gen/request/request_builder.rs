@@ -196,7 +196,7 @@ impl<'a> RequestBuilder<'a> {
                             syn::FnArg::SelfValue(syn::Mutability::Immutable),
                             syn::FnArg::Captured(
                                 syn::Pat::Path(None, path_none("body")),
-                                syn::parse_type("Option<T>").unwrap(),
+                                syn::parse_type("T").unwrap(),
                             ),
                         ],
                         output: syn::FunctionRetTy::Ty(code_gen::ty(
@@ -218,7 +218,7 @@ impl<'a> RequestBuilder<'a> {
                             #builder_ident {
                                 client: self.client,
                                 parts: self.parts,
-                                body,
+                                body: Some(body),
                                 #(#fields),*,
                             }
                     ))))],
@@ -233,7 +233,7 @@ impl<'a> RequestBuilder<'a> {
         let impl_ident = ident(&name);
         let field_ident = ident(&name);
         let value_ident = ident(&name);
-        let ty = typekind_to_ty(&f.0, f.1.ty, false);
+        let ty = typekind_to_ty(&f.0, f.1.ty, true);
         let doc_attr = match &f.1.description {
             Some(docs) => vec![doc(docs.into())],
             _ => vec![],
@@ -270,7 +270,7 @@ impl<'a> RequestBuilder<'a> {
                 syn::Block {
                     stmts: vec![
                         syn::Stmt::Semi(Box::new(parse_expr(
-                            quote!(self.#field_ident = #value_ident),
+                            quote!(self.#field_ident = Some(#value_ident)),
                         ))),
                         syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
                     ],

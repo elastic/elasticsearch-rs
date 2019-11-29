@@ -44,16 +44,16 @@ let client = Elasticsearch::new(settings, connection);
 
 let search_response = client
     .search(SearchUrlParts::None)
-    // Type of body inferred from argument
-    .body(Some(json!({
+    .body(json!({
         "query": {
             "match_all": {}
         }
-    })))
-    .allow_no_indices(Some(true))
+    }))
+    .allow_no_indices(true)
     .send()
     .await?;
 
+// get the HTTP response status code
 let status_code = search_response.status_code();
 
 // read the response body. Consumes search_response

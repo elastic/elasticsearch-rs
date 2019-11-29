@@ -66,14 +66,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> ClusterAllocationExplain<T>
+    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<T>
     where
         T: Serialize,
     {
         ClusterAllocationExplain {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -84,38 +84,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Return information about disk usage and shard sizes (default: false)"]
-    pub fn include_disk_info(mut self, include_disk_info: Option<bool>) -> Self {
-        self.include_disk_info = include_disk_info;
+    pub fn include_disk_info(mut self, include_disk_info: bool) -> Self {
+        self.include_disk_info = Some(include_disk_info);
         self
     }
     #[doc = "Return 'YES' decisions in explanation (default: false)"]
-    pub fn include_yes_decisions(mut self, include_yes_decisions: Option<bool>) -> Self {
-        self.include_yes_decisions = include_yes_decisions;
+    pub fn include_yes_decisions(mut self, include_yes_decisions: bool) -> Self {
+        self.include_yes_decisions = Some(include_yes_decisions);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Allocation Explain API that can be awaited"]
@@ -213,48 +213,48 @@ impl ClusterGetSettings {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether to return all default clusters setting."]
-    pub fn include_defaults(mut self, include_defaults: Option<bool>) -> Self {
-        self.include_defaults = include_defaults;
+    pub fn include_defaults(mut self, include_defaults: bool) -> Self {
+        self.include_defaults = Some(include_defaults);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Get Settings API that can be awaited"]
@@ -374,89 +374,86 @@ impl ClusterHealth {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Specify the level of detail for returned information"]
-    pub fn level(mut self, level: Option<Level>) -> Self {
-        self.level = level;
+    pub fn level(mut self, level: Level) -> Self {
+        self.level = Some(level);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Wait until the specified number of shards is active"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: Option<String>) -> Self {
-        self.wait_for_active_shards = wait_for_active_shards;
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+        self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
     #[doc = "Wait until all currently queued events with the given priority are processed"]
-    pub fn wait_for_events(mut self, wait_for_events: Option<WaitForEvents>) -> Self {
-        self.wait_for_events = wait_for_events;
+    pub fn wait_for_events(mut self, wait_for_events: WaitForEvents) -> Self {
+        self.wait_for_events = Some(wait_for_events);
         self
     }
     #[doc = "Whether to wait until there are no initializing shards in the cluster"]
     pub fn wait_for_no_initializing_shards(
         mut self,
-        wait_for_no_initializing_shards: Option<bool>,
+        wait_for_no_initializing_shards: bool,
     ) -> Self {
-        self.wait_for_no_initializing_shards = wait_for_no_initializing_shards;
+        self.wait_for_no_initializing_shards = Some(wait_for_no_initializing_shards);
         self
     }
     #[doc = "Whether to wait until there are no relocating shards in the cluster"]
-    pub fn wait_for_no_relocating_shards(
-        mut self,
-        wait_for_no_relocating_shards: Option<bool>,
-    ) -> Self {
-        self.wait_for_no_relocating_shards = wait_for_no_relocating_shards;
+    pub fn wait_for_no_relocating_shards(mut self, wait_for_no_relocating_shards: bool) -> Self {
+        self.wait_for_no_relocating_shards = Some(wait_for_no_relocating_shards);
         self
     }
     #[doc = "Wait until the specified number of nodes is available"]
-    pub fn wait_for_nodes(mut self, wait_for_nodes: Option<String>) -> Self {
-        self.wait_for_nodes = wait_for_nodes;
+    pub fn wait_for_nodes(mut self, wait_for_nodes: String) -> Self {
+        self.wait_for_nodes = Some(wait_for_nodes);
         self
     }
     #[doc = "Wait until cluster is in a specific state"]
-    pub fn wait_for_status(mut self, wait_for_status: Option<WaitForStatus>) -> Self {
-        self.wait_for_status = wait_for_status;
+    pub fn wait_for_status(mut self, wait_for_status: WaitForStatus) -> Self {
+        self.wait_for_status = Some(wait_for_status);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Health API that can be awaited"]
@@ -580,38 +577,38 @@ impl ClusterPendingTasks {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Pending Tasks API that can be awaited"]
@@ -706,14 +703,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> ClusterPutSettings<T>
+    pub fn body<T>(self, body: T) -> ClusterPutSettings<T>
     where
         T: Serialize,
     {
         ClusterPutSettings {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             flat_settings: self.flat_settings,
@@ -725,43 +722,43 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Put Settings API that can be awaited"]
@@ -848,28 +845,28 @@ impl ClusterRemoteInfo {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Remote Info API that can be awaited"]
@@ -964,14 +961,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> ClusterReroute<T>
+    pub fn body<T>(self, body: T) -> ClusterReroute<T>
     where
         T: Serialize,
     {
         ClusterReroute {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             dry_run: self.dry_run,
             error_trace: self.error_trace,
             explain: self.explain,
@@ -986,58 +983,58 @@ where
         }
     }
     #[doc = "Simulate the operation only and return the resulting state"]
-    pub fn dry_run(mut self, dry_run: Option<bool>) -> Self {
-        self.dry_run = dry_run;
+    pub fn dry_run(mut self, dry_run: bool) -> Self {
+        self.dry_run = Some(dry_run);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Return an explanation of why the commands can or cannot be executed"]
-    pub fn explain(mut self, explain: Option<bool>) -> Self {
-        self.explain = explain;
+    pub fn explain(mut self, explain: bool) -> Self {
+        self.explain = Some(explain);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Limit the information returned to the specified metrics. Defaults to all but metadata"]
-    pub fn metric(mut self, metric: Option<Vec<String>>) -> Self {
-        self.metric = metric;
+    pub fn metric(mut self, metric: Vec<String>) -> Self {
+        self.metric = Some(metric);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Retries allocation of shards that are blocked due to too many subsequent allocation failures"]
-    pub fn retry_failed(mut self, retry_failed: Option<bool>) -> Self {
-        self.retry_failed = retry_failed;
+    pub fn retry_failed(mut self, retry_failed: bool) -> Self {
+        self.retry_failed = Some(retry_failed);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Reroute API that can be awaited"]
@@ -1172,68 +1169,68 @@ impl ClusterState {
         }
     }
     #[doc = "Whether to ignore if a wildcard indices expression resolves into no concrete indices. (This includes `_all` string or when no indices have been specified)"]
-    pub fn allow_no_indices(mut self, allow_no_indices: Option<bool>) -> Self {
-        self.allow_no_indices = allow_no_indices;
+    pub fn allow_no_indices(mut self, allow_no_indices: bool) -> Self {
+        self.allow_no_indices = Some(allow_no_indices);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: Option<ExpandWildcards>) -> Self {
-        self.expand_wildcards = expand_wildcards;
+    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+        self.expand_wildcards = Some(expand_wildcards);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Whether specified concrete indices should be ignored when unavailable (missing or closed)"]
-    pub fn ignore_unavailable(mut self, ignore_unavailable: Option<bool>) -> Self {
-        self.ignore_unavailable = ignore_unavailable;
+    pub fn ignore_unavailable(mut self, ignore_unavailable: bool) -> Self {
+        self.ignore_unavailable = Some(ignore_unavailable);
         self
     }
     #[doc = "Return local information, do not retrieve the state from master node (default: false)"]
-    pub fn local(mut self, local: Option<bool>) -> Self {
-        self.local = local;
+    pub fn local(mut self, local: bool) -> Self {
+        self.local = Some(local);
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: Option<String>) -> Self {
-        self.master_timeout = master_timeout;
+    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+        self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Wait for the metadata version to be equal or greater than the specified metadata version"]
-    pub fn wait_for_metadata_version(mut self, wait_for_metadata_version: Option<i64>) -> Self {
-        self.wait_for_metadata_version = wait_for_metadata_version;
+    pub fn wait_for_metadata_version(mut self, wait_for_metadata_version: i64) -> Self {
+        self.wait_for_metadata_version = Some(wait_for_metadata_version);
         self
     }
     #[doc = "The maximum time to wait for wait_for_metadata_version before timing out"]
-    pub fn wait_for_timeout(mut self, wait_for_timeout: Option<String>) -> Self {
-        self.wait_for_timeout = wait_for_timeout;
+    pub fn wait_for_timeout(mut self, wait_for_timeout: String) -> Self {
+        self.wait_for_timeout = Some(wait_for_timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster State API that can be awaited"]
@@ -1350,38 +1347,38 @@ impl ClusterStats {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: Option<bool>) -> Self {
-        self.flat_settings = flat_settings;
+    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
+        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Cluster Stats API that can be awaited"]

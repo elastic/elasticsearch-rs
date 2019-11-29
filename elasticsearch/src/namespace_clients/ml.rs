@@ -74,19 +74,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
+    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
+        self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlCloseJob<T>
+    pub fn body<T>(self, body: T) -> MlCloseJob<T>
     where
         T: Serialize,
     {
         MlCloseJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_jobs: self.allow_no_jobs,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -98,38 +98,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "True if the job should be forcefully closed"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Close Job API that can be awaited"]
@@ -221,28 +221,28 @@ impl MlDeleteCalendar {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Calendar API that can be awaited"]
@@ -327,28 +327,28 @@ impl MlDeleteCalendarEvent {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Calendar Event API that can be awaited"]
@@ -433,28 +433,28 @@ impl MlDeleteCalendarJob {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Calendar Job API that can be awaited"]
@@ -537,28 +537,28 @@ impl MlDeleteDataFrameAnalytics {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Data Frame Analytics API that can be awaited"]
@@ -643,33 +643,33 @@ impl MlDeleteDatafeed {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "True if the datafeed should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Datafeed API that can be awaited"]
@@ -750,28 +750,28 @@ impl MlDeleteExpiredData {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Expired Data API that can be awaited"]
@@ -854,28 +854,28 @@ impl MlDeleteFilter {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Filter API that can be awaited"]
@@ -972,38 +972,38 @@ impl MlDeleteForecast {
         }
     }
     #[doc = "Whether to ignore if `_all` matches no forecasts"]
-    pub fn allow_no_forecasts(mut self, allow_no_forecasts: Option<bool>) -> Self {
-        self.allow_no_forecasts = allow_no_forecasts;
+    pub fn allow_no_forecasts(mut self, allow_no_forecasts: bool) -> Self {
+        self.allow_no_forecasts = Some(allow_no_forecasts);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Forecast API that can be awaited"]
@@ -1096,38 +1096,38 @@ impl MlDeleteJob {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "True if the job should be forcefully deleted"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Should this request wait until the operation has completed before returning"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Job API that can be awaited"]
@@ -1221,28 +1221,28 @@ impl MlDeleteModelSnapshot {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Delete Model Snapshot API that can be awaited"]
@@ -1327,14 +1327,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlEstimateMemoryUsage<T>
+    pub fn body<T>(self, body: T) -> MlEstimateMemoryUsage<T>
     where
         T: Serialize,
     {
         MlEstimateMemoryUsage {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1343,28 +1343,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Estimate Memory Usage API that can be awaited"]
@@ -1447,14 +1447,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlEvaluateDataFrame<T>
+    pub fn body<T>(self, body: T) -> MlEvaluateDataFrame<T>
     where
         T: Serialize,
     {
         MlEvaluateDataFrame {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1463,28 +1463,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Evaluate Data Frame API that can be awaited"]
@@ -1595,14 +1595,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlFindFileStructure<T>
+    pub fn body<T>(self, body: T) -> MlFindFileStructure<T>
     where
         T: Serialize,
     {
         MlFindFileStructure {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             charset: self.charset,
             column_names: self.column_names,
             delimiter: self.delimiter,
@@ -1625,98 +1625,98 @@ where
         }
     }
     #[doc = "Optional parameter to specify the character set of the file"]
-    pub fn charset(mut self, charset: Option<String>) -> Self {
-        self.charset = charset;
+    pub fn charset(mut self, charset: String) -> Self {
+        self.charset = Some(charset);
         self
     }
     #[doc = "Optional parameter containing a comma separated list of the column names for a delimited file"]
-    pub fn column_names(mut self, column_names: Option<Vec<String>>) -> Self {
-        self.column_names = column_names;
+    pub fn column_names(mut self, column_names: Vec<String>) -> Self {
+        self.column_names = Some(column_names);
         self
     }
     #[doc = "Optional parameter to specify the delimiter character for a delimited file - must be a single character"]
-    pub fn delimiter(mut self, delimiter: Option<String>) -> Self {
-        self.delimiter = delimiter;
+    pub fn delimiter(mut self, delimiter: String) -> Self {
+        self.delimiter = Some(delimiter);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Whether to include a commentary on how the structure was derived"]
-    pub fn explain(mut self, explain: Option<bool>) -> Self {
-        self.explain = explain;
+    pub fn explain(mut self, explain: bool) -> Self {
+        self.explain = Some(explain);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Optional parameter to specify the high level file format"]
-    pub fn format(mut self, format: Option<Format>) -> Self {
-        self.format = format;
+    pub fn format(mut self, format: Format) -> Self {
+        self.format = Some(format);
         self
     }
     #[doc = "Optional parameter to specify the Grok pattern that should be used to extract fields from messages in a semi-structured text file"]
-    pub fn grok_pattern(mut self, grok_pattern: Option<String>) -> Self {
-        self.grok_pattern = grok_pattern;
+    pub fn grok_pattern(mut self, grok_pattern: String) -> Self {
+        self.grok_pattern = Some(grok_pattern);
         self
     }
     #[doc = "Optional parameter to specify whether a delimited file includes the column names in its first row"]
-    pub fn has_header_row(mut self, has_header_row: Option<bool>) -> Self {
-        self.has_header_row = has_header_row;
+    pub fn has_header_row(mut self, has_header_row: bool) -> Self {
+        self.has_header_row = Some(has_header_row);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Maximum number of characters permitted in a single message when lines are merged to create messages."]
-    pub fn line_merge_size_limit(mut self, line_merge_size_limit: Option<i32>) -> Self {
-        self.line_merge_size_limit = line_merge_size_limit;
+    pub fn line_merge_size_limit(mut self, line_merge_size_limit: i32) -> Self {
+        self.line_merge_size_limit = Some(line_merge_size_limit);
         self
     }
     #[doc = "How many lines of the file should be included in the analysis"]
-    pub fn lines_to_sample(mut self, lines_to_sample: Option<i32>) -> Self {
-        self.lines_to_sample = lines_to_sample;
+    pub fn lines_to_sample(mut self, lines_to_sample: i32) -> Self {
+        self.lines_to_sample = Some(lines_to_sample);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Optional parameter to specify the quote character for a delimited file - must be a single character"]
-    pub fn quote(mut self, quote: Option<String>) -> Self {
-        self.quote = quote;
+    pub fn quote(mut self, quote: String) -> Self {
+        self.quote = Some(quote);
         self
     }
     #[doc = "Optional parameter to specify whether the values between delimiters in a delimited file should have whitespace trimmed from them"]
-    pub fn should_trim_fields(mut self, should_trim_fields: Option<bool>) -> Self {
-        self.should_trim_fields = should_trim_fields;
+    pub fn should_trim_fields(mut self, should_trim_fields: bool) -> Self {
+        self.should_trim_fields = Some(should_trim_fields);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Timeout after which the analysis will be aborted"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Optional parameter to specify the timestamp field in the file"]
-    pub fn timestamp_field(mut self, timestamp_field: Option<String>) -> Self {
-        self.timestamp_field = timestamp_field;
+    pub fn timestamp_field(mut self, timestamp_field: String) -> Self {
+        self.timestamp_field = Some(timestamp_field);
         self
     }
     #[doc = "Optional parameter to specify the timestamp format in the file - may be either a Joda or Java time format"]
-    pub fn timestamp_format(mut self, timestamp_format: Option<String>) -> Self {
-        self.timestamp_format = timestamp_format;
+    pub fn timestamp_format(mut self, timestamp_format: String) -> Self {
+        self.timestamp_format = Some(timestamp_format);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Find File Structure API that can be awaited"]
@@ -1864,19 +1864,19 @@ where
         }
     }
     #[doc = "Advances time to the given value generating results and updating the model for the advanced interval"]
-    pub fn advance_time(mut self, advance_time: Option<String>) -> Self {
-        self.advance_time = advance_time;
+    pub fn advance_time(mut self, advance_time: String) -> Self {
+        self.advance_time = Some(advance_time);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlFlushJob<T>
+    pub fn body<T>(self, body: T) -> MlFlushJob<T>
     where
         T: Serialize,
     {
         MlFlushJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             advance_time: self.advance_time,
             calc_interim: self.calc_interim,
             end: self.end,
@@ -1890,48 +1890,48 @@ where
         }
     }
     #[doc = "Calculates interim results for the most recent bucket or all buckets within the latency period"]
-    pub fn calc_interim(mut self, calc_interim: Option<bool>) -> Self {
-        self.calc_interim = calc_interim;
+    pub fn calc_interim(mut self, calc_interim: bool) -> Self {
+        self.calc_interim = Some(calc_interim);
         self
     }
     #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Skips time to the given value without generating results or updating the model for the skipped interval"]
-    pub fn skip_time(mut self, skip_time: Option<String>) -> Self {
-        self.skip_time = skip_time;
+    pub fn skip_time(mut self, skip_time: String) -> Self {
+        self.skip_time = Some(skip_time);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Flush Job API that can be awaited"]
@@ -2039,14 +2039,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlForecast<T>
+    pub fn body<T>(self, body: T) -> MlForecast<T>
     where
         T: Serialize,
     {
         MlForecast {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             duration: self.duration,
             error_trace: self.error_trace,
             expires_in: self.expires_in,
@@ -2057,38 +2057,38 @@ where
         }
     }
     #[doc = "The duration of the forecast"]
-    pub fn duration(mut self, duration: Option<String>) -> Self {
-        self.duration = duration;
+    pub fn duration(mut self, duration: String) -> Self {
+        self.duration = Some(duration);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity."]
-    pub fn expires_in(mut self, expires_in: Option<String>) -> Self {
-        self.expires_in = expires_in;
+    pub fn expires_in(mut self, expires_in: String) -> Self {
+        self.expires_in = Some(expires_in);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Forecast API that can be awaited"]
@@ -2210,19 +2210,19 @@ where
         }
     }
     #[doc = "Filter for the most anomalous buckets"]
-    pub fn anomaly_score(mut self, anomaly_score: Option<f64>) -> Self {
-        self.anomaly_score = anomaly_score;
+    pub fn anomaly_score(mut self, anomaly_score: f64) -> Self {
+        self.anomaly_score = Some(anomaly_score);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetBuckets<T>
+    pub fn body<T>(self, body: T) -> MlGetBuckets<T>
     where
         T: Serialize,
     {
         MlGetBuckets {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             anomaly_score: self.anomaly_score,
             desc: self.desc,
             end: self.end,
@@ -2240,68 +2240,68 @@ where
         }
     }
     #[doc = "Set the sort direction"]
-    pub fn desc(mut self, desc: Option<bool>) -> Self {
-        self.desc = desc;
+    pub fn desc(mut self, desc: bool) -> Self {
+        self.desc = Some(desc);
         self
     }
     #[doc = "End time filter for buckets"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Exclude interim results"]
-    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
-        self.exclude_interim = exclude_interim;
+    pub fn exclude_interim(mut self, exclude_interim: bool) -> Self {
+        self.exclude_interim = Some(exclude_interim);
         self
     }
     #[doc = "Include anomaly records"]
-    pub fn expand(mut self, expand: Option<bool>) -> Self {
-        self.expand = expand;
+    pub fn expand(mut self, expand: bool) -> Self {
+        self.expand = Some(expand);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of buckets"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of buckets to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "Sort buckets by a particular field"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
+    pub fn sort(mut self, sort: String) -> Self {
+        self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Start time filter for buckets"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Buckets API that can be awaited"]
@@ -2425,53 +2425,53 @@ impl MlGetCalendarEvents {
         }
     }
     #[doc = "Get events before this time"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Skips a number of events"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Get events for the job. When this option is used calendar_id must be '_all'"]
-    pub fn job_id(mut self, job_id: Option<String>) -> Self {
-        self.job_id = job_id;
+    pub fn job_id(mut self, job_id: String) -> Self {
+        self.job_id = Some(job_id);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Specifies a max number of events to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Get events after this time"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Calendar Events API that can be awaited"]
@@ -2580,14 +2580,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetCalendars<T>
+    pub fn body<T>(self, body: T) -> MlGetCalendars<T>
     where
         T: Serialize,
     {
         MlGetCalendars {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             from: self.from,
@@ -2598,38 +2598,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of calendars"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of calendars to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Calendars API that can be awaited"]
@@ -2741,14 +2741,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetCategories<T>
+    pub fn body<T>(self, body: T) -> MlGetCategories<T>
     where
         T: Serialize,
     {
         MlGetCategories {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             from: self.from,
@@ -2759,38 +2759,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of categories"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of categories to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Categories API that can be awaited"]
@@ -2890,43 +2890,43 @@ impl MlGetDataFrameAnalytics {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics API that can be awaited"]
@@ -3027,43 +3027,43 @@ impl MlGetDataFrameAnalyticsStats {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of analytics"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of analytics to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics Stats API that can be awaited"]
@@ -3160,33 +3160,33 @@ impl MlGetDatafeedStats {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
+        self.allow_no_datafeeds = Some(allow_no_datafeeds);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Datafeed Stats API that can be awaited"]
@@ -3276,33 +3276,33 @@ impl MlGetDatafeeds {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
+        self.allow_no_datafeeds = Some(allow_no_datafeeds);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Datafeeds API that can be awaited"]
@@ -3394,38 +3394,38 @@ impl MlGetFilters {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of filters"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of filters to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Filters API that can be awaited"]
@@ -3536,14 +3536,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetInfluencers<T>
+    pub fn body<T>(self, body: T) -> MlGetInfluencers<T>
     where
         T: Serialize,
     {
         MlGetInfluencers {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -3560,68 +3560,68 @@ where
         }
     }
     #[doc = "whether the results should be sorted in decending order"]
-    pub fn desc(mut self, desc: Option<bool>) -> Self {
-        self.desc = desc;
+    pub fn desc(mut self, desc: bool) -> Self {
+        self.desc = Some(desc);
         self
     }
     #[doc = "end timestamp for the requested influencers"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Exclude interim results"]
-    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
-        self.exclude_interim = exclude_interim;
+    pub fn exclude_interim(mut self, exclude_interim: bool) -> Self {
+        self.exclude_interim = Some(exclude_interim);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of influencers"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "influencer score threshold for the requested influencers"]
-    pub fn influencer_score(mut self, influencer_score: Option<f64>) -> Self {
-        self.influencer_score = influencer_score;
+    pub fn influencer_score(mut self, influencer_score: f64) -> Self {
+        self.influencer_score = Some(influencer_score);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of influencers to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "sort field for the requested influencers"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
+    pub fn sort(mut self, sort: String) -> Self {
+        self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "start timestamp for the requested influencers"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Influencers API that can be awaited"]
@@ -3736,33 +3736,33 @@ impl MlGetJobStats {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
+    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
+        self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Job Stats API that can be awaited"]
@@ -3852,33 +3852,33 @@ impl MlGetJobs {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
+    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
+        self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Jobs API that can be awaited"]
@@ -3991,14 +3991,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetModelSnapshots<T>
+    pub fn body<T>(self, body: T) -> MlGetModelSnapshots<T>
     where
         T: Serialize,
     {
         MlGetModelSnapshots {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -4013,58 +4013,58 @@ where
         }
     }
     #[doc = "True if the results should be sorted in descending order"]
-    pub fn desc(mut self, desc: Option<bool>) -> Self {
-        self.desc = desc;
+    pub fn desc(mut self, desc: bool) -> Self {
+        self.desc = Some(desc);
         self
     }
     #[doc = "The filter 'end' query parameter"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Skips a number of documents"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The default number of documents returned in queries as a string."]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "Name of the field to sort on"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
+    pub fn sort(mut self, sort: String) -> Self {
+        self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "The filter 'start' query parameter"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Model Snapshots API that can be awaited"]
@@ -4188,19 +4188,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no jobs. (This includes `_all` string or when no jobs have been specified)"]
-    pub fn allow_no_jobs(mut self, allow_no_jobs: Option<bool>) -> Self {
-        self.allow_no_jobs = allow_no_jobs;
+    pub fn allow_no_jobs(mut self, allow_no_jobs: bool) -> Self {
+        self.allow_no_jobs = Some(allow_no_jobs);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetOverallBuckets<T>
+    pub fn body<T>(self, body: T) -> MlGetOverallBuckets<T>
     where
         T: Serialize,
     {
         MlGetOverallBuckets {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_jobs: self.allow_no_jobs,
             bucket_span: self.bucket_span,
             end: self.end,
@@ -4216,58 +4216,58 @@ where
         }
     }
     #[doc = "The span of the overall buckets. Defaults to the longest job bucket_span"]
-    pub fn bucket_span(mut self, bucket_span: Option<String>) -> Self {
-        self.bucket_span = bucket_span;
+    pub fn bucket_span(mut self, bucket_span: String) -> Self {
+        self.bucket_span = Some(bucket_span);
         self
     }
     #[doc = "Returns overall buckets with timestamps earlier than this time"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "If true overall buckets that include interim buckets will be excluded"]
-    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
-        self.exclude_interim = exclude_interim;
+    pub fn exclude_interim(mut self, exclude_interim: bool) -> Self {
+        self.exclude_interim = Some(exclude_interim);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Returns overall buckets with overall scores higher than this value"]
-    pub fn overall_score(mut self, overall_score: Option<f64>) -> Self {
-        self.overall_score = overall_score;
+    pub fn overall_score(mut self, overall_score: f64) -> Self {
+        self.overall_score = Some(overall_score);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Returns overall buckets with timestamps after this time"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "The number of top job bucket scores to be used in the overall_score calculation"]
-    pub fn top_n(mut self, top_n: Option<i32>) -> Self {
-        self.top_n = top_n;
+    pub fn top_n(mut self, top_n: i32) -> Self {
+        self.top_n = Some(top_n);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Overall Buckets API that can be awaited"]
@@ -4396,14 +4396,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlGetRecords<T>
+    pub fn body<T>(self, body: T) -> MlGetRecords<T>
     where
         T: Serialize,
     {
         MlGetRecords {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -4420,67 +4420,67 @@ where
         }
     }
     #[doc = "Set the sort direction"]
-    pub fn desc(mut self, desc: Option<bool>) -> Self {
-        self.desc = desc;
+    pub fn desc(mut self, desc: bool) -> Self {
+        self.desc = Some(desc);
         self
     }
     #[doc = "End time filter for records"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "Exclude interim results"]
-    pub fn exclude_interim(mut self, exclude_interim: Option<bool>) -> Self {
-        self.exclude_interim = exclude_interim;
+    pub fn exclude_interim(mut self, exclude_interim: bool) -> Self {
+        self.exclude_interim = Some(exclude_interim);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of records"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
-    pub fn record_score(mut self, record_score: Option<f64>) -> Self {
-        self.record_score = record_score;
+    pub fn record_score(mut self, record_score: f64) -> Self {
+        self.record_score = Some(record_score);
         self
     }
     #[doc = "specifies a max number of records to get"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "Sort records by a particular field"]
-    pub fn sort(mut self, sort: Option<String>) -> Self {
-        self.sort = sort;
+    pub fn sort(mut self, sort: String) -> Self {
+        self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Start time filter for records"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Get Records API that can be awaited"]
@@ -4585,28 +4585,28 @@ impl MlInfo {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Info API that can be awaited"]
@@ -4695,14 +4695,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlOpenJob<T>
+    pub fn body<T>(self, body: T) -> MlOpenJob<T>
     where
         T: Serialize,
     {
         MlOpenJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4711,28 +4711,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Open Job API that can be awaited"]
@@ -4821,14 +4821,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPostCalendarEvents<T>
+    pub fn body<T>(self, body: T) -> MlPostCalendarEvents<T>
     where
         T: Serialize,
     {
         MlPostCalendarEvents {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4837,28 +4837,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Post Calendar Events API that can be awaited"]
@@ -4951,14 +4951,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPostData<T>
+    pub fn body<T>(self, body: T) -> MlPostData<T>
     where
         T: Serialize,
     {
         MlPostData {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4969,38 +4969,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "Optional parameter to specify the end of the bucket resetting range"]
-    pub fn reset_end(mut self, reset_end: Option<String>) -> Self {
-        self.reset_end = reset_end;
+    pub fn reset_end(mut self, reset_end: String) -> Self {
+        self.reset_end = Some(reset_end);
         self
     }
     #[doc = "Optional parameter to specify the start of the bucket resetting range"]
-    pub fn reset_start(mut self, reset_start: Option<String>) -> Self {
-        self.reset_start = reset_start;
+    pub fn reset_start(mut self, reset_start: String) -> Self {
+        self.reset_start = Some(reset_start);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Post Data API that can be awaited"]
@@ -5090,28 +5090,28 @@ impl MlPreviewDatafeed {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Preview Datafeed API that can be awaited"]
@@ -5199,14 +5199,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutCalendar<T>
+    pub fn body<T>(self, body: T) -> MlPutCalendar<T>
     where
         T: Serialize,
     {
         MlPutCalendar {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5215,28 +5215,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Calendar API that can be awaited"]
@@ -5326,14 +5326,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutCalendarJob<T>
+    pub fn body<T>(self, body: T) -> MlPutCalendarJob<T>
     where
         T: Serialize,
     {
         MlPutCalendarJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5342,28 +5342,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Calendar Job API that can be awaited"]
@@ -5451,14 +5451,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutDataFrameAnalytics<T>
+    pub fn body<T>(self, body: T) -> MlPutDataFrameAnalytics<T>
     where
         T: Serialize,
     {
         MlPutDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5467,28 +5467,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Data Frame Analytics API that can be awaited"]
@@ -5576,14 +5576,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutDatafeed<T>
+    pub fn body<T>(self, body: T) -> MlPutDatafeed<T>
     where
         T: Serialize,
     {
         MlPutDatafeed {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5592,28 +5592,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Datafeed API that can be awaited"]
@@ -5701,14 +5701,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutFilter<T>
+    pub fn body<T>(self, body: T) -> MlPutFilter<T>
     where
         T: Serialize,
     {
         MlPutFilter {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5717,28 +5717,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Filter API that can be awaited"]
@@ -5826,14 +5826,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlPutJob<T>
+    pub fn body<T>(self, body: T) -> MlPutJob<T>
     where
         T: Serialize,
     {
         MlPutJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5842,28 +5842,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Put Job API that can be awaited"]
@@ -5956,14 +5956,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlRevertModelSnapshot<T>
+    pub fn body<T>(self, body: T) -> MlRevertModelSnapshot<T>
     where
         T: Serialize,
     {
         MlRevertModelSnapshot {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             delete_intervening_results: self.delete_intervening_results,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -5973,33 +5973,33 @@ where
         }
     }
     #[doc = "Should we reset the results back to the time of the snapshot?"]
-    pub fn delete_intervening_results(mut self, delete_intervening_results: Option<bool>) -> Self {
-        self.delete_intervening_results = delete_intervening_results;
+    pub fn delete_intervening_results(mut self, delete_intervening_results: bool) -> Self {
+        self.delete_intervening_results = Some(delete_intervening_results);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Revert Model Snapshot API that can be awaited"]
@@ -6092,14 +6092,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlSetUpgradeMode<T>
+    pub fn body<T>(self, body: T) -> MlSetUpgradeMode<T>
     where
         T: Serialize,
     {
         MlSetUpgradeMode {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             enabled: self.enabled,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6110,38 +6110,38 @@ where
         }
     }
     #[doc = "Whether to enable upgrade_mode ML setting or not. Defaults to false."]
-    pub fn enabled(mut self, enabled: Option<bool>) -> Self {
-        self.enabled = enabled;
+    pub fn enabled(mut self, enabled: bool) -> Self {
+        self.enabled = Some(enabled);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Set Upgrade Mode API that can be awaited"]
@@ -6238,14 +6238,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlStartDataFrameAnalytics<T>
+    pub fn body<T>(self, body: T) -> MlStartDataFrameAnalytics<T>
     where
         T: Serialize,
     {
         MlStartDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6255,33 +6255,33 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the task has started. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Start Data Frame Analytics API that can be awaited"]
@@ -6379,14 +6379,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlStartDatafeed<T>
+    pub fn body<T>(self, body: T) -> MlStartDatafeed<T>
     where
         T: Serialize,
     {
         MlStartDatafeed {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             end: self.end,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6398,43 +6398,43 @@ where
         }
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
-    pub fn end(mut self, end: Option<String>) -> Self {
-        self.end = end;
+    pub fn end(mut self, end: String) -> Self {
+        self.end = Some(end);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "The start time from where the datafeed should begin"]
-    pub fn start(mut self, start: Option<String>) -> Self {
-        self.start = start;
+    pub fn start(mut self, start: String) -> Self {
+        self.start = Some(start);
         self
     }
     #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Start Datafeed API that can be awaited"]
@@ -6538,19 +6538,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame analytics. (This includes `_all` string or when no data frame analytics have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlStopDataFrameAnalytics<T>
+    pub fn body<T>(self, body: T) -> MlStopDataFrameAnalytics<T>
     where
         T: Serialize,
     {
         MlStopDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6562,38 +6562,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "True if the data frame analytics should be forcefully stopped"]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the task has stopped. Defaults to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Stop Data Frame Analytics API that can be awaited"]
@@ -6697,19 +6697,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no datafeeds. (This includes `_all` string or when no datafeeds have been specified)"]
-    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: Option<bool>) -> Self {
-        self.allow_no_datafeeds = allow_no_datafeeds;
+    pub fn allow_no_datafeeds(mut self, allow_no_datafeeds: bool) -> Self {
+        self.allow_no_datafeeds = Some(allow_no_datafeeds);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlStopDatafeed<T>
+    pub fn body<T>(self, body: T) -> MlStopDatafeed<T>
     where
         T: Serialize,
     {
         MlStopDatafeed {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_datafeeds: self.allow_no_datafeeds,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6721,38 +6721,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "True if the datafeed should be forcefully stopped."]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Stop Datafeed API that can be awaited"]
@@ -6850,14 +6850,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlUpdateDatafeed<T>
+    pub fn body<T>(self, body: T) -> MlUpdateDatafeed<T>
     where
         T: Serialize,
     {
         MlUpdateDatafeed {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6866,28 +6866,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Update Datafeed API that can be awaited"]
@@ -6976,14 +6976,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlUpdateFilter<T>
+    pub fn body<T>(self, body: T) -> MlUpdateFilter<T>
     where
         T: Serialize,
     {
         MlUpdateFilter {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6992,28 +6992,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Update Filter API that can be awaited"]
@@ -7102,14 +7102,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlUpdateJob<T>
+    pub fn body<T>(self, body: T) -> MlUpdateJob<T>
     where
         T: Serialize,
     {
         MlUpdateJob {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7118,28 +7118,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Update Job API that can be awaited"]
@@ -7230,14 +7230,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlUpdateModelSnapshot<T>
+    pub fn body<T>(self, body: T) -> MlUpdateModelSnapshot<T>
     where
         T: Serialize,
     {
         MlUpdateModelSnapshot {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7246,28 +7246,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Update Model Snapshot API that can be awaited"]
@@ -7350,14 +7350,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlValidate<T>
+    pub fn body<T>(self, body: T) -> MlValidate<T>
     where
         T: Serialize,
     {
         MlValidate {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7366,28 +7366,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Validate API that can be awaited"]
@@ -7470,14 +7470,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> MlValidateDetector<T>
+    pub fn body<T>(self, body: T) -> MlValidateDetector<T>
     where
         T: Serialize,
     {
         MlValidateDetector {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7486,28 +7486,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Ml Validate Detector API that can be awaited"]

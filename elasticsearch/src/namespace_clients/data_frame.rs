@@ -64,33 +64,33 @@ impl DataFrameDeleteDataFrameTransform {
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "When `true`, the transform is deleted regardless of its current state. The default value is `false`, meaning that the transform must be `stopped` before it can be deleted."]
-    pub fn force(mut self, force: Option<bool>) -> Self {
-        self.force = force;
+    pub fn force(mut self, force: bool) -> Self {
+        self.force = Some(force);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Delete Data Frame Transform API that can be awaited"]
@@ -184,43 +184,43 @@ impl DataFrameGetDataFrameTransform {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of transform configs, defaults to 0"]
-    pub fn from(mut self, from: Option<i32>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i32) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of transforms to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i32>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i32) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Get Data Frame Transform API that can be awaited"]
@@ -319,43 +319,43 @@ impl DataFrameGetDataFrameTransformStats {
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "skips a number of transform stats, defaults to 0"]
-    pub fn from(mut self, from: Option<i64>) -> Self {
-        self.from = from;
+    pub fn from(mut self, from: i64) -> Self {
+        self.from = Some(from);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "specifies a max number of transform stats to get, defaults to 100"]
-    pub fn size(mut self, size: Option<i64>) -> Self {
-        self.size = size;
+    pub fn size(mut self, size: i64) -> Self {
+        self.size = Some(size);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Get Data Frame Transform Stats API that can be awaited"]
@@ -449,14 +449,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> DataFramePreviewDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFramePreviewDataFrameTransform<T>
     where
         T: Serialize,
     {
         DataFramePreviewDataFrameTransform {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -465,28 +465,28 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Preview Data Frame Transform API that can be awaited"]
@@ -576,14 +576,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> DataFramePutDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFramePutDataFrameTransform<T>
     where
         T: Serialize,
     {
         DataFramePutDataFrameTransform {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             defer_validation: self.defer_validation,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -593,33 +593,33 @@ where
         }
     }
     #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
-    pub fn defer_validation(mut self, defer_validation: Option<bool>) -> Self {
-        self.defer_validation = defer_validation;
+    pub fn defer_validation(mut self, defer_validation: bool) -> Self {
+        self.defer_validation = Some(defer_validation);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Put Data Frame Transform API that can be awaited"]
@@ -713,14 +713,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> DataFrameStartDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameStartDataFrameTransform<T>
     where
         T: Serialize,
     {
         DataFrameStartDataFrameTransform {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -730,33 +730,33 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait for the transform to start"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Start Data Frame Transform API that can be awaited"]
@@ -854,19 +854,19 @@ where
         }
     }
     #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
-    pub fn allow_no_match(mut self, allow_no_match: Option<bool>) -> Self {
-        self.allow_no_match = allow_no_match;
+    pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
+        self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> DataFrameStopDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameStopDataFrameTransform<T>
     where
         T: Serialize,
     {
         DataFrameStopDataFrameTransform {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -878,38 +878,38 @@ where
         }
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: Option<String>) -> Self {
-        self.timeout = timeout;
+    pub fn timeout(mut self, timeout: String) -> Self {
+        self.timeout = Some(timeout);
         self
     }
     #[doc = "Whether to wait for the transform to fully stop before returning or not. Default to false"]
-    pub fn wait_for_completion(mut self, wait_for_completion: Option<bool>) -> Self {
-        self.wait_for_completion = wait_for_completion;
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Stop Data Frame Transform API that can be awaited"]
@@ -1012,14 +1012,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Option<T>) -> DataFrameUpdateDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameUpdateDataFrameTransform<T>
     where
         T: Serialize,
     {
         DataFrameUpdateDataFrameTransform {
             client: self.client,
             parts: self.parts,
-            body,
+            body: Some(body),
             defer_validation: self.defer_validation,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -1029,33 +1029,33 @@ where
         }
     }
     #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
-    pub fn defer_validation(mut self, defer_validation: Option<bool>) -> Self {
-        self.defer_validation = defer_validation;
+    pub fn defer_validation(mut self, defer_validation: bool) -> Self {
+        self.defer_validation = Some(defer_validation);
         self
     }
     #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: Option<bool>) -> Self {
-        self.error_trace = error_trace;
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Option<Vec<String>>) -> Self {
-        self.filter_path = filter_path;
+    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+        self.filter_path = Some(filter_path);
         self
     }
     #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: Option<bool>) -> Self {
-        self.human = human;
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: Option<bool>) -> Self {
-        self.pretty = pretty;
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: Option<String>) -> Self {
-        self.source = source;
+    pub fn source(mut self, source: String) -> Self {
+        self.source = Some(source);
         self
     }
     #[doc = "Creates an asynchronous request to the Data Frame Update Data Frame Transform API that can be awaited"]
