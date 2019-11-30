@@ -16,6 +16,7 @@ pub struct EnumBuilder<'a> {
     api_name: String,
     variants: Vec<syn::Variant>,
     paths: Vec<&'a Path>,
+    has_lifetime: bool,
 }
 
 impl<'a> EnumBuilder<'a> {
@@ -27,6 +28,7 @@ impl<'a> EnumBuilder<'a> {
             api_name,
             variants: vec![],
             paths: vec![],
+            has_lifetime: false,
         }
     }
 
@@ -34,11 +36,13 @@ impl<'a> EnumBuilder<'a> {
         format!("{}UrlParts", prefix.to_pascal_case())
     }
 
+    /// Whether this instance already contains a path with parts matching the given path
     fn contains_path_with_parts(&self, path: &'a Path) -> bool {
         let params = path.path.params();
         self.paths.iter().any(|&p| p.path.params() == params)
     }
 
+    /// Whether this instance contains only a single path with no parts
     pub fn contains_single_parameterless_part(&self) -> bool {
         match self.paths.len() {
             1 => self.paths[0].parts.is_empty(),
@@ -51,6 +55,7 @@ impl<'a> EnumBuilder<'a> {
             let variant = match &path.parts.len() {
                 0 => Self::parts_none(),
                 _ => {
+                    self.has_lifetime = true;
                     let name = &path
                         .path
                         .params()
@@ -137,7 +142,13 @@ impl<'a> EnumBuilder<'a> {
             _ => self.variants,
         };
 
-        let (enum_ty, generics) = { (ty(self.ident.as_ref()), generics_none()) };
+        let (enum_ty, generics) = {
+            if self.has_lifetime {
+                (ty_a(self.ident.as_ref()), generics_a())
+            } else {
+                (ty(self.ident.as_ref()), generics_none())
+            }
+        };
 
         let enum_impl = {
             let mut arms = Vec::new();
@@ -315,22 +326,22 @@ mod tests {
 
         let (enum_ty, enum_decl, enum_impl) = EnumBuilder::from(&endpoint).build();
 
-        assert_eq!(ty("SearchUrlParts"), enum_ty);
+        assert_eq!(ty_a("SearchUrlParts"), enum_ty);
 
         let expected_decl = quote!(
             #[derive(Debug, Clone, PartialEq)]
             #[doc = "Url parts for the Search API"]
-            pub enum SearchUrlParts {
+            pub enum SearchUrlParts<'a> {
                 None,
-                Index(Vec<String>),
-                IndexType(Vec<String>, Vec<String>),
+                Index(&'a [&'a str]),
+                IndexType(&'a [&'a str], &'a [&'a str]),
             }
         );
 
         ast_eq(expected_decl, enum_decl);
 
         let expected_impl = quote!(
-            impl SearchUrlParts {
+            impl<'a> SearchUrlParts<'a> {
                 pub fn build(self) -> Cow<'static, str> {
                     match self {
                         SearchUrlParts::None => "/_search".into(),

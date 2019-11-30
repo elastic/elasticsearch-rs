@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Ack Watch API"]
-pub enum WatcherAckWatchUrlParts {
-    WatchId(String),
-    WatchIdActionId(String, Vec<String>),
+pub enum WatcherAckWatchUrlParts<'a> {
+    WatchId(&'a str),
+    WatchIdActionId(&'a str, &'a [&'a str]),
 }
-impl WatcherAckWatchUrlParts {
+impl<'a> WatcherAckWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherAckWatchUrlParts::WatchId(ref watch_id) => {
@@ -51,21 +51,21 @@ impl WatcherAckWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Ack Watch API"]
-pub struct WatcherAckWatch<B> {
+pub struct WatcherAckWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherAckWatchUrlParts,
+    parts: WatcherAckWatchUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherAckWatch<B>
+impl<'a, B> WatcherAckWatch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherAckWatchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherAckWatchUrlParts<'a>) -> Self {
         WatcherAckWatch {
             client,
             parts,
@@ -78,7 +78,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherAckWatch<T>
+    pub fn body<T>(self, body: T) -> WatcherAckWatch<'a, T>
     where
         T: Serialize,
     {
@@ -99,7 +99,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -114,7 +114,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -124,21 +124,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -159,10 +159,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Activate Watch API"]
-pub enum WatcherActivateWatchUrlParts {
-    WatchId(String),
+pub enum WatcherActivateWatchUrlParts<'a> {
+    WatchId(&'a str),
 }
-impl WatcherActivateWatchUrlParts {
+impl<'a> WatcherActivateWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherActivateWatchUrlParts::WatchId(ref watch_id) => {
@@ -177,21 +177,21 @@ impl WatcherActivateWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Activate Watch API"]
-pub struct WatcherActivateWatch<B> {
+pub struct WatcherActivateWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherActivateWatchUrlParts,
+    parts: WatcherActivateWatchUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherActivateWatch<B>
+impl<'a, B> WatcherActivateWatch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherActivateWatchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherActivateWatchUrlParts<'a>) -> Self {
         WatcherActivateWatch {
             client,
             parts,
@@ -204,7 +204,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherActivateWatch<T>
+    pub fn body<T>(self, body: T) -> WatcherActivateWatch<'a, T>
     where
         T: Serialize,
     {
@@ -225,7 +225,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -240,7 +240,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -250,21 +250,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -285,10 +285,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Deactivate Watch API"]
-pub enum WatcherDeactivateWatchUrlParts {
-    WatchId(String),
+pub enum WatcherDeactivateWatchUrlParts<'a> {
+    WatchId(&'a str),
 }
-impl WatcherDeactivateWatchUrlParts {
+impl<'a> WatcherDeactivateWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherDeactivateWatchUrlParts::WatchId(ref watch_id) => {
@@ -303,21 +303,21 @@ impl WatcherDeactivateWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Deactivate Watch API"]
-pub struct WatcherDeactivateWatch<B> {
+pub struct WatcherDeactivateWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherDeactivateWatchUrlParts,
+    parts: WatcherDeactivateWatchUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherDeactivateWatch<B>
+impl<'a, B> WatcherDeactivateWatch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchUrlParts<'a>) -> Self {
         WatcherDeactivateWatch {
             client,
             parts,
@@ -330,7 +330,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherDeactivateWatch<T>
+    pub fn body<T>(self, body: T) -> WatcherDeactivateWatch<'a, T>
     where
         T: Serialize,
     {
@@ -351,7 +351,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -366,7 +366,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -376,21 +376,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -411,10 +411,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Delete Watch API"]
-pub enum WatcherDeleteWatchUrlParts {
-    Id(String),
+pub enum WatcherDeleteWatchUrlParts<'a> {
+    Id(&'a str),
 }
-impl WatcherDeleteWatchUrlParts {
+impl<'a> WatcherDeleteWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherDeleteWatchUrlParts::Id(ref id) => {
@@ -428,17 +428,17 @@ impl WatcherDeleteWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Delete Watch API"]
-pub struct WatcherDeleteWatch {
+pub struct WatcherDeleteWatch<'a> {
     client: Elasticsearch,
-    parts: WatcherDeleteWatchUrlParts,
+    parts: WatcherDeleteWatchUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl WatcherDeleteWatch {
-    pub fn new(client: Elasticsearch, parts: WatcherDeleteWatchUrlParts) -> Self {
+impl<'a> WatcherDeleteWatch<'a> {
+    pub fn new(client: Elasticsearch, parts: WatcherDeleteWatchUrlParts<'a>) -> Self {
         WatcherDeleteWatch {
             client,
             parts,
@@ -455,7 +455,7 @@ impl WatcherDeleteWatch {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -470,7 +470,7 @@ impl WatcherDeleteWatch {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -480,21 +480,21 @@ impl WatcherDeleteWatch {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -515,11 +515,11 @@ impl WatcherDeleteWatch {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Execute Watch API"]
-pub enum WatcherExecuteWatchUrlParts {
-    Id(String),
+pub enum WatcherExecuteWatchUrlParts<'a> {
+    Id(&'a str),
     None,
 }
-impl WatcherExecuteWatchUrlParts {
+impl<'a> WatcherExecuteWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherExecuteWatchUrlParts::Id(ref id) => {
@@ -535,22 +535,22 @@ impl WatcherExecuteWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Execute Watch API"]
-pub struct WatcherExecuteWatch<B> {
+pub struct WatcherExecuteWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherExecuteWatchUrlParts,
+    parts: WatcherExecuteWatchUrlParts<'a>,
     body: Option<B>,
     debug: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherExecuteWatch<B>
+impl<'a, B> WatcherExecuteWatch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchUrlParts<'a>) -> Self {
         WatcherExecuteWatch {
             client,
             parts,
@@ -564,7 +564,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherExecuteWatch<T>
+    pub fn body<T>(self, body: T) -> WatcherExecuteWatch<'a, T>
     where
         T: Serialize,
     {
@@ -591,7 +591,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -606,7 +606,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -616,23 +616,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "debug", skip_serializing_if = "Option::is_none")]
                 debug: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 debug: self.debug,
@@ -654,10 +654,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Get Watch API"]
-pub enum WatcherGetWatchUrlParts {
-    Id(String),
+pub enum WatcherGetWatchUrlParts<'a> {
+    Id(&'a str),
 }
-impl WatcherGetWatchUrlParts {
+impl<'a> WatcherGetWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherGetWatchUrlParts::Id(ref id) => {
@@ -671,17 +671,17 @@ impl WatcherGetWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Get Watch API"]
-pub struct WatcherGetWatch {
+pub struct WatcherGetWatch<'a> {
     client: Elasticsearch,
-    parts: WatcherGetWatchUrlParts,
+    parts: WatcherGetWatchUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl WatcherGetWatch {
-    pub fn new(client: Elasticsearch, parts: WatcherGetWatchUrlParts) -> Self {
+impl<'a> WatcherGetWatch<'a> {
+    pub fn new(client: Elasticsearch, parts: WatcherGetWatchUrlParts<'a>) -> Self {
         WatcherGetWatch {
             client,
             parts,
@@ -698,7 +698,7 @@ impl WatcherGetWatch {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -713,7 +713,7 @@ impl WatcherGetWatch {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -723,21 +723,21 @@ impl WatcherGetWatch {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -758,10 +758,10 @@ impl WatcherGetWatch {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Put Watch API"]
-pub enum WatcherPutWatchUrlParts {
-    Id(String),
+pub enum WatcherPutWatchUrlParts<'a> {
+    Id(&'a str),
 }
-impl WatcherPutWatchUrlParts {
+impl<'a> WatcherPutWatchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherPutWatchUrlParts::Id(ref id) => {
@@ -775,25 +775,25 @@ impl WatcherPutWatchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Put Watch API"]
-pub struct WatcherPutWatch<B> {
+pub struct WatcherPutWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherPutWatchUrlParts,
+    parts: WatcherPutWatchUrlParts<'a>,
     active: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
     version: Option<i64>,
 }
-impl<B> WatcherPutWatch<B>
+impl<'a, B> WatcherPutWatch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherPutWatchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherPutWatchUrlParts<'a>) -> Self {
         WatcherPutWatch {
             client,
             parts,
@@ -815,7 +815,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherPutWatch<T>
+    pub fn body<T>(self, body: T) -> WatcherPutWatch<'a, T>
     where
         T: Serialize,
     {
@@ -840,7 +840,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -865,7 +865,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -880,17 +880,17 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "active", skip_serializing_if = "Option::is_none")]
                 active: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "if_primary_term", skip_serializing_if = "Option::is_none")]
@@ -900,7 +900,7 @@ where
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
             }
@@ -939,17 +939,17 @@ impl WatcherStartUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Start API"]
-pub struct WatcherStart<B> {
+pub struct WatcherStart<'a, B> {
     client: Elasticsearch,
     parts: WatcherStartUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherStart<B>
+impl<'a, B> WatcherStart<'a, B>
 where
     B: Serialize,
 {
@@ -966,7 +966,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherStart<T>
+    pub fn body<T>(self, body: T) -> WatcherStart<'a, T>
     where
         T: Serialize,
     {
@@ -987,7 +987,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1002,7 +1002,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1012,21 +1012,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1047,11 +1047,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Watcher Stats API"]
-pub enum WatcherStatsUrlParts {
+pub enum WatcherStatsUrlParts<'a> {
     None,
-    Metric(Vec<String>),
+    Metric(&'a [&'a str]),
 }
-impl WatcherStatsUrlParts {
+impl<'a> WatcherStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             WatcherStatsUrlParts::None => "/_watcher/stats".into(),
@@ -1067,19 +1067,19 @@ impl WatcherStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Stats API"]
-pub struct WatcherStats {
+pub struct WatcherStats<'a> {
     client: Elasticsearch,
-    parts: WatcherStatsUrlParts,
+    parts: WatcherStatsUrlParts<'a>,
     emit_stacktraces: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    metric: Option<Vec<String>>,
+    metric: Option<&'a [&'a str]>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl WatcherStats {
-    pub fn new(client: Elasticsearch, parts: WatcherStatsUrlParts) -> Self {
+impl<'a> WatcherStats<'a> {
+    pub fn new(client: Elasticsearch, parts: WatcherStatsUrlParts<'a>) -> Self {
         WatcherStats {
             client,
             parts,
@@ -1103,7 +1103,7 @@ impl WatcherStats {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1113,7 +1113,7 @@ impl WatcherStats {
         self
     }
     #[doc = "Controls what additional stat metrics should be include in the response"]
-    pub fn metric(mut self, metric: Vec<String>) -> Self {
+    pub fn metric(mut self, metric: &'a [&'a str]) -> Self {
         self.metric = Some(metric);
         self
     }
@@ -1123,7 +1123,7 @@ impl WatcherStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1133,29 +1133,29 @@ impl WatcherStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "emit_stacktraces", skip_serializing_if = "Option::is_none")]
                 emit_stacktraces: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "metric",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                metric: Option<Vec<String>>,
+                metric: Option<&'a [&'a str]>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 emit_stacktraces: self.emit_stacktraces,
@@ -1190,17 +1190,17 @@ impl WatcherStopUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Watcher Stop API"]
-pub struct WatcherStop<B> {
+pub struct WatcherStop<'a, B> {
     client: Elasticsearch,
     parts: WatcherStopUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> WatcherStop<B>
+impl<'a, B> WatcherStop<'a, B>
 where
     B: Serialize,
 {
@@ -1217,7 +1217,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherStop<T>
+    pub fn body<T>(self, body: T) -> WatcherStop<'a, T>
     where
         T: Serialize,
     {
@@ -1238,7 +1238,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1253,7 +1253,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1263,21 +1263,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1304,37 +1304,46 @@ impl Watcher {
     pub fn new(client: Elasticsearch) -> Self {
         Watcher { client }
     }
-    pub fn ack_watch(&self, parts: WatcherAckWatchUrlParts) -> WatcherAckWatch<()> {
+    pub fn ack_watch<'a>(&self, parts: WatcherAckWatchUrlParts<'a>) -> WatcherAckWatch<'a, ()> {
         WatcherAckWatch::new(self.client.clone(), parts)
     }
-    pub fn activate_watch(&self, parts: WatcherActivateWatchUrlParts) -> WatcherActivateWatch<()> {
+    pub fn activate_watch<'a>(
+        &self,
+        parts: WatcherActivateWatchUrlParts<'a>,
+    ) -> WatcherActivateWatch<'a, ()> {
         WatcherActivateWatch::new(self.client.clone(), parts)
     }
-    pub fn deactivate_watch(
+    pub fn deactivate_watch<'a>(
         &self,
-        parts: WatcherDeactivateWatchUrlParts,
-    ) -> WatcherDeactivateWatch<()> {
+        parts: WatcherDeactivateWatchUrlParts<'a>,
+    ) -> WatcherDeactivateWatch<'a, ()> {
         WatcherDeactivateWatch::new(self.client.clone(), parts)
     }
-    pub fn delete_watch(&self, parts: WatcherDeleteWatchUrlParts) -> WatcherDeleteWatch {
+    pub fn delete_watch<'a>(
+        &self,
+        parts: WatcherDeleteWatchUrlParts<'a>,
+    ) -> WatcherDeleteWatch<'a> {
         WatcherDeleteWatch::new(self.client.clone(), parts)
     }
-    pub fn execute_watch(&self, parts: WatcherExecuteWatchUrlParts) -> WatcherExecuteWatch<()> {
+    pub fn execute_watch<'a>(
+        &self,
+        parts: WatcherExecuteWatchUrlParts<'a>,
+    ) -> WatcherExecuteWatch<'a, ()> {
         WatcherExecuteWatch::new(self.client.clone(), parts)
     }
-    pub fn get_watch(&self, parts: WatcherGetWatchUrlParts) -> WatcherGetWatch {
+    pub fn get_watch<'a>(&self, parts: WatcherGetWatchUrlParts<'a>) -> WatcherGetWatch<'a> {
         WatcherGetWatch::new(self.client.clone(), parts)
     }
-    pub fn put_watch(&self, parts: WatcherPutWatchUrlParts) -> WatcherPutWatch<()> {
+    pub fn put_watch<'a>(&self, parts: WatcherPutWatchUrlParts<'a>) -> WatcherPutWatch<'a, ()> {
         WatcherPutWatch::new(self.client.clone(), parts)
     }
-    pub fn start(&self) -> WatcherStart<()> {
+    pub fn start<'a>(&self) -> WatcherStart<'a, ()> {
         WatcherStart::new(self.client.clone())
     }
-    pub fn stats(&self, parts: WatcherStatsUrlParts) -> WatcherStats {
+    pub fn stats<'a>(&self, parts: WatcherStatsUrlParts<'a>) -> WatcherStats<'a> {
         WatcherStats::new(self.client.clone(), parts)
     }
-    pub fn stop(&self) -> WatcherStop<()> {
+    pub fn stop<'a>(&self) -> WatcherStop<'a, ()> {
         WatcherStop::new(self.client.clone())
     }
 }
