@@ -2,6 +2,7 @@
 // Licensed under Apache License, Version 2.0
 // https://github.com/seanmonstar/reqwest/blob/master/LICENSE-APACHE
 
+pub mod client;
 pub mod server;
 
 #[allow(unused)]

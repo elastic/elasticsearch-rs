@@ -1,27 +1,10 @@
-mod support;
+pub mod support;
 use support::*;
 
-use elasticsearch::{Elasticsearch, SearchUrlParts, Connection, ConnectionBuilder, Credentials};
+use elasticsearch::SearchUrlParts;
 
 use reqwest::StatusCode;
-use serde_json::json;
-use serde_json::Value;
-use url::Url;
-use sysinfo::{SystemExt};
-
-fn create_client(url: Url) -> Elasticsearch {
-    let mut connection_builder = ConnectionBuilder::new(url);
-
-    // check if the Fiddler process is running, and hook it up as a proxy if so.
-    let system = sysinfo::System::new();
-    if !system.get_process_by_name("Fiddler").is_empty() {
-        let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        connection_builder = connection_builder.proxy(proxy_url);
-    }
-
-    let connection = connection_builder.build().unwrap();
-    Elasticsearch::new(connection)
-}
+use serde_json::{json, Value};
 
 #[tokio::test]
 async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
@@ -34,10 +17,9 @@ async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), fa
         }
     });
 
-    let url = Url::parse(format!("http://{}", server.addr()).as_ref())?;
-    let client = create_client(url);
-    let response = client
-        .search(SearchUrlParts::None)
+    let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
+    let _response = client
+        .ping()
         .send()
         .await?;
 
@@ -46,7 +28,7 @@ async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), fa
 
 #[tokio::test]
 async fn search_with_body() -> Result<(), failure::Error> {
-    let client = create_client(Url::parse("http://localhost:9200").unwrap());
+    let client = client::create_default();
     let response = client
         .search(SearchUrlParts::None)
         .body(json!({
@@ -67,7 +49,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
 
 #[tokio::test]
 async fn search_with_no_body() -> Result<(), failure::Error> {
-    let client = create_client(Url::parse("http://localhost:9200").unwrap());
+    let client = client::create_default();
     let response = client
         .search(SearchUrlParts::None)
         .pretty(true)
@@ -88,7 +70,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 
 #[tokio::test]
 async fn cat_count() -> Result<(), failure::Error> {
-    let client = create_client(Url::parse("http://localhost:9200").unwrap());
+    let client = client::create_default();
     let response = client
         .cat()
         .health()
@@ -105,7 +87,7 @@ async fn cat_count() -> Result<(), failure::Error> {
 
 #[tokio::test]
 async fn serialize_slice_collection_on_querystring() -> Result<(), failure::Error> {
-    let client = create_client(Url::parse("http://localhost:9200").unwrap());
+    let client = client::create_default();
     let response = client
         .search(SearchUrlParts::None)
         .pretty(true)
@@ -125,7 +107,7 @@ async fn serialize_slice_collection_on_querystring() -> Result<(), failure::Erro
 
 #[tokio::test]
 async fn clone_search_with_body() -> Result<(), failure::Error> {
-    let client = create_client(Url::parse("http://localhost:9200").unwrap());
+    let client = client::create_default();
 
     let base_request = client
         .search(SearchUrlParts::None);
