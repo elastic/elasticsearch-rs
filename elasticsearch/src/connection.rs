@@ -128,6 +128,12 @@ impl ConnectionBuilder {
     }
 }
 
+static DEFAULT_USER_AGENT: &str = concat!("elasticsearch-rs/", env!("CARGO_PKG_VERSION"));
+
+static DEFAULT_CONTENT_TYPE: &str = "application/json";
+
+static DEFAULT_ACCEPT: &str = "application/json";
+
 /// A connection to an Elasticsearch node, used to send an API request
 #[derive(Debug, Clone)]
 pub struct Connection {
@@ -172,13 +178,9 @@ impl Connection {
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
         let mut headers = HeaderMap::new();
 
-        headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
-        headers.insert(ACCEPT, HeaderValue::from_static("application/json"));
-        // TODO: autogenerate user agent with version, based on version in Cargo.toml, which will align with the REST spec version of Elasticsearch
-        headers.insert(
-            USER_AGENT,
-            HeaderValue::from_static("elasticsearch-rs/0.1.0"),
-        );
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
+        headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
+        headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
 
         request_builder = request_builder.headers(headers);
 

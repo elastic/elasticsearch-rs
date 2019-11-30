@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Migration Deprecations API"]
-pub enum MigrationDeprecationsUrlParts {
+pub enum MigrationDeprecationsUrlParts<'a> {
     None,
-    Index(String),
+    Index(&'a str),
 }
-impl MigrationDeprecationsUrlParts {
+impl<'a> MigrationDeprecationsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MigrationDeprecationsUrlParts::None => "/_migration/deprecations".into(),
@@ -43,17 +43,17 @@ impl MigrationDeprecationsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Migration Deprecations API"]
-pub struct MigrationDeprecations {
+pub struct MigrationDeprecations<'a> {
     client: Elasticsearch,
-    parts: MigrationDeprecationsUrlParts,
+    parts: MigrationDeprecationsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl MigrationDeprecations {
-    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsUrlParts) -> Self {
+impl<'a> MigrationDeprecations<'a> {
+    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsUrlParts<'a>) -> Self {
         MigrationDeprecations {
             client,
             parts,
@@ -70,7 +70,7 @@ impl MigrationDeprecations {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -85,7 +85,7 @@ impl MigrationDeprecations {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -95,21 +95,21 @@ impl MigrationDeprecations {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -136,7 +136,10 @@ impl Migration {
     pub fn new(client: Elasticsearch) -> Self {
         Migration { client }
     }
-    pub fn deprecations(&self, parts: MigrationDeprecationsUrlParts) -> MigrationDeprecations {
+    pub fn deprecations<'a>(
+        &self,
+        parts: MigrationDeprecationsUrlParts<'a>,
+    ) -> MigrationDeprecations<'a> {
         MigrationDeprecations::new(self.client.clone(), parts)
     }
 }

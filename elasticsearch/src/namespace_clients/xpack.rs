@@ -35,17 +35,17 @@ impl XpackInfoUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Xpack Info API"]
-pub struct XpackInfo {
+pub struct XpackInfo<'a> {
     client: Elasticsearch,
     parts: XpackInfoUrlParts,
-    categories: Option<Vec<String>>,
+    categories: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl XpackInfo {
+impl<'a> XpackInfo<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         XpackInfo {
             client,
@@ -59,7 +59,7 @@ impl XpackInfo {
         }
     }
     #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
-    pub fn categories(mut self, categories: Vec<String>) -> Self {
+    pub fn categories(mut self, categories: &'a [&'a str]) -> Self {
         self.categories = Some(categories);
         self
     }
@@ -69,7 +69,7 @@ impl XpackInfo {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -84,7 +84,7 @@ impl XpackInfo {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -94,27 +94,27 @@ impl XpackInfo {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "categories",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                categories: Option<Vec<String>>,
+                categories: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 categories: self.categories,
@@ -148,17 +148,17 @@ impl XpackUsageUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Xpack Usage API"]
-pub struct XpackUsage {
+pub struct XpackUsage<'a> {
     client: Elasticsearch,
     parts: XpackUsageUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl XpackUsage {
+impl<'a> XpackUsage<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         XpackUsage {
             client,
@@ -177,7 +177,7 @@ impl XpackUsage {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -187,7 +187,7 @@ impl XpackUsage {
         self
     }
     #[doc = "Specify timeout for watch write operation"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -197,7 +197,7 @@ impl XpackUsage {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -207,23 +207,23 @@ impl XpackUsage {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -251,10 +251,10 @@ impl Xpack {
     pub fn new(client: Elasticsearch) -> Self {
         Xpack { client }
     }
-    pub fn info(&self) -> XpackInfo {
+    pub fn info<'a>(&self) -> XpackInfo<'a> {
         XpackInfo::new(self.client.clone())
     }
-    pub fn usage(&self) -> XpackUsage {
+    pub fn usage<'a>(&self) -> XpackUsage<'a> {
         XpackUsage::new(self.client.clone())
     }
 }

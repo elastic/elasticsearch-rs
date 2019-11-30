@@ -35,16 +35,16 @@ impl SecurityAuthenticateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Authenticate API"]
-pub struct SecurityAuthenticate {
+pub struct SecurityAuthenticate<'a> {
     client: Elasticsearch,
     parts: SecurityAuthenticateUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityAuthenticate {
+impl<'a> SecurityAuthenticate<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
@@ -62,7 +62,7 @@ impl SecurityAuthenticate {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -77,7 +77,7 @@ impl SecurityAuthenticate {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -87,21 +87,21 @@ impl SecurityAuthenticate {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -122,11 +122,11 @@ impl SecurityAuthenticate {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Change Password API"]
-pub enum SecurityChangePasswordUrlParts {
-    Username(String),
+pub enum SecurityChangePasswordUrlParts<'a> {
+    Username(&'a str),
     None,
 }
-impl SecurityChangePasswordUrlParts {
+impl<'a> SecurityChangePasswordUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityChangePasswordUrlParts::Username(ref username) => {
@@ -142,22 +142,22 @@ impl SecurityChangePasswordUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Change Password API"]
-pub struct SecurityChangePassword<B> {
+pub struct SecurityChangePassword<'a, B> {
     client: Elasticsearch,
-    parts: SecurityChangePasswordUrlParts,
+    parts: SecurityChangePasswordUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityChangePassword<B>
+impl<'a, B> SecurityChangePassword<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordUrlParts<'a>) -> Self {
         SecurityChangePassword {
             client,
             parts,
@@ -171,7 +171,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityChangePassword<T>
+    pub fn body<T>(self, body: T) -> SecurityChangePassword<'a, T>
     where
         T: Serialize,
     {
@@ -193,7 +193,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -213,7 +213,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -223,15 +223,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -239,7 +239,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -261,10 +261,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Clear Cached Realms API"]
-pub enum SecurityClearCachedRealmsUrlParts {
-    Realms(Vec<String>),
+pub enum SecurityClearCachedRealmsUrlParts<'a> {
+    Realms(&'a [&'a str]),
 }
-impl SecurityClearCachedRealmsUrlParts {
+impl<'a> SecurityClearCachedRealmsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityClearCachedRealmsUrlParts::Realms(ref realms) => {
@@ -280,22 +280,22 @@ impl SecurityClearCachedRealmsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Clear Cached Realms API"]
-pub struct SecurityClearCachedRealms<B> {
+pub struct SecurityClearCachedRealms<'a, B> {
     client: Elasticsearch,
-    parts: SecurityClearCachedRealmsUrlParts,
+    parts: SecurityClearCachedRealmsUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    usernames: Option<Vec<String>>,
+    source: Option<&'a str>,
+    usernames: Option<&'a [&'a str]>,
 }
-impl<B> SecurityClearCachedRealms<B>
+impl<'a, B> SecurityClearCachedRealms<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsUrlParts<'a>) -> Self {
         SecurityClearCachedRealms {
             client,
             parts,
@@ -309,7 +309,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<T>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<'a, T>
     where
         T: Serialize,
     {
@@ -331,7 +331,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -346,12 +346,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Comma-separated list of usernames to clear from the cache"]
-    pub fn usernames(mut self, usernames: Vec<String>) -> Self {
+    pub fn usernames(mut self, usernames: &'a [&'a str]) -> Self {
         self.usernames = Some(usernames);
         self
     }
@@ -361,27 +361,27 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "usernames",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                usernames: Option<Vec<String>>,
+                usernames: Option<&'a [&'a str]>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -403,10 +403,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Clear Cached Roles API"]
-pub enum SecurityClearCachedRolesUrlParts {
-    Name(Vec<String>),
+pub enum SecurityClearCachedRolesUrlParts<'a> {
+    Name(&'a [&'a str]),
 }
-impl SecurityClearCachedRolesUrlParts {
+impl<'a> SecurityClearCachedRolesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityClearCachedRolesUrlParts::Name(ref name) => {
@@ -422,21 +422,21 @@ impl SecurityClearCachedRolesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Clear Cached Roles API"]
-pub struct SecurityClearCachedRoles<B> {
+pub struct SecurityClearCachedRoles<'a, B> {
     client: Elasticsearch,
-    parts: SecurityClearCachedRolesUrlParts,
+    parts: SecurityClearCachedRolesUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityClearCachedRoles<B>
+impl<'a, B> SecurityClearCachedRoles<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesUrlParts<'a>) -> Self {
         SecurityClearCachedRoles {
             client,
             parts,
@@ -449,7 +449,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<T>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<'a, T>
     where
         T: Serialize,
     {
@@ -470,7 +470,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -485,7 +485,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -495,21 +495,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -542,18 +542,18 @@ impl SecurityCreateApiKeyUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Create Api Key API"]
-pub struct SecurityCreateApiKey<B> {
+pub struct SecurityCreateApiKey<'a, B> {
     client: Elasticsearch,
     parts: SecurityCreateApiKeyUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityCreateApiKey<B>
+impl<'a, B> SecurityCreateApiKey<'a, B>
 where
     B: Serialize,
 {
@@ -571,7 +571,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<T>
+    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<'a, T>
     where
         T: Serialize,
     {
@@ -593,7 +593,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -613,7 +613,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -623,15 +623,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -639,7 +639,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -661,10 +661,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Delete Privileges API"]
-pub enum SecurityDeletePrivilegesUrlParts {
-    ApplicationName(String, String),
+pub enum SecurityDeletePrivilegesUrlParts<'a> {
+    ApplicationName(&'a str, &'a str),
 }
-impl SecurityDeletePrivilegesUrlParts {
+impl<'a> SecurityDeletePrivilegesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityDeletePrivilegesUrlParts::ApplicationName(ref application, ref name) => {
@@ -680,18 +680,18 @@ impl SecurityDeletePrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Delete Privileges API"]
-pub struct SecurityDeletePrivileges {
+pub struct SecurityDeletePrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityDeletePrivilegesUrlParts,
+    parts: SecurityDeletePrivilegesUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityDeletePrivileges {
-    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesUrlParts) -> Self {
+impl<'a> SecurityDeletePrivileges<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesUrlParts<'a>) -> Self {
         SecurityDeletePrivileges {
             client,
             parts,
@@ -709,7 +709,7 @@ impl SecurityDeletePrivileges {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -729,7 +729,7 @@ impl SecurityDeletePrivileges {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -739,15 +739,15 @@ impl SecurityDeletePrivileges {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -755,7 +755,7 @@ impl SecurityDeletePrivileges {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -777,10 +777,10 @@ impl SecurityDeletePrivileges {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Delete Role API"]
-pub enum SecurityDeleteRoleUrlParts {
-    Name(String),
+pub enum SecurityDeleteRoleUrlParts<'a> {
+    Name(&'a str),
 }
-impl SecurityDeleteRoleUrlParts {
+impl<'a> SecurityDeleteRoleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteRoleUrlParts::Name(ref name) => {
@@ -794,18 +794,18 @@ impl SecurityDeleteRoleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Delete Role API"]
-pub struct SecurityDeleteRole {
+pub struct SecurityDeleteRole<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteRoleUrlParts,
+    parts: SecurityDeleteRoleUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityDeleteRole {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleUrlParts) -> Self {
+impl<'a> SecurityDeleteRole<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleUrlParts<'a>) -> Self {
         SecurityDeleteRole {
             client,
             parts,
@@ -823,7 +823,7 @@ impl SecurityDeleteRole {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -843,7 +843,7 @@ impl SecurityDeleteRole {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -853,15 +853,15 @@ impl SecurityDeleteRole {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -869,7 +869,7 @@ impl SecurityDeleteRole {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -891,10 +891,10 @@ impl SecurityDeleteRole {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Delete Role Mapping API"]
-pub enum SecurityDeleteRoleMappingUrlParts {
-    Name(String),
+pub enum SecurityDeleteRoleMappingUrlParts<'a> {
+    Name(&'a str),
 }
-impl SecurityDeleteRoleMappingUrlParts {
+impl<'a> SecurityDeleteRoleMappingUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteRoleMappingUrlParts::Name(ref name) => {
@@ -908,18 +908,18 @@ impl SecurityDeleteRoleMappingUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Delete Role Mapping API"]
-pub struct SecurityDeleteRoleMapping {
+pub struct SecurityDeleteRoleMapping<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteRoleMappingUrlParts,
+    parts: SecurityDeleteRoleMappingUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityDeleteRoleMapping {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingUrlParts) -> Self {
+impl<'a> SecurityDeleteRoleMapping<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingUrlParts<'a>) -> Self {
         SecurityDeleteRoleMapping {
             client,
             parts,
@@ -937,7 +937,7 @@ impl SecurityDeleteRoleMapping {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -957,7 +957,7 @@ impl SecurityDeleteRoleMapping {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -967,15 +967,15 @@ impl SecurityDeleteRoleMapping {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -983,7 +983,7 @@ impl SecurityDeleteRoleMapping {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1005,10 +1005,10 @@ impl SecurityDeleteRoleMapping {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Delete User API"]
-pub enum SecurityDeleteUserUrlParts {
-    Username(String),
+pub enum SecurityDeleteUserUrlParts<'a> {
+    Username(&'a str),
 }
-impl SecurityDeleteUserUrlParts {
+impl<'a> SecurityDeleteUserUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityDeleteUserUrlParts::Username(ref username) => {
@@ -1022,18 +1022,18 @@ impl SecurityDeleteUserUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Delete User API"]
-pub struct SecurityDeleteUser {
+pub struct SecurityDeleteUser<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteUserUrlParts,
+    parts: SecurityDeleteUserUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityDeleteUser {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserUrlParts) -> Self {
+impl<'a> SecurityDeleteUser<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserUrlParts<'a>) -> Self {
         SecurityDeleteUser {
             client,
             parts,
@@ -1051,7 +1051,7 @@ impl SecurityDeleteUser {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1071,7 +1071,7 @@ impl SecurityDeleteUser {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1081,15 +1081,15 @@ impl SecurityDeleteUser {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -1097,7 +1097,7 @@ impl SecurityDeleteUser {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1119,10 +1119,10 @@ impl SecurityDeleteUser {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Disable User API"]
-pub enum SecurityDisableUserUrlParts {
-    Username(String),
+pub enum SecurityDisableUserUrlParts<'a> {
+    Username(&'a str),
 }
-impl SecurityDisableUserUrlParts {
+impl<'a> SecurityDisableUserUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityDisableUserUrlParts::Username(ref username) => {
@@ -1137,22 +1137,22 @@ impl SecurityDisableUserUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Disable User API"]
-pub struct SecurityDisableUser<B> {
+pub struct SecurityDisableUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityDisableUserUrlParts,
+    parts: SecurityDisableUserUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityDisableUser<B>
+impl<'a, B> SecurityDisableUser<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityDisableUserUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDisableUserUrlParts<'a>) -> Self {
         SecurityDisableUser {
             client,
             parts,
@@ -1166,7 +1166,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityDisableUser<T>
+    pub fn body<T>(self, body: T) -> SecurityDisableUser<'a, T>
     where
         T: Serialize,
     {
@@ -1188,7 +1188,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1208,7 +1208,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1218,15 +1218,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -1234,7 +1234,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1256,10 +1256,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Enable User API"]
-pub enum SecurityEnableUserUrlParts {
-    Username(String),
+pub enum SecurityEnableUserUrlParts<'a> {
+    Username(&'a str),
 }
-impl SecurityEnableUserUrlParts {
+impl<'a> SecurityEnableUserUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityEnableUserUrlParts::Username(ref username) => {
@@ -1274,22 +1274,22 @@ impl SecurityEnableUserUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Enable User API"]
-pub struct SecurityEnableUser<B> {
+pub struct SecurityEnableUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityEnableUserUrlParts,
+    parts: SecurityEnableUserUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityEnableUser<B>
+impl<'a, B> SecurityEnableUser<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityEnableUserUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityEnableUserUrlParts<'a>) -> Self {
         SecurityEnableUser {
             client,
             parts,
@@ -1303,7 +1303,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityEnableUser<T>
+    pub fn body<T>(self, body: T) -> SecurityEnableUser<'a, T>
     where
         T: Serialize,
     {
@@ -1325,7 +1325,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1345,7 +1345,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1355,15 +1355,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -1371,7 +1371,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1405,20 +1405,20 @@ impl SecurityGetApiKeyUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Api Key API"]
-pub struct SecurityGetApiKey {
+pub struct SecurityGetApiKey<'a> {
     client: Elasticsearch,
     parts: SecurityGetApiKeyUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    id: Option<String>,
-    name: Option<String>,
+    id: Option<&'a str>,
+    name: Option<&'a str>,
     pretty: Option<bool>,
-    realm_name: Option<String>,
-    source: Option<String>,
-    username: Option<String>,
+    realm_name: Option<&'a str>,
+    source: Option<&'a str>,
+    username: Option<&'a str>,
 }
-impl SecurityGetApiKey {
+impl<'a> SecurityGetApiKey<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
@@ -1440,7 +1440,7 @@ impl SecurityGetApiKey {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1450,12 +1450,12 @@ impl SecurityGetApiKey {
         self
     }
     #[doc = "API key id of the API key to be retrieved"]
-    pub fn id(mut self, id: String) -> Self {
+    pub fn id(mut self, id: &'a str) -> Self {
         self.id = Some(id);
         self
     }
     #[doc = "API key name of the API key to be retrieved"]
-    pub fn name(mut self, name: String) -> Self {
+    pub fn name(mut self, name: &'a str) -> Self {
         self.name = Some(name);
         self
     }
@@ -1465,17 +1465,17 @@ impl SecurityGetApiKey {
         self
     }
     #[doc = "realm name of the user who created this API key to be retrieved"]
-    pub fn realm_name(mut self, realm_name: String) -> Self {
+    pub fn realm_name(mut self, realm_name: &'a str) -> Self {
         self.realm_name = Some(realm_name);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "user name of the user who created this API key to be retrieved"]
-    pub fn username(mut self, username: String) -> Self {
+    pub fn username(mut self, username: &'a str) -> Self {
         self.username = Some(username);
         self
     }
@@ -1485,29 +1485,29 @@ impl SecurityGetApiKey {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
-                id: Option<String>,
+                id: Option<&'a str>,
                 #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
-                name: Option<String>,
+                name: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realm_name", skip_serializing_if = "Option::is_none")]
-                realm_name: Option<String>,
+                realm_name: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "username", skip_serializing_if = "Option::is_none")]
-                username: Option<String>,
+                username: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1544,16 +1544,16 @@ impl SecurityGetBuiltinPrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Builtin Privileges API"]
-pub struct SecurityGetBuiltinPrivileges {
+pub struct SecurityGetBuiltinPrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetBuiltinPrivileges {
+impl<'a> SecurityGetBuiltinPrivileges<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
@@ -1571,7 +1571,7 @@ impl SecurityGetBuiltinPrivileges {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1586,7 +1586,7 @@ impl SecurityGetBuiltinPrivileges {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1596,21 +1596,21 @@ impl SecurityGetBuiltinPrivileges {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1631,12 +1631,12 @@ impl SecurityGetBuiltinPrivileges {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Get Privileges API"]
-pub enum SecurityGetPrivilegesUrlParts {
+pub enum SecurityGetPrivilegesUrlParts<'a> {
     None,
-    Application(String),
-    ApplicationName(String, String),
+    Application(&'a str),
+    ApplicationName(&'a str, &'a str),
 }
-impl SecurityGetPrivilegesUrlParts {
+impl<'a> SecurityGetPrivilegesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityGetPrivilegesUrlParts::None => "/_security/privilege".into(),
@@ -1659,17 +1659,17 @@ impl SecurityGetPrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Privileges API"]
-pub struct SecurityGetPrivileges {
+pub struct SecurityGetPrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityGetPrivilegesUrlParts,
+    parts: SecurityGetPrivilegesUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetPrivileges {
-    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesUrlParts) -> Self {
+impl<'a> SecurityGetPrivileges<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesUrlParts<'a>) -> Self {
         SecurityGetPrivileges {
             client,
             parts,
@@ -1686,7 +1686,7 @@ impl SecurityGetPrivileges {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1701,7 +1701,7 @@ impl SecurityGetPrivileges {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1711,21 +1711,21 @@ impl SecurityGetPrivileges {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1746,11 +1746,11 @@ impl SecurityGetPrivileges {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Get Role API"]
-pub enum SecurityGetRoleUrlParts {
-    Name(String),
+pub enum SecurityGetRoleUrlParts<'a> {
+    Name(&'a str),
     None,
 }
-impl SecurityGetRoleUrlParts {
+impl<'a> SecurityGetRoleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleUrlParts::Name(ref name) => {
@@ -1765,17 +1765,17 @@ impl SecurityGetRoleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Role API"]
-pub struct SecurityGetRole {
+pub struct SecurityGetRole<'a> {
     client: Elasticsearch,
-    parts: SecurityGetRoleUrlParts,
+    parts: SecurityGetRoleUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetRole {
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleUrlParts) -> Self {
+impl<'a> SecurityGetRole<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleUrlParts<'a>) -> Self {
         SecurityGetRole {
             client,
             parts,
@@ -1792,7 +1792,7 @@ impl SecurityGetRole {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1807,7 +1807,7 @@ impl SecurityGetRole {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1817,21 +1817,21 @@ impl SecurityGetRole {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1852,11 +1852,11 @@ impl SecurityGetRole {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Get Role Mapping API"]
-pub enum SecurityGetRoleMappingUrlParts {
-    Name(String),
+pub enum SecurityGetRoleMappingUrlParts<'a> {
+    Name(&'a str),
     None,
 }
-impl SecurityGetRoleMappingUrlParts {
+impl<'a> SecurityGetRoleMappingUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityGetRoleMappingUrlParts::Name(ref name) => {
@@ -1871,17 +1871,17 @@ impl SecurityGetRoleMappingUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Role Mapping API"]
-pub struct SecurityGetRoleMapping {
+pub struct SecurityGetRoleMapping<'a> {
     client: Elasticsearch,
-    parts: SecurityGetRoleMappingUrlParts,
+    parts: SecurityGetRoleMappingUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetRoleMapping {
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingUrlParts) -> Self {
+impl<'a> SecurityGetRoleMapping<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingUrlParts<'a>) -> Self {
         SecurityGetRoleMapping {
             client,
             parts,
@@ -1898,7 +1898,7 @@ impl SecurityGetRoleMapping {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1913,7 +1913,7 @@ impl SecurityGetRoleMapping {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1923,21 +1923,21 @@ impl SecurityGetRoleMapping {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1970,17 +1970,17 @@ impl SecurityGetTokenUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get Token API"]
-pub struct SecurityGetToken<B> {
+pub struct SecurityGetToken<'a, B> {
     client: Elasticsearch,
     parts: SecurityGetTokenUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityGetToken<B>
+impl<'a, B> SecurityGetToken<'a, B>
 where
     B: Serialize,
 {
@@ -1997,7 +1997,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityGetToken<T>
+    pub fn body<T>(self, body: T) -> SecurityGetToken<'a, T>
     where
         T: Serialize,
     {
@@ -2018,7 +2018,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2033,7 +2033,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2043,21 +2043,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2078,11 +2078,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Get User API"]
-pub enum SecurityGetUserUrlParts {
-    Username(Vec<String>),
+pub enum SecurityGetUserUrlParts<'a> {
+    Username(&'a [&'a str]),
     None,
 }
-impl SecurityGetUserUrlParts {
+impl<'a> SecurityGetUserUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityGetUserUrlParts::Username(ref username) => {
@@ -2098,17 +2098,17 @@ impl SecurityGetUserUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get User API"]
-pub struct SecurityGetUser {
+pub struct SecurityGetUser<'a> {
     client: Elasticsearch,
-    parts: SecurityGetUserUrlParts,
+    parts: SecurityGetUserUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetUser {
-    pub fn new(client: Elasticsearch, parts: SecurityGetUserUrlParts) -> Self {
+impl<'a> SecurityGetUser<'a> {
+    pub fn new(client: Elasticsearch, parts: SecurityGetUserUrlParts<'a>) -> Self {
         SecurityGetUser {
             client,
             parts,
@@ -2125,7 +2125,7 @@ impl SecurityGetUser {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2140,7 +2140,7 @@ impl SecurityGetUser {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2150,21 +2150,21 @@ impl SecurityGetUser {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2197,16 +2197,16 @@ impl SecurityGetUserPrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Get User Privileges API"]
-pub struct SecurityGetUserPrivileges {
+pub struct SecurityGetUserPrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityGetUserPrivilegesUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SecurityGetUserPrivileges {
+impl<'a> SecurityGetUserPrivileges<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
@@ -2224,7 +2224,7 @@ impl SecurityGetUserPrivileges {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2239,7 +2239,7 @@ impl SecurityGetUserPrivileges {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2249,21 +2249,21 @@ impl SecurityGetUserPrivileges {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2284,11 +2284,11 @@ impl SecurityGetUserPrivileges {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Has Privileges API"]
-pub enum SecurityHasPrivilegesUrlParts {
+pub enum SecurityHasPrivilegesUrlParts<'a> {
     None,
-    User(String),
+    User(&'a str),
 }
-impl SecurityHasPrivilegesUrlParts {
+impl<'a> SecurityHasPrivilegesUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityHasPrivilegesUrlParts::None => "/_security/user/_has_privileges".into(),
@@ -2304,21 +2304,21 @@ impl SecurityHasPrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Has Privileges API"]
-pub struct SecurityHasPrivileges<B> {
+pub struct SecurityHasPrivileges<'a, B> {
     client: Elasticsearch,
-    parts: SecurityHasPrivilegesUrlParts,
+    parts: SecurityHasPrivilegesUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityHasPrivileges<B>
+impl<'a, B> SecurityHasPrivileges<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesUrlParts<'a>) -> Self {
         SecurityHasPrivileges {
             client,
             parts,
@@ -2331,7 +2331,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<T>
+    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<'a, T>
     where
         T: Serialize,
     {
@@ -2352,7 +2352,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2367,7 +2367,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2380,21 +2380,21 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2427,17 +2427,17 @@ impl SecurityInvalidateApiKeyUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Invalidate Api Key API"]
-pub struct SecurityInvalidateApiKey<B> {
+pub struct SecurityInvalidateApiKey<'a, B> {
     client: Elasticsearch,
     parts: SecurityInvalidateApiKeyUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityInvalidateApiKey<B>
+impl<'a, B> SecurityInvalidateApiKey<'a, B>
 where
     B: Serialize,
 {
@@ -2454,7 +2454,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<T>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<'a, T>
     where
         T: Serialize,
     {
@@ -2475,7 +2475,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2490,7 +2490,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2500,21 +2500,21 @@ where
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2547,17 +2547,17 @@ impl SecurityInvalidateTokenUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Invalidate Token API"]
-pub struct SecurityInvalidateToken<B> {
+pub struct SecurityInvalidateToken<'a, B> {
     client: Elasticsearch,
     parts: SecurityInvalidateTokenUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityInvalidateToken<B>
+impl<'a, B> SecurityInvalidateToken<'a, B>
 where
     B: Serialize,
 {
@@ -2574,7 +2574,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<T>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<'a, T>
     where
         T: Serialize,
     {
@@ -2595,7 +2595,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2610,7 +2610,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2620,21 +2620,21 @@ where
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2667,18 +2667,18 @@ impl SecurityPutPrivilegesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Put Privileges API"]
-pub struct SecurityPutPrivileges<B> {
+pub struct SecurityPutPrivileges<'a, B> {
     client: Elasticsearch,
     parts: SecurityPutPrivilegesUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityPutPrivileges<B>
+impl<'a, B> SecurityPutPrivileges<'a, B>
 where
     B: Serialize,
 {
@@ -2696,7 +2696,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<T>
+    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<'a, T>
     where
         T: Serialize,
     {
@@ -2718,7 +2718,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2738,7 +2738,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2748,15 +2748,15 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -2764,7 +2764,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2786,10 +2786,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Put Role API"]
-pub enum SecurityPutRoleUrlParts {
-    Name(String),
+pub enum SecurityPutRoleUrlParts<'a> {
+    Name(&'a str),
 }
-impl SecurityPutRoleUrlParts {
+impl<'a> SecurityPutRoleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityPutRoleUrlParts::Name(ref name) => {
@@ -2803,22 +2803,22 @@ impl SecurityPutRoleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Put Role API"]
-pub struct SecurityPutRole<B> {
+pub struct SecurityPutRole<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutRoleUrlParts,
+    parts: SecurityPutRoleUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityPutRole<B>
+impl<'a, B> SecurityPutRole<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleUrlParts<'a>) -> Self {
         SecurityPutRole {
             client,
             parts,
@@ -2832,7 +2832,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRole<T>
+    pub fn body<T>(self, body: T) -> SecurityPutRole<'a, T>
     where
         T: Serialize,
     {
@@ -2854,7 +2854,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2874,7 +2874,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2884,15 +2884,15 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -2900,7 +2900,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -2922,10 +2922,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Put Role Mapping API"]
-pub enum SecurityPutRoleMappingUrlParts {
-    Name(String),
+pub enum SecurityPutRoleMappingUrlParts<'a> {
+    Name(&'a str),
 }
-impl SecurityPutRoleMappingUrlParts {
+impl<'a> SecurityPutRoleMappingUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityPutRoleMappingUrlParts::Name(ref name) => {
@@ -2939,22 +2939,22 @@ impl SecurityPutRoleMappingUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Put Role Mapping API"]
-pub struct SecurityPutRoleMapping<B> {
+pub struct SecurityPutRoleMapping<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutRoleMappingUrlParts,
+    parts: SecurityPutRoleMappingUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityPutRoleMapping<B>
+impl<'a, B> SecurityPutRoleMapping<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingUrlParts<'a>) -> Self {
         SecurityPutRoleMapping {
             client,
             parts,
@@ -2968,7 +2968,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<T>
+    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<'a, T>
     where
         T: Serialize,
     {
@@ -2990,7 +2990,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3010,7 +3010,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3020,15 +3020,15 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -3036,7 +3036,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -3058,10 +3058,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Security Put User API"]
-pub enum SecurityPutUserUrlParts {
-    Username(String),
+pub enum SecurityPutUserUrlParts<'a> {
+    Username(&'a str),
 }
-impl SecurityPutUserUrlParts {
+impl<'a> SecurityPutUserUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SecurityPutUserUrlParts::Username(ref username) => {
@@ -3075,22 +3075,22 @@ impl SecurityPutUserUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Security Put User API"]
-pub struct SecurityPutUser<B> {
+pub struct SecurityPutUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutUserUrlParts,
+    parts: SecurityPutUserUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> SecurityPutUser<B>
+impl<'a, B> SecurityPutUser<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutUserUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutUserUrlParts<'a>) -> Self {
         SecurityPutUser {
             client,
             parts,
@@ -3104,7 +3104,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutUser<T>
+    pub fn body<T>(self, body: T) -> SecurityPutUser<'a, T>
     where
         T: Serialize,
     {
@@ -3126,7 +3126,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3146,7 +3146,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3156,15 +3156,15 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -3172,7 +3172,7 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -3200,106 +3200,115 @@ impl Security {
     pub fn new(client: Elasticsearch) -> Self {
         Security { client }
     }
-    pub fn authenticate(&self) -> SecurityAuthenticate {
+    pub fn authenticate<'a>(&self) -> SecurityAuthenticate<'a> {
         SecurityAuthenticate::new(self.client.clone())
     }
-    pub fn change_password(
+    pub fn change_password<'a>(
         &self,
-        parts: SecurityChangePasswordUrlParts,
-    ) -> SecurityChangePassword<()> {
+        parts: SecurityChangePasswordUrlParts<'a>,
+    ) -> SecurityChangePassword<'a, ()> {
         SecurityChangePassword::new(self.client.clone(), parts)
     }
-    pub fn clear_cached_realms(
+    pub fn clear_cached_realms<'a>(
         &self,
-        parts: SecurityClearCachedRealmsUrlParts,
-    ) -> SecurityClearCachedRealms<()> {
+        parts: SecurityClearCachedRealmsUrlParts<'a>,
+    ) -> SecurityClearCachedRealms<'a, ()> {
         SecurityClearCachedRealms::new(self.client.clone(), parts)
     }
-    pub fn clear_cached_roles(
+    pub fn clear_cached_roles<'a>(
         &self,
-        parts: SecurityClearCachedRolesUrlParts,
-    ) -> SecurityClearCachedRoles<()> {
+        parts: SecurityClearCachedRolesUrlParts<'a>,
+    ) -> SecurityClearCachedRoles<'a, ()> {
         SecurityClearCachedRoles::new(self.client.clone(), parts)
     }
-    pub fn create_api_key(&self) -> SecurityCreateApiKey<()> {
+    pub fn create_api_key<'a>(&self) -> SecurityCreateApiKey<'a, ()> {
         SecurityCreateApiKey::new(self.client.clone())
     }
-    pub fn delete_privileges(
+    pub fn delete_privileges<'a>(
         &self,
-        parts: SecurityDeletePrivilegesUrlParts,
-    ) -> SecurityDeletePrivileges {
+        parts: SecurityDeletePrivilegesUrlParts<'a>,
+    ) -> SecurityDeletePrivileges<'a> {
         SecurityDeletePrivileges::new(self.client.clone(), parts)
     }
-    pub fn delete_role(&self, parts: SecurityDeleteRoleUrlParts) -> SecurityDeleteRole {
+    pub fn delete_role<'a>(&self, parts: SecurityDeleteRoleUrlParts<'a>) -> SecurityDeleteRole<'a> {
         SecurityDeleteRole::new(self.client.clone(), parts)
     }
-    pub fn delete_role_mapping(
+    pub fn delete_role_mapping<'a>(
         &self,
-        parts: SecurityDeleteRoleMappingUrlParts,
-    ) -> SecurityDeleteRoleMapping {
+        parts: SecurityDeleteRoleMappingUrlParts<'a>,
+    ) -> SecurityDeleteRoleMapping<'a> {
         SecurityDeleteRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn delete_user(&self, parts: SecurityDeleteUserUrlParts) -> SecurityDeleteUser {
+    pub fn delete_user<'a>(&self, parts: SecurityDeleteUserUrlParts<'a>) -> SecurityDeleteUser<'a> {
         SecurityDeleteUser::new(self.client.clone(), parts)
     }
-    pub fn disable_user(&self, parts: SecurityDisableUserUrlParts) -> SecurityDisableUser<()> {
+    pub fn disable_user<'a>(
+        &self,
+        parts: SecurityDisableUserUrlParts<'a>,
+    ) -> SecurityDisableUser<'a, ()> {
         SecurityDisableUser::new(self.client.clone(), parts)
     }
-    pub fn enable_user(&self, parts: SecurityEnableUserUrlParts) -> SecurityEnableUser<()> {
+    pub fn enable_user<'a>(
+        &self,
+        parts: SecurityEnableUserUrlParts<'a>,
+    ) -> SecurityEnableUser<'a, ()> {
         SecurityEnableUser::new(self.client.clone(), parts)
     }
-    pub fn get_api_key(&self) -> SecurityGetApiKey {
+    pub fn get_api_key<'a>(&self) -> SecurityGetApiKey<'a> {
         SecurityGetApiKey::new(self.client.clone())
     }
-    pub fn get_builtin_privileges(&self) -> SecurityGetBuiltinPrivileges {
+    pub fn get_builtin_privileges<'a>(&self) -> SecurityGetBuiltinPrivileges<'a> {
         SecurityGetBuiltinPrivileges::new(self.client.clone())
     }
-    pub fn get_privileges(&self, parts: SecurityGetPrivilegesUrlParts) -> SecurityGetPrivileges {
+    pub fn get_privileges<'a>(
+        &self,
+        parts: SecurityGetPrivilegesUrlParts<'a>,
+    ) -> SecurityGetPrivileges<'a> {
         SecurityGetPrivileges::new(self.client.clone(), parts)
     }
-    pub fn get_role(&self, parts: SecurityGetRoleUrlParts) -> SecurityGetRole {
+    pub fn get_role<'a>(&self, parts: SecurityGetRoleUrlParts<'a>) -> SecurityGetRole<'a> {
         SecurityGetRole::new(self.client.clone(), parts)
     }
-    pub fn get_role_mapping(
+    pub fn get_role_mapping<'a>(
         &self,
-        parts: SecurityGetRoleMappingUrlParts,
-    ) -> SecurityGetRoleMapping {
+        parts: SecurityGetRoleMappingUrlParts<'a>,
+    ) -> SecurityGetRoleMapping<'a> {
         SecurityGetRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn get_token(&self) -> SecurityGetToken<()> {
+    pub fn get_token<'a>(&self) -> SecurityGetToken<'a, ()> {
         SecurityGetToken::new(self.client.clone())
     }
-    pub fn get_user(&self, parts: SecurityGetUserUrlParts) -> SecurityGetUser {
+    pub fn get_user<'a>(&self, parts: SecurityGetUserUrlParts<'a>) -> SecurityGetUser<'a> {
         SecurityGetUser::new(self.client.clone(), parts)
     }
-    pub fn get_user_privileges(&self) -> SecurityGetUserPrivileges {
+    pub fn get_user_privileges<'a>(&self) -> SecurityGetUserPrivileges<'a> {
         SecurityGetUserPrivileges::new(self.client.clone())
     }
-    pub fn has_privileges(
+    pub fn has_privileges<'a>(
         &self,
-        parts: SecurityHasPrivilegesUrlParts,
-    ) -> SecurityHasPrivileges<()> {
+        parts: SecurityHasPrivilegesUrlParts<'a>,
+    ) -> SecurityHasPrivileges<'a, ()> {
         SecurityHasPrivileges::new(self.client.clone(), parts)
     }
-    pub fn invalidate_api_key(&self) -> SecurityInvalidateApiKey<()> {
+    pub fn invalidate_api_key<'a>(&self) -> SecurityInvalidateApiKey<'a, ()> {
         SecurityInvalidateApiKey::new(self.client.clone())
     }
-    pub fn invalidate_token(&self) -> SecurityInvalidateToken<()> {
+    pub fn invalidate_token<'a>(&self) -> SecurityInvalidateToken<'a, ()> {
         SecurityInvalidateToken::new(self.client.clone())
     }
-    pub fn put_privileges(&self) -> SecurityPutPrivileges<()> {
+    pub fn put_privileges<'a>(&self) -> SecurityPutPrivileges<'a, ()> {
         SecurityPutPrivileges::new(self.client.clone())
     }
-    pub fn put_role(&self, parts: SecurityPutRoleUrlParts) -> SecurityPutRole<()> {
+    pub fn put_role<'a>(&self, parts: SecurityPutRoleUrlParts<'a>) -> SecurityPutRole<'a, ()> {
         SecurityPutRole::new(self.client.clone(), parts)
     }
-    pub fn put_role_mapping(
+    pub fn put_role_mapping<'a>(
         &self,
-        parts: SecurityPutRoleMappingUrlParts,
-    ) -> SecurityPutRoleMapping<()> {
+        parts: SecurityPutRoleMappingUrlParts<'a>,
+    ) -> SecurityPutRoleMapping<'a, ()> {
         SecurityPutRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn put_user(&self, parts: SecurityPutUserUrlParts) -> SecurityPutUser<()> {
+    pub fn put_user<'a>(&self, parts: SecurityPutUserUrlParts<'a>) -> SecurityPutUser<'a, ()> {
         SecurityPutUser::new(self.client.clone(), parts)
     }
 }

@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Monitoring Bulk API"]
-pub enum MonitoringBulkUrlParts {
+pub enum MonitoringBulkUrlParts<'a> {
     None,
-    Type(String),
+    Type(&'a str),
 }
-impl MonitoringBulkUrlParts {
+impl<'a> MonitoringBulkUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MonitoringBulkUrlParts::None => "/_monitoring/bulk".into(),
@@ -43,24 +43,24 @@ impl MonitoringBulkUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Monitoring Bulk API"]
-pub struct MonitoringBulk<B> {
+pub struct MonitoringBulk<'a, B> {
     client: Elasticsearch,
-    parts: MonitoringBulkUrlParts,
+    parts: MonitoringBulkUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    interval: Option<String>,
+    interval: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    system_api_version: Option<String>,
-    system_id: Option<String>,
+    source: Option<&'a str>,
+    system_api_version: Option<&'a str>,
+    system_id: Option<&'a str>,
 }
-impl<B> MonitoringBulk<B>
+impl<'a, B> MonitoringBulk<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: MonitoringBulkUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: MonitoringBulkUrlParts<'a>) -> Self {
         MonitoringBulk {
             client,
             parts,
@@ -76,7 +76,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MonitoringBulk<T>
+    pub fn body<T>(self, body: T) -> MonitoringBulk<'a, T>
     where
         T: Serialize,
     {
@@ -100,7 +100,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -110,7 +110,7 @@ where
         self
     }
     #[doc = "Collection interval (e.g., '10s' or '10000ms') of the payload"]
-    pub fn interval(mut self, interval: String) -> Self {
+    pub fn interval(mut self, interval: &'a str) -> Self {
         self.interval = Some(interval);
         self
     }
@@ -120,17 +120,17 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "API Version of the monitored system"]
-    pub fn system_api_version(mut self, system_api_version: String) -> Self {
+    pub fn system_api_version(mut self, system_api_version: &'a str) -> Self {
         self.system_api_version = Some(system_api_version);
         self
     }
     #[doc = "Identifier of the monitored system"]
-    pub fn system_id(mut self, system_id: String) -> Self {
+    pub fn system_id(mut self, system_id: &'a str) -> Self {
         self.system_id = Some(system_id);
         self
     }
@@ -140,27 +140,27 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "interval", skip_serializing_if = "Option::is_none")]
-                interval: Option<String>,
+                interval: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "system_api_version", skip_serializing_if = "Option::is_none")]
-                system_api_version: Option<String>,
+                system_api_version: Option<&'a str>,
                 #[serde(rename = "system_id", skip_serializing_if = "Option::is_none")]
-                system_id: Option<String>,
+                system_id: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -190,7 +190,7 @@ impl Monitoring {
     pub fn new(client: Elasticsearch) -> Self {
         Monitoring { client }
     }
-    pub fn bulk(&self, parts: MonitoringBulkUrlParts) -> MonitoringBulk<()> {
+    pub fn bulk<'a>(&self, parts: MonitoringBulkUrlParts<'a>) -> MonitoringBulk<'a, ()> {
         MonitoringBulk::new(self.client.clone(), parts)
     }
 }
