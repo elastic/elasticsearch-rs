@@ -23,10 +23,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Delete Auto Follow Pattern API"]
-pub enum CcrDeleteAutoFollowPatternUrlParts {
-    Name(String),
+pub enum CcrDeleteAutoFollowPatternUrlParts<'a> {
+    Name(&'a str),
 }
-impl CcrDeleteAutoFollowPatternUrlParts {
+impl<'a> CcrDeleteAutoFollowPatternUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrDeleteAutoFollowPatternUrlParts::Name(ref name) => {
@@ -40,17 +40,17 @@ impl CcrDeleteAutoFollowPatternUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Delete Auto Follow Pattern API"]
-pub struct CcrDeleteAutoFollowPattern {
+pub struct CcrDeleteAutoFollowPattern<'a> {
     client: Elasticsearch,
-    parts: CcrDeleteAutoFollowPatternUrlParts,
+    parts: CcrDeleteAutoFollowPatternUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl CcrDeleteAutoFollowPattern {
-    pub fn new(client: Elasticsearch, parts: CcrDeleteAutoFollowPatternUrlParts) -> Self {
+impl<'a> CcrDeleteAutoFollowPattern<'a> {
+    pub fn new(client: Elasticsearch, parts: CcrDeleteAutoFollowPatternUrlParts<'a>) -> Self {
         CcrDeleteAutoFollowPattern {
             client,
             parts,
@@ -67,7 +67,7 @@ impl CcrDeleteAutoFollowPattern {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -82,7 +82,7 @@ impl CcrDeleteAutoFollowPattern {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -92,21 +92,21 @@ impl CcrDeleteAutoFollowPattern {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -127,10 +127,10 @@ impl CcrDeleteAutoFollowPattern {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Follow API"]
-pub enum CcrFollowUrlParts {
-    Index(String),
+pub enum CcrFollowUrlParts<'a> {
+    Index(&'a str),
 }
-impl CcrFollowUrlParts {
+impl<'a> CcrFollowUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrFollowUrlParts::Index(ref index) => {
@@ -145,22 +145,22 @@ impl CcrFollowUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Follow API"]
-pub struct CcrFollow<B> {
+pub struct CcrFollow<'a, B> {
     client: Elasticsearch,
-    parts: CcrFollowUrlParts,
+    parts: CcrFollowUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    wait_for_active_shards: Option<String>,
+    source: Option<&'a str>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl<B> CcrFollow<B>
+impl<'a, B> CcrFollow<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrFollowUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrFollowUrlParts<'a>) -> Self {
         CcrFollow {
             client,
             parts,
@@ -174,7 +174,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrFollow<T>
+    pub fn body<T>(self, body: T) -> CcrFollow<'a, T>
     where
         T: Serialize,
     {
@@ -196,7 +196,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -211,12 +211,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Sets the number of shard copies that must be active before returning. Defaults to 0. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -226,26 +226,26 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -267,10 +267,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Follow Info API"]
-pub enum CcrFollowInfoUrlParts {
-    Index(Vec<String>),
+pub enum CcrFollowInfoUrlParts<'a> {
+    Index(&'a [&'a str]),
 }
-impl CcrFollowInfoUrlParts {
+impl<'a> CcrFollowInfoUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrFollowInfoUrlParts::Index(ref index) => {
@@ -286,17 +286,17 @@ impl CcrFollowInfoUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Follow Info API"]
-pub struct CcrFollowInfo {
+pub struct CcrFollowInfo<'a> {
     client: Elasticsearch,
-    parts: CcrFollowInfoUrlParts,
+    parts: CcrFollowInfoUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl CcrFollowInfo {
-    pub fn new(client: Elasticsearch, parts: CcrFollowInfoUrlParts) -> Self {
+impl<'a> CcrFollowInfo<'a> {
+    pub fn new(client: Elasticsearch, parts: CcrFollowInfoUrlParts<'a>) -> Self {
         CcrFollowInfo {
             client,
             parts,
@@ -313,7 +313,7 @@ impl CcrFollowInfo {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -328,7 +328,7 @@ impl CcrFollowInfo {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -338,21 +338,21 @@ impl CcrFollowInfo {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -373,10 +373,10 @@ impl CcrFollowInfo {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Follow Stats API"]
-pub enum CcrFollowStatsUrlParts {
-    Index(Vec<String>),
+pub enum CcrFollowStatsUrlParts<'a> {
+    Index(&'a [&'a str]),
 }
-impl CcrFollowStatsUrlParts {
+impl<'a> CcrFollowStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrFollowStatsUrlParts::Index(ref index) => {
@@ -392,17 +392,17 @@ impl CcrFollowStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Follow Stats API"]
-pub struct CcrFollowStats {
+pub struct CcrFollowStats<'a> {
     client: Elasticsearch,
-    parts: CcrFollowStatsUrlParts,
+    parts: CcrFollowStatsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl CcrFollowStats {
-    pub fn new(client: Elasticsearch, parts: CcrFollowStatsUrlParts) -> Self {
+impl<'a> CcrFollowStats<'a> {
+    pub fn new(client: Elasticsearch, parts: CcrFollowStatsUrlParts<'a>) -> Self {
         CcrFollowStats {
             client,
             parts,
@@ -419,7 +419,7 @@ impl CcrFollowStats {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -434,7 +434,7 @@ impl CcrFollowStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -444,21 +444,21 @@ impl CcrFollowStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -479,10 +479,10 @@ impl CcrFollowStats {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Forget Follower API"]
-pub enum CcrForgetFollowerUrlParts {
-    Index(String),
+pub enum CcrForgetFollowerUrlParts<'a> {
+    Index(&'a str),
 }
-impl CcrForgetFollowerUrlParts {
+impl<'a> CcrForgetFollowerUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrForgetFollowerUrlParts::Index(ref index) => {
@@ -497,21 +497,21 @@ impl CcrForgetFollowerUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Forget Follower API"]
-pub struct CcrForgetFollower<B> {
+pub struct CcrForgetFollower<'a, B> {
     client: Elasticsearch,
-    parts: CcrForgetFollowerUrlParts,
+    parts: CcrForgetFollowerUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> CcrForgetFollower<B>
+impl<'a, B> CcrForgetFollower<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrForgetFollowerUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrForgetFollowerUrlParts<'a>) -> Self {
         CcrForgetFollower {
             client,
             parts,
@@ -524,7 +524,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrForgetFollower<T>
+    pub fn body<T>(self, body: T) -> CcrForgetFollower<'a, T>
     where
         T: Serialize,
     {
@@ -545,7 +545,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -560,7 +560,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -570,21 +570,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -605,11 +605,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Get Auto Follow Pattern API"]
-pub enum CcrGetAutoFollowPatternUrlParts {
+pub enum CcrGetAutoFollowPatternUrlParts<'a> {
     None,
-    Name(String),
+    Name(&'a str),
 }
-impl CcrGetAutoFollowPatternUrlParts {
+impl<'a> CcrGetAutoFollowPatternUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrGetAutoFollowPatternUrlParts::None => "/_ccr/auto_follow".into(),
@@ -624,17 +624,17 @@ impl CcrGetAutoFollowPatternUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Get Auto Follow Pattern API"]
-pub struct CcrGetAutoFollowPattern {
+pub struct CcrGetAutoFollowPattern<'a> {
     client: Elasticsearch,
-    parts: CcrGetAutoFollowPatternUrlParts,
+    parts: CcrGetAutoFollowPatternUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl CcrGetAutoFollowPattern {
-    pub fn new(client: Elasticsearch, parts: CcrGetAutoFollowPatternUrlParts) -> Self {
+impl<'a> CcrGetAutoFollowPattern<'a> {
+    pub fn new(client: Elasticsearch, parts: CcrGetAutoFollowPatternUrlParts<'a>) -> Self {
         CcrGetAutoFollowPattern {
             client,
             parts,
@@ -651,7 +651,7 @@ impl CcrGetAutoFollowPattern {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -666,7 +666,7 @@ impl CcrGetAutoFollowPattern {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -676,21 +676,21 @@ impl CcrGetAutoFollowPattern {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -711,10 +711,10 @@ impl CcrGetAutoFollowPattern {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Pause Follow API"]
-pub enum CcrPauseFollowUrlParts {
-    Index(String),
+pub enum CcrPauseFollowUrlParts<'a> {
+    Index(&'a str),
 }
-impl CcrPauseFollowUrlParts {
+impl<'a> CcrPauseFollowUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrPauseFollowUrlParts::Index(ref index) => {
@@ -729,21 +729,21 @@ impl CcrPauseFollowUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Pause Follow API"]
-pub struct CcrPauseFollow<B> {
+pub struct CcrPauseFollow<'a, B> {
     client: Elasticsearch,
-    parts: CcrPauseFollowUrlParts,
+    parts: CcrPauseFollowUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> CcrPauseFollow<B>
+impl<'a, B> CcrPauseFollow<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrPauseFollowUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrPauseFollowUrlParts<'a>) -> Self {
         CcrPauseFollow {
             client,
             parts,
@@ -756,7 +756,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrPauseFollow<T>
+    pub fn body<T>(self, body: T) -> CcrPauseFollow<'a, T>
     where
         T: Serialize,
     {
@@ -777,7 +777,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -792,7 +792,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -802,21 +802,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -837,10 +837,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Put Auto Follow Pattern API"]
-pub enum CcrPutAutoFollowPatternUrlParts {
-    Name(String),
+pub enum CcrPutAutoFollowPatternUrlParts<'a> {
+    Name(&'a str),
 }
-impl CcrPutAutoFollowPatternUrlParts {
+impl<'a> CcrPutAutoFollowPatternUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrPutAutoFollowPatternUrlParts::Name(ref name) => {
@@ -854,21 +854,21 @@ impl CcrPutAutoFollowPatternUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Put Auto Follow Pattern API"]
-pub struct CcrPutAutoFollowPattern<B> {
+pub struct CcrPutAutoFollowPattern<'a, B> {
     client: Elasticsearch,
-    parts: CcrPutAutoFollowPatternUrlParts,
+    parts: CcrPutAutoFollowPatternUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> CcrPutAutoFollowPattern<B>
+impl<'a, B> CcrPutAutoFollowPattern<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrPutAutoFollowPatternUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrPutAutoFollowPatternUrlParts<'a>) -> Self {
         CcrPutAutoFollowPattern {
             client,
             parts,
@@ -881,7 +881,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrPutAutoFollowPattern<T>
+    pub fn body<T>(self, body: T) -> CcrPutAutoFollowPattern<'a, T>
     where
         T: Serialize,
     {
@@ -902,7 +902,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -917,7 +917,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -927,21 +927,21 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -962,10 +962,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Resume Follow API"]
-pub enum CcrResumeFollowUrlParts {
-    Index(String),
+pub enum CcrResumeFollowUrlParts<'a> {
+    Index(&'a str),
 }
-impl CcrResumeFollowUrlParts {
+impl<'a> CcrResumeFollowUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrResumeFollowUrlParts::Index(ref index) => {
@@ -980,21 +980,21 @@ impl CcrResumeFollowUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Resume Follow API"]
-pub struct CcrResumeFollow<B> {
+pub struct CcrResumeFollow<'a, B> {
     client: Elasticsearch,
-    parts: CcrResumeFollowUrlParts,
+    parts: CcrResumeFollowUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> CcrResumeFollow<B>
+impl<'a, B> CcrResumeFollow<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrResumeFollowUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrResumeFollowUrlParts<'a>) -> Self {
         CcrResumeFollow {
             client,
             parts,
@@ -1007,7 +1007,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrResumeFollow<T>
+    pub fn body<T>(self, body: T) -> CcrResumeFollow<'a, T>
     where
         T: Serialize,
     {
@@ -1028,7 +1028,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1043,7 +1043,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1053,21 +1053,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1100,16 +1100,16 @@ impl CcrStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Stats API"]
-pub struct CcrStats {
+pub struct CcrStats<'a> {
     client: Elasticsearch,
     parts: CcrStatsUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl CcrStats {
+impl<'a> CcrStats<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CcrStats {
             client,
@@ -1127,7 +1127,7 @@ impl CcrStats {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1142,7 +1142,7 @@ impl CcrStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1152,21 +1152,21 @@ impl CcrStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1187,10 +1187,10 @@ impl CcrStats {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Unfollow API"]
-pub enum CcrUnfollowUrlParts {
-    Index(String),
+pub enum CcrUnfollowUrlParts<'a> {
+    Index(&'a str),
 }
-impl CcrUnfollowUrlParts {
+impl<'a> CcrUnfollowUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CcrUnfollowUrlParts::Index(ref index) => {
@@ -1205,21 +1205,21 @@ impl CcrUnfollowUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ccr Unfollow API"]
-pub struct CcrUnfollow<B> {
+pub struct CcrUnfollow<'a, B> {
     client: Elasticsearch,
-    parts: CcrUnfollowUrlParts,
+    parts: CcrUnfollowUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> CcrUnfollow<B>
+impl<'a, B> CcrUnfollow<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CcrUnfollowUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CcrUnfollowUrlParts<'a>) -> Self {
         CcrUnfollow {
             client,
             parts,
@@ -1232,7 +1232,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrUnfollow<T>
+    pub fn body<T>(self, body: T) -> CcrUnfollow<'a, T>
     where
         T: Serialize,
     {
@@ -1253,7 +1253,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1268,7 +1268,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1278,21 +1278,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1319,46 +1319,49 @@ impl Ccr {
     pub fn new(client: Elasticsearch) -> Self {
         Ccr { client }
     }
-    pub fn delete_auto_follow_pattern(
+    pub fn delete_auto_follow_pattern<'a>(
         &self,
-        parts: CcrDeleteAutoFollowPatternUrlParts,
-    ) -> CcrDeleteAutoFollowPattern {
+        parts: CcrDeleteAutoFollowPatternUrlParts<'a>,
+    ) -> CcrDeleteAutoFollowPattern<'a> {
         CcrDeleteAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn follow(&self, parts: CcrFollowUrlParts) -> CcrFollow<()> {
+    pub fn follow<'a>(&self, parts: CcrFollowUrlParts<'a>) -> CcrFollow<'a, ()> {
         CcrFollow::new(self.client.clone(), parts)
     }
-    pub fn follow_info(&self, parts: CcrFollowInfoUrlParts) -> CcrFollowInfo {
+    pub fn follow_info<'a>(&self, parts: CcrFollowInfoUrlParts<'a>) -> CcrFollowInfo<'a> {
         CcrFollowInfo::new(self.client.clone(), parts)
     }
-    pub fn follow_stats(&self, parts: CcrFollowStatsUrlParts) -> CcrFollowStats {
+    pub fn follow_stats<'a>(&self, parts: CcrFollowStatsUrlParts<'a>) -> CcrFollowStats<'a> {
         CcrFollowStats::new(self.client.clone(), parts)
     }
-    pub fn forget_follower(&self, parts: CcrForgetFollowerUrlParts) -> CcrForgetFollower<()> {
+    pub fn forget_follower<'a>(
+        &self,
+        parts: CcrForgetFollowerUrlParts<'a>,
+    ) -> CcrForgetFollower<'a, ()> {
         CcrForgetFollower::new(self.client.clone(), parts)
     }
-    pub fn get_auto_follow_pattern(
+    pub fn get_auto_follow_pattern<'a>(
         &self,
-        parts: CcrGetAutoFollowPatternUrlParts,
-    ) -> CcrGetAutoFollowPattern {
+        parts: CcrGetAutoFollowPatternUrlParts<'a>,
+    ) -> CcrGetAutoFollowPattern<'a> {
         CcrGetAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn pause_follow(&self, parts: CcrPauseFollowUrlParts) -> CcrPauseFollow<()> {
+    pub fn pause_follow<'a>(&self, parts: CcrPauseFollowUrlParts<'a>) -> CcrPauseFollow<'a, ()> {
         CcrPauseFollow::new(self.client.clone(), parts)
     }
-    pub fn put_auto_follow_pattern(
+    pub fn put_auto_follow_pattern<'a>(
         &self,
-        parts: CcrPutAutoFollowPatternUrlParts,
-    ) -> CcrPutAutoFollowPattern<()> {
+        parts: CcrPutAutoFollowPatternUrlParts<'a>,
+    ) -> CcrPutAutoFollowPattern<'a, ()> {
         CcrPutAutoFollowPattern::new(self.client.clone(), parts)
     }
-    pub fn resume_follow(&self, parts: CcrResumeFollowUrlParts) -> CcrResumeFollow<()> {
+    pub fn resume_follow<'a>(&self, parts: CcrResumeFollowUrlParts<'a>) -> CcrResumeFollow<'a, ()> {
         CcrResumeFollow::new(self.client.clone(), parts)
     }
-    pub fn stats(&self) -> CcrStats {
+    pub fn stats<'a>(&self) -> CcrStats<'a> {
         CcrStats::new(self.client.clone())
     }
-    pub fn unfollow(&self, parts: CcrUnfollowUrlParts) -> CcrUnfollow<()> {
+    pub fn unfollow<'a>(&self, parts: CcrUnfollowUrlParts<'a>) -> CcrUnfollow<'a, ()> {
         CcrUnfollow::new(self.client.clone(), parts)
     }
 }

@@ -23,11 +23,11 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Graph Explore API"]
-pub enum GraphExploreUrlParts {
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+pub enum GraphExploreUrlParts<'a> {
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl GraphExploreUrlParts {
+impl<'a> GraphExploreUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             GraphExploreUrlParts::Index(ref index) => {
@@ -54,23 +54,23 @@ impl GraphExploreUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Graph Explore API"]
-pub struct GraphExplore<B> {
+pub struct GraphExplore<'a, B> {
     client: Elasticsearch,
-    parts: GraphExploreUrlParts,
+    parts: GraphExploreUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> GraphExplore<B>
+impl<'a, B> GraphExplore<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: GraphExploreUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: GraphExploreUrlParts<'a>) -> Self {
         GraphExplore {
             client,
             parts,
@@ -85,7 +85,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> GraphExplore<T>
+    pub fn body<T>(self, body: T) -> GraphExplore<'a, T>
     where
         T: Serialize,
     {
@@ -108,7 +108,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -123,17 +123,17 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -146,25 +146,25 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -193,7 +193,7 @@ impl Graph {
     pub fn new(client: Elasticsearch) -> Self {
         Graph { client }
     }
-    pub fn explore(&self, parts: GraphExploreUrlParts) -> GraphExplore<()> {
+    pub fn explore<'a>(&self, parts: GraphExploreUrlParts<'a>) -> GraphExplore<'a, ()> {
         GraphExplore::new(self.client.clone(), parts)
     }
 }

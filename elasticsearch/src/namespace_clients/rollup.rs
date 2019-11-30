@@ -23,10 +23,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Delete Job API"]
-pub enum RollupDeleteJobUrlParts {
-    Id(String),
+pub enum RollupDeleteJobUrlParts<'a> {
+    Id(&'a str),
 }
-impl RollupDeleteJobUrlParts {
+impl<'a> RollupDeleteJobUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupDeleteJobUrlParts::Id(ref id) => {
@@ -40,17 +40,17 @@ impl RollupDeleteJobUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Delete Job API"]
-pub struct RollupDeleteJob {
+pub struct RollupDeleteJob<'a> {
     client: Elasticsearch,
-    parts: RollupDeleteJobUrlParts,
+    parts: RollupDeleteJobUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl RollupDeleteJob {
-    pub fn new(client: Elasticsearch, parts: RollupDeleteJobUrlParts) -> Self {
+impl<'a> RollupDeleteJob<'a> {
+    pub fn new(client: Elasticsearch, parts: RollupDeleteJobUrlParts<'a>) -> Self {
         RollupDeleteJob {
             client,
             parts,
@@ -67,7 +67,7 @@ impl RollupDeleteJob {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -82,7 +82,7 @@ impl RollupDeleteJob {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -92,21 +92,21 @@ impl RollupDeleteJob {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -127,11 +127,11 @@ impl RollupDeleteJob {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Get Jobs API"]
-pub enum RollupGetJobsUrlParts {
-    Id(String),
+pub enum RollupGetJobsUrlParts<'a> {
+    Id(&'a str),
     None,
 }
-impl RollupGetJobsUrlParts {
+impl<'a> RollupGetJobsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupGetJobsUrlParts::Id(ref id) => {
@@ -146,17 +146,17 @@ impl RollupGetJobsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Get Jobs API"]
-pub struct RollupGetJobs {
+pub struct RollupGetJobs<'a> {
     client: Elasticsearch,
-    parts: RollupGetJobsUrlParts,
+    parts: RollupGetJobsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl RollupGetJobs {
-    pub fn new(client: Elasticsearch, parts: RollupGetJobsUrlParts) -> Self {
+impl<'a> RollupGetJobs<'a> {
+    pub fn new(client: Elasticsearch, parts: RollupGetJobsUrlParts<'a>) -> Self {
         RollupGetJobs {
             client,
             parts,
@@ -173,7 +173,7 @@ impl RollupGetJobs {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -188,7 +188,7 @@ impl RollupGetJobs {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -198,21 +198,21 @@ impl RollupGetJobs {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -233,11 +233,11 @@ impl RollupGetJobs {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Get Rollup Caps API"]
-pub enum RollupGetRollupCapsUrlParts {
-    Id(String),
+pub enum RollupGetRollupCapsUrlParts<'a> {
+    Id(&'a str),
     None,
 }
-impl RollupGetRollupCapsUrlParts {
+impl<'a> RollupGetRollupCapsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupGetRollupCapsUrlParts::Id(ref id) => {
@@ -252,17 +252,17 @@ impl RollupGetRollupCapsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Get Rollup Caps API"]
-pub struct RollupGetRollupCaps {
+pub struct RollupGetRollupCaps<'a> {
     client: Elasticsearch,
-    parts: RollupGetRollupCapsUrlParts,
+    parts: RollupGetRollupCapsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl RollupGetRollupCaps {
-    pub fn new(client: Elasticsearch, parts: RollupGetRollupCapsUrlParts) -> Self {
+impl<'a> RollupGetRollupCaps<'a> {
+    pub fn new(client: Elasticsearch, parts: RollupGetRollupCapsUrlParts<'a>) -> Self {
         RollupGetRollupCaps {
             client,
             parts,
@@ -279,7 +279,7 @@ impl RollupGetRollupCaps {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -294,7 +294,7 @@ impl RollupGetRollupCaps {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -304,21 +304,21 @@ impl RollupGetRollupCaps {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -339,10 +339,10 @@ impl RollupGetRollupCaps {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Get Rollup Index Caps API"]
-pub enum RollupGetRollupIndexCapsUrlParts {
-    Index(String),
+pub enum RollupGetRollupIndexCapsUrlParts<'a> {
+    Index(&'a str),
 }
-impl RollupGetRollupIndexCapsUrlParts {
+impl<'a> RollupGetRollupIndexCapsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupGetRollupIndexCapsUrlParts::Index(ref index) => {
@@ -357,17 +357,17 @@ impl RollupGetRollupIndexCapsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Get Rollup Index Caps API"]
-pub struct RollupGetRollupIndexCaps {
+pub struct RollupGetRollupIndexCaps<'a> {
     client: Elasticsearch,
-    parts: RollupGetRollupIndexCapsUrlParts,
+    parts: RollupGetRollupIndexCapsUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl RollupGetRollupIndexCaps {
-    pub fn new(client: Elasticsearch, parts: RollupGetRollupIndexCapsUrlParts) -> Self {
+impl<'a> RollupGetRollupIndexCaps<'a> {
+    pub fn new(client: Elasticsearch, parts: RollupGetRollupIndexCapsUrlParts<'a>) -> Self {
         RollupGetRollupIndexCaps {
             client,
             parts,
@@ -384,7 +384,7 @@ impl RollupGetRollupIndexCaps {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -399,7 +399,7 @@ impl RollupGetRollupIndexCaps {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -409,21 +409,21 @@ impl RollupGetRollupIndexCaps {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -444,10 +444,10 @@ impl RollupGetRollupIndexCaps {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Put Job API"]
-pub enum RollupPutJobUrlParts {
-    Id(String),
+pub enum RollupPutJobUrlParts<'a> {
+    Id(&'a str),
 }
-impl RollupPutJobUrlParts {
+impl<'a> RollupPutJobUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupPutJobUrlParts::Id(ref id) => {
@@ -461,21 +461,21 @@ impl RollupPutJobUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Put Job API"]
-pub struct RollupPutJob<B> {
+pub struct RollupPutJob<'a, B> {
     client: Elasticsearch,
-    parts: RollupPutJobUrlParts,
+    parts: RollupPutJobUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> RollupPutJob<B>
+impl<'a, B> RollupPutJob<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RollupPutJobUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupPutJobUrlParts<'a>) -> Self {
         RollupPutJob {
             client,
             parts,
@@ -488,7 +488,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupPutJob<T>
+    pub fn body<T>(self, body: T) -> RollupPutJob<'a, T>
     where
         T: Serialize,
     {
@@ -509,7 +509,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -524,7 +524,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -534,21 +534,21 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -569,11 +569,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Rollup Search API"]
-pub enum RollupRollupSearchUrlParts {
-    Index(Vec<String>),
-    IndexType(Vec<String>, String),
+pub enum RollupRollupSearchUrlParts<'a> {
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a str),
 }
-impl RollupRollupSearchUrlParts {
+impl<'a> RollupRollupSearchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupRollupSearchUrlParts::Index(ref index) => {
@@ -599,23 +599,23 @@ impl RollupRollupSearchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Rollup Search API"]
-pub struct RollupRollupSearch<B> {
+pub struct RollupRollupSearch<'a, B> {
     client: Elasticsearch,
-    parts: RollupRollupSearchUrlParts,
+    parts: RollupRollupSearchUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
     typed_keys: Option<bool>,
 }
-impl<B> RollupRollupSearch<B>
+impl<'a, B> RollupRollupSearch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RollupRollupSearchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupRollupSearchUrlParts<'a>) -> Self {
         RollupRollupSearch {
             client,
             parts,
@@ -630,7 +630,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupRollupSearch<T>
+    pub fn body<T>(self, body: T) -> RollupRollupSearch<'a, T>
     where
         T: Serialize,
     {
@@ -653,7 +653,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -673,7 +673,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -691,15 +691,15 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -710,7 +710,7 @@ where
                 )]
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "typed_keys", skip_serializing_if = "Option::is_none")]
                 typed_keys: Option<bool>,
             }
@@ -735,10 +735,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Start Job API"]
-pub enum RollupStartJobUrlParts {
-    Id(String),
+pub enum RollupStartJobUrlParts<'a> {
+    Id(&'a str),
 }
-impl RollupStartJobUrlParts {
+impl<'a> RollupStartJobUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupStartJobUrlParts::Id(ref id) => {
@@ -753,21 +753,21 @@ impl RollupStartJobUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Start Job API"]
-pub struct RollupStartJob<B> {
+pub struct RollupStartJob<'a, B> {
     client: Elasticsearch,
-    parts: RollupStartJobUrlParts,
+    parts: RollupStartJobUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> RollupStartJob<B>
+impl<'a, B> RollupStartJob<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RollupStartJobUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupStartJobUrlParts<'a>) -> Self {
         RollupStartJob {
             client,
             parts,
@@ -780,7 +780,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupStartJob<T>
+    pub fn body<T>(self, body: T) -> RollupStartJob<'a, T>
     where
         T: Serialize,
     {
@@ -801,7 +801,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -816,7 +816,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -826,21 +826,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -861,10 +861,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rollup Stop Job API"]
-pub enum RollupStopJobUrlParts {
-    Id(String),
+pub enum RollupStopJobUrlParts<'a> {
+    Id(&'a str),
 }
-impl RollupStopJobUrlParts {
+impl<'a> RollupStopJobUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RollupStopJobUrlParts::Id(ref id) => {
@@ -879,23 +879,23 @@ impl RollupStopJobUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rollup Stop Job API"]
-pub struct RollupStopJob<B> {
+pub struct RollupStopJob<'a, B> {
     client: Elasticsearch,
-    parts: RollupStopJobUrlParts,
+    parts: RollupStopJobUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<B> RollupStopJob<B>
+impl<'a, B> RollupStopJob<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RollupStopJobUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RollupStopJobUrlParts<'a>) -> Self {
         RollupStopJob {
             client,
             parts,
@@ -910,7 +910,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupStopJob<T>
+    pub fn body<T>(self, body: T) -> RollupStopJob<'a, T>
     where
         T: Serialize,
     {
@@ -933,7 +933,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -948,12 +948,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Block for (at maximum) the specified duration while waiting for the job to stop.  Defaults to 30s."]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -968,23 +968,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -1018,31 +1018,37 @@ impl Rollup {
     pub fn new(client: Elasticsearch) -> Self {
         Rollup { client }
     }
-    pub fn delete_job(&self, parts: RollupDeleteJobUrlParts) -> RollupDeleteJob {
+    pub fn delete_job<'a>(&self, parts: RollupDeleteJobUrlParts<'a>) -> RollupDeleteJob<'a> {
         RollupDeleteJob::new(self.client.clone(), parts)
     }
-    pub fn get_jobs(&self, parts: RollupGetJobsUrlParts) -> RollupGetJobs {
+    pub fn get_jobs<'a>(&self, parts: RollupGetJobsUrlParts<'a>) -> RollupGetJobs<'a> {
         RollupGetJobs::new(self.client.clone(), parts)
     }
-    pub fn get_rollup_caps(&self, parts: RollupGetRollupCapsUrlParts) -> RollupGetRollupCaps {
+    pub fn get_rollup_caps<'a>(
+        &self,
+        parts: RollupGetRollupCapsUrlParts<'a>,
+    ) -> RollupGetRollupCaps<'a> {
         RollupGetRollupCaps::new(self.client.clone(), parts)
     }
-    pub fn get_rollup_index_caps(
+    pub fn get_rollup_index_caps<'a>(
         &self,
-        parts: RollupGetRollupIndexCapsUrlParts,
-    ) -> RollupGetRollupIndexCaps {
+        parts: RollupGetRollupIndexCapsUrlParts<'a>,
+    ) -> RollupGetRollupIndexCaps<'a> {
         RollupGetRollupIndexCaps::new(self.client.clone(), parts)
     }
-    pub fn put_job(&self, parts: RollupPutJobUrlParts) -> RollupPutJob<()> {
+    pub fn put_job<'a>(&self, parts: RollupPutJobUrlParts<'a>) -> RollupPutJob<'a, ()> {
         RollupPutJob::new(self.client.clone(), parts)
     }
-    pub fn rollup_search(&self, parts: RollupRollupSearchUrlParts) -> RollupRollupSearch<()> {
+    pub fn rollup_search<'a>(
+        &self,
+        parts: RollupRollupSearchUrlParts<'a>,
+    ) -> RollupRollupSearch<'a, ()> {
         RollupRollupSearch::new(self.client.clone(), parts)
     }
-    pub fn start_job(&self, parts: RollupStartJobUrlParts) -> RollupStartJob<()> {
+    pub fn start_job<'a>(&self, parts: RollupStartJobUrlParts<'a>) -> RollupStartJob<'a, ()> {
         RollupStartJob::new(self.client.clone(), parts)
     }
-    pub fn stop_job(&self, parts: RollupStopJobUrlParts) -> RollupStopJob<()> {
+    pub fn stop_job<'a>(&self, parts: RollupStopJobUrlParts<'a>) -> RollupStopJob<'a, ()> {
         RollupStopJob::new(self.client.clone(), parts)
     }
 }

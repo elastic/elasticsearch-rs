@@ -8,14 +8,14 @@ use serde::de::DeserializeOwned;
 use serde::{Serialize, Serializer};
 use url::Url;
 
-/// Serializes an Option<Vec<String>> with some value to a comma separated string of values.
+/// Serializes an Option<&[&str]> with some value to a comma separated string of values.
 /// Used to serialize values within the query string
-pub fn serialize_vec_qs<S>(
-    value: &Option<Vec<String>>,
+pub fn serialize_coll_qs<S>(
+    value: &Option<&[&str]>,
     serializer: S,
 ) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-where
-    S: Serializer,
+    where
+        S: Serializer,
 {
     let vec = value
         .as_ref()

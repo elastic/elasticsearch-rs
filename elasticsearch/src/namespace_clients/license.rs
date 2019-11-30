@@ -35,16 +35,16 @@ impl LicenseDeleteUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Delete API"]
-pub struct LicenseDelete {
+pub struct LicenseDelete<'a> {
     client: Elasticsearch,
     parts: LicenseDeleteUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl LicenseDelete {
+impl<'a> LicenseDelete<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseDelete {
             client,
@@ -62,7 +62,7 @@ impl LicenseDelete {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -77,7 +77,7 @@ impl LicenseDelete {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -87,21 +87,21 @@ impl LicenseDelete {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -134,17 +134,17 @@ impl LicenseGetUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Get API"]
-pub struct LicenseGet {
+pub struct LicenseGet<'a> {
     client: Elasticsearch,
     parts: LicenseGetUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl LicenseGet {
+impl<'a> LicenseGet<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGet {
             client,
@@ -163,7 +163,7 @@ impl LicenseGet {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -183,7 +183,7 @@ impl LicenseGet {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -193,15 +193,15 @@ impl LicenseGet {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
@@ -209,7 +209,7 @@ impl LicenseGet {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -243,16 +243,16 @@ impl LicenseGetBasicStatusUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Get Basic Status API"]
-pub struct LicenseGetBasicStatus {
+pub struct LicenseGetBasicStatus<'a> {
     client: Elasticsearch,
     parts: LicenseGetBasicStatusUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl LicenseGetBasicStatus {
+impl<'a> LicenseGetBasicStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetBasicStatus {
             client,
@@ -270,7 +270,7 @@ impl LicenseGetBasicStatus {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -285,7 +285,7 @@ impl LicenseGetBasicStatus {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -295,21 +295,21 @@ impl LicenseGetBasicStatus {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -342,16 +342,16 @@ impl LicenseGetTrialStatusUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Get Trial Status API"]
-pub struct LicenseGetTrialStatus {
+pub struct LicenseGetTrialStatus<'a> {
     client: Elasticsearch,
     parts: LicenseGetTrialStatusUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl LicenseGetTrialStatus {
+impl<'a> LicenseGetTrialStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetTrialStatus {
             client,
@@ -369,7 +369,7 @@ impl LicenseGetTrialStatus {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -384,7 +384,7 @@ impl LicenseGetTrialStatus {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -394,21 +394,21 @@ impl LicenseGetTrialStatus {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -441,18 +441,18 @@ impl LicensePostUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Post API"]
-pub struct LicensePost<B> {
+pub struct LicensePost<'a, B> {
     client: Elasticsearch,
     parts: LicensePostUrlParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> LicensePost<B>
+impl<'a, B> LicensePost<'a, B>
 where
     B: Serialize,
 {
@@ -475,7 +475,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePost<T>
+    pub fn body<T>(self, body: T) -> LicensePost<'a, T>
     where
         T: Serialize,
     {
@@ -497,7 +497,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -512,7 +512,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -522,23 +522,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "acknowledge", skip_serializing_if = "Option::is_none")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
@@ -572,18 +572,18 @@ impl LicensePostStartBasicUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Post Start Basic API"]
-pub struct LicensePostStartBasic<B> {
+pub struct LicensePostStartBasic<'a, B> {
     client: Elasticsearch,
     parts: LicensePostStartBasicUrlParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> LicensePostStartBasic<B>
+impl<'a, B> LicensePostStartBasic<'a, B>
 where
     B: Serialize,
 {
@@ -606,7 +606,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartBasic<T>
+    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, T>
     where
         T: Serialize,
     {
@@ -628,7 +628,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -643,7 +643,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -653,23 +653,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "acknowledge", skip_serializing_if = "Option::is_none")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
@@ -703,19 +703,19 @@ impl LicensePostStartTrialUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the License Post Start Trial API"]
-pub struct LicensePostStartTrial<B> {
+pub struct LicensePostStartTrial<'a, B> {
     client: Elasticsearch,
     parts: LicensePostStartTrialUrlParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    ty: Option<String>,
+    source: Option<&'a str>,
+    ty: Option<&'a str>,
 }
-impl<B> LicensePostStartTrial<B>
+impl<'a, B> LicensePostStartTrial<'a, B>
 where
     B: Serialize,
 {
@@ -739,7 +739,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartTrial<T>
+    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, T>
     where
         T: Serialize,
     {
@@ -762,7 +762,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -777,12 +777,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "The type of trial license to generate (default: \"trial\")"]
-    pub fn ty(mut self, ty: String) -> Self {
+    pub fn ty(mut self, ty: &'a str) -> Self {
         self.ty = Some(ty);
         self
     }
@@ -792,25 +792,25 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "acknowledge", skip_serializing_if = "Option::is_none")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-                ty: Option<String>,
+                ty: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 acknowledge: self.acknowledge,
@@ -839,25 +839,25 @@ impl License {
     pub fn new(client: Elasticsearch) -> Self {
         License { client }
     }
-    pub fn delete(&self) -> LicenseDelete {
+    pub fn delete<'a>(&self) -> LicenseDelete<'a> {
         LicenseDelete::new(self.client.clone())
     }
-    pub fn get(&self) -> LicenseGet {
+    pub fn get<'a>(&self) -> LicenseGet<'a> {
         LicenseGet::new(self.client.clone())
     }
-    pub fn get_basic_status(&self) -> LicenseGetBasicStatus {
+    pub fn get_basic_status<'a>(&self) -> LicenseGetBasicStatus<'a> {
         LicenseGetBasicStatus::new(self.client.clone())
     }
-    pub fn get_trial_status(&self) -> LicenseGetTrialStatus {
+    pub fn get_trial_status<'a>(&self) -> LicenseGetTrialStatus<'a> {
         LicenseGetTrialStatus::new(self.client.clone())
     }
-    pub fn post(&self) -> LicensePost<()> {
+    pub fn post<'a>(&self) -> LicensePost<'a, ()> {
         LicensePost::new(self.client.clone())
     }
-    pub fn post_start_basic(&self) -> LicensePostStartBasic<()> {
+    pub fn post_start_basic<'a>(&self) -> LicensePostStartBasic<'a, ()> {
         LicensePostStartBasic::new(self.client.clone())
     }
-    pub fn post_start_trial(&self) -> LicensePostStartTrial<()> {
+    pub fn post_start_trial<'a>(&self) -> LicensePostStartTrial<'a, ()> {
         LicensePostStartTrial::new(self.client.clone())
     }
 }

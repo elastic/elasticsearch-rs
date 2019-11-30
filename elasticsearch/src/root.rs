@@ -23,12 +23,12 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Bulk API"]
-pub enum BulkUrlParts {
+pub enum BulkUrlParts<'a> {
     None,
-    Index(String),
-    IndexType(String, String),
+    Index(&'a str),
+    IndexType(&'a str, &'a str),
 }
-impl BulkUrlParts {
+impl<'a> BulkUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             BulkUrlParts::None => "/_bulk".into(),
@@ -53,30 +53,30 @@ impl BulkUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Bulk API"]
-pub struct Bulk<B> {
+pub struct Bulk<'a, B> {
     client: Elasticsearch,
-    parts: BulkUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: BulkUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    pipeline: Option<String>,
+    pipeline: Option<&'a str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
-    ty: Option<String>,
-    wait_for_active_shards: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
+    ty: Option<&'a str>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl<B> Bulk<B>
+impl<'a, B> Bulk<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: BulkUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: BulkUrlParts<'a>) -> Self {
         Bulk {
             client,
             parts,
@@ -98,22 +98,22 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or default list of fields to return, can be overridden on each sub-request"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "Default list of fields to exclude from the returned _source field, can be overridden on each sub-request"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "Default list of fields to extract and return from the _source field, can be overridden on each sub-request"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Bulk<T>
+    pub fn body<T>(self, body: T) -> Bulk<'a, T>
     where
         T: Serialize,
     {
@@ -143,7 +143,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -153,7 +153,7 @@ where
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with"]
-    pub fn pipeline(mut self, pipeline: String) -> Self {
+    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
         self.pipeline = Some(pipeline);
         self
     }
@@ -168,27 +168,27 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "Default document type for items which don't provide one"]
-    pub fn ty(mut self, ty: String) -> Self {
+    pub fn ty(mut self, ty: &'a str) -> Self {
         self.ty = Some(ty);
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the bulk operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -198,54 +198,54 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pipeline", skip_serializing_if = "Option::is_none")]
-                pipeline: Option<String>,
+                pipeline: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "type", skip_serializing_if = "Option::is_none")]
-                ty: Option<String>,
+                ty: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 _source: self._source,
@@ -275,11 +275,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Clear Scroll API"]
-pub enum ClearScrollUrlParts {
+pub enum ClearScrollUrlParts<'a> {
     None,
-    ScrollId(Vec<String>),
+    ScrollId(&'a [&'a str]),
 }
-impl ClearScrollUrlParts {
+impl<'a> ClearScrollUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ClearScrollUrlParts::None => "/_search/scroll".into(),
@@ -295,21 +295,21 @@ impl ClearScrollUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Clear Scroll API"]
-pub struct ClearScroll<B> {
+pub struct ClearScroll<'a, B> {
     client: Elasticsearch,
-    parts: ClearScrollUrlParts,
+    parts: ClearScrollUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> ClearScroll<B>
+impl<'a, B> ClearScroll<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: ClearScrollUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClearScrollUrlParts<'a>) -> Self {
         ClearScroll {
             client,
             parts,
@@ -322,7 +322,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClearScroll<T>
+    pub fn body<T>(self, body: T) -> ClearScroll<'a, T>
     where
         T: Serialize,
     {
@@ -343,7 +343,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -358,7 +358,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -368,21 +368,21 @@ where
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -403,12 +403,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Count API"]
-pub enum CountUrlParts {
+pub enum CountUrlParts<'a> {
     None,
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl CountUrlParts {
+impl<'a> CountUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CountUrlParts::None => "/_count".into(),
@@ -436,35 +436,35 @@ impl CountUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Count API"]
-pub struct Count<B> {
+pub struct Count<'a, B> {
     client: Elasticsearch,
-    parts: CountUrlParts,
+    parts: CountUrlParts<'a>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
+    analyzer: Option<&'a str>,
     body: Option<B>,
     default_operator: Option<DefaultOperator>,
-    df: Option<String>,
+    df: Option<&'a str>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     min_score: Option<i64>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    q: Option<String>,
-    routing: Option<Vec<String>>,
-    source: Option<String>,
+    q: Option<&'a str>,
+    routing: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
     terminate_after: Option<i64>,
 }
-impl<B> Count<B>
+impl<'a, B> Count<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CountUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CountUrlParts<'a>) -> Self {
         Count {
             client,
             parts,
@@ -501,12 +501,12 @@ where
         self
     }
     #[doc = "The analyzer to use for the query string"]
-    pub fn analyzer(mut self, analyzer: String) -> Self {
+    pub fn analyzer(mut self, analyzer: &'a str) -> Self {
         self.analyzer = Some(analyzer);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Count<T>
+    pub fn body<T>(self, body: T) -> Count<'a, T>
     where
         T: Serialize,
     {
@@ -541,7 +541,7 @@ where
         self
     }
     #[doc = "The field to use as default where no field prefix is given in the query string"]
-    pub fn df(mut self, df: String) -> Self {
+    pub fn df(mut self, df: &'a str) -> Self {
         self.df = Some(df);
         self
     }
@@ -556,7 +556,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -586,7 +586,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -596,17 +596,17 @@ where
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: String) -> Self {
+    pub fn q(mut self, q: &'a str) -> Self {
         self.q = Some(q);
         self
     }
     #[doc = "A comma-separated list of specific routing values"]
-    pub fn routing(mut self, routing: Vec<String>) -> Self {
+    pub fn routing(mut self, routing: &'a [&'a str]) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -624,27 +624,27 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
                 analyze_wildcard: Option<bool>,
                 #[serde(rename = "analyzer", skip_serializing_if = "Option::is_none")]
-                analyzer: Option<String>,
+                analyzer: Option<&'a str>,
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df", skip_serializing_if = "Option::is_none")]
-                df: Option<String>,
+                df: Option<&'a str>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_throttled", skip_serializing_if = "Option::is_none")]
@@ -656,19 +656,19 @@ where
                 #[serde(rename = "min_score", skip_serializing_if = "Option::is_none")]
                 min_score: Option<i64>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "q", skip_serializing_if = "Option::is_none")]
-                q: Option<String>,
+                q: Option<&'a str>,
                 #[serde(
                     rename = "routing",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                routing: Option<Vec<String>>,
+                routing: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "terminate_after", skip_serializing_if = "Option::is_none")]
                 terminate_after: Option<i64>,
             }
@@ -705,11 +705,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Create API"]
-pub enum CreateUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum CreateUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl CreateUrlParts {
+impl<'a> CreateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             CreateUrlParts::IndexId(ref index, ref id) => {
@@ -736,28 +736,28 @@ impl CreateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Create API"]
-pub struct Create<B> {
+pub struct Create<'a, B> {
     client: Elasticsearch,
-    parts: CreateUrlParts,
+    parts: CreateUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    pipeline: Option<String>,
+    pipeline: Option<&'a str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     version: Option<i64>,
     version_type: Option<VersionType>,
-    wait_for_active_shards: Option<String>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl<B> Create<B>
+impl<'a, B> Create<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: CreateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: CreateUrlParts<'a>) -> Self {
         Create {
             client,
             parts,
@@ -777,7 +777,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Create<T>
+    pub fn body<T>(self, body: T) -> Create<'a, T>
     where
         T: Serialize,
     {
@@ -805,7 +805,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -815,7 +815,7 @@ where
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with"]
-    pub fn pipeline(mut self, pipeline: String) -> Self {
+    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
         self.pipeline = Some(pipeline);
         self
     }
@@ -830,17 +830,17 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -855,7 +855,7 @@ where
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the index operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -865,29 +865,29 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pipeline", skip_serializing_if = "Option::is_none")]
-                pipeline: Option<String>,
+                pipeline: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -896,7 +896,7 @@ where
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -924,11 +924,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Delete API"]
-pub enum DeleteUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum DeleteUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl DeleteUrlParts {
+impl<'a> DeleteUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DeleteUrlParts::IndexId(ref index, ref id) => {
@@ -954,25 +954,25 @@ impl DeleteUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Delete API"]
-pub struct Delete {
+pub struct Delete<'a> {
     client: Elasticsearch,
-    parts: DeleteUrlParts,
+    parts: DeleteUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     version: Option<i64>,
     version_type: Option<VersionType>,
-    wait_for_active_shards: Option<String>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl Delete {
-    pub fn new(client: Elasticsearch, parts: DeleteUrlParts) -> Self {
+impl<'a> Delete<'a> {
+    pub fn new(client: Elasticsearch, parts: DeleteUrlParts<'a>) -> Self {
         Delete {
             client,
             parts,
@@ -997,7 +997,7 @@ impl Delete {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1027,17 +1027,17 @@ impl Delete {
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1052,7 +1052,7 @@ impl Delete {
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the delete operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -1062,15 +1062,15 @@ impl Delete {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "if_primary_term", skip_serializing_if = "Option::is_none")]
@@ -1082,11 +1082,11 @@ impl Delete {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -1095,7 +1095,7 @@ impl Delete {
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1124,11 +1124,11 @@ impl Delete {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Delete By Query API"]
-pub enum DeleteByQueryUrlParts {
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+pub enum DeleteByQueryUrlParts<'a> {
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl DeleteByQueryUrlParts {
+impl<'a> DeleteByQueryUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DeleteByQueryUrlParts::Index(ref index) => {
@@ -1155,53 +1155,53 @@ impl DeleteByQueryUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Delete By Query API"]
-pub struct DeleteByQuery<B> {
+pub struct DeleteByQuery<'a, B> {
     client: Elasticsearch,
-    parts: DeleteByQueryUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: DeleteByQueryUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
-    df: Option<String>,
+    df: Option<&'a str>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    q: Option<String>,
+    q: Option<&'a str>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
     requests_per_second: Option<i64>,
-    routing: Option<Vec<String>>,
-    scroll: Option<String>,
+    routing: Option<&'a [&'a str]>,
+    scroll: Option<&'a str>,
     scroll_size: Option<i64>,
-    search_timeout: Option<String>,
+    search_timeout: Option<&'a str>,
     search_type: Option<SearchType>,
     size: Option<i64>,
     slices: Option<i64>,
-    sort: Option<Vec<String>>,
-    source: Option<String>,
-    stats: Option<Vec<String>>,
+    sort: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
+    stats: Option<&'a [&'a str]>,
     terminate_after: Option<i64>,
-    timeout: Option<String>,
+    timeout: Option<&'a str>,
     version: Option<bool>,
-    wait_for_active_shards: Option<String>,
+    wait_for_active_shards: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<B> DeleteByQuery<B>
+impl<'a, B> DeleteByQuery<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DeleteByQueryUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryUrlParts<'a>) -> Self {
         DeleteByQuery {
             client,
             parts,
@@ -1246,17 +1246,17 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -1271,7 +1271,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DeleteByQuery<T>
+    pub fn body<T>(self, body: T) -> DeleteByQuery<'a, T>
     where
         T: Serialize,
     {
@@ -1329,7 +1329,7 @@ where
         self
     }
     #[doc = "The field to use as default where no field prefix is given in the query string"]
-    pub fn df(mut self, df: String) -> Self {
+    pub fn df(mut self, df: &'a str) -> Self {
         self.df = Some(df);
         self
     }
@@ -1344,7 +1344,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1374,7 +1374,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -1384,7 +1384,7 @@ where
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: String) -> Self {
+    pub fn q(mut self, q: &'a str) -> Self {
         self.q = Some(q);
         self
     }
@@ -1404,12 +1404,12 @@ where
         self
     }
     #[doc = "A comma-separated list of specific routing values"]
-    pub fn routing(mut self, routing: Vec<String>) -> Self {
+    pub fn routing(mut self, routing: &'a [&'a str]) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
@@ -1419,7 +1419,7 @@ where
         self
     }
     #[doc = "Explicit timeout for each search request. Defaults to no timeout."]
-    pub fn search_timeout(mut self, search_timeout: String) -> Self {
+    pub fn search_timeout(mut self, search_timeout: &'a str) -> Self {
         self.search_timeout = Some(search_timeout);
         self
     }
@@ -1439,17 +1439,17 @@ where
         self
     }
     #[doc = "A comma-separated list of <field>:<direction> pairs"]
-    pub fn sort(mut self, sort: Vec<String>) -> Self {
+    pub fn sort(mut self, sort: &'a [&'a str]) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
-    pub fn stats(mut self, stats: Vec<String>) -> Self {
+    pub fn stats(mut self, stats: &'a [&'a str]) -> Self {
         self.stats = Some(stats);
         self
     }
@@ -1459,7 +1459,7 @@ where
         self
     }
     #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1469,7 +1469,7 @@ where
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the delete by query operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -1484,25 +1484,25 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
@@ -1512,17 +1512,17 @@ where
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df", skip_serializing_if = "Option::is_none")]
-                df: Option<String>,
+                df: Option<&'a str>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
                 from: Option<i64>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -1534,11 +1534,11 @@ where
                 #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
                 max_docs: Option<i64>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "q", skip_serializing_if = "Option::is_none")]
-                q: Option<String>,
+                q: Option<&'a str>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "request_cache", skip_serializing_if = "Option::is_none")]
@@ -1550,16 +1550,16 @@ where
                 requests_per_second: Option<i64>,
                 #[serde(
                     rename = "routing",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                routing: Option<Vec<String>>,
+                routing: Option<&'a [&'a str]>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "scroll_size", skip_serializing_if = "Option::is_none")]
                 scroll_size: Option<i64>,
                 #[serde(rename = "search_timeout", skip_serializing_if = "Option::is_none")]
-                search_timeout: Option<String>,
+                search_timeout: Option<&'a str>,
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
@@ -1568,29 +1568,29 @@ where
                 slices: Option<i64>,
                 #[serde(
                     rename = "sort",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                sort: Option<Vec<String>>,
+                sort: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stats",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stats: Option<Vec<String>>,
+                stats: Option<&'a [&'a str]>,
                 #[serde(rename = "terminate_after", skip_serializing_if = "Option::is_none")]
                 terminate_after: Option<i64>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<bool>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -1648,10 +1648,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Delete By Query Rethrottle API"]
-pub enum DeleteByQueryRethrottleUrlParts {
-    TaskId(String),
+pub enum DeleteByQueryRethrottleUrlParts<'a> {
+    TaskId(&'a str),
 }
-impl DeleteByQueryRethrottleUrlParts {
+impl<'a> DeleteByQueryRethrottleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DeleteByQueryRethrottleUrlParts::TaskId(ref task_id) => {
@@ -1666,22 +1666,22 @@ impl DeleteByQueryRethrottleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Delete By Query Rethrottle API"]
-pub struct DeleteByQueryRethrottle<B> {
+pub struct DeleteByQueryRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: DeleteByQueryRethrottleUrlParts,
+    parts: DeleteByQueryRethrottleUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> DeleteByQueryRethrottle<B>
+impl<'a, B> DeleteByQueryRethrottle<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleUrlParts<'a>) -> Self {
         DeleteByQueryRethrottle {
             client,
             parts,
@@ -1695,7 +1695,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DeleteByQueryRethrottle<T>
+    pub fn body<T>(self, body: T) -> DeleteByQueryRethrottle<'a, T>
     where
         T: Serialize,
     {
@@ -1717,7 +1717,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1737,7 +1737,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1747,15 +1747,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -1766,7 +1766,7 @@ where
                 )]
                 requests_per_second: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1788,10 +1788,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Delete Script API"]
-pub enum DeleteScriptUrlParts {
-    Id(String),
+pub enum DeleteScriptUrlParts<'a> {
+    Id(&'a str),
 }
-impl DeleteScriptUrlParts {
+impl<'a> DeleteScriptUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DeleteScriptUrlParts::Id(ref id) => {
@@ -1805,19 +1805,19 @@ impl DeleteScriptUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Delete Script API"]
-pub struct DeleteScript {
+pub struct DeleteScript<'a> {
     client: Elasticsearch,
-    parts: DeleteScriptUrlParts,
+    parts: DeleteScriptUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl DeleteScript {
-    pub fn new(client: Elasticsearch, parts: DeleteScriptUrlParts) -> Self {
+impl<'a> DeleteScript<'a> {
+    pub fn new(client: Elasticsearch, parts: DeleteScriptUrlParts<'a>) -> Self {
         DeleteScript {
             client,
             parts,
@@ -1836,7 +1836,7 @@ impl DeleteScript {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1846,7 +1846,7 @@ impl DeleteScript {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1856,12 +1856,12 @@ impl DeleteScript {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1871,25 +1871,25 @@ impl DeleteScript {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -1912,11 +1912,11 @@ impl DeleteScript {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Exists API"]
-pub enum ExistsUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum ExistsUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl ExistsUrlParts {
+impl<'a> ExistsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ExistsUrlParts::IndexId(ref index, ref id) => {
@@ -1942,27 +1942,27 @@ impl ExistsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Exists API"]
-pub struct Exists {
+pub struct Exists<'a> {
     client: Elasticsearch,
-    parts: ExistsUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: ExistsUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
-    stored_fields: Option<Vec<String>>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    stored_fields: Option<&'a [&'a str]>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl Exists {
-    pub fn new(client: Elasticsearch, parts: ExistsUrlParts) -> Self {
+impl<'a> Exists<'a> {
+    pub fn new(client: Elasticsearch, parts: ExistsUrlParts<'a>) -> Self {
         Exists {
             client,
             parts,
@@ -1984,17 +1984,17 @@ impl Exists {
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -2004,7 +2004,7 @@ impl Exists {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2014,7 +2014,7 @@ impl Exists {
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -2034,17 +2034,17 @@ impl Exists {
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
-    pub fn stored_fields(mut self, stored_fields: Vec<String>) -> Self {
+    pub fn stored_fields(mut self, stored_fields: &'a [&'a str]) -> Self {
         self.stored_fields = Some(stored_fields);
         self
     }
@@ -2064,37 +2064,37 @@ impl Exists {
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
@@ -2102,15 +2102,15 @@ impl Exists {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stored_fields: Option<Vec<String>>,
+                stored_fields: Option<&'a [&'a str]>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -2145,11 +2145,11 @@ impl Exists {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Exists Source API"]
-pub enum ExistsSourceUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum ExistsSourceUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl ExistsSourceUrlParts {
+impl<'a> ExistsSourceUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ExistsSourceUrlParts::IndexId(ref index, ref id) => {
@@ -2176,26 +2176,26 @@ impl ExistsSourceUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Exists Source API"]
-pub struct ExistsSource {
+pub struct ExistsSource<'a> {
     client: Elasticsearch,
-    parts: ExistsSourceUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: ExistsSourceUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl ExistsSource {
-    pub fn new(client: Elasticsearch, parts: ExistsSourceUrlParts) -> Self {
+impl<'a> ExistsSource<'a> {
+    pub fn new(client: Elasticsearch, parts: ExistsSourceUrlParts<'a>) -> Self {
         ExistsSource {
             client,
             parts,
@@ -2216,17 +2216,17 @@ impl ExistsSource {
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -2236,7 +2236,7 @@ impl ExistsSource {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2246,7 +2246,7 @@ impl ExistsSource {
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -2266,12 +2266,12 @@ impl ExistsSource {
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2291,37 +2291,37 @@ impl ExistsSource {
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
@@ -2329,9 +2329,9 @@ impl ExistsSource {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -2365,11 +2365,11 @@ impl ExistsSource {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Explain API"]
-pub enum ExplainUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum ExplainUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl ExplainUrlParts {
+impl<'a> ExplainUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ExplainUrlParts::IndexId(ref index, ref id) => {
@@ -2396,33 +2396,33 @@ impl ExplainUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Explain API"]
-pub struct Explain<B> {
+pub struct Explain<'a, B> {
     client: Elasticsearch,
-    parts: ExplainUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: ExplainUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
+    analyzer: Option<&'a str>,
     body: Option<B>,
     default_operator: Option<DefaultOperator>,
-    df: Option<String>,
+    df: Option<&'a str>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     lenient: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    q: Option<String>,
-    routing: Option<String>,
-    source: Option<String>,
-    stored_fields: Option<Vec<String>>,
+    q: Option<&'a str>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    stored_fields: Option<&'a [&'a str]>,
 }
-impl<B> Explain<B>
+impl<'a, B> Explain<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: ExplainUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExplainUrlParts<'a>) -> Self {
         Explain {
             client,
             parts,
@@ -2447,17 +2447,17 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -2467,12 +2467,12 @@ where
         self
     }
     #[doc = "The analyzer for the query string query"]
-    pub fn analyzer(mut self, analyzer: String) -> Self {
+    pub fn analyzer(mut self, analyzer: &'a str) -> Self {
         self.analyzer = Some(analyzer);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Explain<T>
+    pub fn body<T>(self, body: T) -> Explain<'a, T>
     where
         T: Serialize,
     {
@@ -2505,7 +2505,7 @@ where
         self
     }
     #[doc = "The default field for query string query (default: _all)"]
-    pub fn df(mut self, df: String) -> Self {
+    pub fn df(mut self, df: &'a str) -> Self {
         self.df = Some(df);
         self
     }
@@ -2515,7 +2515,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2530,7 +2530,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -2540,22 +2540,22 @@ where
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: String) -> Self {
+    pub fn q(mut self, q: &'a str) -> Self {
         self.q = Some(q);
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
-    pub fn stored_fields(mut self, stored_fields: Vec<String>) -> Self {
+    pub fn stored_fields(mut self, stored_fields: &'a [&'a str]) -> Self {
         self.stored_fields = Some(stored_fields);
         self
     }
@@ -2568,61 +2568,61 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
                 analyze_wildcard: Option<bool>,
                 #[serde(rename = "analyzer", skip_serializing_if = "Option::is_none")]
-                analyzer: Option<String>,
+                analyzer: Option<&'a str>,
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df", skip_serializing_if = "Option::is_none")]
-                df: Option<String>,
+                df: Option<&'a str>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "lenient", skip_serializing_if = "Option::is_none")]
                 lenient: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "q", skip_serializing_if = "Option::is_none")]
-                q: Option<String>,
+                q: Option<&'a str>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stored_fields: Option<Vec<String>>,
+                stored_fields: Option<&'a [&'a str]>,
             }
             let query_params = QueryParamsStruct {
                 _source: self._source,
@@ -2655,11 +2655,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Field Caps API"]
-pub enum FieldCapsUrlParts {
+pub enum FieldCapsUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl FieldCapsUrlParts {
+impl<'a> FieldCapsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             FieldCapsUrlParts::None => "/_field_caps".into(),
@@ -2676,26 +2676,26 @@ impl FieldCapsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Field Caps API"]
-pub struct FieldCaps<B> {
+pub struct FieldCaps<'a, B> {
     client: Elasticsearch,
-    parts: FieldCapsUrlParts,
+    parts: FieldCapsUrlParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    fields: Option<Vec<String>>,
-    filter_path: Option<Vec<String>>,
+    fields: Option<&'a [&'a str]>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_unmapped: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> FieldCaps<B>
+impl<'a, B> FieldCaps<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: FieldCapsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: FieldCapsUrlParts<'a>) -> Self {
         FieldCaps {
             client,
             parts,
@@ -2718,7 +2718,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> FieldCaps<T>
+    pub fn body<T>(self, body: T) -> FieldCaps<'a, T>
     where
         T: Serialize,
     {
@@ -2749,12 +2749,12 @@ where
         self
     }
     #[doc = "A comma-separated list of field names"]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
+    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2779,7 +2779,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2792,7 +2792,7 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -2801,16 +2801,16 @@ where
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fields: Option<Vec<String>>,
+                fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
@@ -2820,7 +2820,7 @@ where
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
@@ -2846,11 +2846,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Get API"]
-pub enum GetUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum GetUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl GetUrlParts {
+impl<'a> GetUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             GetUrlParts::IndexId(ref index, ref id) => {
@@ -2876,27 +2876,27 @@ impl GetUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Get API"]
-pub struct Get {
+pub struct Get<'a> {
     client: Elasticsearch,
-    parts: GetUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: GetUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
-    stored_fields: Option<Vec<String>>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    stored_fields: Option<&'a [&'a str]>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl Get {
-    pub fn new(client: Elasticsearch, parts: GetUrlParts) -> Self {
+impl<'a> Get<'a> {
+    pub fn new(client: Elasticsearch, parts: GetUrlParts<'a>) -> Self {
         Get {
             client,
             parts,
@@ -2918,17 +2918,17 @@ impl Get {
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -2938,7 +2938,7 @@ impl Get {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2948,7 +2948,7 @@ impl Get {
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -2968,17 +2968,17 @@ impl Get {
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
-    pub fn stored_fields(mut self, stored_fields: Vec<String>) -> Self {
+    pub fn stored_fields(mut self, stored_fields: &'a [&'a str]) -> Self {
         self.stored_fields = Some(stored_fields);
         self
     }
@@ -2998,37 +2998,37 @@ impl Get {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
@@ -3036,15 +3036,15 @@ impl Get {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stored_fields: Option<Vec<String>>,
+                stored_fields: Option<&'a [&'a str]>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -3079,10 +3079,10 @@ impl Get {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Get Script API"]
-pub enum GetScriptUrlParts {
-    Id(String),
+pub enum GetScriptUrlParts<'a> {
+    Id(&'a str),
 }
-impl GetScriptUrlParts {
+impl<'a> GetScriptUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             GetScriptUrlParts::Id(ref id) => {
@@ -3096,18 +3096,18 @@ impl GetScriptUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Get Script API"]
-pub struct GetScript {
+pub struct GetScript<'a> {
     client: Elasticsearch,
-    parts: GetScriptUrlParts,
+    parts: GetScriptUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl GetScript {
-    pub fn new(client: Elasticsearch, parts: GetScriptUrlParts) -> Self {
+impl<'a> GetScript<'a> {
+    pub fn new(client: Elasticsearch, parts: GetScriptUrlParts<'a>) -> Self {
         GetScript {
             client,
             parts,
@@ -3125,7 +3125,7 @@ impl GetScript {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3135,7 +3135,7 @@ impl GetScript {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3145,7 +3145,7 @@ impl GetScript {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3155,23 +3155,23 @@ impl GetScript {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -3193,11 +3193,11 @@ impl GetScript {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Get Source API"]
-pub enum GetSourceUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum GetSourceUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl GetSourceUrlParts {
+impl<'a> GetSourceUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             GetSourceUrlParts::IndexId(ref index, ref id) => {
@@ -3224,26 +3224,26 @@ impl GetSourceUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Get Source API"]
-pub struct GetSource {
+pub struct GetSource<'a> {
     client: Elasticsearch,
-    parts: GetSourceUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: GetSourceUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl GetSource {
-    pub fn new(client: Elasticsearch, parts: GetSourceUrlParts) -> Self {
+impl<'a> GetSource<'a> {
+    pub fn new(client: Elasticsearch, parts: GetSourceUrlParts<'a>) -> Self {
         GetSource {
             client,
             parts,
@@ -3264,17 +3264,17 @@ impl GetSource {
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -3284,7 +3284,7 @@ impl GetSource {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3294,7 +3294,7 @@ impl GetSource {
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -3314,12 +3314,12 @@ impl GetSource {
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3339,37 +3339,37 @@ impl GetSource {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
@@ -3377,9 +3377,9 @@ impl GetSource {
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -3413,13 +3413,13 @@ impl GetSource {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Index API"]
-pub enum IndexUrlParts {
-    IndexId(String, String),
-    Index(String),
-    IndexType(String, String),
-    IndexTypeId(String, String, String),
+pub enum IndexUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    Index(&'a str),
+    IndexType(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl IndexUrlParts {
+impl<'a> IndexUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IndexUrlParts::IndexId(ref index, ref id) => {
@@ -3460,31 +3460,31 @@ impl IndexUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Index API"]
-pub struct Index<B> {
+pub struct Index<'a, B> {
     client: Elasticsearch,
-    parts: IndexUrlParts,
+    parts: IndexUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
     op_type: Option<OpType>,
-    pipeline: Option<String>,
+    pipeline: Option<&'a str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     version: Option<i64>,
     version_type: Option<VersionType>,
-    wait_for_active_shards: Option<String>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl<B> Index<B>
+impl<'a, B> Index<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IndexUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndexUrlParts<'a>) -> Self {
         Index {
             client,
             parts,
@@ -3507,7 +3507,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Index<T>
+    pub fn body<T>(self, body: T) -> Index<'a, T>
     where
         T: Serialize,
     {
@@ -3538,7 +3538,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3563,7 +3563,7 @@ where
         self
     }
     #[doc = "The pipeline id to preprocess incoming documents with"]
-    pub fn pipeline(mut self, pipeline: String) -> Self {
+    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
         self.pipeline = Some(pipeline);
         self
     }
@@ -3578,17 +3578,17 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -3603,7 +3603,7 @@ where
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the index operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -3613,15 +3613,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "if_primary_term", skip_serializing_if = "Option::is_none")]
@@ -3631,17 +3631,17 @@ where
                 #[serde(rename = "op_type", skip_serializing_if = "Option::is_none")]
                 op_type: Option<OpType>,
                 #[serde(rename = "pipeline", skip_serializing_if = "Option::is_none")]
-                pipeline: Option<String>,
+                pipeline: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<i64>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -3650,7 +3650,7 @@ where
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -3693,16 +3693,16 @@ impl InfoUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Info API"]
-pub struct Info {
+pub struct Info<'a> {
     client: Elasticsearch,
     parts: InfoUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl Info {
+impl<'a> Info<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         Info {
             client,
@@ -3720,7 +3720,7 @@ impl Info {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3735,7 +3735,7 @@ impl Info {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3745,21 +3745,21 @@ impl Info {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -3780,12 +3780,12 @@ impl Info {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Mget API"]
-pub enum MgetUrlParts {
+pub enum MgetUrlParts<'a> {
     None,
-    Index(String),
-    IndexType(String, String),
+    Index(&'a str),
+    IndexType(&'a str, &'a str),
 }
-impl MgetUrlParts {
+impl<'a> MgetUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MgetUrlParts::None => "/_mget".into(),
@@ -3810,29 +3810,29 @@ impl MgetUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Mget API"]
-pub struct Mget<B> {
+pub struct Mget<'a, B> {
     client: Elasticsearch,
-    parts: MgetUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: MgetUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
     refresh: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
-    stored_fields: Option<Vec<String>>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    stored_fields: Option<&'a [&'a str]>,
 }
-impl<B> Mget<B>
+impl<'a, B> Mget<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: MgetUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: MgetUrlParts<'a>) -> Self {
         Mget {
             client,
             parts,
@@ -3853,22 +3853,22 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Mget<T>
+    pub fn body<T>(self, body: T) -> Mget<'a, T>
     where
         T: Serialize,
     {
@@ -3897,7 +3897,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3907,7 +3907,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -3927,17 +3927,17 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "A comma-separated list of stored fields to return in the response"]
-    pub fn stored_fields(mut self, stored_fields: Vec<String>) -> Self {
+    pub fn stored_fields(mut self, stored_fields: &'a [&'a str]) -> Self {
         self.stored_fields = Some(stored_fields);
         self
     }
@@ -3950,37 +3950,37 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
@@ -3988,15 +3988,15 @@ where
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stored_fields: Option<Vec<String>>,
+                stored_fields: Option<&'a [&'a str]>,
             }
             let query_params = QueryParamsStruct {
                 _source: self._source,
@@ -4025,12 +4025,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Msearch API"]
-pub enum MsearchUrlParts {
+pub enum MsearchUrlParts<'a> {
     None,
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl MsearchUrlParts {
+impl<'a> MsearchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MsearchUrlParts::None => "/_msearch".into(),
@@ -4058,13 +4058,13 @@ impl MsearchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Msearch API"]
-pub struct Msearch<B> {
+pub struct Msearch<'a, B> {
     client: Elasticsearch,
-    parts: MsearchUrlParts,
+    parts: MsearchUrlParts<'a>,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     max_concurrent_searches: Option<i64>,
     max_concurrent_shard_requests: Option<i64>,
@@ -4072,14 +4072,14 @@ pub struct Msearch<B> {
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
-    source: Option<String>,
+    source: Option<&'a str>,
     typed_keys: Option<bool>,
 }
-impl<B> Msearch<B>
+impl<'a, B> Msearch<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: MsearchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchUrlParts<'a>) -> Self {
         Msearch {
             client,
             parts,
@@ -4099,7 +4099,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Msearch<T>
+    pub fn body<T>(self, body: T) -> Msearch<'a, T>
     where
         T: Serialize,
     {
@@ -4132,7 +4132,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4172,7 +4172,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4190,7 +4190,7 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "ccs_minimize_roundtrips",
                     skip_serializing_if = "Option::is_none"
@@ -4200,10 +4200,10 @@ where
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
@@ -4231,7 +4231,7 @@ where
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "typed_keys", skip_serializing_if = "Option::is_none")]
                 typed_keys: Option<bool>,
             }
@@ -4261,12 +4261,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Msearch Template API"]
-pub enum MsearchTemplateUrlParts {
+pub enum MsearchTemplateUrlParts<'a> {
     None,
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl MsearchTemplateUrlParts {
+impl<'a> MsearchTemplateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MsearchTemplateUrlParts::None => "/_msearch/template".into(),
@@ -4294,25 +4294,25 @@ impl MsearchTemplateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Msearch Template API"]
-pub struct MsearchTemplate<B> {
+pub struct MsearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: MsearchTemplateUrlParts,
+    parts: MsearchTemplateUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     max_concurrent_searches: Option<i64>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
     search_type: Option<SearchType>,
-    source: Option<String>,
+    source: Option<&'a str>,
     typed_keys: Option<bool>,
 }
-impl<B> MsearchTemplate<B>
+impl<'a, B> MsearchTemplate<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: MsearchTemplateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchTemplateUrlParts<'a>) -> Self {
         MsearchTemplate {
             client,
             parts,
@@ -4329,7 +4329,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MsearchTemplate<T>
+    pub fn body<T>(self, body: T) -> MsearchTemplate<'a, T>
     where
         T: Serialize,
     {
@@ -4354,7 +4354,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4384,7 +4384,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4402,15 +4402,15 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
@@ -4428,7 +4428,7 @@ where
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "typed_keys", skip_serializing_if = "Option::is_none")]
                 typed_keys: Option<bool>,
             }
@@ -4455,12 +4455,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Mtermvectors API"]
-pub enum MtermvectorsUrlParts {
+pub enum MtermvectorsUrlParts<'a> {
     None,
-    Index(String),
-    IndexType(String, String),
+    Index(&'a str),
+    IndexType(&'a str, &'a str),
 }
-impl MtermvectorsUrlParts {
+impl<'a> MtermvectorsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             MtermvectorsUrlParts::None => "/_mtermvectors".into(),
@@ -4485,33 +4485,33 @@ impl MtermvectorsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Mtermvectors API"]
-pub struct Mtermvectors<B> {
+pub struct Mtermvectors<'a, B> {
     client: Elasticsearch,
-    parts: MtermvectorsUrlParts,
+    parts: MtermvectorsUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
-    fields: Option<Vec<String>>,
-    filter_path: Option<Vec<String>>,
+    fields: Option<&'a [&'a str]>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    ids: Option<Vec<String>>,
+    ids: Option<&'a [&'a str]>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
     term_statistics: Option<bool>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl<B> Mtermvectors<B>
+impl<'a, B> Mtermvectors<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: MtermvectorsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: MtermvectorsUrlParts<'a>) -> Self {
         Mtermvectors {
             client,
             parts,
@@ -4536,7 +4536,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Mtermvectors<T>
+    pub fn body<T>(self, body: T) -> Mtermvectors<'a, T>
     where
         T: Serialize,
     {
@@ -4574,12 +4574,12 @@ where
         self
     }
     #[doc = "A comma-separated list of fields to return. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
+    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4589,7 +4589,7 @@ where
         self
     }
     #[doc = "A comma-separated list of documents ids. You must define ids as parameter or set \"ids\" or \"docs\" in the request body"]
-    pub fn ids(mut self, ids: Vec<String>) -> Self {
+    pub fn ids(mut self, ids: &'a [&'a str]) -> Self {
         self.ids = Some(ids);
         self
     }
@@ -4609,7 +4609,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random) .Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -4624,12 +4624,12 @@ where
         self
     }
     #[doc = "Specific routing value. Applies to all returned documents unless otherwise specified in body \"params\" or \"docs\"."]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4657,31 +4657,31 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "field_statistics", skip_serializing_if = "Option::is_none")]
                 field_statistics: Option<bool>,
                 #[serde(
                     rename = "fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fields: Option<Vec<String>>,
+                fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(
                     rename = "ids",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                ids: Option<Vec<String>>,
+                ids: Option<&'a [&'a str]>,
                 #[serde(rename = "offsets", skip_serializing_if = "Option::is_none")]
                 offsets: Option<bool>,
                 #[serde(rename = "payloads", skip_serializing_if = "Option::is_none")]
@@ -4689,15 +4689,15 @@ where
                 #[serde(rename = "positions", skip_serializing_if = "Option::is_none")]
                 positions: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
                 realtime: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "term_statistics", skip_serializing_if = "Option::is_none")]
                 term_statistics: Option<bool>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
@@ -4748,16 +4748,16 @@ impl PingUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ping API"]
-pub struct Ping {
+pub struct Ping<'a> {
     client: Elasticsearch,
     parts: PingUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl Ping {
+impl<'a> Ping<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         Ping {
             client,
@@ -4775,7 +4775,7 @@ impl Ping {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4790,7 +4790,7 @@ impl Ping {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4800,21 +4800,21 @@ impl Ping {
         let method = HttpMethod::Head;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -4835,11 +4835,11 @@ impl Ping {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Put Script API"]
-pub enum PutScriptUrlParts {
-    Id(String),
-    IdContext(String, String),
+pub enum PutScriptUrlParts<'a> {
+    Id(&'a str),
+    IdContext(&'a str, &'a str),
 }
-impl PutScriptUrlParts {
+impl<'a> PutScriptUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             PutScriptUrlParts::Id(ref id) => {
@@ -4861,24 +4861,24 @@ impl PutScriptUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Put Script API"]
-pub struct PutScript<B> {
+pub struct PutScript<'a, B> {
     client: Elasticsearch,
-    parts: PutScriptUrlParts,
+    parts: PutScriptUrlParts<'a>,
     body: Option<B>,
-    context: Option<String>,
+    context: Option<&'a str>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> PutScript<B>
+impl<'a, B> PutScript<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: PutScriptUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: PutScriptUrlParts<'a>) -> Self {
         PutScript {
             client,
             parts,
@@ -4894,7 +4894,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> PutScript<T>
+    pub fn body<T>(self, body: T) -> PutScript<'a, T>
     where
         T: Serialize,
     {
@@ -4913,7 +4913,7 @@ where
         }
     }
     #[doc = "Context name to compile script against"]
-    pub fn context(mut self, context: String) -> Self {
+    pub fn context(mut self, context: &'a str) -> Self {
         self.context = Some(context);
         self
     }
@@ -4923,7 +4923,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4933,7 +4933,7 @@ where
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -4943,12 +4943,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -4958,27 +4958,27 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "context", skip_serializing_if = "Option::is_none")]
-                context: Option<String>,
+                context: Option<&'a str>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 context: self.context,
@@ -5002,11 +5002,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Rank Eval API"]
-pub enum RankEvalUrlParts {
+pub enum RankEvalUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl RankEvalUrlParts {
+impl<'a> RankEvalUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RankEvalUrlParts::None => "/_rank_eval".into(),
@@ -5023,24 +5023,24 @@ impl RankEvalUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Rank Eval API"]
-pub struct RankEval<B> {
+pub struct RankEval<'a, B> {
     client: Elasticsearch,
-    parts: RankEvalUrlParts,
+    parts: RankEvalUrlParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> RankEval<B>
+impl<'a, B> RankEval<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RankEvalUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RankEvalUrlParts<'a>) -> Self {
         RankEval {
             client,
             parts,
@@ -5061,7 +5061,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RankEval<T>
+    pub fn body<T>(self, body: T) -> RankEval<'a, T>
     where
         T: Serialize,
     {
@@ -5090,7 +5090,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5110,7 +5110,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5123,7 +5123,7 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -5132,10 +5132,10 @@ where
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
@@ -5143,7 +5143,7 @@ where
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
@@ -5179,25 +5179,25 @@ impl ReindexUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Reindex API"]
-pub struct Reindex<B> {
+pub struct Reindex<'a, B> {
     client: Elasticsearch,
     parts: ReindexUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     max_docs: Option<i64>,
     pretty: Option<bool>,
     refresh: Option<bool>,
     requests_per_second: Option<i64>,
-    scroll: Option<String>,
+    scroll: Option<&'a str>,
     slices: Option<i64>,
-    source: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
+    wait_for_active_shards: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<B> Reindex<B>
+impl<'a, B> Reindex<'a, B>
 where
     B: Serialize,
 {
@@ -5222,7 +5222,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Reindex<T>
+    pub fn body<T>(self, body: T) -> Reindex<'a, T>
     where
         T: Serialize,
     {
@@ -5251,7 +5251,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5281,7 +5281,7 @@ where
         self
     }
     #[doc = "Control how long to keep the search context alive"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
@@ -5291,17 +5291,17 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the reindex operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -5316,15 +5316,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
@@ -5339,18 +5339,18 @@ where
                 )]
                 requests_per_second: Option<i64>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "slices", skip_serializing_if = "Option::is_none")]
                 slices: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -5384,10 +5384,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Reindex Rethrottle API"]
-pub enum ReindexRethrottleUrlParts {
-    TaskId(String),
+pub enum ReindexRethrottleUrlParts<'a> {
+    TaskId(&'a str),
 }
-impl ReindexRethrottleUrlParts {
+impl<'a> ReindexRethrottleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ReindexRethrottleUrlParts::TaskId(ref task_id) => {
@@ -5402,22 +5402,22 @@ impl ReindexRethrottleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Reindex Rethrottle API"]
-pub struct ReindexRethrottle<B> {
+pub struct ReindexRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: ReindexRethrottleUrlParts,
+    parts: ReindexRethrottleUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> ReindexRethrottle<B>
+impl<'a, B> ReindexRethrottle<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: ReindexRethrottleUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: ReindexRethrottleUrlParts<'a>) -> Self {
         ReindexRethrottle {
             client,
             parts,
@@ -5431,7 +5431,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ReindexRethrottle<T>
+    pub fn body<T>(self, body: T) -> ReindexRethrottle<'a, T>
     where
         T: Serialize,
     {
@@ -5453,7 +5453,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5473,7 +5473,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5483,15 +5483,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -5502,7 +5502,7 @@ where
                 )]
                 requests_per_second: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -5524,11 +5524,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Render Search Template API"]
-pub enum RenderSearchTemplateUrlParts {
+pub enum RenderSearchTemplateUrlParts<'a> {
     None,
-    Id(String),
+    Id(&'a str),
 }
-impl RenderSearchTemplateUrlParts {
+impl<'a> RenderSearchTemplateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             RenderSearchTemplateUrlParts::None => "/_render/template".into(),
@@ -5543,21 +5543,21 @@ impl RenderSearchTemplateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Render Search Template API"]
-pub struct RenderSearchTemplate<B> {
+pub struct RenderSearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: RenderSearchTemplateUrlParts,
+    parts: RenderSearchTemplateUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> RenderSearchTemplate<B>
+impl<'a, B> RenderSearchTemplate<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: RenderSearchTemplateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: RenderSearchTemplateUrlParts<'a>) -> Self {
         RenderSearchTemplate {
             client,
             parts,
@@ -5570,7 +5570,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RenderSearchTemplate<T>
+    pub fn body<T>(self, body: T) -> RenderSearchTemplate<'a, T>
     where
         T: Serialize,
     {
@@ -5591,7 +5591,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5606,7 +5606,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5619,21 +5619,21 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -5666,17 +5666,17 @@ impl ScriptsPainlessExecuteUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Scripts Painless Execute API"]
-pub struct ScriptsPainlessExecute<B> {
+pub struct ScriptsPainlessExecute<'a, B> {
     client: Elasticsearch,
     parts: ScriptsPainlessExecuteUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> ScriptsPainlessExecute<B>
+impl<'a, B> ScriptsPainlessExecute<'a, B>
 where
     B: Serialize,
 {
@@ -5693,7 +5693,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<T>
+    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<'a, T>
     where
         T: Serialize,
     {
@@ -5714,7 +5714,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5729,7 +5729,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5742,21 +5742,21 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -5777,11 +5777,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Scroll API"]
-pub enum ScrollUrlParts {
+pub enum ScrollUrlParts<'a> {
     None,
-    ScrollId(String),
+    ScrollId(&'a str),
 }
-impl ScrollUrlParts {
+impl<'a> ScrollUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             ScrollUrlParts::None => "/_search/scroll".into(),
@@ -5796,24 +5796,24 @@ impl ScrollUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Scroll API"]
-pub struct Scroll<B> {
+pub struct Scroll<'a, B> {
     client: Elasticsearch,
-    parts: ScrollUrlParts,
+    parts: ScrollUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
-    scroll: Option<String>,
-    scroll_id: Option<String>,
-    source: Option<String>,
+    scroll: Option<&'a str>,
+    scroll_id: Option<&'a str>,
+    source: Option<&'a str>,
 }
-impl<B> Scroll<B>
+impl<'a, B> Scroll<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: ScrollUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: ScrollUrlParts<'a>) -> Self {
         Scroll {
             client,
             parts,
@@ -5829,7 +5829,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Scroll<T>
+    pub fn body<T>(self, body: T) -> Scroll<'a, T>
     where
         T: Serialize,
     {
@@ -5853,7 +5853,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5873,17 +5873,17 @@ where
         self
     }
     #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
     #[doc = "The scroll ID for scrolled search"]
-    pub fn scroll_id(mut self, scroll_id: String) -> Self {
+    pub fn scroll_id(mut self, scroll_id: &'a str) -> Self {
         self.scroll_id = Some(scroll_id);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5896,15 +5896,15 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -5915,11 +5915,11 @@ where
                 )]
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "scroll_id", skip_serializing_if = "Option::is_none")]
-                scroll_id: Option<String>,
+                scroll_id: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -5943,12 +5943,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Search API"]
-pub enum SearchUrlParts {
+pub enum SearchUrlParts<'a> {
     None,
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl SearchUrlParts {
+impl<'a> SearchUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SearchUrlParts::None => "/_search".into(),
@@ -5976,26 +5976,26 @@ impl SearchUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Search API"]
-pub struct Search<B> {
+pub struct Search<'a, B> {
     client: Elasticsearch,
-    parts: SearchUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: SearchUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     allow_no_indices: Option<bool>,
     allow_partial_search_results: Option<bool>,
     analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
+    analyzer: Option<&'a str>,
     batched_reduce_size: Option<i64>,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     default_operator: Option<DefaultOperator>,
-    df: Option<String>,
-    docvalue_fields: Option<Vec<String>>,
+    df: Option<&'a str>,
+    docvalue_fields: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     from: Option<i64>,
     human: Option<bool>,
     ignore_throttled: Option<bool>,
@@ -6003,36 +6003,36 @@ pub struct Search<B> {
     lenient: Option<bool>,
     max_concurrent_shard_requests: Option<i64>,
     pre_filter_shard_size: Option<i64>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    q: Option<String>,
+    q: Option<&'a str>,
     request_cache: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
-    routing: Option<Vec<String>>,
-    scroll: Option<String>,
+    routing: Option<&'a [&'a str]>,
+    scroll: Option<&'a str>,
     search_type: Option<SearchType>,
     seq_no_primary_term: Option<bool>,
     size: Option<i64>,
-    sort: Option<Vec<String>>,
-    source: Option<String>,
-    stats: Option<Vec<String>>,
-    stored_fields: Option<Vec<String>>,
-    suggest_field: Option<String>,
+    sort: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
+    stats: Option<&'a [&'a str]>,
+    stored_fields: Option<&'a [&'a str]>,
+    suggest_field: Option<&'a str>,
     suggest_mode: Option<SuggestMode>,
     suggest_size: Option<i64>,
-    suggest_text: Option<String>,
+    suggest_text: Option<&'a str>,
     terminate_after: Option<i64>,
-    timeout: Option<String>,
+    timeout: Option<&'a str>,
     track_scores: Option<bool>,
     track_total_hits: Option<bool>,
     typed_keys: Option<bool>,
     version: Option<bool>,
 }
-impl<B> Search<B>
+impl<'a, B> Search<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SearchUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchUrlParts<'a>) -> Self {
         Search {
             client,
             parts,
@@ -6087,17 +6087,17 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -6117,7 +6117,7 @@ where
         self
     }
     #[doc = "The analyzer to use for the query string"]
-    pub fn analyzer(mut self, analyzer: String) -> Self {
+    pub fn analyzer(mut self, analyzer: &'a str) -> Self {
         self.analyzer = Some(analyzer);
         self
     }
@@ -6127,7 +6127,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Search<T>
+    pub fn body<T>(self, body: T) -> Search<'a, T>
     where
         T: Serialize,
     {
@@ -6195,12 +6195,12 @@ where
         self
     }
     #[doc = "The field to use as default where no field prefix is given in the query string"]
-    pub fn df(mut self, df: String) -> Self {
+    pub fn df(mut self, df: &'a str) -> Self {
         self.df = Some(df);
         self
     }
     #[doc = "A comma-separated list of fields to return as the docvalue representation of a field for each hit"]
-    pub fn docvalue_fields(mut self, docvalue_fields: Vec<String>) -> Self {
+    pub fn docvalue_fields(mut self, docvalue_fields: &'a [&'a str]) -> Self {
         self.docvalue_fields = Some(docvalue_fields);
         self
     }
@@ -6220,7 +6220,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6260,7 +6260,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -6270,7 +6270,7 @@ where
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: String) -> Self {
+    pub fn q(mut self, q: &'a str) -> Self {
         self.q = Some(q);
         self
     }
@@ -6285,12 +6285,12 @@ where
         self
     }
     #[doc = "A comma-separated list of specific routing values"]
-    pub fn routing(mut self, routing: Vec<String>) -> Self {
+    pub fn routing(mut self, routing: &'a [&'a str]) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
@@ -6310,27 +6310,27 @@ where
         self
     }
     #[doc = "A comma-separated list of <field>:<direction> pairs"]
-    pub fn sort(mut self, sort: Vec<String>) -> Self {
+    pub fn sort(mut self, sort: &'a [&'a str]) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
-    pub fn stats(mut self, stats: Vec<String>) -> Self {
+    pub fn stats(mut self, stats: &'a [&'a str]) -> Self {
         self.stats = Some(stats);
         self
     }
     #[doc = "A comma-separated list of stored fields to return as part of a hit"]
-    pub fn stored_fields(mut self, stored_fields: Vec<String>) -> Self {
+    pub fn stored_fields(mut self, stored_fields: &'a [&'a str]) -> Self {
         self.stored_fields = Some(stored_fields);
         self
     }
     #[doc = "Specify which field to use for suggestions"]
-    pub fn suggest_field(mut self, suggest_field: String) -> Self {
+    pub fn suggest_field(mut self, suggest_field: &'a str) -> Self {
         self.suggest_field = Some(suggest_field);
         self
     }
@@ -6345,7 +6345,7 @@ where
         self
     }
     #[doc = "The source text for which the suggestions should be returned"]
-    pub fn suggest_text(mut self, suggest_text: String) -> Self {
+    pub fn suggest_text(mut self, suggest_text: &'a str) -> Self {
         self.suggest_text = Some(suggest_text);
         self
     }
@@ -6355,7 +6355,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -6388,25 +6388,25 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(
@@ -6417,7 +6417,7 @@ where
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
                 analyze_wildcard: Option<bool>,
                 #[serde(rename = "analyzer", skip_serializing_if = "Option::is_none")]
-                analyzer: Option<String>,
+                analyzer: Option<&'a str>,
                 #[serde(
                     rename = "batched_reduce_size",
                     skip_serializing_if = "Option::is_none"
@@ -6431,13 +6431,13 @@ where
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df", skip_serializing_if = "Option::is_none")]
-                df: Option<String>,
+                df: Option<&'a str>,
                 #[serde(
                     rename = "docvalue_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                docvalue_fields: Option<Vec<String>>,
+                docvalue_fields: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
@@ -6446,10 +6446,10 @@ where
                 explain: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
                 from: Option<i64>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -6471,11 +6471,11 @@ where
                 )]
                 pre_filter_shard_size: Option<i64>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "q", skip_serializing_if = "Option::is_none")]
-                q: Option<String>,
+                q: Option<&'a str>,
                 #[serde(rename = "request_cache", skip_serializing_if = "Option::is_none")]
                 request_cache: Option<bool>,
                 #[serde(
@@ -6485,12 +6485,12 @@ where
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(
                     rename = "routing",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                routing: Option<Vec<String>>,
+                routing: Option<&'a [&'a str]>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(
@@ -6502,36 +6502,36 @@ where
                 size: Option<i64>,
                 #[serde(
                     rename = "sort",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                sort: Option<Vec<String>>,
+                sort: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stats",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stats: Option<Vec<String>>,
+                stats: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "stored_fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stored_fields: Option<Vec<String>>,
+                stored_fields: Option<&'a [&'a str]>,
                 #[serde(rename = "suggest_field", skip_serializing_if = "Option::is_none")]
-                suggest_field: Option<String>,
+                suggest_field: Option<&'a str>,
                 #[serde(rename = "suggest_mode", skip_serializing_if = "Option::is_none")]
                 suggest_mode: Option<SuggestMode>,
                 #[serde(rename = "suggest_size", skip_serializing_if = "Option::is_none")]
                 suggest_size: Option<i64>,
                 #[serde(rename = "suggest_text", skip_serializing_if = "Option::is_none")]
-                suggest_text: Option<String>,
+                suggest_text: Option<&'a str>,
                 #[serde(rename = "terminate_after", skip_serializing_if = "Option::is_none")]
                 terminate_after: Option<i64>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "track_scores", skip_serializing_if = "Option::is_none")]
                 track_scores: Option<bool>,
                 #[serde(rename = "track_total_hits", skip_serializing_if = "Option::is_none")]
@@ -6602,11 +6602,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Search Shards API"]
-pub enum SearchShardsUrlParts {
+pub enum SearchShardsUrlParts<'a> {
     None,
-    Index(Vec<String>),
+    Index(&'a [&'a str]),
 }
-impl SearchShardsUrlParts {
+impl<'a> SearchShardsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SearchShardsUrlParts::None => "/_search_shards".into(),
@@ -6623,27 +6623,27 @@ impl SearchShardsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Search Shards API"]
-pub struct SearchShards<B> {
+pub struct SearchShards<'a, B> {
     client: Elasticsearch,
-    parts: SearchShardsUrlParts,
+    parts: SearchShardsUrlParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
 }
-impl<B> SearchShards<B>
+impl<'a, B> SearchShards<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SearchShardsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchShardsUrlParts<'a>) -> Self {
         SearchShards {
             client,
             parts,
@@ -6667,7 +6667,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SearchShards<T>
+    pub fn body<T>(self, body: T) -> SearchShards<'a, T>
     where
         T: Serialize,
     {
@@ -6699,7 +6699,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6719,7 +6719,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -6729,12 +6729,12 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6747,7 +6747,7 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -6756,10 +6756,10 @@ where
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
@@ -6767,13 +6767,13 @@ where
                 #[serde(rename = "local", skip_serializing_if = "Option::is_none")]
                 local: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_indices: self.allow_no_indices,
@@ -6800,12 +6800,12 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Search Template API"]
-pub enum SearchTemplateUrlParts {
+pub enum SearchTemplateUrlParts<'a> {
     None,
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl SearchTemplateUrlParts {
+impl<'a> SearchTemplateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             SearchTemplateUrlParts::None => "/_search/template".into(),
@@ -6833,33 +6833,33 @@ impl SearchTemplateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Search Template API"]
-pub struct SearchTemplate<B> {
+pub struct SearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: SearchTemplateUrlParts,
+    parts: SearchTemplateUrlParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     ignore_throttled: Option<bool>,
     ignore_unavailable: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     profile: Option<bool>,
     rest_total_hits_as_int: Option<bool>,
-    routing: Option<Vec<String>>,
-    scroll: Option<String>,
+    routing: Option<&'a [&'a str]>,
+    scroll: Option<&'a str>,
     search_type: Option<SearchType>,
-    source: Option<String>,
+    source: Option<&'a str>,
     typed_keys: Option<bool>,
 }
-impl<B> SearchTemplate<B>
+impl<'a, B> SearchTemplate<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SearchTemplateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchTemplateUrlParts<'a>) -> Self {
         SearchTemplate {
             client,
             parts,
@@ -6889,7 +6889,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SearchTemplate<T>
+    pub fn body<T>(self, body: T) -> SearchTemplate<'a, T>
     where
         T: Serialize,
     {
@@ -6932,7 +6932,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6952,7 +6952,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -6972,12 +6972,12 @@ where
         self
     }
     #[doc = "A comma-separated list of specific routing values"]
-    pub fn routing(mut self, routing: Vec<String>) -> Self {
+    pub fn routing(mut self, routing: &'a [&'a str]) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
@@ -6987,7 +6987,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -7005,7 +7005,7 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
@@ -7016,10 +7016,10 @@ where
                 explain: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_throttled", skip_serializing_if = "Option::is_none")]
@@ -7027,7 +7027,7 @@ where
                 #[serde(rename = "ignore_unavailable", skip_serializing_if = "Option::is_none")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "profile", skip_serializing_if = "Option::is_none")]
@@ -7039,16 +7039,16 @@ where
                 rest_total_hits_as_int: Option<bool>,
                 #[serde(
                     rename = "routing",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                routing: Option<Vec<String>>,
+                routing: Option<&'a [&'a str]>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "typed_keys", skip_serializing_if = "Option::is_none")]
                 typed_keys: Option<bool>,
             }
@@ -7083,13 +7083,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Termvectors API"]
-pub enum TermvectorsUrlParts {
-    IndexId(String, String),
-    Index(String),
-    IndexTypeId(String, String, String),
-    IndexType(String, String),
+pub enum TermvectorsUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    Index(&'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
+    IndexType(&'a str, &'a str),
 }
-impl TermvectorsUrlParts {
+impl<'a> TermvectorsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             TermvectorsUrlParts::IndexId(ref index, ref id) => {
@@ -7132,32 +7132,32 @@ impl TermvectorsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Termvectors API"]
-pub struct Termvectors<B> {
+pub struct Termvectors<'a, B> {
     client: Elasticsearch,
-    parts: TermvectorsUrlParts,
+    parts: TermvectorsUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
-    fields: Option<Vec<String>>,
-    filter_path: Option<Vec<String>>,
+    fields: Option<&'a [&'a str]>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     offsets: Option<bool>,
     payloads: Option<bool>,
     positions: Option<bool>,
-    preference: Option<String>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
     realtime: Option<bool>,
-    routing: Option<String>,
-    source: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
     term_statistics: Option<bool>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
-impl<B> Termvectors<B>
+impl<'a, B> Termvectors<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: TermvectorsUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: TermvectorsUrlParts<'a>) -> Self {
         Termvectors {
             client,
             parts,
@@ -7181,7 +7181,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Termvectors<T>
+    pub fn body<T>(self, body: T) -> Termvectors<'a, T>
     where
         T: Serialize,
     {
@@ -7218,12 +7218,12 @@ where
         self
     }
     #[doc = "A comma-separated list of fields to return."]
-    pub fn fields(mut self, fields: Vec<String>) -> Self {
+    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -7248,7 +7248,7 @@ where
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)."]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -7263,12 +7263,12 @@ where
         self
     }
     #[doc = "Specific routing value."]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -7296,23 +7296,23 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "field_statistics", skip_serializing_if = "Option::is_none")]
                 field_statistics: Option<bool>,
                 #[serde(
                     rename = "fields",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                fields: Option<Vec<String>>,
+                fields: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "offsets", skip_serializing_if = "Option::is_none")]
@@ -7322,15 +7322,15 @@ where
                 #[serde(rename = "positions", skip_serializing_if = "Option::is_none")]
                 positions: Option<bool>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realtime", skip_serializing_if = "Option::is_none")]
                 realtime: Option<bool>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "term_statistics", skip_serializing_if = "Option::is_none")]
                 term_statistics: Option<bool>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
@@ -7368,11 +7368,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Update API"]
-pub enum UpdateUrlParts {
-    IndexId(String, String),
-    IndexTypeId(String, String, String),
+pub enum UpdateUrlParts<'a> {
+    IndexId(&'a str, &'a str),
+    IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl UpdateUrlParts {
+impl<'a> UpdateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             UpdateUrlParts::IndexId(ref index, ref id) => {
@@ -7399,32 +7399,32 @@ impl UpdateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Update API"]
-pub struct Update<B> {
+pub struct Update<'a, B> {
     client: Elasticsearch,
-    parts: UpdateUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: UpdateUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
-    lang: Option<String>,
+    lang: Option<&'a str>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
     retry_on_conflict: Option<i64>,
-    routing: Option<String>,
-    source: Option<String>,
-    timeout: Option<String>,
-    wait_for_active_shards: Option<String>,
+    routing: Option<&'a str>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
+    wait_for_active_shards: Option<&'a str>,
 }
-impl<B> Update<B>
+impl<'a, B> Update<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateUrlParts<'a>) -> Self {
         Update {
             client,
             parts,
@@ -7448,22 +7448,22 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Update<T>
+    pub fn body<T>(self, body: T) -> Update<'a, T>
     where
         T: Serialize,
     {
@@ -7495,7 +7495,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -7515,7 +7515,7 @@ where
         self
     }
     #[doc = "The script language (default: painless)"]
-    pub fn lang(mut self, lang: String) -> Self {
+    pub fn lang(mut self, lang: &'a str) -> Self {
         self.lang = Some(lang);
         self
     }
@@ -7535,22 +7535,22 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: String) -> Self {
+    pub fn routing(mut self, routing: &'a str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the update operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -7560,33 +7560,33 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "if_primary_term", skip_serializing_if = "Option::is_none")]
@@ -7594,7 +7594,7 @@ where
                 #[serde(rename = "if_seq_no", skip_serializing_if = "Option::is_none")]
                 if_seq_no: Option<i64>,
                 #[serde(rename = "lang", skip_serializing_if = "Option::is_none")]
-                lang: Option<String>,
+                lang: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
@@ -7602,16 +7602,16 @@ where
                 #[serde(rename = "retry_on_conflict", skip_serializing_if = "Option::is_none")]
                 retry_on_conflict: Option<i64>,
                 #[serde(rename = "routing", skip_serializing_if = "Option::is_none")]
-                routing: Option<String>,
+                routing: Option<&'a str>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 _source: self._source,
@@ -7643,11 +7643,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Update By Query API"]
-pub enum UpdateByQueryUrlParts {
-    Index(Vec<String>),
-    IndexType(Vec<String>, Vec<String>),
+pub enum UpdateByQueryUrlParts<'a> {
+    Index(&'a [&'a str]),
+    IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl UpdateByQueryUrlParts {
+impl<'a> UpdateByQueryUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             UpdateByQueryUrlParts::Index(ref index) => {
@@ -7674,56 +7674,56 @@ impl UpdateByQueryUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Update By Query API"]
-pub struct UpdateByQuery<B> {
+pub struct UpdateByQuery<'a, B> {
     client: Elasticsearch,
-    parts: UpdateByQueryUrlParts,
-    _source: Option<Vec<String>>,
-    _source_excludes: Option<Vec<String>>,
-    _source_includes: Option<Vec<String>>,
+    parts: UpdateByQueryUrlParts<'a>,
+    _source: Option<&'a [&'a str]>,
+    _source_excludes: Option<&'a [&'a str]>,
+    _source_includes: Option<&'a [&'a str]>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
-    analyzer: Option<String>,
+    analyzer: Option<&'a str>,
     body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
-    df: Option<String>,
+    df: Option<&'a str>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     from: Option<i64>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
     max_docs: Option<i64>,
-    pipeline: Option<String>,
-    preference: Option<String>,
+    pipeline: Option<&'a str>,
+    preference: Option<&'a str>,
     pretty: Option<bool>,
-    q: Option<String>,
+    q: Option<&'a str>,
     refresh: Option<bool>,
     request_cache: Option<bool>,
     requests_per_second: Option<i64>,
-    routing: Option<Vec<String>>,
-    scroll: Option<String>,
+    routing: Option<&'a [&'a str]>,
+    scroll: Option<&'a str>,
     scroll_size: Option<i64>,
-    search_timeout: Option<String>,
+    search_timeout: Option<&'a str>,
     search_type: Option<SearchType>,
     size: Option<i64>,
     slices: Option<i64>,
-    sort: Option<Vec<String>>,
-    source: Option<String>,
-    stats: Option<Vec<String>>,
+    sort: Option<&'a [&'a str]>,
+    source: Option<&'a str>,
+    stats: Option<&'a [&'a str]>,
     terminate_after: Option<i64>,
-    timeout: Option<String>,
+    timeout: Option<&'a str>,
     version: Option<bool>,
     version_type: Option<bool>,
-    wait_for_active_shards: Option<String>,
+    wait_for_active_shards: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<B> UpdateByQuery<B>
+impl<'a, B> UpdateByQuery<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateByQueryUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryUrlParts<'a>) -> Self {
         UpdateByQuery {
             client,
             parts,
@@ -7771,17 +7771,17 @@ where
         }
     }
     #[doc = "True or false to return the _source field or not, or a list of fields to return"]
-    pub fn _source(mut self, _source: Vec<String>) -> Self {
+    pub fn _source(mut self, _source: &'a [&'a str]) -> Self {
         self._source = Some(_source);
         self
     }
     #[doc = "A list of fields to exclude from the returned _source field"]
-    pub fn _source_excludes(mut self, _source_excludes: Vec<String>) -> Self {
+    pub fn _source_excludes(mut self, _source_excludes: &'a [&'a str]) -> Self {
         self._source_excludes = Some(_source_excludes);
         self
     }
     #[doc = "A list of fields to extract and return from the _source field"]
-    pub fn _source_includes(mut self, _source_includes: Vec<String>) -> Self {
+    pub fn _source_includes(mut self, _source_includes: &'a [&'a str]) -> Self {
         self._source_includes = Some(_source_includes);
         self
     }
@@ -7796,12 +7796,12 @@ where
         self
     }
     #[doc = "The analyzer to use for the query string"]
-    pub fn analyzer(mut self, analyzer: String) -> Self {
+    pub fn analyzer(mut self, analyzer: &'a str) -> Self {
         self.analyzer = Some(analyzer);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> UpdateByQuery<T>
+    pub fn body<T>(self, body: T) -> UpdateByQuery<'a, T>
     where
         T: Serialize,
     {
@@ -7862,7 +7862,7 @@ where
         self
     }
     #[doc = "The field to use as default where no field prefix is given in the query string"]
-    pub fn df(mut self, df: String) -> Self {
+    pub fn df(mut self, df: &'a str) -> Self {
         self.df = Some(df);
         self
     }
@@ -7877,7 +7877,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -7907,12 +7907,12 @@ where
         self
     }
     #[doc = "Ingest pipeline to set on index requests made by this action. (default: none)"]
-    pub fn pipeline(mut self, pipeline: String) -> Self {
+    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
         self.pipeline = Some(pipeline);
         self
     }
     #[doc = "Specify the node or shard the operation should be performed on (default: random)"]
-    pub fn preference(mut self, preference: String) -> Self {
+    pub fn preference(mut self, preference: &'a str) -> Self {
         self.preference = Some(preference);
         self
     }
@@ -7922,7 +7922,7 @@ where
         self
     }
     #[doc = "Query in the Lucene query string syntax"]
-    pub fn q(mut self, q: String) -> Self {
+    pub fn q(mut self, q: &'a str) -> Self {
         self.q = Some(q);
         self
     }
@@ -7942,12 +7942,12 @@ where
         self
     }
     #[doc = "A comma-separated list of specific routing values"]
-    pub fn routing(mut self, routing: Vec<String>) -> Self {
+    pub fn routing(mut self, routing: &'a [&'a str]) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "Specify how long a consistent view of the index should be maintained for scrolled search"]
-    pub fn scroll(mut self, scroll: String) -> Self {
+    pub fn scroll(mut self, scroll: &'a str) -> Self {
         self.scroll = Some(scroll);
         self
     }
@@ -7957,7 +7957,7 @@ where
         self
     }
     #[doc = "Explicit timeout for each search request. Defaults to no timeout."]
-    pub fn search_timeout(mut self, search_timeout: String) -> Self {
+    pub fn search_timeout(mut self, search_timeout: &'a str) -> Self {
         self.search_timeout = Some(search_timeout);
         self
     }
@@ -7977,17 +7977,17 @@ where
         self
     }
     #[doc = "A comma-separated list of <field>:<direction> pairs"]
-    pub fn sort(mut self, sort: Vec<String>) -> Self {
+    pub fn sort(mut self, sort: &'a [&'a str]) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Specific 'tag' of the request for logging and statistical purposes"]
-    pub fn stats(mut self, stats: Vec<String>) -> Self {
+    pub fn stats(mut self, stats: &'a [&'a str]) -> Self {
         self.stats = Some(stats);
         self
     }
@@ -7997,7 +7997,7 @@ where
         self
     }
     #[doc = "Time each individual bulk request should wait for shards that are unavailable."]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -8012,7 +8012,7 @@ where
         self
     }
     #[doc = "Sets the number of shard copies that must be active before proceeding with the update by query operation. Defaults to 1, meaning the primary shard only. Set to `all` for all shard copies, otherwise set to any non-negative value less than or equal to the total number of copies for the shard (number of replicas + 1)"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: String) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -8027,47 +8027,47 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(
                     rename = "_source",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source: Option<Vec<String>>,
+                _source: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_excludes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_excludes: Option<Vec<String>>,
+                _source_excludes: Option<&'a [&'a str]>,
                 #[serde(
                     rename = "_source_includes",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                _source_includes: Option<Vec<String>>,
+                _source_includes: Option<&'a [&'a str]>,
                 #[serde(rename = "allow_no_indices", skip_serializing_if = "Option::is_none")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "analyze_wildcard", skip_serializing_if = "Option::is_none")]
                 analyze_wildcard: Option<bool>,
                 #[serde(rename = "analyzer", skip_serializing_if = "Option::is_none")]
-                analyzer: Option<String>,
+                analyzer: Option<&'a str>,
                 #[serde(rename = "conflicts", skip_serializing_if = "Option::is_none")]
                 conflicts: Option<Conflicts>,
                 #[serde(rename = "default_operator", skip_serializing_if = "Option::is_none")]
                 default_operator: Option<DefaultOperator>,
                 #[serde(rename = "df", skip_serializing_if = "Option::is_none")]
-                df: Option<String>,
+                df: Option<&'a str>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards", skip_serializing_if = "Option::is_none")]
                 expand_wildcards: Option<ExpandWildcards>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
                 from: Option<i64>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -8079,13 +8079,13 @@ where
                 #[serde(rename = "max_docs", skip_serializing_if = "Option::is_none")]
                 max_docs: Option<i64>,
                 #[serde(rename = "pipeline", skip_serializing_if = "Option::is_none")]
-                pipeline: Option<String>,
+                pipeline: Option<&'a str>,
                 #[serde(rename = "preference", skip_serializing_if = "Option::is_none")]
-                preference: Option<String>,
+                preference: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "q", skip_serializing_if = "Option::is_none")]
-                q: Option<String>,
+                q: Option<&'a str>,
                 #[serde(rename = "refresh", skip_serializing_if = "Option::is_none")]
                 refresh: Option<bool>,
                 #[serde(rename = "request_cache", skip_serializing_if = "Option::is_none")]
@@ -8097,16 +8097,16 @@ where
                 requests_per_second: Option<i64>,
                 #[serde(
                     rename = "routing",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                routing: Option<Vec<String>>,
+                routing: Option<&'a [&'a str]>,
                 #[serde(rename = "scroll", skip_serializing_if = "Option::is_none")]
-                scroll: Option<String>,
+                scroll: Option<&'a str>,
                 #[serde(rename = "scroll_size", skip_serializing_if = "Option::is_none")]
                 scroll_size: Option<i64>,
                 #[serde(rename = "search_timeout", skip_serializing_if = "Option::is_none")]
-                search_timeout: Option<String>,
+                search_timeout: Option<&'a str>,
                 #[serde(rename = "search_type", skip_serializing_if = "Option::is_none")]
                 search_type: Option<SearchType>,
                 #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
@@ -8115,22 +8115,22 @@ where
                 slices: Option<i64>,
                 #[serde(
                     rename = "sort",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                sort: Option<Vec<String>>,
+                sort: Option<&'a [&'a str]>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(
                     rename = "stats",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                stats: Option<Vec<String>>,
+                stats: Option<&'a [&'a str]>,
                 #[serde(rename = "terminate_after", skip_serializing_if = "Option::is_none")]
                 terminate_after: Option<i64>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(rename = "version", skip_serializing_if = "Option::is_none")]
                 version: Option<bool>,
                 #[serde(rename = "version_type", skip_serializing_if = "Option::is_none")]
@@ -8139,7 +8139,7 @@ where
                     rename = "wait_for_active_shards",
                     skip_serializing_if = "Option::is_none"
                 )]
-                wait_for_active_shards: Option<String>,
+                wait_for_active_shards: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -8200,10 +8200,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Update By Query Rethrottle API"]
-pub enum UpdateByQueryRethrottleUrlParts {
-    TaskId(String),
+pub enum UpdateByQueryRethrottleUrlParts<'a> {
+    TaskId(&'a str),
 }
-impl UpdateByQueryRethrottleUrlParts {
+impl<'a> UpdateByQueryRethrottleUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             UpdateByQueryRethrottleUrlParts::TaskId(ref task_id) => {
@@ -8218,22 +8218,22 @@ impl UpdateByQueryRethrottleUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Update By Query Rethrottle API"]
-pub struct UpdateByQueryRethrottle<B> {
+pub struct UpdateByQueryRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: UpdateByQueryRethrottleUrlParts,
+    parts: UpdateByQueryRethrottleUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     requests_per_second: Option<i64>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> UpdateByQueryRethrottle<B>
+impl<'a, B> UpdateByQueryRethrottle<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleUrlParts<'a>) -> Self {
         UpdateByQueryRethrottle {
             client,
             parts,
@@ -8247,7 +8247,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> UpdateByQueryRethrottle<T>
+    pub fn body<T>(self, body: T) -> UpdateByQueryRethrottle<'a, T>
     where
         T: Serialize,
     {
@@ -8269,7 +8269,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -8289,7 +8289,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -8299,15 +8299,15 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
@@ -8318,7 +8318,7 @@ where
                 )]
                 requests_per_second: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -8340,156 +8340,162 @@ where
 }
 impl Elasticsearch {
     #[doc = "Allows to perform multiple index/update/delete operations in a single request."]
-    pub fn bulk(&self, parts: BulkUrlParts) -> Bulk<()> {
+    pub fn bulk<'a>(&self, parts: BulkUrlParts<'a>) -> Bulk<'a, ()> {
         Bulk::new(self.clone(), parts)
     }
     #[doc = "Explicitly clears the search context for a scroll."]
-    pub fn clear_scroll(&self, parts: ClearScrollUrlParts) -> ClearScroll<()> {
+    pub fn clear_scroll<'a>(&self, parts: ClearScrollUrlParts<'a>) -> ClearScroll<'a, ()> {
         ClearScroll::new(self.clone(), parts)
     }
     #[doc = "Returns number of documents matching a query."]
-    pub fn count(&self, parts: CountUrlParts) -> Count<()> {
+    pub fn count<'a>(&self, parts: CountUrlParts<'a>) -> Count<'a, ()> {
         Count::new(self.clone(), parts)
     }
     #[doc = "Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
-    pub fn create(&self, parts: CreateUrlParts) -> Create<()> {
+    pub fn create<'a>(&self, parts: CreateUrlParts<'a>) -> Create<'a, ()> {
         Create::new(self.clone(), parts)
     }
     #[doc = "Removes a document from the index."]
-    pub fn delete(&self, parts: DeleteUrlParts) -> Delete {
+    pub fn delete<'a>(&self, parts: DeleteUrlParts<'a>) -> Delete<'a> {
         Delete::new(self.clone(), parts)
     }
     #[doc = "Deletes documents matching the provided query."]
-    pub fn delete_by_query(&self, parts: DeleteByQueryUrlParts) -> DeleteByQuery<()> {
+    pub fn delete_by_query<'a>(&self, parts: DeleteByQueryUrlParts<'a>) -> DeleteByQuery<'a, ()> {
         DeleteByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Delete By Query operation."]
-    pub fn delete_by_query_rethrottle(
+    pub fn delete_by_query_rethrottle<'a>(
         &self,
-        parts: DeleteByQueryRethrottleUrlParts,
-    ) -> DeleteByQueryRethrottle<()> {
+        parts: DeleteByQueryRethrottleUrlParts<'a>,
+    ) -> DeleteByQueryRethrottle<'a, ()> {
         DeleteByQueryRethrottle::new(self.clone(), parts)
     }
     #[doc = "Deletes a script."]
-    pub fn delete_script(&self, parts: DeleteScriptUrlParts) -> DeleteScript {
+    pub fn delete_script<'a>(&self, parts: DeleteScriptUrlParts<'a>) -> DeleteScript<'a> {
         DeleteScript::new(self.clone(), parts)
     }
     #[doc = "Returns information about whether a document exists in an index."]
-    pub fn exists(&self, parts: ExistsUrlParts) -> Exists {
+    pub fn exists<'a>(&self, parts: ExistsUrlParts<'a>) -> Exists<'a> {
         Exists::new(self.clone(), parts)
     }
     #[doc = "Returns information about whether a document source exists in an index."]
-    pub fn exists_source(&self, parts: ExistsSourceUrlParts) -> ExistsSource {
+    pub fn exists_source<'a>(&self, parts: ExistsSourceUrlParts<'a>) -> ExistsSource<'a> {
         ExistsSource::new(self.clone(), parts)
     }
     #[doc = "Returns information about why a specific matches (or doesn't match) a query."]
-    pub fn explain(&self, parts: ExplainUrlParts) -> Explain<()> {
+    pub fn explain<'a>(&self, parts: ExplainUrlParts<'a>) -> Explain<'a, ()> {
         Explain::new(self.clone(), parts)
     }
     #[doc = "Returns the information about the capabilities of fields among multiple indices."]
-    pub fn field_caps(&self, parts: FieldCapsUrlParts) -> FieldCaps<()> {
+    pub fn field_caps<'a>(&self, parts: FieldCapsUrlParts<'a>) -> FieldCaps<'a, ()> {
         FieldCaps::new(self.clone(), parts)
     }
     #[doc = "Returns a document."]
-    pub fn get(&self, parts: GetUrlParts) -> Get {
+    pub fn get<'a>(&self, parts: GetUrlParts<'a>) -> Get<'a> {
         Get::new(self.clone(), parts)
     }
     #[doc = "Returns a script."]
-    pub fn get_script(&self, parts: GetScriptUrlParts) -> GetScript {
+    pub fn get_script<'a>(&self, parts: GetScriptUrlParts<'a>) -> GetScript<'a> {
         GetScript::new(self.clone(), parts)
     }
     #[doc = "Returns the source of a document."]
-    pub fn get_source(&self, parts: GetSourceUrlParts) -> GetSource {
+    pub fn get_source<'a>(&self, parts: GetSourceUrlParts<'a>) -> GetSource<'a> {
         GetSource::new(self.clone(), parts)
     }
     #[doc = "Creates or updates a document in an index."]
-    pub fn index(&self, parts: IndexUrlParts) -> Index<()> {
+    pub fn index<'a>(&self, parts: IndexUrlParts<'a>) -> Index<'a, ()> {
         Index::new(self.clone(), parts)
     }
     #[doc = "Returns basic information about the cluster."]
-    pub fn info(&self) -> Info {
+    pub fn info<'a>(&self) -> Info<'a> {
         Info::new(self.clone())
     }
     #[doc = "Allows to get multiple documents in one request."]
-    pub fn mget(&self, parts: MgetUrlParts) -> Mget<()> {
+    pub fn mget<'a>(&self, parts: MgetUrlParts<'a>) -> Mget<'a, ()> {
         Mget::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search operations in one request."]
-    pub fn msearch(&self, parts: MsearchUrlParts) -> Msearch<()> {
+    pub fn msearch<'a>(&self, parts: MsearchUrlParts<'a>) -> Msearch<'a, ()> {
         Msearch::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search template operations in one request."]
-    pub fn msearch_template(&self, parts: MsearchTemplateUrlParts) -> MsearchTemplate<()> {
+    pub fn msearch_template<'a>(
+        &self,
+        parts: MsearchTemplateUrlParts<'a>,
+    ) -> MsearchTemplate<'a, ()> {
         MsearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns multiple termvectors in one request."]
-    pub fn mtermvectors(&self, parts: MtermvectorsUrlParts) -> Mtermvectors<()> {
+    pub fn mtermvectors<'a>(&self, parts: MtermvectorsUrlParts<'a>) -> Mtermvectors<'a, ()> {
         Mtermvectors::new(self.clone(), parts)
     }
     #[doc = "Returns whether the cluster is running."]
-    pub fn ping(&self) -> Ping {
+    pub fn ping<'a>(&self) -> Ping<'a> {
         Ping::new(self.clone())
     }
     #[doc = "Creates or updates a script."]
-    pub fn put_script(&self, parts: PutScriptUrlParts) -> PutScript<()> {
+    pub fn put_script<'a>(&self, parts: PutScriptUrlParts<'a>) -> PutScript<'a, ()> {
         PutScript::new(self.clone(), parts)
     }
     #[doc = "Allows to evaluate the quality of ranked search results over a set of typical search queries"]
-    pub fn rank_eval(&self, parts: RankEvalUrlParts) -> RankEval<()> {
+    pub fn rank_eval<'a>(&self, parts: RankEvalUrlParts<'a>) -> RankEval<'a, ()> {
         RankEval::new(self.clone(), parts)
     }
     #[doc = "Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
-    pub fn reindex(&self) -> Reindex<()> {
+    pub fn reindex<'a>(&self) -> Reindex<'a, ()> {
         Reindex::new(self.clone())
     }
     #[doc = "Changes the number of requests per second for a particular Reindex operation."]
-    pub fn reindex_rethrottle(&self, parts: ReindexRethrottleUrlParts) -> ReindexRethrottle<()> {
+    pub fn reindex_rethrottle<'a>(
+        &self,
+        parts: ReindexRethrottleUrlParts<'a>,
+    ) -> ReindexRethrottle<'a, ()> {
         ReindexRethrottle::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
-    pub fn render_search_template(
+    pub fn render_search_template<'a>(
         &self,
-        parts: RenderSearchTemplateUrlParts,
-    ) -> RenderSearchTemplate<()> {
+        parts: RenderSearchTemplateUrlParts<'a>,
+    ) -> RenderSearchTemplate<'a, ()> {
         RenderSearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Allows an arbitrary script to be executed and a result to be returned"]
-    pub fn scripts_painless_execute(&self) -> ScriptsPainlessExecute<()> {
+    pub fn scripts_painless_execute<'a>(&self) -> ScriptsPainlessExecute<'a, ()> {
         ScriptsPainlessExecute::new(self.clone())
     }
     #[doc = "Allows to retrieve a large numbers of results from a single search request."]
-    pub fn scroll(&self, parts: ScrollUrlParts) -> Scroll<()> {
+    pub fn scroll<'a>(&self, parts: ScrollUrlParts<'a>) -> Scroll<'a, ()> {
         Scroll::new(self.clone(), parts)
     }
     #[doc = "Returns results matching a query."]
-    pub fn search(&self, parts: SearchUrlParts) -> Search<()> {
+    pub fn search<'a>(&self, parts: SearchUrlParts<'a>) -> Search<'a, ()> {
         Search::new(self.clone(), parts)
     }
     #[doc = "Returns information about the indices and shards that a search request would be executed against."]
-    pub fn search_shards(&self, parts: SearchShardsUrlParts) -> SearchShards<()> {
+    pub fn search_shards<'a>(&self, parts: SearchShardsUrlParts<'a>) -> SearchShards<'a, ()> {
         SearchShards::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
-    pub fn search_template(&self, parts: SearchTemplateUrlParts) -> SearchTemplate<()> {
+    pub fn search_template<'a>(&self, parts: SearchTemplateUrlParts<'a>) -> SearchTemplate<'a, ()> {
         SearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns information and statistics about terms in the fields of a particular document."]
-    pub fn termvectors(&self, parts: TermvectorsUrlParts) -> Termvectors<()> {
+    pub fn termvectors<'a>(&self, parts: TermvectorsUrlParts<'a>) -> Termvectors<'a, ()> {
         Termvectors::new(self.clone(), parts)
     }
     #[doc = "Updates a document with a script or partial document."]
-    pub fn update(&self, parts: UpdateUrlParts) -> Update<()> {
+    pub fn update<'a>(&self, parts: UpdateUrlParts<'a>) -> Update<'a, ()> {
         Update::new(self.clone(), parts)
     }
     #[doc = "Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
-    pub fn update_by_query(&self, parts: UpdateByQueryUrlParts) -> UpdateByQuery<()> {
+    pub fn update_by_query<'a>(&self, parts: UpdateByQueryUrlParts<'a>) -> UpdateByQuery<'a, ()> {
         UpdateByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Update By Query operation."]
-    pub fn update_by_query_rethrottle(
+    pub fn update_by_query_rethrottle<'a>(
         &self,
-        parts: UpdateByQueryRethrottleUrlParts,
-    ) -> UpdateByQueryRethrottle<()> {
+        parts: UpdateByQueryRethrottleUrlParts<'a>,
+    ) -> UpdateByQueryRethrottle<'a, ()> {
         UpdateByQueryRethrottle::new(self.clone(), parts)
     }
 }
