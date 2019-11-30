@@ -1,16 +1,20 @@
 use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
 
+use std::fs::File;
+use std::io::Read;
+use std::io;
+use std::io::Write;
+use std::error::Error;
+use std::fmt;
+
+use base64;
+use base64::write::EncoderWriter as Base64Encoder;
 use reqwest::{
-    header::{HeaderMap, HeaderValue, ACCEPT, CONTENT_TYPE, USER_AGENT},
+    header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
     Client, Method,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
-use std::fs::File;
-use std::io::Read;
-use std::io;
-use std::error::Error;
-use std::fmt;
 
 #[derive(Debug, Clone)]
 pub enum Credentials {
@@ -19,7 +23,9 @@ pub enum Credentials {
     /// A token to use for Bearer authentication
     Bearer(String),
     /// A path to a PKCS#12 archive and password to use for Client Certification authentication
-    Certificate(String, String)
+    Certificate(String, String),
+    /// An id an api_key to use for API key authentication
+    ApiKey(String, String),
 }
 
 /// Error that can occur when building a connection
@@ -194,7 +200,16 @@ impl Connection {
             request_builder = match c {
                 Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
-                Credentials::Certificate(_, _) => request_builder
+                Credentials::Certificate(_, _) => request_builder,
+                Credentials::ApiKey(i, k) => {
+                    let mut header_value = b"ApiKey ".to_vec();
+                    {
+                        let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
+                        write!(encoder, "{}:", i).unwrap();
+                        write!(encoder, "{}", k).unwrap();
+                    }
+                    request_builder.header(AUTHORIZATION, HeaderValue::from_bytes(&header_value).unwrap())
+                },
             }
         }
 
