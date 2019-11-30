@@ -35,16 +35,16 @@ impl SslCertificatesUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ssl Certificates API"]
-pub struct SslCertificates {
+pub struct SslCertificates<'a> {
     client: Elasticsearch,
     parts: SslCertificatesUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl SslCertificates {
+impl<'a> SslCertificates<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SslCertificates {
             client,
@@ -62,7 +62,7 @@ impl SslCertificates {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -77,7 +77,7 @@ impl SslCertificates {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -87,21 +87,21 @@ impl SslCertificates {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -128,7 +128,7 @@ impl Ssl {
     pub fn new(client: Elasticsearch) -> Self {
         Ssl { client }
     }
-    pub fn certificates(&self) -> SslCertificates {
+    pub fn certificates<'a>(&self) -> SslCertificates<'a> {
         SslCertificates::new(self.client.clone())
     }
 }

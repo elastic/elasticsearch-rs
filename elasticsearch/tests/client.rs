@@ -4,8 +4,7 @@ use support::*;
 use elasticsearch::{Elasticsearch, SearchUrlParts, Connection, ConnectionSettings};
 
 use reqwest::StatusCode;
-use serde_json::json;
-use serde_json::Value;
+use serde_json::{json, Value};
 use url::Url;
 
 #[tokio::test]
@@ -56,7 +55,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
     let response = client
         .search(SearchUrlParts::None)
         .pretty(true)
-        .q("title:Elasticsearch".into())
+        .q("title:Elasticsearch")
         .send()
         .await?;
 
@@ -72,13 +71,30 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn serialize_vec_string_on_querystring() -> Result<(), failure::Error> {
+async fn cat_count() -> Result<(), failure::Error> {
+    let client = Elasticsearch::default();
+    let response = client
+        .cat()
+        .health()
+        .format("json")
+        .pretty(true)
+        .send()
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    let _response_body = response.read_body::<Value>().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn serialize_slice_collection_on_querystring() -> Result<(), failure::Error> {
     let client = Elasticsearch::default();
     let response = client
         .search(SearchUrlParts::None)
         .pretty(true)
-        .filter_path(vec!["took".into()])
-        .q("title:Elasticsearch".into())
+        .filter_path(&["took"])
+        .q("title:Elasticsearch")
         .send()
         .await?;
 
@@ -100,10 +116,10 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
 
     let request_clone = base_request
         .clone()
-        .q("title:Elasticsearch".into())
+        .q("title:Elasticsearch")
         .size(1);
 
-    let request = base_request
+    let _request = base_request
         .body(json!({
             "query": {
                 "match_all": {}

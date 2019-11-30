@@ -23,10 +23,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Delete Data Frame Transform API"]
-pub enum DataFrameDeleteDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFrameDeleteDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFrameDeleteDataFrameTransformUrlParts {
+impl<'a> DataFrameDeleteDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameDeleteDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -40,18 +40,21 @@ impl DataFrameDeleteDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Delete Data Frame Transform API"]
-pub struct DataFrameDeleteDataFrameTransform {
+pub struct DataFrameDeleteDataFrameTransform<'a> {
     client: Elasticsearch,
-    parts: DataFrameDeleteDataFrameTransformUrlParts,
+    parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     force: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl DataFrameDeleteDataFrameTransform {
-    pub fn new(client: Elasticsearch, parts: DataFrameDeleteDataFrameTransformUrlParts) -> Self {
+impl<'a> DataFrameDeleteDataFrameTransform<'a> {
+    pub fn new(
+        client: Elasticsearch,
+        parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
+    ) -> Self {
         DataFrameDeleteDataFrameTransform {
             client,
             parts,
@@ -69,7 +72,7 @@ impl DataFrameDeleteDataFrameTransform {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -89,7 +92,7 @@ impl DataFrameDeleteDataFrameTransform {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -99,15 +102,15 @@ impl DataFrameDeleteDataFrameTransform {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "force", skip_serializing_if = "Option::is_none")]
                 force: Option<bool>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -115,7 +118,7 @@ impl DataFrameDeleteDataFrameTransform {
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -137,11 +140,11 @@ impl DataFrameDeleteDataFrameTransform {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Get Data Frame Transform API"]
-pub enum DataFrameGetDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFrameGetDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
     None,
 }
-impl DataFrameGetDataFrameTransformUrlParts {
+impl<'a> DataFrameGetDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameGetDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -156,20 +159,20 @@ impl DataFrameGetDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Get Data Frame Transform API"]
-pub struct DataFrameGetDataFrameTransform {
+pub struct DataFrameGetDataFrameTransform<'a> {
     client: Elasticsearch,
-    parts: DataFrameGetDataFrameTransformUrlParts,
+    parts: DataFrameGetDataFrameTransformUrlParts<'a>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     from: Option<i32>,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl DataFrameGetDataFrameTransform {
-    pub fn new(client: Elasticsearch, parts: DataFrameGetDataFrameTransformUrlParts) -> Self {
+impl<'a> DataFrameGetDataFrameTransform<'a> {
+    pub fn new(client: Elasticsearch, parts: DataFrameGetDataFrameTransformUrlParts<'a>) -> Self {
         DataFrameGetDataFrameTransform {
             client,
             parts,
@@ -194,7 +197,7 @@ impl DataFrameGetDataFrameTransform {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -219,7 +222,7 @@ impl DataFrameGetDataFrameTransform {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -229,17 +232,17 @@ impl DataFrameGetDataFrameTransform {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
                 allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
                 from: Option<i32>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -249,7 +252,7 @@ impl DataFrameGetDataFrameTransform {
                 #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
                 size: Option<i32>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
@@ -273,10 +276,10 @@ impl DataFrameGetDataFrameTransform {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Get Data Frame Transform Stats API"]
-pub enum DataFrameGetDataFrameTransformStatsUrlParts {
-    TransformId(String),
+pub enum DataFrameGetDataFrameTransformStatsUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFrameGetDataFrameTransformStatsUrlParts {
+impl<'a> DataFrameGetDataFrameTransformStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameGetDataFrameTransformStatsUrlParts::TransformId(ref transform_id) => {
@@ -291,20 +294,23 @@ impl DataFrameGetDataFrameTransformStatsUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Get Data Frame Transform Stats API"]
-pub struct DataFrameGetDataFrameTransformStats {
+pub struct DataFrameGetDataFrameTransformStats<'a> {
     client: Elasticsearch,
-    parts: DataFrameGetDataFrameTransformStatsUrlParts,
+    parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     from: Option<i64>,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i64>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl DataFrameGetDataFrameTransformStats {
-    pub fn new(client: Elasticsearch, parts: DataFrameGetDataFrameTransformStatsUrlParts) -> Self {
+impl<'a> DataFrameGetDataFrameTransformStats<'a> {
+    pub fn new(
+        client: Elasticsearch,
+        parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
+    ) -> Self {
         DataFrameGetDataFrameTransformStats {
             client,
             parts,
@@ -329,7 +335,7 @@ impl DataFrameGetDataFrameTransformStats {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -354,7 +360,7 @@ impl DataFrameGetDataFrameTransformStats {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -364,17 +370,17 @@ impl DataFrameGetDataFrameTransformStats {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
                 allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
                 from: Option<i64>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
@@ -384,7 +390,7 @@ impl DataFrameGetDataFrameTransformStats {
                 #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
                 size: Option<i64>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 allow_no_match: self.allow_no_match,
@@ -422,17 +428,17 @@ impl DataFramePreviewDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Preview Data Frame Transform API"]
-pub struct DataFramePreviewDataFrameTransform<B> {
+pub struct DataFramePreviewDataFrameTransform<'a, B> {
     client: Elasticsearch,
     parts: DataFramePreviewDataFrameTransformUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> DataFramePreviewDataFrameTransform<B>
+impl<'a, B> DataFramePreviewDataFrameTransform<'a, B>
 where
     B: Serialize,
 {
@@ -449,7 +455,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFramePreviewDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFramePreviewDataFrameTransform<'a, T>
     where
         T: Serialize,
     {
@@ -470,7 +476,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -485,7 +491,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -495,21 +501,21 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -530,10 +536,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Put Data Frame Transform API"]
-pub enum DataFramePutDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFramePutDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFramePutDataFrameTransformUrlParts {
+impl<'a> DataFramePutDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFramePutDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -547,22 +553,22 @@ impl DataFramePutDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Put Data Frame Transform API"]
-pub struct DataFramePutDataFrameTransform<B> {
+pub struct DataFramePutDataFrameTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFramePutDataFrameTransformUrlParts,
+    parts: DataFramePutDataFrameTransformUrlParts<'a>,
     body: Option<B>,
     defer_validation: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> DataFramePutDataFrameTransform<B>
+impl<'a, B> DataFramePutDataFrameTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFramePutDataFrameTransformUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: DataFramePutDataFrameTransformUrlParts<'a>) -> Self {
         DataFramePutDataFrameTransform {
             client,
             parts,
@@ -576,7 +582,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFramePutDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFramePutDataFrameTransform<'a, T>
     where
         T: Serialize,
     {
@@ -603,7 +609,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -618,7 +624,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -628,23 +634,23 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "defer_validation", skip_serializing_if = "Option::is_none")]
                 defer_validation: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 defer_validation: self.defer_validation,
@@ -666,10 +672,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Start Data Frame Transform API"]
-pub enum DataFrameStartDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFrameStartDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFrameStartDataFrameTransformUrlParts {
+impl<'a> DataFrameStartDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameStartDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -684,22 +690,22 @@ impl DataFrameStartDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Start Data Frame Transform API"]
-pub struct DataFrameStartDataFrameTransform<B> {
+pub struct DataFrameStartDataFrameTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameStartDataFrameTransformUrlParts,
+    parts: DataFrameStartDataFrameTransformUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> DataFrameStartDataFrameTransform<B>
+impl<'a, B> DataFrameStartDataFrameTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFrameStartDataFrameTransformUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: DataFrameStartDataFrameTransformUrlParts<'a>) -> Self {
         DataFrameStartDataFrameTransform {
             client,
             parts,
@@ -713,7 +719,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameStartDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameStartDataFrameTransform<'a, T>
     where
         T: Serialize,
     {
@@ -735,7 +741,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -750,12 +756,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait for the transform to start"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -765,23 +771,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -803,10 +809,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Stop Data Frame Transform API"]
-pub enum DataFrameStopDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFrameStopDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFrameStopDataFrameTransformUrlParts {
+impl<'a> DataFrameStopDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameStopDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -821,24 +827,24 @@ impl DataFrameStopDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Stop Data Frame Transform API"]
-pub struct DataFrameStopDataFrameTransform<B> {
+pub struct DataFrameStopDataFrameTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameStopDataFrameTransformUrlParts,
+    parts: DataFrameStopDataFrameTransformUrlParts<'a>,
     allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<B> DataFrameStopDataFrameTransform<B>
+impl<'a, B> DataFrameStopDataFrameTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFrameStopDataFrameTransformUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: DataFrameStopDataFrameTransformUrlParts<'a>) -> Self {
         DataFrameStopDataFrameTransform {
             client,
             parts,
@@ -859,7 +865,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameStopDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameStopDataFrameTransform<'a, T>
     where
         T: Serialize,
     {
@@ -883,7 +889,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -898,12 +904,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the transform has stopped. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -918,25 +924,25 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
                 allow_no_match: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
                 #[serde(
                     rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
@@ -965,10 +971,10 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Data Frame Update Data Frame Transform API"]
-pub enum DataFrameUpdateDataFrameTransformUrlParts {
-    TransformId(String),
+pub enum DataFrameUpdateDataFrameTransformUrlParts<'a> {
+    TransformId(&'a str),
 }
-impl DataFrameUpdateDataFrameTransformUrlParts {
+impl<'a> DataFrameUpdateDataFrameTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             DataFrameUpdateDataFrameTransformUrlParts::TransformId(ref transform_id) => {
@@ -983,22 +989,25 @@ impl DataFrameUpdateDataFrameTransformUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Data Frame Update Data Frame Transform API"]
-pub struct DataFrameUpdateDataFrameTransform<B> {
+pub struct DataFrameUpdateDataFrameTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameUpdateDataFrameTransformUrlParts,
+    parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
     body: Option<B>,
     defer_validation: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl<B> DataFrameUpdateDataFrameTransform<B>
+impl<'a, B> DataFrameUpdateDataFrameTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFrameUpdateDataFrameTransformUrlParts) -> Self {
+    pub fn new(
+        client: Elasticsearch,
+        parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
+    ) -> Self {
         DataFrameUpdateDataFrameTransform {
             client,
             parts,
@@ -1012,7 +1021,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameUpdateDataFrameTransform<T>
+    pub fn body<T>(self, body: T) -> DataFrameUpdateDataFrameTransform<'a, T>
     where
         T: Serialize,
     {
@@ -1039,7 +1048,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1054,7 +1063,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1064,23 +1073,23 @@ where
         let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "defer_validation", skip_serializing_if = "Option::is_none")]
                 defer_validation: Option<bool>,
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 defer_validation: self.defer_validation,
@@ -1108,49 +1117,49 @@ impl DataFrame {
     pub fn new(client: Elasticsearch) -> Self {
         DataFrame { client }
     }
-    pub fn delete_data_frame_transform(
+    pub fn delete_data_frame_transform<'a>(
         &self,
-        parts: DataFrameDeleteDataFrameTransformUrlParts,
-    ) -> DataFrameDeleteDataFrameTransform {
+        parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
+    ) -> DataFrameDeleteDataFrameTransform<'a> {
         DataFrameDeleteDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn get_data_frame_transform(
+    pub fn get_data_frame_transform<'a>(
         &self,
-        parts: DataFrameGetDataFrameTransformUrlParts,
-    ) -> DataFrameGetDataFrameTransform {
+        parts: DataFrameGetDataFrameTransformUrlParts<'a>,
+    ) -> DataFrameGetDataFrameTransform<'a> {
         DataFrameGetDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn get_data_frame_transform_stats(
+    pub fn get_data_frame_transform_stats<'a>(
         &self,
-        parts: DataFrameGetDataFrameTransformStatsUrlParts,
-    ) -> DataFrameGetDataFrameTransformStats {
+        parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
+    ) -> DataFrameGetDataFrameTransformStats<'a> {
         DataFrameGetDataFrameTransformStats::new(self.client.clone(), parts)
     }
-    pub fn preview_data_frame_transform(&self) -> DataFramePreviewDataFrameTransform<()> {
+    pub fn preview_data_frame_transform<'a>(&self) -> DataFramePreviewDataFrameTransform<'a, ()> {
         DataFramePreviewDataFrameTransform::new(self.client.clone())
     }
-    pub fn put_data_frame_transform(
+    pub fn put_data_frame_transform<'a>(
         &self,
-        parts: DataFramePutDataFrameTransformUrlParts,
-    ) -> DataFramePutDataFrameTransform<()> {
+        parts: DataFramePutDataFrameTransformUrlParts<'a>,
+    ) -> DataFramePutDataFrameTransform<'a, ()> {
         DataFramePutDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn start_data_frame_transform(
+    pub fn start_data_frame_transform<'a>(
         &self,
-        parts: DataFrameStartDataFrameTransformUrlParts,
-    ) -> DataFrameStartDataFrameTransform<()> {
+        parts: DataFrameStartDataFrameTransformUrlParts<'a>,
+    ) -> DataFrameStartDataFrameTransform<'a, ()> {
         DataFrameStartDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn stop_data_frame_transform(
+    pub fn stop_data_frame_transform<'a>(
         &self,
-        parts: DataFrameStopDataFrameTransformUrlParts,
-    ) -> DataFrameStopDataFrameTransform<()> {
+        parts: DataFrameStopDataFrameTransformUrlParts<'a>,
+    ) -> DataFrameStopDataFrameTransform<'a, ()> {
         DataFrameStopDataFrameTransform::new(self.client.clone(), parts)
     }
-    pub fn update_data_frame_transform(
+    pub fn update_data_frame_transform<'a>(
         &self,
-        parts: DataFrameUpdateDataFrameTransformUrlParts,
-    ) -> DataFrameUpdateDataFrameTransform<()> {
+        parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
+    ) -> DataFrameUpdateDataFrameTransform<'a, ()> {
         DataFrameUpdateDataFrameTransform::new(self.client.clone(), parts)
     }
 }

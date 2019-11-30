@@ -23,10 +23,10 @@ use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ingest Delete Pipeline API"]
-pub enum IngestDeletePipelineUrlParts {
-    Id(String),
+pub enum IngestDeletePipelineUrlParts<'a> {
+    Id(&'a str),
 }
-impl IngestDeletePipelineUrlParts {
+impl<'a> IngestDeletePipelineUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IngestDeletePipelineUrlParts::Id(ref id) => {
@@ -40,19 +40,19 @@ impl IngestDeletePipelineUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ingest Delete Pipeline API"]
-pub struct IngestDeletePipeline {
+pub struct IngestDeletePipeline<'a> {
     client: Elasticsearch,
-    parts: IngestDeletePipelineUrlParts,
+    parts: IngestDeletePipelineUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl IngestDeletePipeline {
-    pub fn new(client: Elasticsearch, parts: IngestDeletePipelineUrlParts) -> Self {
+impl<'a> IngestDeletePipeline<'a> {
+    pub fn new(client: Elasticsearch, parts: IngestDeletePipelineUrlParts<'a>) -> Self {
         IngestDeletePipeline {
             client,
             parts,
@@ -71,7 +71,7 @@ impl IngestDeletePipeline {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -81,7 +81,7 @@ impl IngestDeletePipeline {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -91,12 +91,12 @@ impl IngestDeletePipeline {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -106,25 +106,25 @@ impl IngestDeletePipeline {
         let method = HttpMethod::Delete;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -147,11 +147,11 @@ impl IngestDeletePipeline {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ingest Get Pipeline API"]
-pub enum IngestGetPipelineUrlParts {
+pub enum IngestGetPipelineUrlParts<'a> {
     None,
-    Id(String),
+    Id(&'a str),
 }
-impl IngestGetPipelineUrlParts {
+impl<'a> IngestGetPipelineUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IngestGetPipelineUrlParts::None => "/_ingest/pipeline".into(),
@@ -166,18 +166,18 @@ impl IngestGetPipelineUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ingest Get Pipeline API"]
-pub struct IngestGetPipeline {
+pub struct IngestGetPipeline<'a> {
     client: Elasticsearch,
-    parts: IngestGetPipelineUrlParts,
+    parts: IngestGetPipelineUrlParts<'a>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IngestGetPipeline {
-    pub fn new(client: Elasticsearch, parts: IngestGetPipelineUrlParts) -> Self {
+impl<'a> IngestGetPipeline<'a> {
+    pub fn new(client: Elasticsearch, parts: IngestGetPipelineUrlParts<'a>) -> Self {
         IngestGetPipeline {
             client,
             parts,
@@ -195,7 +195,7 @@ impl IngestGetPipeline {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -205,7 +205,7 @@ impl IngestGetPipeline {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -215,7 +215,7 @@ impl IngestGetPipeline {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -225,23 +225,23 @@ impl IngestGetPipeline {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -275,16 +275,16 @@ impl IngestProcessorGrokUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ingest Processor Grok API"]
-pub struct IngestProcessorGrok {
+pub struct IngestProcessorGrok<'a> {
     client: Elasticsearch,
     parts: IngestProcessorGrokUrlParts,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
 }
-impl IngestProcessorGrok {
+impl<'a> IngestProcessorGrok<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         IngestProcessorGrok {
             client,
@@ -302,7 +302,7 @@ impl IngestProcessorGrok {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -317,7 +317,7 @@ impl IngestProcessorGrok {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -327,21 +327,21 @@ impl IngestProcessorGrok {
         let method = HttpMethod::Get;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -362,10 +362,10 @@ impl IngestProcessorGrok {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ingest Put Pipeline API"]
-pub enum IngestPutPipelineUrlParts {
-    Id(String),
+pub enum IngestPutPipelineUrlParts<'a> {
+    Id(&'a str),
 }
-impl IngestPutPipelineUrlParts {
+impl<'a> IngestPutPipelineUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IngestPutPipelineUrlParts::Id(ref id) => {
@@ -379,23 +379,23 @@ impl IngestPutPipelineUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ingest Put Pipeline API"]
-pub struct IngestPutPipeline<B> {
+pub struct IngestPutPipeline<'a, B> {
     client: Elasticsearch,
-    parts: IngestPutPipelineUrlParts,
+    parts: IngestPutPipelineUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
-    master_timeout: Option<String>,
+    master_timeout: Option<&'a str>,
     pretty: Option<bool>,
-    source: Option<String>,
-    timeout: Option<String>,
+    source: Option<&'a str>,
+    timeout: Option<&'a str>,
 }
-impl<B> IngestPutPipeline<B>
+impl<'a, B> IngestPutPipeline<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IngestPutPipelineUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestPutPipelineUrlParts<'a>) -> Self {
         IngestPutPipeline {
             client,
             parts,
@@ -410,7 +410,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutPipeline<T>
+    pub fn body<T>(self, body: T) -> IngestPutPipeline<'a, T>
     where
         T: Serialize,
     {
@@ -433,7 +433,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -443,7 +443,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: String) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -453,12 +453,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: String) -> Self {
+    pub fn timeout(mut self, timeout: &'a str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -468,25 +468,25 @@ where
         let method = HttpMethod::Put;
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout", skip_serializing_if = "Option::is_none")]
-                master_timeout: Option<String>,
+                master_timeout: Option<&'a str>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
-                timeout: Option<String>,
+                timeout: Option<&'a str>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -509,11 +509,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ingest Simulate API"]
-pub enum IngestSimulateUrlParts {
+pub enum IngestSimulateUrlParts<'a> {
     None,
-    Id(String),
+    Id(&'a str),
 }
-impl IngestSimulateUrlParts {
+impl<'a> IngestSimulateUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
             IngestSimulateUrlParts::None => "/_ingest/pipeline/_simulate".into(),
@@ -529,22 +529,22 @@ impl IngestSimulateUrlParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Request builder for the Ingest Simulate API"]
-pub struct IngestSimulate<B> {
+pub struct IngestSimulate<'a, B> {
     client: Elasticsearch,
-    parts: IngestSimulateUrlParts,
+    parts: IngestSimulateUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<Vec<String>>,
+    filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<String>,
+    source: Option<&'a str>,
     verbose: Option<bool>,
 }
-impl<B> IngestSimulate<B>
+impl<'a, B> IngestSimulate<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: IngestSimulateUrlParts) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestSimulateUrlParts<'a>) -> Self {
         IngestSimulate {
             client,
             parts,
@@ -558,7 +558,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestSimulate<T>
+    pub fn body<T>(self, body: T) -> IngestSimulate<'a, T>
     where
         T: Serialize,
     {
@@ -580,7 +580,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: Vec<String>) -> Self {
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -595,7 +595,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: String) -> Self {
+    pub fn source(mut self, source: &'a str) -> Self {
         self.source = Some(source);
         self
     }
@@ -613,21 +613,21 @@ where
         };
         let query_string = {
             #[derive(Serialize)]
-            struct QueryParamsStruct {
+            struct QueryParamsStruct<'a> {
                 #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_vec_qs",
+                    serialize_with = "crate::client::serialize_coll_qs",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<Vec<String>>,
+                filter_path: Option<&'a [&'a str]>,
                 #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
                 human: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<String>,
+                source: Option<&'a str>,
                 #[serde(rename = "verbose", skip_serializing_if = "Option::is_none")]
                 verbose: Option<bool>,
             }
@@ -658,23 +658,29 @@ impl Ingest {
         Ingest { client }
     }
     #[doc = "Deletes a pipeline."]
-    pub fn delete_pipeline(&self, parts: IngestDeletePipelineUrlParts) -> IngestDeletePipeline {
+    pub fn delete_pipeline<'a>(
+        &self,
+        parts: IngestDeletePipelineUrlParts<'a>,
+    ) -> IngestDeletePipeline<'a> {
         IngestDeletePipeline::new(self.client.clone(), parts)
     }
     #[doc = "Returns a pipeline."]
-    pub fn get_pipeline(&self, parts: IngestGetPipelineUrlParts) -> IngestGetPipeline {
+    pub fn get_pipeline<'a>(&self, parts: IngestGetPipelineUrlParts<'a>) -> IngestGetPipeline<'a> {
         IngestGetPipeline::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of the built-in patterns."]
-    pub fn processor_grok(&self) -> IngestProcessorGrok {
+    pub fn processor_grok<'a>(&self) -> IngestProcessorGrok<'a> {
         IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "Creates or updates a pipeline."]
-    pub fn put_pipeline(&self, parts: IngestPutPipelineUrlParts) -> IngestPutPipeline<()> {
+    pub fn put_pipeline<'a>(
+        &self,
+        parts: IngestPutPipelineUrlParts<'a>,
+    ) -> IngestPutPipeline<'a, ()> {
         IngestPutPipeline::new(self.client.clone(), parts)
     }
     #[doc = "Allows to simulate a pipeline with example documents."]
-    pub fn simulate(&self, parts: IngestSimulateUrlParts) -> IngestSimulate<()> {
+    pub fn simulate<'a>(&self, parts: IngestSimulateUrlParts<'a>) -> IngestSimulate<'a, ()> {
         IngestSimulate::new(self.client.clone(), parts)
     }
 }

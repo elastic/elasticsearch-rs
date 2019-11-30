@@ -95,7 +95,7 @@ impl<'a> RequestBuilder<'a> {
                 let field_rename = lit(param_name);
                 let skip_serializing_if = lit("Option::is_none");
                 if param_type.ty == TypeKind::List {
-                    let serialize_with = lit("crate::client::serialize_vec_qs");
+                    let serialize_with = lit("crate::client::serialize_coll_qs");
                     quote! {
                         #[serde(rename = #field_rename, serialize_with = #serialize_with, skip_serializing_if = #skip_serializing_if)]
                         #field
@@ -117,7 +117,7 @@ impl<'a> RequestBuilder<'a> {
             quote! {
                 {
                     #[derive(Serialize)]
-                    struct #query_struct_typ {
+                    struct #query_struct_typ<'a> {
                         #(#struct_fields,)*
                     }
                     let query_params = #query_struct_typ {
@@ -200,7 +200,7 @@ impl<'a> RequestBuilder<'a> {
                             ),
                         ],
                         output: syn::FunctionRetTy::Ty(code_gen::ty(
-                            format!("{}<T> where T: Serialize", &builder_name).as_ref(),
+                            format!("{}<'a, T> where T: Serialize", &builder_name).as_ref(),
                         )),
                         variadic: false,
                     },
@@ -368,11 +368,11 @@ impl<'a> RequestBuilder<'a> {
         let (builder_expr, builder_impl) = {
             if supports_body {
                 (
-                    quote!(#builder_ident<B>),
-                    quote!(impl<B> #builder_ident<B> where B: Serialize),
+                    quote!(#builder_ident<'a, B>),
+                    quote!(impl<'a, B> #builder_ident<'a, B> where B: Serialize),
                 )
             } else {
-                (quote!(#builder_ident), quote!(impl #builder_ident))
+                (quote!(#builder_ident<'a>), quote!(impl<'a> #builder_ident<'a>))
             }
         };
 
@@ -428,9 +428,9 @@ impl<'a> RequestBuilder<'a> {
             let i = ident(name);
             let b = builder_ident.clone();
             if endpoint.supports_body() {
-                (quote!(#i), quote!(#b<()>))
+                (quote!(#i<'a>), quote!(#b<'a, ()>))
             } else {
-                (quote!(#i), quote!(#b))
+                (quote!(#i<'a>), quote!(#b<'a>))
             }
         };
 
