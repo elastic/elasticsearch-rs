@@ -1,6 +1,3 @@
-// TODO: whilst developing, suppress unused warnings
-#![allow(dead_code)]
-
 extern crate dialoguer;
 #[macro_use]
 extern crate quote;

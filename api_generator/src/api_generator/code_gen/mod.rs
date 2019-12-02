@@ -206,16 +206,6 @@ pub fn ty(ty: &str) -> syn::Ty {
     ty_path(ty, vec![], vec![])
 }
 
-/// AST for a simple type param.
-pub fn ty_param(ty: &str, bounds: Vec<syn::TyParamBound>) -> syn::TyParam {
-    syn::TyParam {
-        attrs: vec![],
-        ident: ident(ty),
-        bounds,
-        default: None,
-    }
-}
-
 /// Helper for wrapping a value as a quotable statement.
 pub trait IntoStmt {
     fn into_stmt(self) -> syn::Stmt;
