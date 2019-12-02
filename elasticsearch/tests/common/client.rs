@@ -9,7 +9,12 @@ pub fn create_conn_builder(addr: &str) -> ConnectionBuilder {
 }
 
 pub fn create_default() -> Elasticsearch {
-    create_for_url(DEFAULT_ADDRESS)
+    let test_server = env!("ES_TEST_SERVER");
+    if !test_server.is_empty() {
+        create_for_url(test_server)
+    } else {
+        create_for_url(DEFAULT_ADDRESS)
+    }
 }
 
 pub fn create_for_url(url: &str) -> Elasticsearch {
