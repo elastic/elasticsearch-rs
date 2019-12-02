@@ -6,4 +6,4 @@ WORKDIR /usr/src/elasticsearch-rs
 
 # install app dependencies
 COPY ./elasticsearch .
-RUN cargo build
+RUN cargo build --tests
