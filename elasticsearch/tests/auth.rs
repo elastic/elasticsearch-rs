@@ -1,5 +1,5 @@
-pub mod support;
-use support::*;
+pub mod common;
+use common::*;
 
 use elasticsearch::Credentials;
 
@@ -90,7 +90,7 @@ async fn bearer_header() -> Result<(), failure::Error> {
 //    });
 //
 //    let mut buf = Vec::new();
-//    File::open("support/client.p12")?
+//    File::open("common/client.p12")?
 //        .read_to_end(&mut buf)?;
 //
 //    let builder = client::create_conn_builder(format!("https://{}", server.addr()).as_ref())

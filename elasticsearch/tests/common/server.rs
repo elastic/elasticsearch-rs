@@ -65,7 +65,7 @@ where
 
     let (panic_tx, panic_rx) = std_mpsc::channel();
     let tname = format!(
-        "test({})-support-server",
+        "test({})-common-server",
         thread::current().name().unwrap_or("<unknown>")
     );
     thread::Builder::new()

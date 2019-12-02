@@ -1,5 +1,5 @@
-pub mod support;
-use support::*;
+pub mod common;
+use common::*;
 
 use elasticsearch::SearchUrlParts;
 
