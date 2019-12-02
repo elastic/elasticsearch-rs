@@ -89,6 +89,7 @@ pub struct ConnectionBuilder {
     url: Url,
     credentials: Option<Credentials>,
     proxy: Option<Url>,
+    disable_proxy: bool,
 }
 
 impl ConnectionBuilder {
@@ -98,11 +99,19 @@ impl ConnectionBuilder {
             url,
             credentials: None,
             proxy: None,
+            disable_proxy: false,
         }
     }
 
+    /// Configures a proxy
     pub fn proxy(mut self, url: Url) -> Self {
         self.proxy = Some(url);
+        self
+    }
+
+    /// Whether to disable proxies, including system proxies
+    pub fn disable_proxy(mut self) -> Self {
+        self.disable_proxy = true;
         self
     }
 
@@ -124,7 +133,9 @@ impl ConnectionBuilder {
             }
         };
 
-        if let Some(url) = &self.proxy {
+        if self.disable_proxy {
+            client_builder = client_builder.no_proxy();
+        } else if let Some(url) = &self.proxy {
             client_builder = match url.scheme() {
                 "https" => client_builder.proxy(reqwest::Proxy::https(&url.to_string())?),
                 _ => client_builder.proxy(reqwest::Proxy::http(&url.to_string())?),
