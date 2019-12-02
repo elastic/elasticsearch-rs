@@ -41,9 +41,9 @@ impl Drop for Server {
 }
 
 pub fn http<F, Fut>(func: F) -> Server
-    where
-        F: Fn(http::Request<hyper::Body>) -> Fut + Clone + Send + 'static,
-        Fut: Future<Output = http::Response<hyper::Body>> + Send + 'static,
+where
+    F: Fn(http::Request<hyper::Body>) -> Fut + Clone + Send + 'static,
+    Fut: Future<Output = http::Response<hyper::Body>> + Send + 'static,
 {
     let srv = hyper::Server::bind(&([127, 0, 0, 1], 0).into()).serve(
         hyper::service::make_service_fn(move |_| {

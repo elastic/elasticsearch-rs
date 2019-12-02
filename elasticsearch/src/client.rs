@@ -1,6 +1,6 @@
 use crate::{
     connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse,
-    settings::ConnectionSettings, ElasticsearchError,
+    ElasticsearchError,
 };
 
 use reqwest::{header::HeaderMap, Response, StatusCode};
@@ -14,8 +14,8 @@ pub fn serialize_coll_qs<S>(
     value: &Option<&[&str]>,
     serializer: S,
 ) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+where
+    S: Serializer,
 {
     let vec = value
         .as_ref()
@@ -27,17 +27,13 @@ pub fn serialize_coll_qs<S>(
 /// Client used to make API requests to Elasticsearch
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
-    settings: ConnectionSettings,
     connection: Connection,
 }
 
 impl Elasticsearch {
     /// Creates a new instance of Elasticsearch
-    pub fn new(settings: ConnectionSettings, connection: Connection) -> Self {
-        Elasticsearch {
-            settings,
-            connection,
-        }
+    pub fn new(connection: Connection) -> Self {
+        Elasticsearch { connection }
     }
 
     /// Creates an asynchronous request that can be awaited
