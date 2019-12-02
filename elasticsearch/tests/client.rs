@@ -93,7 +93,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn cat_count() -> Result<(), failure::Error> {
+async fn cat_health() -> Result<(), failure::Error> {
     let client = client::create_default();
     let response = client
         .cat()
