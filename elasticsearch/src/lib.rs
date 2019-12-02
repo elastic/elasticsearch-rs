@@ -50,10 +50,7 @@ pub mod tests {
 
     #[test]
     fn build_search_on_selected_indices_and_types() {
-        let parts = SearchUrlParts::IndexType(
-            &["index-1", "index-2"],
-            &["type-1", "type-2"],
-        );
+        let parts = SearchUrlParts::IndexType(&["index-1", "index-2"], &["type-1", "type-2"]);
         let url = parts.build();
         assert_eq!(url, "/index-1,index-2/type-1,type-2/_search");
     }

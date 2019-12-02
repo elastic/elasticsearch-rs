@@ -1,7 +1,7 @@
-use elasticsearch::{Elasticsearch, ConnectionBuilder};
+use elasticsearch::{ConnectionBuilder, Elasticsearch, DEFAULT_ADDRESS};
 
+use sysinfo::SystemExt;
 use url::Url;
-use sysinfo::{SystemExt};
 
 pub fn create_conn_builder(addr: &str) -> ConnectionBuilder {
     let url = Url::parse(addr).unwrap();
@@ -9,7 +9,7 @@ pub fn create_conn_builder(addr: &str) -> ConnectionBuilder {
 }
 
 pub fn create_default() -> Elasticsearch {
-    create_for_url("http://localhost:9200")
+    create_for_url(DEFAULT_ADDRESS)
 }
 
 pub fn create_for_url(url: &str) -> Elasticsearch {

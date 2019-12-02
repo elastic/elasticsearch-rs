@@ -1,11 +1,11 @@
 use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
 
-use std::fs::File;
-use std::io::Read;
-use std::io;
-use std::io::Write;
 use std::error::Error;
 use std::fmt;
+use std::fs::File;
+use std::io;
+use std::io::Read;
+use std::io::Write;
 
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
@@ -16,14 +16,15 @@ use reqwest::{
 use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
 
+/// Credentials for authentication
 #[derive(Debug, Clone)]
 pub enum Credentials {
     /// A username and password to use for Basic authentication
     Basic(String, String),
-    /// A token to use for Bearer authentication
+    /// An access_token to use for Bearer authentication
     Bearer(String),
-    /// A path to a PKCS#12 archive and password to use for Client Certification authentication
-    Certificate(String, String),
+    /// Bytes of a PKCS#12 archive and password to use for PKI (Client Certificate) authentication
+    Cert(Vec<u8>, String),
     /// An id an api_key to use for API key authentication
     ApiKey(String, String),
 }
@@ -35,7 +36,7 @@ pub enum BuildError {
     IoError(io::Error),
 
     /// Certificate error
-    CertificateError(reqwest::Error),
+    CertError(reqwest::Error),
 }
 
 impl From<io::Error> for BuildError {
@@ -46,7 +47,7 @@ impl From<io::Error> for BuildError {
 
 impl From<reqwest::Error> for BuildError {
     fn from(err: reqwest::Error) -> BuildError {
-        BuildError::CertificateError(err)
+        BuildError::CertError(err)
     }
 }
 
@@ -54,14 +55,14 @@ impl Error for BuildError {
     fn description(&self) -> &str {
         match *self {
             BuildError::IoError(ref err) => err.description(),
-            BuildError::CertificateError(ref err) => err.description(),
+            BuildError::CertError(ref err) => err.description(),
         }
     }
 
     fn cause(&self) -> Option<&dyn Error> {
         match *self {
             BuildError::IoError(ref err) => Some(err as &dyn Error),
-            BuildError::CertificateError(ref err) => Some(err as &dyn Error),
+            BuildError::CertError(ref err) => Some(err as &dyn Error),
         }
     }
 }
@@ -70,10 +71,18 @@ impl fmt::Display for BuildError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             BuildError::IoError(ref err) => fmt::Display::fmt(err, f),
-            BuildError::CertificateError(ref err) => fmt::Display::fmt(err, f),
+            BuildError::CertError(ref err) => fmt::Display::fmt(err, f),
         }
     }
 }
+
+pub static DEFAULT_ADDRESS: &str = "http://localhost:9200";
+
+static DEFAULT_USER_AGENT: &str = concat!("elasticsearch-rs/", env!("CARGO_PKG_VERSION"));
+
+static DEFAULT_CONTENT_TYPE: &str = "application/json";
+
+static DEFAULT_ACCEPT: &str = "application/json";
 
 pub struct ConnectionBuilder {
     client_builder: reqwest::ClientBuilder,
@@ -106,15 +115,12 @@ impl ConnectionBuilder {
     pub fn build(self) -> Result<Connection, BuildError> {
         let mut client_builder = self.client_builder;
         if let Some(c) = &self.credentials {
-            match c {
-                Credentials::Certificate(f, p) => {
-                    let mut buf = Vec::new();
-                    File::open(f)?
-                        .read_to_end(&mut buf)?;
-                    let pkcs12 = reqwest::Identity::from_pkcs12_der(&buf, p)?;
-                    client_builder = client_builder.identity(pkcs12);
-                },
-                _ => (),
+            client_builder = match c {
+                Credentials::Cert(b, p) => {
+                    let pkcs12 = reqwest::Identity::from_pkcs12_der(&b, p)?;
+                    client_builder.identity(pkcs12)
+                }
+                _ => client_builder,
             }
         };
 
@@ -129,16 +135,16 @@ impl ConnectionBuilder {
         Ok(Connection {
             url: self.url,
             credentials: self.credentials,
-            client
+            client,
         })
     }
 }
 
-static DEFAULT_USER_AGENT: &str = concat!("elasticsearch-rs/", env!("CARGO_PKG_VERSION"));
-
-static DEFAULT_CONTENT_TYPE: &str = "application/json";
-
-static DEFAULT_ACCEPT: &str = "application/json";
+impl Default for ConnectionBuilder {
+    fn default() -> Self {
+        ConnectionBuilder::new(Url::parse(DEFAULT_ADDRESS).unwrap())
+    }
+}
 
 /// A connection to an Elasticsearch node, used to send an API request
 #[derive(Debug, Clone)]
@@ -202,7 +208,7 @@ impl Connection {
             request_builder = match c {
                 Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
-                Credentials::Certificate(_, _) => request_builder,
+                Credentials::Cert(_, _) => request_builder,
                 Credentials::ApiKey(i, k) => {
                     let mut header_value = b"ApiKey ".to_vec();
                     {
@@ -210,8 +216,11 @@ impl Connection {
                         write!(encoder, "{}:", i).unwrap();
                         write!(encoder, "{}", k).unwrap();
                     }
-                    request_builder.header(AUTHORIZATION, HeaderValue::from_bytes(&header_value).unwrap())
-                },
+                    request_builder.header(
+                        AUTHORIZATION,
+                        HeaderValue::from_bytes(&header_value).unwrap(),
+                    )
+                }
             }
         }
 
@@ -222,6 +231,6 @@ impl Connection {
 
 impl Default for Connection {
     fn default() -> Self {
-        Connection::new(Url::parse("http://localhost:9200").unwrap())
+        Connection::new(Url::parse(DEFAULT_ADDRESS).unwrap())
     }
 }

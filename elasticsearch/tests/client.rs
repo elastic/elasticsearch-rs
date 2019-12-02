@@ -3,11 +3,12 @@ use support::*;
 
 use elasticsearch::SearchUrlParts;
 
+use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
 
 #[tokio::test]
-async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
+async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
     let server = server::http(move |req| {
         async move {
             assert_eq!(req.headers()["user-agent"], DEFAULT_USER_AGENT);
@@ -18,8 +19,31 @@ async fn sends_default_user_agent_content_type_accept_headers() -> Result<(), fa
     });
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
+    let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn serialize_querystring() -> Result<(), failure::Error> {
+    let server = server::http(move |req| {
+        async move {
+            assert_eq!(req.method(), Method::GET);
+            assert_eq!(req.uri().path(), "/_search");
+            assert_eq!(
+                req.uri().query(),
+                Some("filter_path=took%2C_shards&pretty=true&q=title%3AElasticsearch")
+            );
+            http::Response::default()
+        }
+    });
+
+    let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
     let _response = client
-        .ping()
+        .search(SearchUrlParts::None)
+        .pretty(true)
+        .filter_path(&["took", "_shards"])
+        .q("title:Elasticsearch")
         .send()
         .await?;
 
@@ -86,36 +110,12 @@ async fn cat_count() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn serialize_slice_collection_on_querystring() -> Result<(), failure::Error> {
-    let client = client::create_default();
-    let response = client
-        .search(SearchUrlParts::None)
-        .pretty(true)
-        .filter_path(&["took"])
-        .q("title:Elasticsearch")
-        .send()
-        .await?;
-
-    assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
-
-    assert!(response_body["took"].as_i64().unwrap() > 0);
-    assert!(response_body.get("hits").is_none());
-
-    Ok(())
-}
-
-#[tokio::test]
 async fn clone_search_with_body() -> Result<(), failure::Error> {
     let client = client::create_default();
 
-    let base_request = client
-        .search(SearchUrlParts::None);
+    let base_request = client.search(SearchUrlParts::None);
 
-    let request_clone = base_request
-        .clone()
-        .q("title:Elasticsearch")
-        .size(1);
+    let request_clone = base_request.clone().q("title:Elasticsearch").size(1);
 
     let _request = base_request
         .body(json!({

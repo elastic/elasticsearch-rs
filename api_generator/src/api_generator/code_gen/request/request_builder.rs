@@ -372,7 +372,10 @@ impl<'a> RequestBuilder<'a> {
                     quote!(impl<'a, B> #builder_ident<'a, B> where B: Serialize),
                 )
             } else {
-                (quote!(#builder_ident<'a>), quote!(impl<'a> #builder_ident<'a>))
+                (
+                    quote!(#builder_ident<'a>),
+                    quote!(impl<'a> #builder_ident<'a>),
+                )
             }
         };
 

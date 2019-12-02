@@ -14,8 +14,8 @@ pub fn serialize_coll_qs<S>(
     value: &Option<&[&str]>,
     serializer: S,
 ) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
-    where
-        S: Serializer,
+where
+    S: Serializer,
 {
     let vec = value
         .as_ref()
@@ -33,9 +33,7 @@ pub struct Elasticsearch {
 impl Elasticsearch {
     /// Creates a new instance of Elasticsearch
     pub fn new(connection: Connection) -> Self {
-        Elasticsearch {
-            connection,
-        }
+        Elasticsearch { connection }
     }
 
     /// Creates an asynchronous request that can be awaited
