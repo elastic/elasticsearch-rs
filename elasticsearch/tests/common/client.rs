@@ -85,7 +85,7 @@ pub async fn index_documents(client: &Elasticsearch) -> Result<ElasticsearchResp
             body.append(&mut op_doc);
         }
 
-        let bulk_endpoint = format!("{}/{}/_bulk?refresh=wait_for", index, cluster_addr());
+        let bulk_endpoint = format!("{}/{}/_bulk?refresh=wait_for", cluster_addr(), index);
         let reqwest_client = create_reqwest_client();
         let response = reqwest_client.post(&bulk_endpoint)
             .body(body)
