@@ -9,8 +9,6 @@ set -euxo pipefail
 TEST_SUITE=${TEST_SUITE-oss}
 NODE_NAME=instance
 
-repo=$(pwd)
-
 elasticsearch_image=elasticsearch
 elasticsearch_url=https://elastic:changeme@${NODE_NAME}:9200
 if [[ $TEST_SUITE != "xpack" ]]; then
@@ -56,8 +54,8 @@ echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>
 
 docker run \
   --network=elasticsearch \
-  --env "TEST_ES_SERVER=${elasticsearch_url}" \
-  --env "RUST_VERSION" \
+  --env "ES_TEST_SERVER=${elasticsearch_url}" \
+  --env "RUST_VERSION=${RUST_VERSION}" \
   --name elasticsearch-rs \
   --rm \
   elastic/elasticsearch-rs \
