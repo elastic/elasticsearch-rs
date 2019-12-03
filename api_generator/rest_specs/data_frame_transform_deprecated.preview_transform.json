@@ -1,5 +1,5 @@
 {
-  "data_frame.preview_data_frame_transform":{
+  "data_frame_transform_deprecated.preview_transform":{
     "documentation":{
       "url":"https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-transform.html"
     },
@@ -10,12 +10,16 @@
           "path":"/_data_frame/transforms/_preview",
           "methods":[
             "POST"
-          ]
+          ],
+          "deprecated":{
+            "version":"7.5.0",
+            "description":"[_data_frame/transforms/] is deprecated, use [_transform/] in the future."
+          }
         }
       ]
     },
     "body":{
-      "description":"The definition for the data_frame transform to preview",
+      "description":"The definition for the transform to preview",
       "required":true
     }
   }

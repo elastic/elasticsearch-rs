@@ -22,36 +22,36 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Delete Lifecycle API"]
-pub enum SlmDeleteLifecycleUrlParts<'a> {
-    PolicyId(&'a str),
+#[doc = "Url parts for the Enrich Delete Policy API"]
+pub enum EnrichDeletePolicyUrlParts<'a> {
+    Name(&'a str),
 }
-impl<'a> SlmDeleteLifecycleUrlParts<'a> {
+impl<'a> EnrichDeletePolicyUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            SlmDeleteLifecycleUrlParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(13usize + policy_id.len());
-                p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+            EnrichDeletePolicyUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_enrich/policy/");
+                p.push_str(name.as_ref());
                 p.into()
             }
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Delete Lifecycle API"]
-pub struct SlmDeleteLifecycle<'a> {
+#[doc = "Request builder for the Enrich Delete Policy API"]
+pub struct EnrichDeletePolicy<'a> {
     client: Elasticsearch,
-    parts: SlmDeleteLifecycleUrlParts<'a>,
+    parts: EnrichDeletePolicyUrlParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a> SlmDeleteLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: SlmDeleteLifecycleUrlParts<'a>) -> Self {
-        SlmDeleteLifecycle {
+impl<'a> EnrichDeletePolicy<'a> {
+    pub fn new(client: Elasticsearch, parts: EnrichDeletePolicyUrlParts<'a>) -> Self {
+        EnrichDeletePolicy {
             client,
             parts,
             error_trace: None,
@@ -86,7 +86,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Delete Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Enrich Delete Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -126,17 +126,17 @@ impl<'a> SlmDeleteLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Execute Lifecycle API"]
-pub enum SlmExecuteLifecycleUrlParts<'a> {
-    PolicyId(&'a str),
+#[doc = "Url parts for the Enrich Execute Policy API"]
+pub enum EnrichExecutePolicyUrlParts<'a> {
+    Name(&'a str),
 }
-impl<'a> SlmExecuteLifecycleUrlParts<'a> {
+impl<'a> EnrichExecutePolicyUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            SlmExecuteLifecycleUrlParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(22usize + policy_id.len());
-                p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+            EnrichExecutePolicyUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(25usize + name.len());
+                p.push_str("/_enrich/policy/");
+                p.push_str(name.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
@@ -144,23 +144,24 @@ impl<'a> SlmExecuteLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Execute Lifecycle API"]
-pub struct SlmExecuteLifecycle<'a, B> {
+#[doc = "Request builder for the Enrich Execute Policy API"]
+pub struct EnrichExecutePolicy<'a, B> {
     client: Elasticsearch,
-    parts: SlmExecuteLifecycleUrlParts<'a>,
+    parts: EnrichExecutePolicyUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
+    wait_for_completion: Option<bool>,
 }
-impl<'a, B> SlmExecuteLifecycle<'a, B>
+impl<'a, B> EnrichExecutePolicy<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleUrlParts<'a>) -> Self {
-        SlmExecuteLifecycle {
+    pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyUrlParts<'a>) -> Self {
+        EnrichExecutePolicy {
             client,
             parts,
             body: None,
@@ -169,14 +170,15 @@ where
             human: None,
             pretty: None,
             source: None,
+            wait_for_completion: None,
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteLifecycle<'a, T>
+    pub fn body<T>(self, body: T) -> EnrichExecutePolicy<'a, T>
     where
         T: Serialize,
     {
-        SlmExecuteLifecycle {
+        EnrichExecutePolicy {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -185,6 +187,7 @@ where
             human: self.human,
             pretty: self.pretty,
             source: self.source,
+            wait_for_completion: self.wait_for_completion,
         }
     }
     #[doc = "Include the stack trace of returned errors."]
@@ -212,7 +215,12 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Execute Lifecycle API that can be awaited"]
+    #[doc = "Should the request should block until the execution is complete."]
+    pub fn wait_for_completion(mut self, wait_for_completion: bool) -> Self {
+        self.wait_for_completion = Some(wait_for_completion);
+        self
+    }
+    #[doc = "Creates an asynchronous request to the Enrich Execute Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -233,126 +241,11 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
                 source: Option<&'a str>,
-            }
-            let query_params = QueryParamsStruct {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = self.body;
-        let response = self
-            .client
-            .send(method, &path, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Execute Retention API"]
-pub enum SlmExecuteRetentionUrlParts {
-    None,
-}
-impl SlmExecuteRetentionUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
-        match self {
-            SlmExecuteRetentionUrlParts::None => "/_slm/_execute_retention".into(),
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Execute Retention API"]
-pub struct SlmExecuteRetention<'a, B> {
-    client: Elasticsearch,
-    parts: SlmExecuteRetentionUrlParts,
-    body: Option<B>,
-    error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<&'a str>,
-}
-impl<'a, B> SlmExecuteRetention<'a, B>
-where
-    B: Serialize,
-{
-    pub fn new(client: Elasticsearch) -> Self {
-        SlmExecuteRetention {
-            client,
-            parts: SlmExecuteRetentionUrlParts::None,
-            body: None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteRetention<'a, T>
-    where
-        T: Serialize,
-    {
-        SlmExecuteRetention {
-            client: self.client,
-            parts: self.parts,
-            body: Some(body),
-            error_trace: self.error_trace,
-            filter_path: self.filter_path,
-            human: self.human,
-            pretty: self.pretty,
-            source: self.source,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous request to the Slm Execute Retention API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
-        let query_string = {
-            #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
-                error_trace: Option<bool>,
                 #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
+                    rename = "wait_for_completion",
                     skip_serializing_if = "Option::is_none"
                 )]
-                filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
-                human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
-                pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<&'a str>,
+                wait_for_completion: Option<bool>,
             }
             let query_params = QueryParamsStruct {
                 error_trace: self.error_trace,
@@ -360,6 +253,7 @@ where
                 human: self.human,
                 pretty: self.pretty,
                 source: self.source,
+                wait_for_completion: self.wait_for_completion,
             };
             Some(query_params)
         };
@@ -372,39 +266,38 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Get Lifecycle API"]
-pub enum SlmGetLifecycleUrlParts<'a> {
-    PolicyId(&'a [&'a str]),
+#[doc = "Url parts for the Enrich Get Policy API"]
+pub enum EnrichGetPolicyUrlParts<'a> {
+    Name(&'a str),
     None,
 }
-impl<'a> SlmGetLifecycleUrlParts<'a> {
+impl<'a> EnrichGetPolicyUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            SlmGetLifecycleUrlParts::PolicyId(ref policy_id) => {
-                let policy_id_str = policy_id.join(",");
-                let mut p = String::with_capacity(13usize + policy_id_str.len());
-                p.push_str("/_slm/policy/");
-                p.push_str(policy_id_str.as_ref());
+            EnrichGetPolicyUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_enrich/policy/");
+                p.push_str(name.as_ref());
                 p.into()
             }
-            SlmGetLifecycleUrlParts::None => "/_slm/policy".into(),
+            EnrichGetPolicyUrlParts::None => "/_enrich/policy/".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Get Lifecycle API"]
-pub struct SlmGetLifecycle<'a> {
+#[doc = "Request builder for the Enrich Get Policy API"]
+pub struct EnrichGetPolicy<'a> {
     client: Elasticsearch,
-    parts: SlmGetLifecycleUrlParts<'a>,
+    parts: EnrichGetPolicyUrlParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a> SlmGetLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: SlmGetLifecycleUrlParts<'a>) -> Self {
-        SlmGetLifecycle {
+impl<'a> EnrichGetPolicy<'a> {
+    pub fn new(client: Elasticsearch, parts: EnrichGetPolicyUrlParts<'a>) -> Self {
+        EnrichGetPolicy {
             client,
             parts,
             error_trace: None,
@@ -439,7 +332,7 @@ impl<'a> SlmGetLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Get Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Enrich Get Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -479,126 +372,27 @@ impl<'a> SlmGetLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Get Stats API"]
-pub enum SlmGetStatsUrlParts {
-    None,
+#[doc = "Url parts for the Enrich Put Policy API"]
+pub enum EnrichPutPolicyUrlParts<'a> {
+    Name(&'a str),
 }
-impl SlmGetStatsUrlParts {
+impl<'a> EnrichPutPolicyUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            SlmGetStatsUrlParts::None => "/_slm/stats".into(),
-        }
-    }
-}
-#[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Get Stats API"]
-pub struct SlmGetStats<'a> {
-    client: Elasticsearch,
-    parts: SlmGetStatsUrlParts,
-    error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    human: Option<bool>,
-    pretty: Option<bool>,
-    source: Option<&'a str>,
-}
-impl<'a> SlmGetStats<'a> {
-    pub fn new(client: Elasticsearch) -> Self {
-        SlmGetStats {
-            client,
-            parts: SlmGetStatsUrlParts::None,
-            error_trace: None,
-            filter_path: None,
-            human: None,
-            pretty: None,
-            source: None,
-        }
-    }
-    #[doc = "Include the stack trace of returned errors."]
-    pub fn error_trace(mut self, error_trace: bool) -> Self {
-        self.error_trace = Some(error_trace);
-        self
-    }
-    #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
-        self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Return human readable values for statistics."]
-    pub fn human(mut self, human: bool) -> Self {
-        self.human = Some(human);
-        self
-    }
-    #[doc = "Pretty format the returned JSON response."]
-    pub fn pretty(mut self, pretty: bool) -> Self {
-        self.pretty = Some(pretty);
-        self
-    }
-    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
-        self.source = Some(source);
-        self
-    }
-    #[doc = "Creates an asynchronous request to the Slm Get Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
-        let query_string = {
-            #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
-                error_trace: Option<bool>,
-                #[serde(
-                    rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
-                )]
-                filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
-                human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
-                pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
-                source: Option<&'a str>,
-            }
-            let query_params = QueryParamsStruct {
-                error_trace: self.error_trace,
-                filter_path: self.filter_path,
-                human: self.human,
-                pretty: self.pretty,
-                source: self.source,
-            };
-            Some(query_params)
-        };
-        let body = Option::<()>::None;
-        let response = self
-            .client
-            .send(method, &path, query_string.as_ref(), body)
-            .await?;
-        Ok(response)
-    }
-}
-#[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Put Lifecycle API"]
-pub enum SlmPutLifecycleUrlParts<'a> {
-    PolicyId(&'a str),
-}
-impl<'a> SlmPutLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
-        match self {
-            SlmPutLifecycleUrlParts::PolicyId(ref policy_id) => {
-                let mut p = String::with_capacity(13usize + policy_id.len());
-                p.push_str("/_slm/policy/");
-                p.push_str(policy_id.as_ref());
+            EnrichPutPolicyUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(16usize + name.len());
+                p.push_str("/_enrich/policy/");
+                p.push_str(name.as_ref());
                 p.into()
             }
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Put Lifecycle API"]
-pub struct SlmPutLifecycle<'a, B> {
+#[doc = "Request builder for the Enrich Put Policy API"]
+pub struct EnrichPutPolicy<'a, B> {
     client: Elasticsearch,
-    parts: SlmPutLifecycleUrlParts<'a>,
+    parts: EnrichPutPolicyUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -606,12 +400,12 @@ pub struct SlmPutLifecycle<'a, B> {
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a, B> SlmPutLifecycle<'a, B>
+impl<'a, B> EnrichPutPolicy<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: SlmPutLifecycleUrlParts<'a>) -> Self {
-        SlmPutLifecycle {
+    pub fn new(client: Elasticsearch, parts: EnrichPutPolicyUrlParts<'a>) -> Self {
+        EnrichPutPolicy {
             client,
             parts,
             body: None,
@@ -623,11 +417,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmPutLifecycle<'a, T>
+    pub fn body<T>(self, body: T) -> EnrichPutPolicy<'a, T>
     where
         T: Serialize,
     {
-        SlmPutLifecycle {
+        EnrichPutPolicy {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -663,7 +457,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Put Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Enrich Put Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -702,42 +496,138 @@ where
         Ok(response)
     }
 }
-#[doc = "Slm APIs"]
-pub struct Slm {
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Enrich Stats API"]
+pub enum EnrichStatsUrlParts {
+    None,
+}
+impl EnrichStatsUrlParts {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            EnrichStatsUrlParts::None => "/_enrich/_stats".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Request builder for the Enrich Stats API"]
+pub struct EnrichStats<'a> {
+    client: Elasticsearch,
+    parts: EnrichStatsUrlParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a> EnrichStats<'a> {
+    pub fn new(client: Elasticsearch) -> Self {
+        EnrichStats {
+            client,
+            parts: EnrichStatsUrlParts::None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous request to the Enrich Stats API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let path = self.parts.build();
+        let method = HttpMethod::Get;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct<'a> {
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                human: Option<bool>,
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                pretty: Option<bool>,
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[doc = "Enrich APIs"]
+pub struct Enrich {
     client: Elasticsearch,
 }
-impl Slm {
+impl Enrich {
     pub fn new(client: Elasticsearch) -> Self {
-        Slm { client }
+        Enrich { client }
     }
-    pub fn delete_lifecycle<'a>(
+    pub fn delete_policy<'a>(
         &self,
-        parts: SlmDeleteLifecycleUrlParts<'a>,
-    ) -> SlmDeleteLifecycle<'a> {
-        SlmDeleteLifecycle::new(self.client.clone(), parts)
+        parts: EnrichDeletePolicyUrlParts<'a>,
+    ) -> EnrichDeletePolicy<'a> {
+        EnrichDeletePolicy::new(self.client.clone(), parts)
     }
-    pub fn execute_lifecycle<'a>(
+    pub fn execute_policy<'a>(
         &self,
-        parts: SlmExecuteLifecycleUrlParts<'a>,
-    ) -> SlmExecuteLifecycle<'a, ()> {
-        SlmExecuteLifecycle::new(self.client.clone(), parts)
+        parts: EnrichExecutePolicyUrlParts<'a>,
+    ) -> EnrichExecutePolicy<'a, ()> {
+        EnrichExecutePolicy::new(self.client.clone(), parts)
     }
-    pub fn execute_retention<'a>(&self) -> SlmExecuteRetention<'a, ()> {
-        SlmExecuteRetention::new(self.client.clone())
+    pub fn get_policy<'a>(&self, parts: EnrichGetPolicyUrlParts<'a>) -> EnrichGetPolicy<'a> {
+        EnrichGetPolicy::new(self.client.clone(), parts)
     }
-    pub fn get_lifecycle<'a>(&self, parts: SlmGetLifecycleUrlParts<'a>) -> SlmGetLifecycle<'a> {
-        SlmGetLifecycle::new(self.client.clone(), parts)
+    pub fn put_policy<'a>(&self, parts: EnrichPutPolicyUrlParts<'a>) -> EnrichPutPolicy<'a, ()> {
+        EnrichPutPolicy::new(self.client.clone(), parts)
     }
-    pub fn get_stats<'a>(&self) -> SlmGetStats<'a> {
-        SlmGetStats::new(self.client.clone())
-    }
-    pub fn put_lifecycle<'a>(&self, parts: SlmPutLifecycleUrlParts<'a>) -> SlmPutLifecycle<'a, ()> {
-        SlmPutLifecycle::new(self.client.clone(), parts)
+    pub fn stats<'a>(&self) -> EnrichStats<'a> {
+        EnrichStats::new(self.client.clone())
     }
 }
 impl Elasticsearch {
-    #[doc = "Slm APIs"]
-    pub fn slm(&self) -> Slm {
-        Slm::new(self.clone())
+    #[doc = "Enrich APIs"]
+    pub fn enrich(&self) -> Enrich {
+        Enrich::new(self.clone())
     }
 }

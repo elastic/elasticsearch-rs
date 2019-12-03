@@ -22,16 +22,16 @@ use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Delete Data Frame Transform API"]
-pub enum DataFrameDeleteDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Delete Transform API"]
+pub enum TransformDeleteTransformUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFrameDeleteDataFrameTransformUrlParts<'a> {
+impl<'a> TransformDeleteTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameDeleteDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(24usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformDeleteTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(12usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.into()
             }
@@ -39,10 +39,10 @@ impl<'a> DataFrameDeleteDataFrameTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Delete Data Frame Transform API"]
-pub struct DataFrameDeleteDataFrameTransform<'a> {
+#[doc = "Request builder for the Transform Delete Transform API"]
+pub struct TransformDeleteTransform<'a> {
     client: Elasticsearch,
-    parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
+    parts: TransformDeleteTransformUrlParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     force: Option<bool>,
@@ -50,12 +50,9 @@ pub struct DataFrameDeleteDataFrameTransform<'a> {
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a> DataFrameDeleteDataFrameTransform<'a> {
-    pub fn new(
-        client: Elasticsearch,
-        parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
-    ) -> Self {
-        DataFrameDeleteDataFrameTransform {
+impl<'a> TransformDeleteTransform<'a> {
+    pub fn new(client: Elasticsearch, parts: TransformDeleteTransformUrlParts<'a>) -> Self {
+        TransformDeleteTransform {
             client,
             parts,
             error_trace: None,
@@ -96,7 +93,7 @@ impl<'a> DataFrameDeleteDataFrameTransform<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Delete Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Delete Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -139,29 +136,29 @@ impl<'a> DataFrameDeleteDataFrameTransform<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Get Data Frame Transform API"]
-pub enum DataFrameGetDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Get Transform API"]
+pub enum TransformGetTransformUrlParts<'a> {
     TransformId(&'a str),
     None,
 }
-impl<'a> DataFrameGetDataFrameTransformUrlParts<'a> {
+impl<'a> TransformGetTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameGetDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(24usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformGetTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(12usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.into()
             }
-            DataFrameGetDataFrameTransformUrlParts::None => "/_data_frame/transforms".into(),
+            TransformGetTransformUrlParts::None => "/_transform".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Get Data Frame Transform API"]
-pub struct DataFrameGetDataFrameTransform<'a> {
+#[doc = "Request builder for the Transform Get Transform API"]
+pub struct TransformGetTransform<'a> {
     client: Elasticsearch,
-    parts: DataFrameGetDataFrameTransformUrlParts<'a>,
+    parts: TransformGetTransformUrlParts<'a>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -171,9 +168,9 @@ pub struct DataFrameGetDataFrameTransform<'a> {
     size: Option<i32>,
     source: Option<&'a str>,
 }
-impl<'a> DataFrameGetDataFrameTransform<'a> {
-    pub fn new(client: Elasticsearch, parts: DataFrameGetDataFrameTransformUrlParts<'a>) -> Self {
-        DataFrameGetDataFrameTransform {
+impl<'a> TransformGetTransform<'a> {
+    pub fn new(client: Elasticsearch, parts: TransformGetTransformUrlParts<'a>) -> Self {
+        TransformGetTransform {
             client,
             parts,
             allow_no_match: None,
@@ -186,7 +183,7 @@ impl<'a> DataFrameGetDataFrameTransform<'a> {
             source: None,
         }
     }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    #[doc = "Whether to ignore if a wildcard expression matches no transforms. (This includes `_all` string or when no transforms have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
         self
@@ -226,7 +223,7 @@ impl<'a> DataFrameGetDataFrameTransform<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Get Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Get Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -275,16 +272,16 @@ impl<'a> DataFrameGetDataFrameTransform<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Get Data Frame Transform Stats API"]
-pub enum DataFrameGetDataFrameTransformStatsUrlParts<'a> {
+#[doc = "Url parts for the Transform Get Transform Stats API"]
+pub enum TransformGetTransformStatsUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFrameGetDataFrameTransformStatsUrlParts<'a> {
+impl<'a> TransformGetTransformStatsUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameGetDataFrameTransformStatsUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(31usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformGetTransformStatsUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(19usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.push_str("/_stats");
                 p.into()
@@ -293,10 +290,10 @@ impl<'a> DataFrameGetDataFrameTransformStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Get Data Frame Transform Stats API"]
-pub struct DataFrameGetDataFrameTransformStats<'a> {
+#[doc = "Request builder for the Transform Get Transform Stats API"]
+pub struct TransformGetTransformStats<'a> {
     client: Elasticsearch,
-    parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
+    parts: TransformGetTransformStatsUrlParts<'a>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -306,12 +303,9 @@ pub struct DataFrameGetDataFrameTransformStats<'a> {
     size: Option<i64>,
     source: Option<&'a str>,
 }
-impl<'a> DataFrameGetDataFrameTransformStats<'a> {
-    pub fn new(
-        client: Elasticsearch,
-        parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
-    ) -> Self {
-        DataFrameGetDataFrameTransformStats {
+impl<'a> TransformGetTransformStats<'a> {
+    pub fn new(client: Elasticsearch, parts: TransformGetTransformStatsUrlParts<'a>) -> Self {
+        TransformGetTransformStats {
             client,
             parts,
             allow_no_match: None,
@@ -324,7 +318,7 @@ impl<'a> DataFrameGetDataFrameTransformStats<'a> {
             source: None,
         }
     }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    #[doc = "Whether to ignore if a wildcard expression matches no transforms. (This includes `_all` string or when no transforms have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
         self
@@ -364,7 +358,7 @@ impl<'a> DataFrameGetDataFrameTransformStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Get Data Frame Transform Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Get Transform Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -413,24 +407,22 @@ impl<'a> DataFrameGetDataFrameTransformStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Preview Data Frame Transform API"]
-pub enum DataFramePreviewDataFrameTransformUrlParts {
+#[doc = "Url parts for the Transform Preview Transform API"]
+pub enum TransformPreviewTransformUrlParts {
     None,
 }
-impl DataFramePreviewDataFrameTransformUrlParts {
+impl TransformPreviewTransformUrlParts {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFramePreviewDataFrameTransformUrlParts::None => {
-                "/_data_frame/transforms/_preview".into()
-            }
+            TransformPreviewTransformUrlParts::None => "/_transform/_preview".into(),
         }
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Preview Data Frame Transform API"]
-pub struct DataFramePreviewDataFrameTransform<'a, B> {
+#[doc = "Request builder for the Transform Preview Transform API"]
+pub struct TransformPreviewTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFramePreviewDataFrameTransformUrlParts,
+    parts: TransformPreviewTransformUrlParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -438,14 +430,14 @@ pub struct DataFramePreviewDataFrameTransform<'a, B> {
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a, B> DataFramePreviewDataFrameTransform<'a, B>
+impl<'a, B> TransformPreviewTransform<'a, B>
 where
     B: Serialize,
 {
     pub fn new(client: Elasticsearch) -> Self {
-        DataFramePreviewDataFrameTransform {
+        TransformPreviewTransform {
             client,
-            parts: DataFramePreviewDataFrameTransformUrlParts::None,
+            parts: TransformPreviewTransformUrlParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -455,11 +447,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFramePreviewDataFrameTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformPreviewTransform<'a, T>
     where
         T: Serialize,
     {
-        DataFramePreviewDataFrameTransform {
+        TransformPreviewTransform {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -495,7 +487,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Preview Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Preview Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -535,16 +527,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Put Data Frame Transform API"]
-pub enum DataFramePutDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Put Transform API"]
+pub enum TransformPutTransformUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFramePutDataFrameTransformUrlParts<'a> {
+impl<'a> TransformPutTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFramePutDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(24usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformPutTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(12usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.into()
             }
@@ -552,10 +544,10 @@ impl<'a> DataFramePutDataFrameTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Put Data Frame Transform API"]
-pub struct DataFramePutDataFrameTransform<'a, B> {
+#[doc = "Request builder for the Transform Put Transform API"]
+pub struct TransformPutTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFramePutDataFrameTransformUrlParts<'a>,
+    parts: TransformPutTransformUrlParts<'a>,
     body: Option<B>,
     defer_validation: Option<bool>,
     error_trace: Option<bool>,
@@ -564,12 +556,12 @@ pub struct DataFramePutDataFrameTransform<'a, B> {
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a, B> DataFramePutDataFrameTransform<'a, B>
+impl<'a, B> TransformPutTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFramePutDataFrameTransformUrlParts<'a>) -> Self {
-        DataFramePutDataFrameTransform {
+    pub fn new(client: Elasticsearch, parts: TransformPutTransformUrlParts<'a>) -> Self {
+        TransformPutTransform {
             client,
             parts,
             body: None,
@@ -582,11 +574,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFramePutDataFrameTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformPutTransform<'a, T>
     where
         T: Serialize,
     {
-        DataFramePutDataFrameTransform {
+        TransformPutTransform {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -598,7 +590,7 @@ where
             source: self.source,
         }
     }
-    #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
+    #[doc = "If validations should be deferred until transform starts, defaults to false."]
     pub fn defer_validation(mut self, defer_validation: bool) -> Self {
         self.defer_validation = Some(defer_validation);
         self
@@ -628,7 +620,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Put Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Put Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -671,16 +663,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Start Data Frame Transform API"]
-pub enum DataFrameStartDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Start Transform API"]
+pub enum TransformStartTransformUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFrameStartDataFrameTransformUrlParts<'a> {
+impl<'a> TransformStartTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameStartDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(31usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformStartTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(19usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.push_str("/_start");
                 p.into()
@@ -689,10 +681,10 @@ impl<'a> DataFrameStartDataFrameTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Start Data Frame Transform API"]
-pub struct DataFrameStartDataFrameTransform<'a, B> {
+#[doc = "Request builder for the Transform Start Transform API"]
+pub struct TransformStartTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameStartDataFrameTransformUrlParts<'a>,
+    parts: TransformStartTransformUrlParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -701,12 +693,12 @@ pub struct DataFrameStartDataFrameTransform<'a, B> {
     source: Option<&'a str>,
     timeout: Option<&'a str>,
 }
-impl<'a, B> DataFrameStartDataFrameTransform<'a, B>
+impl<'a, B> TransformStartTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFrameStartDataFrameTransformUrlParts<'a>) -> Self {
-        DataFrameStartDataFrameTransform {
+    pub fn new(client: Elasticsearch, parts: TransformStartTransformUrlParts<'a>) -> Self {
+        TransformStartTransform {
             client,
             parts,
             body: None,
@@ -719,11 +711,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameStartDataFrameTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformStartTransform<'a, T>
     where
         T: Serialize,
     {
-        DataFrameStartDataFrameTransform {
+        TransformStartTransform {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -765,7 +757,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Start Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Start Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -808,16 +800,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Stop Data Frame Transform API"]
-pub enum DataFrameStopDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Stop Transform API"]
+pub enum TransformStopTransformUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFrameStopDataFrameTransformUrlParts<'a> {
+impl<'a> TransformStopTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameStopDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(30usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformStopTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(18usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.push_str("/_stop");
                 p.into()
@@ -826,10 +818,10 @@ impl<'a> DataFrameStopDataFrameTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Stop Data Frame Transform API"]
-pub struct DataFrameStopDataFrameTransform<'a, B> {
+#[doc = "Request builder for the Transform Stop Transform API"]
+pub struct TransformStopTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameStopDataFrameTransformUrlParts<'a>,
+    parts: TransformStopTransformUrlParts<'a>,
     allow_no_match: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -840,12 +832,12 @@ pub struct DataFrameStopDataFrameTransform<'a, B> {
     timeout: Option<&'a str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a, B> DataFrameStopDataFrameTransform<'a, B>
+impl<'a, B> TransformStopTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(client: Elasticsearch, parts: DataFrameStopDataFrameTransformUrlParts<'a>) -> Self {
-        DataFrameStopDataFrameTransform {
+    pub fn new(client: Elasticsearch, parts: TransformStopTransformUrlParts<'a>) -> Self {
+        TransformStopTransform {
             client,
             parts,
             allow_no_match: None,
@@ -859,17 +851,17 @@ where
             wait_for_completion: None,
         }
     }
-    #[doc = "Whether to ignore if a wildcard expression matches no data frame transforms. (This includes `_all` string or when no data frame transforms have been specified)"]
+    #[doc = "Whether to ignore if a wildcard expression matches no transforms. (This includes `_all` string or when no transforms have been specified)"]
     pub fn allow_no_match(mut self, allow_no_match: bool) -> Self {
         self.allow_no_match = Some(allow_no_match);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameStopDataFrameTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformStopTransform<'a, T>
     where
         T: Serialize,
     {
-        DataFrameStopDataFrameTransform {
+        TransformStopTransform {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -918,7 +910,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Stop Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Stop Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -970,16 +962,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Data Frame Update Data Frame Transform API"]
-pub enum DataFrameUpdateDataFrameTransformUrlParts<'a> {
+#[doc = "Url parts for the Transform Update Transform API"]
+pub enum TransformUpdateTransformUrlParts<'a> {
     TransformId(&'a str),
 }
-impl<'a> DataFrameUpdateDataFrameTransformUrlParts<'a> {
+impl<'a> TransformUpdateTransformUrlParts<'a> {
     pub fn build(self) -> Cow<'static, str> {
         match self {
-            DataFrameUpdateDataFrameTransformUrlParts::TransformId(ref transform_id) => {
-                let mut p = String::with_capacity(32usize + transform_id.len());
-                p.push_str("/_data_frame/transforms/");
+            TransformUpdateTransformUrlParts::TransformId(ref transform_id) => {
+                let mut p = String::with_capacity(20usize + transform_id.len());
+                p.push_str("/_transform/");
                 p.push_str(transform_id.as_ref());
                 p.push_str("/_update");
                 p.into()
@@ -988,10 +980,10 @@ impl<'a> DataFrameUpdateDataFrameTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Data Frame Update Data Frame Transform API"]
-pub struct DataFrameUpdateDataFrameTransform<'a, B> {
+#[doc = "Request builder for the Transform Update Transform API"]
+pub struct TransformUpdateTransform<'a, B> {
     client: Elasticsearch,
-    parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
+    parts: TransformUpdateTransformUrlParts<'a>,
     body: Option<B>,
     defer_validation: Option<bool>,
     error_trace: Option<bool>,
@@ -1000,15 +992,12 @@ pub struct DataFrameUpdateDataFrameTransform<'a, B> {
     pretty: Option<bool>,
     source: Option<&'a str>,
 }
-impl<'a, B> DataFrameUpdateDataFrameTransform<'a, B>
+impl<'a, B> TransformUpdateTransform<'a, B>
 where
     B: Serialize,
 {
-    pub fn new(
-        client: Elasticsearch,
-        parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
-    ) -> Self {
-        DataFrameUpdateDataFrameTransform {
+    pub fn new(client: Elasticsearch, parts: TransformUpdateTransformUrlParts<'a>) -> Self {
+        TransformUpdateTransform {
             client,
             parts,
             body: None,
@@ -1021,11 +1010,11 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DataFrameUpdateDataFrameTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformUpdateTransform<'a, T>
     where
         T: Serialize,
     {
-        DataFrameUpdateDataFrameTransform {
+        TransformUpdateTransform {
             client: self.client,
             parts: self.parts,
             body: Some(body),
@@ -1037,7 +1026,7 @@ where
             source: self.source,
         }
     }
-    #[doc = "If validations should be deferred until data frame transform starts, defaults to false."]
+    #[doc = "If validations should be deferred until transform starts, defaults to false."]
     pub fn defer_validation(mut self, defer_validation: bool) -> Self {
         self.defer_validation = Some(defer_validation);
         self
@@ -1067,7 +1056,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Data Frame Update Data Frame Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous request to the Transform Update Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1109,63 +1098,63 @@ where
         Ok(response)
     }
 }
-#[doc = "DataFrame APIs"]
-pub struct DataFrame {
+#[doc = "Transform APIs"]
+pub struct Transform {
     client: Elasticsearch,
 }
-impl DataFrame {
+impl Transform {
     pub fn new(client: Elasticsearch) -> Self {
-        DataFrame { client }
+        Transform { client }
     }
-    pub fn delete_data_frame_transform<'a>(
+    pub fn delete_transform<'a>(
         &self,
-        parts: DataFrameDeleteDataFrameTransformUrlParts<'a>,
-    ) -> DataFrameDeleteDataFrameTransform<'a> {
-        DataFrameDeleteDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformDeleteTransformUrlParts<'a>,
+    ) -> TransformDeleteTransform<'a> {
+        TransformDeleteTransform::new(self.client.clone(), parts)
     }
-    pub fn get_data_frame_transform<'a>(
+    pub fn get_transform<'a>(
         &self,
-        parts: DataFrameGetDataFrameTransformUrlParts<'a>,
-    ) -> DataFrameGetDataFrameTransform<'a> {
-        DataFrameGetDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformGetTransformUrlParts<'a>,
+    ) -> TransformGetTransform<'a> {
+        TransformGetTransform::new(self.client.clone(), parts)
     }
-    pub fn get_data_frame_transform_stats<'a>(
+    pub fn get_transform_stats<'a>(
         &self,
-        parts: DataFrameGetDataFrameTransformStatsUrlParts<'a>,
-    ) -> DataFrameGetDataFrameTransformStats<'a> {
-        DataFrameGetDataFrameTransformStats::new(self.client.clone(), parts)
+        parts: TransformGetTransformStatsUrlParts<'a>,
+    ) -> TransformGetTransformStats<'a> {
+        TransformGetTransformStats::new(self.client.clone(), parts)
     }
-    pub fn preview_data_frame_transform<'a>(&self) -> DataFramePreviewDataFrameTransform<'a, ()> {
-        DataFramePreviewDataFrameTransform::new(self.client.clone())
+    pub fn preview_transform<'a>(&self) -> TransformPreviewTransform<'a, ()> {
+        TransformPreviewTransform::new(self.client.clone())
     }
-    pub fn put_data_frame_transform<'a>(
+    pub fn put_transform<'a>(
         &self,
-        parts: DataFramePutDataFrameTransformUrlParts<'a>,
-    ) -> DataFramePutDataFrameTransform<'a, ()> {
-        DataFramePutDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformPutTransformUrlParts<'a>,
+    ) -> TransformPutTransform<'a, ()> {
+        TransformPutTransform::new(self.client.clone(), parts)
     }
-    pub fn start_data_frame_transform<'a>(
+    pub fn start_transform<'a>(
         &self,
-        parts: DataFrameStartDataFrameTransformUrlParts<'a>,
-    ) -> DataFrameStartDataFrameTransform<'a, ()> {
-        DataFrameStartDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformStartTransformUrlParts<'a>,
+    ) -> TransformStartTransform<'a, ()> {
+        TransformStartTransform::new(self.client.clone(), parts)
     }
-    pub fn stop_data_frame_transform<'a>(
+    pub fn stop_transform<'a>(
         &self,
-        parts: DataFrameStopDataFrameTransformUrlParts<'a>,
-    ) -> DataFrameStopDataFrameTransform<'a, ()> {
-        DataFrameStopDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformStopTransformUrlParts<'a>,
+    ) -> TransformStopTransform<'a, ()> {
+        TransformStopTransform::new(self.client.clone(), parts)
     }
-    pub fn update_data_frame_transform<'a>(
+    pub fn update_transform<'a>(
         &self,
-        parts: DataFrameUpdateDataFrameTransformUrlParts<'a>,
-    ) -> DataFrameUpdateDataFrameTransform<'a, ()> {
-        DataFrameUpdateDataFrameTransform::new(self.client.clone(), parts)
+        parts: TransformUpdateTransformUrlParts<'a>,
+    ) -> TransformUpdateTransform<'a, ()> {
+        TransformUpdateTransform::new(self.client.clone(), parts)
     }
 }
 impl Elasticsearch {
-    #[doc = "DataFrame APIs"]
-    pub fn data_frame(&self) -> DataFrame {
-        DataFrame::new(self.clone())
+    #[doc = "Transform APIs"]
+    pub fn transform(&self) -> Transform {
+        Transform::new(self.clone())
     }
 }

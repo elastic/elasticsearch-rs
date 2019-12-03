@@ -1,17 +1,15 @@
 use crate::api_generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
-use serde::Deserialize;
+use serde::{Deserialize, Deserializer};
 use serde_json::Value;
-use std::{
-    collections::{BTreeMap, HashSet},
-    fs::{read_dir, File, OpenOptions},
-    hash::{Hash, Hasher},
-    io::{prelude::*, Read},
-    path::PathBuf,
-};
+use std::{collections::{BTreeMap, HashSet}, fs::{read_dir, File, OpenOptions}, hash::{Hash, Hasher}, io::{prelude::*, Read}, path::PathBuf, fmt};
 
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
+use std::str::FromStr;
+use serde::de::{MapAccess, Visitor};
+use std::marker::PhantomData;
+use void::Void;
 
 mod code_gen;
 
@@ -144,9 +142,56 @@ pub struct Documentation {
     pub description: Option<String>,
 }
 
+impl FromStr for Documentation {
+    type Err = Void;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Documentation {
+            url: Some(s.to_string()),
+            description: None,
+        })
+    }
+}
+
+fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
+    where
+        T: Deserialize<'de> + FromStr<Err = Void>,
+        D: Deserializer<'de>,
+{
+    struct StringOrStruct<T>(PhantomData<fn() -> T>);
+
+    impl<'de, T> Visitor<'de> for StringOrStruct<T>
+        where
+            T: Deserialize<'de> + FromStr<Err = Void>,
+    {
+        type Value = T;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            formatter.write_str("string or map")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<T, E>
+            where
+                E: serde::de::Error,
+        {
+            Ok(FromStr::from_str(value).unwrap())
+        }
+
+        fn visit_map<M>(self, map: M) -> Result<T, M::Error>
+            where
+                M: MapAccess<'de>,
+        {
+            Deserialize::deserialize(serde::de::value::MapAccessDeserializer::new(map))
+        }
+    }
+
+    deserializer.deserialize_any(StringOrStruct(PhantomData))
+}
+
 /// An API endpoint defined in the REST API specs
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct ApiEndpoint {
+    #[serde(deserialize_with = "string_or_struct")]
     documentation: Documentation,
     stability: String,
     url: Url,
@@ -168,8 +213,9 @@ impl ApiEndpoint {
 /// Common parameters accepted by all API endpoints
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Common {
-    description: String,
-    documentation: String,
+    description: Option<String>,
+    #[serde(deserialize_with = "string_or_struct")]
+    documentation: Documentation,
     params: BTreeMap<String, Type>,
 }
 
@@ -285,7 +331,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
         if name
             .unwrap()
-            .map(|name| !name.starts_with('_'))
+            .map(|name| !name.starts_with('_') && !name.contains("_deprecated"))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;

@@ -1413,6 +1413,7 @@ pub struct SecurityGetApiKey<'a> {
     human: Option<bool>,
     id: Option<&'a str>,
     name: Option<&'a str>,
+    owner: Option<bool>,
     pretty: Option<bool>,
     realm_name: Option<&'a str>,
     source: Option<&'a str>,
@@ -1428,6 +1429,7 @@ impl<'a> SecurityGetApiKey<'a> {
             human: None,
             id: None,
             name: None,
+            owner: None,
             pretty: None,
             realm_name: None,
             source: None,
@@ -1457,6 +1459,11 @@ impl<'a> SecurityGetApiKey<'a> {
     #[doc = "API key name of the API key to be retrieved"]
     pub fn name(mut self, name: &'a str) -> Self {
         self.name = Some(name);
+        self
+    }
+    #[doc = "flag to query API keys owned by the currently authenticated user"]
+    pub fn owner(mut self, owner: bool) -> Self {
+        self.owner = Some(owner);
         self
     }
     #[doc = "Pretty format the returned JSON response."]
@@ -1500,6 +1507,8 @@ impl<'a> SecurityGetApiKey<'a> {
                 id: Option<&'a str>,
                 #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
                 name: Option<&'a str>,
+                #[serde(rename = "owner", skip_serializing_if = "Option::is_none")]
+                owner: Option<bool>,
                 #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
                 pretty: Option<bool>,
                 #[serde(rename = "realm_name", skip_serializing_if = "Option::is_none")]
@@ -1515,6 +1524,7 @@ impl<'a> SecurityGetApiKey<'a> {
                 human: self.human,
                 id: self.id,
                 name: self.name,
+                owner: self.owner,
                 pretty: self.pretty,
                 realm_name: self.realm_name,
                 source: self.source,

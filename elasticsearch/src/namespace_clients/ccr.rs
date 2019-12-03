@@ -710,6 +710,132 @@ impl<'a> CcrGetAutoFollowPattern<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Pause Auto Follow Pattern API"]
+pub enum CcrPauseAutoFollowPatternUrlParts<'a> {
+    Name(&'a str),
+}
+impl<'a> CcrPauseAutoFollowPatternUrlParts<'a> {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrPauseAutoFollowPatternUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(24usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                p.push_str("/pause");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Pause Auto Follow Pattern API"]
+pub struct CcrPauseAutoFollowPattern<'a, B> {
+    client: Elasticsearch,
+    parts: CcrPauseAutoFollowPatternUrlParts<'a>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a, B> CcrPauseAutoFollowPattern<'a, B>
+where
+    B: Serialize,
+{
+    pub fn new(client: Elasticsearch, parts: CcrPauseAutoFollowPatternUrlParts<'a>) -> Self {
+        CcrPauseAutoFollowPattern {
+            client,
+            parts,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> CcrPauseAutoFollowPattern<'a, T>
+    where
+        T: Serialize,
+    {
+        CcrPauseAutoFollowPattern {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous request to the Ccr Pause Auto Follow Pattern API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let path = self.parts.build();
+        let method = HttpMethod::Post;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct<'a> {
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                human: Option<bool>,
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                pretty: Option<bool>,
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Ccr Pause Follow API"]
 pub enum CcrPauseFollowUrlParts<'a> {
     Index(&'a str),
@@ -925,6 +1051,132 @@ where
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
+        let query_string = {
+            #[derive(Serialize)]
+            struct QueryParamsStruct<'a> {
+                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs",
+                    skip_serializing_if = "Option::is_none"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                human: Option<bool>,
+                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                pretty: Option<bool>,
+                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParamsStruct {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "Url parts for the Ccr Resume Auto Follow Pattern API"]
+pub enum CcrResumeAutoFollowPatternUrlParts<'a> {
+    Name(&'a str),
+}
+impl<'a> CcrResumeAutoFollowPatternUrlParts<'a> {
+    pub fn build(self) -> Cow<'static, str> {
+        match self {
+            CcrResumeAutoFollowPatternUrlParts::Name(ref name) => {
+                let mut p = String::with_capacity(25usize + name.len());
+                p.push_str("/_ccr/auto_follow/");
+                p.push_str(name.as_ref());
+                p.push_str("/resume");
+                p.into()
+            }
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Request builder for the Ccr Resume Auto Follow Pattern API"]
+pub struct CcrResumeAutoFollowPattern<'a, B> {
+    client: Elasticsearch,
+    parts: CcrResumeAutoFollowPatternUrlParts<'a>,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a, B> CcrResumeAutoFollowPattern<'a, B>
+where
+    B: Serialize,
+{
+    pub fn new(client: Elasticsearch, parts: CcrResumeAutoFollowPatternUrlParts<'a>) -> Self {
+        CcrResumeAutoFollowPattern {
+            client,
+            parts,
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> CcrResumeAutoFollowPattern<'a, T>
+    where
+        T: Serialize,
+    {
+        CcrResumeAutoFollowPattern {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous request to the Ccr Resume Auto Follow Pattern API that can be awaited"]
+    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
+        let path = self.parts.build();
+        let method = HttpMethod::Post;
         let query_string = {
             #[derive(Serialize)]
             struct QueryParamsStruct<'a> {
@@ -1346,6 +1598,12 @@ impl Ccr {
     ) -> CcrGetAutoFollowPattern<'a> {
         CcrGetAutoFollowPattern::new(self.client.clone(), parts)
     }
+    pub fn pause_auto_follow_pattern<'a>(
+        &self,
+        parts: CcrPauseAutoFollowPatternUrlParts<'a>,
+    ) -> CcrPauseAutoFollowPattern<'a, ()> {
+        CcrPauseAutoFollowPattern::new(self.client.clone(), parts)
+    }
     pub fn pause_follow<'a>(&self, parts: CcrPauseFollowUrlParts<'a>) -> CcrPauseFollow<'a, ()> {
         CcrPauseFollow::new(self.client.clone(), parts)
     }
@@ -1354,6 +1612,12 @@ impl Ccr {
         parts: CcrPutAutoFollowPatternUrlParts<'a>,
     ) -> CcrPutAutoFollowPattern<'a, ()> {
         CcrPutAutoFollowPattern::new(self.client.clone(), parts)
+    }
+    pub fn resume_auto_follow_pattern<'a>(
+        &self,
+        parts: CcrResumeAutoFollowPatternUrlParts<'a>,
+    ) -> CcrResumeAutoFollowPattern<'a, ()> {
+        CcrResumeAutoFollowPattern::new(self.client.clone(), parts)
     }
     pub fn resume_follow<'a>(&self, parts: CcrResumeFollowUrlParts<'a>) -> CcrResumeFollow<'a, ()> {
         CcrResumeFollow::new(self.client.clone(), parts)
