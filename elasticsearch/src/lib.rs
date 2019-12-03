@@ -21,7 +21,7 @@ mod root;
 
 pub use crate::{
     client::Elasticsearch, connection::*, enums::*, error::ElasticsearchError,
-    http_method::HttpMethod, response::ElasticsearchResponse, root::*,
+    http_method::HttpMethod, response::ElasticsearchResponse, root::*, namespace_clients::*,
 };
 pub use reqwest::Client;
 
