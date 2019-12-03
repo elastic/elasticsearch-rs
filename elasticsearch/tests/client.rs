@@ -6,6 +6,7 @@ use elasticsearch::SearchUrlParts;
 use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
+use crate::common::client::index_documents;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
@@ -53,6 +54,7 @@ async fn serialize_querystring() -> Result<(), failure::Error> {
 #[tokio::test]
 async fn search_with_body() -> Result<(), failure::Error> {
     let client = client::create_default();
+    let _ = index_documents(&client).await?;
     let response = client
         .search(SearchUrlParts::None)
         .body(json!({
@@ -74,6 +76,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
 #[tokio::test]
 async fn search_with_no_body() -> Result<(), failure::Error> {
     let client = client::create_default();
+    let _ = index_documents(&client).await?;
     let response = client
         .search(SearchUrlParts::None)
         .pretty(true)
@@ -112,7 +115,7 @@ async fn cat_health() -> Result<(), failure::Error> {
 #[tokio::test]
 async fn clone_search_with_body() -> Result<(), failure::Error> {
     let client = client::create_default();
-
+    let _ = index_documents(&client).await?;
     let base_request = client.search(SearchUrlParts::None);
 
     let request_clone = base_request.clone().q("title:Elasticsearch").size(1);

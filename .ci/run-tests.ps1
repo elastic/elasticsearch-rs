@@ -52,9 +52,11 @@ function cleanup {
 
 Write-Output ">>>>> Start [$env:ELASTICSEARCH_VERSION container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
+$network = "elasticsearch"
+
 $runParams = @{
   NODE_NAME= "$NODE_NAME"
-  NETWORK_NAME = "elasticsearch"
+  NETWORK_NAME = $network
   DETACH = $true  
 }
 
@@ -67,7 +69,7 @@ docker build --file .ci/DockerFile --tag elastic/elasticsearch-rs .
 Write-Output ">>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
 docker run `
-  --network=elasticsearch `
+  --network=$network `
   --env "ES_TEST_SERVER=${elasticsearch_url}" `
   --env "RUST_VERSION=$RUST_VERSION" `
   --name elasticsearch-rs `

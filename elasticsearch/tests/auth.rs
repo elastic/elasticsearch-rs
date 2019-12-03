@@ -5,8 +5,9 @@ use elasticsearch::Credentials;
 
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
-use std::fs::File;
-use std::io::{Read, Write};
+// use std::fs::File;
+// use std::io::Read;
+use std::io::Write;
 
 #[tokio::test]
 async fn basic_auth_header() -> Result<(), failure::Error> {
