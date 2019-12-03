@@ -123,6 +123,13 @@ impl ConnectionBuilder {
     /// Builds a connection to an Elasticsearch node
     pub fn build(self) -> Result<Connection, BuildError> {
         let mut client_builder = self.client_builder;
+
+        let mut headers = HeaderMap::new();
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
+        headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
+        headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
+        client_builder = client_builder.default_headers(headers);
+
         if let Some(c) = &self.credentials {
             client_builder = match c {
                 Credentials::Cert(b, p) => {
@@ -199,13 +206,6 @@ impl Connection {
         let url = self.url.join(path)?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
-        let mut headers = HeaderMap::new();
-
-        headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
-        headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
-        headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
-
-        request_builder = request_builder.headers(headers);
 
         if let Some(b) = body {
             request_builder = request_builder.json(&b);
