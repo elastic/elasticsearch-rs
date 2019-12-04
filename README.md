@@ -1,10 +1,37 @@
-# elasticsearch-rs: Elasticsearch Rust Client
+# elasticsearch-rs: 
 
-A spacetime project to build a low level Rust client.
+Repository for the official Elasticsearch Rust Client.
 
-The project is still very much a _work in progress_; input and contributions welcome!
+The project is still very much a _work in progress_ and in an _alpha_ state; 
+input and contributions welcome!
 
-## Outline
+## Versions and Compatibility
+
+<table>
+    <tr>
+        <th><b>Rust client<b></th>
+        <th><b>Elasticsearch<b></th>
+        <th><b>Status</b></th>
+    </tr>
+    <tr>
+    	<td><code>7.x</code></td>
+    	<td><code>7.x</code></td>
+    	<td><code>alpha</code></td>
+    </tr>
+</table>
+
+The Rust client is largely generated from the REST API specs of Elasticsearch. 
+As such, the API functions available align with the version of the specs from which
+they're generated. Elasticsearch strives to adhere to [Semantic Versioning](https://semver.org/),
+which is reflected in the specs and thus this client.
+
+What this means in practice is that a 7.x Rust client is compatible with Elasticsearch 7.x. Where
+the client minor version is greater than Elasticsearch minor version, it may contain API functions
+for APIs that are not available in the version of Elasticsearch, but all other API functions will
+be compatible. Where the client minor version is less than Elasticsearch minor version, all API
+functions will be compatible. 
+
+## Overview
 
 The workspace contains two packages
 
@@ -26,22 +53,53 @@ can be `to_string()`'ed and written to disk, and this is used to create much of 
 
 ### elasticsearch
 
-The client package crate. The client exposes all Elasticsearch APIs as an associated function, either on
-the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as `Cat`. The _namespaced clients_
+The client package crate. The client exposes all Elasticsearch APIs as associated functions, either on
+the root client, `Elasticsearch`, or on one of the _namespaced clients_, such as `Cat`, `Indices`, etc. The _namespaced clients_
 are based on the grouping of APIs within the [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/rest-api-spec) and [X-Pack](https://github.com/elastic/elasticsearch/tree/master/x-pack/plugin/src/test/resources/rest-api-spec/api) REST API specs from which much of the client is generated.
+All API functions are `async` only, and can be `await`ed.
 
-The general usage of the client is envisioned as
+#### Installing
+
+_(Once client is released to crates.io!)_
+
+Add crate name and version to Cargo.toml. Choose the version
+that is comaptible with the version of Elasticsearch you're using
+
+```sh
+[dependencies]
+elasticsearch = "*"
+```
+
+#### Connecting
+
+Build a connection to Elasticsearch using the `ConnectionBuilder`, which allows
+setting of proxies and authentication schemes
 
 ```rust
-// common settings for the client, such as global query string params
-let settings = ConnectionSettings::new();
+let url = Url::parse("http://localhost:9200").unwrap();
 
-// connection for the client. This may eventually be a ConnectionPool trait,
-// to allow different connection strategies e.g. single node, sniffing, etc.
-let connection = Connection::new(Url::parse("http://localhost:9200").unwrap());
+let conn = ConnectionBuilder::new(url)
+    .auth(Credentials::Basic("elastic".into(), "password".into()))
+    .build()?;
+```
 
-let client = Elasticsearch::new(settings, connection);
+The connection can then be passed to the root client
 
+```rust
+let client = Elasticsearch::new(conn);
+```
+
+#### Calling an API endpoint
+
+The following will execute a `POST` request to `/_search?allow_no_indices=true` with
+a JSON body of `{"query":{"match_all":{}}}`
+
+```rust
+let url = Url::parse("http://localhost:9200").unwrap();
+let conn = ConnectionBuilder::new(url).build().unwrap();
+let client = Elasticsearch::new(conn);
+
+// make a search API call
 let search_response = client
     .search(SearchUrlParts::None)
     .body(json!({
@@ -62,6 +120,13 @@ let response_body = search_response.read_body::<Value>().await?;
 // read fields from the response body         
 let took = response_body["took"].as_i64()?;
 ```
+
+The client provides functions on each API builder struct
+for all query string parameters available for that API. APIs with multiple
+URI path variants, where some can contain parts parameters, are modelled as enums.
+
+`Elasticsearch` also has an async `send` function on the root that allows sending an
+API call to an endpoint not represented as an API function.
 
 ## Design principles
 
@@ -91,18 +156,38 @@ The `quote` and `syn` crates help
 ## Contributing
 
 Contributing to the client is very much appreciated, no pull request (PR) is too big or too small!
-We ask that before opening a PR however, you check to see if there is an issue that discusses the change that you
+We ask that _before_ opening a PR however, you check to see if there is an issue that discusses the change that you
 wish to make. If there isn't, it's best to open a new issue first to discuss it, to save you time in future
 and help us further ascertain the crux of the issue. If an issue already exists, please add to the discussion there.
 
-Once an issue has been discussed and agreed that it should be acted upon, if you wish to work on a PR
+Once an issue has been discussed and agreement that it should be acted upon, if you wish to work on a PR
 to address it, please assign the issue to yourself, so that others know that it is being worked on.
 
 ### Sign the Contributor License Agreement
 
 We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement) before we can accept pull requests from you.
 
+### Current Setup
+
+Using Rust nightly for development, whilst reqwest crate, the HTTP client used, has support for `async`
+in an alpha release and has a dependency which uses features that only work on nightly:
+
+```
+> rustup show
+...
+
+active toolchain
+----------------
+
+nightly-x86_64-pc-windows-msvc (default)
+rustc 1.41.0-nightly (a44774c3a 2019-11-25)
+```
+
+It is expected to move to stable once dependencies compile on stable.
+
 ### Coding styleguide
+
+The repository adheres to the styling enforced by `rustfmt`.
 
 #### Formatting
 
@@ -157,3 +242,7 @@ if wishing to use the MSVC debugger with Rust in VS code, which may be preferred
     ```
     
 3. Add `"debug.allowBreakpointsEverywhere": true` to VS code settings.json
+
+## License
+
+This is free software, licensed under [The Apache License Version 2.0.](LICENSE).
