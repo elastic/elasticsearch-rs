@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -158,7 +162,7 @@ pub struct EnrichExecutePolicy<'a, B> {
 }
 impl<'a, B> EnrichExecutePolicy<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyUrlParts<'a>) -> Self {
         EnrichExecutePolicy {
@@ -174,14 +178,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> EnrichExecutePolicy<'a, T>
+    pub fn body<T>(self, body: T) -> EnrichExecutePolicy<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         EnrichExecutePolicy {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -402,7 +406,7 @@ pub struct EnrichPutPolicy<'a, B> {
 }
 impl<'a, B> EnrichPutPolicy<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: EnrichPutPolicyUrlParts<'a>) -> Self {
         EnrichPutPolicy {
@@ -417,14 +421,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> EnrichPutPolicy<'a, T>
+    pub fn body<T>(self, body: T) -> EnrichPutPolicy<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         EnrichPutPolicy {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

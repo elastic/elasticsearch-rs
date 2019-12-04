@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -56,7 +60,7 @@ pub struct IndicesAnalyze<'a, B> {
 }
 impl<'a, B> IndicesAnalyze<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesAnalyzeUrlParts<'a>) -> Self {
         IndicesAnalyze {
@@ -72,14 +76,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesAnalyze<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesAnalyze<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesAnalyze {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -206,7 +210,7 @@ pub struct IndicesClearCache<'a, B> {
 }
 impl<'a, B> IndicesClearCache<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesClearCacheUrlParts<'a>) -> Self {
         IndicesClearCache {
@@ -234,14 +238,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesClearCache<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesClearCache<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesClearCache {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -424,7 +428,7 @@ pub struct IndicesClone<'a, B> {
 }
 impl<'a, B> IndicesClone<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesCloneUrlParts<'a>) -> Self {
         IndicesClone {
@@ -442,14 +446,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesClone<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesClone<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesClone {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -590,7 +594,7 @@ pub struct IndicesClose<'a, B> {
 }
 impl<'a, B> IndicesClose<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesCloseUrlParts<'a>) -> Self {
         IndicesClose {
@@ -616,14 +620,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesClose<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesClose<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesClose {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -782,7 +786,7 @@ pub struct IndicesCreate<'a, B> {
 }
 impl<'a, B> IndicesCreate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesCreateUrlParts<'a>) -> Self {
         IndicesCreate {
@@ -801,14 +805,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesCreate<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesCreate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesCreate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1970,7 +1974,7 @@ pub struct IndicesFlush<'a, B> {
 }
 impl<'a, B> IndicesFlush<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesFlushUrlParts<'a>) -> Self {
         IndicesFlush {
@@ -1995,14 +1999,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesFlush<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesFlush<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesFlush {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2155,7 +2159,7 @@ pub struct IndicesFlushSynced<'a, B> {
 }
 impl<'a, B> IndicesFlushSynced<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesFlushSyncedUrlParts<'a>) -> Self {
         IndicesFlushSynced {
@@ -2178,14 +2182,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesFlushSynced<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesFlushSynced<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesFlushSynced {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2323,7 +2327,7 @@ pub struct IndicesForcemerge<'a, B> {
 }
 impl<'a, B> IndicesForcemerge<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesForcemergeUrlParts<'a>) -> Self {
         IndicesForcemerge {
@@ -2349,14 +2353,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesForcemerge<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesForcemerge<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesForcemerge {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -2518,7 +2522,7 @@ pub struct IndicesFreeze<'a, B> {
 }
 impl<'a, B> IndicesFreeze<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesFreezeUrlParts<'a>) -> Self {
         IndicesFreeze {
@@ -2544,14 +2548,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesFreeze<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesFreeze<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesFreeze {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -3938,7 +3942,7 @@ pub struct IndicesOpen<'a, B> {
 }
 impl<'a, B> IndicesOpen<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesOpenUrlParts<'a>) -> Self {
         IndicesOpen {
@@ -3964,14 +3968,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesOpen<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesOpen<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesOpen {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -4131,7 +4135,7 @@ pub struct IndicesPutAlias<'a, B> {
 }
 impl<'a, B> IndicesPutAlias<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesPutAliasUrlParts<'a>) -> Self {
         IndicesPutAlias {
@@ -4148,14 +4152,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesPutAlias<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesPutAlias<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesPutAlias {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4302,7 +4306,7 @@ pub struct IndicesPutMapping<'a, B> {
 }
 impl<'a, B> IndicesPutMapping<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesPutMappingUrlParts<'a>) -> Self {
         IndicesPutMapping {
@@ -4328,14 +4332,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesPutMapping<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesPutMapping<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesPutMapping {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -4498,7 +4502,7 @@ pub struct IndicesPutSettings<'a, B> {
 }
 impl<'a, B> IndicesPutSettings<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesPutSettingsUrlParts<'a>) -> Self {
         IndicesPutSettings {
@@ -4525,14 +4529,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesPutSettings<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesPutSettings<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesPutSettings {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -4699,7 +4703,7 @@ pub struct IndicesPutTemplate<'a, B> {
 }
 impl<'a, B> IndicesPutTemplate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesPutTemplateUrlParts<'a>) -> Self {
         IndicesPutTemplate {
@@ -4720,14 +4724,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesPutTemplate<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesPutTemplate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesPutTemplate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             create: self.create,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -5019,7 +5023,7 @@ pub struct IndicesRefresh<'a, B> {
 }
 impl<'a, B> IndicesRefresh<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesRefreshUrlParts<'a>) -> Self {
         IndicesRefresh {
@@ -5042,14 +5046,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesRefresh<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesRefresh<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesRefresh {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -5182,7 +5186,7 @@ pub struct IndicesReloadSearchAnalyzers<'a, B> {
 }
 impl<'a, B> IndicesReloadSearchAnalyzers<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesReloadSearchAnalyzersUrlParts<'a>) -> Self {
         IndicesReloadSearchAnalyzers {
@@ -5205,14 +5209,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesReloadSearchAnalyzers<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesReloadSearchAnalyzers<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesReloadSearchAnalyzers {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -5355,7 +5359,7 @@ pub struct IndicesRollover<'a, B> {
 }
 impl<'a, B> IndicesRollover<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesRolloverUrlParts<'a>) -> Self {
         IndicesRollover {
@@ -5375,14 +5379,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesRollover<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesRollover<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesRollover {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             dry_run: self.dry_run,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -5839,7 +5843,7 @@ pub struct IndicesShrink<'a, B> {
 }
 impl<'a, B> IndicesShrink<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesShrinkUrlParts<'a>) -> Self {
         IndicesShrink {
@@ -5858,14 +5862,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesShrink<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesShrink<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesShrink {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6013,7 +6017,7 @@ pub struct IndicesSplit<'a, B> {
 }
 impl<'a, B> IndicesSplit<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesSplitUrlParts<'a>) -> Self {
         IndicesSplit {
@@ -6032,14 +6036,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesSplit<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesSplit<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesSplit {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6444,7 +6448,7 @@ pub struct IndicesUnfreeze<'a, B> {
 }
 impl<'a, B> IndicesUnfreeze<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesUnfreezeUrlParts<'a>) -> Self {
         IndicesUnfreeze {
@@ -6470,14 +6474,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesUnfreeze<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesUnfreeze<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesUnfreeze {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -6629,7 +6633,7 @@ pub struct IndicesUpdateAliases<'a, B> {
 }
 impl<'a, B> IndicesUpdateAliases<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpdateAliases {
@@ -6646,14 +6650,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesUpdateAliases<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesUpdateAliases<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesUpdateAliases {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6783,7 +6787,7 @@ pub struct IndicesUpgrade<'a, B> {
 }
 impl<'a, B> IndicesUpgrade<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesUpgradeUrlParts<'a>) -> Self {
         IndicesUpgrade {
@@ -6808,14 +6812,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesUpgrade<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesUpgrade<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesUpgrade {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -6992,7 +6996,7 @@ pub struct IndicesValidateQuery<'a, B> {
 }
 impl<'a, B> IndicesValidateQuery<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndicesValidateQueryUrlParts<'a>) -> Self {
         IndicesValidateQuery {
@@ -7039,14 +7043,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IndicesValidateQuery<'a, T>
+    pub fn body<T>(self, body: T) -> IndicesValidateQuery<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IndicesValidateQuery {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             all_shards: self.all_shards,
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,

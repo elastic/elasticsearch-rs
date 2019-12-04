@@ -319,7 +319,9 @@ mod tests {
                 },
                 params: BTreeMap::new(),
                 body: Some(Body {
-                    description: Some("The search request".to_string())
+                    description: Some("The search request".to_string()),
+                    required: Some(false),
+                    serialize: None
                 }),
             },
         );

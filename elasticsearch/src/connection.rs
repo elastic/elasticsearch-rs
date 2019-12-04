@@ -1,4 +1,6 @@
-use crate::{error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse};
+use crate::{
+    error::ElasticsearchError, http_method::HttpMethod, response::ElasticsearchResponse, Body,
+};
 
 use std::error::Error;
 use std::fmt;
@@ -9,6 +11,7 @@ use std::io::Write;
 
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
+use bytes::{BufMut, Bytes, BytesMut, IntoBuf};
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
     Client, Method,
@@ -200,7 +203,7 @@ impl Connection {
         body: Option<B>,
     ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
-        B: Serialize,
+        B: Body,
         Q: Serialize + ?Sized,
     {
         let url = self.url.join(path)?;
@@ -208,7 +211,9 @@ impl Connection {
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
 
         if let Some(b) = body {
-            request_builder = request_builder.json(&b);
+            let mut bytes = BytesMut::with_capacity(1024);
+            b.write(&mut bytes)?;
+            request_builder = request_builder.body(bytes.freeze());
         };
 
         if let Some(q) = query_string {

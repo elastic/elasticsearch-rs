@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -155,7 +159,7 @@ pub struct SecurityChangePassword<'a, B> {
 }
 impl<'a, B> SecurityChangePassword<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityChangePasswordUrlParts<'a>) -> Self {
         SecurityChangePassword {
@@ -171,14 +175,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityChangePassword<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityChangePassword<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityChangePassword {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -293,7 +297,7 @@ pub struct SecurityClearCachedRealms<'a, B> {
 }
 impl<'a, B> SecurityClearCachedRealms<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsUrlParts<'a>) -> Self {
         SecurityClearCachedRealms {
@@ -309,14 +313,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityClearCachedRealms {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -434,7 +438,7 @@ pub struct SecurityClearCachedRoles<'a, B> {
 }
 impl<'a, B> SecurityClearCachedRoles<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesUrlParts<'a>) -> Self {
         SecurityClearCachedRoles {
@@ -449,14 +453,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityClearCachedRoles {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -555,7 +559,7 @@ pub struct SecurityCreateApiKey<'a, B> {
 }
 impl<'a, B> SecurityCreateApiKey<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityCreateApiKey {
@@ -571,14 +575,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityCreateApiKey {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1150,7 +1154,7 @@ pub struct SecurityDisableUser<'a, B> {
 }
 impl<'a, B> SecurityDisableUser<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityDisableUserUrlParts<'a>) -> Self {
         SecurityDisableUser {
@@ -1166,14 +1170,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityDisableUser<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityDisableUser<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityDisableUser {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1287,7 +1291,7 @@ pub struct SecurityEnableUser<'a, B> {
 }
 impl<'a, B> SecurityEnableUser<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityEnableUserUrlParts<'a>) -> Self {
         SecurityEnableUser {
@@ -1303,14 +1307,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityEnableUser<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityEnableUser<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityEnableUser {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1992,7 +1996,7 @@ pub struct SecurityGetToken<'a, B> {
 }
 impl<'a, B> SecurityGetToken<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetToken {
@@ -2007,14 +2011,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityGetToken<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityGetToken<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityGetToken {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2326,7 +2330,7 @@ pub struct SecurityHasPrivileges<'a, B> {
 }
 impl<'a, B> SecurityHasPrivileges<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesUrlParts<'a>) -> Self {
         SecurityHasPrivileges {
@@ -2341,14 +2345,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityHasPrivileges {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2449,7 +2453,7 @@ pub struct SecurityInvalidateApiKey<'a, B> {
 }
 impl<'a, B> SecurityInvalidateApiKey<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
@@ -2464,14 +2468,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityInvalidateApiKey {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2569,7 +2573,7 @@ pub struct SecurityInvalidateToken<'a, B> {
 }
 impl<'a, B> SecurityInvalidateToken<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateToken {
@@ -2584,14 +2588,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityInvalidateToken {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2690,7 +2694,7 @@ pub struct SecurityPutPrivileges<'a, B> {
 }
 impl<'a, B> SecurityPutPrivileges<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityPutPrivileges {
@@ -2706,14 +2710,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityPutPrivileges {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2826,7 +2830,7 @@ pub struct SecurityPutRole<'a, B> {
 }
 impl<'a, B> SecurityPutRole<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityPutRoleUrlParts<'a>) -> Self {
         SecurityPutRole {
@@ -2842,14 +2846,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRole<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityPutRole<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityPutRole {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2962,7 +2966,7 @@ pub struct SecurityPutRoleMapping<'a, B> {
 }
 impl<'a, B> SecurityPutRoleMapping<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingUrlParts<'a>) -> Self {
         SecurityPutRoleMapping {
@@ -2978,14 +2982,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityPutRoleMapping {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -3098,7 +3102,7 @@ pub struct SecurityPutUser<'a, B> {
 }
 impl<'a, B> SecurityPutUser<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SecurityPutUserUrlParts<'a>) -> Self {
         SecurityPutUser {
@@ -3114,14 +3118,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutUser<'a, T>
+    pub fn body<T>(self, body: T) -> SecurityPutUser<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SecurityPutUser {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

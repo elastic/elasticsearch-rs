@@ -2,13 +2,20 @@ use crate::api_generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::{Deserialize, Deserializer};
 use serde_json::Value;
-use std::{collections::{BTreeMap, HashSet}, fs::{read_dir, File, OpenOptions}, hash::{Hash, Hasher}, io::{prelude::*, Read}, path::PathBuf, fmt};
+use std::{
+    collections::{BTreeMap, HashSet},
+    fmt,
+    fs::{read_dir, File, OpenOptions},
+    hash::{Hash, Hasher},
+    io::{prelude::*, Read},
+    path::PathBuf,
+};
 
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
-use std::str::FromStr;
 use serde::de::{MapAccess, Visitor};
 use std::marker::PhantomData;
+use std::str::FromStr;
 use void::Void;
 
 mod code_gen;
@@ -133,6 +140,8 @@ pub struct Url {
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Body {
     pub description: Option<String>,
+    pub required: Option<bool>,
+    pub serialize: Option<String>,
 }
 
 /// Documentation for an API endpoint
@@ -154,15 +163,15 @@ impl FromStr for Documentation {
 }
 
 fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
-    where
-        T: Deserialize<'de> + FromStr<Err = Void>,
-        D: Deserializer<'de>,
+where
+    T: Deserialize<'de> + FromStr<Err = Void>,
+    D: Deserializer<'de>,
 {
     struct StringOrStruct<T>(PhantomData<fn() -> T>);
 
     impl<'de, T> Visitor<'de> for StringOrStruct<T>
-        where
-            T: Deserialize<'de> + FromStr<Err = Void>,
+    where
+        T: Deserialize<'de> + FromStr<Err = Void>,
     {
         type Value = T;
 
@@ -171,15 +180,15 @@ fn string_or_struct<'de, T, D>(deserializer: D) -> Result<T, D::Error>
         }
 
         fn visit_str<E>(self, value: &str) -> Result<T, E>
-            where
-                E: serde::de::Error,
+        where
+            E: serde::de::Error,
         {
             Ok(FromStr::from_str(value).unwrap())
         }
 
         fn visit_map<M>(self, map: M) -> Result<T, M::Error>
-            where
-                M: MapAccess<'de>,
+        where
+            M: MapAccess<'de>,
         {
             Deserialize::deserialize(serde::de::value::MapAccessDeserializer::new(map))
         }

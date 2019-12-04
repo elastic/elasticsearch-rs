@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -432,7 +436,7 @@ pub struct TransformPreviewTransform<'a, B> {
 }
 impl<'a, B> TransformPreviewTransform<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         TransformPreviewTransform {
@@ -447,14 +451,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformPreviewTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformPreviewTransform<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TransformPreviewTransform {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -558,7 +562,7 @@ pub struct TransformPutTransform<'a, B> {
 }
 impl<'a, B> TransformPutTransform<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TransformPutTransformUrlParts<'a>) -> Self {
         TransformPutTransform {
@@ -574,14 +578,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformPutTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformPutTransform<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TransformPutTransform {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             defer_validation: self.defer_validation,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -695,7 +699,7 @@ pub struct TransformStartTransform<'a, B> {
 }
 impl<'a, B> TransformStartTransform<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TransformStartTransformUrlParts<'a>) -> Self {
         TransformStartTransform {
@@ -711,14 +715,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformStartTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformStartTransform<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TransformStartTransform {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -834,7 +838,7 @@ pub struct TransformStopTransform<'a, B> {
 }
 impl<'a, B> TransformStopTransform<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TransformStopTransformUrlParts<'a>) -> Self {
         TransformStopTransform {
@@ -857,14 +861,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformStopTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformStopTransform<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TransformStopTransform {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -994,7 +998,7 @@ pub struct TransformUpdateTransform<'a, B> {
 }
 impl<'a, B> TransformUpdateTransform<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TransformUpdateTransformUrlParts<'a>) -> Self {
         TransformUpdateTransform {
@@ -1010,14 +1014,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TransformUpdateTransform<'a, T>
+    pub fn body<T>(self, body: T) -> TransformUpdateTransform<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TransformUpdateTransform {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             defer_validation: self.defer_validation,
             error_trace: self.error_trace,
             filter_path: self.filter_path,

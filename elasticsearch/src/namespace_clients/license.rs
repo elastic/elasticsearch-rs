@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -454,7 +458,7 @@ pub struct LicensePost<'a, B> {
 }
 impl<'a, B> LicensePost<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         LicensePost {
@@ -475,14 +479,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePost<'a, T>
+    pub fn body<T>(self, body: T) -> LicensePost<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         LicensePost {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             acknowledge: self.acknowledge,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -585,7 +589,7 @@ pub struct LicensePostStartBasic<'a, B> {
 }
 impl<'a, B> LicensePostStartBasic<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartBasic {
@@ -606,14 +610,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, T>
+    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         LicensePostStartBasic {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             acknowledge: self.acknowledge,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -717,7 +721,7 @@ pub struct LicensePostStartTrial<'a, B> {
 }
 impl<'a, B> LicensePostStartTrial<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartTrial {
@@ -739,14 +743,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, T>
+    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         LicensePostStartTrial {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             acknowledge: self.acknowledge,
             error_trace: self.error_trace,
             filter_path: self.filter_path,

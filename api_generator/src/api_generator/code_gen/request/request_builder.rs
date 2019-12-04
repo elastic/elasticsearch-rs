@@ -21,6 +21,8 @@ pub struct RequestBuilder<'a> {
     enum_builder: EnumBuilder<'a>,
     /// Whether the API exists on the root client or on a namespace client
     is_root_method: bool,
+    /// Whether the API accepts a newline delimited body
+    accepts_nd_body: bool,
 }
 
 impl<'a> RequestBuilder<'a> {
@@ -36,6 +38,14 @@ impl<'a> RequestBuilder<'a> {
             enum_builder = enum_builder.with_path(path);
         }
 
+        let accepts_nd_body = match &endpoint.body {
+            Some(b) => match &b.serialize {
+                Some(s) => s == "bulk",
+                _ => false,
+            },
+            None => false,
+        };
+
         RequestBuilder {
             name,
             builder_name,
@@ -43,6 +53,7 @@ impl<'a> RequestBuilder<'a> {
             endpoint,
             enum_builder,
             is_root_method,
+            accepts_nd_body,
         }
     }
 
@@ -165,6 +176,7 @@ impl<'a> RequestBuilder<'a> {
         builder_name: &str,
         builder_ident: &syn::Ident,
         default_fields: &[&syn::Ident],
+        accepts_nd_body: bool,
     ) -> syn::ImplItem {
         let fields: Vec<FieldValue> = default_fields
             .iter()
@@ -181,6 +193,24 @@ impl<'a> RequestBuilder<'a> {
             })
             .collect();
 
+        let (fn_arg, field_arg, ret_ty) = if accepts_nd_body {
+            (
+                syn::parse_type("Vec<T>").unwrap(),
+                quote!(Some(NdBody(body))),
+                syn::FunctionRetTy::Ty(code_gen::ty(
+                    format!("{}<'a, NdBody<T>> where T: Body", &builder_name).as_ref(),
+                )),
+            )
+        } else {
+            (
+                syn::parse_type("T").unwrap(),
+                quote!(Some(body.into())),
+                syn::FunctionRetTy::Ty(code_gen::ty(
+                    format!("{}<'a, JsonBody<T>> where T: Serialize", &builder_name).as_ref(),
+                )),
+            )
+        };
+
         syn::ImplItem {
             ident: ident("body<T>"),
             vis: syn::Visibility::Public,
@@ -194,14 +224,9 @@ impl<'a> RequestBuilder<'a> {
                     decl: syn::FnDecl {
                         inputs: vec![
                             syn::FnArg::SelfValue(syn::Mutability::Immutable),
-                            syn::FnArg::Captured(
-                                syn::Pat::Path(None, path_none("body")),
-                                syn::parse_type("T").unwrap(),
-                            ),
+                            syn::FnArg::Captured(syn::Pat::Path(None, path_none("body")), fn_arg),
                         ],
-                        output: syn::FunctionRetTy::Ty(code_gen::ty(
-                            format!("{}<'a, T> where T: Serialize", &builder_name).as_ref(),
-                        )),
+                        output: ret_ty,
                         variadic: false,
                     },
                     generics: generics_none(),
@@ -218,7 +243,7 @@ impl<'a> RequestBuilder<'a> {
                             #builder_ident {
                                 client: self.client,
                                 parts: self.parts,
-                                body: Some(body),
+                                body: #field_arg,
                                 #(#fields),*,
                             }
                     ))))],
@@ -285,6 +310,7 @@ impl<'a> RequestBuilder<'a> {
         endpoint: &ApiEndpoint,
         common_params: &BTreeMap<String, Type>,
         enum_builder: &EnumBuilder,
+        accepts_nd_body: bool,
     ) -> Tokens {
         // TODO: lazy_static! for this?
         let common_fields: Vec<Field> = common_params
@@ -335,7 +361,12 @@ impl<'a> RequestBuilder<'a> {
 
         // add a body impl if supported
         if supports_body {
-            let body_fn = Self::create_body_fn(&builder_name, &builder_ident, &default_fields);
+            let body_fn = Self::create_body_fn(
+                &builder_name,
+                &builder_ident,
+                &default_fields,
+                accepts_nd_body,
+            );
             builder_fns.push(body_fn);
         }
 
@@ -369,7 +400,7 @@ impl<'a> RequestBuilder<'a> {
             if supports_body {
                 (
                     quote!(#builder_ident<'a, B>),
-                    quote!(impl<'a, B> #builder_ident<'a, B> where B: Serialize),
+                    quote!(impl<'a, B> #builder_ident<'a, B> where B: Body),
                 )
             } else {
                 (
@@ -500,6 +531,7 @@ impl<'a> RequestBuilder<'a> {
             self.endpoint,
             self.common_params,
             &self.enum_builder,
+            self.accepts_nd_body,
         );
 
         let ctor_fn = Self::create_builder_struct_ctor_fns(

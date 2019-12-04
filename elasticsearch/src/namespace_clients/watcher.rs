@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -63,7 +67,7 @@ pub struct WatcherAckWatch<'a, B> {
 }
 impl<'a, B> WatcherAckWatch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: WatcherAckWatchUrlParts<'a>) -> Self {
         WatcherAckWatch {
@@ -78,14 +82,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherAckWatch<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherAckWatch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherAckWatch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -189,7 +193,7 @@ pub struct WatcherActivateWatch<'a, B> {
 }
 impl<'a, B> WatcherActivateWatch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: WatcherActivateWatchUrlParts<'a>) -> Self {
         WatcherActivateWatch {
@@ -204,14 +208,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherActivateWatch<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherActivateWatch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherActivateWatch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -315,7 +319,7 @@ pub struct WatcherDeactivateWatch<'a, B> {
 }
 impl<'a, B> WatcherDeactivateWatch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchUrlParts<'a>) -> Self {
         WatcherDeactivateWatch {
@@ -330,14 +334,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherDeactivateWatch<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherDeactivateWatch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherDeactivateWatch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -548,7 +552,7 @@ pub struct WatcherExecuteWatch<'a, B> {
 }
 impl<'a, B> WatcherExecuteWatch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchUrlParts<'a>) -> Self {
         WatcherExecuteWatch {
@@ -564,14 +568,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherExecuteWatch<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherExecuteWatch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherExecuteWatch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             debug: self.debug,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -791,7 +795,7 @@ pub struct WatcherPutWatch<'a, B> {
 }
 impl<'a, B> WatcherPutWatch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: WatcherPutWatchUrlParts<'a>) -> Self {
         WatcherPutWatch {
@@ -815,14 +819,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherPutWatch<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherPutWatch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherPutWatch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             active: self.active,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -951,7 +955,7 @@ pub struct WatcherStart<'a, B> {
 }
 impl<'a, B> WatcherStart<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStart {
@@ -966,14 +970,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherStart<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherStart<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherStart {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1202,7 +1206,7 @@ pub struct WatcherStop<'a, B> {
 }
 impl<'a, B> WatcherStop<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStop {
@@ -1217,14 +1221,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> WatcherStop<'a, T>
+    pub fn body<T>(self, body: T) -> WatcherStop<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         WatcherStop {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

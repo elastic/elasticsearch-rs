@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -49,7 +53,7 @@ pub struct ClusterAllocationExplain<'a, B> {
 }
 impl<'a, B> ClusterAllocationExplain<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterAllocationExplain {
@@ -66,14 +70,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<'a, T>
+    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ClusterAllocationExplain {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -685,7 +689,7 @@ pub struct ClusterPutSettings<'a, B> {
 }
 impl<'a, B> ClusterPutSettings<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPutSettings {
@@ -703,14 +707,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterPutSettings<'a, T>
+    pub fn body<T>(self, body: T) -> ClusterPutSettings<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ClusterPutSettings {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             flat_settings: self.flat_settings,
@@ -940,7 +944,7 @@ pub struct ClusterReroute<'a, B> {
 }
 impl<'a, B> ClusterReroute<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterReroute {
@@ -961,14 +965,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterReroute<'a, T>
+    pub fn body<T>(self, body: T) -> ClusterReroute<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ClusterReroute {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             dry_run: self.dry_run,
             error_trace: self.error_trace,
             explain: self.explain,

@@ -1,5 +1,5 @@
 use crate::{
-    connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse,
+    connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse, Body,
     ElasticsearchError,
 };
 
@@ -45,7 +45,7 @@ impl Elasticsearch {
         body: Option<B>,
     ) -> Result<ElasticsearchResponse, ElasticsearchError>
     where
-        B: Serialize,
+        B: Body,
         Q: Serialize + ?Sized,
     {
         self.connection.send(method, path, query_string, body).await

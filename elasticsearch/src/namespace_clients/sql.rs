@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -47,7 +51,7 @@ pub struct SqlClearCursor<'a, B> {
 }
 impl<'a, B> SqlClearCursor<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SqlClearCursor {
@@ -62,14 +66,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlClearCursor<'a, T>
+    pub fn body<T>(self, body: T) -> SqlClearCursor<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SqlClearCursor {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -168,7 +172,7 @@ pub struct SqlQuery<'a, B> {
 }
 impl<'a, B> SqlQuery<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SqlQuery {
@@ -184,14 +188,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlQuery<'a, T>
+    pub fn body<T>(self, body: T) -> SqlQuery<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SqlQuery {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             format: self.format,
@@ -301,7 +305,7 @@ pub struct SqlTranslate<'a, B> {
 }
 impl<'a, B> SqlTranslate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SqlTranslate {
@@ -316,14 +320,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlTranslate<'a, T>
+    pub fn body<T>(self, body: T) -> SqlTranslate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SqlTranslate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
