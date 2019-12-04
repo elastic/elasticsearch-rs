@@ -17,7 +17,7 @@
 pub mod cat;
 pub mod ccr;
 pub mod cluster;
-pub mod data_frame;
+pub mod enrich;
 pub mod graph;
 pub mod ilm;
 pub mod indices;
@@ -34,5 +34,6 @@ pub mod snapshot;
 pub mod sql;
 pub mod ssl;
 pub mod tasks;
+pub mod transform;
 pub mod watcher;
 pub mod xpack;

@@ -3557,7 +3557,7 @@ where
         self.if_seq_no = Some(if_seq_no);
         self
     }
-    #[doc = "Explicit operation type"]
+    #[doc = "Explicit operation type. Defaults to `index` for requests with an explicit document ID, and to `create`for requests without an explicit document ID"]
     pub fn op_type(mut self, op_type: OpType) -> Self {
         self.op_type = Some(op_type);
         self

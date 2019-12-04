@@ -1,6 +1,6 @@
 [package]
 name = "elasticsearch"
-version = "7.4.1-alpha.1"
+version = "7.5.0-alpha.1"
 authors = ["Elastic and Contributors"]
 description = "Official Elasticsearch Rust client"
 repository = "https://github.com/elastic/elasticsearch-rs"

@@ -182,8 +182,6 @@ pub enum VersionType {
     External,
     #[serde(rename = "external_gte")]
     ExternalGte,
-    #[serde(rename = "force")]
-    Force,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum WaitForEvents {
