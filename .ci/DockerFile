@@ -1,0 +1,9 @@
+ARG RUST_VERSION=nightly
+FROM rustlang/rust:${RUST_VERSION}
+
+# create app directory
+WORKDIR /usr/src/elasticsearch-rs
+
+# install app dependencies
+COPY ./elasticsearch .
+RUN cargo build --tests

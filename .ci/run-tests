@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+if [[ -z $ELASTICSEARCH_VERSION ]]; then
+  echo -e "\033[31;1mERROR:\033[0m Required environment variable [ELASTICSEARCH_VERSION] not set\033[0m"
+  exit 1
+fi
+set -euxo pipefail
+
+TEST_SUITE=${TEST_SUITE-oss}
+NODE_NAME=instance
+
+elasticsearch_image=elasticsearch
+elasticsearch_url=https://elastic:changeme@${NODE_NAME}:9200
+if [[ $TEST_SUITE != "xpack" ]]; then
+  elasticsearch_image=elasticsearch-${TEST_SUITE}
+  elasticsearch_url=http://${NODE_NAME}:9200
+fi
+
+function cleanup {
+  status=$?
+  set +x
+  ELASTICSEARCH_VERSION=${elasticsearch_image}:${ELASTICSEARCH_VERSION} \
+    NODE_NAME=${NODE_NAME} \
+    NETWORK_NAME=elasticsearch \
+    CLEANUP=true \
+    bash ./.ci/run-elasticsearch.sh
+  # Report status and exit
+  if [[ "$status" == "0" ]]; then
+    echo -e "\n\033[32;1mSUCCESS run-tests\033[0m"
+    exit 0
+  else
+    echo -e "\n\033[31;1mFAILURE during run-tests\033[0m"
+    exit ${status}
+  fi
+}
+trap cleanup EXIT
+
+echo -e "\033[1m>>>>> Start [$ELASTICSEARCH_VERSION container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+
+ELASTICSEARCH_VERSION=${elasticsearch_image}:${ELASTICSEARCH_VERSION} \
+  NODE_NAME=${NODE_NAME} \
+  NETWORK_NAME=elasticsearch \
+  DETACH=true \
+  bash .ci/run-elasticsearch.sh
+
+echo -e "\033[1m>>>>> Build [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+
+# TODO: move to stable once elasticsearch-rs compiles on stable
+RUST_VERSION=${RUST_VERSION-nightly}
+
+docker build --file .ci/DockerFile --tag elastic/elasticsearch-rs .
+
+echo -e "\033[1m>>>>> Run [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
+
+docker run \
+  --network=elasticsearch \
+  --env "ES_TEST_SERVER=${elasticsearch_url}" \
+  --env "RUST_VERSION=${RUST_VERSION}" \
+  --name elasticsearch-rs \
+  --rm \
+  elastic/elasticsearch-rs \
+  cargo test

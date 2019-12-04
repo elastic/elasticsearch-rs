@@ -1,0 +1,9 @@
+.git
+.gitignore
+LICENSE
+README.md
+
+api_generator
+target
+.vscode
+.idea
