@@ -20,6 +20,7 @@ use crate::{
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
 use serde::{de::DeserializeOwned, Serialize};
+use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "Url parts for the Transform Delete Transform API"]
@@ -98,26 +99,26 @@ impl<'a> TransformDeleteTransform<'a> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "force", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "force")]
                 force: Option<bool>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 force: self.force,
@@ -228,30 +229,30 @@ impl<'a> TransformGetTransform<'a> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "from")]
                 from: Option<i32>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "size")]
                 size: Option<i32>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -363,30 +364,30 @@ impl<'a> TransformGetTransformStats<'a> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "from", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "from")]
                 from: Option<i64>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "size")]
                 size: Option<i64>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -492,24 +493,24 @@ where
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -625,26 +626,26 @@ where
         let path = self.parts.build();
         let method = HttpMethod::Put;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "defer_validation", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "defer_validation")]
                 defer_validation: Option<bool>,
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 defer_validation: self.defer_validation,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -762,26 +763,26 @@ where
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
-                #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "timeout")]
                 timeout: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -915,33 +916,30 @@ where
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "allow_no_match", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "allow_no_match")]
                 allow_no_match: Option<bool>,
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
-                #[serde(rename = "timeout", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "timeout")]
                 timeout: Option<&'a str>,
-                #[serde(
-                    rename = "wait_for_completion",
-                    skip_serializing_if = "Option::is_none"
-                )]
+                #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 allow_no_match: self.allow_no_match,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
@@ -1061,26 +1059,26 @@ where
         let path = self.parts.build();
         let method = HttpMethod::Post;
         let query_string = {
+            #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParamsStruct<'a> {
-                #[serde(rename = "defer_validation", skip_serializing_if = "Option::is_none")]
+            struct QueryParams<'a> {
+                #[serde(rename = "defer_validation")]
                 defer_validation: Option<bool>,
-                #[serde(rename = "error_trace", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
-                    serialize_with = "crate::client::serialize_coll_qs",
-                    skip_serializing_if = "Option::is_none"
+                    serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'a [&'a str]>,
-                #[serde(rename = "human", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "human")]
                 human: Option<bool>,
-                #[serde(rename = "pretty", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "pretty")]
                 pretty: Option<bool>,
-                #[serde(rename = "source", skip_serializing_if = "Option::is_none")]
+                #[serde(rename = "source")]
                 source: Option<&'a str>,
             }
-            let query_params = QueryParamsStruct {
+            let query_params = QueryParams {
                 defer_validation: self.defer_validation,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,

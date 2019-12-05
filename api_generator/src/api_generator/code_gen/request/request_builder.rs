@@ -89,38 +89,40 @@ impl<'a> RequestBuilder<'a> {
         if endpoint_params.is_empty() {
             quote!(None::<()>)
         } else {
-            let query_struct_typ = ident("QueryParamsStruct");
+            let query_struct_ty = ident("QueryParams");
             let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
                 let field = Self::create_struct_field((param_name, param_type));
                 let field_rename = lit(param_name);
-                let skip_serializing_if = lit("Option::is_none");
                 if param_type.ty == TypeKind::List {
                     let serialize_with = lit("crate::client::serialize_coll_qs");
                     quote! {
-                        #[serde(rename = #field_rename, serialize_with = #serialize_with, skip_serializing_if = #skip_serializing_if)]
+                        #[serde(rename = #field_rename, serialize_with = #serialize_with)]
                         #field
                     }
                 }
                 else {
                     quote! {
-                        #[serde(rename = #field_rename, skip_serializing_if = #skip_serializing_if)]
+                        #[serde(rename = #field_rename)]
                         #field
                     }
                 }
             });
+
             let query_ctor = endpoint_params.iter().map(|(param_name, _)| {
                 let field_name = ident(valid_name(param_name).to_lowercase());
                 quote! {
                     #field_name: self.#field_name
                 }
             });
+
             quote! {
                 {
+                    #[serde_with::skip_serializing_none]
                     #[derive(Serialize)]
-                    struct #query_struct_typ<'a> {
+                    struct #query_struct_ty<'a> {
                         #(#struct_fields,)*
                     }
-                    let query_params = #query_struct_typ {
+                    let query_params = #query_struct_ty {
                         #(#query_ctor,)*
                     };
                     Some(query_params)

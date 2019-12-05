@@ -22,6 +22,7 @@ pub fn use_declarations() -> Tokens {
         use std::borrow::Cow;
         use reqwest::{Response, Request, Error, StatusCode, header::HeaderMap};
         use serde::{Serialize, de::DeserializeOwned};
+        use serde_with;
     )
 }
 
