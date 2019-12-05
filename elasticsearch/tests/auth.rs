@@ -1,7 +1,7 @@
 pub mod common;
 use common::*;
 
-use elasticsearch::Credentials;
+use elasticsearch::auth::Credentials;
 
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;

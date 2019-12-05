@@ -16,8 +16,7 @@ pub fn use_declarations() -> Tokens {
             client::{Elasticsearch},
             enums::*,
             error::ElasticsearchError,
-            http_method::HttpMethod,
-            request::{Body, NdBody, JsonBody},
+            request::{HttpMethod, Body, NdBody, JsonBody},
             response::ElasticsearchResponse,
         };
         use std::borrow::Cow;

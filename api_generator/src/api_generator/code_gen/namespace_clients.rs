@@ -22,14 +22,13 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             "Slm" => "Snapshot Lifecycle Management",
             "Ml" => "Machine Learning",
             "Xpack" => "X-Pack",
-            name => name
+            name => name,
         };
 
-        let namespace_doc = doc(format!(
-            "Namespace client for {} APIs", &name_for_docs
-        ));
+        let namespace_doc = doc(format!("Namespace client for {} APIs", &name_for_docs));
         let namespace_fn_doc = doc(format!(
-            "Creates a namespace client for {} APIs", &name_for_docs
+            "Creates a namespace client for {} APIs",
+            &name_for_docs
         ));
         let namespace_name = ident(namespace.to_string());
 

@@ -1,8 +1,17 @@
-use crate::ElasticsearchError;
+use crate::error::ElasticsearchError;
 use bytes::buf::ext::Writer;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
 use serde::{de::DeserializeOwned, Serialize};
+
+/// Http methods supported by Elasticsearch
+pub enum HttpMethod {
+    Get,
+    Put,
+    Post,
+    Delete,
+    Head,
+}
 
 /// Body of an API call.
 pub trait Body {
@@ -121,7 +130,7 @@ impl Body for () {
 
 #[cfg(test)]
 mod tests {
-    use crate::{Body, Bytes, JsonBody, NdBody};
+    use crate::request::{Body, Bytes, JsonBody, NdBody};
     use bytes::BytesMut;
 
     #[test]

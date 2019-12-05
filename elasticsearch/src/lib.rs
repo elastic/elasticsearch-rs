@@ -10,21 +10,17 @@ extern crate serde;
 #[macro_use]
 extern crate serde_json;
 
+pub mod auth;
 mod client;
 mod connection;
-mod enums;
-mod error;
-mod http_method;
+pub mod enums;
+pub mod error;
 mod namespace_clients;
-mod request;
-mod response;
+pub mod request;
+pub mod response;
 mod root;
 
-pub use crate::{
-    client::Elasticsearch, connection::*, enums::*, error::ElasticsearchError,
-    http_method::HttpMethod, namespace_clients::*, request::*, response::ElasticsearchResponse,
-    root::*,
-};
+pub use crate::{client::*, connection::*, namespace_clients::*, root::*};
 pub use reqwest::Client;
 
 #[cfg(test)]

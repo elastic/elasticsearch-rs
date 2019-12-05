@@ -1,6 +1,7 @@
 use elasticsearch::{
-    indices::IndicesExistsUrlParts, BulkUrlParts, ConnectionBuilder, Credentials, Elasticsearch,
-    ElasticsearchError, ElasticsearchResponse, JsonBody, Refresh, DEFAULT_ADDRESS,
+    auth::Credentials, enums::Refresh, error::ElasticsearchError, indices::IndicesExistsUrlParts,
+    request::JsonBody, response::ElasticsearchResponse, BulkUrlParts, ConnectionBuilder,
+    Elasticsearch, DEFAULT_ADDRESS,
 };
 
 use reqwest::StatusCode;

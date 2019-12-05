@@ -1,6 +1,8 @@
 use crate::{
-    connection::Connection, http_method::HttpMethod, response::ElasticsearchResponse, Body,
-    ElasticsearchError,
+    connection::Connection,
+    error::ElasticsearchError,
+    request::{Body, HttpMethod},
+    response::ElasticsearchResponse,
 };
 
 use reqwest::{header::HeaderMap, Response, StatusCode};
