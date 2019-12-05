@@ -47,7 +47,7 @@ impl<'a> CatAliasesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Aliases API"]
+#[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html). Shows information about currently configured aliases to indices including filter and routing infos."]
 pub struct CatAliases<'a> {
     client: Elasticsearch,
     parts: CatAliasesUrlParts<'a>,
@@ -136,7 +136,7 @@ impl<'a> CatAliases<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Aliases API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Aliases API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -214,7 +214,7 @@ impl<'a> CatAllocationUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Allocation API"]
+#[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html). Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
 pub struct CatAllocation<'a> {
     client: Elasticsearch,
     parts: CatAllocationUrlParts<'a>,
@@ -317,7 +317,7 @@ impl<'a> CatAllocation<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Allocation API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Allocation API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -401,7 +401,7 @@ impl<'a> CatCountUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Count API"]
+#[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html). Provides quick access to the document count of the entire cluster, or individual indices."]
 pub struct CatCount<'a> {
     client: Elasticsearch,
     parts: CatCountUrlParts<'a>,
@@ -483,7 +483,7 @@ impl<'a> CatCount<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Count API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Count API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -558,7 +558,7 @@ impl<'a> CatFielddataUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Fielddata API"]
+#[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html). Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
 pub struct CatFielddata<'a> {
     client: Elasticsearch,
     parts: CatFielddataUrlParts<'a>,
@@ -654,7 +654,7 @@ impl<'a> CatFielddata<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Fielddata API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Fielddata API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -727,7 +727,7 @@ impl CatHealthUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Health API"]
+#[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html). Returns a concise representation of the cluster health."]
 pub struct CatHealth<'a> {
     client: Elasticsearch,
     parts: CatHealthUrlParts,
@@ -823,7 +823,7 @@ impl<'a> CatHealth<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Health API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Health API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -896,7 +896,7 @@ impl CatHelpUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Help API"]
+#[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html). Returns help for the Cat APIs."]
 pub struct CatHelp<'a> {
     client: Elasticsearch,
     parts: CatHelpUrlParts,
@@ -957,7 +957,7 @@ impl<'a> CatHelp<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Help API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Help API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1023,7 +1023,7 @@ impl<'a> CatIndicesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Indices API"]
+#[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html). Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
 pub struct CatIndices<'a> {
     client: Elasticsearch,
     parts: CatIndicesUrlParts<'a>,
@@ -1154,7 +1154,7 @@ impl<'a> CatIndices<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Indices API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Indices API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1242,7 +1242,7 @@ impl CatMasterUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Master API"]
+#[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html). Returns information about the master node."]
 pub struct CatMaster<'a> {
     client: Elasticsearch,
     parts: CatMasterUrlParts,
@@ -1338,7 +1338,7 @@ impl<'a> CatMaster<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Master API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Master API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1411,7 +1411,7 @@ impl CatNodeattrsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Nodeattrs API"]
+#[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html). Returns information about custom node attributes."]
 pub struct CatNodeattrs<'a> {
     client: Elasticsearch,
     parts: CatNodeattrsUrlParts,
@@ -1507,7 +1507,7 @@ impl<'a> CatNodeattrs<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Nodeattrs API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Nodeattrs API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1580,7 +1580,7 @@ impl CatNodesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Nodes API"]
+#[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html). Returns basic statistics about performance of cluster nodes."]
 pub struct CatNodes<'a> {
     client: Elasticsearch,
     parts: CatNodesUrlParts,
@@ -1697,7 +1697,7 @@ impl<'a> CatNodes<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Nodes API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Nodes API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1779,7 +1779,7 @@ impl CatPendingTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Pending Tasks API"]
+#[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html). Returns a concise representation of the cluster pending tasks."]
 pub struct CatPendingTasks<'a> {
     client: Elasticsearch,
     parts: CatPendingTasksUrlParts,
@@ -1882,7 +1882,7 @@ impl<'a> CatPendingTasks<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Pending Tasks API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Pending Tasks API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1958,7 +1958,7 @@ impl CatPluginsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Plugins API"]
+#[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html). Returns information about installed plugins across nodes node."]
 pub struct CatPlugins<'a> {
     client: Elasticsearch,
     parts: CatPluginsUrlParts,
@@ -2054,7 +2054,7 @@ impl<'a> CatPlugins<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Plugins API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Plugins API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2135,7 +2135,7 @@ impl<'a> CatRecoveryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Recovery API"]
+#[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html). Returns information about index shard recoveries, both on-going completed."]
 pub struct CatRecovery<'a> {
     client: Elasticsearch,
     parts: CatRecoveryUrlParts<'a>,
@@ -2252,7 +2252,7 @@ impl<'a> CatRecovery<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Recovery API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Recovery API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2334,7 +2334,7 @@ impl CatRepositoriesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Repositories API"]
+#[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html). Returns information about snapshot repositories registered in the cluster."]
 pub struct CatRepositories<'a> {
     client: Elasticsearch,
     parts: CatRepositoriesUrlParts,
@@ -2430,7 +2430,7 @@ impl<'a> CatRepositories<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Repositories API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Repositories API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2511,7 +2511,7 @@ impl<'a> CatSegmentsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Segments API"]
+#[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html). Provides low-level information about the segments in the shards of an index."]
 pub struct CatSegments<'a> {
     client: Elasticsearch,
     parts: CatSegmentsUrlParts<'a>,
@@ -2600,7 +2600,7 @@ impl<'a> CatSegments<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Segments API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Segments API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2678,7 +2678,7 @@ impl<'a> CatShardsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Shards API"]
+#[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html). Provides a detailed view of shard allocation on nodes."]
 pub struct CatShards<'a> {
     client: Elasticsearch,
     parts: CatShardsUrlParts<'a>,
@@ -2788,7 +2788,7 @@ impl<'a> CatShards<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Shards API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Shards API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2875,7 +2875,7 @@ impl<'a> CatSnapshotsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Snapshots API"]
+#[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html). Returns all snapshots in a specific repository."]
 pub struct CatSnapshots<'a> {
     client: Elasticsearch,
     parts: CatSnapshotsUrlParts<'a>,
@@ -2978,7 +2978,7 @@ impl<'a> CatSnapshots<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Snapshots API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Snapshots API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3054,7 +3054,7 @@ impl CatTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Tasks API"]
+#[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about the tasks currently executing on one or more nodes in the cluster."]
 pub struct CatTasks<'a> {
     client: Elasticsearch,
     parts: CatTasksUrlParts,
@@ -3171,7 +3171,7 @@ impl<'a> CatTasks<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Tasks API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Tasks API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3266,7 +3266,7 @@ impl<'a> CatTemplatesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Templates API"]
+#[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html). Returns information about existing templates."]
 pub struct CatTemplates<'a> {
     client: Elasticsearch,
     parts: CatTemplatesUrlParts<'a>,
@@ -3362,7 +3362,7 @@ impl<'a> CatTemplates<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Templates API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Templates API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3443,7 +3443,7 @@ impl<'a> CatThreadPoolUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cat Thread Pool API"]
+#[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html). Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
 pub struct CatThreadPool<'a> {
     client: Elasticsearch,
     parts: CatThreadPoolUrlParts<'a>,
@@ -3546,7 +3546,7 @@ impl<'a> CatThreadPool<'a> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cat Thread Pool API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Thread Pool API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3609,7 +3609,7 @@ impl<'a> CatThreadPool<'a> {
         Ok(response)
     }
 }
-#[doc = "Cat APIs"]
+#[doc = "Namespace client for Cat APIs"]
 pub struct Cat {
     client: Elasticsearch,
 }
@@ -3699,7 +3699,7 @@ impl Cat {
     }
 }
 impl Elasticsearch {
-    #[doc = "Cat APIs"]
+    #[doc = "Creates a namespace client for Cat APIs"]
     pub fn cat(&self) -> Cat {
         Cat::new(self.clone())
     }

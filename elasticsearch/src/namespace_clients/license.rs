@@ -39,7 +39,7 @@ impl LicenseDeleteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Delete API"]
+#[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html)."]
 pub struct LicenseDelete<'a> {
     client: Elasticsearch,
     parts: LicenseDeleteUrlParts,
@@ -86,7 +86,7 @@ impl<'a> LicenseDelete<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Delete API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Delete API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -138,7 +138,7 @@ impl LicenseGetUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Get API"]
+#[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html)."]
 pub struct LicenseGet<'a> {
     client: Elasticsearch,
     parts: LicenseGetUrlParts,
@@ -192,7 +192,7 @@ impl<'a> LicenseGet<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Get API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Get API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -247,7 +247,7 @@ impl LicenseGetBasicStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Get Basic Status API"]
+#[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html)."]
 pub struct LicenseGetBasicStatus<'a> {
     client: Elasticsearch,
     parts: LicenseGetBasicStatusUrlParts,
@@ -294,7 +294,7 @@ impl<'a> LicenseGetBasicStatus<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Get Basic Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Get Basic Status API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -346,7 +346,7 @@ impl LicenseGetTrialStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Get Trial Status API"]
+#[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html)."]
 pub struct LicenseGetTrialStatus<'a> {
     client: Elasticsearch,
     parts: LicenseGetTrialStatusUrlParts,
@@ -393,7 +393,7 @@ impl<'a> LicenseGetTrialStatus<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Get Trial Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Get Trial Status API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -445,7 +445,7 @@ impl LicensePostUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Post API"]
+#[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html)."]
 pub struct LicensePost<'a, B> {
     client: Elasticsearch,
     parts: LicensePostUrlParts,
@@ -521,7 +521,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Post API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Post API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -576,7 +576,7 @@ impl LicensePostStartBasicUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Post Start Basic API"]
+#[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html)."]
 pub struct LicensePostStartBasic<'a, B> {
     client: Elasticsearch,
     parts: LicensePostStartBasicUrlParts,
@@ -652,7 +652,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Post Start Basic API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Post Start Basic API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -707,7 +707,7 @@ impl LicensePostStartTrialUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the License Post Start Trial API"]
+#[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html)."]
 pub struct LicensePostStartTrial<'a, B> {
     client: Elasticsearch,
     parts: LicensePostStartTrialUrlParts,
@@ -791,7 +791,7 @@ where
         self.ty = Some(ty);
         self
     }
-    #[doc = "Creates an asynchronous request to the License Post Start Trial API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the License Post Start Trial API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -836,7 +836,7 @@ where
         Ok(response)
     }
 }
-#[doc = "License APIs"]
+#[doc = "Namespace client for License APIs"]
 pub struct License {
     client: Elasticsearch,
 }
@@ -867,7 +867,7 @@ impl License {
     }
 }
 impl Elasticsearch {
-    #[doc = "License APIs"]
+    #[doc = "Creates a namespace client for License APIs"]
     pub fn license(&self) -> License {
         License::new(self.clone())
     }

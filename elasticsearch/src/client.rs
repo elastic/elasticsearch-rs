@@ -24,19 +24,22 @@ where
     serializer.serialize_str(joined.as_ref())
 }
 
-/// Client used to make API requests to Elasticsearch
+/// Root client for top level APIs
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
     connection: Connection,
 }
 
 impl Elasticsearch {
-    /// Creates a new instance of Elasticsearch
+    /// Creates a new instance of the root client
     pub fn new(connection: Connection) -> Self {
         Elasticsearch { connection }
     }
 
     /// Creates an asynchronous request that can be awaited
+    ///
+    /// Accepts the HTTP method and relative path to an API,
+    /// and optional query string and body.
     pub async fn send<B, Q>(
         &self,
         method: HttpMethod,

@@ -44,7 +44,7 @@ impl<'a> EnrichDeletePolicyUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Enrich Delete Policy API"]
+#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-delete-policy.html)."]
 pub struct EnrichDeletePolicy<'a> {
     client: Elasticsearch,
     parts: EnrichDeletePolicyUrlParts<'a>,
@@ -91,7 +91,7 @@ impl<'a> EnrichDeletePolicy<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Enrich Delete Policy API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Enrich Delete Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -149,7 +149,7 @@ impl<'a> EnrichExecutePolicyUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Enrich Execute Policy API"]
+#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-execute-policy.html)."]
 pub struct EnrichExecutePolicy<'a, B> {
     client: Elasticsearch,
     parts: EnrichExecutePolicyUrlParts<'a>,
@@ -225,7 +225,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Enrich Execute Policy API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Enrich Execute Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -287,7 +287,7 @@ impl<'a> EnrichGetPolicyUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Enrich Get Policy API"]
+#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-get-policy.html)."]
 pub struct EnrichGetPolicy<'a> {
     client: Elasticsearch,
     parts: EnrichGetPolicyUrlParts<'a>,
@@ -334,7 +334,7 @@ impl<'a> EnrichGetPolicy<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Enrich Get Policy API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Enrich Get Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -391,7 +391,7 @@ impl<'a> EnrichPutPolicyUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Enrich Put Policy API"]
+#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-put-policy.html)."]
 pub struct EnrichPutPolicy<'a, B> {
     client: Elasticsearch,
     parts: EnrichPutPolicyUrlParts<'a>,
@@ -459,7 +459,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Enrich Put Policy API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Enrich Put Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -511,7 +511,7 @@ impl EnrichStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Enrich Stats API"]
+#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-stats.html)."]
 pub struct EnrichStats<'a> {
     client: Elasticsearch,
     parts: EnrichStatsUrlParts,
@@ -558,7 +558,7 @@ impl<'a> EnrichStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Enrich Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Enrich Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -597,7 +597,7 @@ impl<'a> EnrichStats<'a> {
         Ok(response)
     }
 }
-#[doc = "Enrich APIs"]
+#[doc = "Namespace client for Enrich APIs"]
 pub struct Enrich {
     client: Elasticsearch,
 }
@@ -628,7 +628,7 @@ impl Enrich {
     }
 }
 impl Elasticsearch {
-    #[doc = "Enrich APIs"]
+    #[doc = "Creates a namespace client for Enrich APIs"]
     pub fn enrich(&self) -> Enrich {
         Enrich::new(self.clone())
     }

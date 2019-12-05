@@ -48,7 +48,7 @@ impl<'a> NodesHotThreadsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Nodes Hot Threads API"]
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-hot-threads.html). Returns information about hot threads on each node in the cluster."]
 pub struct NodesHotThreads<'a> {
     client: Elasticsearch,
     parts: NodesHotThreadsUrlParts<'a>,
@@ -137,7 +137,7 @@ impl<'a> NodesHotThreads<'a> {
         self.ty = Some(ty);
         self
     }
-    #[doc = "Creates an asynchronous request to the Nodes Hot Threads API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Hot Threads API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -234,7 +234,7 @@ impl<'a> NodesInfoUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Nodes Info API"]
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-info.html). Returns information about nodes in the cluster."]
 pub struct NodesInfo<'a> {
     client: Elasticsearch,
     parts: NodesInfoUrlParts<'a>,
@@ -295,7 +295,7 @@ impl<'a> NodesInfo<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Nodes Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -362,7 +362,7 @@ impl<'a> NodesReloadSecureSettingsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Nodes Reload Secure Settings API"]
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings). Reloads secure settings."]
 pub struct NodesReloadSecureSettings<'a, B> {
     client: Elasticsearch,
     parts: NodesReloadSecureSettingsUrlParts<'a>,
@@ -438,7 +438,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Nodes Reload Secure Settings API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Reload Secure Settings API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -553,7 +553,7 @@ impl<'a> NodesStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Nodes Stats API"]
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html). Returns statistical information about nodes in the cluster."]
 pub struct NodesStats<'a> {
     client: Elasticsearch,
     parts: NodesStatsUrlParts<'a>,
@@ -656,7 +656,7 @@ impl<'a> NodesStats<'a> {
         self.types = Some(types);
         self
     }
-    #[doc = "Creates an asynchronous request to the Nodes Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -766,7 +766,7 @@ impl<'a> NodesUsageUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Nodes Usage API"]
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-usage.html). Returns low-level information about REST actions usage on nodes."]
 pub struct NodesUsage<'a> {
     client: Elasticsearch,
     parts: NodesUsageUrlParts<'a>,
@@ -820,7 +820,7 @@ impl<'a> NodesUsage<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Nodes Usage API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Nodes Usage API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -862,7 +862,7 @@ impl<'a> NodesUsage<'a> {
         Ok(response)
     }
 }
-#[doc = "Nodes APIs"]
+#[doc = "Namespace client for Nodes APIs"]
 pub struct Nodes {
     client: Elasticsearch,
 }
@@ -895,7 +895,7 @@ impl Nodes {
     }
 }
 impl Elasticsearch {
-    #[doc = "Nodes APIs"]
+    #[doc = "Creates a namespace client for Nodes APIs"]
     pub fn nodes(&self) -> Nodes {
         Nodes::new(self.clone())
     }

@@ -47,7 +47,7 @@ impl<'a> MigrationDeprecationsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Migration Deprecations API"]
+#[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html)."]
 pub struct MigrationDeprecations<'a> {
     client: Elasticsearch,
     parts: MigrationDeprecationsUrlParts<'a>,
@@ -94,7 +94,7 @@ impl<'a> MigrationDeprecations<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Migration Deprecations API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Migration Deprecations API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -133,7 +133,7 @@ impl<'a> MigrationDeprecations<'a> {
         Ok(response)
     }
 }
-#[doc = "Migration APIs"]
+#[doc = "Namespace client for Migration APIs"]
 pub struct Migration {
     client: Elasticsearch,
 }
@@ -149,7 +149,7 @@ impl Migration {
     }
 }
 impl Elasticsearch {
-    #[doc = "Migration APIs"]
+    #[doc = "Creates a namespace client for Migration APIs"]
     pub fn migration(&self) -> Migration {
         Migration::new(self.clone())
     }

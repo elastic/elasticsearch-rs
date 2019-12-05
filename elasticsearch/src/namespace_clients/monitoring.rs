@@ -47,7 +47,7 @@ impl<'a> MonitoringBulkUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Monitoring Bulk API"]
+#[doc = "Builder for the [Monitoring Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/master/es-monitoring.html)."]
 pub struct MonitoringBulk<'a, B> {
     client: Elasticsearch,
     parts: MonitoringBulkUrlParts<'a>,
@@ -139,7 +139,7 @@ where
         self.system_id = Some(system_id);
         self
     }
-    #[doc = "Creates an asynchronous request to the Monitoring Bulk API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Monitoring Bulk API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -187,7 +187,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Monitoring APIs"]
+#[doc = "Namespace client for Monitoring APIs"]
 pub struct Monitoring {
     client: Elasticsearch,
 }
@@ -200,7 +200,7 @@ impl Monitoring {
     }
 }
 impl Elasticsearch {
-    #[doc = "Monitoring APIs"]
+    #[doc = "Creates a namespace client for Monitoring APIs"]
     pub fn monitoring(&self) -> Monitoring {
         Monitoring::new(self.clone())
     }

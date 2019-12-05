@@ -39,7 +39,7 @@ impl SqlClearCursorUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Sql Clear Cursor API"]
+#[doc = "Builder for the [Sql Clear Cursor API](Clear SQL cursor)."]
 pub struct SqlClearCursor<'a, B> {
     client: Elasticsearch,
     parts: SqlClearCursorUrlParts,
@@ -107,7 +107,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Sql Clear Cursor API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Sql Clear Cursor API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -159,7 +159,7 @@ impl SqlQueryUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Sql Query API"]
+#[doc = "Builder for the [Sql Query API](Execute SQL)."]
 pub struct SqlQuery<'a, B> {
     client: Elasticsearch,
     parts: SqlQueryUrlParts,
@@ -235,7 +235,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Sql Query API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Sql Query API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -293,7 +293,7 @@ impl SqlTranslateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Sql Translate API"]
+#[doc = "Builder for the [Sql Translate API](Translate SQL into Elasticsearch queries)."]
 pub struct SqlTranslate<'a, B> {
     client: Elasticsearch,
     parts: SqlTranslateUrlParts,
@@ -361,7 +361,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Sql Translate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Sql Translate API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -403,7 +403,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Sql APIs"]
+#[doc = "Namespace client for Sql APIs"]
 pub struct Sql {
     client: Elasticsearch,
 }
@@ -422,7 +422,7 @@ impl Sql {
     }
 }
 impl Elasticsearch {
-    #[doc = "Sql APIs"]
+    #[doc = "Creates a namespace client for Sql APIs"]
     pub fn sql(&self) -> Sql {
         Sql::new(self.clone())
     }

@@ -47,7 +47,7 @@ impl<'a> TasksCancelUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Tasks Cancel API"]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Cancels a task, if it can be cancelled through an API."]
 pub struct TasksCancel<'a, B> {
     client: Elasticsearch,
     parts: TasksCancelUrlParts<'a>,
@@ -139,7 +139,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Tasks Cancel API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Tasks Cancel API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -208,7 +208,7 @@ impl<'a> TasksGetUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Tasks Get API"]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about a task."]
 pub struct TasksGet<'a> {
     client: Elasticsearch,
     parts: TasksGetUrlParts<'a>,
@@ -269,7 +269,7 @@ impl<'a> TasksGet<'a> {
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Tasks Get API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Tasks Get API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -327,7 +327,7 @@ impl TasksListUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Tasks List API"]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns a list of tasks."]
 pub struct TasksList<'a> {
     client: Elasticsearch,
     parts: TasksListUrlParts,
@@ -423,7 +423,7 @@ impl<'a> TasksList<'a> {
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Tasks List API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Tasks List API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -486,7 +486,7 @@ impl<'a> TasksList<'a> {
         Ok(response)
     }
 }
-#[doc = "Tasks APIs"]
+#[doc = "Namespace client for Tasks APIs"]
 pub struct Tasks {
     client: Elasticsearch,
 }
@@ -508,7 +508,7 @@ impl Tasks {
     }
 }
 impl Elasticsearch {
-    #[doc = "Tasks APIs"]
+    #[doc = "Creates a namespace client for Tasks APIs"]
     pub fn tasks(&self) -> Tasks {
         Tasks::new(self.clone())
     }

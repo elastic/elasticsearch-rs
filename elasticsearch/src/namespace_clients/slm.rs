@@ -44,7 +44,7 @@ impl<'a> SlmDeleteLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Delete Lifecycle API"]
+#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-delete.html)."]
 pub struct SlmDeleteLifecycle<'a> {
     client: Elasticsearch,
     parts: SlmDeleteLifecycleUrlParts<'a>,
@@ -91,7 +91,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Delete Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Delete Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -149,7 +149,7 @@ impl<'a> SlmExecuteLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Execute Lifecycle API"]
+#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute.html)."]
 pub struct SlmExecuteLifecycle<'a, B> {
     client: Elasticsearch,
     parts: SlmExecuteLifecycleUrlParts<'a>,
@@ -217,7 +217,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Execute Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Execute Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -269,7 +269,7 @@ impl SlmExecuteRetentionUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Execute Retention API"]
+#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute-retention.html)."]
 pub struct SlmExecuteRetention<'a, B> {
     client: Elasticsearch,
     parts: SlmExecuteRetentionUrlParts,
@@ -337,7 +337,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Execute Retention API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Execute Retention API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -397,7 +397,7 @@ impl<'a> SlmGetLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Get Lifecycle API"]
+#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-get.html)."]
 pub struct SlmGetLifecycle<'a> {
     client: Elasticsearch,
     parts: SlmGetLifecycleUrlParts<'a>,
@@ -444,7 +444,7 @@ impl<'a> SlmGetLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Get Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Get Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -496,7 +496,7 @@ impl SlmGetStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Get Stats API"]
+#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/slm-get-stats.html)."]
 pub struct SlmGetStats<'a> {
     client: Elasticsearch,
     parts: SlmGetStatsUrlParts,
@@ -543,7 +543,7 @@ impl<'a> SlmGetStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Get Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Get Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -600,7 +600,7 @@ impl<'a> SlmPutLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Slm Put Lifecycle API"]
+#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-put.html)."]
 pub struct SlmPutLifecycle<'a, B> {
     client: Elasticsearch,
     parts: SlmPutLifecycleUrlParts<'a>,
@@ -668,7 +668,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Slm Put Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Slm Put Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -707,7 +707,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Slm APIs"]
+#[doc = "Namespace client for Snapshot Lifecycle Management APIs"]
 pub struct Slm {
     client: Elasticsearch,
 }
@@ -741,7 +741,7 @@ impl Slm {
     }
 }
 impl Elasticsearch {
-    #[doc = "Slm APIs"]
+    #[doc = "Creates a namespace client for Snapshot Lifecycle Management APIs"]
     pub fn slm(&self) -> Slm {
         Slm::new(self.clone())
     }

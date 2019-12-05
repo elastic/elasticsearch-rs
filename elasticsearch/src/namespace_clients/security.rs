@@ -39,7 +39,7 @@ impl SecurityAuthenticateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Authenticate API"]
+#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html)."]
 pub struct SecurityAuthenticate<'a> {
     client: Elasticsearch,
     parts: SecurityAuthenticateUrlParts,
@@ -86,7 +86,7 @@ impl<'a> SecurityAuthenticate<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Authenticate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Authenticate API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -146,7 +146,7 @@ impl<'a> SecurityChangePasswordUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Change Password API"]
+#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html)."]
 pub struct SecurityChangePassword<'a, B> {
     client: Elasticsearch,
     parts: SecurityChangePasswordUrlParts<'a>,
@@ -222,7 +222,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Change Password API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Change Password API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -284,7 +284,7 @@ impl<'a> SecurityClearCachedRealmsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Clear Cached Realms API"]
+#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html)."]
 pub struct SecurityClearCachedRealms<'a, B> {
     client: Elasticsearch,
     parts: SecurityClearCachedRealmsUrlParts<'a>,
@@ -360,7 +360,7 @@ where
         self.usernames = Some(usernames);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Clear Cached Realms API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Clear Cached Realms API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -425,7 +425,7 @@ impl<'a> SecurityClearCachedRolesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Clear Cached Roles API"]
+#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html)."]
 pub struct SecurityClearCachedRoles<'a, B> {
     client: Elasticsearch,
     parts: SecurityClearCachedRolesUrlParts<'a>,
@@ -493,7 +493,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Clear Cached Roles API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Clear Cached Roles API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -545,7 +545,7 @@ impl SecurityCreateApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Create Api Key API"]
+#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html)."]
 pub struct SecurityCreateApiKey<'a, B> {
     client: Elasticsearch,
     parts: SecurityCreateApiKeyUrlParts,
@@ -621,7 +621,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Create Api Key API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Create Api Key API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -683,7 +683,7 @@ impl<'a> SecurityDeletePrivilegesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Delete Privileges API"]
+#[doc = "Builder for the Security Delete Privileges API"]
 pub struct SecurityDeletePrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityDeletePrivilegesUrlParts<'a>,
@@ -737,7 +737,7 @@ impl<'a> SecurityDeletePrivileges<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Delete Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Delete Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -797,7 +797,7 @@ impl<'a> SecurityDeleteRoleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Delete Role API"]
+#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html)."]
 pub struct SecurityDeleteRole<'a> {
     client: Elasticsearch,
     parts: SecurityDeleteRoleUrlParts<'a>,
@@ -851,7 +851,7 @@ impl<'a> SecurityDeleteRole<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Delete Role API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Delete Role API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -911,7 +911,7 @@ impl<'a> SecurityDeleteRoleMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Delete Role Mapping API"]
+#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html)."]
 pub struct SecurityDeleteRoleMapping<'a> {
     client: Elasticsearch,
     parts: SecurityDeleteRoleMappingUrlParts<'a>,
@@ -965,7 +965,7 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Delete Role Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Delete Role Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1025,7 +1025,7 @@ impl<'a> SecurityDeleteUserUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Delete User API"]
+#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html)."]
 pub struct SecurityDeleteUser<'a> {
     client: Elasticsearch,
     parts: SecurityDeleteUserUrlParts<'a>,
@@ -1079,7 +1079,7 @@ impl<'a> SecurityDeleteUser<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Delete User API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Delete User API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1140,7 +1140,7 @@ impl<'a> SecurityDisableUserUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Disable User API"]
+#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html)."]
 pub struct SecurityDisableUser<'a, B> {
     client: Elasticsearch,
     parts: SecurityDisableUserUrlParts<'a>,
@@ -1216,7 +1216,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Disable User API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Disable User API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1277,7 +1277,7 @@ impl<'a> SecurityEnableUserUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Enable User API"]
+#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html)."]
 pub struct SecurityEnableUser<'a, B> {
     client: Elasticsearch,
     parts: SecurityEnableUserUrlParts<'a>,
@@ -1353,7 +1353,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Enable User API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Enable User API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1408,7 +1408,7 @@ impl SecurityGetApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Api Key API"]
+#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html)."]
 pub struct SecurityGetApiKey<'a> {
     client: Elasticsearch,
     parts: SecurityGetApiKeyUrlParts,
@@ -1490,7 +1490,7 @@ impl<'a> SecurityGetApiKey<'a> {
         self.username = Some(username);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Api Key API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Api Key API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1557,7 +1557,7 @@ impl SecurityGetBuiltinPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Builtin Privileges API"]
+#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html)."]
 pub struct SecurityGetBuiltinPrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesUrlParts,
@@ -1604,7 +1604,7 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Builtin Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Builtin Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1672,7 +1672,7 @@ impl<'a> SecurityGetPrivilegesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Privileges API"]
+#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
 pub struct SecurityGetPrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityGetPrivilegesUrlParts<'a>,
@@ -1719,7 +1719,7 @@ impl<'a> SecurityGetPrivileges<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1778,7 +1778,7 @@ impl<'a> SecurityGetRoleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Role API"]
+#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html)."]
 pub struct SecurityGetRole<'a> {
     client: Elasticsearch,
     parts: SecurityGetRoleUrlParts<'a>,
@@ -1825,7 +1825,7 @@ impl<'a> SecurityGetRole<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Role API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Role API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1884,7 +1884,7 @@ impl<'a> SecurityGetRoleMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Role Mapping API"]
+#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html)."]
 pub struct SecurityGetRoleMapping<'a> {
     client: Elasticsearch,
     parts: SecurityGetRoleMappingUrlParts<'a>,
@@ -1931,7 +1931,7 @@ impl<'a> SecurityGetRoleMapping<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Role Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Role Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1983,7 +1983,7 @@ impl SecurityGetTokenUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get Token API"]
+#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html)."]
 pub struct SecurityGetToken<'a, B> {
     client: Elasticsearch,
     parts: SecurityGetTokenUrlParts,
@@ -2051,7 +2051,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get Token API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get Token API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -2111,7 +2111,7 @@ impl<'a> SecurityGetUserUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get User API"]
+#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html)."]
 pub struct SecurityGetUser<'a> {
     client: Elasticsearch,
     parts: SecurityGetUserUrlParts<'a>,
@@ -2158,7 +2158,7 @@ impl<'a> SecurityGetUser<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get User API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get User API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2210,7 +2210,7 @@ impl SecurityGetUserPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Get User Privileges API"]
+#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
 pub struct SecurityGetUserPrivileges<'a> {
     client: Elasticsearch,
     parts: SecurityGetUserPrivilegesUrlParts,
@@ -2257,7 +2257,7 @@ impl<'a> SecurityGetUserPrivileges<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Get User Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Get User Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2317,7 +2317,7 @@ impl<'a> SecurityHasPrivilegesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Has Privileges API"]
+#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html)."]
 pub struct SecurityHasPrivileges<'a, B> {
     client: Elasticsearch,
     parts: SecurityHasPrivilegesUrlParts<'a>,
@@ -2385,7 +2385,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Has Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Has Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2440,7 +2440,7 @@ impl SecurityInvalidateApiKeyUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Invalidate Api Key API"]
+#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html)."]
 pub struct SecurityInvalidateApiKey<'a, B> {
     client: Elasticsearch,
     parts: SecurityInvalidateApiKeyUrlParts,
@@ -2508,7 +2508,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Invalidate Api Key API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Invalidate Api Key API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -2560,7 +2560,7 @@ impl SecurityInvalidateTokenUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Invalidate Token API"]
+#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html)."]
 pub struct SecurityInvalidateToken<'a, B> {
     client: Elasticsearch,
     parts: SecurityInvalidateTokenUrlParts,
@@ -2628,7 +2628,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Invalidate Token API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Invalidate Token API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -2680,7 +2680,7 @@ impl SecurityPutPrivilegesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Put Privileges API"]
+#[doc = "Builder for the Security Put Privileges API"]
 pub struct SecurityPutPrivileges<'a, B> {
     client: Elasticsearch,
     parts: SecurityPutPrivilegesUrlParts,
@@ -2756,7 +2756,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Put Privileges API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Put Privileges API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -2816,7 +2816,7 @@ impl<'a> SecurityPutRoleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Put Role API"]
+#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html)."]
 pub struct SecurityPutRole<'a, B> {
     client: Elasticsearch,
     parts: SecurityPutRoleUrlParts<'a>,
@@ -2892,7 +2892,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Put Role API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Put Role API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -2952,7 +2952,7 @@ impl<'a> SecurityPutRoleMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Put Role Mapping API"]
+#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html)."]
 pub struct SecurityPutRoleMapping<'a, B> {
     client: Elasticsearch,
     parts: SecurityPutRoleMappingUrlParts<'a>,
@@ -3028,7 +3028,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Put Role Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Put Role Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -3088,7 +3088,7 @@ impl<'a> SecurityPutUserUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Security Put User API"]
+#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html)."]
 pub struct SecurityPutUser<'a, B> {
     client: Elasticsearch,
     parts: SecurityPutUserUrlParts<'a>,
@@ -3164,7 +3164,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Security Put User API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Security Put User API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -3206,7 +3206,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Security APIs"]
+#[doc = "Namespace client for Security APIs"]
 pub struct Security {
     client: Elasticsearch,
 }
@@ -3327,7 +3327,7 @@ impl Security {
     }
 }
 impl Elasticsearch {
-    #[doc = "Security APIs"]
+    #[doc = "Creates a namespace client for Security APIs"]
     pub fn security(&self) -> Security {
         Security::new(self.clone())
     }

@@ -39,7 +39,7 @@ impl SslCertificatesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ssl Certificates API"]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html)."]
 pub struct SslCertificates<'a> {
     client: Elasticsearch,
     parts: SslCertificatesUrlParts,
@@ -86,7 +86,7 @@ impl<'a> SslCertificates<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ssl Certificates API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ssl Certificates API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -125,7 +125,7 @@ impl<'a> SslCertificates<'a> {
         Ok(response)
     }
 }
-#[doc = "Ssl APIs"]
+#[doc = "Namespace client for Ssl APIs"]
 pub struct Ssl {
     client: Elasticsearch,
 }
@@ -138,7 +138,7 @@ impl Ssl {
     }
 }
 impl Elasticsearch {
-    #[doc = "Ssl APIs"]
+    #[doc = "Creates a namespace client for Ssl APIs"]
     pub fn ssl(&self) -> Ssl {
         Ssl::new(self.clone())
     }

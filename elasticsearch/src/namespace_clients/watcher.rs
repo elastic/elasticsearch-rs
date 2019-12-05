@@ -55,7 +55,7 @@ impl<'a> WatcherAckWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Ack Watch API"]
+#[doc = "Builder for the [Watcher Ack Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html)."]
 pub struct WatcherAckWatch<'a, B> {
     client: Elasticsearch,
     parts: WatcherAckWatchUrlParts<'a>,
@@ -123,7 +123,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Ack Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Ack Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -181,7 +181,7 @@ impl<'a> WatcherActivateWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Activate Watch API"]
+#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html)."]
 pub struct WatcherActivateWatch<'a, B> {
     client: Elasticsearch,
     parts: WatcherActivateWatchUrlParts<'a>,
@@ -249,7 +249,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Activate Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Activate Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -307,7 +307,7 @@ impl<'a> WatcherDeactivateWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Deactivate Watch API"]
+#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html)."]
 pub struct WatcherDeactivateWatch<'a, B> {
     client: Elasticsearch,
     parts: WatcherDeactivateWatchUrlParts<'a>,
@@ -375,7 +375,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Deactivate Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Deactivate Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -432,7 +432,7 @@ impl<'a> WatcherDeleteWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Delete Watch API"]
+#[doc = "Builder for the [Watcher Delete Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html)."]
 pub struct WatcherDeleteWatch<'a> {
     client: Elasticsearch,
     parts: WatcherDeleteWatchUrlParts<'a>,
@@ -479,7 +479,7 @@ impl<'a> WatcherDeleteWatch<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Delete Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Delete Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -539,7 +539,7 @@ impl<'a> WatcherExecuteWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Execute Watch API"]
+#[doc = "Builder for the [Watcher Execute Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html)."]
 pub struct WatcherExecuteWatch<'a, B> {
     client: Elasticsearch,
     parts: WatcherExecuteWatchUrlParts<'a>,
@@ -615,7 +615,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Execute Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Execute Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -675,7 +675,7 @@ impl<'a> WatcherGetWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Get Watch API"]
+#[doc = "Builder for the [Watcher Get Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html)."]
 pub struct WatcherGetWatch<'a> {
     client: Elasticsearch,
     parts: WatcherGetWatchUrlParts<'a>,
@@ -722,7 +722,7 @@ impl<'a> WatcherGetWatch<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Get Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Get Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -779,7 +779,7 @@ impl<'a> WatcherPutWatchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Put Watch API"]
+#[doc = "Builder for the [Watcher Put Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html)."]
 pub struct WatcherPutWatch<'a, B> {
     client: Elasticsearch,
     parts: WatcherPutWatchUrlParts<'a>,
@@ -879,7 +879,7 @@ where
         self.version = Some(version);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Put Watch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Put Watch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -943,7 +943,7 @@ impl WatcherStartUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Start API"]
+#[doc = "Builder for the [Watcher Start API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html)."]
 pub struct WatcherStart<'a, B> {
     client: Elasticsearch,
     parts: WatcherStartUrlParts,
@@ -1011,7 +1011,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Start API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Start API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1071,7 +1071,7 @@ impl<'a> WatcherStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Stats API"]
+#[doc = "Builder for the [Watcher Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html)."]
 pub struct WatcherStats<'a> {
     client: Elasticsearch,
     parts: WatcherStatsUrlParts<'a>,
@@ -1132,7 +1132,7 @@ impl<'a> WatcherStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1190,7 +1190,7 @@ impl WatcherStopUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Watcher Stop API"]
+#[doc = "Builder for the [Watcher Stop API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html)."]
 pub struct WatcherStop<'a, B> {
     client: Elasticsearch,
     parts: WatcherStopUrlParts,
@@ -1258,7 +1258,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Watcher Stop API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Watcher Stop API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1297,7 +1297,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Watcher APIs"]
+#[doc = "Namespace client for Watcher APIs"]
 pub struct Watcher {
     client: Elasticsearch,
 }
@@ -1349,7 +1349,7 @@ impl Watcher {
     }
 }
 impl Elasticsearch {
-    #[doc = "Watcher APIs"]
+    #[doc = "Creates a namespace client for Watcher APIs"]
     pub fn watcher(&self) -> Watcher {
         Watcher::new(self.clone())
     }

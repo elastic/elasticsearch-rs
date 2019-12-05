@@ -47,7 +47,7 @@ impl<'a> IndicesAnalyzeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Analyze API"]
+#[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html). Performs the analysis process on a text and return the tokens breakdown of the text."]
 pub struct IndicesAnalyze<'a, B> {
     client: Elasticsearch,
     parts: IndicesAnalyzeUrlParts<'a>,
@@ -123,7 +123,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Analyze API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Analyze API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -190,7 +190,7 @@ impl<'a> IndicesClearCacheUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Clear Cache API"]
+#[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html). Clears all or specific caches for one or more indices."]
 pub struct IndicesClearCache<'a, B> {
     client: Elasticsearch,
     parts: IndicesClearCacheUrlParts<'a>,
@@ -322,7 +322,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Clear Cache API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Clear Cache API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -405,7 +405,7 @@ impl<'a> IndicesCloneUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Clone API"]
+#[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clone-index.html). Clones an index"]
 pub struct IndicesClone<'a, B> {
     client: Elasticsearch,
     parts: IndicesCloneUrlParts<'a>,
@@ -497,7 +497,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Clone API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Clone API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -565,7 +565,7 @@ impl<'a> IndicesCloseUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Close API"]
+#[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html). Closes an index."]
 pub struct IndicesClose<'a, B> {
     client: Elasticsearch,
     parts: IndicesCloseUrlParts<'a>,
@@ -681,7 +681,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Close API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Close API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -756,7 +756,7 @@ impl<'a> IndicesCreateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Create API"]
+#[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html). Creates an index with optional settings and mappings."]
 pub struct IndicesCreate<'a, B> {
     client: Elasticsearch,
     parts: IndicesCreateUrlParts<'a>,
@@ -856,7 +856,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Create API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Create API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -926,7 +926,7 @@ impl<'a> IndicesDeleteUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Delete API"]
+#[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html). Deletes an index."]
 pub struct IndicesDelete<'a> {
     client: Elasticsearch,
     parts: IndicesDeleteUrlParts<'a>,
@@ -1008,7 +1008,7 @@ impl<'a> IndicesDelete<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Delete API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Delete API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1084,7 +1084,7 @@ impl<'a> IndicesDeleteAliasUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Delete Alias API"]
+#[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Deletes an alias."]
 pub struct IndicesDeleteAlias<'a> {
     client: Elasticsearch,
     parts: IndicesDeleteAliasUrlParts<'a>,
@@ -1145,7 +1145,7 @@ impl<'a> IndicesDeleteAlias<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Delete Alias API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Delete Alias API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1208,7 +1208,7 @@ impl<'a> IndicesDeleteTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Delete Template API"]
+#[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Deletes an index template."]
 pub struct IndicesDeleteTemplate<'a> {
     client: Elasticsearch,
     parts: IndicesDeleteTemplateUrlParts<'a>,
@@ -1269,7 +1269,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Delete Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Delete Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1333,7 +1333,7 @@ impl<'a> IndicesExistsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Exists API"]
+#[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html). Returns information about whether a particular index exists."]
 pub struct IndicesExists<'a> {
     client: Elasticsearch,
     parts: IndicesExistsUrlParts<'a>,
@@ -1422,7 +1422,7 @@ impl<'a> IndicesExists<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Exists API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Exists API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -1509,7 +1509,7 @@ impl<'a> IndicesExistsAliasUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Exists Alias API"]
+#[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Returns information about whether a particular alias exists."]
 pub struct IndicesExistsAlias<'a> {
     client: Elasticsearch,
     parts: IndicesExistsAliasUrlParts<'a>,
@@ -1584,7 +1584,7 @@ impl<'a> IndicesExistsAlias<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Exists Alias API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Exists Alias API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -1654,7 +1654,7 @@ impl<'a> IndicesExistsTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Exists Template API"]
+#[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Returns information about whether a particular index template exists."]
 pub struct IndicesExistsTemplate<'a> {
     client: Elasticsearch,
     parts: IndicesExistsTemplateUrlParts<'a>,
@@ -1722,7 +1722,7 @@ impl<'a> IndicesExistsTemplate<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Exists Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Exists Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -1792,7 +1792,7 @@ impl<'a> IndicesExistsTypeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Exists Type API"]
+#[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html). Returns information about whether a particular document type exists. (DEPRECATED)"]
 pub struct IndicesExistsType<'a> {
     client: Elasticsearch,
     parts: IndicesExistsTypeUrlParts<'a>,
@@ -1867,7 +1867,7 @@ impl<'a> IndicesExistsType<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Exists Type API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Exists Type API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -1940,7 +1940,7 @@ impl<'a> IndicesFlushUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Flush API"]
+#[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html). Performs the flush operation on one or more indices."]
 pub struct IndicesFlush<'a, B> {
     client: Elasticsearch,
     parts: IndicesFlushUrlParts<'a>,
@@ -2048,7 +2048,7 @@ where
         self.wait_if_ongoing = Some(wait_if_ongoing);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Flush API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Flush API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2127,7 +2127,7 @@ impl<'a> IndicesFlushSyncedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Flush Synced API"]
+#[doc = "Builder for the [Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-synced-flush-api.html). Performs a synced flush operation on one or more indices."]
 pub struct IndicesFlushSynced<'a, B> {
     client: Elasticsearch,
     parts: IndicesFlushSyncedUrlParts<'a>,
@@ -2219,7 +2219,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Flush Synced API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Flush Synced API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2292,7 +2292,7 @@ impl<'a> IndicesForcemergeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Forcemerge API"]
+#[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html). Performs the force merge operation on one or more indices."]
 pub struct IndicesForcemerge<'a, B> {
     client: Elasticsearch,
     parts: IndicesForcemergeUrlParts<'a>,
@@ -2408,7 +2408,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Forcemerge API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Forcemerge API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -2484,7 +2484,7 @@ impl<'a> IndicesFreezeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Freeze API"]
+#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html)."]
 pub struct IndicesFreeze<'a, B> {
     client: Elasticsearch,
     parts: IndicesFreezeUrlParts<'a>,
@@ -2600,7 +2600,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Freeze API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Freeze API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -2676,7 +2676,7 @@ impl<'a> IndicesGetUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get API"]
+#[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html). Returns information about one or more indices."]
 pub struct IndicesGet<'a> {
     client: Elasticsearch,
     parts: IndicesGetUrlParts<'a>,
@@ -2779,7 +2779,7 @@ impl<'a> IndicesGet<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2883,7 +2883,7 @@ impl<'a> IndicesGetAliasUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Alias API"]
+#[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Returns an alias."]
 pub struct IndicesGetAlias<'a> {
     client: Elasticsearch,
     parts: IndicesGetAliasUrlParts<'a>,
@@ -2958,7 +2958,7 @@ impl<'a> IndicesGetAlias<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Alias API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Alias API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3066,7 +3066,7 @@ impl<'a> IndicesGetFieldMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Field Mapping API"]
+#[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html). Returns mapping for one or more fields."]
 pub struct IndicesGetFieldMapping<'a> {
     client: Elasticsearch,
     parts: IndicesGetFieldMappingUrlParts<'a>,
@@ -3155,7 +3155,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Field Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Field Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3253,7 +3253,7 @@ impl<'a> IndicesGetMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Mapping API"]
+#[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html). Returns mappings for one or more indices."]
 pub struct IndicesGetMapping<'a> {
     client: Elasticsearch,
     parts: IndicesGetMappingUrlParts<'a>,
@@ -3342,7 +3342,7 @@ impl<'a> IndicesGetMapping<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3440,7 +3440,7 @@ impl<'a> IndicesGetSettingsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Settings API"]
+#[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html). Returns settings for one or more indices."]
 pub struct IndicesGetSettings<'a> {
     client: Elasticsearch,
     parts: IndicesGetSettingsUrlParts<'a>,
@@ -3536,7 +3536,7 @@ impl<'a> IndicesGetSettings<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Settings API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Settings API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3617,7 +3617,7 @@ impl<'a> IndicesGetTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Template API"]
+#[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Returns an index template."]
 pub struct IndicesGetTemplate<'a> {
     client: Elasticsearch,
     parts: IndicesGetTemplateUrlParts<'a>,
@@ -3692,7 +3692,7 @@ impl<'a> IndicesGetTemplate<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3765,7 +3765,7 @@ impl<'a> IndicesGetUpgradeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Get Upgrade API"]
+#[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html). The _upgrade API is no longer useful and will be removed."]
 pub struct IndicesGetUpgrade<'a> {
     client: Elasticsearch,
     parts: IndicesGetUpgradeUrlParts<'a>,
@@ -3833,7 +3833,7 @@ impl<'a> IndicesGetUpgrade<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Get Upgrade API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Get Upgrade API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3901,7 +3901,7 @@ impl<'a> IndicesOpenUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Open API"]
+#[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html). Opens an index."]
 pub struct IndicesOpen<'a, B> {
     client: Elasticsearch,
     parts: IndicesOpenUrlParts<'a>,
@@ -4017,7 +4017,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Open API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Open API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -4095,7 +4095,7 @@ impl<'a> IndicesPutAliasUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Put Alias API"]
+#[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Creates or updates an alias."]
 pub struct IndicesPutAlias<'a, B> {
     client: Elasticsearch,
     parts: IndicesPutAliasUrlParts<'a>,
@@ -4179,7 +4179,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Put Alias API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Put Alias API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -4262,7 +4262,7 @@ impl<'a> IndicesPutMappingUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Put Mapping API"]
+#[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html). Updates the index mappings."]
 pub struct IndicesPutMapping<'a, B> {
     client: Elasticsearch,
     parts: IndicesPutMappingUrlParts<'a>,
@@ -4378,7 +4378,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Put Mapping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Put Mapping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -4457,7 +4457,7 @@ impl<'a> IndicesPutSettingsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Put Settings API"]
+#[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html). Updates the index settings."]
 pub struct IndicesPutSettings<'a, B> {
     client: Elasticsearch,
     parts: IndicesPutSettingsUrlParts<'a>,
@@ -4581,7 +4581,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Put Settings API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Put Settings API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -4659,7 +4659,7 @@ impl<'a> IndicesPutTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Put Template API"]
+#[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Creates or updates an index template."]
 pub struct IndicesPutTemplate<'a, B> {
     client: Elasticsearch,
     parts: IndicesPutTemplateUrlParts<'a>,
@@ -4775,7 +4775,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Put Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Put Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -4854,7 +4854,7 @@ impl<'a> IndicesRecoveryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Recovery API"]
+#[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html). Returns information about ongoing index shard recoveries."]
 pub struct IndicesRecovery<'a> {
     client: Elasticsearch,
     parts: IndicesRecoveryUrlParts<'a>,
@@ -4915,7 +4915,7 @@ impl<'a> IndicesRecovery<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Recovery API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Recovery API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -4982,7 +4982,7 @@ impl<'a> IndicesRefreshUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Refresh API"]
+#[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html). Performs the refresh operation in one or more indices."]
 pub struct IndicesRefresh<'a, B> {
     client: Elasticsearch,
     parts: IndicesRefreshUrlParts<'a>,
@@ -5074,7 +5074,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Refresh API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Refresh API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5145,7 +5145,7 @@ impl<'a> IndicesReloadSearchAnalyzersUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Reload Search Analyzers API"]
+#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html)."]
 pub struct IndicesReloadSearchAnalyzers<'a, B> {
     client: Elasticsearch,
     parts: IndicesReloadSearchAnalyzersUrlParts<'a>,
@@ -5237,7 +5237,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Reload Search Analyzers API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Reload Search Analyzers API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5316,7 +5316,7 @@ impl<'a> IndicesRolloverUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Rollover API"]
+#[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html). Updates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 pub struct IndicesRollover<'a, B> {
     client: Elasticsearch,
     parts: IndicesRolloverUrlParts<'a>,
@@ -5424,7 +5424,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Rollover API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Rollover API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -5500,7 +5500,7 @@ impl<'a> IndicesSegmentsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Segments API"]
+#[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html). Provides low-level information about segments in a Lucene index."]
 pub struct IndicesSegments<'a> {
     client: Elasticsearch,
     parts: IndicesSegmentsUrlParts<'a>,
@@ -5575,7 +5575,7 @@ impl<'a> IndicesSegments<'a> {
         self.verbose = Some(verbose);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Segments API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Segments API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -5648,7 +5648,7 @@ impl<'a> IndicesShardStoresUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Shard Stores API"]
+#[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html). Provides store information for shard copies of indices."]
 pub struct IndicesShardStores<'a> {
     client: Elasticsearch,
     parts: IndicesShardStoresUrlParts<'a>,
@@ -5723,7 +5723,7 @@ impl<'a> IndicesShardStores<'a> {
         self.status = Some(status);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Shard Stores API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Shard Stores API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -5794,7 +5794,7 @@ impl<'a> IndicesShrinkUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Shrink API"]
+#[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html). Allow to shrink an existing index into a new index with fewer primary shards."]
 pub struct IndicesShrink<'a, B> {
     client: Elasticsearch,
     parts: IndicesShrinkUrlParts<'a>,
@@ -5894,7 +5894,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Shrink API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Shrink API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -5965,7 +5965,7 @@ impl<'a> IndicesSplitUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Split API"]
+#[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html). Allows you to split an existing index into a new index with more primary shards."]
 pub struct IndicesSplit<'a, B> {
     client: Elasticsearch,
     parts: IndicesSplitUrlParts<'a>,
@@ -6065,7 +6065,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Split API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Split API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6157,7 +6157,7 @@ impl<'a> IndicesStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Stats API"]
+#[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html). Provides statistics on operations happening in an index."]
 pub struct IndicesStats<'a> {
     client: Elasticsearch,
     parts: IndicesStatsUrlParts<'a>,
@@ -6274,7 +6274,7 @@ impl<'a> IndicesStats<'a> {
         self.types = Some(types);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -6368,7 +6368,7 @@ impl<'a> IndicesUnfreezeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Unfreeze API"]
+#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html)."]
 pub struct IndicesUnfreeze<'a, B> {
     client: Elasticsearch,
     parts: IndicesUnfreezeUrlParts<'a>,
@@ -6484,7 +6484,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Unfreeze API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Unfreeze API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6554,7 +6554,7 @@ impl IndicesUpdateAliasesUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Update Aliases API"]
+#[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Updates index aliases."]
 pub struct IndicesUpdateAliases<'a, B> {
     client: Elasticsearch,
     parts: IndicesUpdateAliasesUrlParts,
@@ -6638,7 +6638,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Update Aliases API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Update Aliases API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6705,7 +6705,7 @@ impl<'a> IndicesUpgradeUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Upgrade API"]
+#[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html). The _upgrade API is no longer useful and will be removed."]
 pub struct IndicesUpgrade<'a, B> {
     client: Elasticsearch,
     parts: IndicesUpgradeUrlParts<'a>,
@@ -6813,7 +6813,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Upgrade API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Upgrade API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6901,7 +6901,7 @@ impl<'a> IndicesValidateQueryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Indices Validate Query API"]
+#[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html). Allows a user to validate a potentially expensive query without executing it."]
 pub struct IndicesValidateQuery<'a, B> {
     client: Elasticsearch,
     parts: IndicesValidateQueryUrlParts<'a>,
@@ -7065,7 +7065,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Indices Validate Query API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Indices Validate Query API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -7143,7 +7143,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Indices APIs"]
+#[doc = "Namespace client for Indices APIs"]
 pub struct Indices {
     client: Elasticsearch,
 }
@@ -7362,7 +7362,7 @@ impl Indices {
     }
 }
 impl Elasticsearch {
-    #[doc = "Indices APIs"]
+    #[doc = "Creates a namespace client for Indices APIs"]
     pub fn indices(&self) -> Indices {
         Indices::new(self.clone())
     }

@@ -44,7 +44,7 @@ impl<'a> IngestDeletePipelineUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ingest Delete Pipeline API"]
+#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html). Deletes a pipeline."]
 pub struct IngestDeletePipeline<'a> {
     client: Elasticsearch,
     parts: IngestDeletePipelineUrlParts<'a>,
@@ -105,7 +105,7 @@ impl<'a> IngestDeletePipeline<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ingest Delete Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ingest Delete Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -170,7 +170,7 @@ impl<'a> IngestGetPipelineUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ingest Get Pipeline API"]
+#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html). Returns a pipeline."]
 pub struct IngestGetPipeline<'a> {
     client: Elasticsearch,
     parts: IngestGetPipelineUrlParts<'a>,
@@ -224,7 +224,7 @@ impl<'a> IngestGetPipeline<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ingest Get Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ingest Get Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -279,7 +279,7 @@ impl IngestProcessorGrokUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ingest Processor Grok API"]
+#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get). Returns a list of the built-in patterns."]
 pub struct IngestProcessorGrok<'a> {
     client: Elasticsearch,
     parts: IngestProcessorGrokUrlParts,
@@ -326,7 +326,7 @@ impl<'a> IngestProcessorGrok<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ingest Processor Grok API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ingest Processor Grok API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -383,7 +383,7 @@ impl<'a> IngestPutPipelineUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ingest Put Pipeline API"]
+#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html). Creates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, B> {
     client: Elasticsearch,
     parts: IngestPutPipelineUrlParts<'a>,
@@ -467,7 +467,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ingest Put Pipeline API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ingest Put Pipeline API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -533,7 +533,7 @@ impl<'a> IngestSimulateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ingest Simulate API"]
+#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html). Allows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, B> {
     client: Elasticsearch,
     parts: IngestSimulateUrlParts<'a>,
@@ -609,7 +609,7 @@ where
         self.verbose = Some(verbose);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ingest Simulate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ingest Simulate API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -654,7 +654,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Ingest APIs"]
+#[doc = "Namespace client for Ingest APIs"]
 pub struct Ingest {
     client: Elasticsearch,
 }
@@ -690,7 +690,7 @@ impl Ingest {
     }
 }
 impl Elasticsearch {
-    #[doc = "Ingest APIs"]
+    #[doc = "Creates a namespace client for Ingest APIs"]
     pub fn ingest(&self) -> Ingest {
         Ingest::new(self.clone())
     }

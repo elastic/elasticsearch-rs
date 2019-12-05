@@ -39,7 +39,7 @@ impl XpackInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Xpack Info API"]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html)."]
 pub struct XpackInfo<'a> {
     client: Elasticsearch,
     parts: XpackInfoUrlParts,
@@ -93,7 +93,7 @@ impl<'a> XpackInfo<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Xpack Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Xpack Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -151,7 +151,7 @@ impl XpackUsageUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Xpack Usage API"]
+#[doc = "Builder for the [Xpack Usage API](Retrieve information about xpack features usage)."]
 pub struct XpackUsage<'a> {
     client: Elasticsearch,
     parts: XpackUsageUrlParts,
@@ -205,7 +205,7 @@ impl<'a> XpackUsage<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Xpack Usage API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Xpack Usage API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -247,7 +247,7 @@ impl<'a> XpackUsage<'a> {
         Ok(response)
     }
 }
-#[doc = "Xpack APIs"]
+#[doc = "Namespace client for X-Pack APIs"]
 pub struct Xpack {
     client: Elasticsearch,
 }
@@ -263,7 +263,7 @@ impl Xpack {
     }
 }
 impl Elasticsearch {
-    #[doc = "Xpack APIs"]
+    #[doc = "Creates a namespace client for X-Pack APIs"]
     pub fn xpack(&self) -> Xpack {
         Xpack::new(self.clone())
     }

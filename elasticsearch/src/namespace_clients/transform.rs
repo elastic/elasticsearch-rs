@@ -44,7 +44,7 @@ impl<'a> TransformDeleteTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Delete Transform API"]
+#[doc = "Builder for the [Transform Delete Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/delete-transform.html)."]
 pub struct TransformDeleteTransform<'a> {
     client: Elasticsearch,
     parts: TransformDeleteTransformUrlParts<'a>,
@@ -98,7 +98,7 @@ impl<'a> TransformDeleteTransform<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Delete Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Delete Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -160,7 +160,7 @@ impl<'a> TransformGetTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Get Transform API"]
+#[doc = "Builder for the [Transform Get Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/get-transform.html)."]
 pub struct TransformGetTransform<'a> {
     client: Elasticsearch,
     parts: TransformGetTransformUrlParts<'a>,
@@ -228,7 +228,7 @@ impl<'a> TransformGetTransform<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Get Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Get Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -295,7 +295,7 @@ impl<'a> TransformGetTransformStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Get Transform Stats API"]
+#[doc = "Builder for the [Transform Get Transform Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/get-transform-stats.html)."]
 pub struct TransformGetTransformStats<'a> {
     client: Elasticsearch,
     parts: TransformGetTransformStatsUrlParts<'a>,
@@ -363,7 +363,7 @@ impl<'a> TransformGetTransformStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Get Transform Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Get Transform Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -424,7 +424,7 @@ impl TransformPreviewTransformUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Preview Transform API"]
+#[doc = "Builder for the [Transform Preview Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/preview-transform.html)."]
 pub struct TransformPreviewTransform<'a, B> {
     client: Elasticsearch,
     parts: TransformPreviewTransformUrlParts,
@@ -492,7 +492,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Preview Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Preview Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -549,7 +549,7 @@ impl<'a> TransformPutTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Put Transform API"]
+#[doc = "Builder for the [Transform Put Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/put-transform.html)."]
 pub struct TransformPutTransform<'a, B> {
     client: Elasticsearch,
     parts: TransformPutTransformUrlParts<'a>,
@@ -625,7 +625,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Put Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Put Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -686,7 +686,7 @@ impl<'a> TransformStartTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Start Transform API"]
+#[doc = "Builder for the [Transform Start Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/start-transform.html)."]
 pub struct TransformStartTransform<'a, B> {
     client: Elasticsearch,
     parts: TransformStartTransformUrlParts<'a>,
@@ -762,7 +762,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Start Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Start Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -823,7 +823,7 @@ impl<'a> TransformStopTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Stop Transform API"]
+#[doc = "Builder for the [Transform Stop Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/stop-transform.html)."]
 pub struct TransformStopTransform<'a, B> {
     client: Elasticsearch,
     parts: TransformStopTransformUrlParts<'a>,
@@ -915,7 +915,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Stop Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Stop Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -982,7 +982,7 @@ impl<'a> TransformUpdateTransformUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Transform Update Transform API"]
+#[doc = "Builder for the [Transform Update Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/current/update-transform.html)."]
 pub struct TransformUpdateTransform<'a, B> {
     client: Elasticsearch,
     parts: TransformUpdateTransformUrlParts<'a>,
@@ -1058,7 +1058,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Transform Update Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Transform Update Transform API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1100,7 +1100,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Transform APIs"]
+#[doc = "Namespace client for Transform APIs"]
 pub struct Transform {
     client: Elasticsearch,
 }
@@ -1155,7 +1155,7 @@ impl Transform {
     }
 }
 impl Elasticsearch {
-    #[doc = "Transform APIs"]
+    #[doc = "Creates a namespace client for Transform APIs"]
     pub fn transform(&self) -> Transform {
         Transform::new(self.clone())
     }

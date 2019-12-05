@@ -14,10 +14,22 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
         tokens.append(use_declarations());
 
         let namespace_pascal_case = namespace.to_pascal_case();
+        let namespace_replaced_pascal_case = namespace.replace("_", " ").to_pascal_case();
         let namespace_client_name = ident(&namespace_pascal_case);
+        let name_for_docs = match namespace_replaced_pascal_case.as_ref() {
+            "Ccr" => "Cross Cluster Replication",
+            "Ilm" => "Index Lifecycle Management",
+            "Slm" => "Snapshot Lifecycle Management",
+            "Ml" => "Machine Learning",
+            "Xpack" => "X-Pack",
+            name => name
+        };
+
         let namespace_doc = doc(format!(
-            "{} APIs",
-            namespace.replace("_", " ").to_pascal_case()
+            "Namespace client for {} APIs", &name_for_docs
+        ));
+        let namespace_fn_doc = doc(format!(
+            "Creates a namespace client for {} APIs", &name_for_docs
         ));
         let namespace_name = ident(namespace.to_string());
 
@@ -48,7 +60,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             }
 
             impl Elasticsearch {
-                #namespace_doc
+                #namespace_fn_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
                     #namespace_client_name::new(self.clone())
                 }

@@ -4,13 +4,14 @@ use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
 use serde::{de::DeserializeOwned, Serialize};
 
-/// The body of an API call that can be written to a buffer
+/// Body of an API call.
 pub trait Body {
+    /// Write to a buffer that will be written to the request stream
     fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError>;
 }
 
-/// A JSON body for an API call
-pub struct JsonBody<T>(T);
+/// A JSON body of an API call
+pub struct JsonBody<T>(pub(crate) T);
 
 impl<T> JsonBody<T>
 where
@@ -43,13 +44,14 @@ where
     }
 }
 
-/// A newline delimited body for an API call
+/// A Newline-delimited body of an API call
 pub struct NdBody<T>(pub(crate) Vec<T>);
 
 impl<T> NdBody<T>
 where
     T: Body,
 {
+    /// Creates a new instance
     pub fn new(b: Vec<T>) -> Self {
         Self(b)
     }

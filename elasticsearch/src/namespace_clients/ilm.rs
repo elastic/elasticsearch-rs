@@ -44,7 +44,7 @@ impl<'a> IlmDeleteLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Delete Lifecycle API"]
+#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html)."]
 pub struct IlmDeleteLifecycle<'a> {
     client: Elasticsearch,
     parts: IlmDeleteLifecycleUrlParts<'a>,
@@ -91,7 +91,7 @@ impl<'a> IlmDeleteLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Delete Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Delete Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -149,7 +149,7 @@ impl<'a> IlmExplainLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Explain Lifecycle API"]
+#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html)."]
 pub struct IlmExplainLifecycle<'a> {
     client: Elasticsearch,
     parts: IlmExplainLifecycleUrlParts<'a>,
@@ -210,7 +210,7 @@ impl<'a> IlmExplainLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Explain Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Explain Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -275,7 +275,7 @@ impl<'a> IlmGetLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Get Lifecycle API"]
+#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html)."]
 pub struct IlmGetLifecycle<'a> {
     client: Elasticsearch,
     parts: IlmGetLifecycleUrlParts<'a>,
@@ -322,7 +322,7 @@ impl<'a> IlmGetLifecycle<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Get Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Get Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -374,7 +374,7 @@ impl IlmGetStatusUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Get Status API"]
+#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-status.html)."]
 pub struct IlmGetStatus<'a> {
     client: Elasticsearch,
     parts: IlmGetStatusUrlParts,
@@ -421,7 +421,7 @@ impl<'a> IlmGetStatus<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Get Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Get Status API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -478,7 +478,7 @@ impl<'a> IlmMoveToStepUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Move To Step API"]
+#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html)."]
 pub struct IlmMoveToStep<'a, B> {
     client: Elasticsearch,
     parts: IlmMoveToStepUrlParts<'a>,
@@ -546,7 +546,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Move To Step API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Move To Step API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -603,7 +603,7 @@ impl<'a> IlmPutLifecycleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Put Lifecycle API"]
+#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html)."]
 pub struct IlmPutLifecycle<'a, B> {
     client: Elasticsearch,
     parts: IlmPutLifecycleUrlParts<'a>,
@@ -671,7 +671,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Put Lifecycle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Put Lifecycle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -729,7 +729,7 @@ impl<'a> IlmRemovePolicyUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Remove Policy API"]
+#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html)."]
 pub struct IlmRemovePolicy<'a, B> {
     client: Elasticsearch,
     parts: IlmRemovePolicyUrlParts<'a>,
@@ -797,7 +797,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Remove Policy API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Remove Policy API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -855,7 +855,7 @@ impl<'a> IlmRetryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Retry API"]
+#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html)."]
 pub struct IlmRetry<'a, B> {
     client: Elasticsearch,
     parts: IlmRetryUrlParts<'a>,
@@ -923,7 +923,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Retry API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Retry API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -975,7 +975,7 @@ impl IlmStartUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Start API"]
+#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html)."]
 pub struct IlmStart<'a, B> {
     client: Elasticsearch,
     parts: IlmStartUrlParts,
@@ -1043,7 +1043,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Start API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Start API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1095,7 +1095,7 @@ impl IlmStopUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ilm Stop API"]
+#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html)."]
 pub struct IlmStop<'a, B> {
     client: Elasticsearch,
     parts: IlmStopUrlParts,
@@ -1163,7 +1163,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ilm Stop API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ilm Stop API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1202,7 +1202,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Ilm APIs"]
+#[doc = "Namespace client for Index Lifecycle Management APIs"]
 pub struct Ilm {
     client: Elasticsearch,
 }
@@ -1248,7 +1248,7 @@ impl Ilm {
     }
 }
 impl Elasticsearch {
-    #[doc = "Ilm APIs"]
+    #[doc = "Creates a namespace client for Index Lifecycle Management APIs"]
     pub fn ilm(&self) -> Ilm {
         Ilm::new(self.clone())
     }

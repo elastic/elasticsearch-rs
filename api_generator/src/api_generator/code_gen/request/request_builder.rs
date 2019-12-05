@@ -413,9 +413,19 @@ impl<'a> RequestBuilder<'a> {
         };
 
         let api_name_for_docs = split_on_pascal_case(builder_name);
-        let builder_doc = lit(format!("Request builder for the {} API", api_name_for_docs));
+
+        let builder_doc = match (endpoint.documentation.description.as_ref(), endpoint.documentation.url.as_ref()) {
+            (Some(d), Some(u)) if u != "TODO" =>
+                lit(format!("Builder for the [{} API]({}). {}", api_name_for_docs, u, d)),
+            (Some(d), None) =>
+                lit(format!("Builder for the {} API. {}", api_name_for_docs, d)),
+            (None, Some(u)) if u != "TODO" =>
+                lit(format!("Builder for the [{} API]({}).", api_name_for_docs, u)),
+            _ => lit(format!("Builder for the {} API", api_name_for_docs)),
+        };
+
         let send_doc = lit(format!(
-            "Creates an asynchronous request to the {} API that can be awaited",
+            "Creates an asynchronous call to the {} API that can be awaited",
             api_name_for_docs
         ));
 

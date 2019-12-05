@@ -44,7 +44,7 @@ impl<'a> CcrDeleteAutoFollowPatternUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Delete Auto Follow Pattern API"]
+#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-delete-auto-follow-pattern.html)."]
 pub struct CcrDeleteAutoFollowPattern<'a> {
     client: Elasticsearch,
     parts: CcrDeleteAutoFollowPatternUrlParts<'a>,
@@ -91,7 +91,7 @@ impl<'a> CcrDeleteAutoFollowPattern<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Delete Auto Follow Pattern API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Delete Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -149,7 +149,7 @@ impl<'a> CcrFollowUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Follow API"]
+#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-follow.html)."]
 pub struct CcrFollow<'a, B> {
     client: Elasticsearch,
     parts: CcrFollowUrlParts<'a>,
@@ -225,7 +225,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Follow API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Follow API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -287,7 +287,7 @@ impl<'a> CcrFollowInfoUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Follow Info API"]
+#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html)."]
 pub struct CcrFollowInfo<'a> {
     client: Elasticsearch,
     parts: CcrFollowInfoUrlParts<'a>,
@@ -334,7 +334,7 @@ impl<'a> CcrFollowInfo<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Follow Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Follow Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -393,7 +393,7 @@ impl<'a> CcrFollowStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Follow Stats API"]
+#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-stats.html)."]
 pub struct CcrFollowStats<'a> {
     client: Elasticsearch,
     parts: CcrFollowStatsUrlParts<'a>,
@@ -440,7 +440,7 @@ impl<'a> CcrFollowStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Follow Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Follow Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -498,7 +498,7 @@ impl<'a> CcrForgetFollowerUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Forget Follower API"]
+#[doc = "Builder for the [Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/current)."]
 pub struct CcrForgetFollower<'a, B> {
     client: Elasticsearch,
     parts: CcrForgetFollowerUrlParts<'a>,
@@ -566,7 +566,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Forget Follower API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Forget Follower API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -625,7 +625,7 @@ impl<'a> CcrGetAutoFollowPatternUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Get Auto Follow Pattern API"]
+#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-auto-follow-pattern.html)."]
 pub struct CcrGetAutoFollowPattern<'a> {
     client: Elasticsearch,
     parts: CcrGetAutoFollowPatternUrlParts<'a>,
@@ -672,7 +672,7 @@ impl<'a> CcrGetAutoFollowPattern<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Get Auto Follow Pattern API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Get Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -730,7 +730,7 @@ impl<'a> CcrPauseAutoFollowPatternUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Pause Auto Follow Pattern API"]
+#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-pause-auto-follow-pattern.html)."]
 pub struct CcrPauseAutoFollowPattern<'a, B> {
     client: Elasticsearch,
     parts: CcrPauseAutoFollowPatternUrlParts<'a>,
@@ -798,7 +798,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Pause Auto Follow Pattern API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Pause Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -856,7 +856,7 @@ impl<'a> CcrPauseFollowUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Pause Follow API"]
+#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-pause-follow.html)."]
 pub struct CcrPauseFollow<'a, B> {
     client: Elasticsearch,
     parts: CcrPauseFollowUrlParts<'a>,
@@ -924,7 +924,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Pause Follow API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Pause Follow API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -981,7 +981,7 @@ impl<'a> CcrPutAutoFollowPatternUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Put Auto Follow Pattern API"]
+#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-put-auto-follow-pattern.html)."]
 pub struct CcrPutAutoFollowPattern<'a, B> {
     client: Elasticsearch,
     parts: CcrPutAutoFollowPatternUrlParts<'a>,
@@ -1049,7 +1049,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Put Auto Follow Pattern API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Put Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -1107,7 +1107,7 @@ impl<'a> CcrResumeAutoFollowPatternUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Resume Auto Follow Pattern API"]
+#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-resume-auto-follow-pattern.html)."]
 pub struct CcrResumeAutoFollowPattern<'a, B> {
     client: Elasticsearch,
     parts: CcrResumeAutoFollowPatternUrlParts<'a>,
@@ -1175,7 +1175,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Resume Auto Follow Pattern API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Resume Auto Follow Pattern API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1233,7 +1233,7 @@ impl<'a> CcrResumeFollowUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Resume Follow API"]
+#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-post-resume-follow.html)."]
 pub struct CcrResumeFollow<'a, B> {
     client: Elasticsearch,
     parts: CcrResumeFollowUrlParts<'a>,
@@ -1301,7 +1301,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Resume Follow API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Resume Follow API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1353,7 +1353,7 @@ impl CcrStatsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Stats API"]
+#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-stats.html)."]
 pub struct CcrStats<'a> {
     client: Elasticsearch,
     parts: CcrStatsUrlParts,
@@ -1400,7 +1400,7 @@ impl<'a> CcrStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1458,7 +1458,7 @@ impl<'a> CcrUnfollowUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ccr Unfollow API"]
+#[doc = "Builder for the [Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/current)."]
 pub struct CcrUnfollow<'a, B> {
     client: Elasticsearch,
     parts: CcrUnfollowUrlParts<'a>,
@@ -1526,7 +1526,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ccr Unfollow API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ccr Unfollow API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1565,7 +1565,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Ccr APIs"]
+#[doc = "Namespace client for Cross Cluster Replication APIs"]
 pub struct Ccr {
     client: Elasticsearch,
 }
@@ -1632,7 +1632,7 @@ impl Ccr {
     }
 }
 impl Elasticsearch {
-    #[doc = "Ccr APIs"]
+    #[doc = "Creates a namespace client for Cross Cluster Replication APIs"]
     pub fn ccr(&self) -> Ccr {
         Ccr::new(self.clone())
     }

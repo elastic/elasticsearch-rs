@@ -45,7 +45,7 @@ impl<'a> SnapshotCleanupRepositoryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Cleanup Repository API"]
+#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Removes stale data from repository."]
 pub struct SnapshotCleanupRepository<'a, B> {
     client: Elasticsearch,
     parts: SnapshotCleanupRepositoryUrlParts<'a>,
@@ -129,7 +129,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Cleanup Repository API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Cleanup Repository API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -194,7 +194,7 @@ impl<'a> SnapshotCreateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Create API"]
+#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a snapshot in a repository."]
 pub struct SnapshotCreate<'a, B> {
     client: Elasticsearch,
     parts: SnapshotCreateUrlParts<'a>,
@@ -278,7 +278,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Create API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Create API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -341,7 +341,7 @@ impl<'a> SnapshotCreateRepositoryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Create Repository API"]
+#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a repository."]
 pub struct SnapshotCreateRepository<'a, B> {
     client: Elasticsearch,
     parts: SnapshotCreateRepositoryUrlParts<'a>,
@@ -433,7 +433,7 @@ where
         self.verify = Some(verify);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Create Repository API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Create Repository API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -501,7 +501,7 @@ impl<'a> SnapshotDeleteUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Delete API"]
+#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a snapshot."]
 pub struct SnapshotDelete<'a> {
     client: Elasticsearch,
     parts: SnapshotDeleteUrlParts<'a>,
@@ -555,7 +555,7 @@ impl<'a> SnapshotDelete<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Delete API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Delete API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -616,7 +616,7 @@ impl<'a> SnapshotDeleteRepositoryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Delete Repository API"]
+#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a repository."]
 pub struct SnapshotDeleteRepository<'a> {
     client: Elasticsearch,
     parts: SnapshotDeleteRepositoryUrlParts<'a>,
@@ -677,7 +677,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Delete Repository API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Delete Repository API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -743,7 +743,7 @@ impl<'a> SnapshotGetUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Get API"]
+#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a snapshot."]
 pub struct SnapshotGet<'a> {
     client: Elasticsearch,
     parts: SnapshotGetUrlParts<'a>,
@@ -811,7 +811,7 @@ impl<'a> SnapshotGet<'a> {
         self.verbose = Some(verbose);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Get API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Get API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -880,7 +880,7 @@ impl<'a> SnapshotGetRepositoryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Get Repository API"]
+#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a repository."]
 pub struct SnapshotGetRepository<'a> {
     client: Elasticsearch,
     parts: SnapshotGetRepositoryUrlParts<'a>,
@@ -941,7 +941,7 @@ impl<'a> SnapshotGetRepository<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Get Repository API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Get Repository API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1007,7 +1007,7 @@ impl<'a> SnapshotRestoreUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Restore API"]
+#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Restores a snapshot."]
 pub struct SnapshotRestore<'a, B> {
     client: Elasticsearch,
     parts: SnapshotRestoreUrlParts<'a>,
@@ -1091,7 +1091,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Restore API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Restore API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1168,7 +1168,7 @@ impl<'a> SnapshotStatusUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Status API"]
+#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about the status of a snapshot."]
 pub struct SnapshotStatus<'a> {
     client: Elasticsearch,
     parts: SnapshotStatusUrlParts<'a>,
@@ -1229,7 +1229,7 @@ impl<'a> SnapshotStatus<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Status API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Status API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1293,7 +1293,7 @@ impl<'a> SnapshotVerifyRepositoryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Snapshot Verify Repository API"]
+#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Verifies a repository."]
 pub struct SnapshotVerifyRepository<'a, B> {
     client: Elasticsearch,
     parts: SnapshotVerifyRepositoryUrlParts<'a>,
@@ -1377,7 +1377,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Snapshot Verify Repository API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Snapshot Verify Repository API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1422,7 +1422,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Snapshot APIs"]
+#[doc = "Namespace client for Snapshot APIs"]
 pub struct Snapshot {
     client: Elasticsearch,
 }
@@ -1487,7 +1487,7 @@ impl Snapshot {
     }
 }
 impl Elasticsearch {
-    #[doc = "Snapshot APIs"]
+    #[doc = "Creates a namespace client for Snapshot APIs"]
     pub fn snapshot(&self) -> Snapshot {
         Snapshot::new(self.clone())
     }

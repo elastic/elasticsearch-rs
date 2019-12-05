@@ -44,7 +44,7 @@ impl<'a> RollupDeleteJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Delete Job API"]
+#[doc = "Builder for the [Rollup Delete Job API]()."]
 pub struct RollupDeleteJob<'a> {
     client: Elasticsearch,
     parts: RollupDeleteJobUrlParts<'a>,
@@ -91,7 +91,7 @@ impl<'a> RollupDeleteJob<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Delete Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Delete Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -150,7 +150,7 @@ impl<'a> RollupGetJobsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Get Jobs API"]
+#[doc = "Builder for the [Rollup Get Jobs API]()."]
 pub struct RollupGetJobs<'a> {
     client: Elasticsearch,
     parts: RollupGetJobsUrlParts<'a>,
@@ -197,7 +197,7 @@ impl<'a> RollupGetJobs<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Get Jobs API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Get Jobs API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -256,7 +256,7 @@ impl<'a> RollupGetRollupCapsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Get Rollup Caps API"]
+#[doc = "Builder for the [Rollup Get Rollup Caps API]()."]
 pub struct RollupGetRollupCaps<'a> {
     client: Elasticsearch,
     parts: RollupGetRollupCapsUrlParts<'a>,
@@ -303,7 +303,7 @@ impl<'a> RollupGetRollupCaps<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Get Rollup Caps API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Get Rollup Caps API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -361,7 +361,7 @@ impl<'a> RollupGetRollupIndexCapsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Get Rollup Index Caps API"]
+#[doc = "Builder for the [Rollup Get Rollup Index Caps API]()."]
 pub struct RollupGetRollupIndexCaps<'a> {
     client: Elasticsearch,
     parts: RollupGetRollupIndexCapsUrlParts<'a>,
@@ -408,7 +408,7 @@ impl<'a> RollupGetRollupIndexCaps<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Get Rollup Index Caps API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Get Rollup Index Caps API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -465,7 +465,7 @@ impl<'a> RollupPutJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Put Job API"]
+#[doc = "Builder for the [Rollup Put Job API]()."]
 pub struct RollupPutJob<'a, B> {
     client: Elasticsearch,
     parts: RollupPutJobUrlParts<'a>,
@@ -533,7 +533,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Put Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Put Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -603,7 +603,7 @@ impl<'a> RollupRollupSearchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Rollup Search API"]
+#[doc = "Builder for the [Rollup Rollup Search API]()."]
 pub struct RollupRollupSearch<'a, B> {
     client: Elasticsearch,
     parts: RollupRollupSearchUrlParts<'a>,
@@ -687,7 +687,7 @@ where
         self.typed_keys = Some(typed_keys);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Rollup Search API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Rollup Search API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -754,7 +754,7 @@ impl<'a> RollupStartJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Start Job API"]
+#[doc = "Builder for the [Rollup Start Job API]()."]
 pub struct RollupStartJob<'a, B> {
     client: Elasticsearch,
     parts: RollupStartJobUrlParts<'a>,
@@ -822,7 +822,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Start Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Start Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -880,7 +880,7 @@ impl<'a> RollupStopJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rollup Stop Job API"]
+#[doc = "Builder for the [Rollup Stop Job API]()."]
 pub struct RollupStopJob<'a, B> {
     client: Elasticsearch,
     parts: RollupStopJobUrlParts<'a>,
@@ -964,7 +964,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rollup Stop Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rollup Stop Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1009,7 +1009,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Rollup APIs"]
+#[doc = "Namespace client for Rollup APIs"]
 pub struct Rollup {
     client: Elasticsearch,
 }
@@ -1052,7 +1052,7 @@ impl Rollup {
     }
 }
 impl Elasticsearch {
-    #[doc = "Rollup APIs"]
+    #[doc = "Creates a namespace client for Rollup APIs"]
     pub fn rollup(&self) -> Rollup {
         Rollup::new(self.clone())
     }

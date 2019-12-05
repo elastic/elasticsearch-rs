@@ -57,7 +57,7 @@ impl<'a> BulkUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Bulk API"]
+#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html). Allows to perform multiple index/update/delete operations in a single request."]
 pub struct Bulk<'a, B> {
     client: Elasticsearch,
     parts: BulkUrlParts<'a>,
@@ -197,7 +197,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Bulk API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Bulk API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -293,7 +293,7 @@ impl<'a> ClearScrollUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Clear Scroll API"]
+#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#_clear_scroll_api). Explicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, B> {
     client: Elasticsearch,
     parts: ClearScrollUrlParts<'a>,
@@ -361,7 +361,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Clear Scroll API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Clear Scroll API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -434,7 +434,7 @@ impl<'a> CountUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Count API"]
+#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html). Returns number of documents matching a query."]
 pub struct Count<'a, B> {
     client: Elasticsearch,
     parts: CountUrlParts<'a>,
@@ -614,7 +614,7 @@ where
         self.terminate_after = Some(terminate_after);
         self
     }
-    #[doc = "Creates an asynchronous request to the Count API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Count API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -733,7 +733,7 @@ impl<'a> CreateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Create API"]
+#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 pub struct Create<'a, B> {
     client: Elasticsearch,
     parts: CreateUrlParts<'a>,
@@ -857,7 +857,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Create API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Create API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -948,7 +948,7 @@ impl<'a> DeleteUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Delete API"]
+#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html). Removes a document from the index."]
 pub struct Delete<'a> {
     client: Elasticsearch,
     parts: DeleteUrlParts<'a>,
@@ -1051,7 +1051,7 @@ impl<'a> Delete<'a> {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Delete API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Delete API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1146,7 +1146,7 @@ impl<'a> DeleteByQueryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Delete By Query API"]
+#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html). Deletes documents matching the provided query."]
 pub struct DeleteByQuery<'a, B> {
     client: Elasticsearch,
     parts: DeleteByQueryUrlParts<'a>,
@@ -1470,7 +1470,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Delete By Query API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Delete By Query API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1636,7 +1636,7 @@ impl<'a> DeleteByQueryRethrottleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Delete By Query Rethrottle API"]
+#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html). Changes the number of requests per second for a particular Delete By Query operation."]
 pub struct DeleteByQueryRethrottle<'a, B> {
     client: Elasticsearch,
     parts: DeleteByQueryRethrottleUrlParts<'a>,
@@ -1712,7 +1712,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Delete By Query Rethrottle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Delete By Query Rethrottle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1772,7 +1772,7 @@ impl<'a> DeleteScriptUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Delete Script API"]
+#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Deletes a script."]
 pub struct DeleteScript<'a> {
     client: Elasticsearch,
     parts: DeleteScriptUrlParts<'a>,
@@ -1833,7 +1833,7 @@ impl<'a> DeleteScript<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Delete Script API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Delete Script API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1909,7 +1909,7 @@ impl<'a> ExistsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Exists API"]
+#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document exists in an index."]
 pub struct Exists<'a> {
     client: Elasticsearch,
     parts: ExistsUrlParts<'a>,
@@ -2026,7 +2026,7 @@ impl<'a> Exists<'a> {
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Exists API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Exists API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -2139,7 +2139,7 @@ impl<'a> ExistsSourceUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Exists Source API"]
+#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document source exists in an index."]
 pub struct ExistsSource<'a> {
     client: Elasticsearch,
     parts: ExistsSourceUrlParts<'a>,
@@ -2249,7 +2249,7 @@ impl<'a> ExistsSource<'a> {
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Exists Source API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Exists Source API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -2356,7 +2356,7 @@ impl<'a> ExplainUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Explain API"]
+#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html). Returns information about why a specific matches (or doesn't match) a query."]
 pub struct Explain<'a, B> {
     client: Elasticsearch,
     parts: ExplainUrlParts<'a>,
@@ -2520,7 +2520,7 @@ where
         self.stored_fields = Some(stored_fields);
         self
     }
-    #[doc = "Creates an asynchronous request to the Explain API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Explain API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2632,7 +2632,7 @@ impl<'a> FieldCapsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Field Caps API"]
+#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html). Returns the information about the capabilities of fields among multiple indices."]
 pub struct FieldCaps<'a, B> {
     client: Elasticsearch,
     parts: FieldCapsUrlParts<'a>,
@@ -2740,7 +2740,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Field Caps API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Field Caps API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2828,7 +2828,7 @@ impl<'a> GetUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Get API"]
+#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns a document."]
 pub struct Get<'a> {
     client: Elasticsearch,
     parts: GetUrlParts<'a>,
@@ -2945,7 +2945,7 @@ impl<'a> Get<'a> {
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Get API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Get API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3044,7 +3044,7 @@ impl<'a> GetScriptUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Get Script API"]
+#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Returns a script."]
 pub struct GetScript<'a> {
     client: Elasticsearch,
     parts: GetScriptUrlParts<'a>,
@@ -3098,7 +3098,7 @@ impl<'a> GetScript<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Get Script API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Get Script API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3172,7 +3172,7 @@ impl<'a> GetSourceUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Get Source API"]
+#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns the source of a document."]
 pub struct GetSource<'a> {
     client: Elasticsearch,
     parts: GetSourceUrlParts<'a>,
@@ -3282,7 +3282,7 @@ impl<'a> GetSource<'a> {
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Get Source API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Get Source API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3405,7 +3405,7 @@ impl<'a> IndexUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Index API"]
+#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates or updates a document in an index."]
 pub struct Index<'a, B> {
     client: Elasticsearch,
     parts: IndexUrlParts<'a>,
@@ -3553,7 +3553,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Index API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Index API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -3635,7 +3635,7 @@ impl InfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Info API"]
+#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns basic information about the cluster."]
 pub struct Info<'a> {
     client: Elasticsearch,
     parts: InfoUrlParts,
@@ -3682,7 +3682,7 @@ impl<'a> Info<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3752,7 +3752,7 @@ impl<'a> MgetUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Mget API"]
+#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html). Allows to get multiple documents in one request."]
 pub struct Mget<'a, B> {
     client: Elasticsearch,
     parts: MgetUrlParts<'a>,
@@ -3884,7 +3884,7 @@ where
         self.stored_fields = Some(stored_fields);
         self
     }
-    #[doc = "Creates an asynchronous request to the Mget API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Mget API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -3996,7 +3996,7 @@ impl<'a> MsearchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Msearch API"]
+#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html). Allows to execute several search operations in one request."]
 pub struct Msearch<'a, B> {
     client: Elasticsearch,
     parts: MsearchUrlParts<'a>,
@@ -4120,7 +4120,7 @@ where
         self.typed_keys = Some(typed_keys);
         self
     }
-    #[doc = "Creates an asynchronous request to the Msearch API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Msearch API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4217,7 +4217,7 @@ impl<'a> MsearchTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Msearch Template API"]
+#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html). Allows to execute several search template operations in one request."]
 pub struct MsearchTemplate<'a, B> {
     client: Elasticsearch,
     parts: MsearchTemplateUrlParts<'a>,
@@ -4317,7 +4317,7 @@ where
         self.typed_keys = Some(typed_keys);
         self
     }
-    #[doc = "Creates an asynchronous request to the Msearch Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Msearch Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4402,7 +4402,7 @@ impl<'a> MtermvectorsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Mtermvectors API"]
+#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html). Returns multiple termvectors in one request."]
 pub struct Mtermvectors<'a, B> {
     client: Elasticsearch,
     parts: MtermvectorsUrlParts<'a>,
@@ -4566,7 +4566,7 @@ where
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Mtermvectors API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Mtermvectors API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4657,7 +4657,7 @@ impl PingUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ping API"]
+#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns whether the cluster is running."]
 pub struct Ping<'a> {
     client: Elasticsearch,
     parts: PingUrlParts,
@@ -4704,7 +4704,7 @@ impl<'a> Ping<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ping API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ping API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Head;
@@ -4770,7 +4770,7 @@ impl<'a> PutScriptUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Put Script API"]
+#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Creates or updates a script."]
 pub struct PutScript<'a, B> {
     client: Elasticsearch,
     parts: PutScriptUrlParts<'a>,
@@ -4862,7 +4862,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Put Script API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Put Script API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -4932,7 +4932,7 @@ impl<'a> RankEvalUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Rank Eval API"]
+#[doc = "Builder for the [Rank Eval API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html). Allows to evaluate the quality of ranked search results over a set of typical search queries"]
 pub struct RankEval<'a, B> {
     client: Elasticsearch,
     parts: RankEvalUrlParts<'a>,
@@ -5024,7 +5024,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Rank Eval API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Rank Eval API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5088,7 +5088,7 @@ impl ReindexUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Reindex API"]
+#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 pub struct Reindex<'a, B> {
     client: Elasticsearch,
     parts: ReindexUrlParts,
@@ -5220,7 +5220,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Reindex API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Reindex API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -5302,7 +5302,7 @@ impl<'a> ReindexRethrottleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Reindex Rethrottle API"]
+#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Changes the number of requests per second for a particular Reindex operation."]
 pub struct ReindexRethrottle<'a, B> {
     client: Elasticsearch,
     parts: ReindexRethrottleUrlParts<'a>,
@@ -5378,7 +5378,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Reindex Rethrottle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Reindex Rethrottle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -5440,7 +5440,7 @@ impl<'a> RenderSearchTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Render Search Template API"]
+#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html#_validating_templates). Allows to use the Mustache language to pre-render a search definition."]
 pub struct RenderSearchTemplate<'a, B> {
     client: Elasticsearch,
     parts: RenderSearchTemplateUrlParts<'a>,
@@ -5508,7 +5508,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Render Search Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Render Search Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5563,7 +5563,7 @@ impl ScriptsPainlessExecuteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Scripts Painless Execute API"]
+#[doc = "Builder for the [Scripts Painless Execute API](https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html). Allows an arbitrary script to be executed and a result to be returned"]
 pub struct ScriptsPainlessExecute<'a, B> {
     client: Elasticsearch,
     parts: ScriptsPainlessExecuteUrlParts,
@@ -5631,7 +5631,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Scripts Painless Execute API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Scripts Painless Execute API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5693,7 +5693,7 @@ impl<'a> ScrollUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Scroll API"]
+#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll). Allows to retrieve a large numbers of results from a single search request."]
 pub struct Scroll<'a, B> {
     client: Elasticsearch,
     parts: ScrollUrlParts<'a>,
@@ -5785,7 +5785,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Scroll API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Scroll API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -5870,7 +5870,7 @@ impl<'a> SearchUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Search API"]
+#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html). Returns results matching a query."]
 pub struct Search<'a, B> {
     client: Elasticsearch,
     parts: SearchUrlParts<'a>,
@@ -6274,7 +6274,7 @@ where
         self.version = Some(version);
         self
     }
-    #[doc = "Creates an asynchronous request to the Search API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -6482,7 +6482,7 @@ impl<'a> SearchShardsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Search Shards API"]
+#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html). Returns information about the indices and shards that a search request would be executed against."]
 pub struct SearchShards<'a, B> {
     client: Elasticsearch,
     parts: SearchShardsUrlParts<'a>,
@@ -6598,7 +6598,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Search Shards API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Shards API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -6692,7 +6692,7 @@ impl<'a> SearchTemplateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Search Template API"]
+#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html). Allows to use the Mustache language to pre-render a search definition."]
 pub struct SearchTemplate<'a, B> {
     client: Elasticsearch,
     parts: SearchTemplateUrlParts<'a>,
@@ -6856,7 +6856,7 @@ where
         self.typed_keys = Some(typed_keys);
         self
     }
-    #[doc = "Creates an asynchronous request to the Search Template API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Search Template API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -6987,7 +6987,7 @@ impl<'a> TermvectorsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Termvectors API"]
+#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html). Returns information and statistics about terms in the fields of a particular document."]
 pub struct Termvectors<'a, B> {
     client: Elasticsearch,
     parts: TermvectorsUrlParts<'a>,
@@ -7143,7 +7143,7 @@ where
         self.version_type = Some(version_type);
         self
     }
-    #[doc = "Creates an asynchronous request to the Termvectors API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Termvectors API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -7250,7 +7250,7 @@ impl<'a> UpdateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Update API"]
+#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html). Updates a document with a script or partial document."]
 pub struct Update<'a, B> {
     client: Elasticsearch,
     parts: UpdateUrlParts<'a>,
@@ -7406,7 +7406,7 @@ where
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
-    #[doc = "Creates an asynchronous request to the Update API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Update API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7519,7 +7519,7 @@ impl<'a> UpdateByQueryUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Update By Query API"]
+#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html). Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 pub struct UpdateByQuery<'a, B> {
     client: Elasticsearch,
     parts: UpdateByQueryUrlParts<'a>,
@@ -7867,7 +7867,7 @@ where
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Update By Query API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Update By Query API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -8042,7 +8042,7 @@ impl<'a> UpdateByQueryRethrottleUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Update By Query Rethrottle API"]
+#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html). Changes the number of requests per second for a particular Update By Query operation."]
 pub struct UpdateByQueryRethrottle<'a, B> {
     client: Elasticsearch,
     parts: UpdateByQueryRethrottleUrlParts<'a>,
@@ -8118,7 +8118,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Update By Query Rethrottle API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Update By Query Rethrottle API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;

@@ -39,7 +39,7 @@ impl ClusterAllocationExplainUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Allocation Explain API"]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html). Provides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, B> {
     client: Elasticsearch,
     parts: ClusterAllocationExplainUrlParts,
@@ -123,7 +123,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Allocation Explain API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Allocation Explain API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -184,7 +184,7 @@ impl ClusterGetSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Get Settings API"]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Returns cluster settings."]
 pub struct ClusterGetSettings<'a> {
     client: Elasticsearch,
     parts: ClusterGetSettingsUrlParts,
@@ -259,7 +259,7 @@ impl<'a> ClusterGetSettings<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Get Settings API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Get Settings API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -331,7 +331,7 @@ impl<'a> ClusterHealthUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Health API"]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html). Returns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a> {
     client: Elasticsearch,
     parts: ClusterHealthUrlParts<'a>,
@@ -458,7 +458,7 @@ impl<'a> ClusterHealth<'a> {
         self.wait_for_status = Some(wait_for_status);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Health API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Health API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -543,7 +543,7 @@ impl ClusterPendingTasksUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Pending Tasks API"]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html). Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a> {
     client: Elasticsearch,
     parts: ClusterPendingTasksUrlParts,
@@ -604,7 +604,7 @@ impl<'a> ClusterPendingTasks<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Pending Tasks API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Pending Tasks API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -662,7 +662,7 @@ impl ClusterPutSettingsUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Put Settings API"]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Updates the cluster settings."]
 pub struct ClusterPutSettings<'a, B> {
     client: Elasticsearch,
     parts: ClusterPutSettingsUrlParts,
@@ -754,7 +754,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Put Settings API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Put Settings API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -815,7 +815,7 @@ impl ClusterRemoteInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Remote Info API"]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html). Returns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a> {
     client: Elasticsearch,
     parts: ClusterRemoteInfoUrlParts,
@@ -862,7 +862,7 @@ impl<'a> ClusterRemoteInfo<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Remote Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Remote Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -914,7 +914,7 @@ impl ClusterRerouteUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Reroute API"]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html). Allows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, B> {
     client: Elasticsearch,
     parts: ClusterRerouteUrlParts,
@@ -1030,7 +1030,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Reroute API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Reroute API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1119,7 +1119,7 @@ impl<'a> ClusterStateUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster State API"]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html). Returns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a> {
     client: Elasticsearch,
     parts: ClusterStateUrlParts<'a>,
@@ -1222,7 +1222,7 @@ impl<'a> ClusterState<'a> {
         self.wait_for_timeout = Some(wait_for_timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster State API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster State API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1306,7 +1306,7 @@ impl<'a> ClusterStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Cluster Stats API"]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html). Returns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a> {
     client: Elasticsearch,
     parts: ClusterStatsUrlParts<'a>,
@@ -1367,7 +1367,7 @@ impl<'a> ClusterStats<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Cluster Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cluster Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -1412,7 +1412,7 @@ impl<'a> ClusterStats<'a> {
         Ok(response)
     }
 }
-#[doc = "Cluster APIs"]
+#[doc = "Namespace client for Cluster APIs"]
 pub struct Cluster {
     client: Elasticsearch,
 }
@@ -1458,7 +1458,7 @@ impl Cluster {
     }
 }
 impl Elasticsearch {
-    #[doc = "Cluster APIs"]
+    #[doc = "Creates a namespace client for Cluster APIs"]
     pub fn cluster(&self) -> Cluster {
         Cluster::new(self.clone())
     }

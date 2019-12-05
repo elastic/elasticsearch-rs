@@ -45,7 +45,7 @@ impl<'a> MlCloseJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Close Job API"]
+#[doc = "Builder for the [Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html)."]
 pub struct MlCloseJob<'a, B> {
     client: Elasticsearch,
     parts: MlCloseJobUrlParts<'a>,
@@ -137,7 +137,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Close Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Close Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -203,7 +203,7 @@ impl<'a> MlDeleteCalendarUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Calendar API"]
+#[doc = "Builder for the Ml Delete Calendar API"]
 pub struct MlDeleteCalendar<'a> {
     client: Elasticsearch,
     parts: MlDeleteCalendarUrlParts<'a>,
@@ -250,7 +250,7 @@ impl<'a> MlDeleteCalendar<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Calendar API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Calendar API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -309,7 +309,7 @@ impl<'a> MlDeleteCalendarEventUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Calendar Event API"]
+#[doc = "Builder for the Ml Delete Calendar Event API"]
 pub struct MlDeleteCalendarEvent<'a> {
     client: Elasticsearch,
     parts: MlDeleteCalendarEventUrlParts<'a>,
@@ -356,7 +356,7 @@ impl<'a> MlDeleteCalendarEvent<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Calendar Event API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Calendar Event API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -415,7 +415,7 @@ impl<'a> MlDeleteCalendarJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Calendar Job API"]
+#[doc = "Builder for the Ml Delete Calendar Job API"]
 pub struct MlDeleteCalendarJob<'a> {
     client: Elasticsearch,
     parts: MlDeleteCalendarJobUrlParts<'a>,
@@ -462,7 +462,7 @@ impl<'a> MlDeleteCalendarJob<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Calendar Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Calendar Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -519,7 +519,7 @@ impl<'a> MlDeleteDataFrameAnalyticsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Data Frame Analytics API"]
+#[doc = "Builder for the [Ml Delete Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/current/delete-dfanalytics.html)."]
 pub struct MlDeleteDataFrameAnalytics<'a> {
     client: Elasticsearch,
     parts: MlDeleteDataFrameAnalyticsUrlParts<'a>,
@@ -566,7 +566,7 @@ impl<'a> MlDeleteDataFrameAnalytics<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Data Frame Analytics API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -623,7 +623,7 @@ impl<'a> MlDeleteDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Datafeed API"]
+#[doc = "Builder for the [Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html)."]
 pub struct MlDeleteDatafeed<'a> {
     client: Elasticsearch,
     parts: MlDeleteDatafeedUrlParts<'a>,
@@ -677,7 +677,7 @@ impl<'a> MlDeleteDatafeed<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -732,7 +732,7 @@ impl MlDeleteExpiredDataUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Expired Data API"]
+#[doc = "Builder for the Ml Delete Expired Data API"]
 pub struct MlDeleteExpiredData<'a> {
     client: Elasticsearch,
     parts: MlDeleteExpiredDataUrlParts,
@@ -779,7 +779,7 @@ impl<'a> MlDeleteExpiredData<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Expired Data API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Expired Data API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -836,7 +836,7 @@ impl<'a> MlDeleteFilterUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Filter API"]
+#[doc = "Builder for the Ml Delete Filter API"]
 pub struct MlDeleteFilter<'a> {
     client: Elasticsearch,
     parts: MlDeleteFilterUrlParts<'a>,
@@ -883,7 +883,7 @@ impl<'a> MlDeleteFilter<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Filter API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Filter API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -950,7 +950,7 @@ impl<'a> MlDeleteForecastUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Forecast API"]
+#[doc = "Builder for the [Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html)."]
 pub struct MlDeleteForecast<'a> {
     client: Elasticsearch,
     parts: MlDeleteForecastUrlParts<'a>,
@@ -1011,7 +1011,7 @@ impl<'a> MlDeleteForecast<'a> {
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Forecast API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Forecast API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1074,7 +1074,7 @@ impl<'a> MlDeleteJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Job API"]
+#[doc = "Builder for the [Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html)."]
 pub struct MlDeleteJob<'a> {
     client: Elasticsearch,
     parts: MlDeleteJobUrlParts<'a>,
@@ -1135,7 +1135,7 @@ impl<'a> MlDeleteJob<'a> {
         self.wait_for_completion = Some(wait_for_completion);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1200,7 +1200,7 @@ impl<'a> MlDeleteModelSnapshotUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Delete Model Snapshot API"]
+#[doc = "Builder for the [Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html)."]
 pub struct MlDeleteModelSnapshot<'a> {
     client: Elasticsearch,
     parts: MlDeleteModelSnapshotUrlParts<'a>,
@@ -1247,7 +1247,7 @@ impl<'a> MlDeleteModelSnapshot<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Delete Model Snapshot API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Delete Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Delete;
@@ -1301,7 +1301,7 @@ impl MlEstimateMemoryUsageUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Estimate Memory Usage API"]
+#[doc = "Builder for the [Ml Estimate Memory Usage API](http://www.elastic.co/guide/en/elasticsearch/reference/current/estimate-memory-usage-dfanalytics.html)."]
 pub struct MlEstimateMemoryUsage<'a, B> {
     client: Elasticsearch,
     parts: MlEstimateMemoryUsageUrlParts,
@@ -1369,7 +1369,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Estimate Memory Usage API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Estimate Memory Usage API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1421,7 +1421,7 @@ impl MlEvaluateDataFrameUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Evaluate Data Frame API"]
+#[doc = "Builder for the [Ml Evaluate Data Frame API](http://www.elastic.co/guide/en/elasticsearch/reference/current/evaluate-dfanalytics.html)."]
 pub struct MlEvaluateDataFrame<'a, B> {
     client: Elasticsearch,
     parts: MlEvaluateDataFrameUrlParts,
@@ -1489,7 +1489,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Evaluate Data Frame API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Evaluate Data Frame API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1541,7 +1541,7 @@ impl MlFindFileStructureUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Find File Structure API"]
+#[doc = "Builder for the [Ml Find File Structure API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-find-file-structure.html)."]
 pub struct MlFindFileStructure<'a, B> {
     client: Elasticsearch,
     parts: MlFindFileStructureUrlParts,
@@ -1721,7 +1721,7 @@ where
         self.timestamp_format = Some(timestamp_format);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Find File Structure API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Find File Structure API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -1824,7 +1824,7 @@ impl<'a> MlFlushJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Flush Job API"]
+#[doc = "Builder for the [Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html)."]
 pub struct MlFlushJob<'a, B> {
     client: Elasticsearch,
     parts: MlFlushJobUrlParts<'a>,
@@ -1932,7 +1932,7 @@ where
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Flush Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Flush Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -2005,7 +2005,7 @@ impl<'a> MlForecastUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Forecast API"]
+#[doc = "Builder for the Ml Forecast API"]
 pub struct MlForecast<'a, B> {
     client: Elasticsearch,
     parts: MlForecastUrlParts<'a>,
@@ -2089,7 +2089,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Forecast API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Forecast API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -2162,7 +2162,7 @@ impl<'a> MlGetBucketsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Buckets API"]
+#[doc = "Builder for the [Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html)."]
 pub struct MlGetBuckets<'a, B> {
     client: Elasticsearch,
     parts: MlGetBucketsUrlParts<'a>,
@@ -2302,7 +2302,7 @@ where
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Buckets API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Buckets API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2390,7 +2390,7 @@ impl<'a> MlGetCalendarEventsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Calendar Events API"]
+#[doc = "Builder for the Ml Get Calendar Events API"]
 pub struct MlGetCalendarEvents<'a> {
     client: Elasticsearch,
     parts: MlGetCalendarEventsUrlParts<'a>,
@@ -2472,7 +2472,7 @@ impl<'a> MlGetCalendarEvents<'a> {
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Calendar Events API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Calendar Events API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2546,7 +2546,7 @@ impl<'a> MlGetCalendarsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Calendars API"]
+#[doc = "Builder for the Ml Get Calendars API"]
 pub struct MlGetCalendars<'a, B> {
     client: Elasticsearch,
     parts: MlGetCalendarsUrlParts<'a>,
@@ -2630,7 +2630,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Calendars API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Calendars API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2707,7 +2707,7 @@ impl<'a> MlGetCategoriesUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Categories API"]
+#[doc = "Builder for the [Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html)."]
 pub struct MlGetCategories<'a, B> {
     client: Elasticsearch,
     parts: MlGetCategoriesUrlParts<'a>,
@@ -2791,7 +2791,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Categories API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Categories API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -2859,7 +2859,7 @@ impl<'a> MlGetDataFrameAnalyticsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Data Frame Analytics API"]
+#[doc = "Builder for the [Ml Get Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html)."]
 pub struct MlGetDataFrameAnalytics<'a> {
     client: Elasticsearch,
     parts: MlGetDataFrameAnalyticsUrlParts<'a>,
@@ -2927,7 +2927,7 @@ impl<'a> MlGetDataFrameAnalytics<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -2996,7 +2996,7 @@ impl<'a> MlGetDataFrameAnalyticsStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Data Frame Analytics Stats API"]
+#[doc = "Builder for the [Ml Get Data Frame Analytics Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics-stats.html)."]
 pub struct MlGetDataFrameAnalyticsStats<'a> {
     client: Elasticsearch,
     parts: MlGetDataFrameAnalyticsStatsUrlParts<'a>,
@@ -3064,7 +3064,7 @@ impl<'a> MlGetDataFrameAnalyticsStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Data Frame Analytics Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Data Frame Analytics Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3133,7 +3133,7 @@ impl<'a> MlGetDatafeedStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Datafeed Stats API"]
+#[doc = "Builder for the [Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html)."]
 pub struct MlGetDatafeedStats<'a> {
     client: Elasticsearch,
     parts: MlGetDatafeedStatsUrlParts<'a>,
@@ -3187,7 +3187,7 @@ impl<'a> MlGetDatafeedStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Datafeed Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Datafeed Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3249,7 +3249,7 @@ impl<'a> MlGetDatafeedsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Datafeeds API"]
+#[doc = "Builder for the [Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html)."]
 pub struct MlGetDatafeeds<'a> {
     client: Elasticsearch,
     parts: MlGetDatafeedsUrlParts<'a>,
@@ -3303,7 +3303,7 @@ impl<'a> MlGetDatafeeds<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Datafeeds API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Datafeeds API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3365,7 +3365,7 @@ impl<'a> MlGetFiltersUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Filters API"]
+#[doc = "Builder for the Ml Get Filters API"]
 pub struct MlGetFilters<'a> {
     client: Elasticsearch,
     parts: MlGetFiltersUrlParts<'a>,
@@ -3426,7 +3426,7 @@ impl<'a> MlGetFilters<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Filters API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Filters API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3490,7 +3490,7 @@ impl<'a> MlGetInfluencersUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Influencers API"]
+#[doc = "Builder for the [Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html)."]
 pub struct MlGetInfluencers<'a, B> {
     client: Elasticsearch,
     parts: MlGetInfluencersUrlParts<'a>,
@@ -3622,7 +3622,7 @@ where
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Influencers API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Influencers API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -3709,7 +3709,7 @@ impl<'a> MlGetJobStatsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Job Stats API"]
+#[doc = "Builder for the [Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html)."]
 pub struct MlGetJobStats<'a> {
     client: Elasticsearch,
     parts: MlGetJobStatsUrlParts<'a>,
@@ -3763,7 +3763,7 @@ impl<'a> MlGetJobStats<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Job Stats API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Job Stats API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3825,7 +3825,7 @@ impl<'a> MlGetJobsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Jobs API"]
+#[doc = "Builder for the [Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html)."]
 pub struct MlGetJobs<'a> {
     client: Elasticsearch,
     parts: MlGetJobsUrlParts<'a>,
@@ -3879,7 +3879,7 @@ impl<'a> MlGetJobs<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Jobs API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Jobs API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -3949,7 +3949,7 @@ impl<'a> MlGetModelSnapshotsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Model Snapshots API"]
+#[doc = "Builder for the [Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html)."]
 pub struct MlGetModelSnapshots<'a, B> {
     client: Elasticsearch,
     parts: MlGetModelSnapshotsUrlParts<'a>,
@@ -4065,7 +4065,7 @@ where
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Model Snapshots API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Model Snapshots API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4144,7 +4144,7 @@ impl<'a> MlGetOverallBucketsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Overall Buckets API"]
+#[doc = "Builder for the [Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html)."]
 pub struct MlGetOverallBuckets<'a, B> {
     client: Elasticsearch,
     parts: MlGetOverallBucketsUrlParts<'a>,
@@ -4268,7 +4268,7 @@ where
         self.top_n = Some(top_n);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Overall Buckets API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Overall Buckets API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4350,7 +4350,7 @@ impl<'a> MlGetRecordsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Get Records API"]
+#[doc = "Builder for the [Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html)."]
 pub struct MlGetRecords<'a, B> {
     client: Elasticsearch,
     parts: MlGetRecordsUrlParts<'a>,
@@ -4481,7 +4481,7 @@ where
         self.start = Some(start);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Get Records API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Get Records API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -4560,7 +4560,7 @@ impl MlInfoUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Info API"]
+#[doc = "Builder for the Ml Info API"]
 pub struct MlInfo<'a> {
     client: Elasticsearch,
     parts: MlInfoUrlParts,
@@ -4607,7 +4607,7 @@ impl<'a> MlInfo<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Info API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Info API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -4665,7 +4665,7 @@ impl<'a> MlOpenJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Open Job API"]
+#[doc = "Builder for the [Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html)."]
 pub struct MlOpenJob<'a, B> {
     client: Elasticsearch,
     parts: MlOpenJobUrlParts<'a>,
@@ -4733,7 +4733,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Open Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Open Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -4791,7 +4791,7 @@ impl<'a> MlPostCalendarEventsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Post Calendar Events API"]
+#[doc = "Builder for the Ml Post Calendar Events API"]
 pub struct MlPostCalendarEvents<'a, B> {
     client: Elasticsearch,
     parts: MlPostCalendarEventsUrlParts<'a>,
@@ -4859,7 +4859,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Post Calendar Events API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Post Calendar Events API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -4917,7 +4917,7 @@ impl<'a> MlPostDataUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Post Data API"]
+#[doc = "Builder for the [Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html)."]
 pub struct MlPostData<'a, B> {
     client: Elasticsearch,
     parts: MlPostDataUrlParts<'a>,
@@ -5001,7 +5001,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Post Data API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Post Data API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -5065,7 +5065,7 @@ impl<'a> MlPreviewDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Preview Datafeed API"]
+#[doc = "Builder for the [Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html)."]
 pub struct MlPreviewDatafeed<'a> {
     client: Elasticsearch,
     parts: MlPreviewDatafeedUrlParts<'a>,
@@ -5112,7 +5112,7 @@ impl<'a> MlPreviewDatafeed<'a> {
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Preview Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Preview Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Get;
@@ -5169,7 +5169,7 @@ impl<'a> MlPutCalendarUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Calendar API"]
+#[doc = "Builder for the Ml Put Calendar API"]
 pub struct MlPutCalendar<'a, B> {
     client: Elasticsearch,
     parts: MlPutCalendarUrlParts<'a>,
@@ -5237,7 +5237,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Calendar API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Calendar API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5296,7 +5296,7 @@ impl<'a> MlPutCalendarJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Calendar Job API"]
+#[doc = "Builder for the Ml Put Calendar Job API"]
 pub struct MlPutCalendarJob<'a, B> {
     client: Elasticsearch,
     parts: MlPutCalendarJobUrlParts<'a>,
@@ -5364,7 +5364,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Calendar Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Calendar Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5421,7 +5421,7 @@ impl<'a> MlPutDataFrameAnalyticsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Data Frame Analytics API"]
+#[doc = "Builder for the [Ml Put Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/current/put-dfanalytics.html)."]
 pub struct MlPutDataFrameAnalytics<'a, B> {
     client: Elasticsearch,
     parts: MlPutDataFrameAnalyticsUrlParts<'a>,
@@ -5489,7 +5489,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Data Frame Analytics API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5546,7 +5546,7 @@ impl<'a> MlPutDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Datafeed API"]
+#[doc = "Builder for the [Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html)."]
 pub struct MlPutDatafeed<'a, B> {
     client: Elasticsearch,
     parts: MlPutDatafeedUrlParts<'a>,
@@ -5614,7 +5614,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5671,7 +5671,7 @@ impl<'a> MlPutFilterUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Filter API"]
+#[doc = "Builder for the Ml Put Filter API"]
 pub struct MlPutFilter<'a, B> {
     client: Elasticsearch,
     parts: MlPutFilterUrlParts<'a>,
@@ -5739,7 +5739,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Filter API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Filter API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5796,7 +5796,7 @@ impl<'a> MlPutJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Put Job API"]
+#[doc = "Builder for the [Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html)."]
 pub struct MlPutJob<'a, B> {
     client: Elasticsearch,
     parts: MlPutJobUrlParts<'a>,
@@ -5864,7 +5864,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Put Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Put Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Put;
@@ -5924,7 +5924,7 @@ impl<'a> MlRevertModelSnapshotUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Revert Model Snapshot API"]
+#[doc = "Builder for the [Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html)."]
 pub struct MlRevertModelSnapshot<'a, B> {
     client: Elasticsearch,
     parts: MlRevertModelSnapshotUrlParts<'a>,
@@ -6000,7 +6000,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Revert Model Snapshot API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Revert Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6055,7 +6055,7 @@ impl MlSetUpgradeModeUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Set Upgrade Mode API"]
+#[doc = "Builder for the [Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html)."]
 pub struct MlSetUpgradeMode<'a, B> {
     client: Elasticsearch,
     parts: MlSetUpgradeModeUrlParts,
@@ -6139,7 +6139,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Set Upgrade Mode API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Set Upgrade Mode API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6203,7 +6203,7 @@ impl<'a> MlStartDataFrameAnalyticsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Start Data Frame Analytics API"]
+#[doc = "Builder for the [Ml Start Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html)."]
 pub struct MlStartDataFrameAnalytics<'a, B> {
     client: Elasticsearch,
     parts: MlStartDataFrameAnalyticsUrlParts<'a>,
@@ -6279,7 +6279,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Start Data Frame Analytics API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Start Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6340,7 +6340,7 @@ impl<'a> MlStartDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Start Datafeed API"]
+#[doc = "Builder for the [Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html)."]
 pub struct MlStartDatafeed<'a, B> {
     client: Elasticsearch,
     parts: MlStartDatafeedUrlParts<'a>,
@@ -6432,7 +6432,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Start Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Start Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6499,7 +6499,7 @@ impl<'a> MlStopDataFrameAnalyticsUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Stop Data Frame Analytics API"]
+#[doc = "Builder for the [Ml Stop Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/current/stop-dfanalytics.html)."]
 pub struct MlStopDataFrameAnalytics<'a, B> {
     client: Elasticsearch,
     parts: MlStopDataFrameAnalyticsUrlParts<'a>,
@@ -6591,7 +6591,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Stop Data Frame Analytics API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Stop Data Frame Analytics API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6658,7 +6658,7 @@ impl<'a> MlStopDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Stop Datafeed API"]
+#[doc = "Builder for the [Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html)."]
 pub struct MlStopDatafeed<'a, B> {
     client: Elasticsearch,
     parts: MlStopDatafeedUrlParts<'a>,
@@ -6750,7 +6750,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Stop Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Stop Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6817,7 +6817,7 @@ impl<'a> MlUpdateDatafeedUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Update Datafeed API"]
+#[doc = "Builder for the [Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html)."]
 pub struct MlUpdateDatafeed<'a, B> {
     client: Elasticsearch,
     parts: MlUpdateDatafeedUrlParts<'a>,
@@ -6885,7 +6885,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Update Datafeed API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Update Datafeed API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -6943,7 +6943,7 @@ impl<'a> MlUpdateFilterUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Update Filter API"]
+#[doc = "Builder for the Ml Update Filter API"]
 pub struct MlUpdateFilter<'a, B> {
     client: Elasticsearch,
     parts: MlUpdateFilterUrlParts<'a>,
@@ -7011,7 +7011,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Update Filter API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Update Filter API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7069,7 +7069,7 @@ impl<'a> MlUpdateJobUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Update Job API"]
+#[doc = "Builder for the [Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html)."]
 pub struct MlUpdateJob<'a, B> {
     client: Elasticsearch,
     parts: MlUpdateJobUrlParts<'a>,
@@ -7137,7 +7137,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Update Job API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Update Job API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7197,7 +7197,7 @@ impl<'a> MlUpdateModelSnapshotUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Update Model Snapshot API"]
+#[doc = "Builder for the [Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html)."]
 pub struct MlUpdateModelSnapshot<'a, B> {
     client: Elasticsearch,
     parts: MlUpdateModelSnapshotUrlParts<'a>,
@@ -7265,7 +7265,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Update Model Snapshot API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Update Model Snapshot API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7317,7 +7317,7 @@ impl MlValidateUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Validate API"]
+#[doc = "Builder for the Ml Validate API"]
 pub struct MlValidate<'a, B> {
     client: Elasticsearch,
     parts: MlValidateUrlParts,
@@ -7385,7 +7385,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Validate API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Validate API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7437,7 +7437,7 @@ impl MlValidateDetectorUrlParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Ml Validate Detector API"]
+#[doc = "Builder for the Ml Validate Detector API"]
 pub struct MlValidateDetector<'a, B> {
     client: Elasticsearch,
     parts: MlValidateDetectorUrlParts,
@@ -7505,7 +7505,7 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Creates an asynchronous request to the Ml Validate Detector API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Ml Validate Detector API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = HttpMethod::Post;
@@ -7544,7 +7544,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Ml APIs"]
+#[doc = "Namespace client for Machine Learning APIs"]
 pub struct Ml {
     client: Elasticsearch,
 }
@@ -7782,7 +7782,7 @@ impl Ml {
     }
 }
 impl Elasticsearch {
-    #[doc = "Ml APIs"]
+    #[doc = "Creates a namespace client for Machine Learning APIs"]
     pub fn ml(&self) -> Ml {
         Ml::new(self.clone())
     }

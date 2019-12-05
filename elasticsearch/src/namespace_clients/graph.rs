@@ -58,7 +58,7 @@ impl<'a> GraphExploreUrlParts<'a> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Request builder for the Graph Explore API"]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html)."]
 pub struct GraphExplore<'a, B> {
     client: Elasticsearch,
     parts: GraphExploreUrlParts<'a>,
@@ -142,7 +142,7 @@ where
         self.timeout = Some(timeout);
         self
     }
-    #[doc = "Creates an asynchronous request to the Graph Explore API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Graph Explore API that can be awaited"]
     pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
         let path = self.parts.build();
         let method = match self.body {
@@ -190,7 +190,7 @@ where
         Ok(response)
     }
 }
-#[doc = "Graph APIs"]
+#[doc = "Namespace client for Graph APIs"]
 pub struct Graph {
     client: Elasticsearch,
 }
@@ -203,7 +203,7 @@ impl Graph {
     }
 }
 impl Elasticsearch {
-    #[doc = "Graph APIs"]
+    #[doc = "Creates a namespace client for Graph APIs"]
     pub fn graph(&self) -> Graph {
         Graph::new(self.clone())
     }
