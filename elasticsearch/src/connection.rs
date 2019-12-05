@@ -11,7 +11,7 @@ use std::io::Write;
 
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
-use bytes::{BufMut, Bytes, BytesMut, IntoBuf};
+use bytes::{BufMut, Bytes, BytesMut};
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
     Client, Method,
@@ -211,9 +211,11 @@ impl Connection {
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
 
         if let Some(b) = body {
-            let mut bytes = BytesMut::with_capacity(1024);
-            b.write(&mut bytes)?;
-            request_builder = request_builder.body(bytes.freeze());
+            let mut bytes_mut = BytesMut::with_capacity(1024);
+            b.write(&mut bytes_mut)?;
+            let bytes = bytes_mut.freeze();
+            // TODO: pass Bytes directly once reqwest is updated to Bytes ^0.5 crate
+            request_builder = request_builder.body(bytes.to_vec());
         };
 
         if let Some(q) = query_string {
