@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -487,7 +491,7 @@ pub struct IlmMoveToStep<'a, B> {
 }
 impl<'a, B> IlmMoveToStep<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IlmMoveToStepUrlParts<'a>) -> Self {
         IlmMoveToStep {
@@ -502,14 +506,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmMoveToStep<'a, T>
+    pub fn body<T>(self, body: T) -> IlmMoveToStep<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmMoveToStep {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -612,7 +616,7 @@ pub struct IlmPutLifecycle<'a, B> {
 }
 impl<'a, B> IlmPutLifecycle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IlmPutLifecycleUrlParts<'a>) -> Self {
         IlmPutLifecycle {
@@ -627,14 +631,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmPutLifecycle<'a, T>
+    pub fn body<T>(self, body: T) -> IlmPutLifecycle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmPutLifecycle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -738,7 +742,7 @@ pub struct IlmRemovePolicy<'a, B> {
 }
 impl<'a, B> IlmRemovePolicy<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IlmRemovePolicyUrlParts<'a>) -> Self {
         IlmRemovePolicy {
@@ -753,14 +757,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRemovePolicy<'a, T>
+    pub fn body<T>(self, body: T) -> IlmRemovePolicy<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmRemovePolicy {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -864,7 +868,7 @@ pub struct IlmRetry<'a, B> {
 }
 impl<'a, B> IlmRetry<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IlmRetryUrlParts<'a>) -> Self {
         IlmRetry {
@@ -879,14 +883,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRetry<'a, T>
+    pub fn body<T>(self, body: T) -> IlmRetry<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmRetry {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -984,7 +988,7 @@ pub struct IlmStart<'a, B> {
 }
 impl<'a, B> IlmStart<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         IlmStart {
@@ -999,14 +1003,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStart<'a, T>
+    pub fn body<T>(self, body: T) -> IlmStart<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmStart {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1104,7 +1108,7 @@ pub struct IlmStop<'a, B> {
 }
 impl<'a, B> IlmStop<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         IlmStop {
@@ -1119,14 +1123,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStop<'a, T>
+    pub fn body<T>(self, body: T) -> IlmStop<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IlmStop {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

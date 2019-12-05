@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -372,7 +376,7 @@ pub struct NodesReloadSecureSettings<'a, B> {
 }
 impl<'a, B> NodesReloadSecureSettings<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsUrlParts<'a>) -> Self {
         NodesReloadSecureSettings {
@@ -388,14 +392,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> NodesReloadSecureSettings<'a, T>
+    pub fn body<T>(self, body: T) -> NodesReloadSecureSettings<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         NodesReloadSecureSettings {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

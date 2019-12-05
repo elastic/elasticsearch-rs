@@ -1,12 +1,15 @@
-use elasticsearch::{ConnectionBuilder, Elasticsearch, DEFAULT_ADDRESS, Credentials, ElasticsearchResponse, ElasticsearchError, indices::IndicesExistsUrlParts};
+use elasticsearch::{
+    indices::IndicesExistsUrlParts, BulkUrlParts, ConnectionBuilder, Credentials, Elasticsearch,
+    ElasticsearchError, ElasticsearchResponse, JsonBody, Refresh, DEFAULT_ADDRESS,
+};
 
+use reqwest::StatusCode;
+use serde_json::json;
 use sysinfo::SystemExt;
 use url::Url;
-use reqwest::StatusCode;
-use http::header::CONTENT_TYPE;
-use http::HeaderValue;
-use reqwest::header::{ACCEPT, HeaderMap};
 
+/// Gets the address to the Elasticsearch instance from environment variables
+/// and assumes an instance running locally on the default port otherwise
 fn cluster_addr() -> String {
     match std::env::var("ES_TEST_SERVER") {
         Ok(server) => server,
@@ -14,8 +17,8 @@ fn cluster_addr() -> String {
     }
 }
 
+/// Checks if Fiddler proxy process is running
 fn running_proxy() -> bool {
-    // check if the Fiddler process is running, and hook it up as a proxy if so.
     let system = sysinfo::System::new();
     !system.get_process_by_name("Fiddler").is_empty()
 }
@@ -50,52 +53,37 @@ pub fn create(mut connection_builder: ConnectionBuilder) -> Elasticsearch {
     Elasticsearch::new(connection)
 }
 
-fn create_reqwest_client() -> reqwest::Client {
-    let mut headers = HeaderMap::new();
-    headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
-    headers.insert(ACCEPT, HeaderValue::from_static("application/json"));
-
-    let mut builder = reqwest::ClientBuilder::new().default_headers(headers);
-
-    if running_proxy() {
-        builder = builder.proxy(reqwest::Proxy::http("http://localhost:8888").unwrap());
-    }
-
-    builder.build().unwrap()
-}
-
 /// index some documents into a posts index. If the posts index already exists, do nothing.
 ///
 /// As an async fn, this can end up running multiple times concurrently, and indexing documents
 /// several times. In this instance, this is fine.
 ///
 /// TODO: This is a temporary measure until https://github.com/elastic/elasticsearch-rs/issues/19 is implemented.
-pub async fn index_documents(client: &Elasticsearch) -> Result<ElasticsearchResponse, ElasticsearchError> {
+pub async fn index_documents(
+    client: &Elasticsearch,
+) -> Result<ElasticsearchResponse, ElasticsearchError> {
     let index = "posts";
-    let exists_response = client.indices()
+    let exists_response = client
+        .indices()
         .exists(IndicesExistsUrlParts::Index(&[index]))
         .send()
         .await?;
 
     if exists_response.status_code() == StatusCode::NOT_FOUND {
-        let mut body: Vec<u8> = vec![];
+        let mut body: Vec<JsonBody<_>> = vec![];
         for i in 1..11 {
-            let mut op_doc =
-                format!("{{\"index\":{{\"_id\":{}}}}}\n{{\"title\":\"Elasticsearch\"}}\n", i).as_bytes().to_vec();
-            body.append(&mut op_doc);
+            let op = json!({"index": {"_id": i}}).into();
+            let doc = json!({"title":"Elasticsearch"}).into();
+            body.push(op);
+            body.push(doc);
         }
 
-        let bulk_endpoint = format!("{}/{}/_bulk?refresh=wait_for", cluster_addr(), index);
-        let reqwest_client = create_reqwest_client();
-        let response = reqwest_client.post(&bulk_endpoint)
+        client
+            .bulk(BulkUrlParts::Index(index))
             .body(body)
+            .refresh(Refresh::WaitFor)
             .send()
-            .await;
-
-        match response {
-            Ok(r) => Ok(ElasticsearchResponse::new(r)),
-            Err(e) => Err(ElasticsearchError::HttpError(e)),
-        }
+            .await
     } else {
         Ok(exists_response)
     }

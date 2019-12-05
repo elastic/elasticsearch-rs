@@ -3,10 +3,10 @@ use common::*;
 
 use elasticsearch::SearchUrlParts;
 
+use crate::common::client::index_documents;
 use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
-use crate::common::client::index_documents;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {

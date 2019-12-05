@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -59,7 +63,7 @@ pub struct TasksCancel<'a, B> {
 }
 impl<'a, B> TasksCancel<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TasksCancelUrlParts<'a>) -> Self {
         TasksCancel {
@@ -82,14 +86,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TasksCancel<'a, T>
+    pub fn body<T>(self, body: T) -> TasksCancel<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         TasksCancel {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             actions: self.actions,
             error_trace: self.error_trace,
             filter_path: self.filter_path,

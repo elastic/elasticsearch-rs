@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -158,7 +162,7 @@ pub struct SlmExecuteLifecycle<'a, B> {
 }
 impl<'a, B> SlmExecuteLifecycle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleUrlParts<'a>) -> Self {
         SlmExecuteLifecycle {
@@ -173,14 +177,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteLifecycle<'a, T>
+    pub fn body<T>(self, body: T) -> SlmExecuteLifecycle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SlmExecuteLifecycle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -278,7 +282,7 @@ pub struct SlmExecuteRetention<'a, B> {
 }
 impl<'a, B> SlmExecuteRetention<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         SlmExecuteRetention {
@@ -293,14 +297,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteRetention<'a, T>
+    pub fn body<T>(self, body: T) -> SlmExecuteRetention<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SlmExecuteRetention {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -609,7 +613,7 @@ pub struct SlmPutLifecycle<'a, B> {
 }
 impl<'a, B> SlmPutLifecycle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SlmPutLifecycleUrlParts<'a>) -> Self {
         SlmPutLifecycle {
@@ -624,14 +628,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmPutLifecycle<'a, T>
+    pub fn body<T>(self, body: T) -> SlmPutLifecycle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SlmPutLifecycle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

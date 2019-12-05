@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -75,7 +79,7 @@ pub struct Bulk<'a, B> {
 }
 impl<'a, B> Bulk<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: BulkUrlParts<'a>) -> Self {
         Bulk {
@@ -114,14 +118,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Bulk<'a, T>
+    pub fn body<T>(self, body: Vec<T>) -> Bulk<'a, NdBody<T>>
     where
-        T: Serialize,
+        T: Body,
     {
         Bulk {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(NdBody(body)),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -302,7 +306,7 @@ pub struct ClearScroll<'a, B> {
 }
 impl<'a, B> ClearScroll<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: ClearScrollUrlParts<'a>) -> Self {
         ClearScroll {
@@ -317,14 +321,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClearScroll<'a, T>
+    pub fn body<T>(self, body: T) -> ClearScroll<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ClearScroll {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -457,7 +461,7 @@ pub struct Count<'a, B> {
 }
 impl<'a, B> Count<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CountUrlParts<'a>) -> Self {
         Count {
@@ -501,14 +505,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Count<'a, T>
+    pub fn body<T>(self, body: T) -> Count<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Count {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,
             analyzer: self.analyzer,
@@ -749,7 +753,7 @@ pub struct Create<'a, B> {
 }
 impl<'a, B> Create<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CreateUrlParts<'a>) -> Self {
         Create {
@@ -771,14 +775,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Create<'a, T>
+    pub fn body<T>(self, body: T) -> Create<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Create {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1187,7 +1191,7 @@ pub struct DeleteByQuery<'a, B> {
 }
 impl<'a, B> DeleteByQuery<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: DeleteByQueryUrlParts<'a>) -> Self {
         DeleteByQuery {
@@ -1259,14 +1263,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DeleteByQuery<'a, T>
+    pub fn body<T>(self, body: T) -> DeleteByQuery<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         DeleteByQuery {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -1646,7 +1650,7 @@ pub struct DeleteByQueryRethrottle<'a, B> {
 }
 impl<'a, B> DeleteByQueryRethrottle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleUrlParts<'a>) -> Self {
         DeleteByQueryRethrottle {
@@ -1662,14 +1666,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> DeleteByQueryRethrottle<'a, T>
+    pub fn body<T>(self, body: T) -> DeleteByQueryRethrottle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         DeleteByQueryRethrottle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -2377,7 +2381,7 @@ pub struct Explain<'a, B> {
 }
 impl<'a, B> Explain<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: ExplainUrlParts<'a>) -> Self {
         Explain {
@@ -2429,14 +2433,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Explain<'a, T>
+    pub fn body<T>(self, body: T) -> Explain<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Explain {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -2646,7 +2650,7 @@ pub struct FieldCaps<'a, B> {
 }
 impl<'a, B> FieldCaps<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: FieldCapsUrlParts<'a>) -> Self {
         FieldCaps {
@@ -2671,14 +2675,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> FieldCaps<'a, T>
+    pub fn body<T>(self, body: T) -> FieldCaps<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         FieldCaps {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -3424,7 +3428,7 @@ pub struct Index<'a, B> {
 }
 impl<'a, B> Index<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IndexUrlParts<'a>) -> Self {
         Index {
@@ -3449,14 +3453,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Index<'a, T>
+    pub fn body<T>(self, body: T) -> Index<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Index {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -3769,7 +3773,7 @@ pub struct Mget<'a, B> {
 }
 impl<'a, B> Mget<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MgetUrlParts<'a>) -> Self {
         Mget {
@@ -3807,14 +3811,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Mget<'a, T>
+    pub fn body<T>(self, body: T) -> Mget<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Mget {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -4012,7 +4016,7 @@ pub struct Msearch<'a, B> {
 }
 impl<'a, B> Msearch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MsearchUrlParts<'a>) -> Self {
         Msearch {
@@ -4034,14 +4038,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Msearch<'a, T>
+    pub fn body<T>(self, body: Vec<T>) -> Msearch<'a, NdBody<T>>
     where
-        T: Serialize,
+        T: Body,
     {
         Msearch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(NdBody(body)),
             ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -4230,7 +4234,7 @@ pub struct MsearchTemplate<'a, B> {
 }
 impl<'a, B> MsearchTemplate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MsearchTemplateUrlParts<'a>) -> Self {
         MsearchTemplate {
@@ -4249,14 +4253,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MsearchTemplate<'a, T>
+    pub fn body<T>(self, body: Vec<T>) -> MsearchTemplate<'a, NdBody<T>>
     where
-        T: Serialize,
+        T: Body,
     {
         MsearchTemplate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(NdBody(body)),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4423,7 +4427,7 @@ pub struct Mtermvectors<'a, B> {
 }
 impl<'a, B> Mtermvectors<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MtermvectorsUrlParts<'a>) -> Self {
         Mtermvectors {
@@ -4450,14 +4454,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Mtermvectors<'a, T>
+    pub fn body<T>(self, body: T) -> Mtermvectors<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Mtermvectors {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             field_statistics: self.field_statistics,
             fields: self.fields,
@@ -4782,7 +4786,7 @@ pub struct PutScript<'a, B> {
 }
 impl<'a, B> PutScript<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: PutScriptUrlParts<'a>) -> Self {
         PutScript {
@@ -4800,14 +4804,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> PutScript<'a, T>
+    pub fn body<T>(self, body: T) -> PutScript<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         PutScript {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             context: self.context,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -4944,7 +4948,7 @@ pub struct RankEval<'a, B> {
 }
 impl<'a, B> RankEval<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RankEvalUrlParts<'a>) -> Self {
         RankEval {
@@ -4967,14 +4971,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RankEval<'a, T>
+    pub fn body<T>(self, body: T) -> RankEval<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RankEval {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -5105,7 +5109,7 @@ pub struct Reindex<'a, B> {
 }
 impl<'a, B> Reindex<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         Reindex {
@@ -5128,14 +5132,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Reindex<'a, T>
+    pub fn body<T>(self, body: T) -> Reindex<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Reindex {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5312,7 +5316,7 @@ pub struct ReindexRethrottle<'a, B> {
 }
 impl<'a, B> ReindexRethrottle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: ReindexRethrottleUrlParts<'a>) -> Self {
         ReindexRethrottle {
@@ -5328,14 +5332,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ReindexRethrottle<'a, T>
+    pub fn body<T>(self, body: T) -> ReindexRethrottle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ReindexRethrottle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5449,7 +5453,7 @@ pub struct RenderSearchTemplate<'a, B> {
 }
 impl<'a, B> RenderSearchTemplate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RenderSearchTemplateUrlParts<'a>) -> Self {
         RenderSearchTemplate {
@@ -5464,14 +5468,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RenderSearchTemplate<'a, T>
+    pub fn body<T>(self, body: T) -> RenderSearchTemplate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RenderSearchTemplate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5572,7 +5576,7 @@ pub struct ScriptsPainlessExecute<'a, B> {
 }
 impl<'a, B> ScriptsPainlessExecute<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         ScriptsPainlessExecute {
@@ -5587,14 +5591,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<'a, T>
+    pub fn body<T>(self, body: T) -> ScriptsPainlessExecute<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         ScriptsPainlessExecute {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5705,7 +5709,7 @@ pub struct Scroll<'a, B> {
 }
 impl<'a, B> Scroll<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: ScrollUrlParts<'a>) -> Self {
         Scroll {
@@ -5723,14 +5727,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Scroll<'a, T>
+    pub fn body<T>(self, body: T) -> Scroll<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Scroll {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5921,7 +5925,7 @@ pub struct Search<'a, B> {
 }
 impl<'a, B> Search<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SearchUrlParts<'a>) -> Self {
         Search {
@@ -6018,14 +6022,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Search<'a, T>
+    pub fn body<T>(self, body: T) -> Search<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Search {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -6497,7 +6501,7 @@ pub struct SearchShards<'a, B> {
 }
 impl<'a, B> SearchShards<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SearchShardsUrlParts<'a>) -> Self {
         SearchShards {
@@ -6523,14 +6527,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SearchShards<'a, T>
+    pub fn body<T>(self, body: T) -> SearchShards<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SearchShards {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -6713,7 +6717,7 @@ pub struct SearchTemplate<'a, B> {
 }
 impl<'a, B> SearchTemplate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SearchTemplateUrlParts<'a>) -> Self {
         SearchTemplate {
@@ -6745,14 +6749,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SearchTemplate<'a, T>
+    pub fn body<T>(self, body: T) -> SearchTemplate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SearchTemplate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
@@ -7007,7 +7011,7 @@ pub struct Termvectors<'a, B> {
 }
 impl<'a, B> Termvectors<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: TermvectorsUrlParts<'a>) -> Self {
         Termvectors {
@@ -7033,14 +7037,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Termvectors<'a, T>
+    pub fn body<T>(self, body: T) -> Termvectors<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Termvectors {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             field_statistics: self.field_statistics,
             fields: self.fields,
@@ -7270,7 +7274,7 @@ pub struct Update<'a, B> {
 }
 impl<'a, B> Update<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: UpdateUrlParts<'a>) -> Self {
         Update {
@@ -7311,14 +7315,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> Update<'a, T>
+    pub fn body<T>(self, body: T) -> Update<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         Update {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -7563,7 +7567,7 @@ pub struct UpdateByQuery<'a, B> {
 }
 impl<'a, B> UpdateByQuery<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: UpdateByQueryUrlParts<'a>) -> Self {
         UpdateByQuery {
@@ -7643,14 +7647,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> UpdateByQuery<'a, T>
+    pub fn body<T>(self, body: T) -> UpdateByQuery<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         UpdateByQuery {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             _source: self._source,
             _source_excludes: self._source_excludes,
             _source_includes: self._source_includes,
@@ -8052,7 +8056,7 @@ pub struct UpdateByQueryRethrottle<'a, B> {
 }
 impl<'a, B> UpdateByQueryRethrottle<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleUrlParts<'a>) -> Self {
         UpdateByQueryRethrottle {
@@ -8068,14 +8072,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> UpdateByQueryRethrottle<'a, T>
+    pub fn body<T>(self, body: T) -> UpdateByQueryRethrottle<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         UpdateByQueryRethrottle {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

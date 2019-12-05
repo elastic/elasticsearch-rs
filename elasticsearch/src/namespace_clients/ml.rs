@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -57,7 +61,7 @@ pub struct MlCloseJob<'a, B> {
 }
 impl<'a, B> MlCloseJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlCloseJobUrlParts<'a>) -> Self {
         MlCloseJob {
@@ -80,14 +84,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlCloseJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlCloseJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlCloseJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_jobs: self.allow_no_jobs,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -1310,7 +1314,7 @@ pub struct MlEstimateMemoryUsage<'a, B> {
 }
 impl<'a, B> MlEstimateMemoryUsage<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlEstimateMemoryUsage {
@@ -1325,14 +1329,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlEstimateMemoryUsage<'a, T>
+    pub fn body<T>(self, body: T) -> MlEstimateMemoryUsage<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlEstimateMemoryUsage {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1430,7 +1434,7 @@ pub struct MlEvaluateDataFrame<'a, B> {
 }
 impl<'a, B> MlEvaluateDataFrame<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlEvaluateDataFrame {
@@ -1445,14 +1449,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlEvaluateDataFrame<'a, T>
+    pub fn body<T>(self, body: T) -> MlEvaluateDataFrame<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlEvaluateDataFrame {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1564,7 +1568,7 @@ pub struct MlFindFileStructure<'a, B> {
 }
 impl<'a, B> MlFindFileStructure<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlFindFileStructure {
@@ -1593,14 +1597,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlFindFileStructure<'a, T>
+    pub fn body<T>(self, body: Vec<T>) -> MlFindFileStructure<'a, NdBody<T>>
     where
-        T: Serialize,
+        T: Body,
     {
         MlFindFileStructure {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(NdBody(body)),
             charset: self.charset,
             column_names: self.column_names,
             delimiter: self.delimiter,
@@ -1838,7 +1842,7 @@ pub struct MlFlushJob<'a, B> {
 }
 impl<'a, B> MlFlushJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlFlushJobUrlParts<'a>) -> Self {
         MlFlushJob {
@@ -1863,14 +1867,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlFlushJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlFlushJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlFlushJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             advance_time: self.advance_time,
             calc_interim: self.calc_interim,
             end: self.end,
@@ -2016,7 +2020,7 @@ pub struct MlForecast<'a, B> {
 }
 impl<'a, B> MlForecast<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlForecastUrlParts<'a>) -> Self {
         MlForecast {
@@ -2033,14 +2037,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlForecast<'a, T>
+    pub fn body<T>(self, body: T) -> MlForecast<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlForecast {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             duration: self.duration,
             error_trace: self.error_trace,
             expires_in: self.expires_in,
@@ -2180,7 +2184,7 @@ pub struct MlGetBuckets<'a, B> {
 }
 impl<'a, B> MlGetBuckets<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetBucketsUrlParts<'a>) -> Self {
         MlGetBuckets {
@@ -2209,14 +2213,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetBuckets<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetBuckets<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetBuckets {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             anomaly_score: self.anomaly_score,
             desc: self.desc,
             end: self.end,
@@ -2557,7 +2561,7 @@ pub struct MlGetCalendars<'a, B> {
 }
 impl<'a, B> MlGetCalendars<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetCalendarsUrlParts<'a>) -> Self {
         MlGetCalendars {
@@ -2574,14 +2578,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetCalendars<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetCalendars<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetCalendars {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             from: self.from,
@@ -2718,7 +2722,7 @@ pub struct MlGetCategories<'a, B> {
 }
 impl<'a, B> MlGetCategories<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetCategoriesUrlParts<'a>) -> Self {
         MlGetCategories {
@@ -2735,14 +2739,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetCategories<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetCategories<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetCategories {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             from: self.from,
@@ -3507,7 +3511,7 @@ pub struct MlGetInfluencers<'a, B> {
 }
 impl<'a, B> MlGetInfluencers<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetInfluencersUrlParts<'a>) -> Self {
         MlGetInfluencers {
@@ -3530,14 +3534,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetInfluencers<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetInfluencers<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetInfluencers {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -3964,7 +3968,7 @@ pub struct MlGetModelSnapshots<'a, B> {
 }
 impl<'a, B> MlGetModelSnapshots<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsUrlParts<'a>) -> Self {
         MlGetModelSnapshots {
@@ -3985,14 +3989,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetModelSnapshots<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetModelSnapshots<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetModelSnapshots {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -4160,7 +4164,7 @@ pub struct MlGetOverallBuckets<'a, B> {
 }
 impl<'a, B> MlGetOverallBuckets<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsUrlParts<'a>) -> Self {
         MlGetOverallBuckets {
@@ -4187,14 +4191,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetOverallBuckets<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetOverallBuckets<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetOverallBuckets {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_jobs: self.allow_no_jobs,
             bucket_span: self.bucket_span,
             end: self.end,
@@ -4367,7 +4371,7 @@ pub struct MlGetRecords<'a, B> {
 }
 impl<'a, B> MlGetRecords<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlGetRecordsUrlParts<'a>) -> Self {
         MlGetRecords {
@@ -4390,14 +4394,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetRecords<'a, T>
+    pub fn body<T>(self, body: T) -> MlGetRecords<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlGetRecords {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             desc: self.desc,
             end: self.end,
             error_trace: self.error_trace,
@@ -4674,7 +4678,7 @@ pub struct MlOpenJob<'a, B> {
 }
 impl<'a, B> MlOpenJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlOpenJobUrlParts<'a>) -> Self {
         MlOpenJob {
@@ -4689,14 +4693,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlOpenJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlOpenJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlOpenJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4800,7 +4804,7 @@ pub struct MlPostCalendarEvents<'a, B> {
 }
 impl<'a, B> MlPostCalendarEvents<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsUrlParts<'a>) -> Self {
         MlPostCalendarEvents {
@@ -4815,14 +4819,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPostCalendarEvents<'a, T>
+    pub fn body<T>(self, body: T) -> MlPostCalendarEvents<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPostCalendarEvents {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -4928,7 +4932,7 @@ pub struct MlPostData<'a, B> {
 }
 impl<'a, B> MlPostData<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPostDataUrlParts<'a>) -> Self {
         MlPostData {
@@ -4945,14 +4949,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPostData<'a, T>
+    pub fn body<T>(self, body: Vec<T>) -> MlPostData<'a, NdBody<T>>
     where
-        T: Serialize,
+        T: Body,
     {
         MlPostData {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(NdBody(body)),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5178,7 +5182,7 @@ pub struct MlPutCalendar<'a, B> {
 }
 impl<'a, B> MlPutCalendar<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutCalendarUrlParts<'a>) -> Self {
         MlPutCalendar {
@@ -5193,14 +5197,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutCalendar<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutCalendar<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutCalendar {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5305,7 +5309,7 @@ pub struct MlPutCalendarJob<'a, B> {
 }
 impl<'a, B> MlPutCalendarJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutCalendarJobUrlParts<'a>) -> Self {
         MlPutCalendarJob {
@@ -5320,14 +5324,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutCalendarJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutCalendarJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutCalendarJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5430,7 +5434,7 @@ pub struct MlPutDataFrameAnalytics<'a, B> {
 }
 impl<'a, B> MlPutDataFrameAnalytics<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutDataFrameAnalyticsUrlParts<'a>) -> Self {
         MlPutDataFrameAnalytics {
@@ -5445,14 +5449,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutDataFrameAnalytics<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutDataFrameAnalytics<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5555,7 +5559,7 @@ pub struct MlPutDatafeed<'a, B> {
 }
 impl<'a, B> MlPutDatafeed<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutDatafeedUrlParts<'a>) -> Self {
         MlPutDatafeed {
@@ -5570,14 +5574,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutDatafeed<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutDatafeed<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutDatafeed {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5680,7 +5684,7 @@ pub struct MlPutFilter<'a, B> {
 }
 impl<'a, B> MlPutFilter<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutFilterUrlParts<'a>) -> Self {
         MlPutFilter {
@@ -5695,14 +5699,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutFilter<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutFilter<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutFilter {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5805,7 +5809,7 @@ pub struct MlPutJob<'a, B> {
 }
 impl<'a, B> MlPutJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlPutJobUrlParts<'a>) -> Self {
         MlPutJob {
@@ -5820,14 +5824,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlPutJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlPutJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -5934,7 +5938,7 @@ pub struct MlRevertModelSnapshot<'a, B> {
 }
 impl<'a, B> MlRevertModelSnapshot<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotUrlParts<'a>) -> Self {
         MlRevertModelSnapshot {
@@ -5950,14 +5954,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlRevertModelSnapshot<'a, T>
+    pub fn body<T>(self, body: T) -> MlRevertModelSnapshot<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlRevertModelSnapshot {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             delete_intervening_results: self.delete_intervening_results,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6066,7 +6070,7 @@ pub struct MlSetUpgradeMode<'a, B> {
 }
 impl<'a, B> MlSetUpgradeMode<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlSetUpgradeMode {
@@ -6083,14 +6087,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlSetUpgradeMode<'a, T>
+    pub fn body<T>(self, body: T) -> MlSetUpgradeMode<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlSetUpgradeMode {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             enabled: self.enabled,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6213,7 +6217,7 @@ pub struct MlStartDataFrameAnalytics<'a, B> {
 }
 impl<'a, B> MlStartDataFrameAnalytics<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlStartDataFrameAnalyticsUrlParts<'a>) -> Self {
         MlStartDataFrameAnalytics {
@@ -6229,14 +6233,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStartDataFrameAnalytics<'a, T>
+    pub fn body<T>(self, body: T) -> MlStartDataFrameAnalytics<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlStartDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6352,7 +6356,7 @@ pub struct MlStartDatafeed<'a, B> {
 }
 impl<'a, B> MlStartDatafeed<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlStartDatafeedUrlParts<'a>) -> Self {
         MlStartDatafeed {
@@ -6370,14 +6374,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStartDatafeed<'a, T>
+    pub fn body<T>(self, body: T) -> MlStartDatafeed<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlStartDatafeed {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             end: self.end,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6511,7 +6515,7 @@ pub struct MlStopDataFrameAnalytics<'a, B> {
 }
 impl<'a, B> MlStopDataFrameAnalytics<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlStopDataFrameAnalyticsUrlParts<'a>) -> Self {
         MlStopDataFrameAnalytics {
@@ -6534,14 +6538,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStopDataFrameAnalytics<'a, T>
+    pub fn body<T>(self, body: T) -> MlStopDataFrameAnalytics<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlStopDataFrameAnalytics {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_match: self.allow_no_match,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6670,7 +6674,7 @@ pub struct MlStopDatafeed<'a, B> {
 }
 impl<'a, B> MlStopDatafeed<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlStopDatafeedUrlParts<'a>) -> Self {
         MlStopDatafeed {
@@ -6693,14 +6697,14 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStopDatafeed<'a, T>
+    pub fn body<T>(self, body: T) -> MlStopDatafeed<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlStopDatafeed {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             allow_no_datafeeds: self.allow_no_datafeeds,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
@@ -6826,7 +6830,7 @@ pub struct MlUpdateDatafeed<'a, B> {
 }
 impl<'a, B> MlUpdateDatafeed<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedUrlParts<'a>) -> Self {
         MlUpdateDatafeed {
@@ -6841,14 +6845,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateDatafeed<'a, T>
+    pub fn body<T>(self, body: T) -> MlUpdateDatafeed<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlUpdateDatafeed {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -6952,7 +6956,7 @@ pub struct MlUpdateFilter<'a, B> {
 }
 impl<'a, B> MlUpdateFilter<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlUpdateFilterUrlParts<'a>) -> Self {
         MlUpdateFilter {
@@ -6967,14 +6971,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateFilter<'a, T>
+    pub fn body<T>(self, body: T) -> MlUpdateFilter<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlUpdateFilter {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7078,7 +7082,7 @@ pub struct MlUpdateJob<'a, B> {
 }
 impl<'a, B> MlUpdateJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlUpdateJobUrlParts<'a>) -> Self {
         MlUpdateJob {
@@ -7093,14 +7097,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateJob<'a, T>
+    pub fn body<T>(self, body: T) -> MlUpdateJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlUpdateJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7206,7 +7210,7 @@ pub struct MlUpdateModelSnapshot<'a, B> {
 }
 impl<'a, B> MlUpdateModelSnapshot<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotUrlParts<'a>) -> Self {
         MlUpdateModelSnapshot {
@@ -7221,14 +7225,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateModelSnapshot<'a, T>
+    pub fn body<T>(self, body: T) -> MlUpdateModelSnapshot<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlUpdateModelSnapshot {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7326,7 +7330,7 @@ pub struct MlValidate<'a, B> {
 }
 impl<'a, B> MlValidate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlValidate {
@@ -7341,14 +7345,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlValidate<'a, T>
+    pub fn body<T>(self, body: T) -> MlValidate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlValidate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -7446,7 +7450,7 @@ pub struct MlValidateDetector<'a, B> {
 }
 impl<'a, B> MlValidateDetector<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch) -> Self {
         MlValidateDetector {
@@ -7461,14 +7465,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlValidateDetector<'a, T>
+    pub fn body<T>(self, body: T) -> MlValidateDetector<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         MlValidateDetector {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -474,7 +478,7 @@ pub struct RollupPutJob<'a, B> {
 }
 impl<'a, B> RollupPutJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RollupPutJobUrlParts<'a>) -> Self {
         RollupPutJob {
@@ -489,14 +493,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupPutJob<'a, T>
+    pub fn body<T>(self, body: T) -> RollupPutJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RollupPutJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -614,7 +618,7 @@ pub struct RollupRollupSearch<'a, B> {
 }
 impl<'a, B> RollupRollupSearch<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RollupRollupSearchUrlParts<'a>) -> Self {
         RollupRollupSearch {
@@ -631,14 +635,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupRollupSearch<'a, T>
+    pub fn body<T>(self, body: T) -> RollupRollupSearch<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RollupRollupSearch {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -763,7 +767,7 @@ pub struct RollupStartJob<'a, B> {
 }
 impl<'a, B> RollupStartJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RollupStartJobUrlParts<'a>) -> Self {
         RollupStartJob {
@@ -778,14 +782,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupStartJob<'a, T>
+    pub fn body<T>(self, body: T) -> RollupStartJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RollupStartJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -891,7 +895,7 @@ pub struct RollupStopJob<'a, B> {
 }
 impl<'a, B> RollupStopJob<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: RollupStopJobUrlParts<'a>) -> Self {
         RollupStopJob {
@@ -908,14 +912,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> RollupStopJob<'a, T>
+    pub fn body<T>(self, body: T) -> RollupStopJob<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         RollupStopJob {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

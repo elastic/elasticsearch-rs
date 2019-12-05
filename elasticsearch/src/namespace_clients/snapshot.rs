@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -56,7 +60,7 @@ pub struct SnapshotCleanupRepository<'a, B> {
 }
 impl<'a, B> SnapshotCleanupRepository<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SnapshotCleanupRepositoryUrlParts<'a>) -> Self {
         SnapshotCleanupRepository {
@@ -73,14 +77,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCleanupRepository<'a, T>
+    pub fn body<T>(self, body: T) -> SnapshotCleanupRepository<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SnapshotCleanupRepository {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -205,7 +209,7 @@ pub struct SnapshotCreate<'a, B> {
 }
 impl<'a, B> SnapshotCreate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SnapshotCreateUrlParts<'a>) -> Self {
         SnapshotCreate {
@@ -222,14 +226,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCreate<'a, T>
+    pub fn body<T>(self, body: T) -> SnapshotCreate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SnapshotCreate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -353,7 +357,7 @@ pub struct SnapshotCreateRepository<'a, B> {
 }
 impl<'a, B> SnapshotCreateRepository<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SnapshotCreateRepositoryUrlParts<'a>) -> Self {
         SnapshotCreateRepository {
@@ -371,14 +375,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCreateRepository<'a, T>
+    pub fn body<T>(self, body: T) -> SnapshotCreateRepository<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SnapshotCreateRepository {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1018,7 +1022,7 @@ pub struct SnapshotRestore<'a, B> {
 }
 impl<'a, B> SnapshotRestore<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SnapshotRestoreUrlParts<'a>) -> Self {
         SnapshotRestore {
@@ -1035,14 +1039,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotRestore<'a, T>
+    pub fn body<T>(self, body: T) -> SnapshotRestore<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SnapshotRestore {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1304,7 +1308,7 @@ pub struct SnapshotVerifyRepository<'a, B> {
 }
 impl<'a, B> SnapshotVerifyRepository<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: SnapshotVerifyRepositoryUrlParts<'a>) -> Self {
         SnapshotVerifyRepository {
@@ -1321,14 +1325,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotVerifyRepository<'a, T>
+    pub fn body<T>(self, body: T) -> SnapshotVerifyRepository<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         SnapshotVerifyRepository {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

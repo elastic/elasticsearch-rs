@@ -16,12 +16,14 @@ mod enums;
 mod error;
 mod http_method;
 mod namespace_clients;
+mod request;
 mod response;
 mod root;
 
 pub use crate::{
     client::Elasticsearch, connection::*, enums::*, error::ElasticsearchError,
-    http_method::HttpMethod, response::ElasticsearchResponse, root::*, namespace_clients::*,
+    http_method::HttpMethod, namespace_clients::*, request::*, response::ElasticsearchResponse,
+    root::*,
 };
 pub use reqwest::Client;
 

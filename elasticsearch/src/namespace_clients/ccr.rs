@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -159,7 +163,7 @@ pub struct CcrFollow<'a, B> {
 }
 impl<'a, B> CcrFollow<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrFollowUrlParts<'a>) -> Self {
         CcrFollow {
@@ -175,14 +179,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrFollow<'a, T>
+    pub fn body<T>(self, body: T) -> CcrFollow<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrFollow {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -507,7 +511,7 @@ pub struct CcrForgetFollower<'a, B> {
 }
 impl<'a, B> CcrForgetFollower<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrForgetFollowerUrlParts<'a>) -> Self {
         CcrForgetFollower {
@@ -522,14 +526,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrForgetFollower<'a, T>
+    pub fn body<T>(self, body: T) -> CcrForgetFollower<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrForgetFollower {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -739,7 +743,7 @@ pub struct CcrPauseAutoFollowPattern<'a, B> {
 }
 impl<'a, B> CcrPauseAutoFollowPattern<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrPauseAutoFollowPatternUrlParts<'a>) -> Self {
         CcrPauseAutoFollowPattern {
@@ -754,14 +758,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrPauseAutoFollowPattern<'a, T>
+    pub fn body<T>(self, body: T) -> CcrPauseAutoFollowPattern<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrPauseAutoFollowPattern {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -865,7 +869,7 @@ pub struct CcrPauseFollow<'a, B> {
 }
 impl<'a, B> CcrPauseFollow<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrPauseFollowUrlParts<'a>) -> Self {
         CcrPauseFollow {
@@ -880,14 +884,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrPauseFollow<'a, T>
+    pub fn body<T>(self, body: T) -> CcrPauseFollow<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrPauseFollow {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -990,7 +994,7 @@ pub struct CcrPutAutoFollowPattern<'a, B> {
 }
 impl<'a, B> CcrPutAutoFollowPattern<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrPutAutoFollowPatternUrlParts<'a>) -> Self {
         CcrPutAutoFollowPattern {
@@ -1005,14 +1009,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrPutAutoFollowPattern<'a, T>
+    pub fn body<T>(self, body: T) -> CcrPutAutoFollowPattern<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrPutAutoFollowPattern {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1116,7 +1120,7 @@ pub struct CcrResumeAutoFollowPattern<'a, B> {
 }
 impl<'a, B> CcrResumeAutoFollowPattern<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrResumeAutoFollowPatternUrlParts<'a>) -> Self {
         CcrResumeAutoFollowPattern {
@@ -1131,14 +1135,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrResumeAutoFollowPattern<'a, T>
+    pub fn body<T>(self, body: T) -> CcrResumeAutoFollowPattern<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrResumeAutoFollowPattern {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1242,7 +1246,7 @@ pub struct CcrResumeFollow<'a, B> {
 }
 impl<'a, B> CcrResumeFollow<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrResumeFollowUrlParts<'a>) -> Self {
         CcrResumeFollow {
@@ -1257,14 +1261,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrResumeFollow<'a, T>
+    pub fn body<T>(self, body: T) -> CcrResumeFollow<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrResumeFollow {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -1467,7 +1471,7 @@ pub struct CcrUnfollow<'a, B> {
 }
 impl<'a, B> CcrUnfollow<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: CcrUnfollowUrlParts<'a>) -> Self {
         CcrUnfollow {
@@ -1482,14 +1486,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> CcrUnfollow<'a, T>
+    pub fn body<T>(self, body: T) -> CcrUnfollow<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         CcrUnfollow {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,

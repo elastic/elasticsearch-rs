@@ -15,7 +15,11 @@
 //
 // -----------------------------------------------
 use crate::{
-    client::Elasticsearch, enums::*, error::ElasticsearchError, http_method::HttpMethod,
+    client::Elasticsearch,
+    enums::*,
+    error::ElasticsearchError,
+    http_method::HttpMethod,
+    request::{Body, JsonBody, NdBody},
     response::ElasticsearchResponse,
 };
 use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
@@ -394,7 +398,7 @@ pub struct IngestPutPipeline<'a, B> {
 }
 impl<'a, B> IngestPutPipeline<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IngestPutPipelineUrlParts<'a>) -> Self {
         IngestPutPipeline {
@@ -411,14 +415,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestPutPipeline<'a, T>
+    pub fn body<T>(self, body: T) -> IngestPutPipeline<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IngestPutPipeline {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
@@ -543,7 +547,7 @@ pub struct IngestSimulate<'a, B> {
 }
 impl<'a, B> IngestSimulate<'a, B>
 where
-    B: Serialize,
+    B: Body,
 {
     pub fn new(client: Elasticsearch, parts: IngestSimulateUrlParts<'a>) -> Self {
         IngestSimulate {
@@ -559,14 +563,14 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IngestSimulate<'a, T>
+    pub fn body<T>(self, body: T) -> IngestSimulate<'a, JsonBody<T>>
     where
         T: Serialize,
     {
         IngestSimulate {
             client: self.client,
             parts: self.parts,
-            body: Some(body),
+            body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             human: self.human,
