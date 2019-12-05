@@ -66,17 +66,6 @@ pub enum ExpandWildcards {
     All,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
-pub enum Format {
-    #[serde(rename = "ndjson")]
-    Ndjson,
-    #[serde(rename = "xml")]
-    Xml,
-    #[serde(rename = "delimited")]
-    Delimited,
-    #[serde(rename = "semi_structured_text")]
-    SemiStructuredText,
-}
-#[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum GroupBy {
     #[serde(rename = "nodes")]
     Nodes,

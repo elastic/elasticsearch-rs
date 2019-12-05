@@ -340,11 +340,16 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
         if name
             .unwrap()
-            .map(|name| !name.starts_with('_') && !name.contains("_deprecated"))
+            .map(|name| !name.starts_with('_'))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;
             let (name, api_endpoint) = endpoint_from_file(display, &mut file)?;
+
+            // Only generate builders and methods for stable APIs, not experimental or beta
+            if &api_endpoint.stability != "stable" {
+                continue;
+            }
 
             let name_parts: Vec<&str> = name.splitn(2, '.').collect();
             let (namespace, method_name) = match name_parts.len() {
