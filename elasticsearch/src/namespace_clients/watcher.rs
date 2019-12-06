@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Ack Watch API"]
 pub enum WatcherAckWatchParts<'a> {
+    #[doc = "WatchId"]
     WatchId(&'a str),
+    #[doc = "WatchId and ActionId"]
     WatchIdActionId(&'a str, &'a [&'a str]),
 }
 impl<'a> WatcherAckWatchParts<'a> {
@@ -73,6 +75,7 @@ impl<'a, B> WatcherAckWatch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherAckWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherAckWatchParts<'a>) -> Self {
         WatcherAckWatch {
             client,
@@ -168,6 +171,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Activate Watch API"]
 pub enum WatcherActivateWatchParts<'a> {
+    #[doc = "WatchId"]
     WatchId(&'a str),
 }
 impl<'a> WatcherActivateWatchParts<'a> {
@@ -200,6 +204,7 @@ impl<'a, B> WatcherActivateWatch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherActivateWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherActivateWatchParts<'a>) -> Self {
         WatcherActivateWatch {
             client,
@@ -295,6 +300,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Deactivate Watch API"]
 pub enum WatcherDeactivateWatchParts<'a> {
+    #[doc = "WatchId"]
     WatchId(&'a str),
 }
 impl<'a> WatcherDeactivateWatchParts<'a> {
@@ -327,6 +333,7 @@ impl<'a, B> WatcherDeactivateWatch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherDeactivateWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchParts<'a>) -> Self {
         WatcherDeactivateWatch {
             client,
@@ -422,6 +429,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Delete Watch API"]
 pub enum WatcherDeleteWatchParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> WatcherDeleteWatchParts<'a> {
@@ -449,6 +457,7 @@ pub struct WatcherDeleteWatch<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherDeleteWatch<'a> {
+    #[doc = "Creates a new instance of [WatcherDeleteWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherDeleteWatchParts<'a>) -> Self {
         WatcherDeleteWatch {
             client,
@@ -527,7 +536,9 @@ impl<'a> WatcherDeleteWatch<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Execute Watch API"]
 pub enum WatcherExecuteWatchParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> WatcherExecuteWatchParts<'a> {
@@ -562,6 +573,7 @@ impl<'a, B> WatcherExecuteWatch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherExecuteWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchParts<'a>) -> Self {
         WatcherExecuteWatch {
             client,
@@ -667,6 +679,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Get Watch API"]
 pub enum WatcherGetWatchParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> WatcherGetWatchParts<'a> {
@@ -694,6 +707,7 @@ pub struct WatcherGetWatch<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherGetWatch<'a> {
+    #[doc = "Creates a new instance of [WatcherGetWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherGetWatchParts<'a>) -> Self {
         WatcherGetWatch {
             client,
@@ -772,6 +786,7 @@ impl<'a> WatcherGetWatch<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Put Watch API"]
 pub enum WatcherPutWatchParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> WatcherPutWatchParts<'a> {
@@ -807,6 +822,7 @@ impl<'a, B> WatcherPutWatch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherPutWatch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherPutWatchParts<'a>) -> Self {
         WatcherPutWatch {
             client,
@@ -942,6 +958,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Start API"]
 pub enum WatcherStartParts {
+    #[doc = "No parts"]
     None,
 }
 impl WatcherStartParts {
@@ -968,6 +985,7 @@ impl<'a, B> WatcherStart<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherStart]"]
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStart {
             client,
@@ -1063,7 +1081,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Stats API"]
 pub enum WatcherStatsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
 }
 impl<'a> WatcherStatsParts<'a> {
@@ -1095,6 +1115,7 @@ pub struct WatcherStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherStats<'a> {
+    #[doc = "Creates a new instance of [WatcherStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: WatcherStatsParts<'a>) -> Self {
         WatcherStats {
             client,
@@ -1191,6 +1212,7 @@ impl<'a> WatcherStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Watcher Stop API"]
 pub enum WatcherStopParts {
+    #[doc = "No parts"]
     None,
 }
 impl WatcherStopParts {
@@ -1217,6 +1239,7 @@ impl<'a, B> WatcherStop<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [WatcherStop]"]
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStop {
             client,
@@ -1314,8 +1337,9 @@ pub struct Watcher {
     client: Elasticsearch,
 }
 impl Watcher {
+    #[doc = "Creates a new instance of [Watcher]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Watcher { client }
+        Self { client }
     }
     pub fn ack_watch<'a>(&self, parts: WatcherAckWatchParts<'a>) -> WatcherAckWatch<'a, ()> {
         WatcherAckWatch::new(self.client.clone(), parts)

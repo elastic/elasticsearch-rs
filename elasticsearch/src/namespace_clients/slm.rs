@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Delete Lifecycle API"]
 pub enum SlmDeleteLifecycleParts<'a> {
+    #[doc = "PolicyId"]
     PolicyId(&'a str),
 }
 impl<'a> SlmDeleteLifecycleParts<'a> {
@@ -58,6 +59,7 @@ pub struct SlmDeleteLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SlmDeleteLifecycle<'a> {
+    #[doc = "Creates a new instance of [SlmDeleteLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SlmDeleteLifecycleParts<'a>) -> Self {
         SlmDeleteLifecycle {
             client,
@@ -136,6 +138,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Execute Lifecycle API"]
 pub enum SlmExecuteLifecycleParts<'a> {
+    #[doc = "PolicyId"]
     PolicyId(&'a str),
 }
 impl<'a> SlmExecuteLifecycleParts<'a> {
@@ -168,6 +171,7 @@ impl<'a, B> SlmExecuteLifecycle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SlmExecuteLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleParts<'a>) -> Self {
         SlmExecuteLifecycle {
             client,
@@ -263,6 +267,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Execute Retention API"]
 pub enum SlmExecuteRetentionParts {
+    #[doc = "No parts"]
     None,
 }
 impl SlmExecuteRetentionParts {
@@ -289,6 +294,7 @@ impl<'a, B> SlmExecuteRetention<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SlmExecuteRetention]"]
     pub fn new(client: Elasticsearch) -> Self {
         SlmExecuteRetention {
             client,
@@ -384,7 +390,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Get Lifecycle API"]
 pub enum SlmGetLifecycleParts<'a> {
+    #[doc = "PolicyId"]
     PolicyId(&'a [&'a str]),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> SlmGetLifecycleParts<'a> {
@@ -414,6 +422,7 @@ pub struct SlmGetLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SlmGetLifecycle<'a> {
+    #[doc = "Creates a new instance of [SlmGetLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SlmGetLifecycleParts<'a>) -> Self {
         SlmGetLifecycle {
             client,
@@ -492,6 +501,7 @@ impl<'a> SlmGetLifecycle<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Get Stats API"]
 pub enum SlmGetStatsParts {
+    #[doc = "No parts"]
     None,
 }
 impl SlmGetStatsParts {
@@ -514,6 +524,7 @@ pub struct SlmGetStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SlmGetStats<'a> {
+    #[doc = "Creates a new instance of [SlmGetStats]"]
     pub fn new(client: Elasticsearch) -> Self {
         SlmGetStats {
             client,
@@ -592,6 +603,7 @@ impl<'a> SlmGetStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Put Lifecycle API"]
 pub enum SlmPutLifecycleParts<'a> {
+    #[doc = "PolicyId"]
     PolicyId(&'a str),
 }
 impl<'a> SlmPutLifecycleParts<'a> {
@@ -623,6 +635,7 @@ impl<'a, B> SlmPutLifecycle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SlmPutLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SlmPutLifecycleParts<'a>) -> Self {
         SlmPutLifecycle {
             client,
@@ -720,8 +733,9 @@ pub struct Slm {
     client: Elasticsearch,
 }
 impl Slm {
+    #[doc = "Creates a new instance of [Slm]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Slm { client }
+        Self { client }
     }
     pub fn delete_lifecycle<'a>(
         &self,

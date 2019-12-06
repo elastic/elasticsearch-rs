@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Delete Pipeline API"]
 pub enum IngestDeletePipelineParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> IngestDeletePipelineParts<'a> {
@@ -60,6 +61,7 @@ pub struct IngestDeletePipeline<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IngestDeletePipeline<'a> {
+    #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IngestDeletePipelineParts<'a>) -> Self {
         IngestDeletePipeline {
             client,
@@ -156,7 +158,9 @@ impl<'a> IngestDeletePipeline<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Get Pipeline API"]
 pub enum IngestGetPipelineParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> IngestGetPipelineParts<'a> {
@@ -186,6 +190,7 @@ pub struct IngestGetPipeline<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IngestGetPipeline<'a> {
+    #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IngestGetPipelineParts<'a>) -> Self {
         IngestGetPipeline {
             client,
@@ -273,6 +278,7 @@ impl<'a> IngestGetPipeline<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Processor Grok API"]
 pub enum IngestProcessorGrokParts {
+    #[doc = "No parts"]
     None,
 }
 impl IngestProcessorGrokParts {
@@ -295,6 +301,7 @@ pub struct IngestProcessorGrok<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IngestProcessorGrok<'a> {
+    #[doc = "Creates a new instance of [IngestProcessorGrok]"]
     pub fn new(client: Elasticsearch) -> Self {
         IngestProcessorGrok {
             client,
@@ -373,6 +380,7 @@ impl<'a> IngestProcessorGrok<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Put Pipeline API"]
 pub enum IngestPutPipelineParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> IngestPutPipelineParts<'a> {
@@ -406,6 +414,7 @@ impl<'a, B> IngestPutPipeline<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IngestPutPipelineParts<'a>) -> Self {
         IngestPutPipeline {
             client,
@@ -521,7 +530,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ingest Simulate API"]
 pub enum IngestSimulateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> IngestSimulateParts<'a> {
@@ -556,6 +567,7 @@ impl<'a, B> IngestSimulate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IngestSimulateParts<'a>) -> Self {
         IngestSimulate {
             client,
@@ -666,8 +678,9 @@ pub struct Ingest {
     client: Elasticsearch,
 }
 impl Ingest {
+    #[doc = "Creates a new instance of [Ingest]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Ingest { client }
+        Self { client }
     }
     #[doc = "Deletes a pipeline."]
     pub fn delete_pipeline<'a>(

@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Authenticate API"]
 pub enum SecurityAuthenticateParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityAuthenticateParts {
@@ -53,6 +54,7 @@ pub struct SecurityAuthenticate<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityAuthenticate<'a> {
+    #[doc = "Creates a new instance of [SecurityAuthenticate]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
@@ -131,7 +133,9 @@ impl<'a> SecurityAuthenticate<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Change Password API"]
 pub enum SecurityChangePasswordParts<'a> {
+    #[doc = "Username"]
     Username(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> SecurityChangePasswordParts<'a> {
@@ -166,6 +170,7 @@ impl<'a, B> SecurityChangePassword<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityChangePassword] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityChangePasswordParts<'a>) -> Self {
         SecurityChangePassword {
             client,
@@ -271,6 +276,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Realms API"]
 pub enum SecurityClearCachedRealmsParts<'a> {
+    #[doc = "Realms"]
     Realms(&'a [&'a str]),
 }
 impl<'a> SecurityClearCachedRealmsParts<'a> {
@@ -305,6 +311,7 @@ impl<'a, B> SecurityClearCachedRealms<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityClearCachedRealms] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsParts<'a>) -> Self {
         SecurityClearCachedRealms {
             client,
@@ -413,6 +420,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Roles API"]
 pub enum SecurityClearCachedRolesParts<'a> {
+    #[doc = "Name"]
     Name(&'a [&'a str]),
 }
 impl<'a> SecurityClearCachedRolesParts<'a> {
@@ -446,6 +454,7 @@ impl<'a, B> SecurityClearCachedRoles<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityClearCachedRoles] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesParts<'a>) -> Self {
         SecurityClearCachedRoles {
             client,
@@ -541,6 +550,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Create Api Key API"]
 pub enum SecurityCreateApiKeyParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityCreateApiKeyParts {
@@ -568,6 +578,7 @@ impl<'a, B> SecurityCreateApiKey<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityCreateApiKey]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityCreateApiKey {
             client,
@@ -673,6 +684,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Privileges API"]
 pub enum SecurityDeletePrivilegesParts<'a> {
+    #[doc = "Application and Name"]
     ApplicationName(&'a str, &'a str),
 }
 impl<'a> SecurityDeletePrivilegesParts<'a> {
@@ -703,6 +715,7 @@ pub struct SecurityDeletePrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeletePrivileges<'a> {
+    #[doc = "Creates a new instance of [SecurityDeletePrivileges] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesParts<'a>) -> Self {
         SecurityDeletePrivileges {
             client,
@@ -790,6 +803,7 @@ impl<'a> SecurityDeletePrivileges<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Role API"]
 pub enum SecurityDeleteRoleParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> SecurityDeleteRoleParts<'a> {
@@ -818,6 +832,7 @@ pub struct SecurityDeleteRole<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteRole<'a> {
+    #[doc = "Creates a new instance of [SecurityDeleteRole] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleParts<'a>) -> Self {
         SecurityDeleteRole {
             client,
@@ -905,6 +920,7 @@ impl<'a> SecurityDeleteRole<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Role Mapping API"]
 pub enum SecurityDeleteRoleMappingParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> SecurityDeleteRoleMappingParts<'a> {
@@ -933,6 +949,7 @@ pub struct SecurityDeleteRoleMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteRoleMapping<'a> {
+    #[doc = "Creates a new instance of [SecurityDeleteRoleMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingParts<'a>) -> Self {
         SecurityDeleteRoleMapping {
             client,
@@ -1020,6 +1037,7 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete User API"]
 pub enum SecurityDeleteUserParts<'a> {
+    #[doc = "Username"]
     Username(&'a str),
 }
 impl<'a> SecurityDeleteUserParts<'a> {
@@ -1048,6 +1066,7 @@ pub struct SecurityDeleteUser<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteUser<'a> {
+    #[doc = "Creates a new instance of [SecurityDeleteUser] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityDeleteUserParts<'a>) -> Self {
         SecurityDeleteUser {
             client,
@@ -1135,6 +1154,7 @@ impl<'a> SecurityDeleteUser<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Disable User API"]
 pub enum SecurityDisableUserParts<'a> {
+    #[doc = "Username"]
     Username(&'a str),
 }
 impl<'a> SecurityDisableUserParts<'a> {
@@ -1168,6 +1188,7 @@ impl<'a, B> SecurityDisableUser<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityDisableUser] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityDisableUserParts<'a>) -> Self {
         SecurityDisableUser {
             client,
@@ -1273,6 +1294,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Enable User API"]
 pub enum SecurityEnableUserParts<'a> {
+    #[doc = "Username"]
     Username(&'a str),
 }
 impl<'a> SecurityEnableUserParts<'a> {
@@ -1306,6 +1328,7 @@ impl<'a, B> SecurityEnableUser<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityEnableUser] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityEnableUserParts<'a>) -> Self {
         SecurityEnableUser {
             client,
@@ -1411,6 +1434,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Api Key API"]
 pub enum SecurityGetApiKeyParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityGetApiKeyParts {
@@ -1438,6 +1462,7 @@ pub struct SecurityGetApiKey<'a> {
     username: Option<&'a str>,
 }
 impl<'a> SecurityGetApiKey<'a> {
+    #[doc = "Creates a new instance of [SecurityGetApiKey]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
@@ -1561,6 +1586,7 @@ impl<'a> SecurityGetApiKey<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Builtin Privileges API"]
 pub enum SecurityGetBuiltinPrivilegesParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityGetBuiltinPrivilegesParts {
@@ -1583,6 +1609,7 @@ pub struct SecurityGetBuiltinPrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetBuiltinPrivileges<'a> {
+    #[doc = "Creates a new instance of [SecurityGetBuiltinPrivileges]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
@@ -1661,8 +1688,11 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Privileges API"]
 pub enum SecurityGetPrivilegesParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Application"]
     Application(&'a str),
+    #[doc = "Application and Name"]
     ApplicationName(&'a str, &'a str),
 }
 impl<'a> SecurityGetPrivilegesParts<'a> {
@@ -1699,6 +1729,7 @@ pub struct SecurityGetPrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetPrivileges<'a> {
+    #[doc = "Creates a new instance of [SecurityGetPrivileges] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesParts<'a>) -> Self {
         SecurityGetPrivileges {
             client,
@@ -1777,7 +1808,9 @@ impl<'a> SecurityGetPrivileges<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Role API"]
 pub enum SecurityGetRoleParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> SecurityGetRoleParts<'a> {
@@ -1806,6 +1839,7 @@ pub struct SecurityGetRole<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetRole<'a> {
+    #[doc = "Creates a new instance of [SecurityGetRole] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityGetRoleParts<'a>) -> Self {
         SecurityGetRole {
             client,
@@ -1884,7 +1918,9 @@ impl<'a> SecurityGetRole<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Role Mapping API"]
 pub enum SecurityGetRoleMappingParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> SecurityGetRoleMappingParts<'a> {
@@ -1913,6 +1949,7 @@ pub struct SecurityGetRoleMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetRoleMapping<'a> {
+    #[doc = "Creates a new instance of [SecurityGetRoleMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingParts<'a>) -> Self {
         SecurityGetRoleMapping {
             client,
@@ -1991,6 +2028,7 @@ impl<'a> SecurityGetRoleMapping<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Token API"]
 pub enum SecurityGetTokenParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityGetTokenParts {
@@ -2017,6 +2055,7 @@ impl<'a, B> SecurityGetToken<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityGetToken]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetToken {
             client,
@@ -2112,7 +2151,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get User API"]
 pub enum SecurityGetUserParts<'a> {
+    #[doc = "Username"]
     Username(&'a [&'a str]),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> SecurityGetUserParts<'a> {
@@ -2142,6 +2183,7 @@ pub struct SecurityGetUser<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetUser<'a> {
+    #[doc = "Creates a new instance of [SecurityGetUser] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityGetUserParts<'a>) -> Self {
         SecurityGetUser {
             client,
@@ -2220,6 +2262,7 @@ impl<'a> SecurityGetUser<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get User Privileges API"]
 pub enum SecurityGetUserPrivilegesParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityGetUserPrivilegesParts {
@@ -2242,6 +2285,7 @@ pub struct SecurityGetUserPrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetUserPrivileges<'a> {
+    #[doc = "Creates a new instance of [SecurityGetUserPrivileges]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
@@ -2320,7 +2364,9 @@ impl<'a> SecurityGetUserPrivileges<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Has Privileges API"]
 pub enum SecurityHasPrivilegesParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "User"]
     User(&'a str),
 }
 impl<'a> SecurityHasPrivilegesParts<'a> {
@@ -2354,6 +2400,7 @@ impl<'a, B> SecurityHasPrivileges<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityHasPrivileges] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesParts<'a>) -> Self {
         SecurityHasPrivileges {
             client,
@@ -2452,6 +2499,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Invalidate Api Key API"]
 pub enum SecurityInvalidateApiKeyParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityInvalidateApiKeyParts {
@@ -2478,6 +2526,7 @@ impl<'a, B> SecurityInvalidateApiKey<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityInvalidateApiKey]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
             client,
@@ -2573,6 +2622,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Invalidate Token API"]
 pub enum SecurityInvalidateTokenParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityInvalidateTokenParts {
@@ -2599,6 +2649,7 @@ impl<'a, B> SecurityInvalidateToken<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityInvalidateToken]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateToken {
             client,
@@ -2694,6 +2745,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put Privileges API"]
 pub enum SecurityPutPrivilegesParts {
+    #[doc = "No parts"]
     None,
 }
 impl SecurityPutPrivilegesParts {
@@ -2721,6 +2773,7 @@ impl<'a, B> SecurityPutPrivileges<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityPutPrivileges]"]
     pub fn new(client: Elasticsearch) -> Self {
         SecurityPutPrivileges {
             client,
@@ -2826,6 +2879,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put Role API"]
 pub enum SecurityPutRoleParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> SecurityPutRoleParts<'a> {
@@ -2858,6 +2912,7 @@ impl<'a, B> SecurityPutRole<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityPutRole] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityPutRoleParts<'a>) -> Self {
         SecurityPutRole {
             client,
@@ -2963,6 +3018,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put Role Mapping API"]
 pub enum SecurityPutRoleMappingParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> SecurityPutRoleMappingParts<'a> {
@@ -2995,6 +3051,7 @@ impl<'a, B> SecurityPutRoleMapping<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityPutRoleMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingParts<'a>) -> Self {
         SecurityPutRoleMapping {
             client,
@@ -3100,6 +3157,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put User API"]
 pub enum SecurityPutUserParts<'a> {
+    #[doc = "Username"]
     Username(&'a str),
 }
 impl<'a> SecurityPutUserParts<'a> {
@@ -3132,6 +3190,7 @@ impl<'a, B> SecurityPutUser<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SecurityPutUser] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SecurityPutUserParts<'a>) -> Self {
         SecurityPutUser {
             client,
@@ -3239,8 +3298,9 @@ pub struct Security {
     client: Elasticsearch,
 }
 impl Security {
+    #[doc = "Creates a new instance of [Security]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Security { client }
+        Self { client }
     }
     pub fn authenticate<'a>(&self) -> SecurityAuthenticate<'a> {
         SecurityAuthenticate::new(self.client.clone())

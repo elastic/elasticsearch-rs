@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Migration Deprecations API"]
 pub enum MigrationDeprecationsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> MigrationDeprecationsParts<'a> {
@@ -61,6 +63,7 @@ pub struct MigrationDeprecations<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MigrationDeprecations<'a> {
+    #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MigrationDeprecationsParts<'a>) -> Self {
         MigrationDeprecations {
             client,
@@ -141,8 +144,9 @@ pub struct Migration {
     client: Elasticsearch,
 }
 impl Migration {
+    #[doc = "Creates a new instance of [Migration]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Migration { client }
+        Self { client }
     }
     pub fn deprecations<'a>(
         &self,

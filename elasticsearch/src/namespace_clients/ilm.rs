@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Delete Lifecycle API"]
 pub enum IlmDeleteLifecycleParts<'a> {
+    #[doc = "Policy"]
     Policy(&'a str),
 }
 impl<'a> IlmDeleteLifecycleParts<'a> {
@@ -58,6 +59,7 @@ pub struct IlmDeleteLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmDeleteLifecycle<'a> {
+    #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleParts<'a>) -> Self {
         IlmDeleteLifecycle {
             client,
@@ -136,6 +138,7 @@ impl<'a> IlmDeleteLifecycle<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Explain Lifecycle API"]
 pub enum IlmExplainLifecycleParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IlmExplainLifecycleParts<'a> {
@@ -166,6 +169,7 @@ pub struct IlmExplainLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmExplainLifecycle<'a> {
+    #[doc = "Creates a new instance of [IlmExplainLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleParts<'a>) -> Self {
         IlmExplainLifecycle {
             client,
@@ -262,7 +266,9 @@ impl<'a> IlmExplainLifecycle<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Get Lifecycle API"]
 pub enum IlmGetLifecycleParts<'a> {
+    #[doc = "Policy"]
     Policy(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> IlmGetLifecycleParts<'a> {
@@ -291,6 +297,7 @@ pub struct IlmGetLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmGetLifecycle<'a> {
+    #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmGetLifecycleParts<'a>) -> Self {
         IlmGetLifecycle {
             client,
@@ -369,6 +376,7 @@ impl<'a> IlmGetLifecycle<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Get Status API"]
 pub enum IlmGetStatusParts {
+    #[doc = "No parts"]
     None,
 }
 impl IlmGetStatusParts {
@@ -391,6 +399,7 @@ pub struct IlmGetStatus<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmGetStatus<'a> {
+    #[doc = "Creates a new instance of [IlmGetStatus]"]
     pub fn new(client: Elasticsearch) -> Self {
         IlmGetStatus {
             client,
@@ -469,6 +478,7 @@ impl<'a> IlmGetStatus<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Move To Step API"]
 pub enum IlmMoveToStepParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IlmMoveToStepParts<'a> {
@@ -500,6 +510,7 @@ impl<'a, B> IlmMoveToStep<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmMoveToStep] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmMoveToStepParts<'a>) -> Self {
         IlmMoveToStep {
             client,
@@ -595,6 +606,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Put Lifecycle API"]
 pub enum IlmPutLifecycleParts<'a> {
+    #[doc = "Policy"]
     Policy(&'a str),
 }
 impl<'a> IlmPutLifecycleParts<'a> {
@@ -626,6 +638,7 @@ impl<'a, B> IlmPutLifecycle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmPutLifecycle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmPutLifecycleParts<'a>) -> Self {
         IlmPutLifecycle {
             client,
@@ -721,6 +734,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Remove Policy API"]
 pub enum IlmRemovePolicyParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IlmRemovePolicyParts<'a> {
@@ -753,6 +767,7 @@ impl<'a, B> IlmRemovePolicy<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmRemovePolicy] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmRemovePolicyParts<'a>) -> Self {
         IlmRemovePolicy {
             client,
@@ -848,6 +863,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Retry API"]
 pub enum IlmRetryParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IlmRetryParts<'a> {
@@ -880,6 +896,7 @@ impl<'a, B> IlmRetry<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmRetry] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IlmRetryParts<'a>) -> Self {
         IlmRetry {
             client,
@@ -975,6 +992,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Start API"]
 pub enum IlmStartParts {
+    #[doc = "No parts"]
     None,
 }
 impl IlmStartParts {
@@ -1001,6 +1019,7 @@ impl<'a, B> IlmStart<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmStart]"]
     pub fn new(client: Elasticsearch) -> Self {
         IlmStart {
             client,
@@ -1096,6 +1115,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Stop API"]
 pub enum IlmStopParts {
+    #[doc = "No parts"]
     None,
 }
 impl IlmStopParts {
@@ -1122,6 +1142,7 @@ impl<'a, B> IlmStop<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IlmStop]"]
     pub fn new(client: Elasticsearch) -> Self {
         IlmStop {
             client,
@@ -1219,8 +1240,9 @@ pub struct Ilm {
     client: Elasticsearch,
 }
 impl Ilm {
+    #[doc = "Creates a new instance of [Ilm]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Ilm { client }
+        Self { client }
     }
     pub fn delete_lifecycle<'a>(
         &self,

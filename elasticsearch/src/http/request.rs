@@ -16,7 +16,7 @@ impl<T> JsonBody<T>
 where
     T: Serialize,
 {
-    /// Creates a new instance of `JsonBody`
+    /// Creates a new instance of [JsonBody]
     pub fn new(t: T) -> Self {
         Self(t)
     }
@@ -26,7 +26,7 @@ impl<T> From<T> for JsonBody<T>
 where
     T: Serialize,
 {
-    /// Creates a new instance of `JsonBody<T>` from a type `T` that implements `Serialize`
+    /// Creates a new instance of [JsonBody] from a type `T` that implements [serde::Serialize]
     fn from(t: T) -> Self {
         JsonBody(t)
     }
@@ -52,7 +52,7 @@ impl<T> NdBody<T>
 where
     T: Body,
 {
-    /// Creates a new instance of `NdBody<T>`
+    /// Creates a new instance of [NdBody]
     pub fn new(b: Vec<T>) -> Self {
         Self(b)
     }

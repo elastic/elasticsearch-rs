@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Cleanup Repository API"]
 pub enum SnapshotCleanupRepositoryParts<'a> {
+    #[doc = "Repository"]
     Repository(&'a str),
 }
 impl<'a> SnapshotCleanupRepositoryParts<'a> {
@@ -65,6 +66,7 @@ impl<'a, B> SnapshotCleanupRepository<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SnapshotCleanupRepository] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotCleanupRepositoryParts<'a>) -> Self {
         SnapshotCleanupRepository {
             client,
@@ -180,6 +182,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Create API"]
 pub enum SnapshotCreateParts<'a> {
+    #[doc = "Repository and Snapshot"]
     RepositorySnapshot(&'a str, &'a str),
 }
 impl<'a> SnapshotCreateParts<'a> {
@@ -215,6 +218,7 @@ impl<'a, B> SnapshotCreate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SnapshotCreate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotCreateParts<'a>) -> Self {
         SnapshotCreate {
             client,
@@ -330,6 +334,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Create Repository API"]
 pub enum SnapshotCreateRepositoryParts<'a> {
+    #[doc = "Repository"]
     Repository(&'a str),
 }
 impl<'a> SnapshotCreateRepositoryParts<'a> {
@@ -364,6 +369,7 @@ impl<'a, B> SnapshotCreateRepository<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SnapshotCreateRepository] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotCreateRepositoryParts<'a>) -> Self {
         SnapshotCreateRepository {
             client,
@@ -489,6 +495,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Delete API"]
 pub enum SnapshotDeleteParts<'a> {
+    #[doc = "Repository and Snapshot"]
     RepositorySnapshot(&'a str, &'a str),
 }
 impl<'a> SnapshotDeleteParts<'a> {
@@ -519,6 +526,7 @@ pub struct SnapshotDelete<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotDelete<'a> {
+    #[doc = "Creates a new instance of [SnapshotDelete] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotDeleteParts<'a>) -> Self {
         SnapshotDelete {
             client,
@@ -606,6 +614,7 @@ impl<'a> SnapshotDelete<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Delete Repository API"]
 pub enum SnapshotDeleteRepositoryParts<'a> {
+    #[doc = "Repository"]
     Repository(&'a [&'a str]),
 }
 impl<'a> SnapshotDeleteRepositoryParts<'a> {
@@ -636,6 +645,7 @@ pub struct SnapshotDeleteRepository<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> SnapshotDeleteRepository<'a> {
+    #[doc = "Creates a new instance of [SnapshotDeleteRepository] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotDeleteRepositoryParts<'a>) -> Self {
         SnapshotDeleteRepository {
             client,
@@ -732,6 +742,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Get API"]
 pub enum SnapshotGetParts<'a> {
+    #[doc = "Repository and Snapshot"]
     RepositorySnapshot(&'a str, &'a [&'a str]),
 }
 impl<'a> SnapshotGetParts<'a> {
@@ -765,6 +776,7 @@ pub struct SnapshotGet<'a> {
     verbose: Option<bool>,
 }
 impl<'a> SnapshotGet<'a> {
+    #[doc = "Creates a new instance of [SnapshotGet] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotGetParts<'a>) -> Self {
         SnapshotGet {
             client,
@@ -870,7 +882,9 @@ impl<'a> SnapshotGet<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Get Repository API"]
 pub enum SnapshotGetRepositoryParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Repository"]
     Repository(&'a [&'a str]),
 }
 impl<'a> SnapshotGetRepositoryParts<'a> {
@@ -902,6 +916,7 @@ pub struct SnapshotGetRepository<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotGetRepository<'a> {
+    #[doc = "Creates a new instance of [SnapshotGetRepository] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotGetRepositoryParts<'a>) -> Self {
         SnapshotGetRepository {
             client,
@@ -998,6 +1013,7 @@ impl<'a> SnapshotGetRepository<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Restore API"]
 pub enum SnapshotRestoreParts<'a> {
+    #[doc = "Repository and Snapshot"]
     RepositorySnapshot(&'a str, &'a str),
 }
 impl<'a> SnapshotRestoreParts<'a> {
@@ -1034,6 +1050,7 @@ impl<'a, B> SnapshotRestore<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SnapshotRestore] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotRestoreParts<'a>) -> Self {
         SnapshotRestore {
             client,
@@ -1149,8 +1166,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Status API"]
 pub enum SnapshotStatusParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Repository"]
     Repository(&'a str),
+    #[doc = "Repository and Snapshot"]
     RepositorySnapshot(&'a str, &'a [&'a str]),
 }
 impl<'a> SnapshotStatusParts<'a> {
@@ -1192,6 +1212,7 @@ pub struct SnapshotStatus<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotStatus<'a> {
+    #[doc = "Creates a new instance of [SnapshotStatus] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotStatusParts<'a>) -> Self {
         SnapshotStatus {
             client,
@@ -1288,6 +1309,7 @@ impl<'a> SnapshotStatus<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Verify Repository API"]
 pub enum SnapshotVerifyRepositoryParts<'a> {
+    #[doc = "Repository"]
     Repository(&'a str),
 }
 impl<'a> SnapshotVerifyRepositoryParts<'a> {
@@ -1322,6 +1344,7 @@ impl<'a, B> SnapshotVerifyRepository<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SnapshotVerifyRepository] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SnapshotVerifyRepositoryParts<'a>) -> Self {
         SnapshotVerifyRepository {
             client,
@@ -1439,8 +1462,9 @@ pub struct Snapshot {
     client: Elasticsearch,
 }
 impl Snapshot {
+    #[doc = "Creates a new instance of [Snapshot]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Snapshot { client }
+        Self { client }
     }
     #[doc = "Removes stale data from repository."]
     pub fn cleanup_repository<'a>(

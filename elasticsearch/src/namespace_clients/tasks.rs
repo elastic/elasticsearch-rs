@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Cancel API"]
 pub enum TasksCancelParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "TaskId"]
     TaskId(&'a str),
 }
 impl<'a> TasksCancelParts<'a> {
@@ -68,6 +70,7 @@ impl<'a, B> TasksCancel<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [TasksCancel] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: TasksCancelParts<'a>) -> Self {
         TasksCancel {
             client,
@@ -196,6 +199,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Get API"]
 pub enum TasksGetParts<'a> {
+    #[doc = "TaskId"]
     TaskId(&'a str),
 }
 impl<'a> TasksGetParts<'a> {
@@ -225,6 +229,7 @@ pub struct TasksGet<'a> {
     wait_for_completion: Option<bool>,
 }
 impl<'a> TasksGet<'a> {
+    #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: TasksGetParts<'a>) -> Self {
         TasksGet {
             client,
@@ -321,6 +326,7 @@ impl<'a> TasksGet<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks List API"]
 pub enum TasksListParts {
+    #[doc = "No parts"]
     None,
 }
 impl TasksListParts {
@@ -350,6 +356,7 @@ pub struct TasksList<'a> {
     wait_for_completion: Option<bool>,
 }
 impl<'a> TasksList<'a> {
+    #[doc = "Creates a new instance of [TasksList]"]
     pub fn new(client: Elasticsearch) -> Self {
         TasksList {
             client,
@@ -496,8 +503,9 @@ pub struct Tasks {
     client: Elasticsearch,
 }
 impl Tasks {
+    #[doc = "Creates a new instance of [Tasks]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Tasks { client }
+        Self { client }
     }
     #[doc = "Cancels a task, if it can be cancelled through an API."]
     pub fn cancel<'a>(&self, parts: TasksCancelParts<'a>) -> TasksCancel<'a, ()> {

@@ -56,14 +56,7 @@ impl<'a> EnumBuilder<'a> {
                 0 => Self::parts_none(),
                 _ => {
                     self.has_lifetime = true;
-                    let name = &path
-                        .path
-                        .params()
-                        .iter()
-                        .map(|k| k.to_pascal_case())
-                        .collect::<Vec<_>>()
-                        .join("");
-                    Self::parts(&name, &path)
+                    Self::parts(&path)
                 }
             };
 
@@ -75,10 +68,36 @@ impl<'a> EnumBuilder<'a> {
     }
 
     /// AST for a parts variant.
-    fn parts(name: &str, path: &Path) -> syn::Variant {
+    fn parts(path: &Path) -> syn::Variant {
+        let params = &path
+            .path
+            .params();
+
+        let name = params
+            .iter()
+            .map(|k| k.to_pascal_case())
+            .collect::<Vec<_>>()
+            .join("");
+
+        let doc = match params.len() {
+            1 => doc(params[0].replace("_", " ").to_pascal_case()),
+            n => {
+                let mut d: String = params
+                    .iter()
+                    .enumerate()
+                    .filter(|&(i, _)| i != n - 1)
+                    .map(|(_, e)| e.replace("_", " ").to_pascal_case())
+                    .collect::<Vec<_>>()
+                    .join(", ");
+
+                d.push_str(format!(" and {}", params[n-1].replace("_", " ").to_pascal_case()).as_str());
+                doc(d)
+            }
+        };
+
         syn::Variant {
             ident: ident(name),
-            attrs: vec![],
+            attrs: vec![doc],
             discriminant: None,
             data: syn::VariantData::Tuple(
                 path.path
@@ -102,7 +121,7 @@ impl<'a> EnumBuilder<'a> {
     fn parts_none() -> syn::Variant {
         syn::Variant {
             ident: ident("None"),
-            attrs: vec![],
+            attrs: vec![doc("No parts".into())],
             data: syn::VariantData::Unit,
             discriminant: None,
         }

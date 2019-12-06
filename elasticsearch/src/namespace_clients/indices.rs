@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Analyze API"]
 pub enum IndicesAnalyzeParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IndicesAnalyzeParts<'a> {
@@ -66,6 +68,7 @@ impl<'a, B> IndicesAnalyze<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesAnalyze] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesAnalyzeParts<'a>) -> Self {
         IndicesAnalyze {
             client,
@@ -174,7 +177,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Clear Cache API"]
 pub enum IndicesClearCacheParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesClearCacheParts<'a> {
@@ -217,6 +222,7 @@ impl<'a, B> IndicesClearCache<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesClearCache] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesClearCacheParts<'a>) -> Self {
         IndicesClearCache {
             client,
@@ -392,6 +398,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Clone API"]
 pub enum IndicesCloneParts<'a> {
+    #[doc = "Index and Target"]
     IndexTarget(&'a str, &'a str),
 }
 impl<'a> IndicesCloneParts<'a> {
@@ -428,6 +435,7 @@ impl<'a, B> IndicesClone<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesClone] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesCloneParts<'a>) -> Self {
         IndicesClone {
             client,
@@ -553,6 +561,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Close API"]
 pub enum IndicesCloseParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesCloseParts<'a> {
@@ -592,6 +601,7 @@ impl<'a, B> IndicesClose<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesClose] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesCloseParts<'a>) -> Self {
         IndicesClose {
             client,
@@ -747,6 +757,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Create API"]
 pub enum IndicesCreateParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IndicesCreateParts<'a> {
@@ -782,6 +793,7 @@ impl<'a, B> IndicesCreate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesCreate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesCreateParts<'a>) -> Self {
         IndicesCreate {
             client,
@@ -917,6 +929,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Delete API"]
 pub enum IndicesDeleteParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesDeleteParts<'a> {
@@ -950,6 +963,7 @@ pub struct IndicesDelete<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDelete<'a> {
+    #[doc = "Creates a new instance of [IndicesDelete] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesDeleteParts<'a>) -> Self {
         IndicesDelete {
             client,
@@ -1073,6 +1087,7 @@ impl<'a> IndicesDelete<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Delete Alias API"]
 pub enum IndicesDeleteAliasParts<'a> {
+    #[doc = "Index and Name"]
     IndexName(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesDeleteAliasParts<'a> {
@@ -1106,6 +1121,7 @@ pub struct IndicesDeleteAlias<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDeleteAlias<'a> {
+    #[doc = "Creates a new instance of [IndicesDeleteAlias] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesDeleteAliasParts<'a>) -> Self {
         IndicesDeleteAlias {
             client,
@@ -1202,6 +1218,7 @@ impl<'a> IndicesDeleteAlias<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Delete Template API"]
 pub enum IndicesDeleteTemplateParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> IndicesDeleteTemplateParts<'a> {
@@ -1231,6 +1248,7 @@ pub struct IndicesDeleteTemplate<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDeleteTemplate<'a> {
+    #[doc = "Creates a new instance of [IndicesDeleteTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesDeleteTemplateParts<'a>) -> Self {
         IndicesDeleteTemplate {
             client,
@@ -1327,6 +1345,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists API"]
 pub enum IndicesExistsParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesExistsParts<'a> {
@@ -1361,6 +1380,7 @@ pub struct IndicesExists<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExists<'a> {
+    #[doc = "Creates a new instance of [IndicesExists] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesExistsParts<'a>) -> Self {
         IndicesExists {
             client,
@@ -1493,7 +1513,9 @@ impl<'a> IndicesExists<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists Alias API"]
 pub enum IndicesExistsAliasParts<'a> {
+    #[doc = "Name"]
     Name(&'a [&'a str]),
+    #[doc = "Index and Name"]
     IndexName(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesExistsAliasParts<'a> {
@@ -1536,6 +1558,7 @@ pub struct IndicesExistsAlias<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsAlias<'a> {
+    #[doc = "Creates a new instance of [IndicesExistsAlias] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesExistsAliasParts<'a>) -> Self {
         IndicesExistsAlias {
             client,
@@ -1650,6 +1673,7 @@ impl<'a> IndicesExistsAlias<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists Template API"]
 pub enum IndicesExistsTemplateParts<'a> {
+    #[doc = "Name"]
     Name(&'a [&'a str]),
 }
 impl<'a> IndicesExistsTemplateParts<'a> {
@@ -1681,6 +1705,7 @@ pub struct IndicesExistsTemplate<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsTemplate<'a> {
+    #[doc = "Creates a new instance of [IndicesExistsTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesExistsTemplateParts<'a>) -> Self {
         IndicesExistsTemplate {
             client,
@@ -1786,6 +1811,7 @@ impl<'a> IndicesExistsTemplate<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Exists Type API"]
 pub enum IndicesExistsTypeParts<'a> {
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesExistsTypeParts<'a> {
@@ -1821,6 +1847,7 @@ pub struct IndicesExistsType<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsType<'a> {
+    #[doc = "Creates a new instance of [IndicesExistsType] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesExistsTypeParts<'a>) -> Self {
         IndicesExistsType {
             client,
@@ -1935,7 +1962,9 @@ impl<'a> IndicesExistsType<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Flush API"]
 pub enum IndicesFlushParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesFlushParts<'a> {
@@ -1975,6 +2004,7 @@ impl<'a, B> IndicesFlush<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesFlush] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesFlushParts<'a>) -> Self {
         IndicesFlush {
             client,
@@ -2123,7 +2153,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Flush Synced API"]
 pub enum IndicesFlushSyncedParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesFlushSyncedParts<'a> {
@@ -2161,6 +2193,7 @@ impl<'a, B> IndicesFlushSynced<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesFlushSynced] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesFlushSyncedParts<'a>) -> Self {
         IndicesFlushSynced {
             client,
@@ -2289,7 +2322,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Forcemerge API"]
 pub enum IndicesForcemergeParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesForcemergeParts<'a> {
@@ -2330,6 +2365,7 @@ impl<'a, B> IndicesForcemerge<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesForcemerge] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesForcemergeParts<'a>) -> Self {
         IndicesForcemerge {
             client,
@@ -2485,6 +2521,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Freeze API"]
 pub enum IndicesFreezeParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IndicesFreezeParts<'a> {
@@ -2523,6 +2560,7 @@ impl<'a, B> IndicesFreeze<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesFreeze] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesFreezeParts<'a>) -> Self {
         IndicesFreeze {
             client,
@@ -2678,6 +2716,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get API"]
 pub enum IndicesGetParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesGetParts<'a> {
@@ -2714,6 +2753,7 @@ pub struct IndicesGet<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGet<'a> {
+    #[doc = "Creates a new instance of [IndicesGet] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetParts<'a>) -> Self {
         IndicesGet {
             client,
@@ -2864,9 +2904,13 @@ impl<'a> IndicesGet<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Alias API"]
 pub enum IndicesGetAliasParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Name"]
     Name(&'a [&'a str]),
+    #[doc = "Index and Name"]
     IndexName(&'a [&'a str], &'a [&'a str]),
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesGetAliasParts<'a> {
@@ -2918,6 +2962,7 @@ pub struct IndicesGetAlias<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetAlias<'a> {
+    #[doc = "Creates a new instance of [IndicesGetAlias] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetAliasParts<'a>) -> Self {
         IndicesGetAlias {
             client,
@@ -3032,9 +3077,13 @@ impl<'a> IndicesGetAlias<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Field Mapping API"]
 pub enum IndicesGetFieldMappingParts<'a> {
+    #[doc = "Fields"]
     Fields(&'a [&'a str]),
+    #[doc = "Index and Fields"]
     IndexFields(&'a [&'a str], &'a [&'a str]),
+    #[doc = "Type and Fields"]
     TypeFields(&'a [&'a str], &'a [&'a str]),
+    #[doc = "Index, Type and Fields"]
     IndexTypeFields(&'a [&'a str], &'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesGetFieldMappingParts<'a> {
@@ -3104,6 +3153,7 @@ pub struct IndicesGetFieldMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetFieldMapping<'a> {
+    #[doc = "Creates a new instance of [IndicesGetFieldMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetFieldMappingParts<'a>) -> Self {
         IndicesGetFieldMapping {
             client,
@@ -3236,9 +3286,13 @@ impl<'a> IndicesGetFieldMapping<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Mapping API"]
 pub enum IndicesGetMappingParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Type"]
     Type(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesGetMappingParts<'a> {
@@ -3292,6 +3346,7 @@ pub struct IndicesGetMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetMapping<'a> {
+    #[doc = "Creates a new instance of [IndicesGetMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetMappingParts<'a>) -> Self {
         IndicesGetMapping {
             client,
@@ -3424,9 +3479,13 @@ impl<'a> IndicesGetMapping<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Settings API"]
 pub enum IndicesGetSettingsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Name"]
     IndexName(&'a [&'a str], &'a [&'a str]),
+    #[doc = "Name"]
     Name(&'a [&'a str]),
 }
 impl<'a> IndicesGetSettingsParts<'a> {
@@ -3481,6 +3540,7 @@ pub struct IndicesGetSettings<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetSettings<'a> {
+    #[doc = "Creates a new instance of [IndicesGetSettings] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetSettingsParts<'a>) -> Self {
         IndicesGetSettings {
             client,
@@ -3622,7 +3682,9 @@ impl<'a> IndicesGetSettings<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Template API"]
 pub enum IndicesGetTemplateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Name"]
     Name(&'a [&'a str]),
 }
 impl<'a> IndicesGetTemplateParts<'a> {
@@ -3656,6 +3718,7 @@ pub struct IndicesGetTemplate<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetTemplate<'a> {
+    #[doc = "Creates a new instance of [IndicesGetTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetTemplateParts<'a>) -> Self {
         IndicesGetTemplate {
             client,
@@ -3770,7 +3833,9 @@ impl<'a> IndicesGetTemplate<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Get Upgrade API"]
 pub enum IndicesGetUpgradeParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesGetUpgradeParts<'a> {
@@ -3804,6 +3869,7 @@ pub struct IndicesGetUpgrade<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetUpgrade<'a> {
+    #[doc = "Creates a new instance of [IndicesGetUpgrade] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesGetUpgradeParts<'a>) -> Self {
         IndicesGetUpgrade {
             client,
@@ -3909,6 +3975,7 @@ impl<'a> IndicesGetUpgrade<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Open API"]
 pub enum IndicesOpenParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesOpenParts<'a> {
@@ -3948,6 +4015,7 @@ impl<'a, B> IndicesOpen<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesOpen] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesOpenParts<'a>) -> Self {
         IndicesOpen {
             client,
@@ -4103,6 +4171,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Put Alias API"]
 pub enum IndicesPutAliasParts<'a> {
+    #[doc = "Index and Name"]
     IndexName(&'a [&'a str], &'a str),
 }
 impl<'a> IndicesPutAliasParts<'a> {
@@ -4139,6 +4208,7 @@ impl<'a, B> IndicesPutAlias<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesPutAlias] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesPutAliasParts<'a>) -> Self {
         IndicesPutAlias {
             client,
@@ -4254,8 +4324,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Put Mapping API"]
 pub enum IndicesPutMappingParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a str),
+    #[doc = "Type"]
     Type(&'a str),
 }
 impl<'a> IndicesPutMappingParts<'a> {
@@ -4311,6 +4384,7 @@ impl<'a, B> IndicesPutMapping<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesPutMapping] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesPutMappingParts<'a>) -> Self {
         IndicesPutMapping {
             client,
@@ -4466,7 +4540,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Put Settings API"]
 pub enum IndicesPutSettingsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesPutSettingsParts<'a> {
@@ -4508,6 +4584,7 @@ impl<'a, B> IndicesPutSettings<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesPutSettings] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesPutSettingsParts<'a>) -> Self {
         IndicesPutSettings {
             client,
@@ -4673,6 +4750,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Put Template API"]
 pub enum IndicesPutTemplateParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> IndicesPutTemplateParts<'a> {
@@ -4710,6 +4788,7 @@ impl<'a, B> IndicesPutTemplate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesPutTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesPutTemplateParts<'a>) -> Self {
         IndicesPutTemplate {
             client,
@@ -4865,7 +4944,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Recovery API"]
 pub enum IndicesRecoveryParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesRecoveryParts<'a> {
@@ -4898,6 +4979,7 @@ pub struct IndicesRecovery<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesRecovery<'a> {
+    #[doc = "Creates a new instance of [IndicesRecovery] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesRecoveryParts<'a>) -> Self {
         IndicesRecovery {
             client,
@@ -4994,7 +5076,9 @@ impl<'a> IndicesRecovery<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Refresh API"]
 pub enum IndicesRefreshParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesRefreshParts<'a> {
@@ -5032,6 +5116,7 @@ impl<'a, B> IndicesRefresh<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesRefresh] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesRefreshParts<'a>) -> Self {
         IndicesRefresh {
             client,
@@ -5160,7 +5245,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Rollover API"]
 pub enum IndicesRolloverParts<'a> {
+    #[doc = "Alias"]
     Alias(&'a str),
+    #[doc = "Alias and NewIndex"]
     AliasNewIndex(&'a str, &'a str),
 }
 impl<'a> IndicesRolloverParts<'a> {
@@ -5206,6 +5293,7 @@ impl<'a, B> IndicesRollover<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesRollover] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesRolloverParts<'a>) -> Self {
         IndicesRollover {
             client,
@@ -5351,7 +5439,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Segments API"]
 pub enum IndicesSegmentsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesSegmentsParts<'a> {
@@ -5386,6 +5476,7 @@ pub struct IndicesSegments<'a> {
     verbose: Option<bool>,
 }
 impl<'a> IndicesSegments<'a> {
+    #[doc = "Creates a new instance of [IndicesSegments] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesSegmentsParts<'a>) -> Self {
         IndicesSegments {
             client,
@@ -5500,7 +5591,9 @@ impl<'a> IndicesSegments<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Shard Stores API"]
 pub enum IndicesShardStoresParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesShardStoresParts<'a> {
@@ -5535,6 +5628,7 @@ pub struct IndicesShardStores<'a> {
     status: Option<&'a [&'a str]>,
 }
 impl<'a> IndicesShardStores<'a> {
+    #[doc = "Creates a new instance of [IndicesShardStores] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesShardStoresParts<'a>) -> Self {
         IndicesShardStores {
             client,
@@ -5649,6 +5743,7 @@ impl<'a> IndicesShardStores<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Shrink API"]
 pub enum IndicesShrinkParts<'a> {
+    #[doc = "Index and Target"]
     IndexTarget(&'a str, &'a str),
 }
 impl<'a> IndicesShrinkParts<'a> {
@@ -5686,6 +5781,7 @@ impl<'a, B> IndicesShrink<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesShrink] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesShrinkParts<'a>) -> Self {
         IndicesShrink {
             client,
@@ -5821,6 +5917,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Split API"]
 pub enum IndicesSplitParts<'a> {
+    #[doc = "Index and Target"]
     IndexTarget(&'a str, &'a str),
 }
 impl<'a> IndicesSplitParts<'a> {
@@ -5858,6 +5955,7 @@ impl<'a, B> IndicesSplit<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesSplit] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesSplitParts<'a>) -> Self {
         IndicesSplit {
             client,
@@ -5993,9 +6091,13 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Stats API"]
 pub enum IndicesStatsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Metric"]
     IndexMetric(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesStatsParts<'a> {
@@ -6053,6 +6155,7 @@ pub struct IndicesStats<'a> {
     types: Option<&'a [&'a str]>,
 }
 impl<'a> IndicesStats<'a> {
+    #[doc = "Creates a new instance of [IndicesStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesStatsParts<'a>) -> Self {
         IndicesStats {
             client,
@@ -6227,6 +6330,7 @@ impl<'a> IndicesStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Unfreeze API"]
 pub enum IndicesUnfreezeParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> IndicesUnfreezeParts<'a> {
@@ -6265,6 +6369,7 @@ impl<'a, B> IndicesUnfreeze<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesUnfreeze] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesUnfreezeParts<'a>) -> Self {
         IndicesUnfreeze {
             client,
@@ -6420,6 +6525,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Update Aliases API"]
 pub enum IndicesUpdateAliasesParts {
+    #[doc = "No parts"]
     None,
 }
 impl IndicesUpdateAliasesParts {
@@ -6448,6 +6554,7 @@ impl<'a, B> IndicesUpdateAliases<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesUpdateAliases]"]
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpdateAliases {
             client,
@@ -6563,7 +6670,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Upgrade API"]
 pub enum IndicesUpgradeParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> IndicesUpgradeParts<'a> {
@@ -6603,6 +6712,7 @@ impl<'a, B> IndicesUpgrade<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesUpgrade] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesUpgradeParts<'a>) -> Self {
         IndicesUpgrade {
             client,
@@ -6748,8 +6858,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Indices Validate Query API"]
 pub enum IndicesValidateQueryParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> IndicesValidateQueryParts<'a> {
@@ -6807,6 +6920,7 @@ impl<'a, B> IndicesValidateQuery<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [IndicesValidateQuery] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndicesValidateQueryParts<'a>) -> Self {
         IndicesValidateQuery {
             client,
@@ -7027,8 +7141,9 @@ pub struct Indices {
     client: Elasticsearch,
 }
 impl Indices {
+    #[doc = "Creates a new instance of [Indices]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Indices { client }
+        Self { client }
     }
     #[doc = "Performs the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'a>(&self, parts: IndicesAnalyzeParts<'a>) -> IndicesAnalyze<'a, ()> {

@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Close Job API"]
 pub enum MlCloseJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlCloseJobParts<'a> {
@@ -66,6 +67,7 @@ impl<'a, B> MlCloseJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlCloseJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlCloseJobParts<'a>) -> Self {
         MlCloseJob {
             client,
@@ -191,6 +193,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar API"]
 pub enum MlDeleteCalendarParts<'a> {
+    #[doc = "CalendarId"]
     CalendarId(&'a str),
 }
 impl<'a> MlDeleteCalendarParts<'a> {
@@ -218,6 +221,7 @@ pub struct MlDeleteCalendar<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendar<'a> {
+    #[doc = "Creates a new instance of [MlDeleteCalendar] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteCalendarParts<'a>) -> Self {
         MlDeleteCalendar {
             client,
@@ -296,6 +300,7 @@ impl<'a> MlDeleteCalendar<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar Event API"]
 pub enum MlDeleteCalendarEventParts<'a> {
+    #[doc = "CalendarId and EventId"]
     CalendarIdEventId(&'a str, &'a str),
 }
 impl<'a> MlDeleteCalendarEventParts<'a> {
@@ -325,6 +330,7 @@ pub struct MlDeleteCalendarEvent<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendarEvent<'a> {
+    #[doc = "Creates a new instance of [MlDeleteCalendarEvent] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteCalendarEventParts<'a>) -> Self {
         MlDeleteCalendarEvent {
             client,
@@ -403,6 +409,7 @@ impl<'a> MlDeleteCalendarEvent<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar Job API"]
 pub enum MlDeleteCalendarJobParts<'a> {
+    #[doc = "CalendarId and JobId"]
     CalendarIdJobId(&'a str, &'a str),
 }
 impl<'a> MlDeleteCalendarJobParts<'a> {
@@ -432,6 +439,7 @@ pub struct MlDeleteCalendarJob<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendarJob<'a> {
+    #[doc = "Creates a new instance of [MlDeleteCalendarJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteCalendarJobParts<'a>) -> Self {
         MlDeleteCalendarJob {
             client,
@@ -510,6 +518,7 @@ impl<'a> MlDeleteCalendarJob<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Datafeed API"]
 pub enum MlDeleteDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlDeleteDatafeedParts<'a> {
@@ -538,6 +547,7 @@ pub struct MlDeleteDatafeed<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteDatafeed<'a> {
+    #[doc = "Creates a new instance of [MlDeleteDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteDatafeedParts<'a>) -> Self {
         MlDeleteDatafeed {
             client,
@@ -625,6 +635,7 @@ impl<'a> MlDeleteDatafeed<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Expired Data API"]
 pub enum MlDeleteExpiredDataParts {
+    #[doc = "No parts"]
     None,
 }
 impl MlDeleteExpiredDataParts {
@@ -647,6 +658,7 @@ pub struct MlDeleteExpiredData<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteExpiredData<'a> {
+    #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
     pub fn new(client: Elasticsearch) -> Self {
         MlDeleteExpiredData {
             client,
@@ -725,6 +737,7 @@ impl<'a> MlDeleteExpiredData<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Filter API"]
 pub enum MlDeleteFilterParts<'a> {
+    #[doc = "FilterId"]
     FilterId(&'a str),
 }
 impl<'a> MlDeleteFilterParts<'a> {
@@ -752,6 +765,7 @@ pub struct MlDeleteFilter<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteFilter<'a> {
+    #[doc = "Creates a new instance of [MlDeleteFilter] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteFilterParts<'a>) -> Self {
         MlDeleteFilter {
             client,
@@ -830,7 +844,9 @@ impl<'a> MlDeleteFilter<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Forecast API"]
 pub enum MlDeleteForecastParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
+    #[doc = "JobId and ForecastId"]
     JobIdForecastId(&'a str, &'a str),
 }
 impl<'a> MlDeleteForecastParts<'a> {
@@ -869,6 +885,7 @@ pub struct MlDeleteForecast<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> MlDeleteForecast<'a> {
+    #[doc = "Creates a new instance of [MlDeleteForecast] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteForecastParts<'a>) -> Self {
         MlDeleteForecast {
             client,
@@ -965,6 +982,7 @@ impl<'a> MlDeleteForecast<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Job API"]
 pub enum MlDeleteJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlDeleteJobParts<'a> {
@@ -994,6 +1012,7 @@ pub struct MlDeleteJob<'a> {
     wait_for_completion: Option<bool>,
 }
 impl<'a> MlDeleteJob<'a> {
+    #[doc = "Creates a new instance of [MlDeleteJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteJobParts<'a>) -> Self {
         MlDeleteJob {
             client,
@@ -1090,6 +1109,7 @@ impl<'a> MlDeleteJob<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Model Snapshot API"]
 pub enum MlDeleteModelSnapshotParts<'a> {
+    #[doc = "JobId and SnapshotId"]
     JobIdSnapshotId(&'a str, &'a str),
 }
 impl<'a> MlDeleteModelSnapshotParts<'a> {
@@ -1119,6 +1139,7 @@ pub struct MlDeleteModelSnapshot<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteModelSnapshot<'a> {
+    #[doc = "Creates a new instance of [MlDeleteModelSnapshot] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlDeleteModelSnapshotParts<'a>) -> Self {
         MlDeleteModelSnapshot {
             client,
@@ -1197,6 +1218,7 @@ impl<'a> MlDeleteModelSnapshot<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Flush Job API"]
 pub enum MlFlushJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlFlushJobParts<'a> {
@@ -1234,6 +1256,7 @@ impl<'a, B> MlFlushJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlFlushJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlFlushJobParts<'a>) -> Self {
         MlFlushJob {
             client,
@@ -1379,6 +1402,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Forecast API"]
 pub enum MlForecastParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlForecastParts<'a> {
@@ -1413,6 +1437,7 @@ impl<'a, B> MlForecast<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlForecast] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlForecastParts<'a>) -> Self {
         MlForecast {
             client,
@@ -1528,7 +1553,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Buckets API"]
 pub enum MlGetBucketsParts<'a> {
+    #[doc = "JobId and Timestamp"]
     JobIdTimestamp(&'a str, &'a str),
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetBucketsParts<'a> {
@@ -1578,6 +1605,7 @@ impl<'a, B> MlGetBuckets<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetBuckets] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetBucketsParts<'a>) -> Self {
         MlGetBuckets {
             client,
@@ -1766,6 +1794,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Calendar Events API"]
 pub enum MlGetCalendarEventsParts<'a> {
+    #[doc = "CalendarId"]
     CalendarId(&'a str),
 }
 impl<'a> MlGetCalendarEventsParts<'a> {
@@ -1799,6 +1828,7 @@ pub struct MlGetCalendarEvents<'a> {
     start: Option<&'a str>,
 }
 impl<'a> MlGetCalendarEvents<'a> {
+    #[doc = "Creates a new instance of [MlGetCalendarEvents] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetCalendarEventsParts<'a>) -> Self {
         MlGetCalendarEvents {
             client,
@@ -1922,7 +1952,9 @@ impl<'a> MlGetCalendarEvents<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Calendars API"]
 pub enum MlGetCalendarsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "CalendarId"]
     CalendarId(&'a str),
 }
 impl<'a> MlGetCalendarsParts<'a> {
@@ -1957,6 +1989,7 @@ impl<'a, B> MlGetCalendars<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetCalendars] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetCalendarsParts<'a>) -> Self {
         MlGetCalendars {
             client,
@@ -2075,7 +2108,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Categories API"]
 pub enum MlGetCategoriesParts<'a> {
+    #[doc = "JobId and CategoryId"]
     JobIdCategoryId(&'a str, i64),
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetCategoriesParts<'a> {
@@ -2119,6 +2154,7 @@ impl<'a, B> MlGetCategories<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetCategories] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetCategoriesParts<'a>) -> Self {
         MlGetCategories {
             client,
@@ -2237,7 +2273,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Datafeed Stats API"]
 pub enum MlGetDatafeedStatsParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> MlGetDatafeedStatsParts<'a> {
@@ -2268,6 +2306,7 @@ pub struct MlGetDatafeedStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetDatafeedStats<'a> {
+    #[doc = "Creates a new instance of [MlGetDatafeedStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetDatafeedStatsParts<'a>) -> Self {
         MlGetDatafeedStats {
             client,
@@ -2355,7 +2394,9 @@ impl<'a> MlGetDatafeedStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Datafeeds API"]
 pub enum MlGetDatafeedsParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> MlGetDatafeedsParts<'a> {
@@ -2385,6 +2426,7 @@ pub struct MlGetDatafeeds<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetDatafeeds<'a> {
+    #[doc = "Creates a new instance of [MlGetDatafeeds] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetDatafeedsParts<'a>) -> Self {
         MlGetDatafeeds {
             client,
@@ -2472,7 +2514,9 @@ impl<'a> MlGetDatafeeds<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Filters API"]
 pub enum MlGetFiltersParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "FilterId"]
     FilterId(&'a str),
 }
 impl<'a> MlGetFiltersParts<'a> {
@@ -2503,6 +2547,7 @@ pub struct MlGetFilters<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetFilters<'a> {
+    #[doc = "Creates a new instance of [MlGetFilters] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetFiltersParts<'a>) -> Self {
         MlGetFilters {
             client,
@@ -2599,6 +2644,7 @@ impl<'a> MlGetFilters<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Influencers API"]
 pub enum MlGetInfluencersParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetInfluencersParts<'a> {
@@ -2639,6 +2685,7 @@ impl<'a, B> MlGetInfluencers<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetInfluencers] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetInfluencersParts<'a>) -> Self {
         MlGetInfluencers {
             client,
@@ -2817,7 +2864,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Job Stats API"]
 pub enum MlGetJobStatsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetJobStatsParts<'a> {
@@ -2848,6 +2897,7 @@ pub struct MlGetJobStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetJobStats<'a> {
+    #[doc = "Creates a new instance of [MlGetJobStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetJobStatsParts<'a>) -> Self {
         MlGetJobStats {
             client,
@@ -2935,7 +2985,9 @@ impl<'a> MlGetJobStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Jobs API"]
 pub enum MlGetJobsParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> MlGetJobsParts<'a> {
@@ -2965,6 +3017,7 @@ pub struct MlGetJobs<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetJobs<'a> {
+    #[doc = "Creates a new instance of [MlGetJobs] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetJobsParts<'a>) -> Self {
         MlGetJobs {
             client,
@@ -3052,7 +3105,9 @@ impl<'a> MlGetJobs<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Model Snapshots API"]
 pub enum MlGetModelSnapshotsParts<'a> {
+    #[doc = "JobId and SnapshotId"]
     JobIdSnapshotId(&'a str, &'a str),
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetModelSnapshotsParts<'a> {
@@ -3099,6 +3154,7 @@ impl<'a, B> MlGetModelSnapshots<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetModelSnapshots] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsParts<'a>) -> Self {
         MlGetModelSnapshots {
             client,
@@ -3257,6 +3313,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Overall Buckets API"]
 pub enum MlGetOverallBucketsParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetOverallBucketsParts<'a> {
@@ -3296,6 +3353,7 @@ impl<'a, B> MlGetOverallBuckets<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetOverallBuckets] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsParts<'a>) -> Self {
         MlGetOverallBuckets {
             client,
@@ -3464,6 +3522,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Records API"]
 pub enum MlGetRecordsParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlGetRecordsParts<'a> {
@@ -3504,6 +3563,7 @@ impl<'a, B> MlGetRecords<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlGetRecords] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlGetRecordsParts<'a>) -> Self {
         MlGetRecords {
             client,
@@ -3681,6 +3741,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Info API"]
 pub enum MlInfoParts {
+    #[doc = "No parts"]
     None,
 }
 impl MlInfoParts {
@@ -3703,6 +3764,7 @@ pub struct MlInfo<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlInfo<'a> {
+    #[doc = "Creates a new instance of [MlInfo]"]
     pub fn new(client: Elasticsearch) -> Self {
         MlInfo {
             client,
@@ -3781,6 +3843,7 @@ impl<'a> MlInfo<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Open Job API"]
 pub enum MlOpenJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlOpenJobParts<'a> {
@@ -3813,6 +3876,7 @@ impl<'a, B> MlOpenJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlOpenJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlOpenJobParts<'a>) -> Self {
         MlOpenJob {
             client,
@@ -3908,6 +3972,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Post Calendar Events API"]
 pub enum MlPostCalendarEventsParts<'a> {
+    #[doc = "CalendarId"]
     CalendarId(&'a str),
 }
 impl<'a> MlPostCalendarEventsParts<'a> {
@@ -3940,6 +4005,7 @@ impl<'a, B> MlPostCalendarEvents<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPostCalendarEvents] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsParts<'a>) -> Self {
         MlPostCalendarEvents {
             client,
@@ -4035,6 +4101,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Post Data API"]
 pub enum MlPostDataParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlPostDataParts<'a> {
@@ -4069,6 +4136,7 @@ impl<'a, B> MlPostData<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPostData] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPostDataParts<'a>) -> Self {
         MlPostData {
             client,
@@ -4184,6 +4252,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Preview Datafeed API"]
 pub enum MlPreviewDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlPreviewDatafeedParts<'a> {
@@ -4212,6 +4281,7 @@ pub struct MlPreviewDatafeed<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlPreviewDatafeed<'a> {
+    #[doc = "Creates a new instance of [MlPreviewDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPreviewDatafeedParts<'a>) -> Self {
         MlPreviewDatafeed {
             client,
@@ -4290,6 +4360,7 @@ impl<'a> MlPreviewDatafeed<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Calendar API"]
 pub enum MlPutCalendarParts<'a> {
+    #[doc = "CalendarId"]
     CalendarId(&'a str),
 }
 impl<'a> MlPutCalendarParts<'a> {
@@ -4321,6 +4392,7 @@ impl<'a, B> MlPutCalendar<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPutCalendar] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPutCalendarParts<'a>) -> Self {
         MlPutCalendar {
             client,
@@ -4416,6 +4488,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Calendar Job API"]
 pub enum MlPutCalendarJobParts<'a> {
+    #[doc = "CalendarId and JobId"]
     CalendarIdJobId(&'a str, &'a str),
 }
 impl<'a> MlPutCalendarJobParts<'a> {
@@ -4449,6 +4522,7 @@ impl<'a, B> MlPutCalendarJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPutCalendarJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPutCalendarJobParts<'a>) -> Self {
         MlPutCalendarJob {
             client,
@@ -4544,6 +4618,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Datafeed API"]
 pub enum MlPutDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlPutDatafeedParts<'a> {
@@ -4575,6 +4650,7 @@ impl<'a, B> MlPutDatafeed<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPutDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPutDatafeedParts<'a>) -> Self {
         MlPutDatafeed {
             client,
@@ -4670,6 +4746,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Filter API"]
 pub enum MlPutFilterParts<'a> {
+    #[doc = "FilterId"]
     FilterId(&'a str),
 }
 impl<'a> MlPutFilterParts<'a> {
@@ -4701,6 +4778,7 @@ impl<'a, B> MlPutFilter<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPutFilter] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPutFilterParts<'a>) -> Self {
         MlPutFilter {
             client,
@@ -4796,6 +4874,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Job API"]
 pub enum MlPutJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlPutJobParts<'a> {
@@ -4827,6 +4906,7 @@ impl<'a, B> MlPutJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlPutJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlPutJobParts<'a>) -> Self {
         MlPutJob {
             client,
@@ -4922,6 +5002,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Revert Model Snapshot API"]
 pub enum MlRevertModelSnapshotParts<'a> {
+    #[doc = "JobId and SnapshotId"]
     JobIdSnapshotId(&'a str, &'a str),
 }
 impl<'a> MlRevertModelSnapshotParts<'a> {
@@ -4957,6 +5038,7 @@ impl<'a, B> MlRevertModelSnapshot<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlRevertModelSnapshot] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotParts<'a>) -> Self {
         MlRevertModelSnapshot {
             client,
@@ -5062,6 +5144,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Set Upgrade Mode API"]
 pub enum MlSetUpgradeModeParts {
+    #[doc = "No parts"]
     None,
 }
 impl MlSetUpgradeModeParts {
@@ -5090,6 +5173,7 @@ impl<'a, B> MlSetUpgradeMode<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlSetUpgradeMode]"]
     pub fn new(client: Elasticsearch) -> Self {
         MlSetUpgradeMode {
             client,
@@ -5205,6 +5289,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Start Datafeed API"]
 pub enum MlStartDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlStartDatafeedParts<'a> {
@@ -5240,6 +5325,7 @@ impl<'a, B> MlStartDatafeed<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlStartDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlStartDatafeedParts<'a>) -> Self {
         MlStartDatafeed {
             client,
@@ -5365,6 +5451,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Stop Datafeed API"]
 pub enum MlStopDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlStopDatafeedParts<'a> {
@@ -5400,6 +5487,7 @@ impl<'a, B> MlStopDatafeed<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlStopDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlStopDatafeedParts<'a>) -> Self {
         MlStopDatafeed {
             client,
@@ -5525,6 +5613,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Datafeed API"]
 pub enum MlUpdateDatafeedParts<'a> {
+    #[doc = "DatafeedId"]
     DatafeedId(&'a str),
 }
 impl<'a> MlUpdateDatafeedParts<'a> {
@@ -5557,6 +5646,7 @@ impl<'a, B> MlUpdateDatafeed<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlUpdateDatafeed] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedParts<'a>) -> Self {
         MlUpdateDatafeed {
             client,
@@ -5652,6 +5742,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Filter API"]
 pub enum MlUpdateFilterParts<'a> {
+    #[doc = "FilterId"]
     FilterId(&'a str),
 }
 impl<'a> MlUpdateFilterParts<'a> {
@@ -5684,6 +5775,7 @@ impl<'a, B> MlUpdateFilter<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlUpdateFilter] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlUpdateFilterParts<'a>) -> Self {
         MlUpdateFilter {
             client,
@@ -5779,6 +5871,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Job API"]
 pub enum MlUpdateJobParts<'a> {
+    #[doc = "JobId"]
     JobId(&'a str),
 }
 impl<'a> MlUpdateJobParts<'a> {
@@ -5811,6 +5904,7 @@ impl<'a, B> MlUpdateJob<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlUpdateJob] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlUpdateJobParts<'a>) -> Self {
         MlUpdateJob {
             client,
@@ -5906,6 +6000,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Model Snapshot API"]
 pub enum MlUpdateModelSnapshotParts<'a> {
+    #[doc = "JobId and SnapshotId"]
     JobIdSnapshotId(&'a str, &'a str),
 }
 impl<'a> MlUpdateModelSnapshotParts<'a> {
@@ -5940,6 +6035,7 @@ impl<'a, B> MlUpdateModelSnapshot<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlUpdateModelSnapshot] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotParts<'a>) -> Self {
         MlUpdateModelSnapshot {
             client,
@@ -6035,6 +6131,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Validate API"]
 pub enum MlValidateParts {
+    #[doc = "No parts"]
     None,
 }
 impl MlValidateParts {
@@ -6061,6 +6158,7 @@ impl<'a, B> MlValidate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlValidate]"]
     pub fn new(client: Elasticsearch) -> Self {
         MlValidate {
             client,
@@ -6156,6 +6254,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Validate Detector API"]
 pub enum MlValidateDetectorParts {
+    #[doc = "No parts"]
     None,
 }
 impl MlValidateDetectorParts {
@@ -6182,6 +6281,7 @@ impl<'a, B> MlValidateDetector<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MlValidateDetector]"]
     pub fn new(client: Elasticsearch) -> Self {
         MlValidateDetector {
             client,
@@ -6279,8 +6379,9 @@ pub struct Ml {
     client: Elasticsearch,
 }
 impl Ml {
+    #[doc = "Creates a new instance of [Ml]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Ml { client }
+        Self { client }
     }
     pub fn close_job<'a>(&self, parts: MlCloseJobParts<'a>) -> MlCloseJob<'a, ()> {
         MlCloseJob::new(self.client.clone(), parts)

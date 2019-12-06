@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Hot Threads API"]
 pub enum NodesHotThreadsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
 }
 impl<'a> NodesHotThreadsParts<'a> {
@@ -68,6 +70,7 @@ pub struct NodesHotThreads<'a> {
     ty: Option<Type>,
 }
 impl<'a> NodesHotThreads<'a> {
+    #[doc = "Creates a new instance of [NodesHotThreads] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: NodesHotThreadsParts<'a>) -> Self {
         NodesHotThreads {
             client,
@@ -200,9 +203,13 @@ impl<'a> NodesHotThreads<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Info API"]
 pub enum NodesInfoParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
+    #[doc = "NodeId and Metric"]
     NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> NodesInfoParts<'a> {
@@ -251,6 +258,7 @@ pub struct NodesInfo<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> NodesInfo<'a> {
+    #[doc = "Creates a new instance of [NodesInfo] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: NodesInfoParts<'a>) -> Self {
         NodesInfo {
             client,
@@ -347,7 +355,9 @@ impl<'a> NodesInfo<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Reload Secure Settings API"]
 pub enum NodesReloadSecureSettingsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
 }
 impl<'a> NodesReloadSecureSettingsParts<'a> {
@@ -383,6 +393,7 @@ impl<'a, B> NodesReloadSecureSettings<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [NodesReloadSecureSettings] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsParts<'a>) -> Self {
         NodesReloadSecureSettings {
             client,
@@ -488,11 +499,17 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Stats API"]
 pub enum NodesStatsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
+    #[doc = "NodeId and Metric"]
     NodeIdMetric(&'a [&'a str], &'a [&'a str]),
+    #[doc = "Metric and IndexMetric"]
     MetricIndexMetric(&'a [&'a str], &'a [&'a str]),
+    #[doc = "NodeId, Metric and IndexMetric"]
     NodeIdMetricIndexMetric(&'a [&'a str], &'a [&'a str], &'a [&'a str]),
 }
 impl<'a> NodesStatsParts<'a> {
@@ -574,6 +591,7 @@ pub struct NodesStats<'a> {
     types: Option<&'a [&'a str]>,
 }
 impl<'a> NodesStats<'a> {
+    #[doc = "Creates a new instance of [NodesStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: NodesStatsParts<'a>) -> Self {
         NodesStats {
             client,
@@ -730,9 +748,13 @@ impl<'a> NodesStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Nodes Usage API"]
 pub enum NodesUsageParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
+    #[doc = "NodeId and Metric"]
     NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> NodesUsageParts<'a> {
@@ -781,6 +803,7 @@ pub struct NodesUsage<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> NodesUsage<'a> {
+    #[doc = "Creates a new instance of [NodesUsage] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: NodesUsageParts<'a>) -> Self {
         NodesUsage {
             client,
@@ -870,8 +893,9 @@ pub struct Nodes {
     client: Elasticsearch,
 }
 impl Nodes {
+    #[doc = "Creates a new instance of [Nodes]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Nodes { client }
+        Self { client }
     }
     #[doc = "Returns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'a>(&self, parts: NodesHotThreadsParts<'a>) -> NodesHotThreads<'a> {

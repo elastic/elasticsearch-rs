@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Graph Explore API"]
 pub enum GraphExploreParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> GraphExploreParts<'a> {
@@ -78,6 +80,7 @@ impl<'a, B> GraphExplore<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: GraphExploreParts<'a>) -> Self {
         GraphExplore {
             client,
@@ -198,8 +201,9 @@ pub struct Graph {
     client: Elasticsearch,
 }
 impl Graph {
+    #[doc = "Creates a new instance of [Graph]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Graph { client }
+        Self { client }
     }
     pub fn explore<'a>(&self, parts: GraphExploreParts<'a>) -> GraphExplore<'a, ()> {
         GraphExplore::new(self.client.clone(), parts)

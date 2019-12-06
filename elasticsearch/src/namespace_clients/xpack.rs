@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Xpack Info API"]
 pub enum XpackInfoParts {
+    #[doc = "No parts"]
     None,
 }
 impl XpackInfoParts {
@@ -54,6 +55,7 @@ pub struct XpackInfo<'a> {
     source: Option<&'a str>,
 }
 impl<'a> XpackInfo<'a> {
+    #[doc = "Creates a new instance of [XpackInfo]"]
     pub fn new(client: Elasticsearch) -> Self {
         XpackInfo {
             client,
@@ -144,6 +146,7 @@ impl<'a> XpackInfo<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Xpack Usage API"]
 pub enum XpackUsageParts {
+    #[doc = "No parts"]
     None,
 }
 impl XpackUsageParts {
@@ -167,6 +170,7 @@ pub struct XpackUsage<'a> {
     source: Option<&'a str>,
 }
 impl<'a> XpackUsage<'a> {
+    #[doc = "Creates a new instance of [XpackUsage]"]
     pub fn new(client: Elasticsearch) -> Self {
         XpackUsage {
             client,
@@ -256,8 +260,9 @@ pub struct Xpack {
     client: Elasticsearch,
 }
 impl Xpack {
+    #[doc = "Creates a new instance of [Xpack]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Xpack { client }
+        Self { client }
     }
     pub fn info<'a>(&self) -> XpackInfo<'a> {
         XpackInfo::new(self.client.clone())

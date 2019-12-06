@@ -31,8 +31,11 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Bulk API"]
 pub enum BulkParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a str),
+    #[doc = "Index and Type"]
     IndexType(&'a str, &'a str),
 }
 impl<'a> BulkParts<'a> {
@@ -84,6 +87,7 @@ impl<'a, B> Bulk<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Bulk] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: BulkParts<'a>) -> Self {
         Bulk {
             client,
@@ -278,7 +282,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Clear Scroll API"]
 pub enum ClearScrollParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "ScrollId"]
     ScrollId(&'a [&'a str]),
 }
 impl<'a> ClearScrollParts<'a> {
@@ -312,6 +318,7 @@ impl<'a, B> ClearScroll<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [ClearScroll] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ClearScrollParts<'a>) -> Self {
         ClearScroll {
             client,
@@ -407,8 +414,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Count API"]
 pub enum CountParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> CountParts<'a> {
@@ -468,6 +478,7 @@ impl<'a, B> Count<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Count] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CountParts<'a>) -> Self {
         Count {
             client,
@@ -709,7 +720,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Create API"]
 pub enum CreateParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> CreateParts<'a> {
@@ -761,6 +774,7 @@ impl<'a, B> Create<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Create] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CreateParts<'a>) -> Self {
         Create {
             client,
@@ -926,7 +940,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Delete API"]
 pub enum DeleteParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> DeleteParts<'a> {
@@ -974,6 +990,7 @@ pub struct Delete<'a> {
     wait_for_active_shards: Option<&'a str>,
 }
 impl<'a> Delete<'a> {
+    #[doc = "Creates a new instance of [Delete] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: DeleteParts<'a>) -> Self {
         Delete {
             client,
@@ -1124,7 +1141,9 @@ impl<'a> Delete<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Delete By Query API"]
 pub enum DeleteByQueryParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> DeleteByQueryParts<'a> {
@@ -1201,6 +1220,7 @@ impl<'a, B> DeleteByQuery<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [DeleteByQuery] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: DeleteByQueryParts<'a>) -> Self {
         DeleteByQuery {
             client,
@@ -1628,6 +1648,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Delete By Query Rethrottle API"]
 pub enum DeleteByQueryRethrottleParts<'a> {
+    #[doc = "TaskId"]
     TaskId(&'a str),
 }
 impl<'a> DeleteByQueryRethrottleParts<'a> {
@@ -1661,6 +1682,7 @@ impl<'a, B> DeleteByQueryRethrottle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [DeleteByQueryRethrottle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleParts<'a>) -> Self {
         DeleteByQueryRethrottle {
             client,
@@ -1766,6 +1788,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Delete Script API"]
 pub enum DeleteScriptParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> DeleteScriptParts<'a> {
@@ -1795,6 +1818,7 @@ pub struct DeleteScript<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> DeleteScript<'a> {
+    #[doc = "Creates a new instance of [DeleteScript] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: DeleteScriptParts<'a>) -> Self {
         DeleteScript {
             client,
@@ -1891,7 +1915,9 @@ impl<'a> DeleteScript<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Exists API"]
 pub enum ExistsParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> ExistsParts<'a> {
@@ -1941,6 +1967,7 @@ pub struct Exists<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> Exists<'a> {
+    #[doc = "Creates a new instance of [Exists] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ExistsParts<'a>) -> Self {
         Exists {
             client,
@@ -2121,7 +2148,9 @@ impl<'a> Exists<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Exists Source API"]
 pub enum ExistsSourceParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> ExistsSourceParts<'a> {
@@ -2171,6 +2200,7 @@ pub struct ExistsSource<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> ExistsSource<'a> {
+    #[doc = "Creates a new instance of [ExistsSource] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ExistsSourceParts<'a>) -> Self {
         ExistsSource {
             client,
@@ -2339,7 +2369,9 @@ impl<'a> ExistsSource<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Explain API"]
 pub enum ExplainParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> ExplainParts<'a> {
@@ -2396,6 +2428,7 @@ impl<'a, B> Explain<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Explain] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ExplainParts<'a>) -> Self {
         Explain {
             client,
@@ -2626,7 +2659,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Field Caps API"]
 pub enum FieldCapsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> FieldCapsParts<'a> {
@@ -2666,6 +2701,7 @@ impl<'a, B> FieldCaps<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [FieldCaps] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: FieldCapsParts<'a>) -> Self {
         FieldCaps {
             client,
@@ -2814,7 +2850,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get API"]
 pub enum GetParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> GetParts<'a> {
@@ -2864,6 +2902,7 @@ pub struct Get<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> Get<'a> {
+    #[doc = "Creates a new instance of [Get] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: GetParts<'a>) -> Self {
         Get {
             client,
@@ -3044,6 +3083,7 @@ impl<'a> Get<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Script API"]
 pub enum GetScriptParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> GetScriptParts<'a> {
@@ -3072,6 +3112,7 @@ pub struct GetScript<'a> {
     source: Option<&'a str>,
 }
 impl<'a> GetScript<'a> {
+    #[doc = "Creates a new instance of [GetScript] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: GetScriptParts<'a>) -> Self {
         GetScript {
             client,
@@ -3159,7 +3200,9 @@ impl<'a> GetScript<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Get Source API"]
 pub enum GetSourceParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> GetSourceParts<'a> {
@@ -3209,6 +3252,7 @@ pub struct GetSource<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> GetSource<'a> {
+    #[doc = "Creates a new instance of [GetSource] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: GetSourceParts<'a>) -> Self {
         GetSource {
             client,
@@ -3377,9 +3421,13 @@ impl<'a> GetSource<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Index API"]
 pub enum IndexParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index"]
     Index(&'a str),
+    #[doc = "Index and Type"]
     IndexType(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> IndexParts<'a> {
@@ -3448,6 +3496,7 @@ impl<'a, B> Index<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Index] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: IndexParts<'a>) -> Self {
         Index {
             client,
@@ -3643,6 +3692,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Info API"]
 pub enum InfoParts {
+    #[doc = "No parts"]
     None,
 }
 impl InfoParts {
@@ -3665,6 +3715,7 @@ pub struct Info<'a> {
     source: Option<&'a str>,
 }
 impl<'a> Info<'a> {
+    #[doc = "Creates a new instance of [Info]"]
     pub fn new(client: Elasticsearch) -> Self {
         Info {
             client,
@@ -3743,8 +3794,11 @@ impl<'a> Info<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Mget API"]
 pub enum MgetParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a str),
+    #[doc = "Index and Type"]
     IndexType(&'a str, &'a str),
 }
 impl<'a> MgetParts<'a> {
@@ -3795,6 +3849,7 @@ impl<'a, B> Mget<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Mget] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MgetParts<'a>) -> Self {
         Mget {
             client,
@@ -3985,8 +4040,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Msearch API"]
 pub enum MsearchParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> MsearchParts<'a> {
@@ -4039,6 +4097,7 @@ impl<'a, B> Msearch<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Msearch] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MsearchParts<'a>) -> Self {
         Msearch {
             client,
@@ -4207,8 +4266,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Msearch Template API"]
 pub enum MsearchTemplateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> MsearchTemplateParts<'a> {
@@ -4258,6 +4320,7 @@ impl<'a, B> MsearchTemplate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [MsearchTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MsearchTemplateParts<'a>) -> Self {
         MsearchTemplate {
             client,
@@ -4396,8 +4459,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Mtermvectors API"]
 pub enum MtermvectorsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a str),
+    #[doc = "Index and Type"]
     IndexType(&'a str, &'a str),
 }
 impl<'a> MtermvectorsParts<'a> {
@@ -4452,6 +4518,7 @@ impl<'a, B> Mtermvectors<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Mtermvectors] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: MtermvectorsParts<'a>) -> Self {
         Mtermvectors {
             client,
@@ -4670,6 +4737,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ping API"]
 pub enum PingParts {
+    #[doc = "No parts"]
     None,
 }
 impl PingParts {
@@ -4692,6 +4760,7 @@ pub struct Ping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> Ping<'a> {
+    #[doc = "Creates a new instance of [Ping]"]
     pub fn new(client: Elasticsearch) -> Self {
         Ping {
             client,
@@ -4770,7 +4839,9 @@ impl<'a> Ping<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Put Script API"]
 pub enum PutScriptParts<'a> {
+    #[doc = "Id"]
     Id(&'a str),
+    #[doc = "Id and Context"]
     IdContext(&'a str, &'a str),
 }
 impl<'a> PutScriptParts<'a> {
@@ -4813,6 +4884,7 @@ impl<'a, B> PutScript<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [PutScript] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: PutScriptParts<'a>) -> Self {
         PutScript {
             client,
@@ -4938,6 +5010,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Reindex API"]
 pub enum ReindexParts {
+    #[doc = "No parts"]
     None,
 }
 impl ReindexParts {
@@ -4972,6 +5045,7 @@ impl<'a, B> Reindex<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Reindex]"]
     pub fn new(client: Elasticsearch) -> Self {
         Reindex {
             client,
@@ -5147,6 +5221,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Reindex Rethrottle API"]
 pub enum ReindexRethrottleParts<'a> {
+    #[doc = "TaskId"]
     TaskId(&'a str),
 }
 impl<'a> ReindexRethrottleParts<'a> {
@@ -5180,6 +5255,7 @@ impl<'a, B> ReindexRethrottle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [ReindexRethrottle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ReindexRethrottleParts<'a>) -> Self {
         ReindexRethrottle {
             client,
@@ -5285,7 +5361,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Render Search Template API"]
 pub enum RenderSearchTemplateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Id"]
     Id(&'a str),
 }
 impl<'a> RenderSearchTemplateParts<'a> {
@@ -5318,6 +5396,7 @@ impl<'a, B> RenderSearchTemplate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [RenderSearchTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: RenderSearchTemplateParts<'a>) -> Self {
         RenderSearchTemplate {
             client,
@@ -5416,7 +5495,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Scroll API"]
 pub enum ScrollParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "ScrollId"]
     ScrollId(&'a str),
 }
 impl<'a> ScrollParts<'a> {
@@ -5452,6 +5533,7 @@ impl<'a, B> Scroll<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Scroll] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ScrollParts<'a>) -> Self {
         Scroll {
             client,
@@ -5580,8 +5662,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Search API"]
 pub enum SearchParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> SearchParts<'a> {
@@ -5669,6 +5754,7 @@ impl<'a, B> Search<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Search] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SearchParts<'a>) -> Self {
         Search {
             client,
@@ -6205,7 +6291,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Search Shards API"]
 pub enum SearchShardsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> SearchShardsParts<'a> {
@@ -6246,6 +6334,7 @@ impl<'a, B> SearchShards<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SearchShards] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SearchShardsParts<'a>) -> Self {
         SearchShards {
             client,
@@ -6404,8 +6493,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Search Template API"]
 pub enum SearchTemplateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> SearchTemplateParts<'a> {
@@ -6463,6 +6555,7 @@ impl<'a, B> SearchTemplate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SearchTemplate] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: SearchTemplateParts<'a>) -> Self {
         SearchTemplate {
             client,
@@ -6684,9 +6777,13 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Termvectors API"]
 pub enum TermvectorsParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index"]
     Index(&'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
+    #[doc = "Index and Type"]
     IndexType(&'a str, &'a str),
 }
 impl<'a> TermvectorsParts<'a> {
@@ -6758,6 +6855,7 @@ impl<'a, B> Termvectors<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Termvectors] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: TermvectorsParts<'a>) -> Self {
         Termvectors {
             client,
@@ -6966,7 +7064,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Update API"]
 pub enum UpdateParts<'a> {
+    #[doc = "Index and Id"]
     IndexId(&'a str, &'a str),
+    #[doc = "Index, Type and Id"]
     IndexTypeId(&'a str, &'a str, &'a str),
 }
 impl<'a> UpdateParts<'a> {
@@ -7022,6 +7122,7 @@ impl<'a, B> Update<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [Update] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: UpdateParts<'a>) -> Self {
         Update {
             client,
@@ -7236,7 +7337,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Update By Query API"]
 pub enum UpdateByQueryParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
+    #[doc = "Index and Type"]
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> UpdateByQueryParts<'a> {
@@ -7316,6 +7419,7 @@ impl<'a, B> UpdateByQuery<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [UpdateByQuery] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: UpdateByQueryParts<'a>) -> Self {
         UpdateByQuery {
             client,
@@ -7773,6 +7877,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Update By Query Rethrottle API"]
 pub enum UpdateByQueryRethrottleParts<'a> {
+    #[doc = "TaskId"]
     TaskId(&'a str),
 }
 impl<'a> UpdateByQueryRethrottleParts<'a> {
@@ -7806,6 +7911,7 @@ impl<'a, B> UpdateByQueryRethrottle<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [UpdateByQueryRethrottle] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleParts<'a>) -> Self {
         UpdateByQueryRethrottle {
             client,

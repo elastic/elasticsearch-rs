@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Allocation Explain API"]
 pub enum ClusterAllocationExplainParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterAllocationExplainParts {
@@ -59,6 +60,7 @@ impl<'a, B> ClusterAllocationExplain<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [ClusterAllocationExplain]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterAllocationExplain {
             client,
@@ -177,6 +179,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Get Settings API"]
 pub enum ClusterGetSettingsParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterGetSettingsParts {
@@ -203,6 +206,7 @@ pub struct ClusterGetSettings<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> ClusterGetSettings<'a> {
+    #[doc = "Creates a new instance of [ClusterGetSettings]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
@@ -317,7 +321,9 @@ impl<'a> ClusterGetSettings<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Health API"]
 pub enum ClusterHealthParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> ClusterHealthParts<'a> {
@@ -358,6 +364,7 @@ pub struct ClusterHealth<'a> {
     wait_for_status: Option<WaitForStatus>,
 }
 impl<'a> ClusterHealth<'a> {
+    #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ClusterHealthParts<'a>) -> Self {
         ClusterHealth {
             client,
@@ -538,6 +545,7 @@ impl<'a> ClusterHealth<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Pending Tasks API"]
 pub enum ClusterPendingTasksParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterPendingTasksParts {
@@ -562,6 +570,7 @@ pub struct ClusterPendingTasks<'a> {
     source: Option<&'a str>,
 }
 impl<'a> ClusterPendingTasks<'a> {
+    #[doc = "Creates a new instance of [ClusterPendingTasks]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
@@ -658,6 +667,7 @@ impl<'a> ClusterPendingTasks<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Put Settings API"]
 pub enum ClusterPutSettingsParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterPutSettingsParts {
@@ -687,6 +697,7 @@ impl<'a, B> ClusterPutSettings<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [ClusterPutSettings]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPutSettings {
             client,
@@ -812,6 +823,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Remote Info API"]
 pub enum ClusterRemoteInfoParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterRemoteInfoParts {
@@ -834,6 +846,7 @@ pub struct ClusterRemoteInfo<'a> {
     source: Option<&'a str>,
 }
 impl<'a> ClusterRemoteInfo<'a> {
+    #[doc = "Creates a new instance of [ClusterRemoteInfo]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
@@ -912,6 +925,7 @@ impl<'a> ClusterRemoteInfo<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Reroute API"]
 pub enum ClusterRerouteParts {
+    #[doc = "No parts"]
     None,
 }
 impl ClusterRerouteParts {
@@ -944,6 +958,7 @@ impl<'a, B> ClusterReroute<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [ClusterReroute]"]
     pub fn new(client: Elasticsearch) -> Self {
         ClusterReroute {
             client,
@@ -1099,8 +1114,11 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster State API"]
 pub enum ClusterStateParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Metric"]
     Metric(&'a [&'a str]),
+    #[doc = "Metric and Index"]
     MetricIndex(&'a [&'a str], &'a [&'a str]),
 }
 impl<'a> ClusterStateParts<'a> {
@@ -1148,6 +1166,7 @@ pub struct ClusterState<'a> {
     wait_for_timeout: Option<&'a str>,
 }
 impl<'a> ClusterState<'a> {
+    #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ClusterStateParts<'a>) -> Self {
         ClusterState {
             client,
@@ -1298,7 +1317,9 @@ impl<'a> ClusterState<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Stats API"]
 pub enum ClusterStatsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
 }
 impl<'a> ClusterStatsParts<'a> {
@@ -1330,6 +1351,7 @@ pub struct ClusterStats<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> ClusterStats<'a> {
+    #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: ClusterStatsParts<'a>) -> Self {
         ClusterStats {
             client,
@@ -1428,8 +1450,9 @@ pub struct Cluster {
     client: Elasticsearch,
 }
 impl Cluster {
+    #[doc = "Creates a new instance of [Cluster]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Cluster { client }
+        Self { client }
     }
     #[doc = "Provides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<'a>(&self) -> ClusterAllocationExplain<'a, ()> {

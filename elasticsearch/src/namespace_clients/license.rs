@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Delete API"]
 pub enum LicenseDeleteParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicenseDeleteParts {
@@ -53,6 +54,7 @@ pub struct LicenseDelete<'a> {
     source: Option<&'a str>,
 }
 impl<'a> LicenseDelete<'a> {
+    #[doc = "Creates a new instance of [LicenseDelete]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicenseDelete {
             client,
@@ -131,6 +133,7 @@ impl<'a> LicenseDelete<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Get API"]
 pub enum LicenseGetParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicenseGetParts {
@@ -154,6 +157,7 @@ pub struct LicenseGet<'a> {
     source: Option<&'a str>,
 }
 impl<'a> LicenseGet<'a> {
+    #[doc = "Creates a new instance of [LicenseGet]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGet {
             client,
@@ -241,6 +245,7 @@ impl<'a> LicenseGet<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Get Basic Status API"]
 pub enum LicenseGetBasicStatusParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicenseGetBasicStatusParts {
@@ -263,6 +268,7 @@ pub struct LicenseGetBasicStatus<'a> {
     source: Option<&'a str>,
 }
 impl<'a> LicenseGetBasicStatus<'a> {
+    #[doc = "Creates a new instance of [LicenseGetBasicStatus]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetBasicStatus {
             client,
@@ -341,6 +347,7 @@ impl<'a> LicenseGetBasicStatus<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Get Trial Status API"]
 pub enum LicenseGetTrialStatusParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicenseGetTrialStatusParts {
@@ -363,6 +370,7 @@ pub struct LicenseGetTrialStatus<'a> {
     source: Option<&'a str>,
 }
 impl<'a> LicenseGetTrialStatus<'a> {
+    #[doc = "Creates a new instance of [LicenseGetTrialStatus]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetTrialStatus {
             client,
@@ -441,6 +449,7 @@ impl<'a> LicenseGetTrialStatus<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Post API"]
 pub enum LicensePostParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicensePostParts {
@@ -468,6 +477,7 @@ impl<'a, B> LicensePost<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [LicensePost]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicensePost {
             client,
@@ -573,6 +583,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Post Start Basic API"]
 pub enum LicensePostStartBasicParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicensePostStartBasicParts {
@@ -600,6 +611,7 @@ impl<'a, B> LicensePostStartBasic<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [LicensePostStartBasic]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartBasic {
             client,
@@ -705,6 +717,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the License Post Start Trial API"]
 pub enum LicensePostStartTrialParts {
+    #[doc = "No parts"]
     None,
 }
 impl LicensePostStartTrialParts {
@@ -733,6 +746,7 @@ impl<'a, B> LicensePostStartTrial<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [LicensePostStartTrial]"]
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartTrial {
             client,
@@ -850,8 +864,9 @@ pub struct License {
     client: Elasticsearch,
 }
 impl License {
+    #[doc = "Creates a new instance of [License]"]
     pub fn new(client: Elasticsearch) -> Self {
-        License { client }
+        Self { client }
     }
     pub fn delete<'a>(&self) -> LicenseDelete<'a> {
         LicenseDelete::new(self.client.clone())

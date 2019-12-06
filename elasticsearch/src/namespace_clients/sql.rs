@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Sql Clear Cursor API"]
 pub enum SqlClearCursorParts {
+    #[doc = "No parts"]
     None,
 }
 impl SqlClearCursorParts {
@@ -57,6 +58,7 @@ impl<'a, B> SqlClearCursor<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SqlClearCursor]"]
     pub fn new(client: Elasticsearch) -> Self {
         SqlClearCursor {
             client,
@@ -152,6 +154,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Sql Query API"]
 pub enum SqlQueryParts {
+    #[doc = "No parts"]
     None,
 }
 impl SqlQueryParts {
@@ -179,6 +182,7 @@ impl<'a, B> SqlQuery<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SqlQuery]"]
     pub fn new(client: Elasticsearch) -> Self {
         SqlQuery {
             client,
@@ -287,6 +291,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Sql Translate API"]
 pub enum SqlTranslateParts {
+    #[doc = "No parts"]
     None,
 }
 impl SqlTranslateParts {
@@ -313,6 +318,7 @@ impl<'a, B> SqlTranslate<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [SqlTranslate]"]
     pub fn new(client: Elasticsearch) -> Self {
         SqlTranslate {
             client,
@@ -413,8 +419,9 @@ pub struct Sql {
     client: Elasticsearch,
 }
 impl Sql {
+    #[doc = "Creates a new instance of [Sql]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Sql { client }
+        Self { client }
     }
     pub fn clear_cursor<'a>(&self) -> SqlClearCursor<'a, ()> {
         SqlClearCursor::new(self.client.clone())

@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ssl Certificates API"]
 pub enum SslCertificatesParts {
+    #[doc = "No parts"]
     None,
 }
 impl SslCertificatesParts {
@@ -53,6 +54,7 @@ pub struct SslCertificates<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SslCertificates<'a> {
+    #[doc = "Creates a new instance of [SslCertificates]"]
     pub fn new(client: Elasticsearch) -> Self {
         SslCertificates {
             client,
@@ -133,8 +135,9 @@ pub struct Ssl {
     client: Elasticsearch,
 }
 impl Ssl {
+    #[doc = "Creates a new instance of [Ssl]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Ssl { client }
+        Self { client }
     }
     pub fn certificates<'a>(&self) -> SslCertificates<'a> {
         SslCertificates::new(self.client.clone())

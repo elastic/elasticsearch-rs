@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Delete Auto Follow Pattern API"]
 pub enum CcrDeleteAutoFollowPatternParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CcrDeleteAutoFollowPatternParts<'a> {
@@ -58,6 +59,7 @@ pub struct CcrDeleteAutoFollowPattern<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CcrDeleteAutoFollowPattern<'a> {
+    #[doc = "Creates a new instance of [CcrDeleteAutoFollowPattern] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrDeleteAutoFollowPatternParts<'a>) -> Self {
         CcrDeleteAutoFollowPattern {
             client,
@@ -136,6 +138,7 @@ impl<'a> CcrDeleteAutoFollowPattern<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Follow API"]
 pub enum CcrFollowParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> CcrFollowParts<'a> {
@@ -169,6 +172,7 @@ impl<'a, B> CcrFollow<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrFollow] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrFollowParts<'a>) -> Self {
         CcrFollow {
             client,
@@ -274,6 +278,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Follow Info API"]
 pub enum CcrFollowInfoParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CcrFollowInfoParts<'a> {
@@ -303,6 +308,7 @@ pub struct CcrFollowInfo<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CcrFollowInfo<'a> {
+    #[doc = "Creates a new instance of [CcrFollowInfo] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrFollowInfoParts<'a>) -> Self {
         CcrFollowInfo {
             client,
@@ -381,6 +387,7 @@ impl<'a> CcrFollowInfo<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Follow Stats API"]
 pub enum CcrFollowStatsParts<'a> {
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CcrFollowStatsParts<'a> {
@@ -410,6 +417,7 @@ pub struct CcrFollowStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CcrFollowStats<'a> {
+    #[doc = "Creates a new instance of [CcrFollowStats] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrFollowStatsParts<'a>) -> Self {
         CcrFollowStats {
             client,
@@ -488,6 +496,7 @@ impl<'a> CcrFollowStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Forget Follower API"]
 pub enum CcrForgetFollowerParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> CcrForgetFollowerParts<'a> {
@@ -520,6 +529,7 @@ impl<'a, B> CcrForgetFollower<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrForgetFollower] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrForgetFollowerParts<'a>) -> Self {
         CcrForgetFollower {
             client,
@@ -615,7 +625,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Get Auto Follow Pattern API"]
 pub enum CcrGetAutoFollowPatternParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CcrGetAutoFollowPatternParts<'a> {
@@ -644,6 +656,7 @@ pub struct CcrGetAutoFollowPattern<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CcrGetAutoFollowPattern<'a> {
+    #[doc = "Creates a new instance of [CcrGetAutoFollowPattern] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrGetAutoFollowPatternParts<'a>) -> Self {
         CcrGetAutoFollowPattern {
             client,
@@ -722,6 +735,7 @@ impl<'a> CcrGetAutoFollowPattern<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Pause Auto Follow Pattern API"]
 pub enum CcrPauseAutoFollowPatternParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CcrPauseAutoFollowPatternParts<'a> {
@@ -754,6 +768,7 @@ impl<'a, B> CcrPauseAutoFollowPattern<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrPauseAutoFollowPattern] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrPauseAutoFollowPatternParts<'a>) -> Self {
         CcrPauseAutoFollowPattern {
             client,
@@ -849,6 +864,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Pause Follow API"]
 pub enum CcrPauseFollowParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> CcrPauseFollowParts<'a> {
@@ -881,6 +897,7 @@ impl<'a, B> CcrPauseFollow<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrPauseFollow] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrPauseFollowParts<'a>) -> Self {
         CcrPauseFollow {
             client,
@@ -976,6 +993,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Put Auto Follow Pattern API"]
 pub enum CcrPutAutoFollowPatternParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CcrPutAutoFollowPatternParts<'a> {
@@ -1007,6 +1025,7 @@ impl<'a, B> CcrPutAutoFollowPattern<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrPutAutoFollowPattern] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrPutAutoFollowPatternParts<'a>) -> Self {
         CcrPutAutoFollowPattern {
             client,
@@ -1102,6 +1121,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Resume Auto Follow Pattern API"]
 pub enum CcrResumeAutoFollowPatternParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CcrResumeAutoFollowPatternParts<'a> {
@@ -1134,6 +1154,7 @@ impl<'a, B> CcrResumeAutoFollowPattern<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrResumeAutoFollowPattern] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrResumeAutoFollowPatternParts<'a>) -> Self {
         CcrResumeAutoFollowPattern {
             client,
@@ -1229,6 +1250,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Resume Follow API"]
 pub enum CcrResumeFollowParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> CcrResumeFollowParts<'a> {
@@ -1261,6 +1283,7 @@ impl<'a, B> CcrResumeFollow<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrResumeFollow] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrResumeFollowParts<'a>) -> Self {
         CcrResumeFollow {
             client,
@@ -1356,6 +1379,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Stats API"]
 pub enum CcrStatsParts {
+    #[doc = "No parts"]
     None,
 }
 impl CcrStatsParts {
@@ -1378,6 +1402,7 @@ pub struct CcrStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CcrStats<'a> {
+    #[doc = "Creates a new instance of [CcrStats]"]
     pub fn new(client: Elasticsearch) -> Self {
         CcrStats {
             client,
@@ -1456,6 +1481,7 @@ impl<'a> CcrStats<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Unfollow API"]
 pub enum CcrUnfollowParts<'a> {
+    #[doc = "Index"]
     Index(&'a str),
 }
 impl<'a> CcrUnfollowParts<'a> {
@@ -1488,6 +1514,7 @@ impl<'a, B> CcrUnfollow<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [CcrUnfollow] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CcrUnfollowParts<'a>) -> Self {
         CcrUnfollow {
             client,
@@ -1585,8 +1612,9 @@ pub struct Ccr {
     client: Elasticsearch,
 }
 impl Ccr {
+    #[doc = "Creates a new instance of [Ccr]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Ccr { client }
+        Self { client }
     }
     pub fn delete_auto_follow_pattern<'a>(
         &self,

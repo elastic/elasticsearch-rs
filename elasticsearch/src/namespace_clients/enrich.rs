@@ -31,6 +31,7 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Delete Policy API"]
 pub enum EnrichDeletePolicyParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> EnrichDeletePolicyParts<'a> {
@@ -58,6 +59,7 @@ pub struct EnrichDeletePolicy<'a> {
     source: Option<&'a str>,
 }
 impl<'a> EnrichDeletePolicy<'a> {
+    #[doc = "Creates a new instance of [EnrichDeletePolicy] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: EnrichDeletePolicyParts<'a>) -> Self {
         EnrichDeletePolicy {
             client,
@@ -136,6 +138,7 @@ impl<'a> EnrichDeletePolicy<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Execute Policy API"]
 pub enum EnrichExecutePolicyParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> EnrichExecutePolicyParts<'a> {
@@ -169,6 +172,7 @@ impl<'a, B> EnrichExecutePolicy<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [EnrichExecutePolicy] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyParts<'a>) -> Self {
         EnrichExecutePolicy {
             client,
@@ -274,7 +278,9 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Get Policy API"]
 pub enum EnrichGetPolicyParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
+    #[doc = "No parts"]
     None,
 }
 impl<'a> EnrichGetPolicyParts<'a> {
@@ -303,6 +309,7 @@ pub struct EnrichGetPolicy<'a> {
     source: Option<&'a str>,
 }
 impl<'a> EnrichGetPolicy<'a> {
+    #[doc = "Creates a new instance of [EnrichGetPolicy] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: EnrichGetPolicyParts<'a>) -> Self {
         EnrichGetPolicy {
             client,
@@ -381,6 +388,7 @@ impl<'a> EnrichGetPolicy<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Put Policy API"]
 pub enum EnrichPutPolicyParts<'a> {
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> EnrichPutPolicyParts<'a> {
@@ -412,6 +420,7 @@ impl<'a, B> EnrichPutPolicy<'a, B>
 where
     B: Body,
 {
+    #[doc = "Creates a new instance of [EnrichPutPolicy] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: EnrichPutPolicyParts<'a>) -> Self {
         EnrichPutPolicy {
             client,
@@ -507,6 +516,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Stats API"]
 pub enum EnrichStatsParts {
+    #[doc = "No parts"]
     None,
 }
 impl EnrichStatsParts {
@@ -529,6 +539,7 @@ pub struct EnrichStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> EnrichStats<'a> {
+    #[doc = "Creates a new instance of [EnrichStats]"]
     pub fn new(client: Elasticsearch) -> Self {
         EnrichStats {
             client,
@@ -609,8 +620,9 @@ pub struct Enrich {
     client: Elasticsearch,
 }
 impl Enrich {
+    #[doc = "Creates a new instance of [Enrich]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Enrich { client }
+        Self { client }
     }
     pub fn delete_policy<'a>(&self, parts: EnrichDeletePolicyParts<'a>) -> EnrichDeletePolicy<'a> {
         EnrichDeletePolicy::new(self.client.clone(), parts)

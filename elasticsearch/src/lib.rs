@@ -1,6 +1,5 @@
-// TODO: whilst developing
-#![allow(missing_docs)]
-#![allow(dead_code)]
+// TODO: turn on before releasing :) Will require adding documentation within all REST API specs
+//#![deny(missing_docs)]
 
 extern crate reqwest;
 extern crate serde;

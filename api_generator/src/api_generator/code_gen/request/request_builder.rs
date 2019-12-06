@@ -143,6 +143,7 @@ impl<'a> RequestBuilder<'a> {
 
     /// Creates the AST for a ctor new fn for a builder struct
     fn create_new_fn(
+        builder_name: &str,
         builder_ident: &syn::Ident,
         enum_builder: &EnumBuilder,
         default_fields: &[&syn::Ident],
@@ -150,8 +151,10 @@ impl<'a> RequestBuilder<'a> {
         let (enum_ty, _, _) = enum_builder.clone().build();
         let default_fields = Self::create_default_fields(default_fields);
         if enum_builder.contains_single_parameterless_part() {
+            let doc = doc(format!("Creates a new instance of [{}]", &builder_name));
             quote!(
-                 pub fn new(client: Elasticsearch) -> Self {
+                #doc
+                pub fn new(client: Elasticsearch) -> Self {
                     #builder_ident {
                         client,
                         parts: #enum_ty::None,
@@ -160,8 +163,10 @@ impl<'a> RequestBuilder<'a> {
                 }
             )
         } else {
+            let doc = doc(format!("Creates a new instance of [{}] with the specified API parts", &builder_name));
             quote!(
-                 pub fn new(client: Elasticsearch, parts: #enum_ty) -> Self {
+                #doc
+                pub fn new(client: Elasticsearch, parts: #enum_ty) -> Self {
                     #builder_ident {
                         client,
                         parts,
@@ -377,7 +382,7 @@ impl<'a> RequestBuilder<'a> {
         builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
         builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
-        let new_fn = Self::create_new_fn(&builder_ident, enum_builder, &default_fields);
+        let new_fn = Self::create_new_fn(&builder_name, &builder_ident, enum_builder, &default_fields);
 
         let method_expr = Self::create_method_expression(&builder_name, &endpoint);
 

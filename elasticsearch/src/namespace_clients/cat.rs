@@ -31,7 +31,9 @@ use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Aliases API"]
 pub enum CatAliasesParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Name"]
     Name(&'a [&'a str]),
 }
 impl<'a> CatAliasesParts<'a> {
@@ -67,6 +69,7 @@ pub struct CatAliases<'a> {
     v: Option<bool>,
 }
 impl<'a> CatAliases<'a> {
+    #[doc = "Creates a new instance of [CatAliases] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatAliasesParts<'a>) -> Self {
         CatAliases {
             client,
@@ -199,7 +202,9 @@ impl<'a> CatAliases<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Allocation API"]
 pub enum CatAllocationParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "NodeId"]
     NodeId(&'a [&'a str]),
 }
 impl<'a> CatAllocationParts<'a> {
@@ -237,6 +242,7 @@ pub struct CatAllocation<'a> {
     v: Option<bool>,
 }
 impl<'a> CatAllocation<'a> {
+    #[doc = "Creates a new instance of [CatAllocation] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatAllocationParts<'a>) -> Self {
         CatAllocation {
             client,
@@ -387,7 +393,9 @@ impl<'a> CatAllocation<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Count API"]
 pub enum CatCountParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CatCountParts<'a> {
@@ -422,6 +430,7 @@ pub struct CatCount<'a> {
     v: Option<bool>,
 }
 impl<'a> CatCount<'a> {
+    #[doc = "Creates a new instance of [CatCount] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatCountParts<'a>) -> Self {
         CatCount {
             client,
@@ -545,7 +554,9 @@ impl<'a> CatCount<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Fielddata API"]
 pub enum CatFielddataParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Fields"]
     Fields(&'a [&'a str]),
 }
 impl<'a> CatFielddataParts<'a> {
@@ -582,6 +593,7 @@ pub struct CatFielddata<'a> {
     v: Option<bool>,
 }
 impl<'a> CatFielddata<'a> {
+    #[doc = "Creates a new instance of [CatFielddata] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatFielddataParts<'a>) -> Self {
         CatFielddata {
             client,
@@ -723,6 +735,7 @@ impl<'a> CatFielddata<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Health API"]
 pub enum CatHealthParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatHealthParts {
@@ -752,6 +765,7 @@ pub struct CatHealth<'a> {
     v: Option<bool>,
 }
 impl<'a> CatHealth<'a> {
+    #[doc = "Creates a new instance of [CatHealth]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatHealth {
             client,
@@ -893,6 +907,7 @@ impl<'a> CatHealth<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Help API"]
 pub enum CatHelpParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatHelpParts {
@@ -917,6 +932,7 @@ pub struct CatHelp<'a> {
     source: Option<&'a str>,
 }
 impl<'a> CatHelp<'a> {
+    #[doc = "Creates a new instance of [CatHelp]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatHelp {
             client,
@@ -1013,7 +1029,9 @@ impl<'a> CatHelp<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Indices API"]
 pub enum CatIndicesParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CatIndicesParts<'a> {
@@ -1055,6 +1073,7 @@ pub struct CatIndices<'a> {
     v: Option<bool>,
 }
 impl<'a> CatIndices<'a> {
+    #[doc = "Creates a new instance of [CatIndices] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatIndicesParts<'a>) -> Self {
         CatIndices {
             client,
@@ -1241,6 +1260,7 @@ impl<'a> CatIndices<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Master API"]
 pub enum CatMasterParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatMasterParts {
@@ -1270,6 +1290,7 @@ pub struct CatMaster<'a> {
     v: Option<bool>,
 }
 impl<'a> CatMaster<'a> {
+    #[doc = "Creates a new instance of [CatMaster]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatMaster {
             client,
@@ -1411,6 +1432,7 @@ impl<'a> CatMaster<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Nodeattrs API"]
 pub enum CatNodeattrsParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatNodeattrsParts {
@@ -1440,6 +1462,7 @@ pub struct CatNodeattrs<'a> {
     v: Option<bool>,
 }
 impl<'a> CatNodeattrs<'a> {
+    #[doc = "Creates a new instance of [CatNodeattrs]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatNodeattrs {
             client,
@@ -1581,6 +1604,7 @@ impl<'a> CatNodeattrs<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Nodes API"]
 pub enum CatNodesParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatNodesParts {
@@ -1613,6 +1637,7 @@ pub struct CatNodes<'a> {
     v: Option<bool>,
 }
 impl<'a> CatNodes<'a> {
+    #[doc = "Creates a new instance of [CatNodes]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatNodes {
             client,
@@ -1781,6 +1806,7 @@ impl<'a> CatNodes<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Pending Tasks API"]
 pub enum CatPendingTasksParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatPendingTasksParts {
@@ -1811,6 +1837,7 @@ pub struct CatPendingTasks<'a> {
     v: Option<bool>,
 }
 impl<'a> CatPendingTasks<'a> {
+    #[doc = "Creates a new instance of [CatPendingTasks]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatPendingTasks {
             client,
@@ -1961,6 +1988,7 @@ impl<'a> CatPendingTasks<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Plugins API"]
 pub enum CatPluginsParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatPluginsParts {
@@ -1990,6 +2018,7 @@ pub struct CatPlugins<'a> {
     v: Option<bool>,
 }
 impl<'a> CatPlugins<'a> {
+    #[doc = "Creates a new instance of [CatPlugins]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatPlugins {
             client,
@@ -2131,7 +2160,9 @@ impl<'a> CatPlugins<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Recovery API"]
 pub enum CatRecoveryParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CatRecoveryParts<'a> {
@@ -2171,6 +2202,7 @@ pub struct CatRecovery<'a> {
     v: Option<bool>,
 }
 impl<'a> CatRecovery<'a> {
+    #[doc = "Creates a new instance of [CatRecovery] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatRecoveryParts<'a>) -> Self {
         CatRecovery {
             client,
@@ -2339,6 +2371,7 @@ impl<'a> CatRecovery<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Repositories API"]
 pub enum CatRepositoriesParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatRepositoriesParts {
@@ -2368,6 +2401,7 @@ pub struct CatRepositories<'a> {
     v: Option<bool>,
 }
 impl<'a> CatRepositories<'a> {
+    #[doc = "Creates a new instance of [CatRepositories]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatRepositories {
             client,
@@ -2509,7 +2543,9 @@ impl<'a> CatRepositories<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Segments API"]
 pub enum CatSegmentsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CatSegmentsParts<'a> {
@@ -2545,6 +2581,7 @@ pub struct CatSegments<'a> {
     v: Option<bool>,
 }
 impl<'a> CatSegments<'a> {
+    #[doc = "Creates a new instance of [CatSegments] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatSegmentsParts<'a>) -> Self {
         CatSegments {
             client,
@@ -2677,7 +2714,9 @@ impl<'a> CatSegments<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Shards API"]
 pub enum CatShardsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Index"]
     Index(&'a [&'a str]),
 }
 impl<'a> CatShardsParts<'a> {
@@ -2716,6 +2755,7 @@ pub struct CatShards<'a> {
     v: Option<bool>,
 }
 impl<'a> CatShards<'a> {
+    #[doc = "Creates a new instance of [CatShards] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatShardsParts<'a>) -> Self {
         CatShards {
             client,
@@ -2875,7 +2915,9 @@ impl<'a> CatShards<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Snapshots API"]
 pub enum CatSnapshotsParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Repository"]
     Repository(&'a [&'a str]),
 }
 impl<'a> CatSnapshotsParts<'a> {
@@ -2913,6 +2955,7 @@ pub struct CatSnapshots<'a> {
     v: Option<bool>,
 }
 impl<'a> CatSnapshots<'a> {
+    #[doc = "Creates a new instance of [CatSnapshots] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatSnapshotsParts<'a>) -> Self {
         CatSnapshots {
             client,
@@ -3063,6 +3106,7 @@ impl<'a> CatSnapshots<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Tasks API"]
 pub enum CatTasksParts {
+    #[doc = "No parts"]
     None,
 }
 impl CatTasksParts {
@@ -3095,6 +3139,7 @@ pub struct CatTasks<'a> {
     v: Option<bool>,
 }
 impl<'a> CatTasks<'a> {
+    #[doc = "Creates a new instance of [CatTasks]"]
     pub fn new(client: Elasticsearch) -> Self {
         CatTasks {
             client,
@@ -3269,7 +3314,9 @@ impl<'a> CatTasks<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Templates API"]
 pub enum CatTemplatesParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "Name"]
     Name(&'a str),
 }
 impl<'a> CatTemplatesParts<'a> {
@@ -3305,6 +3352,7 @@ pub struct CatTemplates<'a> {
     v: Option<bool>,
 }
 impl<'a> CatTemplates<'a> {
+    #[doc = "Creates a new instance of [CatTemplates] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatTemplatesParts<'a>) -> Self {
         CatTemplates {
             client,
@@ -3446,7 +3494,9 @@ impl<'a> CatTemplates<'a> {
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Thread Pool API"]
 pub enum CatThreadPoolParts<'a> {
+    #[doc = "No parts"]
     None,
+    #[doc = "ThreadPoolPatterns"]
     ThreadPoolPatterns(&'a [&'a str]),
 }
 impl<'a> CatThreadPoolParts<'a> {
@@ -3484,6 +3534,7 @@ pub struct CatThreadPool<'a> {
     v: Option<bool>,
 }
 impl<'a> CatThreadPool<'a> {
+    #[doc = "Creates a new instance of [CatThreadPool] with the specified API parts"]
     pub fn new(client: Elasticsearch, parts: CatThreadPoolParts<'a>) -> Self {
         CatThreadPool {
             client,
@@ -3636,8 +3687,9 @@ pub struct Cat {
     client: Elasticsearch,
 }
 impl Cat {
+    #[doc = "Creates a new instance of [Cat]"]
     pub fn new(client: Elasticsearch) -> Self {
-        Cat { client }
+        Self { client }
     }
     #[doc = "Shows information about currently configured aliases to indices including filter and routing infos."]
     pub fn aliases<'a>(&self, parts: CatAliasesParts<'a>) -> CatAliases<'a> {
