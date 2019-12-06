@@ -1,13 +1,9 @@
 // TODO: whilst developing
-#![allow(unused_imports)]
 #![allow(missing_docs)]
 #![allow(dead_code)]
 
 extern crate reqwest;
-
 extern crate serde;
-
-#[macro_use]
 extern crate serde_json;
 
 pub mod auth;

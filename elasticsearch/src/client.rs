@@ -3,9 +3,7 @@ use crate::{
     Error,
 };
 
-use serde::de::DeserializeOwned;
 use serde::{Serialize, Serializer};
-use url::Url;
 
 /// Serializes an Option<&[&str]> with some value to a comma separated string of values.
 /// Used to serialize values within the query string

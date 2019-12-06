@@ -12,6 +12,7 @@ use std::str;
 /// use declarations common across builders
 pub fn use_declarations() -> Tokens {
     quote!(
+        #[allow(unused_imports)]
         use crate::{
             client::{Elasticsearch},
             enums::*,

@@ -14,6 +14,7 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
+#[allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
     enums::*,

@@ -18,7 +18,7 @@
 use serde_json;
 use std::error;
 use std::fmt;
-use std::io::{self, Read};
+use std::io;
 
 /// An error within the client. Errors that can occur include
 /// IO and parsing errors, as well as specific

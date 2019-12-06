@@ -1,9 +1,7 @@
-use super::headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT};
 use crate::error::Error;
-use bytes::buf::ext::Writer;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::{Serialize};
 
 /// Body of an API call.
 pub trait Body {
@@ -124,8 +122,9 @@ impl Body for () {
 
 #[cfg(test)]
 mod tests {
-    use crate::http::request::{Body, Bytes, JsonBody, NdBody};
+    use crate::http::request::{Body, JsonBody, NdBody};
     use bytes::BytesMut;
+    use serde_json::json;
 
     #[test]
     fn serialize_into_jsonbody_writes_to_bytes() -> Result<(), failure::Error> {

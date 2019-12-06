@@ -11,19 +11,14 @@ use crate::{
 
 use std::error;
 use std::fmt;
-use std::fs::File;
-use std::io;
-use std::io::Read;
-use std::io::Write;
-
+use std::io::{self, Write};
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
-use bytes::{BufMut, Bytes, BytesMut};
+use bytes::BytesMut;
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
-    Client,
 };
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use url::Url;
 
 /// Error that can occur when building a connection
