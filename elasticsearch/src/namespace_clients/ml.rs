@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Close Job API"]
-pub enum MlCloseJobUrlParts<'a> {
+#[doc = "API parts for the Ml Close Job API"]
+pub enum MlCloseJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlCloseJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlCloseJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Close Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlCloseJobUrlParts::JobId(ref job_id) => {
+            MlCloseJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(30usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -47,7 +50,7 @@ impl<'a> MlCloseJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html)."]
 pub struct MlCloseJob<'a, B> {
     client: Elasticsearch,
-    parts: MlCloseJobUrlParts<'a>,
+    parts: MlCloseJobParts<'a>,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -62,7 +65,7 @@ impl<'a, B> MlCloseJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlCloseJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlCloseJobParts<'a>) -> Self {
         MlCloseJob {
             client,
             parts,
@@ -137,9 +140,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Close Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -185,14 +188,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Calendar API"]
-pub enum MlDeleteCalendarUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Calendar API"]
+pub enum MlDeleteCalendarParts<'a> {
     CalendarId(&'a str),
 }
-impl<'a> MlDeleteCalendarUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteCalendarParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Calendar API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarUrlParts::CalendarId(ref calendar_id) => {
+            MlDeleteCalendarParts::CalendarId(ref calendar_id) => {
                 let mut p = String::with_capacity(15usize + calendar_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -205,7 +209,7 @@ impl<'a> MlDeleteCalendarUrlParts<'a> {
 #[doc = "Builder for the Ml Delete Calendar API"]
 pub struct MlDeleteCalendar<'a> {
     client: Elasticsearch,
-    parts: MlDeleteCalendarUrlParts<'a>,
+    parts: MlDeleteCalendarParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -213,7 +217,7 @@ pub struct MlDeleteCalendar<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendar<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarParts<'a>) -> Self {
         MlDeleteCalendar {
             client,
             parts,
@@ -250,9 +254,9 @@ impl<'a> MlDeleteCalendar<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -289,14 +293,15 @@ impl<'a> MlDeleteCalendar<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Calendar Event API"]
-pub enum MlDeleteCalendarEventUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Calendar Event API"]
+pub enum MlDeleteCalendarEventParts<'a> {
     CalendarIdEventId(&'a str, &'a str),
 }
-impl<'a> MlDeleteCalendarEventUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteCalendarEventParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Calendar Event API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarEventUrlParts::CalendarIdEventId(ref calendar_id, ref event_id) => {
+            MlDeleteCalendarEventParts::CalendarIdEventId(ref calendar_id, ref event_id) => {
                 let mut p = String::with_capacity(23usize + calendar_id.len() + event_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -311,7 +316,7 @@ impl<'a> MlDeleteCalendarEventUrlParts<'a> {
 #[doc = "Builder for the Ml Delete Calendar Event API"]
 pub struct MlDeleteCalendarEvent<'a> {
     client: Elasticsearch,
-    parts: MlDeleteCalendarEventUrlParts<'a>,
+    parts: MlDeleteCalendarEventParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -319,7 +324,7 @@ pub struct MlDeleteCalendarEvent<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendarEvent<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarEventUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarEventParts<'a>) -> Self {
         MlDeleteCalendarEvent {
             client,
             parts,
@@ -356,9 +361,9 @@ impl<'a> MlDeleteCalendarEvent<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar Event API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -395,14 +400,15 @@ impl<'a> MlDeleteCalendarEvent<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Calendar Job API"]
-pub enum MlDeleteCalendarJobUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Calendar Job API"]
+pub enum MlDeleteCalendarJobParts<'a> {
     CalendarIdJobId(&'a str, &'a str),
 }
-impl<'a> MlDeleteCalendarJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteCalendarJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Calendar Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteCalendarJobUrlParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+            MlDeleteCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
                 let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -417,7 +423,7 @@ impl<'a> MlDeleteCalendarJobUrlParts<'a> {
 #[doc = "Builder for the Ml Delete Calendar Job API"]
 pub struct MlDeleteCalendarJob<'a> {
     client: Elasticsearch,
-    parts: MlDeleteCalendarJobUrlParts<'a>,
+    parts: MlDeleteCalendarJobParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -425,7 +431,7 @@ pub struct MlDeleteCalendarJob<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteCalendarJob<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarJobParts<'a>) -> Self {
         MlDeleteCalendarJob {
             client,
             parts,
@@ -462,9 +468,9 @@ impl<'a> MlDeleteCalendarJob<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Calendar Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -501,14 +507,15 @@ impl<'a> MlDeleteCalendarJob<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Datafeed API"]
-pub enum MlDeleteDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Datafeed API"]
+pub enum MlDeleteDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlDeleteDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlDeleteDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(15usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -521,7 +528,7 @@ impl<'a> MlDeleteDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html)."]
 pub struct MlDeleteDatafeed<'a> {
     client: Elasticsearch,
-    parts: MlDeleteDatafeedUrlParts<'a>,
+    parts: MlDeleteDatafeedParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     force: Option<bool>,
@@ -530,7 +537,7 @@ pub struct MlDeleteDatafeed<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteDatafeed<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteDatafeedParts<'a>) -> Self {
         MlDeleteDatafeed {
             client,
             parts,
@@ -573,9 +580,9 @@ impl<'a> MlDeleteDatafeed<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -615,14 +622,15 @@ impl<'a> MlDeleteDatafeed<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Expired Data API"]
-pub enum MlDeleteExpiredDataUrlParts {
+#[doc = "API parts for the Ml Delete Expired Data API"]
+pub enum MlDeleteExpiredDataParts {
     None,
 }
-impl MlDeleteExpiredDataUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl MlDeleteExpiredDataParts {
+    #[doc = "Builds a relative URL path to the Ml Delete Expired Data API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteExpiredDataUrlParts::None => "/_ml/_delete_expired_data".into(),
+            MlDeleteExpiredDataParts::None => "/_ml/_delete_expired_data".into(),
         }
     }
 }
@@ -630,7 +638,7 @@ impl MlDeleteExpiredDataUrlParts {
 #[doc = "Builder for the Ml Delete Expired Data API"]
 pub struct MlDeleteExpiredData<'a> {
     client: Elasticsearch,
-    parts: MlDeleteExpiredDataUrlParts,
+    parts: MlDeleteExpiredDataParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -641,7 +649,7 @@ impl<'a> MlDeleteExpiredData<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         MlDeleteExpiredData {
             client,
-            parts: MlDeleteExpiredDataUrlParts::None,
+            parts: MlDeleteExpiredDataParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -675,9 +683,9 @@ impl<'a> MlDeleteExpiredData<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Expired Data API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -714,14 +722,15 @@ impl<'a> MlDeleteExpiredData<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Filter API"]
-pub enum MlDeleteFilterUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Filter API"]
+pub enum MlDeleteFilterParts<'a> {
     FilterId(&'a str),
 }
-impl<'a> MlDeleteFilterUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteFilterParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Filter API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteFilterUrlParts::FilterId(ref filter_id) => {
+            MlDeleteFilterParts::FilterId(ref filter_id) => {
                 let mut p = String::with_capacity(13usize + filter_id.len());
                 p.push_str("/_ml/filters/");
                 p.push_str(filter_id.as_ref());
@@ -734,7 +743,7 @@ impl<'a> MlDeleteFilterUrlParts<'a> {
 #[doc = "Builder for the Ml Delete Filter API"]
 pub struct MlDeleteFilter<'a> {
     client: Elasticsearch,
-    parts: MlDeleteFilterUrlParts<'a>,
+    parts: MlDeleteFilterParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -742,7 +751,7 @@ pub struct MlDeleteFilter<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteFilter<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteFilterUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteFilterParts<'a>) -> Self {
         MlDeleteFilter {
             client,
             parts,
@@ -779,9 +788,9 @@ impl<'a> MlDeleteFilter<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Filter API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -818,22 +827,23 @@ impl<'a> MlDeleteFilter<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Forecast API"]
-pub enum MlDeleteForecastUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Forecast API"]
+pub enum MlDeleteForecastParts<'a> {
     JobId(&'a str),
     JobIdForecastId(&'a str, &'a str),
 }
-impl<'a> MlDeleteForecastUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteForecastParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Forecast API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteForecastUrlParts::JobId(ref job_id) => {
+            MlDeleteForecastParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(33usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
                 p.push_str("/_forecast");
                 p.into()
             }
-            MlDeleteForecastUrlParts::JobIdForecastId(ref job_id, ref forecast_id) => {
+            MlDeleteForecastParts::JobIdForecastId(ref job_id, ref forecast_id) => {
                 let mut p = String::with_capacity(34usize + job_id.len() + forecast_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -848,7 +858,7 @@ impl<'a> MlDeleteForecastUrlParts<'a> {
 #[doc = "Builder for the [Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html)."]
 pub struct MlDeleteForecast<'a> {
     client: Elasticsearch,
-    parts: MlDeleteForecastUrlParts<'a>,
+    parts: MlDeleteForecastParts<'a>,
     allow_no_forecasts: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -858,7 +868,7 @@ pub struct MlDeleteForecast<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> MlDeleteForecast<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteForecastUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteForecastParts<'a>) -> Self {
         MlDeleteForecast {
             client,
             parts,
@@ -907,9 +917,9 @@ impl<'a> MlDeleteForecast<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Forecast API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -952,14 +962,15 @@ impl<'a> MlDeleteForecast<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Job API"]
-pub enum MlDeleteJobUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Job API"]
+pub enum MlDeleteJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlDeleteJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteJobUrlParts::JobId(ref job_id) => {
+            MlDeleteJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(23usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -972,7 +983,7 @@ impl<'a> MlDeleteJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html)."]
 pub struct MlDeleteJob<'a> {
     client: Elasticsearch,
-    parts: MlDeleteJobUrlParts<'a>,
+    parts: MlDeleteJobParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     force: Option<bool>,
@@ -982,7 +993,7 @@ pub struct MlDeleteJob<'a> {
     wait_for_completion: Option<bool>,
 }
 impl<'a> MlDeleteJob<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteJobParts<'a>) -> Self {
         MlDeleteJob {
             client,
             parts,
@@ -1031,9 +1042,9 @@ impl<'a> MlDeleteJob<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1076,14 +1087,15 @@ impl<'a> MlDeleteJob<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Delete Model Snapshot API"]
-pub enum MlDeleteModelSnapshotUrlParts<'a> {
+#[doc = "API parts for the Ml Delete Model Snapshot API"]
+pub enum MlDeleteModelSnapshotParts<'a> {
     JobIdSnapshotId(&'a str, &'a str),
 }
-impl<'a> MlDeleteModelSnapshotUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlDeleteModelSnapshotParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Delete Model Snapshot API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlDeleteModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlDeleteModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
                 let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -1098,7 +1110,7 @@ impl<'a> MlDeleteModelSnapshotUrlParts<'a> {
 #[doc = "Builder for the [Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html)."]
 pub struct MlDeleteModelSnapshot<'a> {
     client: Elasticsearch,
-    parts: MlDeleteModelSnapshotUrlParts<'a>,
+    parts: MlDeleteModelSnapshotParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1106,7 +1118,7 @@ pub struct MlDeleteModelSnapshot<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlDeleteModelSnapshot<'a> {
-    pub fn new(client: Elasticsearch, parts: MlDeleteModelSnapshotUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlDeleteModelSnapshotParts<'a>) -> Self {
         MlDeleteModelSnapshot {
             client,
             parts,
@@ -1143,9 +1155,9 @@ impl<'a> MlDeleteModelSnapshot<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Delete Model Snapshot API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1182,14 +1194,15 @@ impl<'a> MlDeleteModelSnapshot<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Flush Job API"]
-pub enum MlFlushJobUrlParts<'a> {
+#[doc = "API parts for the Ml Flush Job API"]
+pub enum MlFlushJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlFlushJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlFlushJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Flush Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlFlushJobUrlParts::JobId(ref job_id) => {
+            MlFlushJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(30usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -1203,7 +1216,7 @@ impl<'a> MlFlushJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html)."]
 pub struct MlFlushJob<'a, B> {
     client: Elasticsearch,
-    parts: MlFlushJobUrlParts<'a>,
+    parts: MlFlushJobParts<'a>,
     advance_time: Option<&'a str>,
     body: Option<B>,
     calc_interim: Option<bool>,
@@ -1220,7 +1233,7 @@ impl<'a, B> MlFlushJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlFlushJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlFlushJobParts<'a>) -> Self {
         MlFlushJob {
             client,
             parts,
@@ -1309,9 +1322,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Flush Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1363,14 +1376,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Forecast API"]
-pub enum MlForecastUrlParts<'a> {
+#[doc = "API parts for the Ml Forecast API"]
+pub enum MlForecastParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlForecastUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlForecastParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Forecast API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlForecastUrlParts::JobId(ref job_id) => {
+            MlForecastParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(33usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -1384,7 +1398,7 @@ impl<'a> MlForecastUrlParts<'a> {
 #[doc = "Builder for the Ml Forecast API"]
 pub struct MlForecast<'a, B> {
     client: Elasticsearch,
-    parts: MlForecastUrlParts<'a>,
+    parts: MlForecastParts<'a>,
     body: Option<B>,
     duration: Option<&'a str>,
     error_trace: Option<bool>,
@@ -1398,7 +1412,7 @@ impl<'a, B> MlForecast<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlForecastUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlForecastParts<'a>) -> Self {
         MlForecast {
             client,
             parts,
@@ -1466,9 +1480,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Forecast API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1511,15 +1525,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Buckets API"]
-pub enum MlGetBucketsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Buckets API"]
+pub enum MlGetBucketsParts<'a> {
     JobIdTimestamp(&'a str, &'a str),
     JobId(&'a str),
 }
-impl<'a> MlGetBucketsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetBucketsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Buckets API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetBucketsUrlParts::JobIdTimestamp(ref job_id, ref timestamp) => {
+            MlGetBucketsParts::JobIdTimestamp(ref job_id, ref timestamp) => {
                 let mut p = String::with_capacity(40usize + job_id.len() + timestamp.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -1527,7 +1542,7 @@ impl<'a> MlGetBucketsUrlParts<'a> {
                 p.push_str(timestamp.as_ref());
                 p.into()
             }
-            MlGetBucketsUrlParts::JobId(ref job_id) => {
+            MlGetBucketsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(39usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -1541,7 +1556,7 @@ impl<'a> MlGetBucketsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html)."]
 pub struct MlGetBuckets<'a, B> {
     client: Elasticsearch,
-    parts: MlGetBucketsUrlParts<'a>,
+    parts: MlGetBucketsParts<'a>,
     anomaly_score: Option<f64>,
     body: Option<B>,
     desc: Option<bool>,
@@ -1562,7 +1577,7 @@ impl<'a, B> MlGetBuckets<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetBucketsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetBucketsParts<'a>) -> Self {
         MlGetBuckets {
             client,
             parts,
@@ -1679,11 +1694,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Buckets API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -1748,14 +1763,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Calendar Events API"]
-pub enum MlGetCalendarEventsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Calendar Events API"]
+pub enum MlGetCalendarEventsParts<'a> {
     CalendarId(&'a str),
 }
-impl<'a> MlGetCalendarEventsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetCalendarEventsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Calendar Events API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetCalendarEventsUrlParts::CalendarId(ref calendar_id) => {
+            MlGetCalendarEventsParts::CalendarId(ref calendar_id) => {
                 let mut p = String::with_capacity(22usize + calendar_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -1769,7 +1785,7 @@ impl<'a> MlGetCalendarEventsUrlParts<'a> {
 #[doc = "Builder for the Ml Get Calendar Events API"]
 pub struct MlGetCalendarEvents<'a> {
     client: Elasticsearch,
-    parts: MlGetCalendarEventsUrlParts<'a>,
+    parts: MlGetCalendarEventsParts<'a>,
     end: Option<&'a str>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1782,7 +1798,7 @@ pub struct MlGetCalendarEvents<'a> {
     start: Option<&'a str>,
 }
 impl<'a> MlGetCalendarEvents<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetCalendarEventsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCalendarEventsParts<'a>) -> Self {
         MlGetCalendarEvents {
             client,
             parts,
@@ -1849,9 +1865,9 @@ impl<'a> MlGetCalendarEvents<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Calendar Events API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1903,16 +1919,17 @@ impl<'a> MlGetCalendarEvents<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Calendars API"]
-pub enum MlGetCalendarsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Calendars API"]
+pub enum MlGetCalendarsParts<'a> {
     None,
     CalendarId(&'a str),
 }
-impl<'a> MlGetCalendarsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetCalendarsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Calendars API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetCalendarsUrlParts::None => "/_ml/calendars".into(),
-            MlGetCalendarsUrlParts::CalendarId(ref calendar_id) => {
+            MlGetCalendarsParts::None => "/_ml/calendars".into(),
+            MlGetCalendarsParts::CalendarId(ref calendar_id) => {
                 let mut p = String::with_capacity(15usize + calendar_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -1925,7 +1942,7 @@ impl<'a> MlGetCalendarsUrlParts<'a> {
 #[doc = "Builder for the Ml Get Calendars API"]
 pub struct MlGetCalendars<'a, B> {
     client: Elasticsearch,
-    parts: MlGetCalendarsUrlParts<'a>,
+    parts: MlGetCalendarsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1939,7 +1956,7 @@ impl<'a, B> MlGetCalendars<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetCalendarsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCalendarsParts<'a>) -> Self {
         MlGetCalendars {
             client,
             parts,
@@ -2007,11 +2024,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Calendars API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2055,15 +2072,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Categories API"]
-pub enum MlGetCategoriesUrlParts<'a> {
+#[doc = "API parts for the Ml Get Categories API"]
+pub enum MlGetCategoriesParts<'a> {
     JobIdCategoryId(&'a str, i64),
     JobId(&'a str),
 }
-impl<'a> MlGetCategoriesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetCategoriesParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Categories API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetCategoriesUrlParts::JobIdCategoryId(ref job_id, ref category_id) => {
+            MlGetCategoriesParts::JobIdCategoryId(ref job_id, ref category_id) => {
                 let category_id_str = category_id.to_string();
                 let mut p = String::with_capacity(43usize + job_id.len() + category_id_str.len());
                 p.push_str("/_ml/anomaly_detectors/");
@@ -2072,7 +2090,7 @@ impl<'a> MlGetCategoriesUrlParts<'a> {
                 p.push_str(category_id_str.as_ref());
                 p.into()
             }
-            MlGetCategoriesUrlParts::JobId(ref job_id) => {
+            MlGetCategoriesParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(43usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -2086,7 +2104,7 @@ impl<'a> MlGetCategoriesUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html)."]
 pub struct MlGetCategories<'a, B> {
     client: Elasticsearch,
-    parts: MlGetCategoriesUrlParts<'a>,
+    parts: MlGetCategoriesParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2100,7 +2118,7 @@ impl<'a, B> MlGetCategories<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetCategoriesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetCategoriesParts<'a>) -> Self {
         MlGetCategories {
             client,
             parts,
@@ -2168,11 +2186,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Categories API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2216,22 +2234,23 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Datafeed Stats API"]
-pub enum MlGetDatafeedStatsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Datafeed Stats API"]
+pub enum MlGetDatafeedStatsParts<'a> {
     DatafeedId(&'a str),
     None,
 }
-impl<'a> MlGetDatafeedStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetDatafeedStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Datafeed Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetDatafeedStatsUrlParts::DatafeedId(ref datafeed_id) => {
+            MlGetDatafeedStatsParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(22usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
                 p.push_str("/_stats");
                 p.into()
             }
-            MlGetDatafeedStatsUrlParts::None => "/_ml/datafeeds/_stats".into(),
+            MlGetDatafeedStatsParts::None => "/_ml/datafeeds/_stats".into(),
         }
     }
 }
@@ -2239,7 +2258,7 @@ impl<'a> MlGetDatafeedStatsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html)."]
 pub struct MlGetDatafeedStats<'a> {
     client: Elasticsearch,
-    parts: MlGetDatafeedStatsUrlParts<'a>,
+    parts: MlGetDatafeedStatsParts<'a>,
     allow_no_datafeeds: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2248,7 +2267,7 @@ pub struct MlGetDatafeedStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetDatafeedStats<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetDatafeedStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDatafeedStatsParts<'a>) -> Self {
         MlGetDatafeedStats {
             client,
             parts,
@@ -2291,9 +2310,9 @@ impl<'a> MlGetDatafeedStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Datafeed Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2333,21 +2352,22 @@ impl<'a> MlGetDatafeedStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Datafeeds API"]
-pub enum MlGetDatafeedsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Datafeeds API"]
+pub enum MlGetDatafeedsParts<'a> {
     DatafeedId(&'a str),
     None,
 }
-impl<'a> MlGetDatafeedsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetDatafeedsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Datafeeds API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetDatafeedsUrlParts::DatafeedId(ref datafeed_id) => {
+            MlGetDatafeedsParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(15usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
                 p.into()
             }
-            MlGetDatafeedsUrlParts::None => "/_ml/datafeeds".into(),
+            MlGetDatafeedsParts::None => "/_ml/datafeeds".into(),
         }
     }
 }
@@ -2355,7 +2375,7 @@ impl<'a> MlGetDatafeedsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html)."]
 pub struct MlGetDatafeeds<'a> {
     client: Elasticsearch,
-    parts: MlGetDatafeedsUrlParts<'a>,
+    parts: MlGetDatafeedsParts<'a>,
     allow_no_datafeeds: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2364,7 +2384,7 @@ pub struct MlGetDatafeeds<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetDatafeeds<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetDatafeedsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetDatafeedsParts<'a>) -> Self {
         MlGetDatafeeds {
             client,
             parts,
@@ -2407,9 +2427,9 @@ impl<'a> MlGetDatafeeds<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Datafeeds API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2449,16 +2469,17 @@ impl<'a> MlGetDatafeeds<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Filters API"]
-pub enum MlGetFiltersUrlParts<'a> {
+#[doc = "API parts for the Ml Get Filters API"]
+pub enum MlGetFiltersParts<'a> {
     None,
     FilterId(&'a str),
 }
-impl<'a> MlGetFiltersUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetFiltersParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Filters API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetFiltersUrlParts::None => "/_ml/filters".into(),
-            MlGetFiltersUrlParts::FilterId(ref filter_id) => {
+            MlGetFiltersParts::None => "/_ml/filters".into(),
+            MlGetFiltersParts::FilterId(ref filter_id) => {
                 let mut p = String::with_capacity(13usize + filter_id.len());
                 p.push_str("/_ml/filters/");
                 p.push_str(filter_id.as_ref());
@@ -2471,7 +2492,7 @@ impl<'a> MlGetFiltersUrlParts<'a> {
 #[doc = "Builder for the Ml Get Filters API"]
 pub struct MlGetFilters<'a> {
     client: Elasticsearch,
-    parts: MlGetFiltersUrlParts<'a>,
+    parts: MlGetFiltersParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     from: Option<i32>,
@@ -2481,7 +2502,7 @@ pub struct MlGetFilters<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetFilters<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetFiltersUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetFiltersParts<'a>) -> Self {
         MlGetFilters {
             client,
             parts,
@@ -2530,9 +2551,9 @@ impl<'a> MlGetFilters<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Filters API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2575,14 +2596,15 @@ impl<'a> MlGetFilters<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Influencers API"]
-pub enum MlGetInfluencersUrlParts<'a> {
+#[doc = "API parts for the Ml Get Influencers API"]
+pub enum MlGetInfluencersParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlGetInfluencersUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetInfluencersParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Influencers API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetInfluencersUrlParts::JobId(ref job_id) => {
+            MlGetInfluencersParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(43usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -2596,7 +2618,7 @@ impl<'a> MlGetInfluencersUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html)."]
 pub struct MlGetInfluencers<'a, B> {
     client: Elasticsearch,
-    parts: MlGetInfluencersUrlParts<'a>,
+    parts: MlGetInfluencersParts<'a>,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<&'a str>,
@@ -2616,7 +2638,7 @@ impl<'a, B> MlGetInfluencers<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetInfluencersUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetInfluencersParts<'a>) -> Self {
         MlGetInfluencers {
             client,
             parts,
@@ -2726,11 +2748,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Influencers API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2792,16 +2814,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Job Stats API"]
-pub enum MlGetJobStatsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Job Stats API"]
+pub enum MlGetJobStatsParts<'a> {
     None,
     JobId(&'a str),
 }
-impl<'a> MlGetJobStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetJobStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Job Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetJobStatsUrlParts::None => "/_ml/anomaly_detectors/_stats".into(),
-            MlGetJobStatsUrlParts::JobId(ref job_id) => {
+            MlGetJobStatsParts::None => "/_ml/anomaly_detectors/_stats".into(),
+            MlGetJobStatsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(30usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -2815,7 +2838,7 @@ impl<'a> MlGetJobStatsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html)."]
 pub struct MlGetJobStats<'a> {
     client: Elasticsearch,
-    parts: MlGetJobStatsUrlParts<'a>,
+    parts: MlGetJobStatsParts<'a>,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2824,7 +2847,7 @@ pub struct MlGetJobStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetJobStats<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetJobStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetJobStatsParts<'a>) -> Self {
         MlGetJobStats {
             client,
             parts,
@@ -2867,9 +2890,9 @@ impl<'a> MlGetJobStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Job Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2909,21 +2932,22 @@ impl<'a> MlGetJobStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Jobs API"]
-pub enum MlGetJobsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Jobs API"]
+pub enum MlGetJobsParts<'a> {
     JobId(&'a str),
     None,
 }
-impl<'a> MlGetJobsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetJobsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Jobs API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetJobsUrlParts::JobId(ref job_id) => {
+            MlGetJobsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(23usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
                 p.into()
             }
-            MlGetJobsUrlParts::None => "/_ml/anomaly_detectors".into(),
+            MlGetJobsParts::None => "/_ml/anomaly_detectors".into(),
         }
     }
 }
@@ -2931,7 +2955,7 @@ impl<'a> MlGetJobsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html)."]
 pub struct MlGetJobs<'a> {
     client: Elasticsearch,
-    parts: MlGetJobsUrlParts<'a>,
+    parts: MlGetJobsParts<'a>,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2940,7 +2964,7 @@ pub struct MlGetJobs<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlGetJobs<'a> {
-    pub fn new(client: Elasticsearch, parts: MlGetJobsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetJobsParts<'a>) -> Self {
         MlGetJobs {
             client,
             parts,
@@ -2983,9 +3007,9 @@ impl<'a> MlGetJobs<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Jobs API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3025,15 +3049,16 @@ impl<'a> MlGetJobs<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Model Snapshots API"]
-pub enum MlGetModelSnapshotsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Model Snapshots API"]
+pub enum MlGetModelSnapshotsParts<'a> {
     JobIdSnapshotId(&'a str, &'a str),
     JobId(&'a str),
 }
-impl<'a> MlGetModelSnapshotsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetModelSnapshotsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Model Snapshots API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetModelSnapshotsUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlGetModelSnapshotsParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
                 let mut p = String::with_capacity(40usize + job_id.len() + snapshot_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -3041,7 +3066,7 @@ impl<'a> MlGetModelSnapshotsUrlParts<'a> {
                 p.push_str(snapshot_id.as_ref());
                 p.into()
             }
-            MlGetModelSnapshotsUrlParts::JobId(ref job_id) => {
+            MlGetModelSnapshotsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(39usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -3055,7 +3080,7 @@ impl<'a> MlGetModelSnapshotsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html)."]
 pub struct MlGetModelSnapshots<'a, B> {
     client: Elasticsearch,
-    parts: MlGetModelSnapshotsUrlParts<'a>,
+    parts: MlGetModelSnapshotsParts<'a>,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<&'a str>,
@@ -3073,7 +3098,7 @@ impl<'a, B> MlGetModelSnapshots<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsParts<'a>) -> Self {
         MlGetModelSnapshots {
             client,
             parts,
@@ -3169,11 +3194,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Model Snapshots API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -3229,14 +3254,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Overall Buckets API"]
-pub enum MlGetOverallBucketsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Overall Buckets API"]
+pub enum MlGetOverallBucketsParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlGetOverallBucketsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetOverallBucketsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Overall Buckets API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetOverallBucketsUrlParts::JobId(ref job_id) => {
+            MlGetOverallBucketsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(47usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -3250,7 +3276,7 @@ impl<'a> MlGetOverallBucketsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html)."]
 pub struct MlGetOverallBuckets<'a, B> {
     client: Elasticsearch,
-    parts: MlGetOverallBucketsUrlParts<'a>,
+    parts: MlGetOverallBucketsParts<'a>,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
     bucket_span: Option<&'a str>,
@@ -3269,7 +3295,7 @@ impl<'a, B> MlGetOverallBuckets<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsParts<'a>) -> Self {
         MlGetOverallBuckets {
             client,
             parts,
@@ -3372,11 +3398,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Overall Buckets API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -3435,14 +3461,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Get Records API"]
-pub enum MlGetRecordsUrlParts<'a> {
+#[doc = "API parts for the Ml Get Records API"]
+pub enum MlGetRecordsParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlGetRecordsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlGetRecordsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Get Records API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlGetRecordsUrlParts::JobId(ref job_id) => {
+            MlGetRecordsParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(39usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -3456,7 +3483,7 @@ impl<'a> MlGetRecordsUrlParts<'a> {
 #[doc = "Builder for the [Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html)."]
 pub struct MlGetRecords<'a, B> {
     client: Elasticsearch,
-    parts: MlGetRecordsUrlParts<'a>,
+    parts: MlGetRecordsParts<'a>,
     body: Option<B>,
     desc: Option<bool>,
     end: Option<&'a str>,
@@ -3476,7 +3503,7 @@ impl<'a, B> MlGetRecords<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlGetRecordsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlGetRecordsParts<'a>) -> Self {
         MlGetRecords {
             client,
             parts,
@@ -3585,11 +3612,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Get Records API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -3651,14 +3678,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Info API"]
-pub enum MlInfoUrlParts {
+#[doc = "API parts for the Ml Info API"]
+pub enum MlInfoParts {
     None,
 }
-impl MlInfoUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl MlInfoParts {
+    #[doc = "Builds a relative URL path to the Ml Info API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlInfoUrlParts::None => "/_ml/info".into(),
+            MlInfoParts::None => "/_ml/info".into(),
         }
     }
 }
@@ -3666,7 +3694,7 @@ impl MlInfoUrlParts {
 #[doc = "Builder for the Ml Info API"]
 pub struct MlInfo<'a> {
     client: Elasticsearch,
-    parts: MlInfoUrlParts,
+    parts: MlInfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -3677,7 +3705,7 @@ impl<'a> MlInfo<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         MlInfo {
             client,
-            parts: MlInfoUrlParts::None,
+            parts: MlInfoParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3711,9 +3739,9 @@ impl<'a> MlInfo<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Info API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3750,14 +3778,15 @@ impl<'a> MlInfo<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Open Job API"]
-pub enum MlOpenJobUrlParts<'a> {
+#[doc = "API parts for the Ml Open Job API"]
+pub enum MlOpenJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlOpenJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlOpenJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Open Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlOpenJobUrlParts::JobId(ref job_id) => {
+            MlOpenJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(29usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -3771,7 +3800,7 @@ impl<'a> MlOpenJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html)."]
 pub struct MlOpenJob<'a, B> {
     client: Elasticsearch,
-    parts: MlOpenJobUrlParts<'a>,
+    parts: MlOpenJobParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -3783,7 +3812,7 @@ impl<'a, B> MlOpenJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlOpenJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlOpenJobParts<'a>) -> Self {
         MlOpenJob {
             client,
             parts,
@@ -3837,9 +3866,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Open Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3876,14 +3905,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Post Calendar Events API"]
-pub enum MlPostCalendarEventsUrlParts<'a> {
+#[doc = "API parts for the Ml Post Calendar Events API"]
+pub enum MlPostCalendarEventsParts<'a> {
     CalendarId(&'a str),
 }
-impl<'a> MlPostCalendarEventsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPostCalendarEventsParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Post Calendar Events API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPostCalendarEventsUrlParts::CalendarId(ref calendar_id) => {
+            MlPostCalendarEventsParts::CalendarId(ref calendar_id) => {
                 let mut p = String::with_capacity(22usize + calendar_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -3897,7 +3927,7 @@ impl<'a> MlPostCalendarEventsUrlParts<'a> {
 #[doc = "Builder for the Ml Post Calendar Events API"]
 pub struct MlPostCalendarEvents<'a, B> {
     client: Elasticsearch,
-    parts: MlPostCalendarEventsUrlParts<'a>,
+    parts: MlPostCalendarEventsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -3909,7 +3939,7 @@ impl<'a, B> MlPostCalendarEvents<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsParts<'a>) -> Self {
         MlPostCalendarEvents {
             client,
             parts,
@@ -3963,9 +3993,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Post Calendar Events API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4002,14 +4032,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Post Data API"]
-pub enum MlPostDataUrlParts<'a> {
+#[doc = "API parts for the Ml Post Data API"]
+pub enum MlPostDataParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlPostDataUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPostDataParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Post Data API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPostDataUrlParts::JobId(ref job_id) => {
+            MlPostDataParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(29usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -4023,7 +4054,7 @@ impl<'a> MlPostDataUrlParts<'a> {
 #[doc = "Builder for the [Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html)."]
 pub struct MlPostData<'a, B> {
     client: Elasticsearch,
-    parts: MlPostDataUrlParts<'a>,
+    parts: MlPostDataParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4037,7 +4068,7 @@ impl<'a, B> MlPostData<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPostDataUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPostDataParts<'a>) -> Self {
         MlPostData {
             client,
             parts,
@@ -4105,9 +4136,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Post Data API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4150,14 +4181,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Preview Datafeed API"]
-pub enum MlPreviewDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Preview Datafeed API"]
+pub enum MlPreviewDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlPreviewDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPreviewDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Preview Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPreviewDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlPreviewDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(24usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -4171,7 +4203,7 @@ impl<'a> MlPreviewDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html)."]
 pub struct MlPreviewDatafeed<'a> {
     client: Elasticsearch,
-    parts: MlPreviewDatafeedUrlParts<'a>,
+    parts: MlPreviewDatafeedParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -4179,7 +4211,7 @@ pub struct MlPreviewDatafeed<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MlPreviewDatafeed<'a> {
-    pub fn new(client: Elasticsearch, parts: MlPreviewDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPreviewDatafeedParts<'a>) -> Self {
         MlPreviewDatafeed {
             client,
             parts,
@@ -4216,9 +4248,9 @@ impl<'a> MlPreviewDatafeed<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Preview Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4255,14 +4287,15 @@ impl<'a> MlPreviewDatafeed<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Put Calendar API"]
-pub enum MlPutCalendarUrlParts<'a> {
+#[doc = "API parts for the Ml Put Calendar API"]
+pub enum MlPutCalendarParts<'a> {
     CalendarId(&'a str),
 }
-impl<'a> MlPutCalendarUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPutCalendarParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Put Calendar API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutCalendarUrlParts::CalendarId(ref calendar_id) => {
+            MlPutCalendarParts::CalendarId(ref calendar_id) => {
                 let mut p = String::with_capacity(15usize + calendar_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -4275,7 +4308,7 @@ impl<'a> MlPutCalendarUrlParts<'a> {
 #[doc = "Builder for the Ml Put Calendar API"]
 pub struct MlPutCalendar<'a, B> {
     client: Elasticsearch,
-    parts: MlPutCalendarUrlParts<'a>,
+    parts: MlPutCalendarParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4287,7 +4320,7 @@ impl<'a, B> MlPutCalendar<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPutCalendarUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutCalendarParts<'a>) -> Self {
         MlPutCalendar {
             client,
             parts,
@@ -4341,9 +4374,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Put Calendar API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4380,14 +4413,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Put Calendar Job API"]
-pub enum MlPutCalendarJobUrlParts<'a> {
+#[doc = "API parts for the Ml Put Calendar Job API"]
+pub enum MlPutCalendarJobParts<'a> {
     CalendarIdJobId(&'a str, &'a str),
 }
-impl<'a> MlPutCalendarJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPutCalendarJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Put Calendar Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutCalendarJobUrlParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
+            MlPutCalendarJobParts::CalendarIdJobId(ref calendar_id, ref job_id) => {
                 let mut p = String::with_capacity(21usize + calendar_id.len() + job_id.len());
                 p.push_str("/_ml/calendars/");
                 p.push_str(calendar_id.as_ref());
@@ -4402,7 +4436,7 @@ impl<'a> MlPutCalendarJobUrlParts<'a> {
 #[doc = "Builder for the Ml Put Calendar Job API"]
 pub struct MlPutCalendarJob<'a, B> {
     client: Elasticsearch,
-    parts: MlPutCalendarJobUrlParts<'a>,
+    parts: MlPutCalendarJobParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4414,7 +4448,7 @@ impl<'a, B> MlPutCalendarJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPutCalendarJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutCalendarJobParts<'a>) -> Self {
         MlPutCalendarJob {
             client,
             parts,
@@ -4468,9 +4502,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Put Calendar Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4507,14 +4541,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Put Datafeed API"]
-pub enum MlPutDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Put Datafeed API"]
+pub enum MlPutDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlPutDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPutDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Put Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlPutDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(15usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -4527,7 +4562,7 @@ impl<'a> MlPutDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html)."]
 pub struct MlPutDatafeed<'a, B> {
     client: Elasticsearch,
-    parts: MlPutDatafeedUrlParts<'a>,
+    parts: MlPutDatafeedParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4539,7 +4574,7 @@ impl<'a, B> MlPutDatafeed<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPutDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutDatafeedParts<'a>) -> Self {
         MlPutDatafeed {
             client,
             parts,
@@ -4593,9 +4628,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Put Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4632,14 +4667,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Put Filter API"]
-pub enum MlPutFilterUrlParts<'a> {
+#[doc = "API parts for the Ml Put Filter API"]
+pub enum MlPutFilterParts<'a> {
     FilterId(&'a str),
 }
-impl<'a> MlPutFilterUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPutFilterParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Put Filter API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutFilterUrlParts::FilterId(ref filter_id) => {
+            MlPutFilterParts::FilterId(ref filter_id) => {
                 let mut p = String::with_capacity(13usize + filter_id.len());
                 p.push_str("/_ml/filters/");
                 p.push_str(filter_id.as_ref());
@@ -4652,7 +4688,7 @@ impl<'a> MlPutFilterUrlParts<'a> {
 #[doc = "Builder for the Ml Put Filter API"]
 pub struct MlPutFilter<'a, B> {
     client: Elasticsearch,
-    parts: MlPutFilterUrlParts<'a>,
+    parts: MlPutFilterParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4664,7 +4700,7 @@ impl<'a, B> MlPutFilter<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPutFilterUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutFilterParts<'a>) -> Self {
         MlPutFilter {
             client,
             parts,
@@ -4718,9 +4754,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Put Filter API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4757,14 +4793,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Put Job API"]
-pub enum MlPutJobUrlParts<'a> {
+#[doc = "API parts for the Ml Put Job API"]
+pub enum MlPutJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlPutJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlPutJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Put Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlPutJobUrlParts::JobId(ref job_id) => {
+            MlPutJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(23usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -4777,7 +4814,7 @@ impl<'a> MlPutJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html)."]
 pub struct MlPutJob<'a, B> {
     client: Elasticsearch,
-    parts: MlPutJobUrlParts<'a>,
+    parts: MlPutJobParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4789,7 +4826,7 @@ impl<'a, B> MlPutJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlPutJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlPutJobParts<'a>) -> Self {
         MlPutJob {
             client,
             parts,
@@ -4843,9 +4880,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Put Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4882,14 +4919,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Revert Model Snapshot API"]
-pub enum MlRevertModelSnapshotUrlParts<'a> {
+#[doc = "API parts for the Ml Revert Model Snapshot API"]
+pub enum MlRevertModelSnapshotParts<'a> {
     JobIdSnapshotId(&'a str, &'a str),
 }
-impl<'a> MlRevertModelSnapshotUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlRevertModelSnapshotParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Revert Model Snapshot API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlRevertModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlRevertModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
                 let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -4905,7 +4943,7 @@ impl<'a> MlRevertModelSnapshotUrlParts<'a> {
 #[doc = "Builder for the [Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html)."]
 pub struct MlRevertModelSnapshot<'a, B> {
     client: Elasticsearch,
-    parts: MlRevertModelSnapshotUrlParts<'a>,
+    parts: MlRevertModelSnapshotParts<'a>,
     body: Option<B>,
     delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
@@ -4918,7 +4956,7 @@ impl<'a, B> MlRevertModelSnapshot<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotParts<'a>) -> Self {
         MlRevertModelSnapshot {
             client,
             parts,
@@ -4979,9 +5017,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Revert Model Snapshot API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5021,14 +5059,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Set Upgrade Mode API"]
-pub enum MlSetUpgradeModeUrlParts {
+#[doc = "API parts for the Ml Set Upgrade Mode API"]
+pub enum MlSetUpgradeModeParts {
     None,
 }
-impl MlSetUpgradeModeUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl MlSetUpgradeModeParts {
+    #[doc = "Builds a relative URL path to the Ml Set Upgrade Mode API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlSetUpgradeModeUrlParts::None => "/_ml/set_upgrade_mode".into(),
+            MlSetUpgradeModeParts::None => "/_ml/set_upgrade_mode".into(),
         }
     }
 }
@@ -5036,7 +5075,7 @@ impl MlSetUpgradeModeUrlParts {
 #[doc = "Builder for the [Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html)."]
 pub struct MlSetUpgradeMode<'a, B> {
     client: Elasticsearch,
-    parts: MlSetUpgradeModeUrlParts,
+    parts: MlSetUpgradeModeParts,
     body: Option<B>,
     enabled: Option<bool>,
     error_trace: Option<bool>,
@@ -5053,7 +5092,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlSetUpgradeMode {
             client,
-            parts: MlSetUpgradeModeUrlParts::None,
+            parts: MlSetUpgradeModeParts::None,
             body: None,
             enabled: None,
             error_trace: None,
@@ -5118,9 +5157,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Set Upgrade Mode API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5163,14 +5202,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Start Datafeed API"]
-pub enum MlStartDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Start Datafeed API"]
+pub enum MlStartDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlStartDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlStartDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Start Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStartDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlStartDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(22usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -5184,7 +5224,7 @@ impl<'a> MlStartDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html)."]
 pub struct MlStartDatafeed<'a, B> {
     client: Elasticsearch,
-    parts: MlStartDatafeedUrlParts<'a>,
+    parts: MlStartDatafeedParts<'a>,
     body: Option<B>,
     end: Option<&'a str>,
     error_trace: Option<bool>,
@@ -5199,7 +5239,7 @@ impl<'a, B> MlStartDatafeed<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlStartDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStartDatafeedParts<'a>) -> Self {
         MlStartDatafeed {
             client,
             parts,
@@ -5274,9 +5314,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Start Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5322,14 +5362,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Stop Datafeed API"]
-pub enum MlStopDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Stop Datafeed API"]
+pub enum MlStopDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlStopDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlStopDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Stop Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlStopDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlStopDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(21usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -5343,7 +5384,7 @@ impl<'a> MlStopDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html)."]
 pub struct MlStopDatafeed<'a, B> {
     client: Elasticsearch,
-    parts: MlStopDatafeedUrlParts<'a>,
+    parts: MlStopDatafeedParts<'a>,
     allow_no_datafeeds: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -5358,7 +5399,7 @@ impl<'a, B> MlStopDatafeed<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlStopDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlStopDatafeedParts<'a>) -> Self {
         MlStopDatafeed {
             client,
             parts,
@@ -5433,9 +5474,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Stop Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5481,14 +5522,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Update Datafeed API"]
-pub enum MlUpdateDatafeedUrlParts<'a> {
+#[doc = "API parts for the Ml Update Datafeed API"]
+pub enum MlUpdateDatafeedParts<'a> {
     DatafeedId(&'a str),
 }
-impl<'a> MlUpdateDatafeedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlUpdateDatafeedParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Update Datafeed API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateDatafeedUrlParts::DatafeedId(ref datafeed_id) => {
+            MlUpdateDatafeedParts::DatafeedId(ref datafeed_id) => {
                 let mut p = String::with_capacity(23usize + datafeed_id.len());
                 p.push_str("/_ml/datafeeds/");
                 p.push_str(datafeed_id.as_ref());
@@ -5502,7 +5544,7 @@ impl<'a> MlUpdateDatafeedUrlParts<'a> {
 #[doc = "Builder for the [Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html)."]
 pub struct MlUpdateDatafeed<'a, B> {
     client: Elasticsearch,
-    parts: MlUpdateDatafeedUrlParts<'a>,
+    parts: MlUpdateDatafeedParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5514,7 +5556,7 @@ impl<'a, B> MlUpdateDatafeed<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedParts<'a>) -> Self {
         MlUpdateDatafeed {
             client,
             parts,
@@ -5568,9 +5610,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Update Datafeed API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5607,14 +5649,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Update Filter API"]
-pub enum MlUpdateFilterUrlParts<'a> {
+#[doc = "API parts for the Ml Update Filter API"]
+pub enum MlUpdateFilterParts<'a> {
     FilterId(&'a str),
 }
-impl<'a> MlUpdateFilterUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlUpdateFilterParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Update Filter API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateFilterUrlParts::FilterId(ref filter_id) => {
+            MlUpdateFilterParts::FilterId(ref filter_id) => {
                 let mut p = String::with_capacity(21usize + filter_id.len());
                 p.push_str("/_ml/filters/");
                 p.push_str(filter_id.as_ref());
@@ -5628,7 +5671,7 @@ impl<'a> MlUpdateFilterUrlParts<'a> {
 #[doc = "Builder for the Ml Update Filter API"]
 pub struct MlUpdateFilter<'a, B> {
     client: Elasticsearch,
-    parts: MlUpdateFilterUrlParts<'a>,
+    parts: MlUpdateFilterParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5640,7 +5683,7 @@ impl<'a, B> MlUpdateFilter<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlUpdateFilterUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateFilterParts<'a>) -> Self {
         MlUpdateFilter {
             client,
             parts,
@@ -5694,9 +5737,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Update Filter API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5733,14 +5776,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Update Job API"]
-pub enum MlUpdateJobUrlParts<'a> {
+#[doc = "API parts for the Ml Update Job API"]
+pub enum MlUpdateJobParts<'a> {
     JobId(&'a str),
 }
-impl<'a> MlUpdateJobUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlUpdateJobParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Update Job API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateJobUrlParts::JobId(ref job_id) => {
+            MlUpdateJobParts::JobId(ref job_id) => {
                 let mut p = String::with_capacity(31usize + job_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -5754,7 +5798,7 @@ impl<'a> MlUpdateJobUrlParts<'a> {
 #[doc = "Builder for the [Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html)."]
 pub struct MlUpdateJob<'a, B> {
     client: Elasticsearch,
-    parts: MlUpdateJobUrlParts<'a>,
+    parts: MlUpdateJobParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5766,7 +5810,7 @@ impl<'a, B> MlUpdateJob<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlUpdateJobUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateJobParts<'a>) -> Self {
         MlUpdateJob {
             client,
             parts,
@@ -5820,9 +5864,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Update Job API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5859,14 +5903,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Update Model Snapshot API"]
-pub enum MlUpdateModelSnapshotUrlParts<'a> {
+#[doc = "API parts for the Ml Update Model Snapshot API"]
+pub enum MlUpdateModelSnapshotParts<'a> {
     JobIdSnapshotId(&'a str, &'a str),
 }
-impl<'a> MlUpdateModelSnapshotUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MlUpdateModelSnapshotParts<'a> {
+    #[doc = "Builds a relative URL path to the Ml Update Model Snapshot API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlUpdateModelSnapshotUrlParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
+            MlUpdateModelSnapshotParts::JobIdSnapshotId(ref job_id, ref snapshot_id) => {
                 let mut p = String::with_capacity(48usize + job_id.len() + snapshot_id.len());
                 p.push_str("/_ml/anomaly_detectors/");
                 p.push_str(job_id.as_ref());
@@ -5882,7 +5927,7 @@ impl<'a> MlUpdateModelSnapshotUrlParts<'a> {
 #[doc = "Builder for the [Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html)."]
 pub struct MlUpdateModelSnapshot<'a, B> {
     client: Elasticsearch,
-    parts: MlUpdateModelSnapshotUrlParts<'a>,
+    parts: MlUpdateModelSnapshotParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5894,7 +5939,7 @@ impl<'a, B> MlUpdateModelSnapshot<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotParts<'a>) -> Self {
         MlUpdateModelSnapshot {
             client,
             parts,
@@ -5948,9 +5993,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Update Model Snapshot API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5987,14 +6032,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Validate API"]
-pub enum MlValidateUrlParts {
+#[doc = "API parts for the Ml Validate API"]
+pub enum MlValidateParts {
     None,
 }
-impl MlValidateUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl MlValidateParts {
+    #[doc = "Builds a relative URL path to the Ml Validate API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlValidateUrlParts::None => "/_ml/anomaly_detectors/_validate".into(),
+            MlValidateParts::None => "/_ml/anomaly_detectors/_validate".into(),
         }
     }
 }
@@ -6002,7 +6048,7 @@ impl MlValidateUrlParts {
 #[doc = "Builder for the Ml Validate API"]
 pub struct MlValidate<'a, B> {
     client: Elasticsearch,
-    parts: MlValidateUrlParts,
+    parts: MlValidateParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -6017,7 +6063,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlValidate {
             client,
-            parts: MlValidateUrlParts::None,
+            parts: MlValidateParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6068,9 +6114,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Validate API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6107,14 +6153,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ml Validate Detector API"]
-pub enum MlValidateDetectorUrlParts {
+#[doc = "API parts for the Ml Validate Detector API"]
+pub enum MlValidateDetectorParts {
     None,
 }
-impl MlValidateDetectorUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl MlValidateDetectorParts {
+    #[doc = "Builds a relative URL path to the Ml Validate Detector API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MlValidateDetectorUrlParts::None => "/_ml/anomaly_detectors/_validate/detector".into(),
+            MlValidateDetectorParts::None => "/_ml/anomaly_detectors/_validate/detector".into(),
         }
     }
 }
@@ -6122,7 +6169,7 @@ impl MlValidateDetectorUrlParts {
 #[doc = "Builder for the Ml Validate Detector API"]
 pub struct MlValidateDetector<'a, B> {
     client: Elasticsearch,
-    parts: MlValidateDetectorUrlParts,
+    parts: MlValidateDetectorParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -6137,7 +6184,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         MlValidateDetector {
             client,
-            parts: MlValidateDetectorUrlParts::None,
+            parts: MlValidateDetectorParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6188,9 +6235,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ml Validate Detector API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6234,180 +6281,171 @@ impl Ml {
     pub fn new(client: Elasticsearch) -> Self {
         Ml { client }
     }
-    pub fn close_job<'a>(&self, parts: MlCloseJobUrlParts<'a>) -> MlCloseJob<'a, ()> {
+    pub fn close_job<'a>(&self, parts: MlCloseJobParts<'a>) -> MlCloseJob<'a, ()> {
         MlCloseJob::new(self.client.clone(), parts)
     }
-    pub fn delete_calendar<'a>(&self, parts: MlDeleteCalendarUrlParts<'a>) -> MlDeleteCalendar<'a> {
+    pub fn delete_calendar<'a>(&self, parts: MlDeleteCalendarParts<'a>) -> MlDeleteCalendar<'a> {
         MlDeleteCalendar::new(self.client.clone(), parts)
     }
     pub fn delete_calendar_event<'a>(
         &self,
-        parts: MlDeleteCalendarEventUrlParts<'a>,
+        parts: MlDeleteCalendarEventParts<'a>,
     ) -> MlDeleteCalendarEvent<'a> {
         MlDeleteCalendarEvent::new(self.client.clone(), parts)
     }
     pub fn delete_calendar_job<'a>(
         &self,
-        parts: MlDeleteCalendarJobUrlParts<'a>,
+        parts: MlDeleteCalendarJobParts<'a>,
     ) -> MlDeleteCalendarJob<'a> {
         MlDeleteCalendarJob::new(self.client.clone(), parts)
     }
-    pub fn delete_datafeed<'a>(&self, parts: MlDeleteDatafeedUrlParts<'a>) -> MlDeleteDatafeed<'a> {
+    pub fn delete_datafeed<'a>(&self, parts: MlDeleteDatafeedParts<'a>) -> MlDeleteDatafeed<'a> {
         MlDeleteDatafeed::new(self.client.clone(), parts)
     }
     pub fn delete_expired_data<'a>(&self) -> MlDeleteExpiredData<'a> {
         MlDeleteExpiredData::new(self.client.clone())
     }
-    pub fn delete_filter<'a>(&self, parts: MlDeleteFilterUrlParts<'a>) -> MlDeleteFilter<'a> {
+    pub fn delete_filter<'a>(&self, parts: MlDeleteFilterParts<'a>) -> MlDeleteFilter<'a> {
         MlDeleteFilter::new(self.client.clone(), parts)
     }
-    pub fn delete_forecast<'a>(&self, parts: MlDeleteForecastUrlParts<'a>) -> MlDeleteForecast<'a> {
+    pub fn delete_forecast<'a>(&self, parts: MlDeleteForecastParts<'a>) -> MlDeleteForecast<'a> {
         MlDeleteForecast::new(self.client.clone(), parts)
     }
-    pub fn delete_job<'a>(&self, parts: MlDeleteJobUrlParts<'a>) -> MlDeleteJob<'a> {
+    pub fn delete_job<'a>(&self, parts: MlDeleteJobParts<'a>) -> MlDeleteJob<'a> {
         MlDeleteJob::new(self.client.clone(), parts)
     }
     pub fn delete_model_snapshot<'a>(
         &self,
-        parts: MlDeleteModelSnapshotUrlParts<'a>,
+        parts: MlDeleteModelSnapshotParts<'a>,
     ) -> MlDeleteModelSnapshot<'a> {
         MlDeleteModelSnapshot::new(self.client.clone(), parts)
     }
-    pub fn flush_job<'a>(&self, parts: MlFlushJobUrlParts<'a>) -> MlFlushJob<'a, ()> {
+    pub fn flush_job<'a>(&self, parts: MlFlushJobParts<'a>) -> MlFlushJob<'a, ()> {
         MlFlushJob::new(self.client.clone(), parts)
     }
-    pub fn forecast<'a>(&self, parts: MlForecastUrlParts<'a>) -> MlForecast<'a, ()> {
+    pub fn forecast<'a>(&self, parts: MlForecastParts<'a>) -> MlForecast<'a, ()> {
         MlForecast::new(self.client.clone(), parts)
     }
-    pub fn get_buckets<'a>(&self, parts: MlGetBucketsUrlParts<'a>) -> MlGetBuckets<'a, ()> {
+    pub fn get_buckets<'a>(&self, parts: MlGetBucketsParts<'a>) -> MlGetBuckets<'a, ()> {
         MlGetBuckets::new(self.client.clone(), parts)
     }
     pub fn get_calendar_events<'a>(
         &self,
-        parts: MlGetCalendarEventsUrlParts<'a>,
+        parts: MlGetCalendarEventsParts<'a>,
     ) -> MlGetCalendarEvents<'a> {
         MlGetCalendarEvents::new(self.client.clone(), parts)
     }
-    pub fn get_calendars<'a>(&self, parts: MlGetCalendarsUrlParts<'a>) -> MlGetCalendars<'a, ()> {
+    pub fn get_calendars<'a>(&self, parts: MlGetCalendarsParts<'a>) -> MlGetCalendars<'a, ()> {
         MlGetCalendars::new(self.client.clone(), parts)
     }
-    pub fn get_categories<'a>(
-        &self,
-        parts: MlGetCategoriesUrlParts<'a>,
-    ) -> MlGetCategories<'a, ()> {
+    pub fn get_categories<'a>(&self, parts: MlGetCategoriesParts<'a>) -> MlGetCategories<'a, ()> {
         MlGetCategories::new(self.client.clone(), parts)
     }
     pub fn get_datafeed_stats<'a>(
         &self,
-        parts: MlGetDatafeedStatsUrlParts<'a>,
+        parts: MlGetDatafeedStatsParts<'a>,
     ) -> MlGetDatafeedStats<'a> {
         MlGetDatafeedStats::new(self.client.clone(), parts)
     }
-    pub fn get_datafeeds<'a>(&self, parts: MlGetDatafeedsUrlParts<'a>) -> MlGetDatafeeds<'a> {
+    pub fn get_datafeeds<'a>(&self, parts: MlGetDatafeedsParts<'a>) -> MlGetDatafeeds<'a> {
         MlGetDatafeeds::new(self.client.clone(), parts)
     }
-    pub fn get_filters<'a>(&self, parts: MlGetFiltersUrlParts<'a>) -> MlGetFilters<'a> {
+    pub fn get_filters<'a>(&self, parts: MlGetFiltersParts<'a>) -> MlGetFilters<'a> {
         MlGetFilters::new(self.client.clone(), parts)
     }
     pub fn get_influencers<'a>(
         &self,
-        parts: MlGetInfluencersUrlParts<'a>,
+        parts: MlGetInfluencersParts<'a>,
     ) -> MlGetInfluencers<'a, ()> {
         MlGetInfluencers::new(self.client.clone(), parts)
     }
-    pub fn get_job_stats<'a>(&self, parts: MlGetJobStatsUrlParts<'a>) -> MlGetJobStats<'a> {
+    pub fn get_job_stats<'a>(&self, parts: MlGetJobStatsParts<'a>) -> MlGetJobStats<'a> {
         MlGetJobStats::new(self.client.clone(), parts)
     }
-    pub fn get_jobs<'a>(&self, parts: MlGetJobsUrlParts<'a>) -> MlGetJobs<'a> {
+    pub fn get_jobs<'a>(&self, parts: MlGetJobsParts<'a>) -> MlGetJobs<'a> {
         MlGetJobs::new(self.client.clone(), parts)
     }
     pub fn get_model_snapshots<'a>(
         &self,
-        parts: MlGetModelSnapshotsUrlParts<'a>,
+        parts: MlGetModelSnapshotsParts<'a>,
     ) -> MlGetModelSnapshots<'a, ()> {
         MlGetModelSnapshots::new(self.client.clone(), parts)
     }
     pub fn get_overall_buckets<'a>(
         &self,
-        parts: MlGetOverallBucketsUrlParts<'a>,
+        parts: MlGetOverallBucketsParts<'a>,
     ) -> MlGetOverallBuckets<'a, ()> {
         MlGetOverallBuckets::new(self.client.clone(), parts)
     }
-    pub fn get_records<'a>(&self, parts: MlGetRecordsUrlParts<'a>) -> MlGetRecords<'a, ()> {
+    pub fn get_records<'a>(&self, parts: MlGetRecordsParts<'a>) -> MlGetRecords<'a, ()> {
         MlGetRecords::new(self.client.clone(), parts)
     }
     pub fn info<'a>(&self) -> MlInfo<'a> {
         MlInfo::new(self.client.clone())
     }
-    pub fn open_job<'a>(&self, parts: MlOpenJobUrlParts<'a>) -> MlOpenJob<'a, ()> {
+    pub fn open_job<'a>(&self, parts: MlOpenJobParts<'a>) -> MlOpenJob<'a, ()> {
         MlOpenJob::new(self.client.clone(), parts)
     }
     pub fn post_calendar_events<'a>(
         &self,
-        parts: MlPostCalendarEventsUrlParts<'a>,
+        parts: MlPostCalendarEventsParts<'a>,
     ) -> MlPostCalendarEvents<'a, ()> {
         MlPostCalendarEvents::new(self.client.clone(), parts)
     }
-    pub fn post_data<'a>(&self, parts: MlPostDataUrlParts<'a>) -> MlPostData<'a, ()> {
+    pub fn post_data<'a>(&self, parts: MlPostDataParts<'a>) -> MlPostData<'a, ()> {
         MlPostData::new(self.client.clone(), parts)
     }
-    pub fn preview_datafeed<'a>(
-        &self,
-        parts: MlPreviewDatafeedUrlParts<'a>,
-    ) -> MlPreviewDatafeed<'a> {
+    pub fn preview_datafeed<'a>(&self, parts: MlPreviewDatafeedParts<'a>) -> MlPreviewDatafeed<'a> {
         MlPreviewDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_calendar<'a>(&self, parts: MlPutCalendarUrlParts<'a>) -> MlPutCalendar<'a, ()> {
+    pub fn put_calendar<'a>(&self, parts: MlPutCalendarParts<'a>) -> MlPutCalendar<'a, ()> {
         MlPutCalendar::new(self.client.clone(), parts)
     }
     pub fn put_calendar_job<'a>(
         &self,
-        parts: MlPutCalendarJobUrlParts<'a>,
+        parts: MlPutCalendarJobParts<'a>,
     ) -> MlPutCalendarJob<'a, ()> {
         MlPutCalendarJob::new(self.client.clone(), parts)
     }
-    pub fn put_datafeed<'a>(&self, parts: MlPutDatafeedUrlParts<'a>) -> MlPutDatafeed<'a, ()> {
+    pub fn put_datafeed<'a>(&self, parts: MlPutDatafeedParts<'a>) -> MlPutDatafeed<'a, ()> {
         MlPutDatafeed::new(self.client.clone(), parts)
     }
-    pub fn put_filter<'a>(&self, parts: MlPutFilterUrlParts<'a>) -> MlPutFilter<'a, ()> {
+    pub fn put_filter<'a>(&self, parts: MlPutFilterParts<'a>) -> MlPutFilter<'a, ()> {
         MlPutFilter::new(self.client.clone(), parts)
     }
-    pub fn put_job<'a>(&self, parts: MlPutJobUrlParts<'a>) -> MlPutJob<'a, ()> {
+    pub fn put_job<'a>(&self, parts: MlPutJobParts<'a>) -> MlPutJob<'a, ()> {
         MlPutJob::new(self.client.clone(), parts)
     }
     pub fn revert_model_snapshot<'a>(
         &self,
-        parts: MlRevertModelSnapshotUrlParts<'a>,
+        parts: MlRevertModelSnapshotParts<'a>,
     ) -> MlRevertModelSnapshot<'a, ()> {
         MlRevertModelSnapshot::new(self.client.clone(), parts)
     }
     pub fn set_upgrade_mode<'a>(&self) -> MlSetUpgradeMode<'a, ()> {
         MlSetUpgradeMode::new(self.client.clone())
     }
-    pub fn start_datafeed<'a>(
-        &self,
-        parts: MlStartDatafeedUrlParts<'a>,
-    ) -> MlStartDatafeed<'a, ()> {
+    pub fn start_datafeed<'a>(&self, parts: MlStartDatafeedParts<'a>) -> MlStartDatafeed<'a, ()> {
         MlStartDatafeed::new(self.client.clone(), parts)
     }
-    pub fn stop_datafeed<'a>(&self, parts: MlStopDatafeedUrlParts<'a>) -> MlStopDatafeed<'a, ()> {
+    pub fn stop_datafeed<'a>(&self, parts: MlStopDatafeedParts<'a>) -> MlStopDatafeed<'a, ()> {
         MlStopDatafeed::new(self.client.clone(), parts)
     }
     pub fn update_datafeed<'a>(
         &self,
-        parts: MlUpdateDatafeedUrlParts<'a>,
+        parts: MlUpdateDatafeedParts<'a>,
     ) -> MlUpdateDatafeed<'a, ()> {
         MlUpdateDatafeed::new(self.client.clone(), parts)
     }
-    pub fn update_filter<'a>(&self, parts: MlUpdateFilterUrlParts<'a>) -> MlUpdateFilter<'a, ()> {
+    pub fn update_filter<'a>(&self, parts: MlUpdateFilterParts<'a>) -> MlUpdateFilter<'a, ()> {
         MlUpdateFilter::new(self.client.clone(), parts)
     }
-    pub fn update_job<'a>(&self, parts: MlUpdateJobUrlParts<'a>) -> MlUpdateJob<'a, ()> {
+    pub fn update_job<'a>(&self, parts: MlUpdateJobParts<'a>) -> MlUpdateJob<'a, ()> {
         MlUpdateJob::new(self.client.clone(), parts)
     }
     pub fn update_model_snapshot<'a>(
         &self,
-        parts: MlUpdateModelSnapshotUrlParts<'a>,
+        parts: MlUpdateModelSnapshotParts<'a>,
     ) -> MlUpdateModelSnapshot<'a, ()> {
         MlUpdateModelSnapshot::new(self.client.clone(), parts)
     }

@@ -17,31 +17,34 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Ack Watch API"]
-pub enum WatcherAckWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Ack Watch API"]
+pub enum WatcherAckWatchParts<'a> {
     WatchId(&'a str),
     WatchIdActionId(&'a str, &'a [&'a str]),
 }
-impl<'a> WatcherAckWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherAckWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Ack Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherAckWatchUrlParts::WatchId(ref watch_id) => {
+            WatcherAckWatchParts::WatchId(ref watch_id) => {
                 let mut p = String::with_capacity(21usize + watch_id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(watch_id.as_ref());
                 p.push_str("/_ack");
                 p.into()
             }
-            WatcherAckWatchUrlParts::WatchIdActionId(ref watch_id, ref action_id) => {
+            WatcherAckWatchParts::WatchIdActionId(ref watch_id, ref action_id) => {
                 let action_id_str = action_id.join(",");
                 let mut p = String::with_capacity(22usize + watch_id.len() + action_id_str.len());
                 p.push_str("/_watcher/watch/");
@@ -57,7 +60,7 @@ impl<'a> WatcherAckWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Ack Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html)."]
 pub struct WatcherAckWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherAckWatchUrlParts<'a>,
+    parts: WatcherAckWatchParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -69,7 +72,7 @@ impl<'a, B> WatcherAckWatch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherAckWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherAckWatchParts<'a>) -> Self {
         WatcherAckWatch {
             client,
             parts,
@@ -123,9 +126,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Ack Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -162,14 +165,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Activate Watch API"]
-pub enum WatcherActivateWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Activate Watch API"]
+pub enum WatcherActivateWatchParts<'a> {
     WatchId(&'a str),
 }
-impl<'a> WatcherActivateWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherActivateWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Activate Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherActivateWatchUrlParts::WatchId(ref watch_id) => {
+            WatcherActivateWatchParts::WatchId(ref watch_id) => {
                 let mut p = String::with_capacity(26usize + watch_id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(watch_id.as_ref());
@@ -183,7 +187,7 @@ impl<'a> WatcherActivateWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html)."]
 pub struct WatcherActivateWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherActivateWatchUrlParts<'a>,
+    parts: WatcherActivateWatchParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -195,7 +199,7 @@ impl<'a, B> WatcherActivateWatch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherActivateWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherActivateWatchParts<'a>) -> Self {
         WatcherActivateWatch {
             client,
             parts,
@@ -249,9 +253,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Activate Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -288,14 +292,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Deactivate Watch API"]
-pub enum WatcherDeactivateWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Deactivate Watch API"]
+pub enum WatcherDeactivateWatchParts<'a> {
     WatchId(&'a str),
 }
-impl<'a> WatcherDeactivateWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherDeactivateWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Deactivate Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeactivateWatchUrlParts::WatchId(ref watch_id) => {
+            WatcherDeactivateWatchParts::WatchId(ref watch_id) => {
                 let mut p = String::with_capacity(28usize + watch_id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(watch_id.as_ref());
@@ -309,7 +314,7 @@ impl<'a> WatcherDeactivateWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html)."]
 pub struct WatcherDeactivateWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherDeactivateWatchUrlParts<'a>,
+    parts: WatcherDeactivateWatchParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -321,7 +326,7 @@ impl<'a, B> WatcherDeactivateWatch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherDeactivateWatchParts<'a>) -> Self {
         WatcherDeactivateWatch {
             client,
             parts,
@@ -375,9 +380,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Deactivate Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -414,14 +419,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Delete Watch API"]
-pub enum WatcherDeleteWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Delete Watch API"]
+pub enum WatcherDeleteWatchParts<'a> {
     Id(&'a str),
 }
-impl<'a> WatcherDeleteWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherDeleteWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Delete Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherDeleteWatchUrlParts::Id(ref id) => {
+            WatcherDeleteWatchParts::Id(ref id) => {
                 let mut p = String::with_capacity(16usize + id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(id.as_ref());
@@ -434,7 +440,7 @@ impl<'a> WatcherDeleteWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Delete Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html)."]
 pub struct WatcherDeleteWatch<'a> {
     client: Elasticsearch,
-    parts: WatcherDeleteWatchUrlParts<'a>,
+    parts: WatcherDeleteWatchParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -442,7 +448,7 @@ pub struct WatcherDeleteWatch<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherDeleteWatch<'a> {
-    pub fn new(client: Elasticsearch, parts: WatcherDeleteWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherDeleteWatchParts<'a>) -> Self {
         WatcherDeleteWatch {
             client,
             parts,
@@ -479,9 +485,9 @@ impl<'a> WatcherDeleteWatch<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Delete Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -518,22 +524,23 @@ impl<'a> WatcherDeleteWatch<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Execute Watch API"]
-pub enum WatcherExecuteWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Execute Watch API"]
+pub enum WatcherExecuteWatchParts<'a> {
     Id(&'a str),
     None,
 }
-impl<'a> WatcherExecuteWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherExecuteWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Execute Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherExecuteWatchUrlParts::Id(ref id) => {
+            WatcherExecuteWatchParts::Id(ref id) => {
                 let mut p = String::with_capacity(25usize + id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(id.as_ref());
                 p.push_str("/_execute");
                 p.into()
             }
-            WatcherExecuteWatchUrlParts::None => "/_watcher/watch/_execute".into(),
+            WatcherExecuteWatchParts::None => "/_watcher/watch/_execute".into(),
         }
     }
 }
@@ -541,7 +548,7 @@ impl<'a> WatcherExecuteWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Execute Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html)."]
 pub struct WatcherExecuteWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherExecuteWatchUrlParts<'a>,
+    parts: WatcherExecuteWatchParts<'a>,
     body: Option<B>,
     debug: Option<bool>,
     error_trace: Option<bool>,
@@ -554,7 +561,7 @@ impl<'a, B> WatcherExecuteWatch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherExecuteWatchParts<'a>) -> Self {
         WatcherExecuteWatch {
             client,
             parts,
@@ -615,9 +622,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Execute Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -657,14 +664,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Get Watch API"]
-pub enum WatcherGetWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Get Watch API"]
+pub enum WatcherGetWatchParts<'a> {
     Id(&'a str),
 }
-impl<'a> WatcherGetWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherGetWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Get Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherGetWatchUrlParts::Id(ref id) => {
+            WatcherGetWatchParts::Id(ref id) => {
                 let mut p = String::with_capacity(16usize + id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(id.as_ref());
@@ -677,7 +685,7 @@ impl<'a> WatcherGetWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Get Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html)."]
 pub struct WatcherGetWatch<'a> {
     client: Elasticsearch,
-    parts: WatcherGetWatchUrlParts<'a>,
+    parts: WatcherGetWatchParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -685,7 +693,7 @@ pub struct WatcherGetWatch<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherGetWatch<'a> {
-    pub fn new(client: Elasticsearch, parts: WatcherGetWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherGetWatchParts<'a>) -> Self {
         WatcherGetWatch {
             client,
             parts,
@@ -722,9 +730,9 @@ impl<'a> WatcherGetWatch<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Get Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -761,14 +769,15 @@ impl<'a> WatcherGetWatch<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Put Watch API"]
-pub enum WatcherPutWatchUrlParts<'a> {
+#[doc = "API parts for the Watcher Put Watch API"]
+pub enum WatcherPutWatchParts<'a> {
     Id(&'a str),
 }
-impl<'a> WatcherPutWatchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherPutWatchParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Put Watch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherPutWatchUrlParts::Id(ref id) => {
+            WatcherPutWatchParts::Id(ref id) => {
                 let mut p = String::with_capacity(16usize + id.len());
                 p.push_str("/_watcher/watch/");
                 p.push_str(id.as_ref());
@@ -781,7 +790,7 @@ impl<'a> WatcherPutWatchUrlParts<'a> {
 #[doc = "Builder for the [Watcher Put Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html)."]
 pub struct WatcherPutWatch<'a, B> {
     client: Elasticsearch,
-    parts: WatcherPutWatchUrlParts<'a>,
+    parts: WatcherPutWatchParts<'a>,
     active: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -797,7 +806,7 @@ impl<'a, B> WatcherPutWatch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: WatcherPutWatchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherPutWatchParts<'a>) -> Self {
         WatcherPutWatch {
             client,
             parts,
@@ -879,9 +888,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Put Watch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -930,14 +939,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Start API"]
-pub enum WatcherStartUrlParts {
+#[doc = "API parts for the Watcher Start API"]
+pub enum WatcherStartParts {
     None,
 }
-impl WatcherStartUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl WatcherStartParts {
+    #[doc = "Builds a relative URL path to the Watcher Start API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherStartUrlParts::None => "/_watcher/_start".into(),
+            WatcherStartParts::None => "/_watcher/_start".into(),
         }
     }
 }
@@ -945,7 +955,7 @@ impl WatcherStartUrlParts {
 #[doc = "Builder for the [Watcher Start API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html)."]
 pub struct WatcherStart<'a, B> {
     client: Elasticsearch,
-    parts: WatcherStartUrlParts,
+    parts: WatcherStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -960,7 +970,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStart {
             client,
-            parts: WatcherStartUrlParts::None,
+            parts: WatcherStartParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1011,9 +1021,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Start API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1050,16 +1060,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Stats API"]
-pub enum WatcherStatsUrlParts<'a> {
+#[doc = "API parts for the Watcher Stats API"]
+pub enum WatcherStatsParts<'a> {
     None,
     Metric(&'a [&'a str]),
 }
-impl<'a> WatcherStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> WatcherStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Watcher Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherStatsUrlParts::None => "/_watcher/stats".into(),
-            WatcherStatsUrlParts::Metric(ref metric) => {
+            WatcherStatsParts::None => "/_watcher/stats".into(),
+            WatcherStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(16usize + metric_str.len());
                 p.push_str("/_watcher/stats/");
@@ -1073,7 +1084,7 @@ impl<'a> WatcherStatsUrlParts<'a> {
 #[doc = "Builder for the [Watcher Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html)."]
 pub struct WatcherStats<'a> {
     client: Elasticsearch,
-    parts: WatcherStatsUrlParts<'a>,
+    parts: WatcherStatsParts<'a>,
     emit_stacktraces: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1083,7 +1094,7 @@ pub struct WatcherStats<'a> {
     source: Option<&'a str>,
 }
 impl<'a> WatcherStats<'a> {
-    pub fn new(client: Elasticsearch, parts: WatcherStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: WatcherStatsParts<'a>) -> Self {
         WatcherStats {
             client,
             parts,
@@ -1132,9 +1143,9 @@ impl<'a> WatcherStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1177,14 +1188,15 @@ impl<'a> WatcherStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Watcher Stop API"]
-pub enum WatcherStopUrlParts {
+#[doc = "API parts for the Watcher Stop API"]
+pub enum WatcherStopParts {
     None,
 }
-impl WatcherStopUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl WatcherStopParts {
+    #[doc = "Builds a relative URL path to the Watcher Stop API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            WatcherStopUrlParts::None => "/_watcher/_stop".into(),
+            WatcherStopParts::None => "/_watcher/_stop".into(),
         }
     }
 }
@@ -1192,7 +1204,7 @@ impl WatcherStopUrlParts {
 #[doc = "Builder for the [Watcher Stop API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html)."]
 pub struct WatcherStop<'a, B> {
     client: Elasticsearch,
-    parts: WatcherStopUrlParts,
+    parts: WatcherStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1207,7 +1219,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         WatcherStop {
             client,
-            parts: WatcherStopUrlParts::None,
+            parts: WatcherStopParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1258,9 +1270,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Watcher Stop API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1304,43 +1316,40 @@ impl Watcher {
     pub fn new(client: Elasticsearch) -> Self {
         Watcher { client }
     }
-    pub fn ack_watch<'a>(&self, parts: WatcherAckWatchUrlParts<'a>) -> WatcherAckWatch<'a, ()> {
+    pub fn ack_watch<'a>(&self, parts: WatcherAckWatchParts<'a>) -> WatcherAckWatch<'a, ()> {
         WatcherAckWatch::new(self.client.clone(), parts)
     }
     pub fn activate_watch<'a>(
         &self,
-        parts: WatcherActivateWatchUrlParts<'a>,
+        parts: WatcherActivateWatchParts<'a>,
     ) -> WatcherActivateWatch<'a, ()> {
         WatcherActivateWatch::new(self.client.clone(), parts)
     }
     pub fn deactivate_watch<'a>(
         &self,
-        parts: WatcherDeactivateWatchUrlParts<'a>,
+        parts: WatcherDeactivateWatchParts<'a>,
     ) -> WatcherDeactivateWatch<'a, ()> {
         WatcherDeactivateWatch::new(self.client.clone(), parts)
     }
-    pub fn delete_watch<'a>(
-        &self,
-        parts: WatcherDeleteWatchUrlParts<'a>,
-    ) -> WatcherDeleteWatch<'a> {
+    pub fn delete_watch<'a>(&self, parts: WatcherDeleteWatchParts<'a>) -> WatcherDeleteWatch<'a> {
         WatcherDeleteWatch::new(self.client.clone(), parts)
     }
     pub fn execute_watch<'a>(
         &self,
-        parts: WatcherExecuteWatchUrlParts<'a>,
+        parts: WatcherExecuteWatchParts<'a>,
     ) -> WatcherExecuteWatch<'a, ()> {
         WatcherExecuteWatch::new(self.client.clone(), parts)
     }
-    pub fn get_watch<'a>(&self, parts: WatcherGetWatchUrlParts<'a>) -> WatcherGetWatch<'a> {
+    pub fn get_watch<'a>(&self, parts: WatcherGetWatchParts<'a>) -> WatcherGetWatch<'a> {
         WatcherGetWatch::new(self.client.clone(), parts)
     }
-    pub fn put_watch<'a>(&self, parts: WatcherPutWatchUrlParts<'a>) -> WatcherPutWatch<'a, ()> {
+    pub fn put_watch<'a>(&self, parts: WatcherPutWatchParts<'a>) -> WatcherPutWatch<'a, ()> {
         WatcherPutWatch::new(self.client.clone(), parts)
     }
     pub fn start<'a>(&self) -> WatcherStart<'a, ()> {
         WatcherStart::new(self.client.clone())
     }
-    pub fn stats<'a>(&self, parts: WatcherStatsUrlParts<'a>) -> WatcherStats<'a> {
+    pub fn stats<'a>(&self, parts: WatcherStatsParts<'a>) -> WatcherStats<'a> {
         WatcherStats::new(self.client.clone(), parts)
     }
     pub fn stop<'a>(&self) -> WatcherStop<'a, ()> {

@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Allocation Explain API"]
-pub enum ClusterAllocationExplainUrlParts {
+#[doc = "API parts for the Cluster Allocation Explain API"]
+pub enum ClusterAllocationExplainParts {
     None,
 }
-impl ClusterAllocationExplainUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterAllocationExplainParts {
+    #[doc = "Builds a relative URL path to the Cluster Allocation Explain API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterAllocationExplainUrlParts::None => "/_cluster/allocation/explain".into(),
+            ClusterAllocationExplainParts::None => "/_cluster/allocation/explain".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl ClusterAllocationExplainUrlParts {
 #[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html). Provides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, B> {
     client: Elasticsearch,
-    parts: ClusterAllocationExplainUrlParts,
+    parts: ClusterAllocationExplainParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -58,7 +61,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterAllocationExplain {
             client,
-            parts: ClusterAllocationExplainUrlParts::None,
+            parts: ClusterAllocationExplainParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -123,11 +126,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Allocation Explain API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -171,14 +174,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Get Settings API"]
-pub enum ClusterGetSettingsUrlParts {
+#[doc = "API parts for the Cluster Get Settings API"]
+pub enum ClusterGetSettingsParts {
     None,
 }
-impl ClusterGetSettingsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterGetSettingsParts {
+    #[doc = "Builds a relative URL path to the Cluster Get Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterGetSettingsUrlParts::None => "/_cluster/settings".into(),
+            ClusterGetSettingsParts::None => "/_cluster/settings".into(),
         }
     }
 }
@@ -186,7 +190,7 @@ impl ClusterGetSettingsUrlParts {
 #[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Returns cluster settings."]
 pub struct ClusterGetSettings<'a> {
     client: Elasticsearch,
-    parts: ClusterGetSettingsUrlParts,
+    parts: ClusterGetSettingsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
@@ -201,7 +205,7 @@ impl<'a> ClusterGetSettings<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
-            parts: ClusterGetSettingsUrlParts::None,
+            parts: ClusterGetSettingsParts::None,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -259,9 +263,9 @@ impl<'a> ClusterGetSettings<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Get Settings API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -310,16 +314,17 @@ impl<'a> ClusterGetSettings<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Health API"]
-pub enum ClusterHealthUrlParts<'a> {
+#[doc = "API parts for the Cluster Health API"]
+pub enum ClusterHealthParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> ClusterHealthUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ClusterHealthParts<'a> {
+    #[doc = "Builds a relative URL path to the Cluster Health API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterHealthUrlParts::None => "/_cluster/health".into(),
-            ClusterHealthUrlParts::Index(ref index) => {
+            ClusterHealthParts::None => "/_cluster/health".into(),
+            ClusterHealthParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(17usize + index_str.len());
                 p.push_str("/_cluster/health/");
@@ -333,7 +338,7 @@ impl<'a> ClusterHealthUrlParts<'a> {
 #[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html). Returns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a> {
     client: Elasticsearch,
-    parts: ClusterHealthUrlParts<'a>,
+    parts: ClusterHealthParts<'a>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
@@ -352,7 +357,7 @@ pub struct ClusterHealth<'a> {
     wait_for_status: Option<WaitForStatus>,
 }
 impl<'a> ClusterHealth<'a> {
-    pub fn new(client: Elasticsearch, parts: ClusterHealthUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterHealthParts<'a>) -> Self {
         ClusterHealth {
             client,
             parts,
@@ -458,9 +463,9 @@ impl<'a> ClusterHealth<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Health API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -530,14 +535,15 @@ impl<'a> ClusterHealth<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Pending Tasks API"]
-pub enum ClusterPendingTasksUrlParts {
+#[doc = "API parts for the Cluster Pending Tasks API"]
+pub enum ClusterPendingTasksParts {
     None,
 }
-impl ClusterPendingTasksUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterPendingTasksParts {
+    #[doc = "Builds a relative URL path to the Cluster Pending Tasks API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterPendingTasksUrlParts::None => "/_cluster/pending_tasks".into(),
+            ClusterPendingTasksParts::None => "/_cluster/pending_tasks".into(),
         }
     }
 }
@@ -545,7 +551,7 @@ impl ClusterPendingTasksUrlParts {
 #[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html). Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a> {
     client: Elasticsearch,
-    parts: ClusterPendingTasksUrlParts,
+    parts: ClusterPendingTasksParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -558,7 +564,7 @@ impl<'a> ClusterPendingTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
-            parts: ClusterPendingTasksUrlParts::None,
+            parts: ClusterPendingTasksParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -604,9 +610,9 @@ impl<'a> ClusterPendingTasks<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Pending Tasks API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -649,14 +655,15 @@ impl<'a> ClusterPendingTasks<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Put Settings API"]
-pub enum ClusterPutSettingsUrlParts {
+#[doc = "API parts for the Cluster Put Settings API"]
+pub enum ClusterPutSettingsParts {
     None,
 }
-impl ClusterPutSettingsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterPutSettingsParts {
+    #[doc = "Builds a relative URL path to the Cluster Put Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterPutSettingsUrlParts::None => "/_cluster/settings".into(),
+            ClusterPutSettingsParts::None => "/_cluster/settings".into(),
         }
     }
 }
@@ -664,7 +671,7 @@ impl ClusterPutSettingsUrlParts {
 #[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Updates the cluster settings."]
 pub struct ClusterPutSettings<'a, B> {
     client: Elasticsearch,
-    parts: ClusterPutSettingsUrlParts,
+    parts: ClusterPutSettingsParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -682,7 +689,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterPutSettings {
             client,
-            parts: ClusterPutSettingsUrlParts::None,
+            parts: ClusterPutSettingsParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -754,9 +761,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Put Settings API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -802,14 +809,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Remote Info API"]
-pub enum ClusterRemoteInfoUrlParts {
+#[doc = "API parts for the Cluster Remote Info API"]
+pub enum ClusterRemoteInfoParts {
     None,
 }
-impl ClusterRemoteInfoUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterRemoteInfoParts {
+    #[doc = "Builds a relative URL path to the Cluster Remote Info API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterRemoteInfoUrlParts::None => "/_remote/info".into(),
+            ClusterRemoteInfoParts::None => "/_remote/info".into(),
         }
     }
 }
@@ -817,7 +825,7 @@ impl ClusterRemoteInfoUrlParts {
 #[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html). Returns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a> {
     client: Elasticsearch,
-    parts: ClusterRemoteInfoUrlParts,
+    parts: ClusterRemoteInfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -828,7 +836,7 @@ impl<'a> ClusterRemoteInfo<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
-            parts: ClusterRemoteInfoUrlParts::None,
+            parts: ClusterRemoteInfoParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -862,9 +870,9 @@ impl<'a> ClusterRemoteInfo<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Remote Info API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -901,14 +909,15 @@ impl<'a> ClusterRemoteInfo<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Reroute API"]
-pub enum ClusterRerouteUrlParts {
+#[doc = "API parts for the Cluster Reroute API"]
+pub enum ClusterRerouteParts {
     None,
 }
-impl ClusterRerouteUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ClusterRerouteParts {
+    #[doc = "Builds a relative URL path to the Cluster Reroute API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterRerouteUrlParts::None => "/_cluster/reroute".into(),
+            ClusterRerouteParts::None => "/_cluster/reroute".into(),
         }
     }
 }
@@ -916,7 +925,7 @@ impl ClusterRerouteUrlParts {
 #[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html). Allows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, B> {
     client: Elasticsearch,
-    parts: ClusterRerouteUrlParts,
+    parts: ClusterRerouteParts,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
@@ -937,7 +946,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         ClusterReroute {
             client,
-            parts: ClusterRerouteUrlParts::None,
+            parts: ClusterRerouteParts::None,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -1030,9 +1039,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Reroute API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1087,24 +1096,25 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster State API"]
-pub enum ClusterStateUrlParts<'a> {
+#[doc = "API parts for the Cluster State API"]
+pub enum ClusterStateParts<'a> {
     None,
     Metric(&'a [&'a str]),
     MetricIndex(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> ClusterStateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ClusterStateParts<'a> {
+    #[doc = "Builds a relative URL path to the Cluster State API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterStateUrlParts::None => "/_cluster/state".into(),
-            ClusterStateUrlParts::Metric(ref metric) => {
+            ClusterStateParts::None => "/_cluster/state".into(),
+            ClusterStateParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(16usize + metric_str.len());
                 p.push_str("/_cluster/state/");
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            ClusterStateUrlParts::MetricIndex(ref metric, ref index) => {
+            ClusterStateParts::MetricIndex(ref metric, ref index) => {
                 let metric_str = metric.join(",");
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(17usize + metric_str.len() + index_str.len());
@@ -1121,7 +1131,7 @@ impl<'a> ClusterStateUrlParts<'a> {
 #[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html). Returns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a> {
     client: Elasticsearch,
-    parts: ClusterStateUrlParts<'a>,
+    parts: ClusterStateParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -1137,7 +1147,7 @@ pub struct ClusterState<'a> {
     wait_for_timeout: Option<&'a str>,
 }
 impl<'a> ClusterState<'a> {
-    pub fn new(client: Elasticsearch, parts: ClusterStateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterStateParts<'a>) -> Self {
         ClusterState {
             client,
             parts,
@@ -1222,9 +1232,9 @@ impl<'a> ClusterState<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster State API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1285,16 +1295,17 @@ impl<'a> ClusterState<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cluster Stats API"]
-pub enum ClusterStatsUrlParts<'a> {
+#[doc = "API parts for the Cluster Stats API"]
+pub enum ClusterStatsParts<'a> {
     None,
     NodeId(&'a [&'a str]),
 }
-impl<'a> ClusterStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ClusterStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Cluster Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClusterStatsUrlParts::None => "/_cluster/stats".into(),
-            ClusterStatsUrlParts::NodeId(ref node_id) => {
+            ClusterStatsParts::None => "/_cluster/stats".into(),
+            ClusterStatsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(22usize + node_id_str.len());
                 p.push_str("/_cluster/stats/nodes/");
@@ -1308,7 +1319,7 @@ impl<'a> ClusterStatsUrlParts<'a> {
 #[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html). Returns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a> {
     client: Elasticsearch,
-    parts: ClusterStatsUrlParts<'a>,
+    parts: ClusterStatsParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
@@ -1318,7 +1329,7 @@ pub struct ClusterStats<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> ClusterStats<'a> {
-    pub fn new(client: Elasticsearch, parts: ClusterStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClusterStatsParts<'a>) -> Self {
         ClusterStats {
             client,
             parts,
@@ -1367,9 +1378,9 @@ impl<'a> ClusterStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cluster Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1428,7 +1439,7 @@ impl Cluster {
         ClusterGetSettings::new(self.client.clone())
     }
     #[doc = "Returns basic information about the health of the cluster."]
-    pub fn health<'a>(&self, parts: ClusterHealthUrlParts<'a>) -> ClusterHealth<'a> {
+    pub fn health<'a>(&self, parts: ClusterHealthParts<'a>) -> ClusterHealth<'a> {
         ClusterHealth::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
@@ -1448,11 +1459,11 @@ impl Cluster {
         ClusterReroute::new(self.client.clone())
     }
     #[doc = "Returns a comprehensive information about the state of the cluster."]
-    pub fn state<'a>(&self, parts: ClusterStateUrlParts<'a>) -> ClusterState<'a> {
+    pub fn state<'a>(&self, parts: ClusterStateParts<'a>) -> ClusterState<'a> {
         ClusterState::new(self.client.clone(), parts)
     }
     #[doc = "Returns high-level overview of cluster statistics."]
-    pub fn stats<'a>(&self, parts: ClusterStatsUrlParts<'a>) -> ClusterStats<'a> {
+    pub fn stats<'a>(&self, parts: ClusterStatsParts<'a>) -> ClusterStats<'a> {
         ClusterStats::new(self.client.clone(), parts)
     }
 }

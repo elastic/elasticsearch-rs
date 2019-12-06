@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Delete API"]
-pub enum LicenseDeleteUrlParts {
+#[doc = "API parts for the License Delete API"]
+pub enum LicenseDeleteParts {
     None,
 }
-impl LicenseDeleteUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicenseDeleteParts {
+    #[doc = "Builds a relative URL path to the License Delete API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseDeleteUrlParts::None => "/_license".into(),
+            LicenseDeleteParts::None => "/_license".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl LicenseDeleteUrlParts {
 #[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html)."]
 pub struct LicenseDelete<'a> {
     client: Elasticsearch,
-    parts: LicenseDeleteUrlParts,
+    parts: LicenseDeleteParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -52,7 +55,7 @@ impl<'a> LicenseDelete<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseDelete {
             client,
-            parts: LicenseDeleteUrlParts::None,
+            parts: LicenseDeleteParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -86,9 +89,9 @@ impl<'a> LicenseDelete<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the License Delete API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -125,14 +128,15 @@ impl<'a> LicenseDelete<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Get API"]
-pub enum LicenseGetUrlParts {
+#[doc = "API parts for the License Get API"]
+pub enum LicenseGetParts {
     None,
 }
-impl LicenseGetUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicenseGetParts {
+    #[doc = "Builds a relative URL path to the License Get API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseGetUrlParts::None => "/_license".into(),
+            LicenseGetParts::None => "/_license".into(),
         }
     }
 }
@@ -140,7 +144,7 @@ impl LicenseGetUrlParts {
 #[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html)."]
 pub struct LicenseGet<'a> {
     client: Elasticsearch,
-    parts: LicenseGetUrlParts,
+    parts: LicenseGetParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -152,7 +156,7 @@ impl<'a> LicenseGet<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGet {
             client,
-            parts: LicenseGetUrlParts::None,
+            parts: LicenseGetParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -192,9 +196,9 @@ impl<'a> LicenseGet<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the License Get API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -234,14 +238,15 @@ impl<'a> LicenseGet<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Get Basic Status API"]
-pub enum LicenseGetBasicStatusUrlParts {
+#[doc = "API parts for the License Get Basic Status API"]
+pub enum LicenseGetBasicStatusParts {
     None,
 }
-impl LicenseGetBasicStatusUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicenseGetBasicStatusParts {
+    #[doc = "Builds a relative URL path to the License Get Basic Status API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseGetBasicStatusUrlParts::None => "/_license/basic_status".into(),
+            LicenseGetBasicStatusParts::None => "/_license/basic_status".into(),
         }
     }
 }
@@ -249,7 +254,7 @@ impl LicenseGetBasicStatusUrlParts {
 #[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html)."]
 pub struct LicenseGetBasicStatus<'a> {
     client: Elasticsearch,
-    parts: LicenseGetBasicStatusUrlParts,
+    parts: LicenseGetBasicStatusParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -260,7 +265,7 @@ impl<'a> LicenseGetBasicStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetBasicStatus {
             client,
-            parts: LicenseGetBasicStatusUrlParts::None,
+            parts: LicenseGetBasicStatusParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -294,9 +299,9 @@ impl<'a> LicenseGetBasicStatus<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the License Get Basic Status API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -333,14 +338,15 @@ impl<'a> LicenseGetBasicStatus<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Get Trial Status API"]
-pub enum LicenseGetTrialStatusUrlParts {
+#[doc = "API parts for the License Get Trial Status API"]
+pub enum LicenseGetTrialStatusParts {
     None,
 }
-impl LicenseGetTrialStatusUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicenseGetTrialStatusParts {
+    #[doc = "Builds a relative URL path to the License Get Trial Status API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicenseGetTrialStatusUrlParts::None => "/_license/trial_status".into(),
+            LicenseGetTrialStatusParts::None => "/_license/trial_status".into(),
         }
     }
 }
@@ -348,7 +354,7 @@ impl LicenseGetTrialStatusUrlParts {
 #[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html)."]
 pub struct LicenseGetTrialStatus<'a> {
     client: Elasticsearch,
-    parts: LicenseGetTrialStatusUrlParts,
+    parts: LicenseGetTrialStatusParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -359,7 +365,7 @@ impl<'a> LicenseGetTrialStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         LicenseGetTrialStatus {
             client,
-            parts: LicenseGetTrialStatusUrlParts::None,
+            parts: LicenseGetTrialStatusParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -393,9 +399,9 @@ impl<'a> LicenseGetTrialStatus<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the License Get Trial Status API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -432,14 +438,15 @@ impl<'a> LicenseGetTrialStatus<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Post API"]
-pub enum LicensePostUrlParts {
+#[doc = "API parts for the License Post API"]
+pub enum LicensePostParts {
     None,
 }
-impl LicensePostUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicensePostParts {
+    #[doc = "Builds a relative URL path to the License Post API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicensePostUrlParts::None => "/_license".into(),
+            LicensePostParts::None => "/_license".into(),
         }
     }
 }
@@ -447,7 +454,7 @@ impl LicensePostUrlParts {
 #[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html)."]
 pub struct LicensePost<'a, B> {
     client: Elasticsearch,
-    parts: LicensePostUrlParts,
+    parts: LicensePostParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -463,7 +470,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         LicensePost {
             client,
-            parts: LicensePostUrlParts::None,
+            parts: LicensePostParts::None,
             acknowledge: None,
             body: None,
             error_trace: None,
@@ -521,9 +528,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the License Post API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -563,14 +570,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Post Start Basic API"]
-pub enum LicensePostStartBasicUrlParts {
+#[doc = "API parts for the License Post Start Basic API"]
+pub enum LicensePostStartBasicParts {
     None,
 }
-impl LicensePostStartBasicUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicensePostStartBasicParts {
+    #[doc = "Builds a relative URL path to the License Post Start Basic API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicensePostStartBasicUrlParts::None => "/_license/start_basic".into(),
+            LicensePostStartBasicParts::None => "/_license/start_basic".into(),
         }
     }
 }
@@ -578,7 +586,7 @@ impl LicensePostStartBasicUrlParts {
 #[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html)."]
 pub struct LicensePostStartBasic<'a, B> {
     client: Elasticsearch,
-    parts: LicensePostStartBasicUrlParts,
+    parts: LicensePostStartBasicParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -594,7 +602,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartBasic {
             client,
-            parts: LicensePostStartBasicUrlParts::None,
+            parts: LicensePostStartBasicParts::None,
             acknowledge: None,
             body: None,
             error_trace: None,
@@ -652,9 +660,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the License Post Start Basic API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -694,14 +702,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the License Post Start Trial API"]
-pub enum LicensePostStartTrialUrlParts {
+#[doc = "API parts for the License Post Start Trial API"]
+pub enum LicensePostStartTrialParts {
     None,
 }
-impl LicensePostStartTrialUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl LicensePostStartTrialParts {
+    #[doc = "Builds a relative URL path to the License Post Start Trial API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            LicensePostStartTrialUrlParts::None => "/_license/start_trial".into(),
+            LicensePostStartTrialParts::None => "/_license/start_trial".into(),
         }
     }
 }
@@ -709,7 +718,7 @@ impl LicensePostStartTrialUrlParts {
 #[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html)."]
 pub struct LicensePostStartTrial<'a, B> {
     client: Elasticsearch,
-    parts: LicensePostStartTrialUrlParts,
+    parts: LicensePostStartTrialParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -726,7 +735,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         LicensePostStartTrial {
             client,
-            parts: LicensePostStartTrialUrlParts::None,
+            parts: LicensePostStartTrialParts::None,
             acknowledge: None,
             body: None,
             error_trace: None,
@@ -791,9 +800,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the License Post Start Trial API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]

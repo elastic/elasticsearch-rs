@@ -1,7 +1,7 @@
 pub mod common;
 use common::*;
 
-use elasticsearch::SearchUrlParts;
+use elasticsearch::SearchParts;
 
 use crate::common::client::index_documents;
 use hyper::Method;
@@ -41,7 +41,7 @@ async fn serialize_querystring() -> Result<(), failure::Error> {
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
     let _response = client
-        .search(SearchUrlParts::None)
+        .search(SearchParts::None)
         .pretty(true)
         .filter_path(&["took", "_shards"])
         .q("title:Elasticsearch")
@@ -56,7 +56,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let response = client
-        .search(SearchUrlParts::None)
+        .search(SearchParts::None)
         .body(json!({
             "query": {
                 "match_all": {}
@@ -68,7 +68,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
 
     assert_eq!(response.status_code(), StatusCode::OK);
     let response_body = response.read_body::<Value>().await?;
-    assert!(response_body["took"].as_i64().unwrap() > 0);
+    assert!(response_body["took"].as_i64().is_some());
 
     Ok(())
 }
@@ -78,7 +78,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
     let response = client
-        .search(SearchUrlParts::None)
+        .search(SearchParts::None)
         .pretty(true)
         .q("title:Elasticsearch")
         .send()
@@ -86,7 +86,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 
     assert_eq!(response.status_code(), StatusCode::OK);
     let response_body = response.read_body::<Value>().await?;
-    assert!(response_body["took"].as_i64().unwrap() > 0);
+    assert!(response_body["took"].as_i64().is_some());
 
     for hit in response_body["hits"]["hits"].as_array().unwrap() {
         assert!(hit["_source"]["title"].as_str().is_some());
@@ -116,7 +116,7 @@ async fn cat_health() -> Result<(), failure::Error> {
 async fn clone_search_with_body() -> Result<(), failure::Error> {
     let client = client::create_default();
     let _ = index_documents(&client).await?;
-    let base_request = client.search(SearchUrlParts::None);
+    let base_request = client.search(SearchParts::None);
 
     let request_clone = base_request.clone().q("title:Elasticsearch").size(1);
 

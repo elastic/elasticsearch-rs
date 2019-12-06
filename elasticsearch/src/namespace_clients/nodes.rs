@@ -17,25 +17,28 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Nodes Hot Threads API"]
-pub enum NodesHotThreadsUrlParts<'a> {
+#[doc = "API parts for the Nodes Hot Threads API"]
+pub enum NodesHotThreadsParts<'a> {
     None,
     NodeId(&'a [&'a str]),
 }
-impl<'a> NodesHotThreadsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> NodesHotThreadsParts<'a> {
+    #[doc = "Builds a relative URL path to the Nodes Hot Threads API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesHotThreadsUrlParts::None => "/_nodes/hot_threads".into(),
-            NodesHotThreadsUrlParts::NodeId(ref node_id) => {
+            NodesHotThreadsParts::None => "/_nodes/hot_threads".into(),
+            NodesHotThreadsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(20usize + node_id_str.len());
                 p.push_str("/_nodes/");
@@ -50,7 +53,7 @@ impl<'a> NodesHotThreadsUrlParts<'a> {
 #[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-hot-threads.html). Returns information about hot threads on each node in the cluster."]
 pub struct NodesHotThreads<'a> {
     client: Elasticsearch,
-    parts: NodesHotThreadsUrlParts<'a>,
+    parts: NodesHotThreadsParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -64,7 +67,7 @@ pub struct NodesHotThreads<'a> {
     ty: Option<Type>,
 }
 impl<'a> NodesHotThreads<'a> {
-    pub fn new(client: Elasticsearch, parts: NodesHotThreadsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesHotThreadsParts<'a>) -> Self {
         NodesHotThreads {
             client,
             parts,
@@ -137,9 +140,9 @@ impl<'a> NodesHotThreads<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Nodes Hot Threads API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -194,32 +197,33 @@ impl<'a> NodesHotThreads<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Nodes Info API"]
-pub enum NodesInfoUrlParts<'a> {
+#[doc = "API parts for the Nodes Info API"]
+pub enum NodesInfoParts<'a> {
     None,
     NodeId(&'a [&'a str]),
     Metric(&'a [&'a str]),
     NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> NodesInfoUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> NodesInfoParts<'a> {
+    #[doc = "Builds a relative URL path to the Nodes Info API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesInfoUrlParts::None => "/_nodes".into(),
-            NodesInfoUrlParts::NodeId(ref node_id) => {
+            NodesInfoParts::None => "/_nodes".into(),
+            NodesInfoParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(8usize + node_id_str.len());
                 p.push_str("/_nodes/");
                 p.push_str(node_id_str.as_ref());
                 p.into()
             }
-            NodesInfoUrlParts::Metric(ref metric) => {
+            NodesInfoParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(8usize + metric_str.len());
                 p.push_str("/_nodes/");
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            NodesInfoUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesInfoParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(9usize + node_id_str.len() + metric_str.len());
@@ -236,7 +240,7 @@ impl<'a> NodesInfoUrlParts<'a> {
 #[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-info.html). Returns information about nodes in the cluster."]
 pub struct NodesInfo<'a> {
     client: Elasticsearch,
-    parts: NodesInfoUrlParts<'a>,
+    parts: NodesInfoParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
@@ -246,7 +250,7 @@ pub struct NodesInfo<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> NodesInfo<'a> {
-    pub fn new(client: Elasticsearch, parts: NodesInfoUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesInfoParts<'a>) -> Self {
         NodesInfo {
             client,
             parts,
@@ -295,9 +299,9 @@ impl<'a> NodesInfo<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Nodes Info API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -340,16 +344,17 @@ impl<'a> NodesInfo<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Nodes Reload Secure Settings API"]
-pub enum NodesReloadSecureSettingsUrlParts<'a> {
+#[doc = "API parts for the Nodes Reload Secure Settings API"]
+pub enum NodesReloadSecureSettingsParts<'a> {
     None,
     NodeId(&'a [&'a str]),
 }
-impl<'a> NodesReloadSecureSettingsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> NodesReloadSecureSettingsParts<'a> {
+    #[doc = "Builds a relative URL path to the Nodes Reload Secure Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesReloadSecureSettingsUrlParts::None => "/_nodes/reload_secure_settings".into(),
-            NodesReloadSecureSettingsUrlParts::NodeId(ref node_id) => {
+            NodesReloadSecureSettingsParts::None => "/_nodes/reload_secure_settings".into(),
+            NodesReloadSecureSettingsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(31usize + node_id_str.len());
                 p.push_str("/_nodes/");
@@ -364,7 +369,7 @@ impl<'a> NodesReloadSecureSettingsUrlParts<'a> {
 #[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/secure-settings.html#reloadable-secure-settings). Reloads secure settings."]
 pub struct NodesReloadSecureSettings<'a, B> {
     client: Elasticsearch,
-    parts: NodesReloadSecureSettingsUrlParts<'a>,
+    parts: NodesReloadSecureSettingsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -377,7 +382,7 @@ impl<'a, B> NodesReloadSecureSettings<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesReloadSecureSettingsParts<'a>) -> Self {
         NodesReloadSecureSettings {
             client,
             parts,
@@ -438,9 +443,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Nodes Reload Secure Settings API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -480,8 +485,8 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Nodes Stats API"]
-pub enum NodesStatsUrlParts<'a> {
+#[doc = "API parts for the Nodes Stats API"]
+pub enum NodesStatsParts<'a> {
     None,
     NodeId(&'a [&'a str]),
     Metric(&'a [&'a str]),
@@ -489,11 +494,12 @@ pub enum NodesStatsUrlParts<'a> {
     MetricIndexMetric(&'a [&'a str], &'a [&'a str]),
     NodeIdMetricIndexMetric(&'a [&'a str], &'a [&'a str], &'a [&'a str]),
 }
-impl<'a> NodesStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> NodesStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Nodes Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesStatsUrlParts::None => "/_nodes/stats".into(),
-            NodesStatsUrlParts::NodeId(ref node_id) => {
+            NodesStatsParts::None => "/_nodes/stats".into(),
+            NodesStatsParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(14usize + node_id_str.len());
                 p.push_str("/_nodes/");
@@ -501,14 +507,14 @@ impl<'a> NodesStatsUrlParts<'a> {
                 p.push_str("/stats");
                 p.into()
             }
-            NodesStatsUrlParts::Metric(ref metric) => {
+            NodesStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(14usize + metric_str.len());
                 p.push_str("/_nodes/stats/");
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            NodesStatsUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesStatsParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
@@ -518,7 +524,7 @@ impl<'a> NodesStatsUrlParts<'a> {
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            NodesStatsUrlParts::MetricIndexMetric(ref metric, ref index_metric) => {
+            NodesStatsParts::MetricIndexMetric(ref metric, ref index_metric) => {
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
                 let mut p =
@@ -529,11 +535,7 @@ impl<'a> NodesStatsUrlParts<'a> {
                 p.push_str(index_metric_str.as_ref());
                 p.into()
             }
-            NodesStatsUrlParts::NodeIdMetricIndexMetric(
-                ref node_id,
-                ref metric,
-                ref index_metric,
-            ) => {
+            NodesStatsParts::NodeIdMetricIndexMetric(ref node_id, ref metric, ref index_metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let index_metric_str = index_metric.join(",");
@@ -555,7 +557,7 @@ impl<'a> NodesStatsUrlParts<'a> {
 #[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-stats.html). Returns statistical information about nodes in the cluster."]
 pub struct NodesStats<'a> {
     client: Elasticsearch,
-    parts: NodesStatsUrlParts<'a>,
+    parts: NodesStatsParts<'a>,
     completion_fields: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
     fielddata_fields: Option<&'a [&'a str]>,
@@ -571,7 +573,7 @@ pub struct NodesStats<'a> {
     types: Option<&'a [&'a str]>,
 }
 impl<'a> NodesStats<'a> {
-    pub fn new(client: Elasticsearch, parts: NodesStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesStatsParts<'a>) -> Self {
         NodesStats {
             client,
             parts,
@@ -656,9 +658,9 @@ impl<'a> NodesStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Nodes Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -725,18 +727,19 @@ impl<'a> NodesStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Nodes Usage API"]
-pub enum NodesUsageUrlParts<'a> {
+#[doc = "API parts for the Nodes Usage API"]
+pub enum NodesUsageParts<'a> {
     None,
     NodeId(&'a [&'a str]),
     Metric(&'a [&'a str]),
     NodeIdMetric(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> NodesUsageUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> NodesUsageParts<'a> {
+    #[doc = "Builds a relative URL path to the Nodes Usage API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            NodesUsageUrlParts::None => "/_nodes/usage".into(),
-            NodesUsageUrlParts::NodeId(ref node_id) => {
+            NodesUsageParts::None => "/_nodes/usage".into(),
+            NodesUsageParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(14usize + node_id_str.len());
                 p.push_str("/_nodes/");
@@ -744,14 +747,14 @@ impl<'a> NodesUsageUrlParts<'a> {
                 p.push_str("/usage");
                 p.into()
             }
-            NodesUsageUrlParts::Metric(ref metric) => {
+            NodesUsageParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(14usize + metric_str.len());
                 p.push_str("/_nodes/usage/");
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            NodesUsageUrlParts::NodeIdMetric(ref node_id, ref metric) => {
+            NodesUsageParts::NodeIdMetric(ref node_id, ref metric) => {
                 let node_id_str = node_id.join(",");
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(15usize + node_id_str.len() + metric_str.len());
@@ -768,7 +771,7 @@ impl<'a> NodesUsageUrlParts<'a> {
 #[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-nodes-usage.html). Returns low-level information about REST actions usage on nodes."]
 pub struct NodesUsage<'a> {
     client: Elasticsearch,
-    parts: NodesUsageUrlParts<'a>,
+    parts: NodesUsageParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -777,7 +780,7 @@ pub struct NodesUsage<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> NodesUsage<'a> {
-    pub fn new(client: Elasticsearch, parts: NodesUsageUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: NodesUsageParts<'a>) -> Self {
         NodesUsage {
             client,
             parts,
@@ -820,9 +823,9 @@ impl<'a> NodesUsage<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Nodes Usage API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -870,26 +873,26 @@ impl Nodes {
         Nodes { client }
     }
     #[doc = "Returns information about hot threads on each node in the cluster."]
-    pub fn hot_threads<'a>(&self, parts: NodesHotThreadsUrlParts<'a>) -> NodesHotThreads<'a> {
+    pub fn hot_threads<'a>(&self, parts: NodesHotThreadsParts<'a>) -> NodesHotThreads<'a> {
         NodesHotThreads::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about nodes in the cluster."]
-    pub fn info<'a>(&self, parts: NodesInfoUrlParts<'a>) -> NodesInfo<'a> {
+    pub fn info<'a>(&self, parts: NodesInfoParts<'a>) -> NodesInfo<'a> {
         NodesInfo::new(self.client.clone(), parts)
     }
     #[doc = "Reloads secure settings."]
     pub fn reload_secure_settings<'a>(
         &self,
-        parts: NodesReloadSecureSettingsUrlParts<'a>,
+        parts: NodesReloadSecureSettingsParts<'a>,
     ) -> NodesReloadSecureSettings<'a, ()> {
         NodesReloadSecureSettings::new(self.client.clone(), parts)
     }
     #[doc = "Returns statistical information about nodes in the cluster."]
-    pub fn stats<'a>(&self, parts: NodesStatsUrlParts<'a>) -> NodesStats<'a> {
+    pub fn stats<'a>(&self, parts: NodesStatsParts<'a>) -> NodesStats<'a> {
         NodesStats::new(self.client.clone(), parts)
     }
     #[doc = "Returns low-level information about REST actions usage on nodes."]
-    pub fn usage<'a>(&self, parts: NodesUsageUrlParts<'a>) -> NodesUsage<'a> {
+    pub fn usage<'a>(&self, parts: NodesUsageParts<'a>) -> NodesUsage<'a> {
         NodesUsage::new(self.client.clone(), parts)
     }
 }

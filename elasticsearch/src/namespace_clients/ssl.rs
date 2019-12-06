@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ssl Certificates API"]
-pub enum SslCertificatesUrlParts {
+#[doc = "API parts for the Ssl Certificates API"]
+pub enum SslCertificatesParts {
     None,
 }
-impl SslCertificatesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SslCertificatesParts {
+    #[doc = "Builds a relative URL path to the Ssl Certificates API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SslCertificatesUrlParts::None => "/_ssl/certificates".into(),
+            SslCertificatesParts::None => "/_ssl/certificates".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl SslCertificatesUrlParts {
 #[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html)."]
 pub struct SslCertificates<'a> {
     client: Elasticsearch,
-    parts: SslCertificatesUrlParts,
+    parts: SslCertificatesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -52,7 +55,7 @@ impl<'a> SslCertificates<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SslCertificates {
             client,
-            parts: SslCertificatesUrlParts::None,
+            parts: SslCertificatesParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -86,9 +89,9 @@ impl<'a> SslCertificates<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ssl Certificates API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]

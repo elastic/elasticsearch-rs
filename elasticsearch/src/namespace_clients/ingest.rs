@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ingest Delete Pipeline API"]
-pub enum IngestDeletePipelineUrlParts<'a> {
+#[doc = "API parts for the Ingest Delete Pipeline API"]
+pub enum IngestDeletePipelineParts<'a> {
     Id(&'a str),
 }
-impl<'a> IngestDeletePipelineUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IngestDeletePipelineParts<'a> {
+    #[doc = "Builds a relative URL path to the Ingest Delete Pipeline API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestDeletePipelineUrlParts::Id(ref id) => {
+            IngestDeletePipelineParts::Id(ref id) => {
                 let mut p = String::with_capacity(18usize + id.len());
                 p.push_str("/_ingest/pipeline/");
                 p.push_str(id.as_ref());
@@ -46,7 +49,7 @@ impl<'a> IngestDeletePipelineUrlParts<'a> {
 #[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html). Deletes a pipeline."]
 pub struct IngestDeletePipeline<'a> {
     client: Elasticsearch,
-    parts: IngestDeletePipelineUrlParts<'a>,
+    parts: IngestDeletePipelineParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -56,7 +59,7 @@ pub struct IngestDeletePipeline<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IngestDeletePipeline<'a> {
-    pub fn new(client: Elasticsearch, parts: IngestDeletePipelineUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestDeletePipelineParts<'a>) -> Self {
         IngestDeletePipeline {
             client,
             parts,
@@ -105,9 +108,9 @@ impl<'a> IngestDeletePipeline<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ingest Delete Pipeline API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -150,16 +153,17 @@ impl<'a> IngestDeletePipeline<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ingest Get Pipeline API"]
-pub enum IngestGetPipelineUrlParts<'a> {
+#[doc = "API parts for the Ingest Get Pipeline API"]
+pub enum IngestGetPipelineParts<'a> {
     None,
     Id(&'a str),
 }
-impl<'a> IngestGetPipelineUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IngestGetPipelineParts<'a> {
+    #[doc = "Builds a relative URL path to the Ingest Get Pipeline API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestGetPipelineUrlParts::None => "/_ingest/pipeline".into(),
-            IngestGetPipelineUrlParts::Id(ref id) => {
+            IngestGetPipelineParts::None => "/_ingest/pipeline".into(),
+            IngestGetPipelineParts::Id(ref id) => {
                 let mut p = String::with_capacity(18usize + id.len());
                 p.push_str("/_ingest/pipeline/");
                 p.push_str(id.as_ref());
@@ -172,7 +176,7 @@ impl<'a> IngestGetPipelineUrlParts<'a> {
 #[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html). Returns a pipeline."]
 pub struct IngestGetPipeline<'a> {
     client: Elasticsearch,
-    parts: IngestGetPipelineUrlParts<'a>,
+    parts: IngestGetPipelineParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -181,7 +185,7 @@ pub struct IngestGetPipeline<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IngestGetPipeline<'a> {
-    pub fn new(client: Elasticsearch, parts: IngestGetPipelineUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestGetPipelineParts<'a>) -> Self {
         IngestGetPipeline {
             client,
             parts,
@@ -224,9 +228,9 @@ impl<'a> IngestGetPipeline<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ingest Get Pipeline API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -266,14 +270,15 @@ impl<'a> IngestGetPipeline<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ingest Processor Grok API"]
-pub enum IngestProcessorGrokUrlParts {
+#[doc = "API parts for the Ingest Processor Grok API"]
+pub enum IngestProcessorGrokParts {
     None,
 }
-impl IngestProcessorGrokUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl IngestProcessorGrokParts {
+    #[doc = "Builds a relative URL path to the Ingest Processor Grok API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestProcessorGrokUrlParts::None => "/_ingest/processor/grok".into(),
+            IngestProcessorGrokParts::None => "/_ingest/processor/grok".into(),
         }
     }
 }
@@ -281,7 +286,7 @@ impl IngestProcessorGrokUrlParts {
 #[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get). Returns a list of the built-in patterns."]
 pub struct IngestProcessorGrok<'a> {
     client: Elasticsearch,
-    parts: IngestProcessorGrokUrlParts,
+    parts: IngestProcessorGrokParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -292,7 +297,7 @@ impl<'a> IngestProcessorGrok<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         IngestProcessorGrok {
             client,
-            parts: IngestProcessorGrokUrlParts::None,
+            parts: IngestProcessorGrokParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -326,9 +331,9 @@ impl<'a> IngestProcessorGrok<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ingest Processor Grok API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -365,14 +370,15 @@ impl<'a> IngestProcessorGrok<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ingest Put Pipeline API"]
-pub enum IngestPutPipelineUrlParts<'a> {
+#[doc = "API parts for the Ingest Put Pipeline API"]
+pub enum IngestPutPipelineParts<'a> {
     Id(&'a str),
 }
-impl<'a> IngestPutPipelineUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IngestPutPipelineParts<'a> {
+    #[doc = "Builds a relative URL path to the Ingest Put Pipeline API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestPutPipelineUrlParts::Id(ref id) => {
+            IngestPutPipelineParts::Id(ref id) => {
                 let mut p = String::with_capacity(18usize + id.len());
                 p.push_str("/_ingest/pipeline/");
                 p.push_str(id.as_ref());
@@ -385,7 +391,7 @@ impl<'a> IngestPutPipelineUrlParts<'a> {
 #[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html). Creates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, B> {
     client: Elasticsearch,
-    parts: IngestPutPipelineUrlParts<'a>,
+    parts: IngestPutPipelineParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -399,7 +405,7 @@ impl<'a, B> IngestPutPipeline<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IngestPutPipelineUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestPutPipelineParts<'a>) -> Self {
         IngestPutPipeline {
             client,
             parts,
@@ -467,9 +473,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ingest Put Pipeline API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -512,16 +518,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ingest Simulate API"]
-pub enum IngestSimulateUrlParts<'a> {
+#[doc = "API parts for the Ingest Simulate API"]
+pub enum IngestSimulateParts<'a> {
     None,
     Id(&'a str),
 }
-impl<'a> IngestSimulateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IngestSimulateParts<'a> {
+    #[doc = "Builds a relative URL path to the Ingest Simulate API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IngestSimulateUrlParts::None => "/_ingest/pipeline/_simulate".into(),
-            IngestSimulateUrlParts::Id(ref id) => {
+            IngestSimulateParts::None => "/_ingest/pipeline/_simulate".into(),
+            IngestSimulateParts::Id(ref id) => {
                 let mut p = String::with_capacity(28usize + id.len());
                 p.push_str("/_ingest/pipeline/");
                 p.push_str(id.as_ref());
@@ -535,7 +542,7 @@ impl<'a> IngestSimulateUrlParts<'a> {
 #[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html). Allows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, B> {
     client: Elasticsearch,
-    parts: IngestSimulateUrlParts<'a>,
+    parts: IngestSimulateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -548,7 +555,7 @@ impl<'a, B> IngestSimulate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IngestSimulateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IngestSimulateParts<'a>) -> Self {
         IngestSimulate {
             client,
             parts,
@@ -609,11 +616,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ingest Simulate API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -664,12 +671,12 @@ impl Ingest {
     #[doc = "Deletes a pipeline."]
     pub fn delete_pipeline<'a>(
         &self,
-        parts: IngestDeletePipelineUrlParts<'a>,
+        parts: IngestDeletePipelineParts<'a>,
     ) -> IngestDeletePipeline<'a> {
         IngestDeletePipeline::new(self.client.clone(), parts)
     }
     #[doc = "Returns a pipeline."]
-    pub fn get_pipeline<'a>(&self, parts: IngestGetPipelineUrlParts<'a>) -> IngestGetPipeline<'a> {
+    pub fn get_pipeline<'a>(&self, parts: IngestGetPipelineParts<'a>) -> IngestGetPipeline<'a> {
         IngestGetPipeline::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of the built-in patterns."]
@@ -677,14 +684,11 @@ impl Ingest {
         IngestProcessorGrok::new(self.client.clone())
     }
     #[doc = "Creates or updates a pipeline."]
-    pub fn put_pipeline<'a>(
-        &self,
-        parts: IngestPutPipelineUrlParts<'a>,
-    ) -> IngestPutPipeline<'a, ()> {
+    pub fn put_pipeline<'a>(&self, parts: IngestPutPipelineParts<'a>) -> IngestPutPipeline<'a, ()> {
         IngestPutPipeline::new(self.client.clone(), parts)
     }
     #[doc = "Allows to simulate a pipeline with example documents."]
-    pub fn simulate<'a>(&self, parts: IngestSimulateUrlParts<'a>) -> IngestSimulate<'a, ()> {
+    pub fn simulate<'a>(&self, parts: IngestSimulateParts<'a>) -> IngestSimulate<'a, ()> {
         IngestSimulate::new(self.client.clone(), parts)
     }
 }

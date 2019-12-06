@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Enrich Delete Policy API"]
-pub enum EnrichDeletePolicyUrlParts<'a> {
+#[doc = "API parts for the Enrich Delete Policy API"]
+pub enum EnrichDeletePolicyParts<'a> {
     Name(&'a str),
 }
-impl<'a> EnrichDeletePolicyUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> EnrichDeletePolicyParts<'a> {
+    #[doc = "Builds a relative URL path to the Enrich Delete Policy API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichDeletePolicyUrlParts::Name(ref name) => {
+            EnrichDeletePolicyParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_enrich/policy/");
                 p.push_str(name.as_ref());
@@ -46,7 +49,7 @@ impl<'a> EnrichDeletePolicyUrlParts<'a> {
 #[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-delete-policy.html)."]
 pub struct EnrichDeletePolicy<'a> {
     client: Elasticsearch,
-    parts: EnrichDeletePolicyUrlParts<'a>,
+    parts: EnrichDeletePolicyParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -54,7 +57,7 @@ pub struct EnrichDeletePolicy<'a> {
     source: Option<&'a str>,
 }
 impl<'a> EnrichDeletePolicy<'a> {
-    pub fn new(client: Elasticsearch, parts: EnrichDeletePolicyUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: EnrichDeletePolicyParts<'a>) -> Self {
         EnrichDeletePolicy {
             client,
             parts,
@@ -91,9 +94,9 @@ impl<'a> EnrichDeletePolicy<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Enrich Delete Policy API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -130,14 +133,15 @@ impl<'a> EnrichDeletePolicy<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Enrich Execute Policy API"]
-pub enum EnrichExecutePolicyUrlParts<'a> {
+#[doc = "API parts for the Enrich Execute Policy API"]
+pub enum EnrichExecutePolicyParts<'a> {
     Name(&'a str),
 }
-impl<'a> EnrichExecutePolicyUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> EnrichExecutePolicyParts<'a> {
+    #[doc = "Builds a relative URL path to the Enrich Execute Policy API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichExecutePolicyUrlParts::Name(ref name) => {
+            EnrichExecutePolicyParts::Name(ref name) => {
                 let mut p = String::with_capacity(25usize + name.len());
                 p.push_str("/_enrich/policy/");
                 p.push_str(name.as_ref());
@@ -151,7 +155,7 @@ impl<'a> EnrichExecutePolicyUrlParts<'a> {
 #[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-execute-policy.html)."]
 pub struct EnrichExecutePolicy<'a, B> {
     client: Elasticsearch,
-    parts: EnrichExecutePolicyUrlParts<'a>,
+    parts: EnrichExecutePolicyParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -164,7 +168,7 @@ impl<'a, B> EnrichExecutePolicy<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyParts<'a>) -> Self {
         EnrichExecutePolicy {
             client,
             parts,
@@ -225,9 +229,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Enrich Execute Policy API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -267,21 +271,22 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Enrich Get Policy API"]
-pub enum EnrichGetPolicyUrlParts<'a> {
+#[doc = "API parts for the Enrich Get Policy API"]
+pub enum EnrichGetPolicyParts<'a> {
     Name(&'a str),
     None,
 }
-impl<'a> EnrichGetPolicyUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> EnrichGetPolicyParts<'a> {
+    #[doc = "Builds a relative URL path to the Enrich Get Policy API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichGetPolicyUrlParts::Name(ref name) => {
+            EnrichGetPolicyParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_enrich/policy/");
                 p.push_str(name.as_ref());
                 p.into()
             }
-            EnrichGetPolicyUrlParts::None => "/_enrich/policy/".into(),
+            EnrichGetPolicyParts::None => "/_enrich/policy/".into(),
         }
     }
 }
@@ -289,7 +294,7 @@ impl<'a> EnrichGetPolicyUrlParts<'a> {
 #[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-get-policy.html)."]
 pub struct EnrichGetPolicy<'a> {
     client: Elasticsearch,
-    parts: EnrichGetPolicyUrlParts<'a>,
+    parts: EnrichGetPolicyParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -297,7 +302,7 @@ pub struct EnrichGetPolicy<'a> {
     source: Option<&'a str>,
 }
 impl<'a> EnrichGetPolicy<'a> {
-    pub fn new(client: Elasticsearch, parts: EnrichGetPolicyUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: EnrichGetPolicyParts<'a>) -> Self {
         EnrichGetPolicy {
             client,
             parts,
@@ -334,9 +339,9 @@ impl<'a> EnrichGetPolicy<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Enrich Get Policy API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -373,14 +378,15 @@ impl<'a> EnrichGetPolicy<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Enrich Put Policy API"]
-pub enum EnrichPutPolicyUrlParts<'a> {
+#[doc = "API parts for the Enrich Put Policy API"]
+pub enum EnrichPutPolicyParts<'a> {
     Name(&'a str),
 }
-impl<'a> EnrichPutPolicyUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> EnrichPutPolicyParts<'a> {
+    #[doc = "Builds a relative URL path to the Enrich Put Policy API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichPutPolicyUrlParts::Name(ref name) => {
+            EnrichPutPolicyParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_enrich/policy/");
                 p.push_str(name.as_ref());
@@ -393,7 +399,7 @@ impl<'a> EnrichPutPolicyUrlParts<'a> {
 #[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-put-policy.html)."]
 pub struct EnrichPutPolicy<'a, B> {
     client: Elasticsearch,
-    parts: EnrichPutPolicyUrlParts<'a>,
+    parts: EnrichPutPolicyParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -405,7 +411,7 @@ impl<'a, B> EnrichPutPolicy<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: EnrichPutPolicyUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: EnrichPutPolicyParts<'a>) -> Self {
         EnrichPutPolicy {
             client,
             parts,
@@ -459,9 +465,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Enrich Put Policy API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -498,14 +504,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Enrich Stats API"]
-pub enum EnrichStatsUrlParts {
+#[doc = "API parts for the Enrich Stats API"]
+pub enum EnrichStatsParts {
     None,
 }
-impl EnrichStatsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl EnrichStatsParts {
+    #[doc = "Builds a relative URL path to the Enrich Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            EnrichStatsUrlParts::None => "/_enrich/_stats".into(),
+            EnrichStatsParts::None => "/_enrich/_stats".into(),
         }
     }
 }
@@ -513,7 +520,7 @@ impl EnrichStatsUrlParts {
 #[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-stats.html)."]
 pub struct EnrichStats<'a> {
     client: Elasticsearch,
-    parts: EnrichStatsUrlParts,
+    parts: EnrichStatsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -524,7 +531,7 @@ impl<'a> EnrichStats<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         EnrichStats {
             client,
-            parts: EnrichStatsUrlParts::None,
+            parts: EnrichStatsParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -558,9 +565,9 @@ impl<'a> EnrichStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Enrich Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -604,22 +611,19 @@ impl Enrich {
     pub fn new(client: Elasticsearch) -> Self {
         Enrich { client }
     }
-    pub fn delete_policy<'a>(
-        &self,
-        parts: EnrichDeletePolicyUrlParts<'a>,
-    ) -> EnrichDeletePolicy<'a> {
+    pub fn delete_policy<'a>(&self, parts: EnrichDeletePolicyParts<'a>) -> EnrichDeletePolicy<'a> {
         EnrichDeletePolicy::new(self.client.clone(), parts)
     }
     pub fn execute_policy<'a>(
         &self,
-        parts: EnrichExecutePolicyUrlParts<'a>,
+        parts: EnrichExecutePolicyParts<'a>,
     ) -> EnrichExecutePolicy<'a, ()> {
         EnrichExecutePolicy::new(self.client.clone(), parts)
     }
-    pub fn get_policy<'a>(&self, parts: EnrichGetPolicyUrlParts<'a>) -> EnrichGetPolicy<'a> {
+    pub fn get_policy<'a>(&self, parts: EnrichGetPolicyParts<'a>) -> EnrichGetPolicy<'a> {
         EnrichGetPolicy::new(self.client.clone(), parts)
     }
-    pub fn put_policy<'a>(&self, parts: EnrichPutPolicyUrlParts<'a>) -> EnrichPutPolicy<'a, ()> {
+    pub fn put_policy<'a>(&self, parts: EnrichPutPolicyParts<'a>) -> EnrichPutPolicy<'a, ()> {
         EnrichPutPolicy::new(self.client.clone(), parts)
     }
     pub fn stats<'a>(&self) -> EnrichStats<'a> {

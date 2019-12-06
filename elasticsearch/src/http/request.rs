@@ -1,22 +1,14 @@
-use crate::error::ElasticsearchError;
+use super::headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT};
+use crate::error::Error;
 use bytes::buf::ext::Writer;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
 use serde::{de::DeserializeOwned, Serialize};
 
-/// Http methods supported by Elasticsearch
-pub enum HttpMethod {
-    Get,
-    Put,
-    Post,
-    Delete,
-    Head,
-}
-
 /// Body of an API call.
 pub trait Body {
     /// Write to a buffer that will be written to the request stream
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError>;
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error>;
 }
 
 /// A JSON body of an API call
@@ -26,6 +18,7 @@ impl<T> JsonBody<T>
 where
     T: Serialize,
 {
+    /// Creates a new instance of `JsonBody`
     pub fn new(t: T) -> Self {
         Self(t)
     }
@@ -35,6 +28,7 @@ impl<T> From<T> for JsonBody<T>
 where
     T: Serialize,
 {
+    /// Creates a new instance of `JsonBody<T>` from a type `T` that implements `Serialize`
     fn from(t: T) -> Self {
         JsonBody(t)
     }
@@ -44,11 +38,11 @@ impl<T> Body for JsonBody<T>
 where
     T: Serialize,
 {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         let writer = bytes.writer();
         match serde_json::to_writer(writer, &self.0) {
             Ok(_) => Ok(()),
-            Err(e) => Err(ElasticsearchError::JsonError(e)),
+            Err(e) => Err(Error::Json(e)),
         }
     }
 }
@@ -60,7 +54,7 @@ impl<T> NdBody<T>
 where
     T: Body,
 {
-    /// Creates a new instance
+    /// Creates a new instance of `NdBody<T>`
     pub fn new(b: Vec<T>) -> Self {
         Self(b)
     }
@@ -73,7 +67,7 @@ impl<T> Body for NdBody<T>
 where
     T: Body,
 {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         for line in &self.0 {
             line.write(bytes)?;
             bytes.put_u8(b'\n');
@@ -83,7 +77,7 @@ where
 }
 
 impl Body for Bytes {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.resize(self.len(), 0);
         bytes.copy_from_slice(&self[..]);
         Ok(())
@@ -91,7 +85,7 @@ impl Body for Bytes {
 }
 
 impl Body for Vec<u8> {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.resize(self.len(), 0);
         bytes.copy_from_slice(&self[..]);
         Ok(())
@@ -99,7 +93,7 @@ impl Body for Vec<u8> {
 }
 
 impl Body for &'static [u8] {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.resize(self.len(), 0);
         bytes.copy_from_slice(&self[..]);
         Ok(())
@@ -107,7 +101,7 @@ impl Body for &'static [u8] {
 }
 
 impl Body for String {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.resize(self.len(), 0);
         bytes.copy_from_slice(self.as_bytes());
         Ok(())
@@ -115,7 +109,7 @@ impl Body for String {
 }
 
 impl Body for &'static str {
-    fn write(&self, bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         bytes.resize(self.len(), 0);
         bytes.copy_from_slice(self.as_bytes());
         Ok(())
@@ -123,14 +117,14 @@ impl Body for &'static str {
 }
 
 impl Body for () {
-    fn write(&self, _bytes: &mut BytesMut) -> Result<(), ElasticsearchError> {
+    fn write(&self, _bytes: &mut BytesMut) -> Result<(), Error> {
         Ok(())
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::request::{Body, Bytes, JsonBody, NdBody};
+    use crate::http::request::{Body, Bytes, JsonBody, NdBody};
     use bytes::BytesMut;
 
     #[test]

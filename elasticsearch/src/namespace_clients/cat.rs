@@ -17,25 +17,28 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Aliases API"]
-pub enum CatAliasesUrlParts<'a> {
+#[doc = "API parts for the Cat Aliases API"]
+pub enum CatAliasesParts<'a> {
     None,
     Name(&'a [&'a str]),
 }
-impl<'a> CatAliasesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatAliasesParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Aliases API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatAliasesUrlParts::None => "/_cat/aliases".into(),
-            CatAliasesUrlParts::Name(ref name) => {
+            CatAliasesParts::None => "/_cat/aliases".into(),
+            CatAliasesParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(14usize + name_str.len());
                 p.push_str("/_cat/aliases/");
@@ -49,7 +52,7 @@ impl<'a> CatAliasesUrlParts<'a> {
 #[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html). Shows information about currently configured aliases to indices including filter and routing infos."]
 pub struct CatAliases<'a> {
     client: Elasticsearch,
-    parts: CatAliasesUrlParts<'a>,
+    parts: CatAliasesParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -63,7 +66,7 @@ pub struct CatAliases<'a> {
     v: Option<bool>,
 }
 impl<'a> CatAliases<'a> {
-    pub fn new(client: Elasticsearch, parts: CatAliasesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatAliasesParts<'a>) -> Self {
         CatAliases {
             client,
             parts,
@@ -136,9 +139,9 @@ impl<'a> CatAliases<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Aliases API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -193,16 +196,17 @@ impl<'a> CatAliases<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Allocation API"]
-pub enum CatAllocationUrlParts<'a> {
+#[doc = "API parts for the Cat Allocation API"]
+pub enum CatAllocationParts<'a> {
     None,
     NodeId(&'a [&'a str]),
 }
-impl<'a> CatAllocationUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatAllocationParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Allocation API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatAllocationUrlParts::None => "/_cat/allocation".into(),
-            CatAllocationUrlParts::NodeId(ref node_id) => {
+            CatAllocationParts::None => "/_cat/allocation".into(),
+            CatAllocationParts::NodeId(ref node_id) => {
                 let node_id_str = node_id.join(",");
                 let mut p = String::with_capacity(17usize + node_id_str.len());
                 p.push_str("/_cat/allocation/");
@@ -216,7 +220,7 @@ impl<'a> CatAllocationUrlParts<'a> {
 #[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html). Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
 pub struct CatAllocation<'a> {
     client: Elasticsearch,
-    parts: CatAllocationUrlParts<'a>,
+    parts: CatAllocationParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -232,7 +236,7 @@ pub struct CatAllocation<'a> {
     v: Option<bool>,
 }
 impl<'a> CatAllocation<'a> {
-    pub fn new(client: Elasticsearch, parts: CatAllocationUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatAllocationParts<'a>) -> Self {
         CatAllocation {
             client,
             parts,
@@ -317,9 +321,9 @@ impl<'a> CatAllocation<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Allocation API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -380,16 +384,17 @@ impl<'a> CatAllocation<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Count API"]
-pub enum CatCountUrlParts<'a> {
+#[doc = "API parts for the Cat Count API"]
+pub enum CatCountParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> CatCountUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatCountParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Count API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatCountUrlParts::None => "/_cat/count".into(),
-            CatCountUrlParts::Index(ref index) => {
+            CatCountParts::None => "/_cat/count".into(),
+            CatCountParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(12usize + index_str.len());
                 p.push_str("/_cat/count/");
@@ -403,7 +408,7 @@ impl<'a> CatCountUrlParts<'a> {
 #[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html). Provides quick access to the document count of the entire cluster, or individual indices."]
 pub struct CatCount<'a> {
     client: Elasticsearch,
-    parts: CatCountUrlParts<'a>,
+    parts: CatCountParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -416,7 +421,7 @@ pub struct CatCount<'a> {
     v: Option<bool>,
 }
 impl<'a> CatCount<'a> {
-    pub fn new(client: Elasticsearch, parts: CatCountUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatCountParts<'a>) -> Self {
         CatCount {
             client,
             parts,
@@ -483,9 +488,9 @@ impl<'a> CatCount<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Count API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -537,16 +542,17 @@ impl<'a> CatCount<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Fielddata API"]
-pub enum CatFielddataUrlParts<'a> {
+#[doc = "API parts for the Cat Fielddata API"]
+pub enum CatFielddataParts<'a> {
     None,
     Fields(&'a [&'a str]),
 }
-impl<'a> CatFielddataUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatFielddataParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Fielddata API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatFielddataUrlParts::None => "/_cat/fielddata".into(),
-            CatFielddataUrlParts::Fields(ref fields) => {
+            CatFielddataParts::None => "/_cat/fielddata".into(),
+            CatFielddataParts::Fields(ref fields) => {
                 let fields_str = fields.join(",");
                 let mut p = String::with_capacity(16usize + fields_str.len());
                 p.push_str("/_cat/fielddata/");
@@ -560,7 +566,7 @@ impl<'a> CatFielddataUrlParts<'a> {
 #[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html). Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
 pub struct CatFielddata<'a> {
     client: Elasticsearch,
-    parts: CatFielddataUrlParts<'a>,
+    parts: CatFielddataParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     fields: Option<&'a [&'a str]>,
@@ -575,7 +581,7 @@ pub struct CatFielddata<'a> {
     v: Option<bool>,
 }
 impl<'a> CatFielddata<'a> {
-    pub fn new(client: Elasticsearch, parts: CatFielddataUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatFielddataParts<'a>) -> Self {
         CatFielddata {
             client,
             parts,
@@ -654,9 +660,9 @@ impl<'a> CatFielddata<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Fielddata API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -714,14 +720,15 @@ impl<'a> CatFielddata<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Health API"]
-pub enum CatHealthUrlParts {
+#[doc = "API parts for the Cat Health API"]
+pub enum CatHealthParts {
     None,
 }
-impl CatHealthUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatHealthParts {
+    #[doc = "Builds a relative URL path to the Cat Health API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatHealthUrlParts::None => "/_cat/health".into(),
+            CatHealthParts::None => "/_cat/health".into(),
         }
     }
 }
@@ -729,7 +736,7 @@ impl CatHealthUrlParts {
 #[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html). Returns a concise representation of the cluster health."]
 pub struct CatHealth<'a> {
     client: Elasticsearch,
-    parts: CatHealthUrlParts,
+    parts: CatHealthParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -747,7 +754,7 @@ impl<'a> CatHealth<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatHealth {
             client,
-            parts: CatHealthUrlParts::None,
+            parts: CatHealthParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -823,9 +830,9 @@ impl<'a> CatHealth<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Health API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -883,14 +890,15 @@ impl<'a> CatHealth<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Help API"]
-pub enum CatHelpUrlParts {
+#[doc = "API parts for the Cat Help API"]
+pub enum CatHelpParts {
     None,
 }
-impl CatHelpUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatHelpParts {
+    #[doc = "Builds a relative URL path to the Cat Help API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatHelpUrlParts::None => "/_cat".into(),
+            CatHelpParts::None => "/_cat".into(),
         }
     }
 }
@@ -898,7 +906,7 @@ impl CatHelpUrlParts {
 #[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html). Returns help for the Cat APIs."]
 pub struct CatHelp<'a> {
     client: Elasticsearch,
-    parts: CatHelpUrlParts,
+    parts: CatHelpParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     help: Option<bool>,
@@ -911,7 +919,7 @@ impl<'a> CatHelp<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatHelp {
             client,
-            parts: CatHelpUrlParts::None,
+            parts: CatHelpParts::None,
             error_trace: None,
             filter_path: None,
             help: None,
@@ -957,9 +965,9 @@ impl<'a> CatHelp<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Help API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1002,16 +1010,17 @@ impl<'a> CatHelp<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Indices API"]
-pub enum CatIndicesUrlParts<'a> {
+#[doc = "API parts for the Cat Indices API"]
+pub enum CatIndicesParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> CatIndicesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatIndicesParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Indices API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatIndicesUrlParts::None => "/_cat/indices".into(),
-            CatIndicesUrlParts::Index(ref index) => {
+            CatIndicesParts::None => "/_cat/indices".into(),
+            CatIndicesParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(14usize + index_str.len());
                 p.push_str("/_cat/indices/");
@@ -1025,7 +1034,7 @@ impl<'a> CatIndicesUrlParts<'a> {
 #[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html). Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
 pub struct CatIndices<'a> {
     client: Elasticsearch,
-    parts: CatIndicesUrlParts<'a>,
+    parts: CatIndicesParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1045,7 +1054,7 @@ pub struct CatIndices<'a> {
     v: Option<bool>,
 }
 impl<'a> CatIndices<'a> {
-    pub fn new(client: Elasticsearch, parts: CatIndicesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatIndicesParts<'a>) -> Self {
         CatIndices {
             client,
             parts,
@@ -1154,9 +1163,9 @@ impl<'a> CatIndices<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Indices API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1229,14 +1238,15 @@ impl<'a> CatIndices<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Master API"]
-pub enum CatMasterUrlParts {
+#[doc = "API parts for the Cat Master API"]
+pub enum CatMasterParts {
     None,
 }
-impl CatMasterUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatMasterParts {
+    #[doc = "Builds a relative URL path to the Cat Master API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatMasterUrlParts::None => "/_cat/master".into(),
+            CatMasterParts::None => "/_cat/master".into(),
         }
     }
 }
@@ -1244,7 +1254,7 @@ impl CatMasterUrlParts {
 #[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html). Returns information about the master node."]
 pub struct CatMaster<'a> {
     client: Elasticsearch,
-    parts: CatMasterUrlParts,
+    parts: CatMasterParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -1262,7 +1272,7 @@ impl<'a> CatMaster<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatMaster {
             client,
-            parts: CatMasterUrlParts::None,
+            parts: CatMasterParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1338,9 +1348,9 @@ impl<'a> CatMaster<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Master API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1398,14 +1408,15 @@ impl<'a> CatMaster<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Nodeattrs API"]
-pub enum CatNodeattrsUrlParts {
+#[doc = "API parts for the Cat Nodeattrs API"]
+pub enum CatNodeattrsParts {
     None,
 }
-impl CatNodeattrsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatNodeattrsParts {
+    #[doc = "Builds a relative URL path to the Cat Nodeattrs API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatNodeattrsUrlParts::None => "/_cat/nodeattrs".into(),
+            CatNodeattrsParts::None => "/_cat/nodeattrs".into(),
         }
     }
 }
@@ -1413,7 +1424,7 @@ impl CatNodeattrsUrlParts {
 #[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html). Returns information about custom node attributes."]
 pub struct CatNodeattrs<'a> {
     client: Elasticsearch,
-    parts: CatNodeattrsUrlParts,
+    parts: CatNodeattrsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -1431,7 +1442,7 @@ impl<'a> CatNodeattrs<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodeattrs {
             client,
-            parts: CatNodeattrsUrlParts::None,
+            parts: CatNodeattrsParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1507,9 +1518,9 @@ impl<'a> CatNodeattrs<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Nodeattrs API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1567,14 +1578,15 @@ impl<'a> CatNodeattrs<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Nodes API"]
-pub enum CatNodesUrlParts {
+#[doc = "API parts for the Cat Nodes API"]
+pub enum CatNodesParts {
     None,
 }
-impl CatNodesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatNodesParts {
+    #[doc = "Builds a relative URL path to the Cat Nodes API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatNodesUrlParts::None => "/_cat/nodes".into(),
+            CatNodesParts::None => "/_cat/nodes".into(),
         }
     }
 }
@@ -1582,7 +1594,7 @@ impl CatNodesUrlParts {
 #[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html). Returns basic statistics about performance of cluster nodes."]
 pub struct CatNodes<'a> {
     client: Elasticsearch,
-    parts: CatNodesUrlParts,
+    parts: CatNodesParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1603,7 +1615,7 @@ impl<'a> CatNodes<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatNodes {
             client,
-            parts: CatNodesUrlParts::None,
+            parts: CatNodesParts::None,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1697,9 +1709,9 @@ impl<'a> CatNodes<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Nodes API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1766,14 +1778,15 @@ impl<'a> CatNodes<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Pending Tasks API"]
-pub enum CatPendingTasksUrlParts {
+#[doc = "API parts for the Cat Pending Tasks API"]
+pub enum CatPendingTasksParts {
     None,
 }
-impl CatPendingTasksUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatPendingTasksParts {
+    #[doc = "Builds a relative URL path to the Cat Pending Tasks API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatPendingTasksUrlParts::None => "/_cat/pending_tasks".into(),
+            CatPendingTasksParts::None => "/_cat/pending_tasks".into(),
         }
     }
 }
@@ -1781,7 +1794,7 @@ impl CatPendingTasksUrlParts {
 #[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html). Returns a concise representation of the cluster pending tasks."]
 pub struct CatPendingTasks<'a> {
     client: Elasticsearch,
-    parts: CatPendingTasksUrlParts,
+    parts: CatPendingTasksParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -1800,7 +1813,7 @@ impl<'a> CatPendingTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatPendingTasks {
             client,
-            parts: CatPendingTasksUrlParts::None,
+            parts: CatPendingTasksParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1882,9 +1895,9 @@ impl<'a> CatPendingTasks<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Pending Tasks API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1945,14 +1958,15 @@ impl<'a> CatPendingTasks<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Plugins API"]
-pub enum CatPluginsUrlParts {
+#[doc = "API parts for the Cat Plugins API"]
+pub enum CatPluginsParts {
     None,
 }
-impl CatPluginsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatPluginsParts {
+    #[doc = "Builds a relative URL path to the Cat Plugins API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatPluginsUrlParts::None => "/_cat/plugins".into(),
+            CatPluginsParts::None => "/_cat/plugins".into(),
         }
     }
 }
@@ -1960,7 +1974,7 @@ impl CatPluginsUrlParts {
 #[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html). Returns information about installed plugins across nodes node."]
 pub struct CatPlugins<'a> {
     client: Elasticsearch,
-    parts: CatPluginsUrlParts,
+    parts: CatPluginsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -1978,7 +1992,7 @@ impl<'a> CatPlugins<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatPlugins {
             client,
-            parts: CatPluginsUrlParts::None,
+            parts: CatPluginsParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2054,9 +2068,9 @@ impl<'a> CatPlugins<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Plugins API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2114,16 +2128,17 @@ impl<'a> CatPlugins<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Recovery API"]
-pub enum CatRecoveryUrlParts<'a> {
+#[doc = "API parts for the Cat Recovery API"]
+pub enum CatRecoveryParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> CatRecoveryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatRecoveryParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Recovery API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatRecoveryUrlParts::None => "/_cat/recovery".into(),
-            CatRecoveryUrlParts::Index(ref index) => {
+            CatRecoveryParts::None => "/_cat/recovery".into(),
+            CatRecoveryParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(15usize + index_str.len());
                 p.push_str("/_cat/recovery/");
@@ -2137,7 +2152,7 @@ impl<'a> CatRecoveryUrlParts<'a> {
 #[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html). Returns information about index shard recoveries, both on-going completed."]
 pub struct CatRecovery<'a> {
     client: Elasticsearch,
-    parts: CatRecoveryUrlParts<'a>,
+    parts: CatRecoveryParts<'a>,
     active_only: Option<bool>,
     bytes: Option<Bytes>,
     detailed: Option<bool>,
@@ -2155,7 +2170,7 @@ pub struct CatRecovery<'a> {
     v: Option<bool>,
 }
 impl<'a> CatRecovery<'a> {
-    pub fn new(client: Elasticsearch, parts: CatRecoveryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatRecoveryParts<'a>) -> Self {
         CatRecovery {
             client,
             parts,
@@ -2252,9 +2267,9 @@ impl<'a> CatRecovery<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Recovery API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2321,14 +2336,15 @@ impl<'a> CatRecovery<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Repositories API"]
-pub enum CatRepositoriesUrlParts {
+#[doc = "API parts for the Cat Repositories API"]
+pub enum CatRepositoriesParts {
     None,
 }
-impl CatRepositoriesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatRepositoriesParts {
+    #[doc = "Builds a relative URL path to the Cat Repositories API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatRepositoriesUrlParts::None => "/_cat/repositories".into(),
+            CatRepositoriesParts::None => "/_cat/repositories".into(),
         }
     }
 }
@@ -2336,7 +2352,7 @@ impl CatRepositoriesUrlParts {
 #[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html). Returns information about snapshot repositories registered in the cluster."]
 pub struct CatRepositories<'a> {
     client: Elasticsearch,
-    parts: CatRepositoriesUrlParts,
+    parts: CatRepositoriesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -2354,7 +2370,7 @@ impl<'a> CatRepositories<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatRepositories {
             client,
-            parts: CatRepositoriesUrlParts::None,
+            parts: CatRepositoriesParts::None,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2430,9 +2446,9 @@ impl<'a> CatRepositories<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Repositories API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2490,16 +2506,17 @@ impl<'a> CatRepositories<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Segments API"]
-pub enum CatSegmentsUrlParts<'a> {
+#[doc = "API parts for the Cat Segments API"]
+pub enum CatSegmentsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> CatSegmentsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatSegmentsParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Segments API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatSegmentsUrlParts::None => "/_cat/segments".into(),
-            CatSegmentsUrlParts::Index(ref index) => {
+            CatSegmentsParts::None => "/_cat/segments".into(),
+            CatSegmentsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(15usize + index_str.len());
                 p.push_str("/_cat/segments/");
@@ -2513,7 +2530,7 @@ impl<'a> CatSegmentsUrlParts<'a> {
 #[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html). Provides low-level information about the segments in the shards of an index."]
 pub struct CatSegments<'a> {
     client: Elasticsearch,
-    parts: CatSegmentsUrlParts<'a>,
+    parts: CatSegmentsParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2527,7 +2544,7 @@ pub struct CatSegments<'a> {
     v: Option<bool>,
 }
 impl<'a> CatSegments<'a> {
-    pub fn new(client: Elasticsearch, parts: CatSegmentsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatSegmentsParts<'a>) -> Self {
         CatSegments {
             client,
             parts,
@@ -2600,9 +2617,9 @@ impl<'a> CatSegments<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Segments API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2657,16 +2674,17 @@ impl<'a> CatSegments<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Shards API"]
-pub enum CatShardsUrlParts<'a> {
+#[doc = "API parts for the Cat Shards API"]
+pub enum CatShardsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> CatShardsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatShardsParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Shards API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatShardsUrlParts::None => "/_cat/shards".into(),
-            CatShardsUrlParts::Index(ref index) => {
+            CatShardsParts::None => "/_cat/shards".into(),
+            CatShardsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(13usize + index_str.len());
                 p.push_str("/_cat/shards/");
@@ -2680,7 +2698,7 @@ impl<'a> CatShardsUrlParts<'a> {
 #[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html). Provides a detailed view of shard allocation on nodes."]
 pub struct CatShards<'a> {
     client: Elasticsearch,
-    parts: CatShardsUrlParts<'a>,
+    parts: CatShardsParts<'a>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2697,7 +2715,7 @@ pub struct CatShards<'a> {
     v: Option<bool>,
 }
 impl<'a> CatShards<'a> {
-    pub fn new(client: Elasticsearch, parts: CatShardsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatShardsParts<'a>) -> Self {
         CatShards {
             client,
             parts,
@@ -2788,9 +2806,9 @@ impl<'a> CatShards<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Shards API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2854,16 +2872,17 @@ impl<'a> CatShards<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Snapshots API"]
-pub enum CatSnapshotsUrlParts<'a> {
+#[doc = "API parts for the Cat Snapshots API"]
+pub enum CatSnapshotsParts<'a> {
     None,
     Repository(&'a [&'a str]),
 }
-impl<'a> CatSnapshotsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatSnapshotsParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Snapshots API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatSnapshotsUrlParts::None => "/_cat/snapshots".into(),
-            CatSnapshotsUrlParts::Repository(ref repository) => {
+            CatSnapshotsParts::None => "/_cat/snapshots".into(),
+            CatSnapshotsParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
                 let mut p = String::with_capacity(16usize + repository_str.len());
                 p.push_str("/_cat/snapshots/");
@@ -2877,7 +2896,7 @@ impl<'a> CatSnapshotsUrlParts<'a> {
 #[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html). Returns all snapshots in a specific repository."]
 pub struct CatSnapshots<'a> {
     client: Elasticsearch,
-    parts: CatSnapshotsUrlParts<'a>,
+    parts: CatSnapshotsParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -2893,7 +2912,7 @@ pub struct CatSnapshots<'a> {
     v: Option<bool>,
 }
 impl<'a> CatSnapshots<'a> {
-    pub fn new(client: Elasticsearch, parts: CatSnapshotsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatSnapshotsParts<'a>) -> Self {
         CatSnapshots {
             client,
             parts,
@@ -2978,9 +2997,9 @@ impl<'a> CatSnapshots<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Snapshots API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3041,14 +3060,15 @@ impl<'a> CatSnapshots<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Tasks API"]
-pub enum CatTasksUrlParts {
+#[doc = "API parts for the Cat Tasks API"]
+pub enum CatTasksParts {
     None,
 }
-impl CatTasksUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl CatTasksParts {
+    #[doc = "Builds a relative URL path to the Cat Tasks API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatTasksUrlParts::None => "/_cat/tasks".into(),
+            CatTasksParts::None => "/_cat/tasks".into(),
         }
     }
 }
@@ -3056,7 +3076,7 @@ impl CatTasksUrlParts {
 #[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about the tasks currently executing on one or more nodes in the cluster."]
 pub struct CatTasks<'a> {
     client: Elasticsearch,
-    parts: CatTasksUrlParts,
+    parts: CatTasksParts,
     actions: Option<&'a [&'a str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
@@ -3077,7 +3097,7 @@ impl<'a> CatTasks<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         CatTasks {
             client,
-            parts: CatTasksUrlParts::None,
+            parts: CatTasksParts::None,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -3171,9 +3191,9 @@ impl<'a> CatTasks<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Tasks API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3246,16 +3266,17 @@ impl<'a> CatTasks<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Templates API"]
-pub enum CatTemplatesUrlParts<'a> {
+#[doc = "API parts for the Cat Templates API"]
+pub enum CatTemplatesParts<'a> {
     None,
     Name(&'a str),
 }
-impl<'a> CatTemplatesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatTemplatesParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Templates API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatTemplatesUrlParts::None => "/_cat/templates".into(),
-            CatTemplatesUrlParts::Name(ref name) => {
+            CatTemplatesParts::None => "/_cat/templates".into(),
+            CatTemplatesParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_cat/templates/");
                 p.push_str(name.as_ref());
@@ -3268,7 +3289,7 @@ impl<'a> CatTemplatesUrlParts<'a> {
 #[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html). Returns information about existing templates."]
 pub struct CatTemplates<'a> {
     client: Elasticsearch,
-    parts: CatTemplatesUrlParts<'a>,
+    parts: CatTemplatesParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -3283,7 +3304,7 @@ pub struct CatTemplates<'a> {
     v: Option<bool>,
 }
 impl<'a> CatTemplates<'a> {
-    pub fn new(client: Elasticsearch, parts: CatTemplatesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatTemplatesParts<'a>) -> Self {
         CatTemplates {
             client,
             parts,
@@ -3362,9 +3383,9 @@ impl<'a> CatTemplates<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Templates API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3422,16 +3443,17 @@ impl<'a> CatTemplates<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Cat Thread Pool API"]
-pub enum CatThreadPoolUrlParts<'a> {
+#[doc = "API parts for the Cat Thread Pool API"]
+pub enum CatThreadPoolParts<'a> {
     None,
     ThreadPoolPatterns(&'a [&'a str]),
 }
-impl<'a> CatThreadPoolUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CatThreadPoolParts<'a> {
+    #[doc = "Builds a relative URL path to the Cat Thread Pool API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatThreadPoolUrlParts::None => "/_cat/thread_pool".into(),
-            CatThreadPoolUrlParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
+            CatThreadPoolParts::None => "/_cat/thread_pool".into(),
+            CatThreadPoolParts::ThreadPoolPatterns(ref thread_pool_patterns) => {
                 let thread_pool_patterns_str = thread_pool_patterns.join(",");
                 let mut p = String::with_capacity(18usize + thread_pool_patterns_str.len());
                 p.push_str("/_cat/thread_pool/");
@@ -3445,7 +3467,7 @@ impl<'a> CatThreadPoolUrlParts<'a> {
 #[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html). Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
 pub struct CatThreadPool<'a> {
     client: Elasticsearch,
-    parts: CatThreadPoolUrlParts<'a>,
+    parts: CatThreadPoolParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
@@ -3461,7 +3483,7 @@ pub struct CatThreadPool<'a> {
     v: Option<bool>,
 }
 impl<'a> CatThreadPool<'a> {
-    pub fn new(client: Elasticsearch, parts: CatThreadPoolUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CatThreadPoolParts<'a>) -> Self {
         CatThreadPool {
             client,
             parts,
@@ -3546,9 +3568,9 @@ impl<'a> CatThreadPool<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Cat Thread Pool API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3617,19 +3639,19 @@ impl Cat {
         Cat { client }
     }
     #[doc = "Shows information about currently configured aliases to indices including filter and routing infos."]
-    pub fn aliases<'a>(&self, parts: CatAliasesUrlParts<'a>) -> CatAliases<'a> {
+    pub fn aliases<'a>(&self, parts: CatAliasesParts<'a>) -> CatAliases<'a> {
         CatAliases::new(self.client.clone(), parts)
     }
     #[doc = "Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
-    pub fn allocation<'a>(&self, parts: CatAllocationUrlParts<'a>) -> CatAllocation<'a> {
+    pub fn allocation<'a>(&self, parts: CatAllocationParts<'a>) -> CatAllocation<'a> {
         CatAllocation::new(self.client.clone(), parts)
     }
     #[doc = "Provides quick access to the document count of the entire cluster, or individual indices."]
-    pub fn count<'a>(&self, parts: CatCountUrlParts<'a>) -> CatCount<'a> {
+    pub fn count<'a>(&self, parts: CatCountParts<'a>) -> CatCount<'a> {
         CatCount::new(self.client.clone(), parts)
     }
     #[doc = "Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
-    pub fn fielddata<'a>(&self, parts: CatFielddataUrlParts<'a>) -> CatFielddata<'a> {
+    pub fn fielddata<'a>(&self, parts: CatFielddataParts<'a>) -> CatFielddata<'a> {
         CatFielddata::new(self.client.clone(), parts)
     }
     #[doc = "Returns a concise representation of the cluster health."]
@@ -3641,7 +3663,7 @@ impl Cat {
         CatHelp::new(self.client.clone())
     }
     #[doc = "Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
-    pub fn indices<'a>(&self, parts: CatIndicesUrlParts<'a>) -> CatIndices<'a> {
+    pub fn indices<'a>(&self, parts: CatIndicesParts<'a>) -> CatIndices<'a> {
         CatIndices::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the master node."]
@@ -3665,7 +3687,7 @@ impl Cat {
         CatPlugins::new(self.client.clone())
     }
     #[doc = "Returns information about index shard recoveries, both on-going completed."]
-    pub fn recovery<'a>(&self, parts: CatRecoveryUrlParts<'a>) -> CatRecovery<'a> {
+    pub fn recovery<'a>(&self, parts: CatRecoveryParts<'a>) -> CatRecovery<'a> {
         CatRecovery::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about snapshot repositories registered in the cluster."]
@@ -3673,15 +3695,15 @@ impl Cat {
         CatRepositories::new(self.client.clone())
     }
     #[doc = "Provides low-level information about the segments in the shards of an index."]
-    pub fn segments<'a>(&self, parts: CatSegmentsUrlParts<'a>) -> CatSegments<'a> {
+    pub fn segments<'a>(&self, parts: CatSegmentsParts<'a>) -> CatSegments<'a> {
         CatSegments::new(self.client.clone(), parts)
     }
     #[doc = "Provides a detailed view of shard allocation on nodes."]
-    pub fn shards<'a>(&self, parts: CatShardsUrlParts<'a>) -> CatShards<'a> {
+    pub fn shards<'a>(&self, parts: CatShardsParts<'a>) -> CatShards<'a> {
         CatShards::new(self.client.clone(), parts)
     }
     #[doc = "Returns all snapshots in a specific repository."]
-    pub fn snapshots<'a>(&self, parts: CatSnapshotsUrlParts<'a>) -> CatSnapshots<'a> {
+    pub fn snapshots<'a>(&self, parts: CatSnapshotsParts<'a>) -> CatSnapshots<'a> {
         CatSnapshots::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the tasks currently executing on one or more nodes in the cluster."]
@@ -3689,11 +3711,11 @@ impl Cat {
         CatTasks::new(self.client.clone())
     }
     #[doc = "Returns information about existing templates."]
-    pub fn templates<'a>(&self, parts: CatTemplatesUrlParts<'a>) -> CatTemplates<'a> {
+    pub fn templates<'a>(&self, parts: CatTemplatesParts<'a>) -> CatTemplates<'a> {
         CatTemplates::new(self.client.clone(), parts)
     }
     #[doc = "Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
-    pub fn thread_pool<'a>(&self, parts: CatThreadPoolUrlParts<'a>) -> CatThreadPool<'a> {
+    pub fn thread_pool<'a>(&self, parts: CatThreadPoolParts<'a>) -> CatThreadPool<'a> {
         CatThreadPool::new(self.client.clone(), parts)
     }
 }

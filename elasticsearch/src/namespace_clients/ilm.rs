@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Delete Lifecycle API"]
-pub enum IlmDeleteLifecycleUrlParts<'a> {
+#[doc = "API parts for the Ilm Delete Lifecycle API"]
+pub enum IlmDeleteLifecycleParts<'a> {
     Policy(&'a str),
 }
-impl<'a> IlmDeleteLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmDeleteLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Delete Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmDeleteLifecycleUrlParts::Policy(ref policy) => {
+            IlmDeleteLifecycleParts::Policy(ref policy) => {
                 let mut p = String::with_capacity(13usize + policy.len());
                 p.push_str("/_ilm/policy/");
                 p.push_str(policy.as_ref());
@@ -46,7 +49,7 @@ impl<'a> IlmDeleteLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html)."]
 pub struct IlmDeleteLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmDeleteLifecycleUrlParts<'a>,
+    parts: IlmDeleteLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -54,7 +57,7 @@ pub struct IlmDeleteLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmDeleteLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleParts<'a>) -> Self {
         IlmDeleteLifecycle {
             client,
             parts,
@@ -91,9 +94,9 @@ impl<'a> IlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Delete Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -130,14 +133,15 @@ impl<'a> IlmDeleteLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Explain Lifecycle API"]
-pub enum IlmExplainLifecycleUrlParts<'a> {
+#[doc = "API parts for the Ilm Explain Lifecycle API"]
+pub enum IlmExplainLifecycleParts<'a> {
     Index(&'a str),
 }
-impl<'a> IlmExplainLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmExplainLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Explain Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmExplainLifecycleUrlParts::Index(ref index) => {
+            IlmExplainLifecycleParts::Index(ref index) => {
                 let mut p = String::with_capacity(14usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -151,7 +155,7 @@ impl<'a> IlmExplainLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html)."]
 pub struct IlmExplainLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmExplainLifecycleUrlParts<'a>,
+    parts: IlmExplainLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -161,7 +165,7 @@ pub struct IlmExplainLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmExplainLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleParts<'a>) -> Self {
         IlmExplainLifecycle {
             client,
             parts,
@@ -210,9 +214,9 @@ impl<'a> IlmExplainLifecycle<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Explain Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -255,21 +259,22 @@ impl<'a> IlmExplainLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Get Lifecycle API"]
-pub enum IlmGetLifecycleUrlParts<'a> {
+#[doc = "API parts for the Ilm Get Lifecycle API"]
+pub enum IlmGetLifecycleParts<'a> {
     Policy(&'a str),
     None,
 }
-impl<'a> IlmGetLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmGetLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Get Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmGetLifecycleUrlParts::Policy(ref policy) => {
+            IlmGetLifecycleParts::Policy(ref policy) => {
                 let mut p = String::with_capacity(13usize + policy.len());
                 p.push_str("/_ilm/policy/");
                 p.push_str(policy.as_ref());
                 p.into()
             }
-            IlmGetLifecycleUrlParts::None => "/_ilm/policy".into(),
+            IlmGetLifecycleParts::None => "/_ilm/policy".into(),
         }
     }
 }
@@ -277,7 +282,7 @@ impl<'a> IlmGetLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html)."]
 pub struct IlmGetLifecycle<'a> {
     client: Elasticsearch,
-    parts: IlmGetLifecycleUrlParts<'a>,
+    parts: IlmGetLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -285,7 +290,7 @@ pub struct IlmGetLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IlmGetLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: IlmGetLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmGetLifecycleParts<'a>) -> Self {
         IlmGetLifecycle {
             client,
             parts,
@@ -322,9 +327,9 @@ impl<'a> IlmGetLifecycle<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Get Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -361,14 +366,15 @@ impl<'a> IlmGetLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Get Status API"]
-pub enum IlmGetStatusUrlParts {
+#[doc = "API parts for the Ilm Get Status API"]
+pub enum IlmGetStatusParts {
     None,
 }
-impl IlmGetStatusUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl IlmGetStatusParts {
+    #[doc = "Builds a relative URL path to the Ilm Get Status API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmGetStatusUrlParts::None => "/_ilm/status".into(),
+            IlmGetStatusParts::None => "/_ilm/status".into(),
         }
     }
 }
@@ -376,7 +382,7 @@ impl IlmGetStatusUrlParts {
 #[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-status.html)."]
 pub struct IlmGetStatus<'a> {
     client: Elasticsearch,
-    parts: IlmGetStatusUrlParts,
+    parts: IlmGetStatusParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -387,7 +393,7 @@ impl<'a> IlmGetStatus<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         IlmGetStatus {
             client,
-            parts: IlmGetStatusUrlParts::None,
+            parts: IlmGetStatusParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -421,9 +427,9 @@ impl<'a> IlmGetStatus<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Get Status API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -460,14 +466,15 @@ impl<'a> IlmGetStatus<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Move To Step API"]
-pub enum IlmMoveToStepUrlParts<'a> {
+#[doc = "API parts for the Ilm Move To Step API"]
+pub enum IlmMoveToStepParts<'a> {
     Index(&'a str),
 }
-impl<'a> IlmMoveToStepUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmMoveToStepParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Move To Step API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmMoveToStepUrlParts::Index(ref index) => {
+            IlmMoveToStepParts::Index(ref index) => {
                 let mut p = String::with_capacity(11usize + index.len());
                 p.push_str("/_ilm/move/");
                 p.push_str(index.as_ref());
@@ -480,7 +487,7 @@ impl<'a> IlmMoveToStepUrlParts<'a> {
 #[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html)."]
 pub struct IlmMoveToStep<'a, B> {
     client: Elasticsearch,
-    parts: IlmMoveToStepUrlParts<'a>,
+    parts: IlmMoveToStepParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -492,7 +499,7 @@ impl<'a, B> IlmMoveToStep<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IlmMoveToStepUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmMoveToStepParts<'a>) -> Self {
         IlmMoveToStep {
             client,
             parts,
@@ -546,9 +553,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Move To Step API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -585,14 +592,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Put Lifecycle API"]
-pub enum IlmPutLifecycleUrlParts<'a> {
+#[doc = "API parts for the Ilm Put Lifecycle API"]
+pub enum IlmPutLifecycleParts<'a> {
     Policy(&'a str),
 }
-impl<'a> IlmPutLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmPutLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Put Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmPutLifecycleUrlParts::Policy(ref policy) => {
+            IlmPutLifecycleParts::Policy(ref policy) => {
                 let mut p = String::with_capacity(13usize + policy.len());
                 p.push_str("/_ilm/policy/");
                 p.push_str(policy.as_ref());
@@ -605,7 +613,7 @@ impl<'a> IlmPutLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html)."]
 pub struct IlmPutLifecycle<'a, B> {
     client: Elasticsearch,
-    parts: IlmPutLifecycleUrlParts<'a>,
+    parts: IlmPutLifecycleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -617,7 +625,7 @@ impl<'a, B> IlmPutLifecycle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IlmPutLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmPutLifecycleParts<'a>) -> Self {
         IlmPutLifecycle {
             client,
             parts,
@@ -671,9 +679,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Put Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -710,14 +718,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Remove Policy API"]
-pub enum IlmRemovePolicyUrlParts<'a> {
+#[doc = "API parts for the Ilm Remove Policy API"]
+pub enum IlmRemovePolicyParts<'a> {
     Index(&'a str),
 }
-impl<'a> IlmRemovePolicyUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmRemovePolicyParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Remove Policy API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmRemovePolicyUrlParts::Index(ref index) => {
+            IlmRemovePolicyParts::Index(ref index) => {
                 let mut p = String::with_capacity(13usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -731,7 +740,7 @@ impl<'a> IlmRemovePolicyUrlParts<'a> {
 #[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html)."]
 pub struct IlmRemovePolicy<'a, B> {
     client: Elasticsearch,
-    parts: IlmRemovePolicyUrlParts<'a>,
+    parts: IlmRemovePolicyParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -743,7 +752,7 @@ impl<'a, B> IlmRemovePolicy<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IlmRemovePolicyUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmRemovePolicyParts<'a>) -> Self {
         IlmRemovePolicy {
             client,
             parts,
@@ -797,9 +806,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Remove Policy API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -836,14 +845,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Retry API"]
-pub enum IlmRetryUrlParts<'a> {
+#[doc = "API parts for the Ilm Retry API"]
+pub enum IlmRetryParts<'a> {
     Index(&'a str),
 }
-impl<'a> IlmRetryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IlmRetryParts<'a> {
+    #[doc = "Builds a relative URL path to the Ilm Retry API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmRetryUrlParts::Index(ref index) => {
+            IlmRetryParts::Index(ref index) => {
                 let mut p = String::with_capacity(12usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -857,7 +867,7 @@ impl<'a> IlmRetryUrlParts<'a> {
 #[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html)."]
 pub struct IlmRetry<'a, B> {
     client: Elasticsearch,
-    parts: IlmRetryUrlParts<'a>,
+    parts: IlmRetryParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -869,7 +879,7 @@ impl<'a, B> IlmRetry<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IlmRetryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IlmRetryParts<'a>) -> Self {
         IlmRetry {
             client,
             parts,
@@ -923,9 +933,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Retry API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -962,14 +972,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Start API"]
-pub enum IlmStartUrlParts {
+#[doc = "API parts for the Ilm Start API"]
+pub enum IlmStartParts {
     None,
 }
-impl IlmStartUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl IlmStartParts {
+    #[doc = "Builds a relative URL path to the Ilm Start API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmStartUrlParts::None => "/_ilm/start".into(),
+            IlmStartParts::None => "/_ilm/start".into(),
         }
     }
 }
@@ -977,7 +988,7 @@ impl IlmStartUrlParts {
 #[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html)."]
 pub struct IlmStart<'a, B> {
     client: Elasticsearch,
-    parts: IlmStartUrlParts,
+    parts: IlmStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -992,7 +1003,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         IlmStart {
             client,
-            parts: IlmStartUrlParts::None,
+            parts: IlmStartParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1043,9 +1054,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Start API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1082,14 +1093,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ilm Stop API"]
-pub enum IlmStopUrlParts {
+#[doc = "API parts for the Ilm Stop API"]
+pub enum IlmStopParts {
     None,
 }
-impl IlmStopUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl IlmStopParts {
+    #[doc = "Builds a relative URL path to the Ilm Stop API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IlmStopUrlParts::None => "/_ilm/stop".into(),
+            IlmStopParts::None => "/_ilm/stop".into(),
         }
     }
 }
@@ -1097,7 +1109,7 @@ impl IlmStopUrlParts {
 #[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html)."]
 pub struct IlmStop<'a, B> {
     client: Elasticsearch,
-    parts: IlmStopUrlParts,
+    parts: IlmStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1112,7 +1124,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         IlmStop {
             client,
-            parts: IlmStopUrlParts::None,
+            parts: IlmStopParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1163,9 +1175,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Ilm Stop API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1211,32 +1223,32 @@ impl Ilm {
     }
     pub fn delete_lifecycle<'a>(
         &self,
-        parts: IlmDeleteLifecycleUrlParts<'a>,
+        parts: IlmDeleteLifecycleParts<'a>,
     ) -> IlmDeleteLifecycle<'a> {
         IlmDeleteLifecycle::new(self.client.clone(), parts)
     }
     pub fn explain_lifecycle<'a>(
         &self,
-        parts: IlmExplainLifecycleUrlParts<'a>,
+        parts: IlmExplainLifecycleParts<'a>,
     ) -> IlmExplainLifecycle<'a> {
         IlmExplainLifecycle::new(self.client.clone(), parts)
     }
-    pub fn get_lifecycle<'a>(&self, parts: IlmGetLifecycleUrlParts<'a>) -> IlmGetLifecycle<'a> {
+    pub fn get_lifecycle<'a>(&self, parts: IlmGetLifecycleParts<'a>) -> IlmGetLifecycle<'a> {
         IlmGetLifecycle::new(self.client.clone(), parts)
     }
     pub fn get_status<'a>(&self) -> IlmGetStatus<'a> {
         IlmGetStatus::new(self.client.clone())
     }
-    pub fn move_to_step<'a>(&self, parts: IlmMoveToStepUrlParts<'a>) -> IlmMoveToStep<'a, ()> {
+    pub fn move_to_step<'a>(&self, parts: IlmMoveToStepParts<'a>) -> IlmMoveToStep<'a, ()> {
         IlmMoveToStep::new(self.client.clone(), parts)
     }
-    pub fn put_lifecycle<'a>(&self, parts: IlmPutLifecycleUrlParts<'a>) -> IlmPutLifecycle<'a, ()> {
+    pub fn put_lifecycle<'a>(&self, parts: IlmPutLifecycleParts<'a>) -> IlmPutLifecycle<'a, ()> {
         IlmPutLifecycle::new(self.client.clone(), parts)
     }
-    pub fn remove_policy<'a>(&self, parts: IlmRemovePolicyUrlParts<'a>) -> IlmRemovePolicy<'a, ()> {
+    pub fn remove_policy<'a>(&self, parts: IlmRemovePolicyParts<'a>) -> IlmRemovePolicy<'a, ()> {
         IlmRemovePolicy::new(self.client.clone(), parts)
     }
-    pub fn retry<'a>(&self, parts: IlmRetryUrlParts<'a>) -> IlmRetry<'a, ()> {
+    pub fn retry<'a>(&self, parts: IlmRetryParts<'a>) -> IlmRetry<'a, ()> {
         IlmRetry::new(self.client.clone(), parts)
     }
     pub fn start<'a>(&self) -> IlmStart<'a, ()> {

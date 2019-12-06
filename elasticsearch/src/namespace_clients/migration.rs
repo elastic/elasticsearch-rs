@@ -17,25 +17,28 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Migration Deprecations API"]
-pub enum MigrationDeprecationsUrlParts<'a> {
+#[doc = "API parts for the Migration Deprecations API"]
+pub enum MigrationDeprecationsParts<'a> {
     None,
     Index(&'a str),
 }
-impl<'a> MigrationDeprecationsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MigrationDeprecationsParts<'a> {
+    #[doc = "Builds a relative URL path to the Migration Deprecations API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MigrationDeprecationsUrlParts::None => "/_migration/deprecations".into(),
-            MigrationDeprecationsUrlParts::Index(ref index) => {
+            MigrationDeprecationsParts::None => "/_migration/deprecations".into(),
+            MigrationDeprecationsParts::Index(ref index) => {
                 let mut p = String::with_capacity(25usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -49,7 +52,7 @@ impl<'a> MigrationDeprecationsUrlParts<'a> {
 #[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html)."]
 pub struct MigrationDeprecations<'a> {
     client: Elasticsearch,
-    parts: MigrationDeprecationsUrlParts<'a>,
+    parts: MigrationDeprecationsParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -57,7 +60,7 @@ pub struct MigrationDeprecations<'a> {
     source: Option<&'a str>,
 }
 impl<'a> MigrationDeprecations<'a> {
-    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsParts<'a>) -> Self {
         MigrationDeprecations {
             client,
             parts,
@@ -94,9 +97,9 @@ impl<'a> MigrationDeprecations<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Migration Deprecations API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -142,7 +145,7 @@ impl Migration {
     }
     pub fn deprecations<'a>(
         &self,
-        parts: MigrationDeprecationsUrlParts<'a>,
+        parts: MigrationDeprecationsParts<'a>,
     ) -> MigrationDeprecations<'a> {
         MigrationDeprecations::new(self.client.clone(), parts)
     }

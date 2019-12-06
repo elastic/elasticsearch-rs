@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Authenticate API"]
-pub enum SecurityAuthenticateUrlParts {
+#[doc = "API parts for the Security Authenticate API"]
+pub enum SecurityAuthenticateParts {
     None,
 }
-impl SecurityAuthenticateUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityAuthenticateParts {
+    #[doc = "Builds a relative URL path to the Security Authenticate API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityAuthenticateUrlParts::None => "/_security/_authenticate".into(),
+            SecurityAuthenticateParts::None => "/_security/_authenticate".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl SecurityAuthenticateUrlParts {
 #[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html)."]
 pub struct SecurityAuthenticate<'a> {
     client: Elasticsearch,
-    parts: SecurityAuthenticateUrlParts,
+    parts: SecurityAuthenticateParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -52,7 +55,7 @@ impl<'a> SecurityAuthenticate<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
-            parts: SecurityAuthenticateUrlParts::None,
+            parts: SecurityAuthenticateParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -86,9 +89,9 @@ impl<'a> SecurityAuthenticate<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Authenticate API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -125,22 +128,23 @@ impl<'a> SecurityAuthenticate<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Change Password API"]
-pub enum SecurityChangePasswordUrlParts<'a> {
+#[doc = "API parts for the Security Change Password API"]
+pub enum SecurityChangePasswordParts<'a> {
     Username(&'a str),
     None,
 }
-impl<'a> SecurityChangePasswordUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityChangePasswordParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Change Password API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityChangePasswordUrlParts::Username(ref username) => {
+            SecurityChangePasswordParts::Username(ref username) => {
                 let mut p = String::with_capacity(26usize + username.len());
                 p.push_str("/_security/user/");
                 p.push_str(username.as_ref());
                 p.push_str("/_password");
                 p.into()
             }
-            SecurityChangePasswordUrlParts::None => "/_security/user/_password".into(),
+            SecurityChangePasswordParts::None => "/_security/user/_password".into(),
         }
     }
 }
@@ -148,7 +152,7 @@ impl<'a> SecurityChangePasswordUrlParts<'a> {
 #[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html)."]
 pub struct SecurityChangePassword<'a, B> {
     client: Elasticsearch,
-    parts: SecurityChangePasswordUrlParts<'a>,
+    parts: SecurityChangePasswordParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -161,7 +165,7 @@ impl<'a, B> SecurityChangePassword<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordParts<'a>) -> Self {
         SecurityChangePassword {
             client,
             parts,
@@ -222,9 +226,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Change Password API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -264,14 +268,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Clear Cached Realms API"]
-pub enum SecurityClearCachedRealmsUrlParts<'a> {
+#[doc = "API parts for the Security Clear Cached Realms API"]
+pub enum SecurityClearCachedRealmsParts<'a> {
     Realms(&'a [&'a str]),
 }
-impl<'a> SecurityClearCachedRealmsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityClearCachedRealmsParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Clear Cached Realms API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearCachedRealmsUrlParts::Realms(ref realms) => {
+            SecurityClearCachedRealmsParts::Realms(ref realms) => {
                 let realms_str = realms.join(",");
                 let mut p = String::with_capacity(30usize + realms_str.len());
                 p.push_str("/_security/realm/");
@@ -286,7 +291,7 @@ impl<'a> SecurityClearCachedRealmsUrlParts<'a> {
 #[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html)."]
 pub struct SecurityClearCachedRealms<'a, B> {
     client: Elasticsearch,
-    parts: SecurityClearCachedRealmsUrlParts<'a>,
+    parts: SecurityClearCachedRealmsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -299,7 +304,7 @@ impl<'a, B> SecurityClearCachedRealms<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsParts<'a>) -> Self {
         SecurityClearCachedRealms {
             client,
             parts,
@@ -360,9 +365,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Clear Cached Realms API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -405,14 +410,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Clear Cached Roles API"]
-pub enum SecurityClearCachedRolesUrlParts<'a> {
+#[doc = "API parts for the Security Clear Cached Roles API"]
+pub enum SecurityClearCachedRolesParts<'a> {
     Name(&'a [&'a str]),
 }
-impl<'a> SecurityClearCachedRolesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityClearCachedRolesParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Clear Cached Roles API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityClearCachedRolesUrlParts::Name(ref name) => {
+            SecurityClearCachedRolesParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(29usize + name_str.len());
                 p.push_str("/_security/role/");
@@ -427,7 +433,7 @@ impl<'a> SecurityClearCachedRolesUrlParts<'a> {
 #[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html)."]
 pub struct SecurityClearCachedRoles<'a, B> {
     client: Elasticsearch,
-    parts: SecurityClearCachedRolesUrlParts<'a>,
+    parts: SecurityClearCachedRolesParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -439,7 +445,7 @@ impl<'a, B> SecurityClearCachedRoles<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesParts<'a>) -> Self {
         SecurityClearCachedRoles {
             client,
             parts,
@@ -493,9 +499,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Clear Cached Roles API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -532,14 +538,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Create Api Key API"]
-pub enum SecurityCreateApiKeyUrlParts {
+#[doc = "API parts for the Security Create Api Key API"]
+pub enum SecurityCreateApiKeyParts {
     None,
 }
-impl SecurityCreateApiKeyUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityCreateApiKeyParts {
+    #[doc = "Builds a relative URL path to the Security Create Api Key API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityCreateApiKeyUrlParts::None => "/_security/api_key".into(),
+            SecurityCreateApiKeyParts::None => "/_security/api_key".into(),
         }
     }
 }
@@ -547,7 +554,7 @@ impl SecurityCreateApiKeyUrlParts {
 #[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html)."]
 pub struct SecurityCreateApiKey<'a, B> {
     client: Elasticsearch,
-    parts: SecurityCreateApiKeyUrlParts,
+    parts: SecurityCreateApiKeyParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -563,7 +570,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityCreateApiKey {
             client,
-            parts: SecurityCreateApiKeyUrlParts::None,
+            parts: SecurityCreateApiKeyParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -621,9 +628,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Create Api Key API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -663,14 +670,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Delete Privileges API"]
-pub enum SecurityDeletePrivilegesUrlParts<'a> {
+#[doc = "API parts for the Security Delete Privileges API"]
+pub enum SecurityDeletePrivilegesParts<'a> {
     ApplicationName(&'a str, &'a str),
 }
-impl<'a> SecurityDeletePrivilegesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityDeletePrivilegesParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Delete Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeletePrivilegesUrlParts::ApplicationName(ref application, ref name) => {
+            SecurityDeletePrivilegesParts::ApplicationName(ref application, ref name) => {
                 let mut p = String::with_capacity(22usize + application.len() + name.len());
                 p.push_str("/_security/privilege/");
                 p.push_str(application.as_ref());
@@ -685,7 +693,7 @@ impl<'a> SecurityDeletePrivilegesUrlParts<'a> {
 #[doc = "Builder for the Security Delete Privileges API"]
 pub struct SecurityDeletePrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityDeletePrivilegesUrlParts<'a>,
+    parts: SecurityDeletePrivilegesParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -694,7 +702,7 @@ pub struct SecurityDeletePrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeletePrivileges<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesParts<'a>) -> Self {
         SecurityDeletePrivileges {
             client,
             parts,
@@ -737,9 +745,9 @@ impl<'a> SecurityDeletePrivileges<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Delete Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -779,14 +787,15 @@ impl<'a> SecurityDeletePrivileges<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Delete Role API"]
-pub enum SecurityDeleteRoleUrlParts<'a> {
+#[doc = "API parts for the Security Delete Role API"]
+pub enum SecurityDeleteRoleParts<'a> {
     Name(&'a str),
 }
-impl<'a> SecurityDeleteRoleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityDeleteRoleParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Delete Role API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteRoleUrlParts::Name(ref name) => {
+            SecurityDeleteRoleParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_security/role/");
                 p.push_str(name.as_ref());
@@ -799,7 +808,7 @@ impl<'a> SecurityDeleteRoleUrlParts<'a> {
 #[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html)."]
 pub struct SecurityDeleteRole<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteRoleUrlParts<'a>,
+    parts: SecurityDeleteRoleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -808,7 +817,7 @@ pub struct SecurityDeleteRole<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteRole<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleParts<'a>) -> Self {
         SecurityDeleteRole {
             client,
             parts,
@@ -851,9 +860,9 @@ impl<'a> SecurityDeleteRole<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Delete Role API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -893,14 +902,15 @@ impl<'a> SecurityDeleteRole<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Delete Role Mapping API"]
-pub enum SecurityDeleteRoleMappingUrlParts<'a> {
+#[doc = "API parts for the Security Delete Role Mapping API"]
+pub enum SecurityDeleteRoleMappingParts<'a> {
     Name(&'a str),
 }
-impl<'a> SecurityDeleteRoleMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityDeleteRoleMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Delete Role Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteRoleMappingUrlParts::Name(ref name) => {
+            SecurityDeleteRoleMappingParts::Name(ref name) => {
                 let mut p = String::with_capacity(24usize + name.len());
                 p.push_str("/_security/role_mapping/");
                 p.push_str(name.as_ref());
@@ -913,7 +923,7 @@ impl<'a> SecurityDeleteRoleMappingUrlParts<'a> {
 #[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html)."]
 pub struct SecurityDeleteRoleMapping<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteRoleMappingUrlParts<'a>,
+    parts: SecurityDeleteRoleMappingParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -922,7 +932,7 @@ pub struct SecurityDeleteRoleMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteRoleMapping<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingParts<'a>) -> Self {
         SecurityDeleteRoleMapping {
             client,
             parts,
@@ -965,9 +975,9 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Delete Role Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1007,14 +1017,15 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Delete User API"]
-pub enum SecurityDeleteUserUrlParts<'a> {
+#[doc = "API parts for the Security Delete User API"]
+pub enum SecurityDeleteUserParts<'a> {
     Username(&'a str),
 }
-impl<'a> SecurityDeleteUserUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityDeleteUserParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Delete User API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDeleteUserUrlParts::Username(ref username) => {
+            SecurityDeleteUserParts::Username(ref username) => {
                 let mut p = String::with_capacity(16usize + username.len());
                 p.push_str("/_security/user/");
                 p.push_str(username.as_ref());
@@ -1027,7 +1038,7 @@ impl<'a> SecurityDeleteUserUrlParts<'a> {
 #[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html)."]
 pub struct SecurityDeleteUser<'a> {
     client: Elasticsearch,
-    parts: SecurityDeleteUserUrlParts<'a>,
+    parts: SecurityDeleteUserParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1036,7 +1047,7 @@ pub struct SecurityDeleteUser<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityDeleteUser<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserParts<'a>) -> Self {
         SecurityDeleteUser {
             client,
             parts,
@@ -1079,9 +1090,9 @@ impl<'a> SecurityDeleteUser<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Delete User API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1121,14 +1132,15 @@ impl<'a> SecurityDeleteUser<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Disable User API"]
-pub enum SecurityDisableUserUrlParts<'a> {
+#[doc = "API parts for the Security Disable User API"]
+pub enum SecurityDisableUserParts<'a> {
     Username(&'a str),
 }
-impl<'a> SecurityDisableUserUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityDisableUserParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Disable User API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityDisableUserUrlParts::Username(ref username) => {
+            SecurityDisableUserParts::Username(ref username) => {
                 let mut p = String::with_capacity(25usize + username.len());
                 p.push_str("/_security/user/");
                 p.push_str(username.as_ref());
@@ -1142,7 +1154,7 @@ impl<'a> SecurityDisableUserUrlParts<'a> {
 #[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html)."]
 pub struct SecurityDisableUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityDisableUserUrlParts<'a>,
+    parts: SecurityDisableUserParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1155,7 +1167,7 @@ impl<'a, B> SecurityDisableUser<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityDisableUserUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityDisableUserParts<'a>) -> Self {
         SecurityDisableUser {
             client,
             parts,
@@ -1216,9 +1228,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Disable User API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1258,14 +1270,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Enable User API"]
-pub enum SecurityEnableUserUrlParts<'a> {
+#[doc = "API parts for the Security Enable User API"]
+pub enum SecurityEnableUserParts<'a> {
     Username(&'a str),
 }
-impl<'a> SecurityEnableUserUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityEnableUserParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Enable User API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityEnableUserUrlParts::Username(ref username) => {
+            SecurityEnableUserParts::Username(ref username) => {
                 let mut p = String::with_capacity(24usize + username.len());
                 p.push_str("/_security/user/");
                 p.push_str(username.as_ref());
@@ -1279,7 +1292,7 @@ impl<'a> SecurityEnableUserUrlParts<'a> {
 #[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html)."]
 pub struct SecurityEnableUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityEnableUserUrlParts<'a>,
+    parts: SecurityEnableUserParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1292,7 +1305,7 @@ impl<'a, B> SecurityEnableUser<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityEnableUserUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityEnableUserParts<'a>) -> Self {
         SecurityEnableUser {
             client,
             parts,
@@ -1353,9 +1366,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Enable User API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1395,14 +1408,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Api Key API"]
-pub enum SecurityGetApiKeyUrlParts {
+#[doc = "API parts for the Security Get Api Key API"]
+pub enum SecurityGetApiKeyParts {
     None,
 }
-impl SecurityGetApiKeyUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityGetApiKeyParts {
+    #[doc = "Builds a relative URL path to the Security Get Api Key API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetApiKeyUrlParts::None => "/_security/api_key".into(),
+            SecurityGetApiKeyParts::None => "/_security/api_key".into(),
         }
     }
 }
@@ -1410,7 +1424,7 @@ impl SecurityGetApiKeyUrlParts {
 #[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html)."]
 pub struct SecurityGetApiKey<'a> {
     client: Elasticsearch,
-    parts: SecurityGetApiKeyUrlParts,
+    parts: SecurityGetApiKeyParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1426,7 +1440,7 @@ impl<'a> SecurityGetApiKey<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
-            parts: SecurityGetApiKeyUrlParts::None,
+            parts: SecurityGetApiKeyParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1490,9 +1504,9 @@ impl<'a> SecurityGetApiKey<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Api Key API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1544,14 +1558,15 @@ impl<'a> SecurityGetApiKey<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Builtin Privileges API"]
-pub enum SecurityGetBuiltinPrivilegesUrlParts {
+#[doc = "API parts for the Security Get Builtin Privileges API"]
+pub enum SecurityGetBuiltinPrivilegesParts {
     None,
 }
-impl SecurityGetBuiltinPrivilegesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityGetBuiltinPrivilegesParts {
+    #[doc = "Builds a relative URL path to the Security Get Builtin Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetBuiltinPrivilegesUrlParts::None => "/_security/privilege/_builtin".into(),
+            SecurityGetBuiltinPrivilegesParts::None => "/_security/privilege/_builtin".into(),
         }
     }
 }
@@ -1559,7 +1574,7 @@ impl SecurityGetBuiltinPrivilegesUrlParts {
 #[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html)."]
 pub struct SecurityGetBuiltinPrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityGetBuiltinPrivilegesUrlParts,
+    parts: SecurityGetBuiltinPrivilegesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1570,7 +1585,7 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
-            parts: SecurityGetBuiltinPrivilegesUrlParts::None,
+            parts: SecurityGetBuiltinPrivilegesParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1604,9 +1619,9 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Builtin Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1643,23 +1658,24 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Privileges API"]
-pub enum SecurityGetPrivilegesUrlParts<'a> {
+#[doc = "API parts for the Security Get Privileges API"]
+pub enum SecurityGetPrivilegesParts<'a> {
     None,
     Application(&'a str),
     ApplicationName(&'a str, &'a str),
 }
-impl<'a> SecurityGetPrivilegesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityGetPrivilegesParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Get Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetPrivilegesUrlParts::None => "/_security/privilege".into(),
-            SecurityGetPrivilegesUrlParts::Application(ref application) => {
+            SecurityGetPrivilegesParts::None => "/_security/privilege".into(),
+            SecurityGetPrivilegesParts::Application(ref application) => {
                 let mut p = String::with_capacity(21usize + application.len());
                 p.push_str("/_security/privilege/");
                 p.push_str(application.as_ref());
                 p.into()
             }
-            SecurityGetPrivilegesUrlParts::ApplicationName(ref application, ref name) => {
+            SecurityGetPrivilegesParts::ApplicationName(ref application, ref name) => {
                 let mut p = String::with_capacity(22usize + application.len() + name.len());
                 p.push_str("/_security/privilege/");
                 p.push_str(application.as_ref());
@@ -1674,7 +1690,7 @@ impl<'a> SecurityGetPrivilegesUrlParts<'a> {
 #[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
 pub struct SecurityGetPrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityGetPrivilegesUrlParts<'a>,
+    parts: SecurityGetPrivilegesParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1682,7 +1698,7 @@ pub struct SecurityGetPrivileges<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetPrivileges<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesParts<'a>) -> Self {
         SecurityGetPrivileges {
             client,
             parts,
@@ -1719,9 +1735,9 @@ impl<'a> SecurityGetPrivileges<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1758,21 +1774,22 @@ impl<'a> SecurityGetPrivileges<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Role API"]
-pub enum SecurityGetRoleUrlParts<'a> {
+#[doc = "API parts for the Security Get Role API"]
+pub enum SecurityGetRoleParts<'a> {
     Name(&'a str),
     None,
 }
-impl<'a> SecurityGetRoleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityGetRoleParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Get Role API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetRoleUrlParts::Name(ref name) => {
+            SecurityGetRoleParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_security/role/");
                 p.push_str(name.as_ref());
                 p.into()
             }
-            SecurityGetRoleUrlParts::None => "/_security/role".into(),
+            SecurityGetRoleParts::None => "/_security/role".into(),
         }
     }
 }
@@ -1780,7 +1797,7 @@ impl<'a> SecurityGetRoleUrlParts<'a> {
 #[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html)."]
 pub struct SecurityGetRole<'a> {
     client: Elasticsearch,
-    parts: SecurityGetRoleUrlParts<'a>,
+    parts: SecurityGetRoleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1788,7 +1805,7 @@ pub struct SecurityGetRole<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetRole<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleParts<'a>) -> Self {
         SecurityGetRole {
             client,
             parts,
@@ -1825,9 +1842,9 @@ impl<'a> SecurityGetRole<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Role API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1864,21 +1881,22 @@ impl<'a> SecurityGetRole<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Role Mapping API"]
-pub enum SecurityGetRoleMappingUrlParts<'a> {
+#[doc = "API parts for the Security Get Role Mapping API"]
+pub enum SecurityGetRoleMappingParts<'a> {
     Name(&'a str),
     None,
 }
-impl<'a> SecurityGetRoleMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityGetRoleMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Get Role Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetRoleMappingUrlParts::Name(ref name) => {
+            SecurityGetRoleMappingParts::Name(ref name) => {
                 let mut p = String::with_capacity(24usize + name.len());
                 p.push_str("/_security/role_mapping/");
                 p.push_str(name.as_ref());
                 p.into()
             }
-            SecurityGetRoleMappingUrlParts::None => "/_security/role_mapping".into(),
+            SecurityGetRoleMappingParts::None => "/_security/role_mapping".into(),
         }
     }
 }
@@ -1886,7 +1904,7 @@ impl<'a> SecurityGetRoleMappingUrlParts<'a> {
 #[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html)."]
 pub struct SecurityGetRoleMapping<'a> {
     client: Elasticsearch,
-    parts: SecurityGetRoleMappingUrlParts<'a>,
+    parts: SecurityGetRoleMappingParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1894,7 +1912,7 @@ pub struct SecurityGetRoleMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetRoleMapping<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingParts<'a>) -> Self {
         SecurityGetRoleMapping {
             client,
             parts,
@@ -1931,9 +1949,9 @@ impl<'a> SecurityGetRoleMapping<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Role Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1970,14 +1988,15 @@ impl<'a> SecurityGetRoleMapping<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get Token API"]
-pub enum SecurityGetTokenUrlParts {
+#[doc = "API parts for the Security Get Token API"]
+pub enum SecurityGetTokenParts {
     None,
 }
-impl SecurityGetTokenUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityGetTokenParts {
+    #[doc = "Builds a relative URL path to the Security Get Token API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetTokenUrlParts::None => "/_security/oauth2/token".into(),
+            SecurityGetTokenParts::None => "/_security/oauth2/token".into(),
         }
     }
 }
@@ -1985,7 +2004,7 @@ impl SecurityGetTokenUrlParts {
 #[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html)."]
 pub struct SecurityGetToken<'a, B> {
     client: Elasticsearch,
-    parts: SecurityGetTokenUrlParts,
+    parts: SecurityGetTokenParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2000,7 +2019,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetToken {
             client,
-            parts: SecurityGetTokenUrlParts::None,
+            parts: SecurityGetTokenParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2051,9 +2070,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get Token API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2090,22 +2109,23 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get User API"]
-pub enum SecurityGetUserUrlParts<'a> {
+#[doc = "API parts for the Security Get User API"]
+pub enum SecurityGetUserParts<'a> {
     Username(&'a [&'a str]),
     None,
 }
-impl<'a> SecurityGetUserUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityGetUserParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Get User API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetUserUrlParts::Username(ref username) => {
+            SecurityGetUserParts::Username(ref username) => {
                 let username_str = username.join(",");
                 let mut p = String::with_capacity(16usize + username_str.len());
                 p.push_str("/_security/user/");
                 p.push_str(username_str.as_ref());
                 p.into()
             }
-            SecurityGetUserUrlParts::None => "/_security/user".into(),
+            SecurityGetUserParts::None => "/_security/user".into(),
         }
     }
 }
@@ -2113,7 +2133,7 @@ impl<'a> SecurityGetUserUrlParts<'a> {
 #[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html)."]
 pub struct SecurityGetUser<'a> {
     client: Elasticsearch,
-    parts: SecurityGetUserUrlParts<'a>,
+    parts: SecurityGetUserParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -2121,7 +2141,7 @@ pub struct SecurityGetUser<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SecurityGetUser<'a> {
-    pub fn new(client: Elasticsearch, parts: SecurityGetUserUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityGetUserParts<'a>) -> Self {
         SecurityGetUser {
             client,
             parts,
@@ -2158,9 +2178,9 @@ impl<'a> SecurityGetUser<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get User API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2197,14 +2217,15 @@ impl<'a> SecurityGetUser<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Get User Privileges API"]
-pub enum SecurityGetUserPrivilegesUrlParts {
+#[doc = "API parts for the Security Get User Privileges API"]
+pub enum SecurityGetUserPrivilegesParts {
     None,
 }
-impl SecurityGetUserPrivilegesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityGetUserPrivilegesParts {
+    #[doc = "Builds a relative URL path to the Security Get User Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityGetUserPrivilegesUrlParts::None => "/_security/user/_privileges".into(),
+            SecurityGetUserPrivilegesParts::None => "/_security/user/_privileges".into(),
         }
     }
 }
@@ -2212,7 +2233,7 @@ impl SecurityGetUserPrivilegesUrlParts {
 #[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
 pub struct SecurityGetUserPrivileges<'a> {
     client: Elasticsearch,
-    parts: SecurityGetUserPrivilegesUrlParts,
+    parts: SecurityGetUserPrivilegesParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -2223,7 +2244,7 @@ impl<'a> SecurityGetUserPrivileges<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
-            parts: SecurityGetUserPrivilegesUrlParts::None,
+            parts: SecurityGetUserPrivilegesParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2257,9 +2278,9 @@ impl<'a> SecurityGetUserPrivileges<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Security Get User Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2296,16 +2317,17 @@ impl<'a> SecurityGetUserPrivileges<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Has Privileges API"]
-pub enum SecurityHasPrivilegesUrlParts<'a> {
+#[doc = "API parts for the Security Has Privileges API"]
+pub enum SecurityHasPrivilegesParts<'a> {
     None,
     User(&'a str),
 }
-impl<'a> SecurityHasPrivilegesUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityHasPrivilegesParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Has Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityHasPrivilegesUrlParts::None => "/_security/user/_has_privileges".into(),
-            SecurityHasPrivilegesUrlParts::User(ref user) => {
+            SecurityHasPrivilegesParts::None => "/_security/user/_has_privileges".into(),
+            SecurityHasPrivilegesParts::User(ref user) => {
                 let mut p = String::with_capacity(32usize + user.len());
                 p.push_str("/_security/user/");
                 p.push_str(user.as_ref());
@@ -2319,7 +2341,7 @@ impl<'a> SecurityHasPrivilegesUrlParts<'a> {
 #[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html)."]
 pub struct SecurityHasPrivileges<'a, B> {
     client: Elasticsearch,
-    parts: SecurityHasPrivilegesUrlParts<'a>,
+    parts: SecurityHasPrivilegesParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2331,7 +2353,7 @@ impl<'a, B> SecurityHasPrivileges<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesParts<'a>) -> Self {
         SecurityHasPrivileges {
             client,
             parts,
@@ -2385,11 +2407,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Has Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2427,14 +2449,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Invalidate Api Key API"]
-pub enum SecurityInvalidateApiKeyUrlParts {
+#[doc = "API parts for the Security Invalidate Api Key API"]
+pub enum SecurityInvalidateApiKeyParts {
     None,
 }
-impl SecurityInvalidateApiKeyUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityInvalidateApiKeyParts {
+    #[doc = "Builds a relative URL path to the Security Invalidate Api Key API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityInvalidateApiKeyUrlParts::None => "/_security/api_key".into(),
+            SecurityInvalidateApiKeyParts::None => "/_security/api_key".into(),
         }
     }
 }
@@ -2442,7 +2465,7 @@ impl SecurityInvalidateApiKeyUrlParts {
 #[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html)."]
 pub struct SecurityInvalidateApiKey<'a, B> {
     client: Elasticsearch,
-    parts: SecurityInvalidateApiKeyUrlParts,
+    parts: SecurityInvalidateApiKeyParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2457,7 +2480,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
             client,
-            parts: SecurityInvalidateApiKeyUrlParts::None,
+            parts: SecurityInvalidateApiKeyParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2508,9 +2531,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Invalidate Api Key API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2547,14 +2570,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Invalidate Token API"]
-pub enum SecurityInvalidateTokenUrlParts {
+#[doc = "API parts for the Security Invalidate Token API"]
+pub enum SecurityInvalidateTokenParts {
     None,
 }
-impl SecurityInvalidateTokenUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityInvalidateTokenParts {
+    #[doc = "Builds a relative URL path to the Security Invalidate Token API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityInvalidateTokenUrlParts::None => "/_security/oauth2/token".into(),
+            SecurityInvalidateTokenParts::None => "/_security/oauth2/token".into(),
         }
     }
 }
@@ -2562,7 +2586,7 @@ impl SecurityInvalidateTokenUrlParts {
 #[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html)."]
 pub struct SecurityInvalidateToken<'a, B> {
     client: Elasticsearch,
-    parts: SecurityInvalidateTokenUrlParts,
+    parts: SecurityInvalidateTokenParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2577,7 +2601,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityInvalidateToken {
             client,
-            parts: SecurityInvalidateTokenUrlParts::None,
+            parts: SecurityInvalidateTokenParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2628,9 +2652,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Invalidate Token API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2667,14 +2691,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Put Privileges API"]
-pub enum SecurityPutPrivilegesUrlParts {
+#[doc = "API parts for the Security Put Privileges API"]
+pub enum SecurityPutPrivilegesParts {
     None,
 }
-impl SecurityPutPrivilegesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SecurityPutPrivilegesParts {
+    #[doc = "Builds a relative URL path to the Security Put Privileges API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutPrivilegesUrlParts::None => "/_security/privilege/".into(),
+            SecurityPutPrivilegesParts::None => "/_security/privilege/".into(),
         }
     }
 }
@@ -2682,7 +2707,7 @@ impl SecurityPutPrivilegesUrlParts {
 #[doc = "Builder for the Security Put Privileges API"]
 pub struct SecurityPutPrivileges<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutPrivilegesUrlParts,
+    parts: SecurityPutPrivilegesParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2698,7 +2723,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SecurityPutPrivileges {
             client,
-            parts: SecurityPutPrivilegesUrlParts::None,
+            parts: SecurityPutPrivilegesParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2756,9 +2781,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Put Privileges API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2798,14 +2823,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Put Role API"]
-pub enum SecurityPutRoleUrlParts<'a> {
+#[doc = "API parts for the Security Put Role API"]
+pub enum SecurityPutRoleParts<'a> {
     Name(&'a str),
 }
-impl<'a> SecurityPutRoleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityPutRoleParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Put Role API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutRoleUrlParts::Name(ref name) => {
+            SecurityPutRoleParts::Name(ref name) => {
                 let mut p = String::with_capacity(16usize + name.len());
                 p.push_str("/_security/role/");
                 p.push_str(name.as_ref());
@@ -2818,7 +2844,7 @@ impl<'a> SecurityPutRoleUrlParts<'a> {
 #[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html)."]
 pub struct SecurityPutRole<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutRoleUrlParts<'a>,
+    parts: SecurityPutRoleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2831,7 +2857,7 @@ impl<'a, B> SecurityPutRole<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleParts<'a>) -> Self {
         SecurityPutRole {
             client,
             parts,
@@ -2892,9 +2918,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Put Role API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2934,14 +2960,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Put Role Mapping API"]
-pub enum SecurityPutRoleMappingUrlParts<'a> {
+#[doc = "API parts for the Security Put Role Mapping API"]
+pub enum SecurityPutRoleMappingParts<'a> {
     Name(&'a str),
 }
-impl<'a> SecurityPutRoleMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityPutRoleMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Put Role Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutRoleMappingUrlParts::Name(ref name) => {
+            SecurityPutRoleMappingParts::Name(ref name) => {
                 let mut p = String::with_capacity(24usize + name.len());
                 p.push_str("/_security/role_mapping/");
                 p.push_str(name.as_ref());
@@ -2954,7 +2981,7 @@ impl<'a> SecurityPutRoleMappingUrlParts<'a> {
 #[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html)."]
 pub struct SecurityPutRoleMapping<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutRoleMappingUrlParts<'a>,
+    parts: SecurityPutRoleMappingParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -2967,7 +2994,7 @@ impl<'a, B> SecurityPutRoleMapping<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingParts<'a>) -> Self {
         SecurityPutRoleMapping {
             client,
             parts,
@@ -3028,9 +3055,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Put Role Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3070,14 +3097,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Security Put User API"]
-pub enum SecurityPutUserUrlParts<'a> {
+#[doc = "API parts for the Security Put User API"]
+pub enum SecurityPutUserParts<'a> {
     Username(&'a str),
 }
-impl<'a> SecurityPutUserUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SecurityPutUserParts<'a> {
+    #[doc = "Builds a relative URL path to the Security Put User API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SecurityPutUserUrlParts::Username(ref username) => {
+            SecurityPutUserParts::Username(ref username) => {
                 let mut p = String::with_capacity(16usize + username.len());
                 p.push_str("/_security/user/");
                 p.push_str(username.as_ref());
@@ -3090,7 +3118,7 @@ impl<'a> SecurityPutUserUrlParts<'a> {
 #[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html)."]
 pub struct SecurityPutUser<'a, B> {
     client: Elasticsearch,
-    parts: SecurityPutUserUrlParts<'a>,
+    parts: SecurityPutUserParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -3103,7 +3131,7 @@ impl<'a, B> SecurityPutUser<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SecurityPutUserUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SecurityPutUserParts<'a>) -> Self {
         SecurityPutUser {
             client,
             parts,
@@ -3164,9 +3192,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Security Put User API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3218,19 +3246,19 @@ impl Security {
     }
     pub fn change_password<'a>(
         &self,
-        parts: SecurityChangePasswordUrlParts<'a>,
+        parts: SecurityChangePasswordParts<'a>,
     ) -> SecurityChangePassword<'a, ()> {
         SecurityChangePassword::new(self.client.clone(), parts)
     }
     pub fn clear_cached_realms<'a>(
         &self,
-        parts: SecurityClearCachedRealmsUrlParts<'a>,
+        parts: SecurityClearCachedRealmsParts<'a>,
     ) -> SecurityClearCachedRealms<'a, ()> {
         SecurityClearCachedRealms::new(self.client.clone(), parts)
     }
     pub fn clear_cached_roles<'a>(
         &self,
-        parts: SecurityClearCachedRolesUrlParts<'a>,
+        parts: SecurityClearCachedRolesParts<'a>,
     ) -> SecurityClearCachedRoles<'a, ()> {
         SecurityClearCachedRoles::new(self.client.clone(), parts)
     }
@@ -3239,31 +3267,31 @@ impl Security {
     }
     pub fn delete_privileges<'a>(
         &self,
-        parts: SecurityDeletePrivilegesUrlParts<'a>,
+        parts: SecurityDeletePrivilegesParts<'a>,
     ) -> SecurityDeletePrivileges<'a> {
         SecurityDeletePrivileges::new(self.client.clone(), parts)
     }
-    pub fn delete_role<'a>(&self, parts: SecurityDeleteRoleUrlParts<'a>) -> SecurityDeleteRole<'a> {
+    pub fn delete_role<'a>(&self, parts: SecurityDeleteRoleParts<'a>) -> SecurityDeleteRole<'a> {
         SecurityDeleteRole::new(self.client.clone(), parts)
     }
     pub fn delete_role_mapping<'a>(
         &self,
-        parts: SecurityDeleteRoleMappingUrlParts<'a>,
+        parts: SecurityDeleteRoleMappingParts<'a>,
     ) -> SecurityDeleteRoleMapping<'a> {
         SecurityDeleteRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn delete_user<'a>(&self, parts: SecurityDeleteUserUrlParts<'a>) -> SecurityDeleteUser<'a> {
+    pub fn delete_user<'a>(&self, parts: SecurityDeleteUserParts<'a>) -> SecurityDeleteUser<'a> {
         SecurityDeleteUser::new(self.client.clone(), parts)
     }
     pub fn disable_user<'a>(
         &self,
-        parts: SecurityDisableUserUrlParts<'a>,
+        parts: SecurityDisableUserParts<'a>,
     ) -> SecurityDisableUser<'a, ()> {
         SecurityDisableUser::new(self.client.clone(), parts)
     }
     pub fn enable_user<'a>(
         &self,
-        parts: SecurityEnableUserUrlParts<'a>,
+        parts: SecurityEnableUserParts<'a>,
     ) -> SecurityEnableUser<'a, ()> {
         SecurityEnableUser::new(self.client.clone(), parts)
     }
@@ -3275,23 +3303,23 @@ impl Security {
     }
     pub fn get_privileges<'a>(
         &self,
-        parts: SecurityGetPrivilegesUrlParts<'a>,
+        parts: SecurityGetPrivilegesParts<'a>,
     ) -> SecurityGetPrivileges<'a> {
         SecurityGetPrivileges::new(self.client.clone(), parts)
     }
-    pub fn get_role<'a>(&self, parts: SecurityGetRoleUrlParts<'a>) -> SecurityGetRole<'a> {
+    pub fn get_role<'a>(&self, parts: SecurityGetRoleParts<'a>) -> SecurityGetRole<'a> {
         SecurityGetRole::new(self.client.clone(), parts)
     }
     pub fn get_role_mapping<'a>(
         &self,
-        parts: SecurityGetRoleMappingUrlParts<'a>,
+        parts: SecurityGetRoleMappingParts<'a>,
     ) -> SecurityGetRoleMapping<'a> {
         SecurityGetRoleMapping::new(self.client.clone(), parts)
     }
     pub fn get_token<'a>(&self) -> SecurityGetToken<'a, ()> {
         SecurityGetToken::new(self.client.clone())
     }
-    pub fn get_user<'a>(&self, parts: SecurityGetUserUrlParts<'a>) -> SecurityGetUser<'a> {
+    pub fn get_user<'a>(&self, parts: SecurityGetUserParts<'a>) -> SecurityGetUser<'a> {
         SecurityGetUser::new(self.client.clone(), parts)
     }
     pub fn get_user_privileges<'a>(&self) -> SecurityGetUserPrivileges<'a> {
@@ -3299,7 +3327,7 @@ impl Security {
     }
     pub fn has_privileges<'a>(
         &self,
-        parts: SecurityHasPrivilegesUrlParts<'a>,
+        parts: SecurityHasPrivilegesParts<'a>,
     ) -> SecurityHasPrivileges<'a, ()> {
         SecurityHasPrivileges::new(self.client.clone(), parts)
     }
@@ -3312,16 +3340,16 @@ impl Security {
     pub fn put_privileges<'a>(&self) -> SecurityPutPrivileges<'a, ()> {
         SecurityPutPrivileges::new(self.client.clone())
     }
-    pub fn put_role<'a>(&self, parts: SecurityPutRoleUrlParts<'a>) -> SecurityPutRole<'a, ()> {
+    pub fn put_role<'a>(&self, parts: SecurityPutRoleParts<'a>) -> SecurityPutRole<'a, ()> {
         SecurityPutRole::new(self.client.clone(), parts)
     }
     pub fn put_role_mapping<'a>(
         &self,
-        parts: SecurityPutRoleMappingUrlParts<'a>,
+        parts: SecurityPutRoleMappingParts<'a>,
     ) -> SecurityPutRoleMapping<'a, ()> {
         SecurityPutRoleMapping::new(self.client.clone(), parts)
     }
-    pub fn put_user<'a>(&self, parts: SecurityPutUserUrlParts<'a>) -> SecurityPutUser<'a, ()> {
+    pub fn put_user<'a>(&self, parts: SecurityPutUserParts<'a>) -> SecurityPutUser<'a, ()> {
         SecurityPutUser::new(self.client.clone(), parts)
     }
 }

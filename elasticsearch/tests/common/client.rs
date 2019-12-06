@@ -1,7 +1,7 @@
 use elasticsearch::{
-    auth::Credentials, enums::Refresh, error::ElasticsearchError, indices::IndicesExistsUrlParts,
-    request::JsonBody, response::ElasticsearchResponse, BulkUrlParts, ConnectionBuilder,
-    Elasticsearch, DEFAULT_ADDRESS,
+    auth::Credentials, enums::Refresh, http::request::JsonBody, http::response::Response,
+    http::transport::ConnectionBuilder, indices::IndicesExistsParts, BulkParts, Elasticsearch,
+    Error, DEFAULT_ADDRESS,
 };
 
 use reqwest::StatusCode;
@@ -60,13 +60,11 @@ pub fn create(mut connection_builder: ConnectionBuilder) -> Elasticsearch {
 /// several times. In this instance, this is fine.
 ///
 /// TODO: This is a temporary measure until https://github.com/elastic/elasticsearch-rs/issues/19 is implemented.
-pub async fn index_documents(
-    client: &Elasticsearch,
-) -> Result<ElasticsearchResponse, ElasticsearchError> {
+pub async fn index_documents(client: &Elasticsearch) -> Result<Response, Error> {
     let index = "posts";
     let exists_response = client
         .indices()
-        .exists(IndicesExistsUrlParts::Index(&[index]))
+        .exists(IndicesExistsParts::Index(&[index]))
         .send()
         .await?;
 
@@ -80,7 +78,7 @@ pub async fn index_documents(
         }
 
         client
-            .bulk(BulkUrlParts::Index(index))
+            .bulk(BulkParts::Index(index))
             .body(body)
             .refresh(Refresh::WaitFor)
             .send()

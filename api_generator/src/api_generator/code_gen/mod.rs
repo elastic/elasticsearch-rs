@@ -15,13 +15,15 @@ pub fn use_declarations() -> Tokens {
         use crate::{
             client::{Elasticsearch},
             enums::*,
-            error::ElasticsearchError,
-            request::{HttpMethod, Body, NdBody, JsonBody},
-            response::ElasticsearchResponse,
+            error::Error,
+            http::{
+                Method,
+                request::{Body, NdBody, JsonBody},
+                response::Response,
+            },
         };
         use std::borrow::Cow;
-        use reqwest::{Response, Request, Error, StatusCode, header::HeaderMap};
-        use serde::{Serialize, de::DeserializeOwned};
+        use serde::Serialize;
         use serde_with;
     )
 }

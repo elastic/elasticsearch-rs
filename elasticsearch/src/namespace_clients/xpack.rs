@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Xpack Info API"]
-pub enum XpackInfoUrlParts {
+#[doc = "API parts for the Xpack Info API"]
+pub enum XpackInfoParts {
     None,
 }
-impl XpackInfoUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl XpackInfoParts {
+    #[doc = "Builds a relative URL path to the Xpack Info API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            XpackInfoUrlParts::None => "/_xpack".into(),
+            XpackInfoParts::None => "/_xpack".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl XpackInfoUrlParts {
 #[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html)."]
 pub struct XpackInfo<'a> {
     client: Elasticsearch,
-    parts: XpackInfoUrlParts,
+    parts: XpackInfoParts,
     categories: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -53,7 +56,7 @@ impl<'a> XpackInfo<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         XpackInfo {
             client,
-            parts: XpackInfoUrlParts::None,
+            parts: XpackInfoParts::None,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -93,9 +96,9 @@ impl<'a> XpackInfo<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Xpack Info API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -138,14 +141,15 @@ impl<'a> XpackInfo<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Xpack Usage API"]
-pub enum XpackUsageUrlParts {
+#[doc = "API parts for the Xpack Usage API"]
+pub enum XpackUsageParts {
     None,
 }
-impl XpackUsageUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl XpackUsageParts {
+    #[doc = "Builds a relative URL path to the Xpack Usage API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            XpackUsageUrlParts::None => "/_xpack/usage".into(),
+            XpackUsageParts::None => "/_xpack/usage".into(),
         }
     }
 }
@@ -153,7 +157,7 @@ impl XpackUsageUrlParts {
 #[doc = "Builder for the [Xpack Usage API](Retrieve information about xpack features usage)."]
 pub struct XpackUsage<'a> {
     client: Elasticsearch,
-    parts: XpackUsageUrlParts,
+    parts: XpackUsageParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -165,7 +169,7 @@ impl<'a> XpackUsage<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         XpackUsage {
             client,
-            parts: XpackUsageUrlParts::None,
+            parts: XpackUsageParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -205,9 +209,9 @@ impl<'a> XpackUsage<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Xpack Usage API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]

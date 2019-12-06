@@ -16,92 +16,93 @@
  *
  */
 use serde_json;
-use std::error::Error;
+use std::error;
 use std::fmt;
 use std::io::{self, Read};
 
-/// Error that can occur include IO and parsing errors, as well as specific
-/// errors from the Elasticsearch server and logic errors from this library
+/// An error within the client. Errors that can occur include
+/// IO and parsing errors, as well as specific
+/// errors from Elasticsearch and internal errors from this library
 #[derive(Debug)]
-pub enum ElasticsearchError {
+pub enum Error {
     /// An internal error from this library
-    LibError(String),
+    Lib(String),
 
     /// An error reported in a JSON response from Elasticsearch
-    ServerError(String),
+    Server(String),
 
     /// HTTP library error
-    HttpError(reqwest::Error),
+    Http(reqwest::Error),
 
     /// IO error
-    IoError(io::Error),
+    Io(io::Error),
 
     /// JSON error
-    JsonError(serde_json::error::Error),
+    Json(serde_json::error::Error),
 }
 
-impl From<io::Error> for ElasticsearchError {
-    fn from(err: io::Error) -> ElasticsearchError {
-        ElasticsearchError::IoError(err)
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Error {
+        Error::Io(err)
     }
 }
 
-impl From<reqwest::Error> for ElasticsearchError {
-    fn from(err: reqwest::Error) -> ElasticsearchError {
-        ElasticsearchError::HttpError(err)
+impl From<reqwest::Error> for Error {
+    fn from(err: reqwest::Error) -> Error {
+        Error::Http(err)
     }
 }
 
-impl From<serde_json::error::Error> for ElasticsearchError {
-    fn from(err: serde_json::error::Error) -> ElasticsearchError {
-        ElasticsearchError::JsonError(err)
+impl From<serde_json::error::Error> for Error {
+    fn from(err: serde_json::error::Error) -> Error {
+        Error::Json(err)
     }
 }
 
-impl From<url::ParseError> for ElasticsearchError {
-    fn from(err: url::ParseError) -> ElasticsearchError {
-        ElasticsearchError::LibError(err.to_string())
+impl From<url::ParseError> for Error {
+    fn from(err: url::ParseError) -> Error {
+        Error::Lib(err.to_string())
     }
 }
 
-impl<'a> From<&'a mut reqwest::Response> for ElasticsearchError {
-    fn from(err: &'a mut reqwest::Response) -> ElasticsearchError {
+impl<'a> From<&'a mut reqwest::Response> for Error {
+    fn from(err: &'a mut reqwest::Response) -> Error {
         // TODO: figure out how to read the response body synchronously
         //let body = err.text().await?;
-        ElasticsearchError::ServerError(format!("{} status code received", err.status()))
+        Error::Server(format!("{} status code received", err.status()))
     }
 }
 
-impl Error for ElasticsearchError {
+impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
-            ElasticsearchError::LibError(ref err) => err,
-            ElasticsearchError::ServerError(ref err) => err,
-            ElasticsearchError::HttpError(ref err) => err.description(),
-            ElasticsearchError::IoError(ref err) => err.description(),
-            ElasticsearchError::JsonError(ref err) => err.description(),
+            Error::Lib(ref err) => err,
+            Error::Server(ref err) => err,
+            Error::Http(ref err) => err.description(),
+            Error::Io(ref err) => err.description(),
+            Error::Json(ref err) => err.description(),
         }
     }
 
-    fn cause(&self) -> Option<&dyn Error> {
+    fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
-            ElasticsearchError::LibError(_) => None,
-            ElasticsearchError::ServerError(_) => None,
-            ElasticsearchError::HttpError(ref err) => Some(err as &dyn Error),
-            ElasticsearchError::IoError(ref err) => Some(err as &dyn Error),
-            ElasticsearchError::JsonError(ref err) => Some(err as &dyn Error),
+            Error::Lib(_) => None,
+            Error::Server(_) => None,
+            Error::Http(ref err) => Some(err as &dyn error::Error),
+            Error::Io(ref err) => Some(err as &dyn error::Error),
+            Error::Json(ref err) => Some(err as &dyn error::Error),
         }
     }
 }
 
-impl fmt::Display for ElasticsearchError {
+impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            ElasticsearchError::LibError(ref s) => fmt::Display::fmt(s, f),
-            ElasticsearchError::ServerError(ref s) => fmt::Display::fmt(s, f),
-            ElasticsearchError::HttpError(ref err) => fmt::Display::fmt(err, f),
-            ElasticsearchError::IoError(ref err) => fmt::Display::fmt(err, f),
-            ElasticsearchError::JsonError(ref err) => fmt::Display::fmt(err, f),
+            Error::Lib(ref s) => fmt::Display::fmt(s, f),
+            Error::Server(ref s) => fmt::Display::fmt(s, f),
+            Error::Http(ref err) => fmt::Display::fmt(err, f),
+            Error::Io(ref err) => fmt::Display::fmt(err, f),
+            Error::Json(ref err) => fmt::Display::fmt(err, f),
         }
     }
 }

@@ -33,7 +33,7 @@ impl<'a> EnumBuilder<'a> {
     }
 
     fn name(prefix: &str) -> String {
-        format!("{}UrlParts", prefix.to_pascal_case())
+        format!("{}Parts", prefix.to_pascal_case())
     }
 
     /// Whether this instance already contains a path with parts matching the given path
@@ -179,10 +179,13 @@ impl<'a> EnumBuilder<'a> {
             };
 
             let item = syn::ImplItem {
-                ident: ident("build"),
+                ident: ident("url"),
                 vis: syn::Visibility::Public,
                 defaultness: syn::Defaultness::Final,
-                attrs: vec![],
+                attrs: vec![doc(format!(
+                    "Builds a relative URL path to the {} API",
+                    self.api_name
+                ))],
                 node: syn::ImplItemKind::Method(
                     syn::MethodSig {
                         unsafety: syn::Unsafety::Normal,
@@ -228,7 +231,7 @@ impl<'a> EnumBuilder<'a> {
                         ],
                     ),
                 },
-                doc(format!("Url parts for the {} API", self.api_name)),
+                doc(format!("API parts for the {} API", self.api_name)),
             ],
             node: syn::ItemKind::Enum(variants, generics),
         };
@@ -328,12 +331,12 @@ mod tests {
 
         let (enum_ty, enum_decl, enum_impl) = EnumBuilder::from(&endpoint).build();
 
-        assert_eq!(ty_a("SearchUrlParts"), enum_ty);
+        assert_eq!(ty_a("SearchParts"), enum_ty);
 
         let expected_decl = quote!(
             #[derive(Debug, Clone, PartialEq)]
-            #[doc = "Url parts for the Search API"]
-            pub enum SearchUrlParts<'a> {
+            #[doc = "API parts for the Search API"]
+            pub enum SearchParts<'a> {
                 None,
                 Index(&'a [&'a str]),
                 IndexType(&'a [&'a str], &'a [&'a str]),
@@ -343,11 +346,12 @@ mod tests {
         ast_eq(expected_decl, enum_decl);
 
         let expected_impl = quote!(
-            impl<'a> SearchUrlParts<'a> {
-                pub fn build(self) -> Cow<'static, str> {
+            impl<'a> SearchParts<'a> {
+                #[doc = "Builds a relative URL path to the Search API"]
+                pub fn url(self) -> Cow<'static, str> {
                     match self {
-                        SearchUrlParts::None => "/_search".into(),
-                        SearchUrlParts::Index(ref index) => {
+                        SearchParts::None => "/_search".into(),
+                        SearchParts::Index(ref index) => {
                             let index_str = index.join(",");
                             let mut p = String::with_capacity(9usize + index_str.len());
                             p.push_str("/");
@@ -355,7 +359,7 @@ mod tests {
                             p.push_str("/_search");
                             p.into()
                         }
-                        SearchUrlParts::IndexType(ref index, ref ty) => {
+                        SearchParts::IndexType(ref index, ref ty) => {
                             let index_str = index.join(",");
                             let ty_str = ty.join(",");
                             let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());

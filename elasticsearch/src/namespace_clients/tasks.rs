@@ -17,25 +17,28 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Tasks Cancel API"]
-pub enum TasksCancelUrlParts<'a> {
+#[doc = "API parts for the Tasks Cancel API"]
+pub enum TasksCancelParts<'a> {
     None,
     TaskId(&'a str),
 }
-impl<'a> TasksCancelUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> TasksCancelParts<'a> {
+    #[doc = "Builds a relative URL path to the Tasks Cancel API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            TasksCancelUrlParts::None => "/_tasks/_cancel".into(),
-            TasksCancelUrlParts::TaskId(ref task_id) => {
+            TasksCancelParts::None => "/_tasks/_cancel".into(),
+            TasksCancelParts::TaskId(ref task_id) => {
                 let mut p = String::with_capacity(16usize + task_id.len());
                 p.push_str("/_tasks/");
                 p.push_str(task_id.as_ref());
@@ -49,7 +52,7 @@ impl<'a> TasksCancelUrlParts<'a> {
 #[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Cancels a task, if it can be cancelled through an API."]
 pub struct TasksCancel<'a, B> {
     client: Elasticsearch,
-    parts: TasksCancelUrlParts<'a>,
+    parts: TasksCancelParts<'a>,
     actions: Option<&'a [&'a str]>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -64,7 +67,7 @@ impl<'a, B> TasksCancel<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: TasksCancelUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: TasksCancelParts<'a>) -> Self {
         TasksCancel {
             client,
             parts,
@@ -139,9 +142,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Tasks Cancel API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -190,14 +193,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Tasks Get API"]
-pub enum TasksGetUrlParts<'a> {
+#[doc = "API parts for the Tasks Get API"]
+pub enum TasksGetParts<'a> {
     TaskId(&'a str),
 }
-impl<'a> TasksGetUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> TasksGetParts<'a> {
+    #[doc = "Builds a relative URL path to the Tasks Get API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            TasksGetUrlParts::TaskId(ref task_id) => {
+            TasksGetParts::TaskId(ref task_id) => {
                 let mut p = String::with_capacity(8usize + task_id.len());
                 p.push_str("/_tasks/");
                 p.push_str(task_id.as_ref());
@@ -210,7 +214,7 @@ impl<'a> TasksGetUrlParts<'a> {
 #[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about a task."]
 pub struct TasksGet<'a> {
     client: Elasticsearch,
-    parts: TasksGetUrlParts<'a>,
+    parts: TasksGetParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -220,7 +224,7 @@ pub struct TasksGet<'a> {
     wait_for_completion: Option<bool>,
 }
 impl<'a> TasksGet<'a> {
-    pub fn new(client: Elasticsearch, parts: TasksGetUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: TasksGetParts<'a>) -> Self {
         TasksGet {
             client,
             parts,
@@ -269,9 +273,9 @@ impl<'a> TasksGet<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Tasks Get API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -314,14 +318,15 @@ impl<'a> TasksGet<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Tasks List API"]
-pub enum TasksListUrlParts {
+#[doc = "API parts for the Tasks List API"]
+pub enum TasksListParts {
     None,
 }
-impl TasksListUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl TasksListParts {
+    #[doc = "Builds a relative URL path to the Tasks List API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            TasksListUrlParts::None => "/_tasks".into(),
+            TasksListParts::None => "/_tasks".into(),
         }
     }
 }
@@ -329,7 +334,7 @@ impl TasksListUrlParts {
 #[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns a list of tasks."]
 pub struct TasksList<'a> {
     client: Elasticsearch,
-    parts: TasksListUrlParts,
+    parts: TasksListParts,
     actions: Option<&'a [&'a str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
@@ -347,7 +352,7 @@ impl<'a> TasksList<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         TasksList {
             client,
-            parts: TasksListUrlParts::None,
+            parts: TasksListParts::None,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -423,9 +428,9 @@ impl<'a> TasksList<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Tasks List API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -494,11 +499,11 @@ impl Tasks {
         Tasks { client }
     }
     #[doc = "Cancels a task, if it can be cancelled through an API."]
-    pub fn cancel<'a>(&self, parts: TasksCancelUrlParts<'a>) -> TasksCancel<'a, ()> {
+    pub fn cancel<'a>(&self, parts: TasksCancelParts<'a>) -> TasksCancel<'a, ()> {
         TasksCancel::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about a task."]
-    pub fn get<'a>(&self, parts: TasksGetUrlParts<'a>) -> TasksGet<'a> {
+    pub fn get<'a>(&self, parts: TasksGetParts<'a>) -> TasksGet<'a> {
         TasksGet::new(self.client.clone(), parts)
     }
     #[doc = "Returns a list of tasks."]

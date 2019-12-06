@@ -17,24 +17,27 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Graph Explore API"]
-pub enum GraphExploreUrlParts<'a> {
+#[doc = "API parts for the Graph Explore API"]
+pub enum GraphExploreParts<'a> {
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> GraphExploreUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> GraphExploreParts<'a> {
+    #[doc = "Builds a relative URL path to the Graph Explore API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            GraphExploreUrlParts::Index(ref index) => {
+            GraphExploreParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(16usize + index_str.len());
                 p.push_str("/");
@@ -42,7 +45,7 @@ impl<'a> GraphExploreUrlParts<'a> {
                 p.push_str("/_graph/explore");
                 p.into()
             }
-            GraphExploreUrlParts::IndexType(ref index, ref ty) => {
+            GraphExploreParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(17usize + index_str.len() + ty_str.len());
@@ -60,7 +63,7 @@ impl<'a> GraphExploreUrlParts<'a> {
 #[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html)."]
 pub struct GraphExplore<'a, B> {
     client: Elasticsearch,
-    parts: GraphExploreUrlParts<'a>,
+    parts: GraphExploreParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -74,7 +77,7 @@ impl<'a, B> GraphExplore<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: GraphExploreUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: GraphExploreParts<'a>) -> Self {
         GraphExplore {
             client,
             parts,
@@ -142,11 +145,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Graph Explore API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -197,7 +200,7 @@ impl Graph {
     pub fn new(client: Elasticsearch) -> Self {
         Graph { client }
     }
-    pub fn explore<'a>(&self, parts: GraphExploreUrlParts<'a>) -> GraphExplore<'a, ()> {
+    pub fn explore<'a>(&self, parts: GraphExploreParts<'a>) -> GraphExplore<'a, ()> {
         GraphExplore::new(self.client.clone(), parts)
     }
 }

@@ -17,25 +17,28 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Analyze API"]
-pub enum IndicesAnalyzeUrlParts<'a> {
+#[doc = "API parts for the Indices Analyze API"]
+pub enum IndicesAnalyzeParts<'a> {
     None,
     Index(&'a str),
 }
-impl<'a> IndicesAnalyzeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesAnalyzeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Analyze API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesAnalyzeUrlParts::None => "/_analyze".into(),
-            IndicesAnalyzeUrlParts::Index(ref index) => {
+            IndicesAnalyzeParts::None => "/_analyze".into(),
+            IndicesAnalyzeParts::Index(ref index) => {
                 let mut p = String::with_capacity(10usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -49,7 +52,7 @@ impl<'a> IndicesAnalyzeUrlParts<'a> {
 #[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html). Performs the analysis process on a text and return the tokens breakdown of the text."]
 pub struct IndicesAnalyze<'a, B> {
     client: Elasticsearch,
-    parts: IndicesAnalyzeUrlParts<'a>,
+    parts: IndicesAnalyzeParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -62,7 +65,7 @@ impl<'a, B> IndicesAnalyze<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesAnalyzeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesAnalyzeParts<'a>) -> Self {
         IndicesAnalyze {
             client,
             parts,
@@ -123,11 +126,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Analyze API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -168,16 +171,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Clear Cache API"]
-pub enum IndicesClearCacheUrlParts<'a> {
+#[doc = "API parts for the Indices Clear Cache API"]
+pub enum IndicesClearCacheParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesClearCacheUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesClearCacheParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Clear Cache API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesClearCacheUrlParts::None => "/_cache/clear".into(),
-            IndicesClearCacheUrlParts::Index(ref index) => {
+            IndicesClearCacheParts::None => "/_cache/clear".into(),
+            IndicesClearCacheParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(14usize + index_str.len());
                 p.push_str("/");
@@ -192,7 +196,7 @@ impl<'a> IndicesClearCacheUrlParts<'a> {
 #[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clearcache.html). Clears all or specific caches for one or more indices."]
 pub struct IndicesClearCache<'a, B> {
     client: Elasticsearch,
-    parts: IndicesClearCacheUrlParts<'a>,
+    parts: IndicesClearCacheParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -212,7 +216,7 @@ impl<'a, B> IndicesClearCache<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesClearCacheUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesClearCacheParts<'a>) -> Self {
         IndicesClearCache {
             client,
             parts,
@@ -322,9 +326,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Clear Cache API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -385,14 +389,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Clone API"]
-pub enum IndicesCloneUrlParts<'a> {
+#[doc = "API parts for the Indices Clone API"]
+pub enum IndicesCloneParts<'a> {
     IndexTarget(&'a str, &'a str),
 }
-impl<'a> IndicesCloneUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesCloneParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Clone API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesCloneUrlParts::IndexTarget(ref index, ref target) => {
+            IndicesCloneParts::IndexTarget(ref index, ref target) => {
                 let mut p = String::with_capacity(9usize + index.len() + target.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -407,7 +412,7 @@ impl<'a> IndicesCloneUrlParts<'a> {
 #[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-clone-index.html). Clones an index"]
 pub struct IndicesClone<'a, B> {
     client: Elasticsearch,
-    parts: IndicesCloneUrlParts<'a>,
+    parts: IndicesCloneParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -422,7 +427,7 @@ impl<'a, B> IndicesClone<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesCloneUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesCloneParts<'a>) -> Self {
         IndicesClone {
             client,
             parts,
@@ -497,9 +502,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Clone API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -545,14 +550,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Close API"]
-pub enum IndicesCloseUrlParts<'a> {
+#[doc = "API parts for the Indices Close API"]
+pub enum IndicesCloseParts<'a> {
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesCloseUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesCloseParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Close API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesCloseUrlParts::Index(ref index) => {
+            IndicesCloseParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(8usize + index_str.len());
                 p.push_str("/");
@@ -567,7 +573,7 @@ impl<'a> IndicesCloseUrlParts<'a> {
 #[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html). Closes an index."]
 pub struct IndicesClose<'a, B> {
     client: Elasticsearch,
-    parts: IndicesCloseUrlParts<'a>,
+    parts: IndicesCloseParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -585,7 +591,7 @@ impl<'a, B> IndicesClose<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesCloseUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesCloseParts<'a>) -> Self {
         IndicesClose {
             client,
             parts,
@@ -681,9 +687,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Close API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -738,14 +744,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Create API"]
-pub enum IndicesCreateUrlParts<'a> {
+#[doc = "API parts for the Indices Create API"]
+pub enum IndicesCreateParts<'a> {
     Index(&'a str),
 }
-impl<'a> IndicesCreateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesCreateParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Create API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesCreateUrlParts::Index(ref index) => {
+            IndicesCreateParts::Index(ref index) => {
                 let mut p = String::with_capacity(1usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -758,7 +765,7 @@ impl<'a> IndicesCreateUrlParts<'a> {
 #[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html). Creates an index with optional settings and mappings."]
 pub struct IndicesCreate<'a, B> {
     client: Elasticsearch,
-    parts: IndicesCreateUrlParts<'a>,
+    parts: IndicesCreateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -774,7 +781,7 @@ impl<'a, B> IndicesCreate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesCreateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesCreateParts<'a>) -> Self {
         IndicesCreate {
             client,
             parts,
@@ -856,9 +863,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Create API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -907,14 +914,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Delete API"]
-pub enum IndicesDeleteUrlParts<'a> {
+#[doc = "API parts for the Indices Delete API"]
+pub enum IndicesDeleteParts<'a> {
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesDeleteUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesDeleteParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Delete API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesDeleteUrlParts::Index(ref index) => {
+            IndicesDeleteParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(1usize + index_str.len());
                 p.push_str("/");
@@ -928,7 +936,7 @@ impl<'a> IndicesDeleteUrlParts<'a> {
 #[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html). Deletes an index."]
 pub struct IndicesDelete<'a> {
     client: Elasticsearch,
-    parts: IndicesDeleteUrlParts<'a>,
+    parts: IndicesDeleteParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -941,7 +949,7 @@ pub struct IndicesDelete<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDelete<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesDeleteUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteParts<'a>) -> Self {
         IndicesDelete {
             client,
             parts,
@@ -1008,9 +1016,9 @@ impl<'a> IndicesDelete<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Delete API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1062,14 +1070,15 @@ impl<'a> IndicesDelete<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Delete Alias API"]
-pub enum IndicesDeleteAliasUrlParts<'a> {
+#[doc = "API parts for the Indices Delete Alias API"]
+pub enum IndicesDeleteAliasParts<'a> {
     IndexName(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesDeleteAliasUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesDeleteAliasParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Delete Alias API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesDeleteAliasUrlParts::IndexName(ref index, ref name) => {
+            IndicesDeleteAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
@@ -1086,7 +1095,7 @@ impl<'a> IndicesDeleteAliasUrlParts<'a> {
 #[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Deletes an alias."]
 pub struct IndicesDeleteAlias<'a> {
     client: Elasticsearch,
-    parts: IndicesDeleteAliasUrlParts<'a>,
+    parts: IndicesDeleteAliasParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1096,7 +1105,7 @@ pub struct IndicesDeleteAlias<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDeleteAlias<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesDeleteAliasUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteAliasParts<'a>) -> Self {
         IndicesDeleteAlias {
             client,
             parts,
@@ -1145,9 +1154,9 @@ impl<'a> IndicesDeleteAlias<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Delete Alias API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1190,14 +1199,15 @@ impl<'a> IndicesDeleteAlias<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Delete Template API"]
-pub enum IndicesDeleteTemplateUrlParts<'a> {
+#[doc = "API parts for the Indices Delete Template API"]
+pub enum IndicesDeleteTemplateParts<'a> {
     Name(&'a str),
 }
-impl<'a> IndicesDeleteTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesDeleteTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Delete Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesDeleteTemplateUrlParts::Name(ref name) => {
+            IndicesDeleteTemplateParts::Name(ref name) => {
                 let mut p = String::with_capacity(11usize + name.len());
                 p.push_str("/_template/");
                 p.push_str(name.as_ref());
@@ -1210,7 +1220,7 @@ impl<'a> IndicesDeleteTemplateUrlParts<'a> {
 #[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Deletes an index template."]
 pub struct IndicesDeleteTemplate<'a> {
     client: Elasticsearch,
-    parts: IndicesDeleteTemplateUrlParts<'a>,
+    parts: IndicesDeleteTemplateParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1220,7 +1230,7 @@ pub struct IndicesDeleteTemplate<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> IndicesDeleteTemplate<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesDeleteTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesDeleteTemplateParts<'a>) -> Self {
         IndicesDeleteTemplate {
             client,
             parts,
@@ -1269,9 +1279,9 @@ impl<'a> IndicesDeleteTemplate<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Delete Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1314,14 +1324,15 @@ impl<'a> IndicesDeleteTemplate<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Exists API"]
-pub enum IndicesExistsUrlParts<'a> {
+#[doc = "API parts for the Indices Exists API"]
+pub enum IndicesExistsParts<'a> {
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesExistsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesExistsParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Exists API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesExistsUrlParts::Index(ref index) => {
+            IndicesExistsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(1usize + index_str.len());
                 p.push_str("/");
@@ -1335,7 +1346,7 @@ impl<'a> IndicesExistsUrlParts<'a> {
 #[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html). Returns information about whether a particular index exists."]
 pub struct IndicesExists<'a> {
     client: Elasticsearch,
-    parts: IndicesExistsUrlParts<'a>,
+    parts: IndicesExistsParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -1349,7 +1360,7 @@ pub struct IndicesExists<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExists<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesExistsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsParts<'a>) -> Self {
         IndicesExists {
             client,
             parts,
@@ -1422,9 +1433,9 @@ impl<'a> IndicesExists<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Exists API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1479,22 +1490,23 @@ impl<'a> IndicesExists<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Exists Alias API"]
-pub enum IndicesExistsAliasUrlParts<'a> {
+#[doc = "API parts for the Indices Exists Alias API"]
+pub enum IndicesExistsAliasParts<'a> {
     Name(&'a [&'a str]),
     IndexName(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesExistsAliasUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesExistsAliasParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Exists Alias API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesExistsAliasUrlParts::Name(ref name) => {
+            IndicesExistsAliasParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(8usize + name_str.len());
                 p.push_str("/_alias/");
                 p.push_str(name_str.as_ref());
                 p.into()
             }
-            IndicesExistsAliasUrlParts::IndexName(ref index, ref name) => {
+            IndicesExistsAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
@@ -1511,7 +1523,7 @@ impl<'a> IndicesExistsAliasUrlParts<'a> {
 #[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Returns information about whether a particular alias exists."]
 pub struct IndicesExistsAlias<'a> {
     client: Elasticsearch,
-    parts: IndicesExistsAliasUrlParts<'a>,
+    parts: IndicesExistsAliasParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -1523,7 +1535,7 @@ pub struct IndicesExistsAlias<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsAlias<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesExistsAliasUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsAliasParts<'a>) -> Self {
         IndicesExistsAlias {
             client,
             parts,
@@ -1584,9 +1596,9 @@ impl<'a> IndicesExistsAlias<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Exists Alias API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1635,14 +1647,15 @@ impl<'a> IndicesExistsAlias<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Exists Template API"]
-pub enum IndicesExistsTemplateUrlParts<'a> {
+#[doc = "API parts for the Indices Exists Template API"]
+pub enum IndicesExistsTemplateParts<'a> {
     Name(&'a [&'a str]),
 }
-impl<'a> IndicesExistsTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesExistsTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Exists Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesExistsTemplateUrlParts::Name(ref name) => {
+            IndicesExistsTemplateParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(11usize + name_str.len());
                 p.push_str("/_template/");
@@ -1656,7 +1669,7 @@ impl<'a> IndicesExistsTemplateUrlParts<'a> {
 #[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Returns information about whether a particular index template exists."]
 pub struct IndicesExistsTemplate<'a> {
     client: Elasticsearch,
-    parts: IndicesExistsTemplateUrlParts<'a>,
+    parts: IndicesExistsTemplateParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
@@ -1667,7 +1680,7 @@ pub struct IndicesExistsTemplate<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsTemplate<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesExistsTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsTemplateParts<'a>) -> Self {
         IndicesExistsTemplate {
             client,
             parts,
@@ -1722,9 +1735,9 @@ impl<'a> IndicesExistsTemplate<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Exists Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1770,14 +1783,15 @@ impl<'a> IndicesExistsTemplate<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Exists Type API"]
-pub enum IndicesExistsTypeUrlParts<'a> {
+#[doc = "API parts for the Indices Exists Type API"]
+pub enum IndicesExistsTypeParts<'a> {
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesExistsTypeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesExistsTypeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Exists Type API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesExistsTypeUrlParts::IndexType(ref index, ref ty) => {
+            IndicesExistsTypeParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
@@ -1794,7 +1808,7 @@ impl<'a> IndicesExistsTypeUrlParts<'a> {
 #[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-types-exists.html). Returns information about whether a particular document type exists. (DEPRECATED)"]
 pub struct IndicesExistsType<'a> {
     client: Elasticsearch,
-    parts: IndicesExistsTypeUrlParts<'a>,
+    parts: IndicesExistsTypeParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -1806,7 +1820,7 @@ pub struct IndicesExistsType<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesExistsType<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesExistsTypeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesExistsTypeParts<'a>) -> Self {
         IndicesExistsType {
             client,
             parts,
@@ -1867,9 +1881,9 @@ impl<'a> IndicesExistsType<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Exists Type API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1918,16 +1932,17 @@ impl<'a> IndicesExistsType<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Flush API"]
-pub enum IndicesFlushUrlParts<'a> {
+#[doc = "API parts for the Indices Flush API"]
+pub enum IndicesFlushParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesFlushUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesFlushParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Flush API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesFlushUrlParts::None => "/_flush".into(),
-            IndicesFlushUrlParts::Index(ref index) => {
+            IndicesFlushParts::None => "/_flush".into(),
+            IndicesFlushParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(8usize + index_str.len());
                 p.push_str("/");
@@ -1942,7 +1957,7 @@ impl<'a> IndicesFlushUrlParts<'a> {
 #[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-flush.html). Performs the flush operation on one or more indices."]
 pub struct IndicesFlush<'a, B> {
     client: Elasticsearch,
-    parts: IndicesFlushUrlParts<'a>,
+    parts: IndicesFlushParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -1959,7 +1974,7 @@ impl<'a, B> IndicesFlush<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesFlushUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFlushParts<'a>) -> Self {
         IndicesFlush {
             client,
             parts,
@@ -2048,11 +2063,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Flush API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2105,16 +2120,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Flush Synced API"]
-pub enum IndicesFlushSyncedUrlParts<'a> {
+#[doc = "API parts for the Indices Flush Synced API"]
+pub enum IndicesFlushSyncedParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesFlushSyncedUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesFlushSyncedParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Flush Synced API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesFlushSyncedUrlParts::None => "/_flush/synced".into(),
-            IndicesFlushSyncedUrlParts::Index(ref index) => {
+            IndicesFlushSyncedParts::None => "/_flush/synced".into(),
+            IndicesFlushSyncedParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(15usize + index_str.len());
                 p.push_str("/");
@@ -2129,7 +2145,7 @@ impl<'a> IndicesFlushSyncedUrlParts<'a> {
 #[doc = "Builder for the [Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-synced-flush-api.html). Performs a synced flush operation on one or more indices."]
 pub struct IndicesFlushSynced<'a, B> {
     client: Elasticsearch,
-    parts: IndicesFlushSyncedUrlParts<'a>,
+    parts: IndicesFlushSyncedParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2144,7 +2160,7 @@ impl<'a, B> IndicesFlushSynced<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesFlushSyncedUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFlushSyncedParts<'a>) -> Self {
         IndicesFlushSynced {
             client,
             parts,
@@ -2219,11 +2235,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Flush Synced API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2270,16 +2286,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Forcemerge API"]
-pub enum IndicesForcemergeUrlParts<'a> {
+#[doc = "API parts for the Indices Forcemerge API"]
+pub enum IndicesForcemergeParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesForcemergeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesForcemergeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Forcemerge API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesForcemergeUrlParts::None => "/_forcemerge".into(),
-            IndicesForcemergeUrlParts::Index(ref index) => {
+            IndicesForcemergeParts::None => "/_forcemerge".into(),
+            IndicesForcemergeParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(13usize + index_str.len());
                 p.push_str("/");
@@ -2294,7 +2311,7 @@ impl<'a> IndicesForcemergeUrlParts<'a> {
 #[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-forcemerge.html). Performs the force merge operation on one or more indices."]
 pub struct IndicesForcemerge<'a, B> {
     client: Elasticsearch,
-    parts: IndicesForcemergeUrlParts<'a>,
+    parts: IndicesForcemergeParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2312,7 +2329,7 @@ impl<'a, B> IndicesForcemerge<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesForcemergeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesForcemergeParts<'a>) -> Self {
         IndicesForcemerge {
             client,
             parts,
@@ -2408,9 +2425,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Forcemerge API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2465,14 +2482,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Freeze API"]
-pub enum IndicesFreezeUrlParts<'a> {
+#[doc = "API parts for the Indices Freeze API"]
+pub enum IndicesFreezeParts<'a> {
     Index(&'a str),
 }
-impl<'a> IndicesFreezeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesFreezeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Freeze API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesFreezeUrlParts::Index(ref index) => {
+            IndicesFreezeParts::Index(ref index) => {
                 let mut p = String::with_capacity(9usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2486,7 +2504,7 @@ impl<'a> IndicesFreezeUrlParts<'a> {
 #[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html)."]
 pub struct IndicesFreeze<'a, B> {
     client: Elasticsearch,
-    parts: IndicesFreezeUrlParts<'a>,
+    parts: IndicesFreezeParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2504,7 +2522,7 @@ impl<'a, B> IndicesFreeze<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesFreezeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesFreezeParts<'a>) -> Self {
         IndicesFreeze {
             client,
             parts,
@@ -2600,9 +2618,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Freeze API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2657,14 +2675,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get API"]
-pub enum IndicesGetUrlParts<'a> {
+#[doc = "API parts for the Indices Get API"]
+pub enum IndicesGetParts<'a> {
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesGetUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetUrlParts::Index(ref index) => {
+            IndicesGetParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(1usize + index_str.len());
                 p.push_str("/");
@@ -2678,7 +2697,7 @@ impl<'a> IndicesGetUrlParts<'a> {
 #[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html). Returns information about one or more indices."]
 pub struct IndicesGet<'a> {
     client: Elasticsearch,
-    parts: IndicesGetUrlParts<'a>,
+    parts: IndicesGetParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -2694,7 +2713,7 @@ pub struct IndicesGet<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGet<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetParts<'a>) -> Self {
         IndicesGet {
             client,
             parts,
@@ -2779,9 +2798,9 @@ impl<'a> IndicesGet<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2842,25 +2861,26 @@ impl<'a> IndicesGet<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Alias API"]
-pub enum IndicesGetAliasUrlParts<'a> {
+#[doc = "API parts for the Indices Get Alias API"]
+pub enum IndicesGetAliasParts<'a> {
     None,
     Name(&'a [&'a str]),
     IndexName(&'a [&'a str], &'a [&'a str]),
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesGetAliasUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetAliasParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Alias API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetAliasUrlParts::None => "/_alias".into(),
-            IndicesGetAliasUrlParts::Name(ref name) => {
+            IndicesGetAliasParts::None => "/_alias".into(),
+            IndicesGetAliasParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(8usize + name_str.len());
                 p.push_str("/_alias/");
                 p.push_str(name_str.as_ref());
                 p.into()
             }
-            IndicesGetAliasUrlParts::IndexName(ref index, ref name) => {
+            IndicesGetAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + name_str.len());
@@ -2870,7 +2890,7 @@ impl<'a> IndicesGetAliasUrlParts<'a> {
                 p.push_str(name_str.as_ref());
                 p.into()
             }
-            IndicesGetAliasUrlParts::Index(ref index) => {
+            IndicesGetAliasParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(8usize + index_str.len());
                 p.push_str("/");
@@ -2885,7 +2905,7 @@ impl<'a> IndicesGetAliasUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Returns an alias."]
 pub struct IndicesGetAlias<'a> {
     client: Elasticsearch,
-    parts: IndicesGetAliasUrlParts<'a>,
+    parts: IndicesGetAliasParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -2897,7 +2917,7 @@ pub struct IndicesGetAlias<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetAlias<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetAliasUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetAliasParts<'a>) -> Self {
         IndicesGetAlias {
             client,
             parts,
@@ -2958,9 +2978,9 @@ impl<'a> IndicesGetAlias<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Alias API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3009,24 +3029,25 @@ impl<'a> IndicesGetAlias<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Field Mapping API"]
-pub enum IndicesGetFieldMappingUrlParts<'a> {
+#[doc = "API parts for the Indices Get Field Mapping API"]
+pub enum IndicesGetFieldMappingParts<'a> {
     Fields(&'a [&'a str]),
     IndexFields(&'a [&'a str], &'a [&'a str]),
     TypeFields(&'a [&'a str], &'a [&'a str]),
     IndexTypeFields(&'a [&'a str], &'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesGetFieldMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetFieldMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Field Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetFieldMappingUrlParts::Fields(ref fields) => {
+            IndicesGetFieldMappingParts::Fields(ref fields) => {
                 let fields_str = fields.join(",");
                 let mut p = String::with_capacity(16usize + fields_str.len());
                 p.push_str("/_mapping/field/");
                 p.push_str(fields_str.as_ref());
                 p.into()
             }
-            IndicesGetFieldMappingUrlParts::IndexFields(ref index, ref fields) => {
+            IndicesGetFieldMappingParts::IndexFields(ref index, ref fields) => {
                 let index_str = index.join(",");
                 let fields_str = fields.join(",");
                 let mut p = String::with_capacity(17usize + index_str.len() + fields_str.len());
@@ -3036,7 +3057,7 @@ impl<'a> IndicesGetFieldMappingUrlParts<'a> {
                 p.push_str(fields_str.as_ref());
                 p.into()
             }
-            IndicesGetFieldMappingUrlParts::TypeFields(ref ty, ref fields) => {
+            IndicesGetFieldMappingParts::TypeFields(ref ty, ref fields) => {
                 let ty_str = ty.join(",");
                 let fields_str = fields.join(",");
                 let mut p = String::with_capacity(17usize + ty_str.len() + fields_str.len());
@@ -3046,7 +3067,7 @@ impl<'a> IndicesGetFieldMappingUrlParts<'a> {
                 p.push_str(fields_str.as_ref());
                 p.into()
             }
-            IndicesGetFieldMappingUrlParts::IndexTypeFields(ref index, ref ty, ref fields) => {
+            IndicesGetFieldMappingParts::IndexTypeFields(ref index, ref ty, ref fields) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let fields_str = fields.join(",");
@@ -3068,7 +3089,7 @@ impl<'a> IndicesGetFieldMappingUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-field-mapping.html). Returns mapping for one or more fields."]
 pub struct IndicesGetFieldMapping<'a> {
     client: Elasticsearch,
-    parts: IndicesGetFieldMappingUrlParts<'a>,
+    parts: IndicesGetFieldMappingParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -3082,7 +3103,7 @@ pub struct IndicesGetFieldMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetFieldMapping<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetFieldMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetFieldMappingParts<'a>) -> Self {
         IndicesGetFieldMapping {
             client,
             parts,
@@ -3155,9 +3176,9 @@ impl<'a> IndicesGetFieldMapping<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Field Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3212,18 +3233,19 @@ impl<'a> IndicesGetFieldMapping<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Mapping API"]
-pub enum IndicesGetMappingUrlParts<'a> {
+#[doc = "API parts for the Indices Get Mapping API"]
+pub enum IndicesGetMappingParts<'a> {
     None,
     Index(&'a [&'a str]),
     Type(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesGetMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetMappingUrlParts::None => "/_mapping".into(),
-            IndicesGetMappingUrlParts::Index(ref index) => {
+            IndicesGetMappingParts::None => "/_mapping".into(),
+            IndicesGetMappingParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -3231,14 +3253,14 @@ impl<'a> IndicesGetMappingUrlParts<'a> {
                 p.push_str("/_mapping");
                 p.into()
             }
-            IndicesGetMappingUrlParts::Type(ref ty) => {
+            IndicesGetMappingParts::Type(ref ty) => {
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(10usize + ty_str.len());
                 p.push_str("/_mapping/");
                 p.push_str(ty_str.as_ref());
                 p.into()
             }
-            IndicesGetMappingUrlParts::IndexType(ref index, ref ty) => {
+            IndicesGetMappingParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
@@ -3255,7 +3277,7 @@ impl<'a> IndicesGetMappingUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html). Returns mappings for one or more indices."]
 pub struct IndicesGetMapping<'a> {
     client: Elasticsearch,
-    parts: IndicesGetMappingUrlParts<'a>,
+    parts: IndicesGetMappingParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -3269,7 +3291,7 @@ pub struct IndicesGetMapping<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetMapping<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetMappingParts<'a>) -> Self {
         IndicesGetMapping {
             client,
             parts,
@@ -3342,9 +3364,9 @@ impl<'a> IndicesGetMapping<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3399,18 +3421,19 @@ impl<'a> IndicesGetMapping<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Settings API"]
-pub enum IndicesGetSettingsUrlParts<'a> {
+#[doc = "API parts for the Indices Get Settings API"]
+pub enum IndicesGetSettingsParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexName(&'a [&'a str], &'a [&'a str]),
     Name(&'a [&'a str]),
 }
-impl<'a> IndicesGetSettingsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetSettingsParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetSettingsUrlParts::None => "/_settings".into(),
-            IndicesGetSettingsUrlParts::Index(ref index) => {
+            IndicesGetSettingsParts::None => "/_settings".into(),
+            IndicesGetSettingsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len());
                 p.push_str("/");
@@ -3418,7 +3441,7 @@ impl<'a> IndicesGetSettingsUrlParts<'a> {
                 p.push_str("/_settings");
                 p.into()
             }
-            IndicesGetSettingsUrlParts::IndexName(ref index, ref name) => {
+            IndicesGetSettingsParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(12usize + index_str.len() + name_str.len());
@@ -3428,7 +3451,7 @@ impl<'a> IndicesGetSettingsUrlParts<'a> {
                 p.push_str(name_str.as_ref());
                 p.into()
             }
-            IndicesGetSettingsUrlParts::Name(ref name) => {
+            IndicesGetSettingsParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(11usize + name_str.len());
                 p.push_str("/_settings/");
@@ -3442,7 +3465,7 @@ impl<'a> IndicesGetSettingsUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html). Returns settings for one or more indices."]
 pub struct IndicesGetSettings<'a> {
     client: Elasticsearch,
-    parts: IndicesGetSettingsUrlParts<'a>,
+    parts: IndicesGetSettingsParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -3457,7 +3480,7 @@ pub struct IndicesGetSettings<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetSettings<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetSettingsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetSettingsParts<'a>) -> Self {
         IndicesGetSettings {
             client,
             parts,
@@ -3536,9 +3559,9 @@ impl<'a> IndicesGetSettings<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Settings API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3596,16 +3619,17 @@ impl<'a> IndicesGetSettings<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Template API"]
-pub enum IndicesGetTemplateUrlParts<'a> {
+#[doc = "API parts for the Indices Get Template API"]
+pub enum IndicesGetTemplateParts<'a> {
     None,
     Name(&'a [&'a str]),
 }
-impl<'a> IndicesGetTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetTemplateUrlParts::None => "/_template".into(),
-            IndicesGetTemplateUrlParts::Name(ref name) => {
+            IndicesGetTemplateParts::None => "/_template".into(),
+            IndicesGetTemplateParts::Name(ref name) => {
                 let name_str = name.join(",");
                 let mut p = String::with_capacity(11usize + name_str.len());
                 p.push_str("/_template/");
@@ -3619,7 +3643,7 @@ impl<'a> IndicesGetTemplateUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Returns an index template."]
 pub struct IndicesGetTemplate<'a> {
     client: Elasticsearch,
-    parts: IndicesGetTemplateUrlParts<'a>,
+    parts: IndicesGetTemplateParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
@@ -3631,7 +3655,7 @@ pub struct IndicesGetTemplate<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetTemplate<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetTemplateParts<'a>) -> Self {
         IndicesGetTemplate {
             client,
             parts,
@@ -3692,9 +3716,9 @@ impl<'a> IndicesGetTemplate<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3743,16 +3767,17 @@ impl<'a> IndicesGetTemplate<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Get Upgrade API"]
-pub enum IndicesGetUpgradeUrlParts<'a> {
+#[doc = "API parts for the Indices Get Upgrade API"]
+pub enum IndicesGetUpgradeParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesGetUpgradeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesGetUpgradeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Get Upgrade API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesGetUpgradeUrlParts::None => "/_upgrade".into(),
-            IndicesGetUpgradeUrlParts::Index(ref index) => {
+            IndicesGetUpgradeParts::None => "/_upgrade".into(),
+            IndicesGetUpgradeParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -3767,7 +3792,7 @@ impl<'a> IndicesGetUpgradeUrlParts<'a> {
 #[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html). The _upgrade API is no longer useful and will be removed."]
 pub struct IndicesGetUpgrade<'a> {
     client: Elasticsearch,
-    parts: IndicesGetUpgradeUrlParts<'a>,
+    parts: IndicesGetUpgradeParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -3778,7 +3803,7 @@ pub struct IndicesGetUpgrade<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesGetUpgrade<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesGetUpgradeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesGetUpgradeParts<'a>) -> Self {
         IndicesGetUpgrade {
             client,
             parts,
@@ -3833,9 +3858,9 @@ impl<'a> IndicesGetUpgrade<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Get Upgrade API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3881,14 +3906,15 @@ impl<'a> IndicesGetUpgrade<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Open API"]
-pub enum IndicesOpenUrlParts<'a> {
+#[doc = "API parts for the Indices Open API"]
+pub enum IndicesOpenParts<'a> {
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesOpenUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesOpenParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Open API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesOpenUrlParts::Index(ref index) => {
+            IndicesOpenParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(7usize + index_str.len());
                 p.push_str("/");
@@ -3903,7 +3929,7 @@ impl<'a> IndicesOpenUrlParts<'a> {
 #[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-open-close.html). Opens an index."]
 pub struct IndicesOpen<'a, B> {
     client: Elasticsearch,
-    parts: IndicesOpenUrlParts<'a>,
+    parts: IndicesOpenParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -3921,7 +3947,7 @@ impl<'a, B> IndicesOpen<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesOpenUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesOpenParts<'a>) -> Self {
         IndicesOpen {
             client,
             parts,
@@ -4017,9 +4043,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Open API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4074,14 +4100,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Put Alias API"]
-pub enum IndicesPutAliasUrlParts<'a> {
+#[doc = "API parts for the Indices Put Alias API"]
+pub enum IndicesPutAliasParts<'a> {
     IndexName(&'a [&'a str], &'a str),
 }
-impl<'a> IndicesPutAliasUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesPutAliasParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Put Alias API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesPutAliasUrlParts::IndexName(ref index, ref name) => {
+            IndicesPutAliasParts::IndexName(ref index, ref name) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + name.len());
                 p.push_str("/");
@@ -4097,7 +4124,7 @@ impl<'a> IndicesPutAliasUrlParts<'a> {
 #[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Creates or updates an alias."]
 pub struct IndicesPutAlias<'a, B> {
     client: Elasticsearch,
-    parts: IndicesPutAliasUrlParts<'a>,
+    parts: IndicesPutAliasParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4111,7 +4138,7 @@ impl<'a, B> IndicesPutAlias<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesPutAliasUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutAliasParts<'a>) -> Self {
         IndicesPutAlias {
             client,
             parts,
@@ -4179,9 +4206,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Put Alias API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4224,16 +4251,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Put Mapping API"]
-pub enum IndicesPutMappingUrlParts<'a> {
+#[doc = "API parts for the Indices Put Mapping API"]
+pub enum IndicesPutMappingParts<'a> {
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a str),
     Type(&'a str),
 }
-impl<'a> IndicesPutMappingUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesPutMappingParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Put Mapping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesPutMappingUrlParts::Index(ref index) => {
+            IndicesPutMappingParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -4241,7 +4269,7 @@ impl<'a> IndicesPutMappingUrlParts<'a> {
                 p.push_str("/_mapping");
                 p.into()
             }
-            IndicesPutMappingUrlParts::IndexType(ref index, ref ty) => {
+            IndicesPutMappingParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len() + ty.len());
                 p.push_str("/");
@@ -4251,7 +4279,7 @@ impl<'a> IndicesPutMappingUrlParts<'a> {
                 p.push_str("/_mapping");
                 p.into()
             }
-            IndicesPutMappingUrlParts::Type(ref ty) => {
+            IndicesPutMappingParts::Type(ref ty) => {
                 let mut p = String::with_capacity(11usize + ty.len());
                 p.push_str("/_mappings/");
                 p.push_str(ty.as_ref());
@@ -4264,7 +4292,7 @@ impl<'a> IndicesPutMappingUrlParts<'a> {
 #[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html). Updates the index mappings."]
 pub struct IndicesPutMapping<'a, B> {
     client: Elasticsearch,
-    parts: IndicesPutMappingUrlParts<'a>,
+    parts: IndicesPutMappingParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4282,7 +4310,7 @@ impl<'a, B> IndicesPutMapping<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesPutMappingUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutMappingParts<'a>) -> Self {
         IndicesPutMapping {
             client,
             parts,
@@ -4378,9 +4406,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Put Mapping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4435,16 +4463,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Put Settings API"]
-pub enum IndicesPutSettingsUrlParts<'a> {
+#[doc = "API parts for the Indices Put Settings API"]
+pub enum IndicesPutSettingsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesPutSettingsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesPutSettingsParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Put Settings API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesPutSettingsUrlParts::None => "/_settings".into(),
-            IndicesPutSettingsUrlParts::Index(ref index) => {
+            IndicesPutSettingsParts::None => "/_settings".into(),
+            IndicesPutSettingsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len());
                 p.push_str("/");
@@ -4459,7 +4488,7 @@ impl<'a> IndicesPutSettingsUrlParts<'a> {
 #[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html). Updates the index settings."]
 pub struct IndicesPutSettings<'a, B> {
     client: Elasticsearch,
-    parts: IndicesPutSettingsUrlParts<'a>,
+    parts: IndicesPutSettingsParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4478,7 +4507,7 @@ impl<'a, B> IndicesPutSettings<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesPutSettingsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutSettingsParts<'a>) -> Self {
         IndicesPutSettings {
             client,
             parts,
@@ -4581,9 +4610,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Put Settings API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4641,14 +4670,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Put Template API"]
-pub enum IndicesPutTemplateUrlParts<'a> {
+#[doc = "API parts for the Indices Put Template API"]
+pub enum IndicesPutTemplateParts<'a> {
     Name(&'a str),
 }
-impl<'a> IndicesPutTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesPutTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Put Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesPutTemplateUrlParts::Name(ref name) => {
+            IndicesPutTemplateParts::Name(ref name) => {
                 let mut p = String::with_capacity(11usize + name.len());
                 p.push_str("/_template/");
                 p.push_str(name.as_ref());
@@ -4661,7 +4691,7 @@ impl<'a> IndicesPutTemplateUrlParts<'a> {
 #[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates.html). Creates or updates an index template."]
 pub struct IndicesPutTemplate<'a, B> {
     client: Elasticsearch,
-    parts: IndicesPutTemplateUrlParts<'a>,
+    parts: IndicesPutTemplateParts<'a>,
     body: Option<B>,
     create: Option<bool>,
     error_trace: Option<bool>,
@@ -4679,7 +4709,7 @@ impl<'a, B> IndicesPutTemplate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesPutTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesPutTemplateParts<'a>) -> Self {
         IndicesPutTemplate {
             client,
             parts,
@@ -4775,9 +4805,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Put Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4832,16 +4862,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Recovery API"]
-pub enum IndicesRecoveryUrlParts<'a> {
+#[doc = "API parts for the Indices Recovery API"]
+pub enum IndicesRecoveryParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesRecoveryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesRecoveryParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Recovery API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesRecoveryUrlParts::None => "/_recovery".into(),
-            IndicesRecoveryUrlParts::Index(ref index) => {
+            IndicesRecoveryParts::None => "/_recovery".into(),
+            IndicesRecoveryParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len());
                 p.push_str("/");
@@ -4856,7 +4887,7 @@ impl<'a> IndicesRecoveryUrlParts<'a> {
 #[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-recovery.html). Returns information about ongoing index shard recoveries."]
 pub struct IndicesRecovery<'a> {
     client: Elasticsearch,
-    parts: IndicesRecoveryUrlParts<'a>,
+    parts: IndicesRecoveryParts<'a>,
     active_only: Option<bool>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
@@ -4866,7 +4897,7 @@ pub struct IndicesRecovery<'a> {
     source: Option<&'a str>,
 }
 impl<'a> IndicesRecovery<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesRecoveryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRecoveryParts<'a>) -> Self {
         IndicesRecovery {
             client,
             parts,
@@ -4915,9 +4946,9 @@ impl<'a> IndicesRecovery<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Recovery API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4960,16 +4991,17 @@ impl<'a> IndicesRecovery<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Refresh API"]
-pub enum IndicesRefreshUrlParts<'a> {
+#[doc = "API parts for the Indices Refresh API"]
+pub enum IndicesRefreshParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesRefreshUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesRefreshParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Refresh API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesRefreshUrlParts::None => "/_refresh".into(),
-            IndicesRefreshUrlParts::Index(ref index) => {
+            IndicesRefreshParts::None => "/_refresh".into(),
+            IndicesRefreshParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -4984,7 +5016,7 @@ impl<'a> IndicesRefreshUrlParts<'a> {
 #[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html). Performs the refresh operation in one or more indices."]
 pub struct IndicesRefresh<'a, B> {
     client: Elasticsearch,
-    parts: IndicesRefreshUrlParts<'a>,
+    parts: IndicesRefreshParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -4999,7 +5031,7 @@ impl<'a, B> IndicesRefresh<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesRefreshUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRefreshParts<'a>) -> Self {
         IndicesRefresh {
             client,
             parts,
@@ -5074,11 +5106,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Refresh API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -5125,22 +5157,23 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Rollover API"]
-pub enum IndicesRolloverUrlParts<'a> {
+#[doc = "API parts for the Indices Rollover API"]
+pub enum IndicesRolloverParts<'a> {
     Alias(&'a str),
     AliasNewIndex(&'a str, &'a str),
 }
-impl<'a> IndicesRolloverUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesRolloverParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Rollover API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesRolloverUrlParts::Alias(ref alias) => {
+            IndicesRolloverParts::Alias(ref alias) => {
                 let mut p = String::with_capacity(11usize + alias.len());
                 p.push_str("/");
                 p.push_str(alias.as_ref());
                 p.push_str("/_rollover");
                 p.into()
             }
-            IndicesRolloverUrlParts::AliasNewIndex(ref alias, ref new_index) => {
+            IndicesRolloverParts::AliasNewIndex(ref alias, ref new_index) => {
                 let mut p = String::with_capacity(12usize + alias.len() + new_index.len());
                 p.push_str("/");
                 p.push_str(alias.as_ref());
@@ -5155,7 +5188,7 @@ impl<'a> IndicesRolloverUrlParts<'a> {
 #[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html). Updates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 pub struct IndicesRollover<'a, B> {
     client: Elasticsearch,
-    parts: IndicesRolloverUrlParts<'a>,
+    parts: IndicesRolloverParts<'a>,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
@@ -5172,7 +5205,7 @@ impl<'a, B> IndicesRollover<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesRolloverUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesRolloverParts<'a>) -> Self {
         IndicesRollover {
             client,
             parts,
@@ -5261,9 +5294,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Rollover API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5315,16 +5348,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Segments API"]
-pub enum IndicesSegmentsUrlParts<'a> {
+#[doc = "API parts for the Indices Segments API"]
+pub enum IndicesSegmentsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesSegmentsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesSegmentsParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Segments API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesSegmentsUrlParts::None => "/_segments".into(),
-            IndicesSegmentsUrlParts::Index(ref index) => {
+            IndicesSegmentsParts::None => "/_segments".into(),
+            IndicesSegmentsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len());
                 p.push_str("/");
@@ -5339,7 +5373,7 @@ impl<'a> IndicesSegmentsUrlParts<'a> {
 #[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-segments.html). Provides low-level information about segments in a Lucene index."]
 pub struct IndicesSegments<'a> {
     client: Elasticsearch,
-    parts: IndicesSegmentsUrlParts<'a>,
+    parts: IndicesSegmentsParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -5351,7 +5385,7 @@ pub struct IndicesSegments<'a> {
     verbose: Option<bool>,
 }
 impl<'a> IndicesSegments<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesSegmentsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesSegmentsParts<'a>) -> Self {
         IndicesSegments {
             client,
             parts,
@@ -5412,9 +5446,9 @@ impl<'a> IndicesSegments<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Segments API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5463,16 +5497,17 @@ impl<'a> IndicesSegments<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Shard Stores API"]
-pub enum IndicesShardStoresUrlParts<'a> {
+#[doc = "API parts for the Indices Shard Stores API"]
+pub enum IndicesShardStoresParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesShardStoresUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesShardStoresParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Shard Stores API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesShardStoresUrlParts::None => "/_shard_stores".into(),
-            IndicesShardStoresUrlParts::Index(ref index) => {
+            IndicesShardStoresParts::None => "/_shard_stores".into(),
+            IndicesShardStoresParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(15usize + index_str.len());
                 p.push_str("/");
@@ -5487,7 +5522,7 @@ impl<'a> IndicesShardStoresUrlParts<'a> {
 #[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shards-stores.html). Provides store information for shard copies of indices."]
 pub struct IndicesShardStores<'a> {
     client: Elasticsearch,
-    parts: IndicesShardStoresUrlParts<'a>,
+    parts: IndicesShardStoresParts<'a>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -5499,7 +5534,7 @@ pub struct IndicesShardStores<'a> {
     status: Option<&'a [&'a str]>,
 }
 impl<'a> IndicesShardStores<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesShardStoresUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesShardStoresParts<'a>) -> Self {
         IndicesShardStores {
             client,
             parts,
@@ -5560,9 +5595,9 @@ impl<'a> IndicesShardStores<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Shard Stores API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5611,14 +5646,15 @@ impl<'a> IndicesShardStores<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Shrink API"]
-pub enum IndicesShrinkUrlParts<'a> {
+#[doc = "API parts for the Indices Shrink API"]
+pub enum IndicesShrinkParts<'a> {
     IndexTarget(&'a str, &'a str),
 }
-impl<'a> IndicesShrinkUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesShrinkParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Shrink API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesShrinkUrlParts::IndexTarget(ref index, ref target) => {
+            IndicesShrinkParts::IndexTarget(ref index, ref target) => {
                 let mut p = String::with_capacity(10usize + index.len() + target.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -5633,7 +5669,7 @@ impl<'a> IndicesShrinkUrlParts<'a> {
 #[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-shrink-index.html). Allow to shrink an existing index into a new index with fewer primary shards."]
 pub struct IndicesShrink<'a, B> {
     client: Elasticsearch,
-    parts: IndicesShrinkUrlParts<'a>,
+    parts: IndicesShrinkParts<'a>,
     body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
@@ -5649,7 +5685,7 @@ impl<'a, B> IndicesShrink<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesShrinkUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesShrinkParts<'a>) -> Self {
         IndicesShrink {
             client,
             parts,
@@ -5731,9 +5767,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Shrink API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5782,14 +5818,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Split API"]
-pub enum IndicesSplitUrlParts<'a> {
+#[doc = "API parts for the Indices Split API"]
+pub enum IndicesSplitParts<'a> {
     IndexTarget(&'a str, &'a str),
 }
-impl<'a> IndicesSplitUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesSplitParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Split API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesSplitUrlParts::IndexTarget(ref index, ref target) => {
+            IndicesSplitParts::IndexTarget(ref index, ref target) => {
                 let mut p = String::with_capacity(9usize + index.len() + target.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -5804,7 +5841,7 @@ impl<'a> IndicesSplitUrlParts<'a> {
 #[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-split-index.html). Allows you to split an existing index into a new index with more primary shards."]
 pub struct IndicesSplit<'a, B> {
     client: Elasticsearch,
-    parts: IndicesSplitUrlParts<'a>,
+    parts: IndicesSplitParts<'a>,
     body: Option<B>,
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
@@ -5820,7 +5857,7 @@ impl<'a, B> IndicesSplit<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesSplitUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesSplitParts<'a>) -> Self {
         IndicesSplit {
             client,
             parts,
@@ -5902,9 +5939,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Split API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5953,25 +5990,26 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Stats API"]
-pub enum IndicesStatsUrlParts<'a> {
+#[doc = "API parts for the Indices Stats API"]
+pub enum IndicesStatsParts<'a> {
     None,
     Metric(&'a [&'a str]),
     Index(&'a [&'a str]),
     IndexMetric(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesStatsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesStatsParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesStatsUrlParts::None => "/_stats".into(),
-            IndicesStatsUrlParts::Metric(ref metric) => {
+            IndicesStatsParts::None => "/_stats".into(),
+            IndicesStatsParts::Metric(ref metric) => {
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(8usize + metric_str.len());
                 p.push_str("/_stats/");
                 p.push_str(metric_str.as_ref());
                 p.into()
             }
-            IndicesStatsUrlParts::Index(ref index) => {
+            IndicesStatsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(8usize + index_str.len());
                 p.push_str("/");
@@ -5979,7 +6017,7 @@ impl<'a> IndicesStatsUrlParts<'a> {
                 p.push_str("/_stats");
                 p.into()
             }
-            IndicesStatsUrlParts::IndexMetric(ref index, ref metric) => {
+            IndicesStatsParts::IndexMetric(ref index, ref metric) => {
                 let index_str = index.join(",");
                 let metric_str = metric.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + metric_str.len());
@@ -5996,7 +6034,7 @@ impl<'a> IndicesStatsUrlParts<'a> {
 #[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-stats.html). Provides statistics on operations happening in an index."]
 pub struct IndicesStats<'a> {
     client: Elasticsearch,
-    parts: IndicesStatsUrlParts<'a>,
+    parts: IndicesStatsParts<'a>,
     completion_fields: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
@@ -6014,7 +6052,7 @@ pub struct IndicesStats<'a> {
     types: Option<&'a [&'a str]>,
 }
 impl<'a> IndicesStats<'a> {
-    pub fn new(client: Elasticsearch, parts: IndicesStatsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesStatsParts<'a>) -> Self {
         IndicesStats {
             client,
             parts,
@@ -6111,9 +6149,9 @@ impl<'a> IndicesStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6186,14 +6224,15 @@ impl<'a> IndicesStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Unfreeze API"]
-pub enum IndicesUnfreezeUrlParts<'a> {
+#[doc = "API parts for the Indices Unfreeze API"]
+pub enum IndicesUnfreezeParts<'a> {
     Index(&'a str),
 }
-impl<'a> IndicesUnfreezeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesUnfreezeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Unfreeze API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesUnfreezeUrlParts::Index(ref index) => {
+            IndicesUnfreezeParts::Index(ref index) => {
                 let mut p = String::with_capacity(11usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6207,7 +6246,7 @@ impl<'a> IndicesUnfreezeUrlParts<'a> {
 #[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/frozen.html)."]
 pub struct IndicesUnfreeze<'a, B> {
     client: Elasticsearch,
-    parts: IndicesUnfreezeUrlParts<'a>,
+    parts: IndicesUnfreezeParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6225,7 +6264,7 @@ impl<'a, B> IndicesUnfreeze<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesUnfreezeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesUnfreezeParts<'a>) -> Self {
         IndicesUnfreeze {
             client,
             parts,
@@ -6321,9 +6360,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Unfreeze API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6378,14 +6417,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Update Aliases API"]
-pub enum IndicesUpdateAliasesUrlParts {
+#[doc = "API parts for the Indices Update Aliases API"]
+pub enum IndicesUpdateAliasesParts {
     None,
 }
-impl IndicesUpdateAliasesUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl IndicesUpdateAliasesParts {
+    #[doc = "Builds a relative URL path to the Indices Update Aliases API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesUpdateAliasesUrlParts::None => "/_aliases".into(),
+            IndicesUpdateAliasesParts::None => "/_aliases".into(),
         }
     }
 }
@@ -6393,7 +6433,7 @@ impl IndicesUpdateAliasesUrlParts {
 #[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html). Updates index aliases."]
 pub struct IndicesUpdateAliases<'a, B> {
     client: Elasticsearch,
-    parts: IndicesUpdateAliasesUrlParts,
+    parts: IndicesUpdateAliasesParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -6410,7 +6450,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         IndicesUpdateAliases {
             client,
-            parts: IndicesUpdateAliasesUrlParts::None,
+            parts: IndicesUpdateAliasesParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6475,9 +6515,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Update Aliases API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6520,16 +6560,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Upgrade API"]
-pub enum IndicesUpgradeUrlParts<'a> {
+#[doc = "API parts for the Indices Upgrade API"]
+pub enum IndicesUpgradeParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> IndicesUpgradeUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesUpgradeParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Upgrade API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesUpgradeUrlParts::None => "/_upgrade".into(),
-            IndicesUpgradeUrlParts::Index(ref index) => {
+            IndicesUpgradeParts::None => "/_upgrade".into(),
+            IndicesUpgradeParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -6544,7 +6585,7 @@ impl<'a> IndicesUpgradeUrlParts<'a> {
 #[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-upgrade.html). The _upgrade API is no longer useful and will be removed."]
 pub struct IndicesUpgrade<'a, B> {
     client: Elasticsearch,
-    parts: IndicesUpgradeUrlParts<'a>,
+    parts: IndicesUpgradeParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6561,7 +6602,7 @@ impl<'a, B> IndicesUpgrade<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesUpgradeUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesUpgradeParts<'a>) -> Self {
         IndicesUpgrade {
             client,
             parts,
@@ -6650,9 +6691,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Upgrade API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6704,17 +6745,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Indices Validate Query API"]
-pub enum IndicesValidateQueryUrlParts<'a> {
+#[doc = "API parts for the Indices Validate Query API"]
+pub enum IndicesValidateQueryParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> IndicesValidateQueryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndicesValidateQueryParts<'a> {
+    #[doc = "Builds a relative URL path to the Indices Validate Query API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndicesValidateQueryUrlParts::None => "/_validate/query".into(),
-            IndicesValidateQueryUrlParts::Index(ref index) => {
+            IndicesValidateQueryParts::None => "/_validate/query".into(),
+            IndicesValidateQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(17usize + index_str.len());
                 p.push_str("/");
@@ -6722,7 +6764,7 @@ impl<'a> IndicesValidateQueryUrlParts<'a> {
                 p.push_str("/_validate/query");
                 p.into()
             }
-            IndicesValidateQueryUrlParts::IndexType(ref index, ref ty) => {
+            IndicesValidateQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(18usize + index_str.len() + ty_str.len());
@@ -6740,7 +6782,7 @@ impl<'a> IndicesValidateQueryUrlParts<'a> {
 #[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html). Allows a user to validate a potentially expensive query without executing it."]
 pub struct IndicesValidateQuery<'a, B> {
     client: Elasticsearch,
-    parts: IndicesValidateQueryUrlParts<'a>,
+    parts: IndicesValidateQueryParts<'a>,
     all_shards: Option<bool>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
@@ -6764,7 +6806,7 @@ impl<'a, B> IndicesValidateQuery<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndicesValidateQueryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndicesValidateQueryParts<'a>) -> Self {
         IndicesValidateQuery {
             client,
             parts,
@@ -6902,11 +6944,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Indices Validate Query API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -6988,191 +7030,167 @@ impl Indices {
         Indices { client }
     }
     #[doc = "Performs the analysis process on a text and return the tokens breakdown of the text."]
-    pub fn analyze<'a>(&self, parts: IndicesAnalyzeUrlParts<'a>) -> IndicesAnalyze<'a, ()> {
+    pub fn analyze<'a>(&self, parts: IndicesAnalyzeParts<'a>) -> IndicesAnalyze<'a, ()> {
         IndicesAnalyze::new(self.client.clone(), parts)
     }
     #[doc = "Clears all or specific caches for one or more indices."]
-    pub fn clear_cache<'a>(
-        &self,
-        parts: IndicesClearCacheUrlParts<'a>,
-    ) -> IndicesClearCache<'a, ()> {
+    pub fn clear_cache<'a>(&self, parts: IndicesClearCacheParts<'a>) -> IndicesClearCache<'a, ()> {
         IndicesClearCache::new(self.client.clone(), parts)
     }
     #[doc = "Clones an index"]
-    pub fn clone<'a>(&self, parts: IndicesCloneUrlParts<'a>) -> IndicesClone<'a, ()> {
+    pub fn clone<'a>(&self, parts: IndicesCloneParts<'a>) -> IndicesClone<'a, ()> {
         IndicesClone::new(self.client.clone(), parts)
     }
     #[doc = "Closes an index."]
-    pub fn close<'a>(&self, parts: IndicesCloseUrlParts<'a>) -> IndicesClose<'a, ()> {
+    pub fn close<'a>(&self, parts: IndicesCloseParts<'a>) -> IndicesClose<'a, ()> {
         IndicesClose::new(self.client.clone(), parts)
     }
     #[doc = "Creates an index with optional settings and mappings."]
-    pub fn create<'a>(&self, parts: IndicesCreateUrlParts<'a>) -> IndicesCreate<'a, ()> {
+    pub fn create<'a>(&self, parts: IndicesCreateParts<'a>) -> IndicesCreate<'a, ()> {
         IndicesCreate::new(self.client.clone(), parts)
     }
     #[doc = "Deletes an index."]
-    pub fn delete<'a>(&self, parts: IndicesDeleteUrlParts<'a>) -> IndicesDelete<'a> {
+    pub fn delete<'a>(&self, parts: IndicesDeleteParts<'a>) -> IndicesDelete<'a> {
         IndicesDelete::new(self.client.clone(), parts)
     }
     #[doc = "Deletes an alias."]
-    pub fn delete_alias<'a>(
-        &self,
-        parts: IndicesDeleteAliasUrlParts<'a>,
-    ) -> IndicesDeleteAlias<'a> {
+    pub fn delete_alias<'a>(&self, parts: IndicesDeleteAliasParts<'a>) -> IndicesDeleteAlias<'a> {
         IndicesDeleteAlias::new(self.client.clone(), parts)
     }
     #[doc = "Deletes an index template."]
     pub fn delete_template<'a>(
         &self,
-        parts: IndicesDeleteTemplateUrlParts<'a>,
+        parts: IndicesDeleteTemplateParts<'a>,
     ) -> IndicesDeleteTemplate<'a> {
         IndicesDeleteTemplate::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about whether a particular index exists."]
-    pub fn exists<'a>(&self, parts: IndicesExistsUrlParts<'a>) -> IndicesExists<'a> {
+    pub fn exists<'a>(&self, parts: IndicesExistsParts<'a>) -> IndicesExists<'a> {
         IndicesExists::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about whether a particular alias exists."]
-    pub fn exists_alias<'a>(
-        &self,
-        parts: IndicesExistsAliasUrlParts<'a>,
-    ) -> IndicesExistsAlias<'a> {
+    pub fn exists_alias<'a>(&self, parts: IndicesExistsAliasParts<'a>) -> IndicesExistsAlias<'a> {
         IndicesExistsAlias::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about whether a particular index template exists."]
     pub fn exists_template<'a>(
         &self,
-        parts: IndicesExistsTemplateUrlParts<'a>,
+        parts: IndicesExistsTemplateParts<'a>,
     ) -> IndicesExistsTemplate<'a> {
         IndicesExistsTemplate::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about whether a particular document type exists. (DEPRECATED)"]
-    pub fn exists_type<'a>(&self, parts: IndicesExistsTypeUrlParts<'a>) -> IndicesExistsType<'a> {
+    pub fn exists_type<'a>(&self, parts: IndicesExistsTypeParts<'a>) -> IndicesExistsType<'a> {
         IndicesExistsType::new(self.client.clone(), parts)
     }
     #[doc = "Performs the flush operation on one or more indices."]
-    pub fn flush<'a>(&self, parts: IndicesFlushUrlParts<'a>) -> IndicesFlush<'a, ()> {
+    pub fn flush<'a>(&self, parts: IndicesFlushParts<'a>) -> IndicesFlush<'a, ()> {
         IndicesFlush::new(self.client.clone(), parts)
     }
     #[doc = "Performs a synced flush operation on one or more indices."]
     pub fn flush_synced<'a>(
         &self,
-        parts: IndicesFlushSyncedUrlParts<'a>,
+        parts: IndicesFlushSyncedParts<'a>,
     ) -> IndicesFlushSynced<'a, ()> {
         IndicesFlushSynced::new(self.client.clone(), parts)
     }
     #[doc = "Performs the force merge operation on one or more indices."]
-    pub fn forcemerge<'a>(
-        &self,
-        parts: IndicesForcemergeUrlParts<'a>,
-    ) -> IndicesForcemerge<'a, ()> {
+    pub fn forcemerge<'a>(&self, parts: IndicesForcemergeParts<'a>) -> IndicesForcemerge<'a, ()> {
         IndicesForcemerge::new(self.client.clone(), parts)
     }
-    pub fn freeze<'a>(&self, parts: IndicesFreezeUrlParts<'a>) -> IndicesFreeze<'a, ()> {
+    pub fn freeze<'a>(&self, parts: IndicesFreezeParts<'a>) -> IndicesFreeze<'a, ()> {
         IndicesFreeze::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about one or more indices."]
-    pub fn get<'a>(&self, parts: IndicesGetUrlParts<'a>) -> IndicesGet<'a> {
+    pub fn get<'a>(&self, parts: IndicesGetParts<'a>) -> IndicesGet<'a> {
         IndicesGet::new(self.client.clone(), parts)
     }
     #[doc = "Returns an alias."]
-    pub fn get_alias<'a>(&self, parts: IndicesGetAliasUrlParts<'a>) -> IndicesGetAlias<'a> {
+    pub fn get_alias<'a>(&self, parts: IndicesGetAliasParts<'a>) -> IndicesGetAlias<'a> {
         IndicesGetAlias::new(self.client.clone(), parts)
     }
     #[doc = "Returns mapping for one or more fields."]
     pub fn get_field_mapping<'a>(
         &self,
-        parts: IndicesGetFieldMappingUrlParts<'a>,
+        parts: IndicesGetFieldMappingParts<'a>,
     ) -> IndicesGetFieldMapping<'a> {
         IndicesGetFieldMapping::new(self.client.clone(), parts)
     }
     #[doc = "Returns mappings for one or more indices."]
-    pub fn get_mapping<'a>(&self, parts: IndicesGetMappingUrlParts<'a>) -> IndicesGetMapping<'a> {
+    pub fn get_mapping<'a>(&self, parts: IndicesGetMappingParts<'a>) -> IndicesGetMapping<'a> {
         IndicesGetMapping::new(self.client.clone(), parts)
     }
     #[doc = "Returns settings for one or more indices."]
-    pub fn get_settings<'a>(
-        &self,
-        parts: IndicesGetSettingsUrlParts<'a>,
-    ) -> IndicesGetSettings<'a> {
+    pub fn get_settings<'a>(&self, parts: IndicesGetSettingsParts<'a>) -> IndicesGetSettings<'a> {
         IndicesGetSettings::new(self.client.clone(), parts)
     }
     #[doc = "Returns an index template."]
-    pub fn get_template<'a>(
-        &self,
-        parts: IndicesGetTemplateUrlParts<'a>,
-    ) -> IndicesGetTemplate<'a> {
+    pub fn get_template<'a>(&self, parts: IndicesGetTemplateParts<'a>) -> IndicesGetTemplate<'a> {
         IndicesGetTemplate::new(self.client.clone(), parts)
     }
     #[doc = "The _upgrade API is no longer useful and will be removed."]
-    pub fn get_upgrade<'a>(&self, parts: IndicesGetUpgradeUrlParts<'a>) -> IndicesGetUpgrade<'a> {
+    pub fn get_upgrade<'a>(&self, parts: IndicesGetUpgradeParts<'a>) -> IndicesGetUpgrade<'a> {
         IndicesGetUpgrade::new(self.client.clone(), parts)
     }
     #[doc = "Opens an index."]
-    pub fn open<'a>(&self, parts: IndicesOpenUrlParts<'a>) -> IndicesOpen<'a, ()> {
+    pub fn open<'a>(&self, parts: IndicesOpenParts<'a>) -> IndicesOpen<'a, ()> {
         IndicesOpen::new(self.client.clone(), parts)
     }
     #[doc = "Creates or updates an alias."]
-    pub fn put_alias<'a>(&self, parts: IndicesPutAliasUrlParts<'a>) -> IndicesPutAlias<'a, ()> {
+    pub fn put_alias<'a>(&self, parts: IndicesPutAliasParts<'a>) -> IndicesPutAlias<'a, ()> {
         IndicesPutAlias::new(self.client.clone(), parts)
     }
     #[doc = "Updates the index mappings."]
-    pub fn put_mapping<'a>(
-        &self,
-        parts: IndicesPutMappingUrlParts<'a>,
-    ) -> IndicesPutMapping<'a, ()> {
+    pub fn put_mapping<'a>(&self, parts: IndicesPutMappingParts<'a>) -> IndicesPutMapping<'a, ()> {
         IndicesPutMapping::new(self.client.clone(), parts)
     }
     #[doc = "Updates the index settings."]
     pub fn put_settings<'a>(
         &self,
-        parts: IndicesPutSettingsUrlParts<'a>,
+        parts: IndicesPutSettingsParts<'a>,
     ) -> IndicesPutSettings<'a, ()> {
         IndicesPutSettings::new(self.client.clone(), parts)
     }
     #[doc = "Creates or updates an index template."]
     pub fn put_template<'a>(
         &self,
-        parts: IndicesPutTemplateUrlParts<'a>,
+        parts: IndicesPutTemplateParts<'a>,
     ) -> IndicesPutTemplate<'a, ()> {
         IndicesPutTemplate::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about ongoing index shard recoveries."]
-    pub fn recovery<'a>(&self, parts: IndicesRecoveryUrlParts<'a>) -> IndicesRecovery<'a> {
+    pub fn recovery<'a>(&self, parts: IndicesRecoveryParts<'a>) -> IndicesRecovery<'a> {
         IndicesRecovery::new(self.client.clone(), parts)
     }
     #[doc = "Performs the refresh operation in one or more indices."]
-    pub fn refresh<'a>(&self, parts: IndicesRefreshUrlParts<'a>) -> IndicesRefresh<'a, ()> {
+    pub fn refresh<'a>(&self, parts: IndicesRefreshParts<'a>) -> IndicesRefresh<'a, ()> {
         IndicesRefresh::new(self.client.clone(), parts)
     }
     #[doc = "Updates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
-    pub fn rollover<'a>(&self, parts: IndicesRolloverUrlParts<'a>) -> IndicesRollover<'a, ()> {
+    pub fn rollover<'a>(&self, parts: IndicesRolloverParts<'a>) -> IndicesRollover<'a, ()> {
         IndicesRollover::new(self.client.clone(), parts)
     }
     #[doc = "Provides low-level information about segments in a Lucene index."]
-    pub fn segments<'a>(&self, parts: IndicesSegmentsUrlParts<'a>) -> IndicesSegments<'a> {
+    pub fn segments<'a>(&self, parts: IndicesSegmentsParts<'a>) -> IndicesSegments<'a> {
         IndicesSegments::new(self.client.clone(), parts)
     }
     #[doc = "Provides store information for shard copies of indices."]
-    pub fn shard_stores<'a>(
-        &self,
-        parts: IndicesShardStoresUrlParts<'a>,
-    ) -> IndicesShardStores<'a> {
+    pub fn shard_stores<'a>(&self, parts: IndicesShardStoresParts<'a>) -> IndicesShardStores<'a> {
         IndicesShardStores::new(self.client.clone(), parts)
     }
     #[doc = "Allow to shrink an existing index into a new index with fewer primary shards."]
-    pub fn shrink<'a>(&self, parts: IndicesShrinkUrlParts<'a>) -> IndicesShrink<'a, ()> {
+    pub fn shrink<'a>(&self, parts: IndicesShrinkParts<'a>) -> IndicesShrink<'a, ()> {
         IndicesShrink::new(self.client.clone(), parts)
     }
     #[doc = "Allows you to split an existing index into a new index with more primary shards."]
-    pub fn split<'a>(&self, parts: IndicesSplitUrlParts<'a>) -> IndicesSplit<'a, ()> {
+    pub fn split<'a>(&self, parts: IndicesSplitParts<'a>) -> IndicesSplit<'a, ()> {
         IndicesSplit::new(self.client.clone(), parts)
     }
     #[doc = "Provides statistics on operations happening in an index."]
-    pub fn stats<'a>(&self, parts: IndicesStatsUrlParts<'a>) -> IndicesStats<'a> {
+    pub fn stats<'a>(&self, parts: IndicesStatsParts<'a>) -> IndicesStats<'a> {
         IndicesStats::new(self.client.clone(), parts)
     }
-    pub fn unfreeze<'a>(&self, parts: IndicesUnfreezeUrlParts<'a>) -> IndicesUnfreeze<'a, ()> {
+    pub fn unfreeze<'a>(&self, parts: IndicesUnfreezeParts<'a>) -> IndicesUnfreeze<'a, ()> {
         IndicesUnfreeze::new(self.client.clone(), parts)
     }
     #[doc = "Updates index aliases."]
@@ -7180,13 +7198,13 @@ impl Indices {
         IndicesUpdateAliases::new(self.client.clone())
     }
     #[doc = "The _upgrade API is no longer useful and will be removed."]
-    pub fn upgrade<'a>(&self, parts: IndicesUpgradeUrlParts<'a>) -> IndicesUpgrade<'a, ()> {
+    pub fn upgrade<'a>(&self, parts: IndicesUpgradeParts<'a>) -> IndicesUpgrade<'a, ()> {
         IndicesUpgrade::new(self.client.clone(), parts)
     }
     #[doc = "Allows a user to validate a potentially expensive query without executing it."]
     pub fn validate_query<'a>(
         &self,
-        parts: IndicesValidateQueryUrlParts<'a>,
+        parts: IndicesValidateQueryParts<'a>,
     ) -> IndicesValidateQuery<'a, ()> {
         IndicesValidateQuery::new(self.client.clone(), parts)
     }

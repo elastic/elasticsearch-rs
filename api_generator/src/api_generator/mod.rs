@@ -50,9 +50,11 @@ pub enum HttpMethod {
     Delete,
 }
 
+/// Converts a `HttpMethod` in the REST spec, into the AST for
+/// a `Method` in the elasticsearch client
 impl quote::ToTokens for HttpMethod {
     fn to_tokens(&self, tokens: &mut quote::Tokens) {
-        tokens.append("HttpMethod");
+        tokens.append("Method");
         tokens.append("::");
         match *self {
             HttpMethod::Head => tokens.append("Head"),

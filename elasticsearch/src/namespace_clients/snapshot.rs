@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Cleanup Repository API"]
-pub enum SnapshotCleanupRepositoryUrlParts<'a> {
+#[doc = "API parts for the Snapshot Cleanup Repository API"]
+pub enum SnapshotCleanupRepositoryParts<'a> {
     Repository(&'a str),
 }
-impl<'a> SnapshotCleanupRepositoryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotCleanupRepositoryParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Cleanup Repository API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotCleanupRepositoryUrlParts::Repository(ref repository) => {
+            SnapshotCleanupRepositoryParts::Repository(ref repository) => {
                 let mut p = String::with_capacity(20usize + repository.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -47,7 +50,7 @@ impl<'a> SnapshotCleanupRepositoryUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Removes stale data from repository."]
 pub struct SnapshotCleanupRepository<'a, B> {
     client: Elasticsearch,
-    parts: SnapshotCleanupRepositoryUrlParts<'a>,
+    parts: SnapshotCleanupRepositoryParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -61,7 +64,7 @@ impl<'a, B> SnapshotCleanupRepository<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SnapshotCleanupRepositoryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotCleanupRepositoryParts<'a>) -> Self {
         SnapshotCleanupRepository {
             client,
             parts,
@@ -129,9 +132,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Cleanup Repository API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -174,14 +177,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Create API"]
-pub enum SnapshotCreateUrlParts<'a> {
+#[doc = "API parts for the Snapshot Create API"]
+pub enum SnapshotCreateParts<'a> {
     RepositorySnapshot(&'a str, &'a str),
 }
-impl<'a> SnapshotCreateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotCreateParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Create API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotCreateUrlParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SnapshotCreateParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -196,7 +200,7 @@ impl<'a> SnapshotCreateUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a snapshot in a repository."]
 pub struct SnapshotCreate<'a, B> {
     client: Elasticsearch,
-    parts: SnapshotCreateUrlParts<'a>,
+    parts: SnapshotCreateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -210,7 +214,7 @@ impl<'a, B> SnapshotCreate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SnapshotCreateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotCreateParts<'a>) -> Self {
         SnapshotCreate {
             client,
             parts,
@@ -278,9 +282,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Create API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -323,14 +327,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Create Repository API"]
-pub enum SnapshotCreateRepositoryUrlParts<'a> {
+#[doc = "API parts for the Snapshot Create Repository API"]
+pub enum SnapshotCreateRepositoryParts<'a> {
     Repository(&'a str),
 }
-impl<'a> SnapshotCreateRepositoryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotCreateRepositoryParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Create Repository API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotCreateRepositoryUrlParts::Repository(ref repository) => {
+            SnapshotCreateRepositoryParts::Repository(ref repository) => {
                 let mut p = String::with_capacity(11usize + repository.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -343,7 +348,7 @@ impl<'a> SnapshotCreateRepositoryUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a repository."]
 pub struct SnapshotCreateRepository<'a, B> {
     client: Elasticsearch,
-    parts: SnapshotCreateRepositoryUrlParts<'a>,
+    parts: SnapshotCreateRepositoryParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -358,7 +363,7 @@ impl<'a, B> SnapshotCreateRepository<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SnapshotCreateRepositoryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotCreateRepositoryParts<'a>) -> Self {
         SnapshotCreateRepository {
             client,
             parts,
@@ -433,9 +438,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Create Repository API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -481,14 +486,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Delete API"]
-pub enum SnapshotDeleteUrlParts<'a> {
+#[doc = "API parts for the Snapshot Delete API"]
+pub enum SnapshotDeleteParts<'a> {
     RepositorySnapshot(&'a str, &'a str),
 }
-impl<'a> SnapshotDeleteUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotDeleteParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Delete API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotDeleteUrlParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SnapshotDeleteParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let mut p = String::with_capacity(12usize + repository.len() + snapshot.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -503,7 +509,7 @@ impl<'a> SnapshotDeleteUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a snapshot."]
 pub struct SnapshotDelete<'a> {
     client: Elasticsearch,
-    parts: SnapshotDeleteUrlParts<'a>,
+    parts: SnapshotDeleteParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -512,7 +518,7 @@ pub struct SnapshotDelete<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotDelete<'a> {
-    pub fn new(client: Elasticsearch, parts: SnapshotDeleteUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotDeleteParts<'a>) -> Self {
         SnapshotDelete {
             client,
             parts,
@@ -555,9 +561,9 @@ impl<'a> SnapshotDelete<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Delete API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -597,14 +603,15 @@ impl<'a> SnapshotDelete<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Delete Repository API"]
-pub enum SnapshotDeleteRepositoryUrlParts<'a> {
+#[doc = "API parts for the Snapshot Delete Repository API"]
+pub enum SnapshotDeleteRepositoryParts<'a> {
     Repository(&'a [&'a str]),
 }
-impl<'a> SnapshotDeleteRepositoryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotDeleteRepositoryParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Delete Repository API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotDeleteRepositoryUrlParts::Repository(ref repository) => {
+            SnapshotDeleteRepositoryParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
                 let mut p = String::with_capacity(11usize + repository_str.len());
                 p.push_str("/_snapshot/");
@@ -618,7 +625,7 @@ impl<'a> SnapshotDeleteRepositoryUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a repository."]
 pub struct SnapshotDeleteRepository<'a> {
     client: Elasticsearch,
-    parts: SnapshotDeleteRepositoryUrlParts<'a>,
+    parts: SnapshotDeleteRepositoryParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -628,7 +635,7 @@ pub struct SnapshotDeleteRepository<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> SnapshotDeleteRepository<'a> {
-    pub fn new(client: Elasticsearch, parts: SnapshotDeleteRepositoryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotDeleteRepositoryParts<'a>) -> Self {
         SnapshotDeleteRepository {
             client,
             parts,
@@ -677,9 +684,9 @@ impl<'a> SnapshotDeleteRepository<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Delete Repository API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -722,14 +729,15 @@ impl<'a> SnapshotDeleteRepository<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Get API"]
-pub enum SnapshotGetUrlParts<'a> {
+#[doc = "API parts for the Snapshot Get API"]
+pub enum SnapshotGetParts<'a> {
     RepositorySnapshot(&'a str, &'a [&'a str]),
 }
-impl<'a> SnapshotGetUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotGetParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Get API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotGetUrlParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SnapshotGetParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let snapshot_str = snapshot.join(",");
                 let mut p = String::with_capacity(12usize + repository.len() + snapshot_str.len());
                 p.push_str("/_snapshot/");
@@ -745,7 +753,7 @@ impl<'a> SnapshotGetUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a snapshot."]
 pub struct SnapshotGet<'a> {
     client: Elasticsearch,
-    parts: SnapshotGetUrlParts<'a>,
+    parts: SnapshotGetParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -756,7 +764,7 @@ pub struct SnapshotGet<'a> {
     verbose: Option<bool>,
 }
 impl<'a> SnapshotGet<'a> {
-    pub fn new(client: Elasticsearch, parts: SnapshotGetUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotGetParts<'a>) -> Self {
         SnapshotGet {
             client,
             parts,
@@ -811,9 +819,9 @@ impl<'a> SnapshotGet<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Get API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -859,16 +867,17 @@ impl<'a> SnapshotGet<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Get Repository API"]
-pub enum SnapshotGetRepositoryUrlParts<'a> {
+#[doc = "API parts for the Snapshot Get Repository API"]
+pub enum SnapshotGetRepositoryParts<'a> {
     None,
     Repository(&'a [&'a str]),
 }
-impl<'a> SnapshotGetRepositoryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotGetRepositoryParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Get Repository API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotGetRepositoryUrlParts::None => "/_snapshot".into(),
-            SnapshotGetRepositoryUrlParts::Repository(ref repository) => {
+            SnapshotGetRepositoryParts::None => "/_snapshot".into(),
+            SnapshotGetRepositoryParts::Repository(ref repository) => {
                 let repository_str = repository.join(",");
                 let mut p = String::with_capacity(11usize + repository_str.len());
                 p.push_str("/_snapshot/");
@@ -882,7 +891,7 @@ impl<'a> SnapshotGetRepositoryUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a repository."]
 pub struct SnapshotGetRepository<'a> {
     client: Elasticsearch,
-    parts: SnapshotGetRepositoryUrlParts<'a>,
+    parts: SnapshotGetRepositoryParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -892,7 +901,7 @@ pub struct SnapshotGetRepository<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotGetRepository<'a> {
-    pub fn new(client: Elasticsearch, parts: SnapshotGetRepositoryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotGetRepositoryParts<'a>) -> Self {
         SnapshotGetRepository {
             client,
             parts,
@@ -941,9 +950,9 @@ impl<'a> SnapshotGetRepository<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Get Repository API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -986,14 +995,15 @@ impl<'a> SnapshotGetRepository<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Restore API"]
-pub enum SnapshotRestoreUrlParts<'a> {
+#[doc = "API parts for the Snapshot Restore API"]
+pub enum SnapshotRestoreParts<'a> {
     RepositorySnapshot(&'a str, &'a str),
 }
-impl<'a> SnapshotRestoreUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotRestoreParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Restore API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotRestoreUrlParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SnapshotRestoreParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let mut p = String::with_capacity(21usize + repository.len() + snapshot.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -1009,7 +1019,7 @@ impl<'a> SnapshotRestoreUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Restores a snapshot."]
 pub struct SnapshotRestore<'a, B> {
     client: Elasticsearch,
-    parts: SnapshotRestoreUrlParts<'a>,
+    parts: SnapshotRestoreParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1023,7 +1033,7 @@ impl<'a, B> SnapshotRestore<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SnapshotRestoreUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotRestoreParts<'a>) -> Self {
         SnapshotRestore {
             client,
             parts,
@@ -1091,9 +1101,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Restore API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1136,24 +1146,25 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Status API"]
-pub enum SnapshotStatusUrlParts<'a> {
+#[doc = "API parts for the Snapshot Status API"]
+pub enum SnapshotStatusParts<'a> {
     None,
     Repository(&'a str),
     RepositorySnapshot(&'a str, &'a [&'a str]),
 }
-impl<'a> SnapshotStatusUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotStatusParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Status API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotStatusUrlParts::None => "/_snapshot/_status".into(),
-            SnapshotStatusUrlParts::Repository(ref repository) => {
+            SnapshotStatusParts::None => "/_snapshot/_status".into(),
+            SnapshotStatusParts::Repository(ref repository) => {
                 let mut p = String::with_capacity(19usize + repository.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
                 p.push_str("/_status");
                 p.into()
             }
-            SnapshotStatusUrlParts::RepositorySnapshot(ref repository, ref snapshot) => {
+            SnapshotStatusParts::RepositorySnapshot(ref repository, ref snapshot) => {
                 let snapshot_str = snapshot.join(",");
                 let mut p = String::with_capacity(20usize + repository.len() + snapshot_str.len());
                 p.push_str("/_snapshot/");
@@ -1170,7 +1181,7 @@ impl<'a> SnapshotStatusUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about the status of a snapshot."]
 pub struct SnapshotStatus<'a> {
     client: Elasticsearch,
-    parts: SnapshotStatusUrlParts<'a>,
+    parts: SnapshotStatusParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1180,7 +1191,7 @@ pub struct SnapshotStatus<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SnapshotStatus<'a> {
-    pub fn new(client: Elasticsearch, parts: SnapshotStatusUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotStatusParts<'a>) -> Self {
         SnapshotStatus {
             client,
             parts,
@@ -1229,9 +1240,9 @@ impl<'a> SnapshotStatus<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Status API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1274,14 +1285,15 @@ impl<'a> SnapshotStatus<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Snapshot Verify Repository API"]
-pub enum SnapshotVerifyRepositoryUrlParts<'a> {
+#[doc = "API parts for the Snapshot Verify Repository API"]
+pub enum SnapshotVerifyRepositoryParts<'a> {
     Repository(&'a str),
 }
-impl<'a> SnapshotVerifyRepositoryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SnapshotVerifyRepositoryParts<'a> {
+    #[doc = "Builds a relative URL path to the Snapshot Verify Repository API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SnapshotVerifyRepositoryUrlParts::Repository(ref repository) => {
+            SnapshotVerifyRepositoryParts::Repository(ref repository) => {
                 let mut p = String::with_capacity(19usize + repository.len());
                 p.push_str("/_snapshot/");
                 p.push_str(repository.as_ref());
@@ -1295,7 +1307,7 @@ impl<'a> SnapshotVerifyRepositoryUrlParts<'a> {
 #[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Verifies a repository."]
 pub struct SnapshotVerifyRepository<'a, B> {
     client: Elasticsearch,
-    parts: SnapshotVerifyRepositoryUrlParts<'a>,
+    parts: SnapshotVerifyRepositoryParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1309,7 +1321,7 @@ impl<'a, B> SnapshotVerifyRepository<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SnapshotVerifyRepositoryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SnapshotVerifyRepositoryParts<'a>) -> Self {
         SnapshotVerifyRepository {
             client,
             parts,
@@ -1377,9 +1389,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Snapshot Verify Repository API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1432,55 +1444,55 @@ impl Snapshot {
     #[doc = "Removes stale data from repository."]
     pub fn cleanup_repository<'a>(
         &self,
-        parts: SnapshotCleanupRepositoryUrlParts<'a>,
+        parts: SnapshotCleanupRepositoryParts<'a>,
     ) -> SnapshotCleanupRepository<'a, ()> {
         SnapshotCleanupRepository::new(self.client.clone(), parts)
     }
     #[doc = "Creates a snapshot in a repository."]
-    pub fn create<'a>(&self, parts: SnapshotCreateUrlParts<'a>) -> SnapshotCreate<'a, ()> {
+    pub fn create<'a>(&self, parts: SnapshotCreateParts<'a>) -> SnapshotCreate<'a, ()> {
         SnapshotCreate::new(self.client.clone(), parts)
     }
     #[doc = "Creates a repository."]
     pub fn create_repository<'a>(
         &self,
-        parts: SnapshotCreateRepositoryUrlParts<'a>,
+        parts: SnapshotCreateRepositoryParts<'a>,
     ) -> SnapshotCreateRepository<'a, ()> {
         SnapshotCreateRepository::new(self.client.clone(), parts)
     }
     #[doc = "Deletes a snapshot."]
-    pub fn delete<'a>(&self, parts: SnapshotDeleteUrlParts<'a>) -> SnapshotDelete<'a> {
+    pub fn delete<'a>(&self, parts: SnapshotDeleteParts<'a>) -> SnapshotDelete<'a> {
         SnapshotDelete::new(self.client.clone(), parts)
     }
     #[doc = "Deletes a repository."]
     pub fn delete_repository<'a>(
         &self,
-        parts: SnapshotDeleteRepositoryUrlParts<'a>,
+        parts: SnapshotDeleteRepositoryParts<'a>,
     ) -> SnapshotDeleteRepository<'a> {
         SnapshotDeleteRepository::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about a snapshot."]
-    pub fn get<'a>(&self, parts: SnapshotGetUrlParts<'a>) -> SnapshotGet<'a> {
+    pub fn get<'a>(&self, parts: SnapshotGetParts<'a>) -> SnapshotGet<'a> {
         SnapshotGet::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about a repository."]
     pub fn get_repository<'a>(
         &self,
-        parts: SnapshotGetRepositoryUrlParts<'a>,
+        parts: SnapshotGetRepositoryParts<'a>,
     ) -> SnapshotGetRepository<'a> {
         SnapshotGetRepository::new(self.client.clone(), parts)
     }
     #[doc = "Restores a snapshot."]
-    pub fn restore<'a>(&self, parts: SnapshotRestoreUrlParts<'a>) -> SnapshotRestore<'a, ()> {
+    pub fn restore<'a>(&self, parts: SnapshotRestoreParts<'a>) -> SnapshotRestore<'a, ()> {
         SnapshotRestore::new(self.client.clone(), parts)
     }
     #[doc = "Returns information about the status of a snapshot."]
-    pub fn status<'a>(&self, parts: SnapshotStatusUrlParts<'a>) -> SnapshotStatus<'a> {
+    pub fn status<'a>(&self, parts: SnapshotStatusParts<'a>) -> SnapshotStatus<'a> {
         SnapshotStatus::new(self.client.clone(), parts)
     }
     #[doc = "Verifies a repository."]
     pub fn verify_repository<'a>(
         &self,
-        parts: SnapshotVerifyRepositoryUrlParts<'a>,
+        parts: SnapshotVerifyRepositoryParts<'a>,
     ) -> SnapshotVerifyRepository<'a, ()> {
         SnapshotVerifyRepository::new(self.client.clone(), parts)
     }

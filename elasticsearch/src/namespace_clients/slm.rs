@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Delete Lifecycle API"]
-pub enum SlmDeleteLifecycleUrlParts<'a> {
+#[doc = "API parts for the Slm Delete Lifecycle API"]
+pub enum SlmDeleteLifecycleParts<'a> {
     PolicyId(&'a str),
 }
-impl<'a> SlmDeleteLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SlmDeleteLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Slm Delete Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmDeleteLifecycleUrlParts::PolicyId(ref policy_id) => {
+            SlmDeleteLifecycleParts::PolicyId(ref policy_id) => {
                 let mut p = String::with_capacity(13usize + policy_id.len());
                 p.push_str("/_slm/policy/");
                 p.push_str(policy_id.as_ref());
@@ -46,7 +49,7 @@ impl<'a> SlmDeleteLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-delete.html)."]
 pub struct SlmDeleteLifecycle<'a> {
     client: Elasticsearch,
-    parts: SlmDeleteLifecycleUrlParts<'a>,
+    parts: SlmDeleteLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -54,7 +57,7 @@ pub struct SlmDeleteLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SlmDeleteLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: SlmDeleteLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SlmDeleteLifecycleParts<'a>) -> Self {
         SlmDeleteLifecycle {
             client,
             parts,
@@ -91,9 +94,9 @@ impl<'a> SlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Delete Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -130,14 +133,15 @@ impl<'a> SlmDeleteLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Execute Lifecycle API"]
-pub enum SlmExecuteLifecycleUrlParts<'a> {
+#[doc = "API parts for the Slm Execute Lifecycle API"]
+pub enum SlmExecuteLifecycleParts<'a> {
     PolicyId(&'a str),
 }
-impl<'a> SlmExecuteLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SlmExecuteLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Slm Execute Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmExecuteLifecycleUrlParts::PolicyId(ref policy_id) => {
+            SlmExecuteLifecycleParts::PolicyId(ref policy_id) => {
                 let mut p = String::with_capacity(22usize + policy_id.len());
                 p.push_str("/_slm/policy/");
                 p.push_str(policy_id.as_ref());
@@ -151,7 +155,7 @@ impl<'a> SlmExecuteLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute.html)."]
 pub struct SlmExecuteLifecycle<'a, B> {
     client: Elasticsearch,
-    parts: SlmExecuteLifecycleUrlParts<'a>,
+    parts: SlmExecuteLifecycleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -163,7 +167,7 @@ impl<'a, B> SlmExecuteLifecycle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleParts<'a>) -> Self {
         SlmExecuteLifecycle {
             client,
             parts,
@@ -217,9 +221,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Execute Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -256,14 +260,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Execute Retention API"]
-pub enum SlmExecuteRetentionUrlParts {
+#[doc = "API parts for the Slm Execute Retention API"]
+pub enum SlmExecuteRetentionParts {
     None,
 }
-impl SlmExecuteRetentionUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SlmExecuteRetentionParts {
+    #[doc = "Builds a relative URL path to the Slm Execute Retention API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmExecuteRetentionUrlParts::None => "/_slm/_execute_retention".into(),
+            SlmExecuteRetentionParts::None => "/_slm/_execute_retention".into(),
         }
     }
 }
@@ -271,7 +276,7 @@ impl SlmExecuteRetentionUrlParts {
 #[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute-retention.html)."]
 pub struct SlmExecuteRetention<'a, B> {
     client: Elasticsearch,
-    parts: SlmExecuteRetentionUrlParts,
+    parts: SlmExecuteRetentionParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -286,7 +291,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SlmExecuteRetention {
             client,
-            parts: SlmExecuteRetentionUrlParts::None,
+            parts: SlmExecuteRetentionParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -337,9 +342,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Execute Retention API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -376,22 +381,23 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Get Lifecycle API"]
-pub enum SlmGetLifecycleUrlParts<'a> {
+#[doc = "API parts for the Slm Get Lifecycle API"]
+pub enum SlmGetLifecycleParts<'a> {
     PolicyId(&'a [&'a str]),
     None,
 }
-impl<'a> SlmGetLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SlmGetLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Slm Get Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmGetLifecycleUrlParts::PolicyId(ref policy_id) => {
+            SlmGetLifecycleParts::PolicyId(ref policy_id) => {
                 let policy_id_str = policy_id.join(",");
                 let mut p = String::with_capacity(13usize + policy_id_str.len());
                 p.push_str("/_slm/policy/");
                 p.push_str(policy_id_str.as_ref());
                 p.into()
             }
-            SlmGetLifecycleUrlParts::None => "/_slm/policy".into(),
+            SlmGetLifecycleParts::None => "/_slm/policy".into(),
         }
     }
 }
@@ -399,7 +405,7 @@ impl<'a> SlmGetLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-get.html)."]
 pub struct SlmGetLifecycle<'a> {
     client: Elasticsearch,
-    parts: SlmGetLifecycleUrlParts<'a>,
+    parts: SlmGetLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -407,7 +413,7 @@ pub struct SlmGetLifecycle<'a> {
     source: Option<&'a str>,
 }
 impl<'a> SlmGetLifecycle<'a> {
-    pub fn new(client: Elasticsearch, parts: SlmGetLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SlmGetLifecycleParts<'a>) -> Self {
         SlmGetLifecycle {
             client,
             parts,
@@ -444,9 +450,9 @@ impl<'a> SlmGetLifecycle<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Get Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -483,14 +489,15 @@ impl<'a> SlmGetLifecycle<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Get Stats API"]
-pub enum SlmGetStatsUrlParts {
+#[doc = "API parts for the Slm Get Stats API"]
+pub enum SlmGetStatsParts {
     None,
 }
-impl SlmGetStatsUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SlmGetStatsParts {
+    #[doc = "Builds a relative URL path to the Slm Get Stats API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmGetStatsUrlParts::None => "/_slm/stats".into(),
+            SlmGetStatsParts::None => "/_slm/stats".into(),
         }
     }
 }
@@ -498,7 +505,7 @@ impl SlmGetStatsUrlParts {
 #[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/slm-get-stats.html)."]
 pub struct SlmGetStats<'a> {
     client: Elasticsearch,
-    parts: SlmGetStatsUrlParts,
+    parts: SlmGetStatsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -509,7 +516,7 @@ impl<'a> SlmGetStats<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         SlmGetStats {
             client,
-            parts: SlmGetStatsUrlParts::None,
+            parts: SlmGetStatsParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -543,9 +550,9 @@ impl<'a> SlmGetStats<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Get Stats API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -582,14 +589,15 @@ impl<'a> SlmGetStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Slm Put Lifecycle API"]
-pub enum SlmPutLifecycleUrlParts<'a> {
+#[doc = "API parts for the Slm Put Lifecycle API"]
+pub enum SlmPutLifecycleParts<'a> {
     PolicyId(&'a str),
 }
-impl<'a> SlmPutLifecycleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SlmPutLifecycleParts<'a> {
+    #[doc = "Builds a relative URL path to the Slm Put Lifecycle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SlmPutLifecycleUrlParts::PolicyId(ref policy_id) => {
+            SlmPutLifecycleParts::PolicyId(ref policy_id) => {
                 let mut p = String::with_capacity(13usize + policy_id.len());
                 p.push_str("/_slm/policy/");
                 p.push_str(policy_id.as_ref());
@@ -602,7 +610,7 @@ impl<'a> SlmPutLifecycleUrlParts<'a> {
 #[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-put.html)."]
 pub struct SlmPutLifecycle<'a, B> {
     client: Elasticsearch,
-    parts: SlmPutLifecycleUrlParts<'a>,
+    parts: SlmPutLifecycleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -614,7 +622,7 @@ impl<'a, B> SlmPutLifecycle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SlmPutLifecycleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SlmPutLifecycleParts<'a>) -> Self {
         SlmPutLifecycle {
             client,
             parts,
@@ -668,9 +676,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Slm Put Lifecycle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -716,26 +724,26 @@ impl Slm {
     }
     pub fn delete_lifecycle<'a>(
         &self,
-        parts: SlmDeleteLifecycleUrlParts<'a>,
+        parts: SlmDeleteLifecycleParts<'a>,
     ) -> SlmDeleteLifecycle<'a> {
         SlmDeleteLifecycle::new(self.client.clone(), parts)
     }
     pub fn execute_lifecycle<'a>(
         &self,
-        parts: SlmExecuteLifecycleUrlParts<'a>,
+        parts: SlmExecuteLifecycleParts<'a>,
     ) -> SlmExecuteLifecycle<'a, ()> {
         SlmExecuteLifecycle::new(self.client.clone(), parts)
     }
     pub fn execute_retention<'a>(&self) -> SlmExecuteRetention<'a, ()> {
         SlmExecuteRetention::new(self.client.clone())
     }
-    pub fn get_lifecycle<'a>(&self, parts: SlmGetLifecycleUrlParts<'a>) -> SlmGetLifecycle<'a> {
+    pub fn get_lifecycle<'a>(&self, parts: SlmGetLifecycleParts<'a>) -> SlmGetLifecycle<'a> {
         SlmGetLifecycle::new(self.client.clone(), parts)
     }
     pub fn get_stats<'a>(&self) -> SlmGetStats<'a> {
         SlmGetStats::new(self.client.clone())
     }
-    pub fn put_lifecycle<'a>(&self, parts: SlmPutLifecycleUrlParts<'a>) -> SlmPutLifecycle<'a, ()> {
+    pub fn put_lifecycle<'a>(&self, parts: SlmPutLifecycleParts<'a>) -> SlmPutLifecycle<'a, ()> {
         SlmPutLifecycle::new(self.client.clone(), parts)
     }
 }

@@ -17,23 +17,26 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Sql Clear Cursor API"]
-pub enum SqlClearCursorUrlParts {
+#[doc = "API parts for the Sql Clear Cursor API"]
+pub enum SqlClearCursorParts {
     None,
 }
-impl SqlClearCursorUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SqlClearCursorParts {
+    #[doc = "Builds a relative URL path to the Sql Clear Cursor API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlClearCursorUrlParts::None => "/_sql/close".into(),
+            SqlClearCursorParts::None => "/_sql/close".into(),
         }
     }
 }
@@ -41,7 +44,7 @@ impl SqlClearCursorUrlParts {
 #[doc = "Builder for the [Sql Clear Cursor API](Clear SQL cursor)."]
 pub struct SqlClearCursor<'a, B> {
     client: Elasticsearch,
-    parts: SqlClearCursorUrlParts,
+    parts: SqlClearCursorParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -56,7 +59,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlClearCursor {
             client,
-            parts: SqlClearCursorUrlParts::None,
+            parts: SqlClearCursorParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -107,9 +110,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Sql Clear Cursor API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -146,14 +149,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Sql Query API"]
-pub enum SqlQueryUrlParts {
+#[doc = "API parts for the Sql Query API"]
+pub enum SqlQueryParts {
     None,
 }
-impl SqlQueryUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SqlQueryParts {
+    #[doc = "Builds a relative URL path to the Sql Query API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlQueryUrlParts::None => "/_sql".into(),
+            SqlQueryParts::None => "/_sql".into(),
         }
     }
 }
@@ -161,7 +165,7 @@ impl SqlQueryUrlParts {
 #[doc = "Builder for the [Sql Query API](Execute SQL)."]
 pub struct SqlQuery<'a, B> {
     client: Elasticsearch,
-    parts: SqlQueryUrlParts,
+    parts: SqlQueryParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -177,7 +181,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlQuery {
             client,
-            parts: SqlQueryUrlParts::None,
+            parts: SqlQueryParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -235,11 +239,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Sql Query API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -280,14 +284,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Sql Translate API"]
-pub enum SqlTranslateUrlParts {
+#[doc = "API parts for the Sql Translate API"]
+pub enum SqlTranslateParts {
     None,
 }
-impl SqlTranslateUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl SqlTranslateParts {
+    #[doc = "Builds a relative URL path to the Sql Translate API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SqlTranslateUrlParts::None => "/_sql/translate".into(),
+            SqlTranslateParts::None => "/_sql/translate".into(),
         }
     }
 }
@@ -295,7 +300,7 @@ impl SqlTranslateUrlParts {
 #[doc = "Builder for the [Sql Translate API](Translate SQL into Elasticsearch queries)."]
 pub struct SqlTranslate<'a, B> {
     client: Elasticsearch,
-    parts: SqlTranslateUrlParts,
+    parts: SqlTranslateParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -310,7 +315,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         SqlTranslate {
             client,
-            parts: SqlTranslateUrlParts::None,
+            parts: SqlTranslateParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -361,11 +366,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Sql Translate API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]

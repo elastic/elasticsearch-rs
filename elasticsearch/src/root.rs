@@ -17,33 +17,36 @@
 use crate::{
     client::Elasticsearch,
     enums::*,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod, JsonBody, NdBody},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        request::{Body, JsonBody, NdBody},
+        response::Response,
+        Method,
+    },
 };
-use reqwest::{header::HeaderMap, Error, Request, Response, StatusCode};
-use serde::{de::DeserializeOwned, Serialize};
+use serde::Serialize;
 use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Bulk API"]
-pub enum BulkUrlParts<'a> {
+#[doc = "API parts for the Bulk API"]
+pub enum BulkParts<'a> {
     None,
     Index(&'a str),
     IndexType(&'a str, &'a str),
 }
-impl<'a> BulkUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> BulkParts<'a> {
+    #[doc = "Builds a relative URL path to the Bulk API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            BulkUrlParts::None => "/_bulk".into(),
-            BulkUrlParts::Index(ref index) => {
+            BulkParts::None => "/_bulk".into(),
+            BulkParts::Index(ref index) => {
                 let mut p = String::with_capacity(7usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
                 p.push_str("/_bulk");
                 p.into()
             }
-            BulkUrlParts::IndexType(ref index, ref ty) => {
+            BulkParts::IndexType(ref index, ref ty) => {
                 let mut p = String::with_capacity(8usize + index.len() + ty.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -59,7 +62,7 @@ impl<'a> BulkUrlParts<'a> {
 #[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html). Allows to perform multiple index/update/delete operations in a single request."]
 pub struct Bulk<'a, B> {
     client: Elasticsearch,
-    parts: BulkUrlParts<'a>,
+    parts: BulkParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -80,7 +83,7 @@ impl<'a, B> Bulk<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: BulkUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: BulkParts<'a>) -> Self {
         Bulk {
             client,
             parts,
@@ -197,9 +200,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Bulk API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -272,16 +275,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Clear Scroll API"]
-pub enum ClearScrollUrlParts<'a> {
+#[doc = "API parts for the Clear Scroll API"]
+pub enum ClearScrollParts<'a> {
     None,
     ScrollId(&'a [&'a str]),
 }
-impl<'a> ClearScrollUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ClearScrollParts<'a> {
+    #[doc = "Builds a relative URL path to the Clear Scroll API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ClearScrollUrlParts::None => "/_search/scroll".into(),
-            ClearScrollUrlParts::ScrollId(ref scroll_id) => {
+            ClearScrollParts::None => "/_search/scroll".into(),
+            ClearScrollParts::ScrollId(ref scroll_id) => {
                 let scroll_id_str = scroll_id.join(",");
                 let mut p = String::with_capacity(16usize + scroll_id_str.len());
                 p.push_str("/_search/scroll/");
@@ -295,7 +299,7 @@ impl<'a> ClearScrollUrlParts<'a> {
 #[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#_clear_scroll_api). Explicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, B> {
     client: Elasticsearch,
-    parts: ClearScrollUrlParts<'a>,
+    parts: ClearScrollParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -307,7 +311,7 @@ impl<'a, B> ClearScroll<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: ClearScrollUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ClearScrollParts<'a>) -> Self {
         ClearScroll {
             client,
             parts,
@@ -361,9 +365,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Clear Scroll API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -400,17 +404,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Count API"]
-pub enum CountUrlParts<'a> {
+#[doc = "API parts for the Count API"]
+pub enum CountParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> CountUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CountParts<'a> {
+    #[doc = "Builds a relative URL path to the Count API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CountUrlParts::None => "/_count".into(),
-            CountUrlParts::Index(ref index) => {
+            CountParts::None => "/_count".into(),
+            CountParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(8usize + index_str.len());
                 p.push_str("/");
@@ -418,7 +423,7 @@ impl<'a> CountUrlParts<'a> {
                 p.push_str("/_count");
                 p.into()
             }
-            CountUrlParts::IndexType(ref index, ref ty) => {
+            CountParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len() + ty_str.len());
@@ -436,7 +441,7 @@ impl<'a> CountUrlParts<'a> {
 #[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html). Returns number of documents matching a query."]
 pub struct Count<'a, B> {
     client: Elasticsearch,
-    parts: CountUrlParts<'a>,
+    parts: CountParts<'a>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
     analyzer: Option<&'a str>,
@@ -462,7 +467,7 @@ impl<'a, B> Count<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: CountUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CountParts<'a>) -> Self {
         Count {
             client,
             parts,
@@ -614,11 +619,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Count API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -701,15 +706,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Create API"]
-pub enum CreateUrlParts<'a> {
+#[doc = "API parts for the Create API"]
+pub enum CreateParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> CreateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> CreateParts<'a> {
+    #[doc = "Builds a relative URL path to the Create API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            CreateUrlParts::IndexId(ref index, ref id) => {
+            CreateParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(10usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -717,7 +723,7 @@ impl<'a> CreateUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            CreateUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            CreateParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -735,7 +741,7 @@ impl<'a> CreateUrlParts<'a> {
 #[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 pub struct Create<'a, B> {
     client: Elasticsearch,
-    parts: CreateUrlParts<'a>,
+    parts: CreateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -754,7 +760,7 @@ impl<'a, B> Create<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: CreateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: CreateParts<'a>) -> Self {
         Create {
             client,
             parts,
@@ -857,9 +863,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Create API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -917,15 +923,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Delete API"]
-pub enum DeleteUrlParts<'a> {
+#[doc = "API parts for the Delete API"]
+pub enum DeleteParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> DeleteUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> DeleteParts<'a> {
+    #[doc = "Builds a relative URL path to the Delete API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteUrlParts::IndexId(ref index, ref id) => {
+            DeleteParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(7usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -933,7 +940,7 @@ impl<'a> DeleteUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            DeleteUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            DeleteParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -950,7 +957,7 @@ impl<'a> DeleteUrlParts<'a> {
 #[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html). Removes a document from the index."]
 pub struct Delete<'a> {
     client: Elasticsearch,
-    parts: DeleteUrlParts<'a>,
+    parts: DeleteParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -966,7 +973,7 @@ pub struct Delete<'a> {
     wait_for_active_shards: Option<&'a str>,
 }
 impl<'a> Delete<'a> {
-    pub fn new(client: Elasticsearch, parts: DeleteUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteParts<'a>) -> Self {
         Delete {
             client,
             parts,
@@ -1051,9 +1058,9 @@ impl<'a> Delete<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Delete API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1114,15 +1121,16 @@ impl<'a> Delete<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Delete By Query API"]
-pub enum DeleteByQueryUrlParts<'a> {
+#[doc = "API parts for the Delete By Query API"]
+pub enum DeleteByQueryParts<'a> {
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> DeleteByQueryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> DeleteByQueryParts<'a> {
+    #[doc = "Builds a relative URL path to the Delete By Query API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteByQueryUrlParts::Index(ref index) => {
+            DeleteByQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(18usize + index_str.len());
                 p.push_str("/");
@@ -1130,7 +1138,7 @@ impl<'a> DeleteByQueryUrlParts<'a> {
                 p.push_str("/_delete_by_query");
                 p.into()
             }
-            DeleteByQueryUrlParts::IndexType(ref index, ref ty) => {
+            DeleteByQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
@@ -1148,7 +1156,7 @@ impl<'a> DeleteByQueryUrlParts<'a> {
 #[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html). Deletes documents matching the provided query."]
 pub struct DeleteByQuery<'a, B> {
     client: Elasticsearch,
-    parts: DeleteByQueryUrlParts<'a>,
+    parts: DeleteByQueryParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -1192,7 +1200,7 @@ impl<'a, B> DeleteByQuery<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: DeleteByQueryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryParts<'a>) -> Self {
         DeleteByQuery {
             client,
             parts,
@@ -1470,9 +1478,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Delete By Query API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1617,14 +1625,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Delete By Query Rethrottle API"]
-pub enum DeleteByQueryRethrottleUrlParts<'a> {
+#[doc = "API parts for the Delete By Query Rethrottle API"]
+pub enum DeleteByQueryRethrottleParts<'a> {
     TaskId(&'a str),
 }
-impl<'a> DeleteByQueryRethrottleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> DeleteByQueryRethrottleParts<'a> {
+    #[doc = "Builds a relative URL path to the Delete By Query Rethrottle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteByQueryRethrottleUrlParts::TaskId(ref task_id) => {
+            DeleteByQueryRethrottleParts::TaskId(ref task_id) => {
                 let mut p = String::with_capacity(30usize + task_id.len());
                 p.push_str("/_delete_by_query/");
                 p.push_str(task_id.as_ref());
@@ -1638,7 +1647,7 @@ impl<'a> DeleteByQueryRethrottleUrlParts<'a> {
 #[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html). Changes the number of requests per second for a particular Delete By Query operation."]
 pub struct DeleteByQueryRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: DeleteByQueryRethrottleUrlParts<'a>,
+    parts: DeleteByQueryRethrottleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -1651,7 +1660,7 @@ impl<'a, B> DeleteByQueryRethrottle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteByQueryRethrottleParts<'a>) -> Self {
         DeleteByQueryRethrottle {
             client,
             parts,
@@ -1712,9 +1721,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Delete By Query Rethrottle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1754,14 +1763,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Delete Script API"]
-pub enum DeleteScriptUrlParts<'a> {
+#[doc = "API parts for the Delete Script API"]
+pub enum DeleteScriptParts<'a> {
     Id(&'a str),
 }
-impl<'a> DeleteScriptUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> DeleteScriptParts<'a> {
+    #[doc = "Builds a relative URL path to the Delete Script API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            DeleteScriptUrlParts::Id(ref id) => {
+            DeleteScriptParts::Id(ref id) => {
                 let mut p = String::with_capacity(10usize + id.len());
                 p.push_str("/_scripts/");
                 p.push_str(id.as_ref());
@@ -1774,7 +1784,7 @@ impl<'a> DeleteScriptUrlParts<'a> {
 #[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Deletes a script."]
 pub struct DeleteScript<'a> {
     client: Elasticsearch,
-    parts: DeleteScriptUrlParts<'a>,
+    parts: DeleteScriptParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -1784,7 +1794,7 @@ pub struct DeleteScript<'a> {
     timeout: Option<&'a str>,
 }
 impl<'a> DeleteScript<'a> {
-    pub fn new(client: Elasticsearch, parts: DeleteScriptUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: DeleteScriptParts<'a>) -> Self {
         DeleteScript {
             client,
             parts,
@@ -1833,9 +1843,9 @@ impl<'a> DeleteScript<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Delete Script API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Delete;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Delete;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1878,15 +1888,16 @@ impl<'a> DeleteScript<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Exists API"]
-pub enum ExistsUrlParts<'a> {
+#[doc = "API parts for the Exists API"]
+pub enum ExistsParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> ExistsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ExistsParts<'a> {
+    #[doc = "Builds a relative URL path to the Exists API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExistsUrlParts::IndexId(ref index, ref id) => {
+            ExistsParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(7usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -1894,7 +1905,7 @@ impl<'a> ExistsUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            ExistsUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            ExistsParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -1911,7 +1922,7 @@ impl<'a> ExistsUrlParts<'a> {
 #[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document exists in an index."]
 pub struct Exists<'a> {
     client: Elasticsearch,
-    parts: ExistsUrlParts<'a>,
+    parts: ExistsParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -1929,7 +1940,7 @@ pub struct Exists<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> Exists<'a> {
-    pub fn new(client: Elasticsearch, parts: ExistsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExistsParts<'a>) -> Self {
         Exists {
             client,
             parts,
@@ -2026,9 +2037,9 @@ impl<'a> Exists<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Exists API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2107,15 +2118,16 @@ impl<'a> Exists<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Exists Source API"]
-pub enum ExistsSourceUrlParts<'a> {
+#[doc = "API parts for the Exists Source API"]
+pub enum ExistsSourceParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> ExistsSourceUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ExistsSourceParts<'a> {
+    #[doc = "Builds a relative URL path to the Exists Source API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExistsSourceUrlParts::IndexId(ref index, ref id) => {
+            ExistsSourceParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(10usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2123,7 +2135,7 @@ impl<'a> ExistsSourceUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            ExistsSourceUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            ExistsSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2141,7 +2153,7 @@ impl<'a> ExistsSourceUrlParts<'a> {
 #[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document source exists in an index."]
 pub struct ExistsSource<'a> {
     client: Elasticsearch,
-    parts: ExistsSourceUrlParts<'a>,
+    parts: ExistsSourceParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -2158,7 +2170,7 @@ pub struct ExistsSource<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> ExistsSource<'a> {
-    pub fn new(client: Elasticsearch, parts: ExistsSourceUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExistsSourceParts<'a>) -> Self {
         ExistsSource {
             client,
             parts,
@@ -2249,9 +2261,9 @@ impl<'a> ExistsSource<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Exists Source API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2324,15 +2336,16 @@ impl<'a> ExistsSource<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Explain API"]
-pub enum ExplainUrlParts<'a> {
+#[doc = "API parts for the Explain API"]
+pub enum ExplainParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> ExplainUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ExplainParts<'a> {
+    #[doc = "Builds a relative URL path to the Explain API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ExplainUrlParts::IndexId(ref index, ref id) => {
+            ExplainParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(11usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2340,7 +2353,7 @@ impl<'a> ExplainUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            ExplainUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            ExplainParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(12usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2358,7 +2371,7 @@ impl<'a> ExplainUrlParts<'a> {
 #[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html). Returns information about why a specific matches (or doesn't match) a query."]
 pub struct Explain<'a, B> {
     client: Elasticsearch,
-    parts: ExplainUrlParts<'a>,
+    parts: ExplainParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -2382,7 +2395,7 @@ impl<'a, B> Explain<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: ExplainUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ExplainParts<'a>) -> Self {
         Explain {
             client,
             parts,
@@ -2520,11 +2533,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Explain API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2610,16 +2623,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Field Caps API"]
-pub enum FieldCapsUrlParts<'a> {
+#[doc = "API parts for the Field Caps API"]
+pub enum FieldCapsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> FieldCapsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> FieldCapsParts<'a> {
+    #[doc = "Builds a relative URL path to the Field Caps API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            FieldCapsUrlParts::None => "/_field_caps".into(),
-            FieldCapsUrlParts::Index(ref index) => {
+            FieldCapsParts::None => "/_field_caps".into(),
+            FieldCapsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(13usize + index_str.len());
                 p.push_str("/");
@@ -2634,7 +2648,7 @@ impl<'a> FieldCapsUrlParts<'a> {
 #[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html). Returns the information about the capabilities of fields among multiple indices."]
 pub struct FieldCaps<'a, B> {
     client: Elasticsearch,
-    parts: FieldCapsUrlParts<'a>,
+    parts: FieldCapsParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -2651,7 +2665,7 @@ impl<'a, B> FieldCaps<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: FieldCapsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: FieldCapsParts<'a>) -> Self {
         FieldCaps {
             client,
             parts,
@@ -2740,11 +2754,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Field Caps API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -2797,15 +2811,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Get API"]
-pub enum GetUrlParts<'a> {
+#[doc = "API parts for the Get API"]
+pub enum GetParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> GetUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> GetParts<'a> {
+    #[doc = "Builds a relative URL path to the Get API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetUrlParts::IndexId(ref index, ref id) => {
+            GetParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(7usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2813,7 +2828,7 @@ impl<'a> GetUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            GetUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            GetParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -2830,7 +2845,7 @@ impl<'a> GetUrlParts<'a> {
 #[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns a document."]
 pub struct Get<'a> {
     client: Elasticsearch,
-    parts: GetUrlParts<'a>,
+    parts: GetParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -2848,7 +2863,7 @@ pub struct Get<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> Get<'a> {
-    pub fn new(client: Elasticsearch, parts: GetUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetParts<'a>) -> Self {
         Get {
             client,
             parts,
@@ -2945,9 +2960,9 @@ impl<'a> Get<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Get API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3026,14 +3041,15 @@ impl<'a> Get<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Get Script API"]
-pub enum GetScriptUrlParts<'a> {
+#[doc = "API parts for the Get Script API"]
+pub enum GetScriptParts<'a> {
     Id(&'a str),
 }
-impl<'a> GetScriptUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> GetScriptParts<'a> {
+    #[doc = "Builds a relative URL path to the Get Script API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetScriptUrlParts::Id(ref id) => {
+            GetScriptParts::Id(ref id) => {
                 let mut p = String::with_capacity(10usize + id.len());
                 p.push_str("/_scripts/");
                 p.push_str(id.as_ref());
@@ -3046,7 +3062,7 @@ impl<'a> GetScriptUrlParts<'a> {
 #[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Returns a script."]
 pub struct GetScript<'a> {
     client: Elasticsearch,
-    parts: GetScriptUrlParts<'a>,
+    parts: GetScriptParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -3055,7 +3071,7 @@ pub struct GetScript<'a> {
     source: Option<&'a str>,
 }
 impl<'a> GetScript<'a> {
-    pub fn new(client: Elasticsearch, parts: GetScriptUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetScriptParts<'a>) -> Self {
         GetScript {
             client,
             parts,
@@ -3098,9 +3114,9 @@ impl<'a> GetScript<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Get Script API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3140,15 +3156,16 @@ impl<'a> GetScript<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Get Source API"]
-pub enum GetSourceUrlParts<'a> {
+#[doc = "API parts for the Get Source API"]
+pub enum GetSourceParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> GetSourceUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> GetSourceParts<'a> {
+    #[doc = "Builds a relative URL path to the Get Source API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            GetSourceUrlParts::IndexId(ref index, ref id) => {
+            GetSourceParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(10usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3156,7 +3173,7 @@ impl<'a> GetSourceUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            GetSourceUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            GetSourceParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3174,7 +3191,7 @@ impl<'a> GetSourceUrlParts<'a> {
 #[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns the source of a document."]
 pub struct GetSource<'a> {
     client: Elasticsearch,
-    parts: GetSourceUrlParts<'a>,
+    parts: GetSourceParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -3191,7 +3208,7 @@ pub struct GetSource<'a> {
     version_type: Option<VersionType>,
 }
 impl<'a> GetSource<'a> {
-    pub fn new(client: Elasticsearch, parts: GetSourceUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: GetSourceParts<'a>) -> Self {
         GetSource {
             client,
             parts,
@@ -3282,9 +3299,9 @@ impl<'a> GetSource<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Get Source API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3357,17 +3374,18 @@ impl<'a> GetSource<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Index API"]
-pub enum IndexUrlParts<'a> {
+#[doc = "API parts for the Index API"]
+pub enum IndexParts<'a> {
     IndexId(&'a str, &'a str),
     Index(&'a str),
     IndexType(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> IndexUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> IndexParts<'a> {
+    #[doc = "Builds a relative URL path to the Index API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            IndexUrlParts::IndexId(ref index, ref id) => {
+            IndexParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(7usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3375,14 +3393,14 @@ impl<'a> IndexUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            IndexUrlParts::Index(ref index) => {
+            IndexParts::Index(ref index) => {
                 let mut p = String::with_capacity(6usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
                 p.push_str("/_doc");
                 p.into()
             }
-            IndexUrlParts::IndexType(ref index, ref ty) => {
+            IndexParts::IndexType(ref index, ref ty) => {
                 let mut p = String::with_capacity(2usize + index.len() + ty.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3390,7 +3408,7 @@ impl<'a> IndexUrlParts<'a> {
                 p.push_str(ty.as_ref());
                 p.into()
             }
-            IndexUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            IndexParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(3usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3407,7 +3425,7 @@ impl<'a> IndexUrlParts<'a> {
 #[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates or updates a document in an index."]
 pub struct Index<'a, B> {
     client: Elasticsearch,
-    parts: IndexUrlParts<'a>,
+    parts: IndexParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -3429,7 +3447,7 @@ impl<'a, B> Index<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: IndexUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: IndexParts<'a>) -> Self {
         Index {
             client,
             parts,
@@ -3553,9 +3571,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Index API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3622,14 +3640,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Info API"]
-pub enum InfoUrlParts {
+#[doc = "API parts for the Info API"]
+pub enum InfoParts {
     None,
 }
-impl InfoUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl InfoParts {
+    #[doc = "Builds a relative URL path to the Info API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            InfoUrlParts::None => "/".into(),
+            InfoParts::None => "/".into(),
         }
     }
 }
@@ -3637,7 +3656,7 @@ impl InfoUrlParts {
 #[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns basic information about the cluster."]
 pub struct Info<'a> {
     client: Elasticsearch,
-    parts: InfoUrlParts,
+    parts: InfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -3648,7 +3667,7 @@ impl<'a> Info<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         Info {
             client,
-            parts: InfoUrlParts::None,
+            parts: InfoParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -3682,9 +3701,9 @@ impl<'a> Info<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Info API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Get;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3721,24 +3740,25 @@ impl<'a> Info<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Mget API"]
-pub enum MgetUrlParts<'a> {
+#[doc = "API parts for the Mget API"]
+pub enum MgetParts<'a> {
     None,
     Index(&'a str),
     IndexType(&'a str, &'a str),
 }
-impl<'a> MgetUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MgetParts<'a> {
+    #[doc = "Builds a relative URL path to the Mget API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MgetUrlParts::None => "/_mget".into(),
-            MgetUrlParts::Index(ref index) => {
+            MgetParts::None => "/_mget".into(),
+            MgetParts::Index(ref index) => {
                 let mut p = String::with_capacity(7usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
                 p.push_str("/_mget");
                 p.into()
             }
-            MgetUrlParts::IndexType(ref index, ref ty) => {
+            MgetParts::IndexType(ref index, ref ty) => {
                 let mut p = String::with_capacity(8usize + index.len() + ty.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -3754,7 +3774,7 @@ impl<'a> MgetUrlParts<'a> {
 #[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html). Allows to get multiple documents in one request."]
 pub struct Mget<'a, B> {
     client: Elasticsearch,
-    parts: MgetUrlParts<'a>,
+    parts: MgetParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -3774,7 +3794,7 @@ impl<'a, B> Mget<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MgetUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MgetParts<'a>) -> Self {
         Mget {
             client,
             parts,
@@ -3884,11 +3904,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Mget API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -3962,17 +3982,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Msearch API"]
-pub enum MsearchUrlParts<'a> {
+#[doc = "API parts for the Msearch API"]
+pub enum MsearchParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> MsearchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MsearchParts<'a> {
+    #[doc = "Builds a relative URL path to the Msearch API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MsearchUrlParts::None => "/_msearch".into(),
-            MsearchUrlParts::Index(ref index) => {
+            MsearchParts::None => "/_msearch".into(),
+            MsearchParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len());
                 p.push_str("/");
@@ -3980,7 +4001,7 @@ impl<'a> MsearchUrlParts<'a> {
                 p.push_str("/_msearch");
                 p.into()
             }
-            MsearchUrlParts::IndexType(ref index, ref ty) => {
+            MsearchParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(11usize + index_str.len() + ty_str.len());
@@ -3998,7 +4019,7 @@ impl<'a> MsearchUrlParts<'a> {
 #[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html). Allows to execute several search operations in one request."]
 pub struct Msearch<'a, B> {
     client: Elasticsearch,
-    parts: MsearchUrlParts<'a>,
+    parts: MsearchParts<'a>,
     body: Option<B>,
     ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
@@ -4017,7 +4038,7 @@ impl<'a, B> Msearch<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MsearchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchParts<'a>) -> Self {
         Msearch {
             client,
             parts,
@@ -4120,11 +4141,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Msearch API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -4183,17 +4204,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Msearch Template API"]
-pub enum MsearchTemplateUrlParts<'a> {
+#[doc = "API parts for the Msearch Template API"]
+pub enum MsearchTemplateParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> MsearchTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MsearchTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Msearch Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MsearchTemplateUrlParts::None => "/_msearch/template".into(),
-            MsearchTemplateUrlParts::Index(ref index) => {
+            MsearchTemplateParts::None => "/_msearch/template".into(),
+            MsearchTemplateParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(19usize + index_str.len());
                 p.push_str("/");
@@ -4201,7 +4223,7 @@ impl<'a> MsearchTemplateUrlParts<'a> {
                 p.push_str("/_msearch/template");
                 p.into()
             }
-            MsearchTemplateUrlParts::IndexType(ref index, ref ty) => {
+            MsearchTemplateParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(20usize + index_str.len() + ty_str.len());
@@ -4219,7 +4241,7 @@ impl<'a> MsearchTemplateUrlParts<'a> {
 #[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html). Allows to execute several search template operations in one request."]
 pub struct MsearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: MsearchTemplateUrlParts<'a>,
+    parts: MsearchTemplateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4235,7 +4257,7 @@ impl<'a, B> MsearchTemplate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MsearchTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MsearchTemplateParts<'a>) -> Self {
         MsearchTemplate {
             client,
             parts,
@@ -4317,11 +4339,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Msearch Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -4371,24 +4393,25 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Mtermvectors API"]
-pub enum MtermvectorsUrlParts<'a> {
+#[doc = "API parts for the Mtermvectors API"]
+pub enum MtermvectorsParts<'a> {
     None,
     Index(&'a str),
     IndexType(&'a str, &'a str),
 }
-impl<'a> MtermvectorsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> MtermvectorsParts<'a> {
+    #[doc = "Builds a relative URL path to the Mtermvectors API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            MtermvectorsUrlParts::None => "/_mtermvectors".into(),
-            MtermvectorsUrlParts::Index(ref index) => {
+            MtermvectorsParts::None => "/_mtermvectors".into(),
+            MtermvectorsParts::Index(ref index) => {
                 let mut p = String::with_capacity(15usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
                 p.push_str("/_mtermvectors");
                 p.into()
             }
-            MtermvectorsUrlParts::IndexType(ref index, ref ty) => {
+            MtermvectorsParts::IndexType(ref index, ref ty) => {
                 let mut p = String::with_capacity(16usize + index.len() + ty.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -4404,7 +4427,7 @@ impl<'a> MtermvectorsUrlParts<'a> {
 #[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html). Returns multiple termvectors in one request."]
 pub struct Mtermvectors<'a, B> {
     client: Elasticsearch,
-    parts: MtermvectorsUrlParts<'a>,
+    parts: MtermvectorsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
@@ -4428,7 +4451,7 @@ impl<'a, B> Mtermvectors<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: MtermvectorsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: MtermvectorsParts<'a>) -> Self {
         Mtermvectors {
             client,
             parts,
@@ -4566,11 +4589,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Mtermvectors API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -4644,14 +4667,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Ping API"]
-pub enum PingUrlParts {
+#[doc = "API parts for the Ping API"]
+pub enum PingParts {
     None,
 }
-impl PingUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl PingParts {
+    #[doc = "Builds a relative URL path to the Ping API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            PingUrlParts::None => "/".into(),
+            PingParts::None => "/".into(),
         }
     }
 }
@@ -4659,7 +4683,7 @@ impl PingUrlParts {
 #[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns whether the cluster is running."]
 pub struct Ping<'a> {
     client: Elasticsearch,
-    parts: PingUrlParts,
+    parts: PingParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     human: Option<bool>,
@@ -4670,7 +4694,7 @@ impl<'a> Ping<'a> {
     pub fn new(client: Elasticsearch) -> Self {
         Ping {
             client,
-            parts: PingUrlParts::None,
+            parts: PingParts::None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4704,9 +4728,9 @@ impl<'a> Ping<'a> {
         self
     }
     #[doc = "Creates an asynchronous call to the Ping API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Head;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Head;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4743,21 +4767,22 @@ impl<'a> Ping<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Put Script API"]
-pub enum PutScriptUrlParts<'a> {
+#[doc = "API parts for the Put Script API"]
+pub enum PutScriptParts<'a> {
     Id(&'a str),
     IdContext(&'a str, &'a str),
 }
-impl<'a> PutScriptUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> PutScriptParts<'a> {
+    #[doc = "Builds a relative URL path to the Put Script API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            PutScriptUrlParts::Id(ref id) => {
+            PutScriptParts::Id(ref id) => {
                 let mut p = String::with_capacity(10usize + id.len());
                 p.push_str("/_scripts/");
                 p.push_str(id.as_ref());
                 p.into()
             }
-            PutScriptUrlParts::IdContext(ref id, ref context) => {
+            PutScriptParts::IdContext(ref id, ref context) => {
                 let mut p = String::with_capacity(11usize + id.len() + context.len());
                 p.push_str("/_scripts/");
                 p.push_str(id.as_ref());
@@ -4772,7 +4797,7 @@ impl<'a> PutScriptUrlParts<'a> {
 #[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Creates or updates a script."]
 pub struct PutScript<'a, B> {
     client: Elasticsearch,
-    parts: PutScriptUrlParts<'a>,
+    parts: PutScriptParts<'a>,
     body: Option<B>,
     context: Option<&'a str>,
     error_trace: Option<bool>,
@@ -4787,7 +4812,7 @@ impl<'a, B> PutScript<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: PutScriptUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: PutScriptParts<'a>) -> Self {
         PutScript {
             client,
             parts,
@@ -4862,9 +4887,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Put Script API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Put;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Put;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4910,14 +4935,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Reindex API"]
-pub enum ReindexUrlParts {
+#[doc = "API parts for the Reindex API"]
+pub enum ReindexParts {
     None,
 }
-impl ReindexUrlParts {
-    pub fn build(self) -> Cow<'static, str> {
+impl ReindexParts {
+    #[doc = "Builds a relative URL path to the Reindex API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ReindexUrlParts::None => "/_reindex".into(),
+            ReindexParts::None => "/_reindex".into(),
         }
     }
 }
@@ -4925,7 +4951,7 @@ impl ReindexUrlParts {
 #[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 pub struct Reindex<'a, B> {
     client: Elasticsearch,
-    parts: ReindexUrlParts,
+    parts: ReindexParts,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -4948,7 +4974,7 @@ where
     pub fn new(client: Elasticsearch) -> Self {
         Reindex {
             client,
-            parts: ReindexUrlParts::None,
+            parts: ReindexParts::None,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5055,9 +5081,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Reindex API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5118,14 +5144,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Reindex Rethrottle API"]
-pub enum ReindexRethrottleUrlParts<'a> {
+#[doc = "API parts for the Reindex Rethrottle API"]
+pub enum ReindexRethrottleParts<'a> {
     TaskId(&'a str),
 }
-impl<'a> ReindexRethrottleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ReindexRethrottleParts<'a> {
+    #[doc = "Builds a relative URL path to the Reindex Rethrottle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ReindexRethrottleUrlParts::TaskId(ref task_id) => {
+            ReindexRethrottleParts::TaskId(ref task_id) => {
                 let mut p = String::with_capacity(22usize + task_id.len());
                 p.push_str("/_reindex/");
                 p.push_str(task_id.as_ref());
@@ -5139,7 +5166,7 @@ impl<'a> ReindexRethrottleUrlParts<'a> {
 #[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Changes the number of requests per second for a particular Reindex operation."]
 pub struct ReindexRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: ReindexRethrottleUrlParts<'a>,
+    parts: ReindexRethrottleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5152,7 +5179,7 @@ impl<'a, B> ReindexRethrottle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: ReindexRethrottleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ReindexRethrottleParts<'a>) -> Self {
         ReindexRethrottle {
             client,
             parts,
@@ -5213,9 +5240,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Reindex Rethrottle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5255,16 +5282,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Render Search Template API"]
-pub enum RenderSearchTemplateUrlParts<'a> {
+#[doc = "API parts for the Render Search Template API"]
+pub enum RenderSearchTemplateParts<'a> {
     None,
     Id(&'a str),
 }
-impl<'a> RenderSearchTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> RenderSearchTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Render Search Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            RenderSearchTemplateUrlParts::None => "/_render/template".into(),
-            RenderSearchTemplateUrlParts::Id(ref id) => {
+            RenderSearchTemplateParts::None => "/_render/template".into(),
+            RenderSearchTemplateParts::Id(ref id) => {
                 let mut p = String::with_capacity(18usize + id.len());
                 p.push_str("/_render/template/");
                 p.push_str(id.as_ref());
@@ -5277,7 +5305,7 @@ impl<'a> RenderSearchTemplateUrlParts<'a> {
 #[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html#_validating_templates). Allows to use the Mustache language to pre-render a search definition."]
 pub struct RenderSearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: RenderSearchTemplateUrlParts<'a>,
+    parts: RenderSearchTemplateParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5289,7 +5317,7 @@ impl<'a, B> RenderSearchTemplate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: RenderSearchTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: RenderSearchTemplateParts<'a>) -> Self {
         RenderSearchTemplate {
             client,
             parts,
@@ -5343,11 +5371,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Render Search Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -5385,16 +5413,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Scroll API"]
-pub enum ScrollUrlParts<'a> {
+#[doc = "API parts for the Scroll API"]
+pub enum ScrollParts<'a> {
     None,
     ScrollId(&'a str),
 }
-impl<'a> ScrollUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> ScrollParts<'a> {
+    #[doc = "Builds a relative URL path to the Scroll API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            ScrollUrlParts::None => "/_search/scroll".into(),
-            ScrollUrlParts::ScrollId(ref scroll_id) => {
+            ScrollParts::None => "/_search/scroll".into(),
+            ScrollParts::ScrollId(ref scroll_id) => {
                 let mut p = String::with_capacity(16usize + scroll_id.len());
                 p.push_str("/_search/scroll/");
                 p.push_str(scroll_id.as_ref());
@@ -5407,7 +5436,7 @@ impl<'a> ScrollUrlParts<'a> {
 #[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll). Allows to retrieve a large numbers of results from a single search request."]
 pub struct Scroll<'a, B> {
     client: Elasticsearch,
-    parts: ScrollUrlParts<'a>,
+    parts: ScrollParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -5422,7 +5451,7 @@ impl<'a, B> Scroll<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: ScrollUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: ScrollParts<'a>) -> Self {
         Scroll {
             client,
             parts,
@@ -5497,11 +5526,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Scroll API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -5548,17 +5577,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Search API"]
-pub enum SearchUrlParts<'a> {
+#[doc = "API parts for the Search API"]
+pub enum SearchParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> SearchUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SearchParts<'a> {
+    #[doc = "Builds a relative URL path to the Search API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchUrlParts::None => "/_search".into(),
-            SearchUrlParts::Index(ref index) => {
+            SearchParts::None => "/_search".into(),
+            SearchParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(9usize + index_str.len());
                 p.push_str("/");
@@ -5566,7 +5596,7 @@ impl<'a> SearchUrlParts<'a> {
                 p.push_str("/_search");
                 p.into()
             }
-            SearchUrlParts::IndexType(ref index, ref ty) => {
+            SearchParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(10usize + index_str.len() + ty_str.len());
@@ -5584,7 +5614,7 @@ impl<'a> SearchUrlParts<'a> {
 #[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html). Returns results matching a query."]
 pub struct Search<'a, B> {
     client: Elasticsearch,
-    parts: SearchUrlParts<'a>,
+    parts: SearchParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -5638,7 +5668,7 @@ impl<'a, B> Search<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SearchUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchParts<'a>) -> Self {
         Search {
             client,
             parts,
@@ -5986,11 +6016,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Search API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -6172,16 +6202,17 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Search Shards API"]
-pub enum SearchShardsUrlParts<'a> {
+#[doc = "API parts for the Search Shards API"]
+pub enum SearchShardsParts<'a> {
     None,
     Index(&'a [&'a str]),
 }
-impl<'a> SearchShardsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SearchShardsParts<'a> {
+    #[doc = "Builds a relative URL path to the Search Shards API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchShardsUrlParts::None => "/_search_shards".into(),
-            SearchShardsUrlParts::Index(ref index) => {
+            SearchShardsParts::None => "/_search_shards".into(),
+            SearchShardsParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(16usize + index_str.len());
                 p.push_str("/");
@@ -6196,7 +6227,7 @@ impl<'a> SearchShardsUrlParts<'a> {
 #[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html). Returns information about the indices and shards that a search request would be executed against."]
 pub struct SearchShards<'a, B> {
     client: Elasticsearch,
-    parts: SearchShardsUrlParts<'a>,
+    parts: SearchShardsParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6214,7 +6245,7 @@ impl<'a, B> SearchShards<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SearchShardsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchShardsParts<'a>) -> Self {
         SearchShards {
             client,
             parts,
@@ -6310,11 +6341,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Search Shards API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -6370,17 +6401,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Search Template API"]
-pub enum SearchTemplateUrlParts<'a> {
+#[doc = "API parts for the Search Template API"]
+pub enum SearchTemplateParts<'a> {
     None,
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> SearchTemplateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> SearchTemplateParts<'a> {
+    #[doc = "Builds a relative URL path to the Search Template API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            SearchTemplateUrlParts::None => "/_search/template".into(),
-            SearchTemplateUrlParts::Index(ref index) => {
+            SearchTemplateParts::None => "/_search/template".into(),
+            SearchTemplateParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(18usize + index_str.len());
                 p.push_str("/");
@@ -6388,7 +6420,7 @@ impl<'a> SearchTemplateUrlParts<'a> {
                 p.push_str("/_search/template");
                 p.into()
             }
-            SearchTemplateUrlParts::IndexType(ref index, ref ty) => {
+            SearchTemplateParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
@@ -6406,7 +6438,7 @@ impl<'a> SearchTemplateUrlParts<'a> {
 #[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html). Allows to use the Mustache language to pre-render a search definition."]
 pub struct SearchTemplate<'a, B> {
     client: Elasticsearch,
-    parts: SearchTemplateUrlParts<'a>,
+    parts: SearchTemplateParts<'a>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
@@ -6430,7 +6462,7 @@ impl<'a, B> SearchTemplate<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: SearchTemplateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: SearchTemplateParts<'a>) -> Self {
         SearchTemplate {
             client,
             parts,
@@ -6568,11 +6600,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Search Template API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -6649,17 +6681,18 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Termvectors API"]
-pub enum TermvectorsUrlParts<'a> {
+#[doc = "API parts for the Termvectors API"]
+pub enum TermvectorsParts<'a> {
     IndexId(&'a str, &'a str),
     Index(&'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
     IndexType(&'a str, &'a str),
 }
-impl<'a> TermvectorsUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> TermvectorsParts<'a> {
+    #[doc = "Builds a relative URL path to the Termvectors API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            TermvectorsUrlParts::IndexId(ref index, ref id) => {
+            TermvectorsParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(15usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6667,14 +6700,14 @@ impl<'a> TermvectorsUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            TermvectorsUrlParts::Index(ref index) => {
+            TermvectorsParts::Index(ref index) => {
                 let mut p = String::with_capacity(14usize + index.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
                 p.push_str("/_termvectors");
                 p.into()
             }
-            TermvectorsUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            TermvectorsParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(16usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6685,7 +6718,7 @@ impl<'a> TermvectorsUrlParts<'a> {
                 p.push_str("/_termvectors");
                 p.into()
             }
-            TermvectorsUrlParts::IndexType(ref index, ref ty) => {
+            TermvectorsParts::IndexType(ref index, ref ty) => {
                 let mut p = String::with_capacity(15usize + index.len() + ty.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6701,7 +6734,7 @@ impl<'a> TermvectorsUrlParts<'a> {
 #[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html). Returns information and statistics about terms in the fields of a particular document."]
 pub struct Termvectors<'a, B> {
     client: Elasticsearch,
-    parts: TermvectorsUrlParts<'a>,
+    parts: TermvectorsParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     field_statistics: Option<bool>,
@@ -6724,7 +6757,7 @@ impl<'a, B> Termvectors<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: TermvectorsUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: TermvectorsParts<'a>) -> Self {
         Termvectors {
             client,
             parts,
@@ -6855,11 +6888,11 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Termvectors API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
         let method = match self.body {
-            Some(_) => HttpMethod::Post,
-            None => HttpMethod::Get,
+            Some(_) => Method::Post,
+            None => Method::Get,
         };
         let query_string = {
             #[serde_with::skip_serializing_none]
@@ -6930,15 +6963,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Update API"]
-pub enum UpdateUrlParts<'a> {
+#[doc = "API parts for the Update API"]
+pub enum UpdateParts<'a> {
     IndexId(&'a str, &'a str),
     IndexTypeId(&'a str, &'a str, &'a str),
 }
-impl<'a> UpdateUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> UpdateParts<'a> {
+    #[doc = "Builds a relative URL path to the Update API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateUrlParts::IndexId(ref index, ref id) => {
+            UpdateParts::IndexId(ref index, ref id) => {
                 let mut p = String::with_capacity(10usize + index.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6946,7 +6980,7 @@ impl<'a> UpdateUrlParts<'a> {
                 p.push_str(id.as_ref());
                 p.into()
             }
-            UpdateUrlParts::IndexTypeId(ref index, ref ty, ref id) => {
+            UpdateParts::IndexTypeId(ref index, ref ty, ref id) => {
                 let mut p = String::with_capacity(11usize + index.len() + ty.len() + id.len());
                 p.push_str("/");
                 p.push_str(index.as_ref());
@@ -6964,7 +6998,7 @@ impl<'a> UpdateUrlParts<'a> {
 #[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html). Updates a document with a script or partial document."]
 pub struct Update<'a, B> {
     client: Elasticsearch,
-    parts: UpdateUrlParts<'a>,
+    parts: UpdateParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -6987,7 +7021,7 @@ impl<'a, B> Update<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateParts<'a>) -> Self {
         Update {
             client,
             parts,
@@ -7118,9 +7152,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Update API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7199,15 +7233,16 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Update By Query API"]
-pub enum UpdateByQueryUrlParts<'a> {
+#[doc = "API parts for the Update By Query API"]
+pub enum UpdateByQueryParts<'a> {
     Index(&'a [&'a str]),
     IndexType(&'a [&'a str], &'a [&'a str]),
 }
-impl<'a> UpdateByQueryUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> UpdateByQueryParts<'a> {
+    #[doc = "Builds a relative URL path to the Update By Query API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateByQueryUrlParts::Index(ref index) => {
+            UpdateByQueryParts::Index(ref index) => {
                 let index_str = index.join(",");
                 let mut p = String::with_capacity(18usize + index_str.len());
                 p.push_str("/");
@@ -7215,7 +7250,7 @@ impl<'a> UpdateByQueryUrlParts<'a> {
                 p.push_str("/_update_by_query");
                 p.into()
             }
-            UpdateByQueryUrlParts::IndexType(ref index, ref ty) => {
+            UpdateByQueryParts::IndexType(ref index, ref ty) => {
                 let index_str = index.join(",");
                 let ty_str = ty.join(",");
                 let mut p = String::with_capacity(19usize + index_str.len() + ty_str.len());
@@ -7233,7 +7268,7 @@ impl<'a> UpdateByQueryUrlParts<'a> {
 #[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html). Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 pub struct UpdateByQuery<'a, B> {
     client: Elasticsearch,
-    parts: UpdateByQueryUrlParts<'a>,
+    parts: UpdateByQueryParts<'a>,
     _source: Option<&'a [&'a str]>,
     _source_excludes: Option<&'a [&'a str]>,
     _source_includes: Option<&'a [&'a str]>,
@@ -7280,7 +7315,7 @@ impl<'a, B> UpdateByQuery<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateByQueryUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryParts<'a>) -> Self {
         UpdateByQuery {
             client,
             parts,
@@ -7579,9 +7614,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Update By Query API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7735,14 +7770,15 @@ where
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "Url parts for the Update By Query Rethrottle API"]
-pub enum UpdateByQueryRethrottleUrlParts<'a> {
+#[doc = "API parts for the Update By Query Rethrottle API"]
+pub enum UpdateByQueryRethrottleParts<'a> {
     TaskId(&'a str),
 }
-impl<'a> UpdateByQueryRethrottleUrlParts<'a> {
-    pub fn build(self) -> Cow<'static, str> {
+impl<'a> UpdateByQueryRethrottleParts<'a> {
+    #[doc = "Builds a relative URL path to the Update By Query Rethrottle API"]
+    pub fn url(self) -> Cow<'static, str> {
         match self {
-            UpdateByQueryRethrottleUrlParts::TaskId(ref task_id) => {
+            UpdateByQueryRethrottleParts::TaskId(ref task_id) => {
                 let mut p = String::with_capacity(30usize + task_id.len());
                 p.push_str("/_update_by_query/");
                 p.push_str(task_id.as_ref());
@@ -7756,7 +7792,7 @@ impl<'a> UpdateByQueryRethrottleUrlParts<'a> {
 #[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html). Changes the number of requests per second for a particular Update By Query operation."]
 pub struct UpdateByQueryRethrottle<'a, B> {
     client: Elasticsearch,
-    parts: UpdateByQueryRethrottleUrlParts<'a>,
+    parts: UpdateByQueryRethrottleParts<'a>,
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
@@ -7769,7 +7805,7 @@ impl<'a, B> UpdateByQueryRethrottle<'a, B>
 where
     B: Body,
 {
-    pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleUrlParts<'a>) -> Self {
+    pub fn new(client: Elasticsearch, parts: UpdateByQueryRethrottleParts<'a>) -> Self {
         UpdateByQueryRethrottle {
             client,
             parts,
@@ -7830,9 +7866,9 @@ where
         self
     }
     #[doc = "Creates an asynchronous call to the Update By Query Rethrottle API that can be awaited"]
-    pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-        let path = self.parts.build();
-        let method = HttpMethod::Post;
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7873,70 +7909,70 @@ where
 }
 impl Elasticsearch {
     #[doc = "Allows to perform multiple index/update/delete operations in a single request."]
-    pub fn bulk<'a>(&self, parts: BulkUrlParts<'a>) -> Bulk<'a, ()> {
+    pub fn bulk<'a>(&self, parts: BulkParts<'a>) -> Bulk<'a, ()> {
         Bulk::new(self.clone(), parts)
     }
     #[doc = "Explicitly clears the search context for a scroll."]
-    pub fn clear_scroll<'a>(&self, parts: ClearScrollUrlParts<'a>) -> ClearScroll<'a, ()> {
+    pub fn clear_scroll<'a>(&self, parts: ClearScrollParts<'a>) -> ClearScroll<'a, ()> {
         ClearScroll::new(self.clone(), parts)
     }
     #[doc = "Returns number of documents matching a query."]
-    pub fn count<'a>(&self, parts: CountUrlParts<'a>) -> Count<'a, ()> {
+    pub fn count<'a>(&self, parts: CountParts<'a>) -> Count<'a, ()> {
         Count::new(self.clone(), parts)
     }
     #[doc = "Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
-    pub fn create<'a>(&self, parts: CreateUrlParts<'a>) -> Create<'a, ()> {
+    pub fn create<'a>(&self, parts: CreateParts<'a>) -> Create<'a, ()> {
         Create::new(self.clone(), parts)
     }
     #[doc = "Removes a document from the index."]
-    pub fn delete<'a>(&self, parts: DeleteUrlParts<'a>) -> Delete<'a> {
+    pub fn delete<'a>(&self, parts: DeleteParts<'a>) -> Delete<'a> {
         Delete::new(self.clone(), parts)
     }
     #[doc = "Deletes documents matching the provided query."]
-    pub fn delete_by_query<'a>(&self, parts: DeleteByQueryUrlParts<'a>) -> DeleteByQuery<'a, ()> {
+    pub fn delete_by_query<'a>(&self, parts: DeleteByQueryParts<'a>) -> DeleteByQuery<'a, ()> {
         DeleteByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Delete By Query operation."]
     pub fn delete_by_query_rethrottle<'a>(
         &self,
-        parts: DeleteByQueryRethrottleUrlParts<'a>,
+        parts: DeleteByQueryRethrottleParts<'a>,
     ) -> DeleteByQueryRethrottle<'a, ()> {
         DeleteByQueryRethrottle::new(self.clone(), parts)
     }
     #[doc = "Deletes a script."]
-    pub fn delete_script<'a>(&self, parts: DeleteScriptUrlParts<'a>) -> DeleteScript<'a> {
+    pub fn delete_script<'a>(&self, parts: DeleteScriptParts<'a>) -> DeleteScript<'a> {
         DeleteScript::new(self.clone(), parts)
     }
     #[doc = "Returns information about whether a document exists in an index."]
-    pub fn exists<'a>(&self, parts: ExistsUrlParts<'a>) -> Exists<'a> {
+    pub fn exists<'a>(&self, parts: ExistsParts<'a>) -> Exists<'a> {
         Exists::new(self.clone(), parts)
     }
     #[doc = "Returns information about whether a document source exists in an index."]
-    pub fn exists_source<'a>(&self, parts: ExistsSourceUrlParts<'a>) -> ExistsSource<'a> {
+    pub fn exists_source<'a>(&self, parts: ExistsSourceParts<'a>) -> ExistsSource<'a> {
         ExistsSource::new(self.clone(), parts)
     }
     #[doc = "Returns information about why a specific matches (or doesn't match) a query."]
-    pub fn explain<'a>(&self, parts: ExplainUrlParts<'a>) -> Explain<'a, ()> {
+    pub fn explain<'a>(&self, parts: ExplainParts<'a>) -> Explain<'a, ()> {
         Explain::new(self.clone(), parts)
     }
     #[doc = "Returns the information about the capabilities of fields among multiple indices."]
-    pub fn field_caps<'a>(&self, parts: FieldCapsUrlParts<'a>) -> FieldCaps<'a, ()> {
+    pub fn field_caps<'a>(&self, parts: FieldCapsParts<'a>) -> FieldCaps<'a, ()> {
         FieldCaps::new(self.clone(), parts)
     }
     #[doc = "Returns a document."]
-    pub fn get<'a>(&self, parts: GetUrlParts<'a>) -> Get<'a> {
+    pub fn get<'a>(&self, parts: GetParts<'a>) -> Get<'a> {
         Get::new(self.clone(), parts)
     }
     #[doc = "Returns a script."]
-    pub fn get_script<'a>(&self, parts: GetScriptUrlParts<'a>) -> GetScript<'a> {
+    pub fn get_script<'a>(&self, parts: GetScriptParts<'a>) -> GetScript<'a> {
         GetScript::new(self.clone(), parts)
     }
     #[doc = "Returns the source of a document."]
-    pub fn get_source<'a>(&self, parts: GetSourceUrlParts<'a>) -> GetSource<'a> {
+    pub fn get_source<'a>(&self, parts: GetSourceParts<'a>) -> GetSource<'a> {
         GetSource::new(self.clone(), parts)
     }
     #[doc = "Creates or updates a document in an index."]
-    pub fn index<'a>(&self, parts: IndexUrlParts<'a>) -> Index<'a, ()> {
+    pub fn index<'a>(&self, parts: IndexParts<'a>) -> Index<'a, ()> {
         Index::new(self.clone(), parts)
     }
     #[doc = "Returns basic information about the cluster."]
@@ -7944,22 +7980,19 @@ impl Elasticsearch {
         Info::new(self.clone())
     }
     #[doc = "Allows to get multiple documents in one request."]
-    pub fn mget<'a>(&self, parts: MgetUrlParts<'a>) -> Mget<'a, ()> {
+    pub fn mget<'a>(&self, parts: MgetParts<'a>) -> Mget<'a, ()> {
         Mget::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search operations in one request."]
-    pub fn msearch<'a>(&self, parts: MsearchUrlParts<'a>) -> Msearch<'a, ()> {
+    pub fn msearch<'a>(&self, parts: MsearchParts<'a>) -> Msearch<'a, ()> {
         Msearch::new(self.clone(), parts)
     }
     #[doc = "Allows to execute several search template operations in one request."]
-    pub fn msearch_template<'a>(
-        &self,
-        parts: MsearchTemplateUrlParts<'a>,
-    ) -> MsearchTemplate<'a, ()> {
+    pub fn msearch_template<'a>(&self, parts: MsearchTemplateParts<'a>) -> MsearchTemplate<'a, ()> {
         MsearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns multiple termvectors in one request."]
-    pub fn mtermvectors<'a>(&self, parts: MtermvectorsUrlParts<'a>) -> Mtermvectors<'a, ()> {
+    pub fn mtermvectors<'a>(&self, parts: MtermvectorsParts<'a>) -> Mtermvectors<'a, ()> {
         Mtermvectors::new(self.clone(), parts)
     }
     #[doc = "Returns whether the cluster is running."]
@@ -7967,7 +8000,7 @@ impl Elasticsearch {
         Ping::new(self.clone())
     }
     #[doc = "Creates or updates a script."]
-    pub fn put_script<'a>(&self, parts: PutScriptUrlParts<'a>) -> PutScript<'a, ()> {
+    pub fn put_script<'a>(&self, parts: PutScriptParts<'a>) -> PutScript<'a, ()> {
         PutScript::new(self.clone(), parts)
     }
     #[doc = "Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
@@ -7977,49 +8010,49 @@ impl Elasticsearch {
     #[doc = "Changes the number of requests per second for a particular Reindex operation."]
     pub fn reindex_rethrottle<'a>(
         &self,
-        parts: ReindexRethrottleUrlParts<'a>,
+        parts: ReindexRethrottleParts<'a>,
     ) -> ReindexRethrottle<'a, ()> {
         ReindexRethrottle::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a>(
         &self,
-        parts: RenderSearchTemplateUrlParts<'a>,
+        parts: RenderSearchTemplateParts<'a>,
     ) -> RenderSearchTemplate<'a, ()> {
         RenderSearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Allows to retrieve a large numbers of results from a single search request."]
-    pub fn scroll<'a>(&self, parts: ScrollUrlParts<'a>) -> Scroll<'a, ()> {
+    pub fn scroll<'a>(&self, parts: ScrollParts<'a>) -> Scroll<'a, ()> {
         Scroll::new(self.clone(), parts)
     }
     #[doc = "Returns results matching a query."]
-    pub fn search<'a>(&self, parts: SearchUrlParts<'a>) -> Search<'a, ()> {
+    pub fn search<'a>(&self, parts: SearchParts<'a>) -> Search<'a, ()> {
         Search::new(self.clone(), parts)
     }
     #[doc = "Returns information about the indices and shards that a search request would be executed against."]
-    pub fn search_shards<'a>(&self, parts: SearchShardsUrlParts<'a>) -> SearchShards<'a, ()> {
+    pub fn search_shards<'a>(&self, parts: SearchShardsParts<'a>) -> SearchShards<'a, ()> {
         SearchShards::new(self.clone(), parts)
     }
     #[doc = "Allows to use the Mustache language to pre-render a search definition."]
-    pub fn search_template<'a>(&self, parts: SearchTemplateUrlParts<'a>) -> SearchTemplate<'a, ()> {
+    pub fn search_template<'a>(&self, parts: SearchTemplateParts<'a>) -> SearchTemplate<'a, ()> {
         SearchTemplate::new(self.clone(), parts)
     }
     #[doc = "Returns information and statistics about terms in the fields of a particular document."]
-    pub fn termvectors<'a>(&self, parts: TermvectorsUrlParts<'a>) -> Termvectors<'a, ()> {
+    pub fn termvectors<'a>(&self, parts: TermvectorsParts<'a>) -> Termvectors<'a, ()> {
         Termvectors::new(self.clone(), parts)
     }
     #[doc = "Updates a document with a script or partial document."]
-    pub fn update<'a>(&self, parts: UpdateUrlParts<'a>) -> Update<'a, ()> {
+    pub fn update<'a>(&self, parts: UpdateParts<'a>) -> Update<'a, ()> {
         Update::new(self.clone(), parts)
     }
     #[doc = "Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
-    pub fn update_by_query<'a>(&self, parts: UpdateByQueryUrlParts<'a>) -> UpdateByQuery<'a, ()> {
+    pub fn update_by_query<'a>(&self, parts: UpdateByQueryParts<'a>) -> UpdateByQuery<'a, ()> {
         UpdateByQuery::new(self.clone(), parts)
     }
     #[doc = "Changes the number of requests per second for a particular Update By Query operation."]
     pub fn update_by_query_rethrottle<'a>(
         &self,
-        parts: UpdateByQueryRethrottleUrlParts<'a>,
+        parts: UpdateByQueryRethrottleParts<'a>,
     ) -> UpdateByQueryRethrottle<'a, ()> {
         UpdateByQueryRethrottle::new(self.clone(), parts)
     }

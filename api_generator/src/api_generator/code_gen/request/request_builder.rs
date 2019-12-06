@@ -81,14 +81,14 @@ impl<'a> RequestBuilder<'a> {
             _ => match methods.as_slice() {
                 [HttpMethod::Post, HttpMethod::Put] => {
                     if builder_name.contains("Put") {
-                        parse_expr(quote!(HttpMethod::Put))
+                        parse_expr(quote!(Method::Put))
                     } else {
-                        parse_expr(quote!(HttpMethod::Post))
+                        parse_expr(quote!(Method::Post))
                     }
                 }
                 [HttpMethod::Get, HttpMethod::Post] => parse_expr(quote!(match self.body {
-                    Some(_) => HttpMethod::Post,
-                    None => HttpMethod::Get,
+                    Some(_) => Method::Post,
+                    None => Method::Get,
                 })),
                 _ => panic!("Combination of methods unexpected"),
             },
@@ -452,8 +452,8 @@ impl<'a> RequestBuilder<'a> {
                 #(#builder_fns)*
 
                 #[doc = #send_doc]
-                pub async fn send(self) -> Result<ElasticsearchResponse, ElasticsearchError> {
-                      let path = self.parts.build();
+                pub async fn send(self) -> Result<Response, Error> {
+                      let path = self.parts.url();
                       let method = #method_expr;
                       let query_string = #query_string_expr;
                       let body = #body_expr;

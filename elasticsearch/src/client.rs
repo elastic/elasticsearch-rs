@@ -1,11 +1,8 @@
 use crate::{
-    connection::Connection,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod},
-    response::ElasticsearchResponse,
+    http::{request::Body, response::Response, transport::Connection, Method},
+    Error,
 };
 
-use reqwest::{header::HeaderMap, Response, StatusCode};
 use serde::de::DeserializeOwned;
 use serde::{Serialize, Serializer};
 use url::Url;
@@ -44,11 +41,11 @@ impl Elasticsearch {
     /// and optional query string and body.
     pub async fn send<B, Q>(
         &self,
-        method: HttpMethod,
+        method: Method,
         path: &str,
         query_string: Option<&Q>,
         body: Option<B>,
-    ) -> Result<ElasticsearchResponse, ElasticsearchError>
+    ) -> Result<Response, Error>
     where
         B: Body,
         Q: Serialize + ?Sized,

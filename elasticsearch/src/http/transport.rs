@@ -1,11 +1,15 @@
 use crate::{
     auth::Credentials,
-    error::ElasticsearchError,
-    request::{Body, HttpMethod},
-    response::ElasticsearchResponse,
+    error::Error,
+    http::{
+        headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT},
+        request::Body,
+        response::Response,
+        Method,
+    },
 };
 
-use std::error::Error;
+use std::error;
 use std::fmt;
 use std::fs::File;
 use std::io;
@@ -17,7 +21,7 @@ use base64::write::EncoderWriter as Base64Encoder;
 use bytes::{BufMut, Bytes, BytesMut};
 use reqwest::{
     header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
-    Client, Method,
+    Client,
 };
 use serde::{de::DeserializeOwned, Serialize};
 use url::Url;
@@ -26,36 +30,36 @@ use url::Url;
 #[derive(Debug)]
 pub enum BuildError {
     /// IO error
-    IoError(io::Error),
+    Io(io::Error),
 
     /// Certificate error
-    CertError(reqwest::Error),
+    Cert(reqwest::Error),
 }
 
 impl From<io::Error> for BuildError {
     fn from(err: io::Error) -> BuildError {
-        BuildError::IoError(err)
+        BuildError::Io(err)
     }
 }
 
 impl From<reqwest::Error> for BuildError {
     fn from(err: reqwest::Error) -> BuildError {
-        BuildError::CertError(err)
+        BuildError::Cert(err)
     }
 }
 
-impl Error for BuildError {
+impl error::Error for BuildError {
     fn description(&self) -> &str {
         match *self {
-            BuildError::IoError(ref err) => err.description(),
-            BuildError::CertError(ref err) => err.description(),
+            BuildError::Io(ref err) => err.description(),
+            BuildError::Cert(ref err) => err.description(),
         }
     }
 
-    fn cause(&self) -> Option<&dyn Error> {
+    fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
-            BuildError::IoError(ref err) => Some(err as &dyn Error),
-            BuildError::CertError(ref err) => Some(err as &dyn Error),
+            BuildError::Io(ref err) => Some(err as &dyn error::Error),
+            BuildError::Cert(ref err) => Some(err as &dyn error::Error),
         }
     }
 }
@@ -63,19 +67,14 @@ impl Error for BuildError {
 impl fmt::Display for BuildError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            BuildError::IoError(ref err) => fmt::Display::fmt(err, f),
-            BuildError::CertError(ref err) => fmt::Display::fmt(err, f),
+            BuildError::Io(ref err) => fmt::Display::fmt(err, f),
+            BuildError::Cert(ref err) => fmt::Display::fmt(err, f),
         }
     }
 }
 
+/// The default address to Elasticsearch.
 pub static DEFAULT_ADDRESS: &str = "http://localhost:9200";
-
-static DEFAULT_USER_AGENT: &str = concat!("elasticsearch-rs/", env!("CARGO_PKG_VERSION"));
-
-static DEFAULT_CONTENT_TYPE: &str = "application/json";
-
-static DEFAULT_ACCEPT: &str = "application/json";
 
 pub struct ConnectionBuilder {
     client_builder: reqwest::ClientBuilder,
@@ -166,13 +165,13 @@ pub struct Connection {
 }
 
 impl Connection {
-    fn method(&self, method: HttpMethod) -> Method {
+    fn method(&self, method: Method) -> reqwest::Method {
         match method {
-            HttpMethod::Get => Method::GET,
-            HttpMethod::Put => Method::PUT,
-            HttpMethod::Post => Method::POST,
-            HttpMethod::Delete => Method::DELETE,
-            HttpMethod::Head => Method::HEAD,
+            Method::Get => reqwest::Method::GET,
+            Method::Put => reqwest::Method::PUT,
+            Method::Post => reqwest::Method::POST,
+            Method::Delete => reqwest::Method::DELETE,
+            Method::Head => reqwest::Method::HEAD,
         }
     }
 
@@ -187,11 +186,11 @@ impl Connection {
     /// Creates an asynchronous request that can be awaited
     pub async fn send<B, Q>(
         &self,
-        method: HttpMethod,
+        method: Method,
         path: &str,
         query_string: Option<&Q>,
         body: Option<B>,
-    ) -> Result<ElasticsearchResponse, ElasticsearchError>
+    ) -> Result<Response, Error>
     where
         B: Body,
         Q: Serialize + ?Sized,
@@ -233,7 +232,7 @@ impl Connection {
         }
 
         let response = request_builder.send().await?;
-        Ok(ElasticsearchResponse::new(response))
+        Ok(Response::new(response))
     }
 }
 
