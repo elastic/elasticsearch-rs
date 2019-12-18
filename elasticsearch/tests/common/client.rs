@@ -1,5 +1,5 @@
 use elasticsearch::{
-    auth::Credentials, enums::Refresh, http::request::JsonBody, http::response::Response,
+    auth::Credentials, params::Refresh, http::request::JsonBody, http::response::Response,
     http::transport::ConnectionBuilder, indices::IndicesExistsParts, BulkParts, Elasticsearch,
     Error, DEFAULT_ADDRESS,
 };

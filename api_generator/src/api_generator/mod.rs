@@ -259,9 +259,9 @@ pub fn generate(
     // read the Api from file
     let api = read_api(branch, download_dir)?;
 
-    // generate enums
-    let enums = code_gen::enums::generate(&api)?;
-    write_file(enums, generated_dir, "enums.rs")?;
+    // generate param enums
+    let params = code_gen::params::generate(&api)?;
+    write_file(params, generated_dir, "params.rs")?;
 
     // generate namespace clients
     let namespace_clients = code_gen::namespace_clients::generate(&api)?;

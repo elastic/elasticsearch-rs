@@ -1,4 +1,4 @@
-pub mod enums;
+pub mod params;
 pub mod namespace_clients;
 pub mod request;
 pub mod root;
@@ -15,7 +15,7 @@ pub fn use_declarations() -> Tokens {
         #[allow(unused_imports)]
         use crate::{
             client::{Elasticsearch},
-            enums::*,
+            params::*,
             error::Error,
             http::{
                 Method,

@@ -17,13 +17,13 @@
 #[allow(unused_imports)]
 use crate::{
     client::Elasticsearch,
-    enums::*,
     error::Error,
     http::{
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
     },
+    params::*,
 };
 use serde::Serialize;
 use serde_with;

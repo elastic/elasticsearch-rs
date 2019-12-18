@@ -6,7 +6,7 @@ extern crate serde;
 extern crate serde_json;
 
 pub mod auth;
-pub mod enums;
+pub mod params;
 pub mod http;
 
 mod client;

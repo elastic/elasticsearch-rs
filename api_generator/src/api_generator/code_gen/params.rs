@@ -10,13 +10,13 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
     );
     tokens.append(header);
     for e in &api.enums {
-        generate_enum(&mut tokens, &e);
+        generate_param(&mut tokens, &e);
     }
 
     rust_fmt(tokens.to_string())
 }
 
-fn generate_enum(tokens: &mut Tokens, e: &ApiEnum) {
+fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
     let name = syn::Ident::from(e.name.to_pascal_case());
     let renames = e
         .values

@@ -87,20 +87,21 @@ fn main() {
         if generate_code {
             // delete existing generated files
             remove(&generated_dir, "namespace_clients");
-            remove(&generated_dir, "enums.rs");
+            remove(&generated_dir, "params.rs");
             remove(&generated_dir, "root.rs");
             api_generator::generate(&branch, &download_dir, &generated_dir).unwrap();
         }
     }
 }
 
-fn remove(dir: &PathBuf, s: &str) {
-    let mut p = dir.clone();
+fn remove(path: &PathBuf, s: &str) {
+    let mut p = path.clone();
     p.push(s);
-
-    if p.is_dir() {
-        fs::remove_dir_all(p).unwrap();
-    } else {
-        fs::remove_file(p).unwrap();
+    if p.exists() {
+        if p.is_dir() {
+            fs::remove_dir_all(p).unwrap();
+        } else {
+            fs::remove_file(p).unwrap();
+        }
     }
 }
