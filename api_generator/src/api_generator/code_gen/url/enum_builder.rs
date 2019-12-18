@@ -356,8 +356,11 @@ mod tests {
             #[derive(Debug, Clone, PartialEq)]
             #[doc = "API parts for the Search API"]
             pub enum SearchParts<'a> {
+                #[doc = "No parts"]
                 None,
+                #[doc = "Index"]
                 Index(&'a [&'a str]),
+                #[doc = "Index and Type"]
                 IndexType(&'a [&'a str], &'a [&'a str]),
             }
         );
