@@ -30,7 +30,10 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             "Creates a namespace client for {} APIs",
             &name_for_docs
         ));
-        let new_namespace_client_doc = doc(format!("Creates a new instance of [{}]", &namespace_pascal_case));
+        let new_namespace_client_doc = doc(format!(
+            "Creates a new instance of [{}]",
+            &namespace_pascal_case
+        ));
         let namespace_name = ident(namespace.to_string());
 
         let (builders, methods): (Vec<Tokens>, Vec<Tokens>) = namespace_methods

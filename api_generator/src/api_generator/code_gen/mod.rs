@@ -1,5 +1,5 @@
-pub mod params;
 pub mod namespace_clients;
+pub mod params;
 pub mod request;
 pub mod root;
 pub mod url;

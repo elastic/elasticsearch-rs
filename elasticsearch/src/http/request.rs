@@ -1,7 +1,7 @@
 use crate::error::Error;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};
-use serde::{Serialize};
+use serde::Serialize;
 
 /// Body of an API call.
 ///

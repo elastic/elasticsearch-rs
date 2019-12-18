@@ -163,7 +163,10 @@ impl<'a> RequestBuilder<'a> {
                 }
             )
         } else {
-            let doc = doc(format!("Creates a new instance of [{}] with the specified API parts", &builder_name));
+            let doc = doc(format!(
+                "Creates a new instance of [{}] with the specified API parts",
+                &builder_name
+            ));
             quote!(
                 #doc
                 pub fn new(client: Elasticsearch, parts: #enum_ty) -> Self {
@@ -382,7 +385,8 @@ impl<'a> RequestBuilder<'a> {
         builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
         builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 
-        let new_fn = Self::create_new_fn(&builder_name, &builder_ident, enum_builder, &default_fields);
+        let new_fn =
+            Self::create_new_fn(&builder_name, &builder_ident, enum_builder, &default_fields);
 
         let method_expr = Self::create_method_expression(&builder_name, &endpoint);
 

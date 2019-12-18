@@ -69,9 +69,7 @@ impl<'a> EnumBuilder<'a> {
 
     /// AST for a parts variant.
     fn parts(path: &Path) -> syn::Variant {
-        let params = &path
-            .path
-            .params();
+        let params = &path.path.params();
 
         let name = params
             .iter()
@@ -90,7 +88,9 @@ impl<'a> EnumBuilder<'a> {
                     .collect::<Vec<_>>()
                     .join(", ");
 
-                d.push_str(format!(" and {}", params[n-1].replace("_", " ").to_pascal_case()).as_str());
+                d.push_str(
+                    format!(" and {}", params[n - 1].replace("_", " ").to_pascal_case()).as_str(),
+                );
                 doc(d)
             }
         };

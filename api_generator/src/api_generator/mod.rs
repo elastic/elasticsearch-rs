@@ -5,7 +5,7 @@ use serde_json::Value;
 use std::{
     collections::{BTreeMap, HashSet},
     fmt,
-    fs::{read_dir, File, OpenOptions},
+    fs::{self, File, OpenOptions},
     hash::{Hash, Hasher},
     io::{prelude::*, Read},
     path::PathBuf,
@@ -267,7 +267,7 @@ pub fn generate(
     let namespace_clients = code_gen::namespace_clients::generate(&api)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
-    std::fs::create_dir_all(&namespace_clients_dir)?;
+    fs::create_dir_all(&namespace_clients_dir)?;
 
     // generate the mod file to reference all namespace clients
     let modules = namespace_clients
@@ -289,6 +289,17 @@ pub fn generate(
     // generate functions on root of client
     let root = code_gen::root::generate(&api)?;
     write_file(root, generated_dir, "root.rs")?;
+
+    let generated_modules = fs::read_dir(generated_dir)?
+        .into_iter()
+        .map(|r| {
+            let path = r.unwrap().path();
+            format!("pub mod {};", path.file_stem().unwrap().to_string_lossy())
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    write_file(generated_modules, &generated_dir, "mod.rs")?;
 
     Ok(())
 }
@@ -329,7 +340,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 
 /// Reads Api from a directory of REST Api specs
 fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
-    let paths = read_dir(download_dir)?;
+    let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
     let mut common_params = BTreeMap::new();

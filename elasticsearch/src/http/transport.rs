@@ -9,16 +9,14 @@ use crate::{
     },
 };
 
-use std::error;
-use std::fmt;
-use std::io::{self, Write};
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
-use reqwest::{
-    header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
-};
+use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
 use serde::Serialize;
+use std::error;
+use std::fmt;
+use std::io::{self, Write};
 use url::Url;
 
 /// Error that can occur when building a connection

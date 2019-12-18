@@ -6,17 +6,16 @@ extern crate serde;
 extern crate serde_json;
 
 pub mod auth;
-pub mod params;
 pub mod http;
 
 mod client;
 mod error;
-mod namespace_clients;
-mod root;
+mod generated;
 
-// exposed at the library root level
+// exposes types within modules at the library root level
 pub use crate::{
-    client::*, error::*, http::transport::DEFAULT_ADDRESS, namespace_clients::*, root::*,
+    client::*, error::*, generated::namespace_clients::*, generated::params, generated::root::*,
+    http::transport::DEFAULT_ADDRESS,
 };
 
 #[cfg(test)]

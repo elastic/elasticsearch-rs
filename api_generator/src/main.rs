@@ -17,7 +17,7 @@ mod rest_spec;
 fn main() {
     // This must be run from the src root directory, with cargo run -p api_generator
     let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs")).unwrap();
-    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src")).unwrap();
+    let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src/generated")).unwrap();
     let last_downloaded_version = "./api_generator/last_downloaded_version";
 
     let mut download_specs = false;
@@ -85,23 +85,14 @@ fn main() {
         }
 
         if generate_code {
-            // delete existing generated files
-            remove(&generated_dir, "namespace_clients");
-            remove(&generated_dir, "params.rs");
-            remove(&generated_dir, "root.rs");
-            api_generator::generate(&branch, &download_dir, &generated_dir).unwrap();
-        }
-    }
-}
+            // delete existing generated files if the exist
+            if generated_dir.exists() {
+                fs::remove_dir_all(&generated_dir).unwrap();
+            }
 
-fn remove(path: &PathBuf, s: &str) {
-    let mut p = path.clone();
-    p.push(s);
-    if p.exists() {
-        if p.is_dir() {
-            fs::remove_dir_all(p).unwrap();
-        } else {
-            fs::remove_file(p).unwrap();
+            fs::create_dir_all(&generated_dir).unwrap();
+
+            api_generator::generate(&branch, &download_dir, &generated_dir).unwrap();
         }
     }
 }
