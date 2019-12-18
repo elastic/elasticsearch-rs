@@ -4,19 +4,23 @@ use bytes::{BufMut, Bytes, BytesMut};
 use serde::{Serialize};
 
 /// Body of an API call.
+///
+/// Some Elasticsearch APIs accept a body as part of the API call. Most APIs
+/// expect JSON, however, there are some APIs that expect newline-delimited JSON (NDJSON).
+/// [Body] allows modelling different API body implementations.
 pub trait Body {
     /// Write to a buffer that will be written to the request stream
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error>;
 }
 
-/// A JSON body of an API call
+/// A JSON body of an API call.
 pub struct JsonBody<T>(pub(crate) T);
 
 impl<T> JsonBody<T>
 where
     T: Serialize,
 {
-    /// Creates a new instance of [JsonBody]
+    /// Creates a new instance of [JsonBody] for a type `T` that implements [serde::Serialize]
     pub fn new(t: T) -> Self {
         Self(t)
     }
@@ -52,15 +56,15 @@ impl<T> NdBody<T>
 where
     T: Body,
 {
-    /// Creates a new instance of [NdBody]
+    /// Creates a new instance of [NdBody], for a collection of `T` that implement [Body].
+    ///
+    /// Accepts `T` that implement [Body] as opposed to [serde::Serialize], because each `T`
+    /// itself may need to serialize to newline delimited.
     pub fn new(b: Vec<T>) -> Self {
         Self(b)
     }
 }
 
-// Accepts T as Body as opposed to Serialize, because each T may need to
-// serialize to newline delimited in future e.g. A BulkOperation struct
-// that implements Body could contain the operation and a document.
 impl<T> Body for NdBody<T>
 where
     T: Body,
