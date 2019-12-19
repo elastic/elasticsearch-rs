@@ -108,12 +108,6 @@ impl ConnectionBuilder {
     pub fn build(self) -> Result<Connection, BuildError> {
         let mut client_builder = self.client_builder;
 
-        let mut headers = HeaderMap::new();
-        headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
-        headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
-        headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
-        client_builder = client_builder.default_headers(headers);
-
         if let Some(c) = &self.credentials {
             client_builder = match c {
                 Credentials::Cert(b, p) => {
@@ -192,6 +186,10 @@ impl Connection {
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
 
+        let mut headers = headers;
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
+        headers.insert(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT));
+        headers.insert(USER_AGENT, HeaderValue::from_static(DEFAULT_USER_AGENT));
         request_builder = request_builder.headers(headers);
 
         if let Some(b) = body {
