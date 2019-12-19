@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -59,6 +60,7 @@ pub struct IndicesAnalyze<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     index: Option<&'a str>,
     pretty: Option<bool>,
@@ -73,6 +75,7 @@ where
         IndicesAnalyze {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -93,6 +96,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             index: self.index,
             pretty: self.pretty,
@@ -107,6 +111,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -136,6 +145,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -169,7 +179,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -210,6 +220,7 @@ pub struct IndicesClearCache<'a, B> {
     fielddata: Option<bool>,
     fields: Option<&'a [&'a str]>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     index: Option<&'a [&'a str]>,
@@ -227,6 +238,7 @@ where
         IndicesClearCache {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -263,6 +275,7 @@ where
             fielddata: self.fielddata,
             fields: self.fields,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             index: self.index,
@@ -295,6 +308,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -336,6 +354,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -390,7 +409,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -424,6 +443,7 @@ pub struct IndicesClone<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -440,6 +460,7 @@ where
         IndicesClone {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -462,6 +483,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -478,6 +500,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -514,6 +541,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -553,7 +581,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -589,6 +617,7 @@ pub struct IndicesClose<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -606,6 +635,7 @@ where
         IndicesClose {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -638,6 +668,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
@@ -660,6 +691,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -701,6 +737,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -749,7 +786,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -781,6 +818,7 @@ pub struct IndicesCreate<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -798,6 +836,7 @@ where
         IndicesCreate {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -821,6 +860,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
@@ -838,6 +878,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -879,6 +924,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -921,7 +967,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -955,6 +1001,7 @@ pub struct IndicesDelete<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -968,6 +1015,7 @@ impl<'a> IndicesDelete<'a> {
         IndicesDelete {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -998,6 +1046,11 @@ impl<'a> IndicesDelete<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1034,6 +1087,7 @@ impl<'a> IndicesDelete<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1079,7 +1133,7 @@ impl<'a> IndicesDelete<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1114,6 +1168,7 @@ pub struct IndicesDeleteAlias<'a> {
     parts: IndicesDeleteAliasParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -1126,6 +1181,7 @@ impl<'a> IndicesDeleteAlias<'a> {
         IndicesDeleteAlias {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1143,6 +1199,11 @@ impl<'a> IndicesDeleteAlias<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1174,6 +1235,7 @@ impl<'a> IndicesDeleteAlias<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1210,7 +1272,7 @@ impl<'a> IndicesDeleteAlias<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1241,6 +1303,7 @@ pub struct IndicesDeleteTemplate<'a> {
     parts: IndicesDeleteTemplateParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -1253,6 +1316,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
         IndicesDeleteTemplate {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1270,6 +1334,11 @@ impl<'a> IndicesDeleteTemplate<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1301,6 +1370,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1337,7 +1407,7 @@ impl<'a> IndicesDeleteTemplate<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1372,6 +1442,7 @@ pub struct IndicesExists<'a> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -1385,6 +1456,7 @@ impl<'a> IndicesExists<'a> {
         IndicesExists {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1423,6 +1495,11 @@ impl<'a> IndicesExists<'a> {
         self.flat_settings = Some(flat_settings);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -1457,6 +1534,7 @@ impl<'a> IndicesExists<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Head;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1505,7 +1583,7 @@ impl<'a> IndicesExists<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1551,6 +1629,7 @@ pub struct IndicesExistsAlias<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
@@ -1563,6 +1642,7 @@ impl<'a> IndicesExistsAlias<'a> {
         IndicesExistsAlias {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1594,6 +1674,11 @@ impl<'a> IndicesExistsAlias<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -1623,6 +1708,7 @@ impl<'a> IndicesExistsAlias<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Head;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1665,7 +1751,7 @@ impl<'a> IndicesExistsAlias<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1698,6 +1784,7 @@ pub struct IndicesExistsTemplate<'a> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -1710,6 +1797,7 @@ impl<'a> IndicesExistsTemplate<'a> {
         IndicesExistsTemplate {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -1733,6 +1821,11 @@ impl<'a> IndicesExistsTemplate<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1764,6 +1857,7 @@ impl<'a> IndicesExistsTemplate<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Head;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1803,7 +1897,7 @@ impl<'a> IndicesExistsTemplate<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1840,6 +1934,7 @@ pub struct IndicesExistsType<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
@@ -1852,6 +1947,7 @@ impl<'a> IndicesExistsType<'a> {
         IndicesExistsType {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1883,6 +1979,11 @@ impl<'a> IndicesExistsType<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -1912,6 +2013,7 @@ impl<'a> IndicesExistsType<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Head;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1954,7 +2056,7 @@ impl<'a> IndicesExistsType<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1994,6 +2096,7 @@ pub struct IndicesFlush<'a, B> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     force: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -2009,6 +2112,7 @@ where
         IndicesFlush {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2041,6 +2145,7 @@ where
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
             force: self.force,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
@@ -2066,6 +2171,11 @@ where
     #[doc = "Whether a flush should be forced even if it is not necessarily needed ie. if no changes will be committed to the index. This is useful if transaction log IDs should be incremented even if no uncommitted changes are present. (This setting can be considered as internal)"]
     pub fn force(mut self, force: bool) -> Self {
         self.force = Some(force);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -2100,6 +2210,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2145,7 +2256,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2184,6 +2295,7 @@ pub struct IndicesFlushSynced<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -2198,6 +2310,7 @@ where
         IndicesFlushSynced {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2227,6 +2340,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
@@ -2246,6 +2360,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -2275,6 +2394,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2314,7 +2434,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2354,6 +2474,7 @@ pub struct IndicesForcemerge<'a, B> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flush: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     max_num_segments: Option<i64>,
@@ -2370,6 +2491,7 @@ where
         IndicesForcemerge {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2403,6 +2525,7 @@ where
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
             flush: self.flush,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             max_num_segments: self.max_num_segments,
@@ -2429,6 +2552,11 @@ where
     #[doc = "Specify whether the index should be flushed after performing the operation (default: true)"]
     pub fn flush(mut self, flush: bool) -> Self {
         self.flush = Some(flush);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -2465,6 +2593,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2513,7 +2642,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2548,6 +2677,7 @@ pub struct IndicesFreeze<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -2565,6 +2695,7 @@ where
         IndicesFreeze {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2597,6 +2728,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
@@ -2619,6 +2751,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -2660,6 +2797,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2708,7 +2846,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2743,6 +2881,7 @@ pub struct IndicesGet<'a> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -2758,6 +2897,7 @@ impl<'a> IndicesGet<'a> {
         IndicesGet {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2796,6 +2936,11 @@ impl<'a> IndicesGet<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -2842,6 +2987,7 @@ impl<'a> IndicesGet<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2896,7 +3042,7 @@ impl<'a> IndicesGet<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2955,6 +3101,7 @@ pub struct IndicesGetAlias<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
@@ -2967,6 +3114,7 @@ impl<'a> IndicesGetAlias<'a> {
         IndicesGetAlias {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2998,6 +3146,11 @@ impl<'a> IndicesGetAlias<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -3027,6 +3180,7 @@ impl<'a> IndicesGetAlias<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3069,7 +3223,7 @@ impl<'a> IndicesGetAlias<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3144,6 +3298,7 @@ pub struct IndicesGetFieldMapping<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -3158,6 +3313,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
         IndicesGetFieldMapping {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3189,6 +3345,11 @@ impl<'a> IndicesGetFieldMapping<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3230,6 +3391,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3278,7 +3440,7 @@ impl<'a> IndicesGetFieldMapping<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3337,6 +3499,7 @@ pub struct IndicesGetMapping<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
@@ -3351,6 +3514,7 @@ impl<'a> IndicesGetMapping<'a> {
         IndicesGetMapping {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3382,6 +3546,11 @@ impl<'a> IndicesGetMapping<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3423,6 +3592,7 @@ impl<'a> IndicesGetMapping<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3471,7 +3641,7 @@ impl<'a> IndicesGetMapping<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3531,6 +3701,7 @@ pub struct IndicesGetSettings<'a> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_defaults: Option<bool>,
@@ -3545,6 +3716,7 @@ impl<'a> IndicesGetSettings<'a> {
         IndicesGetSettings {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3582,6 +3754,11 @@ impl<'a> IndicesGetSettings<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3623,6 +3800,7 @@ impl<'a> IndicesGetSettings<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3674,7 +3852,7 @@ impl<'a> IndicesGetSettings<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3710,6 +3888,7 @@ pub struct IndicesGetTemplate<'a> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_type_name: Option<bool>,
     local: Option<bool>,
@@ -3723,6 +3902,7 @@ impl<'a> IndicesGetTemplate<'a> {
         IndicesGetTemplate {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -3747,6 +3927,11 @@ impl<'a> IndicesGetTemplate<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -3783,6 +3968,7 @@ impl<'a> IndicesGetTemplate<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3825,7 +4011,7 @@ impl<'a> IndicesGetTemplate<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3863,6 +4049,7 @@ pub struct IndicesGetUpgrade<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -3874,6 +4061,7 @@ impl<'a> IndicesGetUpgrade<'a> {
         IndicesGetUpgrade {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3904,6 +4092,11 @@ impl<'a> IndicesGetUpgrade<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -3928,6 +4121,7 @@ impl<'a> IndicesGetUpgrade<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3967,7 +4161,7 @@ impl<'a> IndicesGetUpgrade<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4003,6 +4197,7 @@ pub struct IndicesOpen<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -4020,6 +4215,7 @@ where
         IndicesOpen {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4052,6 +4248,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
@@ -4074,6 +4271,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -4115,6 +4317,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4163,7 +4366,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4198,6 +4401,7 @@ pub struct IndicesPutAlias<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -4213,6 +4417,7 @@ where
         IndicesPutAlias {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4234,6 +4439,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -4249,6 +4455,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -4280,6 +4491,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4316,7 +4528,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4372,6 +4584,7 @@ pub struct IndicesPutMapping<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     include_type_name: Option<bool>,
@@ -4389,6 +4602,7 @@ where
         IndicesPutMapping {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4421,6 +4635,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             include_type_name: self.include_type_name,
@@ -4443,6 +4658,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -4484,6 +4704,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4532,7 +4753,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4572,6 +4793,7 @@ pub struct IndicesPutSettings<'a, B> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -4589,6 +4811,7 @@ where
         IndicesPutSettings {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4623,6 +4846,7 @@ where
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
             flat_settings: self.flat_settings,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
@@ -4650,6 +4874,11 @@ where
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -4691,6 +4920,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4742,7 +4972,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4776,6 +5006,7 @@ pub struct IndicesPutTemplate<'a, B> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -4793,6 +5024,7 @@ where
         IndicesPutTemplate {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             create: None,
             error_trace: None,
@@ -4820,6 +5052,7 @@ where
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             flat_settings: self.flat_settings,
+            headers: self.headers,
             human: self.human,
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
@@ -4847,6 +5080,11 @@ where
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -4888,6 +5126,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -4936,7 +5175,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -4974,6 +5213,7 @@ pub struct IndicesRecovery<'a> {
     detailed: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -4984,6 +5224,7 @@ impl<'a> IndicesRecovery<'a> {
         IndicesRecovery {
             client,
             parts,
+            headers: HeaderMap::new(),
             active_only: None,
             detailed: None,
             error_trace: None,
@@ -5013,6 +5254,11 @@ impl<'a> IndicesRecovery<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -5032,6 +5278,7 @@ impl<'a> IndicesRecovery<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5068,7 +5315,7 @@ impl<'a> IndicesRecovery<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5107,6 +5354,7 @@ pub struct IndicesRefresh<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -5121,6 +5369,7 @@ where
         IndicesRefresh {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -5150,6 +5399,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             pretty: self.pretty,
@@ -5169,6 +5419,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -5198,6 +5453,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5237,7 +5493,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5281,6 +5537,7 @@ pub struct IndicesRollover<'a, B> {
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_type_name: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -5298,6 +5555,7 @@ where
         IndicesRollover {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             dry_run: None,
             error_trace: None,
@@ -5323,6 +5581,7 @@ where
             dry_run: self.dry_run,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             include_type_name: self.include_type_name,
             master_timeout: self.master_timeout,
@@ -5345,6 +5604,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -5386,6 +5650,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5431,7 +5696,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5469,6 +5734,7 @@ pub struct IndicesSegments<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -5481,6 +5747,7 @@ impl<'a> IndicesSegments<'a> {
         IndicesSegments {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -5512,6 +5779,11 @@ impl<'a> IndicesSegments<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -5541,6 +5813,7 @@ impl<'a> IndicesSegments<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5583,7 +5856,7 @@ impl<'a> IndicesSegments<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5621,6 +5894,7 @@ pub struct IndicesShardStores<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     pretty: Option<bool>,
@@ -5633,6 +5907,7 @@ impl<'a> IndicesShardStores<'a> {
         IndicesShardStores {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -5664,6 +5939,11 @@ impl<'a> IndicesShardStores<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -5693,6 +5973,7 @@ impl<'a> IndicesShardStores<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5735,7 +6016,7 @@ impl<'a> IndicesShardStores<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5770,6 +6051,7 @@ pub struct IndicesShrink<'a, B> {
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -5786,6 +6068,7 @@ where
         IndicesShrink {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -5810,6 +6093,7 @@ where
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -5831,6 +6115,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -5867,6 +6156,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -5909,7 +6199,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -5944,6 +6234,7 @@ pub struct IndicesSplit<'a, B> {
     copy_settings: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -5960,6 +6251,7 @@ where
         IndicesSplit {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -5984,6 +6276,7 @@ where
             copy_settings: self.copy_settings,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -6005,6 +6298,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -6041,6 +6339,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6083,7 +6382,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -6146,6 +6445,7 @@ pub struct IndicesStats<'a> {
     filter_path: Option<&'a [&'a str]>,
     forbid_closed_indices: Option<bool>,
     groups: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_segment_file_sizes: Option<bool>,
     include_unloaded_segments: Option<bool>,
@@ -6160,6 +6460,7 @@ impl<'a> IndicesStats<'a> {
         IndicesStats {
             client,
             parts,
+            headers: HeaderMap::new(),
             completion_fields: None,
             error_trace: None,
             expand_wildcards: None,
@@ -6217,6 +6518,11 @@ impl<'a> IndicesStats<'a> {
         self.groups = Some(groups);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -6256,6 +6562,7 @@ impl<'a> IndicesStats<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6322,7 +6629,7 @@ impl<'a> IndicesStats<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -6357,6 +6664,7 @@ pub struct IndicesUnfreeze<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -6374,6 +6682,7 @@ where
         IndicesUnfreeze {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -6406,6 +6715,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             master_timeout: self.master_timeout,
@@ -6428,6 +6738,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -6469,6 +6784,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6517,7 +6833,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -6544,6 +6860,7 @@ pub struct IndicesUpdateAliases<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -6559,6 +6876,7 @@ where
         IndicesUpdateAliases {
             client,
             parts: IndicesUpdateAliasesParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6580,6 +6898,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -6595,6 +6914,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -6626,6 +6950,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6662,7 +6987,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -6701,6 +7026,7 @@ pub struct IndicesUpgrade<'a, B> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     only_ancient_segments: Option<bool>,
@@ -6717,6 +7043,7 @@ where
         IndicesUpgrade {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -6748,6 +7075,7 @@ where
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             only_ancient_segments: self.only_ancient_segments,
@@ -6769,6 +7097,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -6805,6 +7138,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -6850,7 +7184,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -6908,6 +7242,7 @@ pub struct IndicesValidateQuery<'a, B> {
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     lenient: Option<bool>,
@@ -6925,6 +7260,7 @@ where
         IndicesValidateQuery {
             client,
             parts,
+            headers: HeaderMap::new(),
             all_shards: None,
             allow_no_indices: None,
             analyze_wildcard: None,
@@ -6984,6 +7320,7 @@ where
             expand_wildcards: self.expand_wildcards,
             explain: self.explain,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             ignore_unavailable: self.ignore_unavailable,
             lenient: self.lenient,
@@ -7021,6 +7358,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -7065,6 +7407,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -7131,7 +7474,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

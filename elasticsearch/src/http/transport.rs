@@ -2,7 +2,7 @@ use crate::{
     auth::Credentials,
     error::Error,
     http::{
-        headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT},
+        headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
         request::Body,
         response::Response,
         Method,
@@ -12,7 +12,6 @@ use crate::{
 use base64;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
-use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT};
 use serde::Serialize;
 use std::error;
 use std::fmt;
@@ -181,6 +180,7 @@ impl Connection {
         &self,
         method: Method,
         path: &str,
+        headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
     ) -> Result<Response, Error>
@@ -191,6 +191,8 @@ impl Connection {
         let url = self.url.join(path)?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
+
+        request_builder = request_builder.headers(headers);
 
         if let Some(b) = body {
             let mut bytes_mut = BytesMut::with_capacity(1024);
