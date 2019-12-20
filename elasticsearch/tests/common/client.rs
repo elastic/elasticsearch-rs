@@ -1,9 +1,10 @@
 use elasticsearch::{
     auth::Credentials, http::request::JsonBody, http::response::Response,
-    http::transport::ConnectionBuilder, indices::IndicesExistsParts, params::Refresh, BulkParts,
+    http::transport::TransportBuilder, indices::IndicesExistsParts, params::Refresh, BulkParts,
     Elasticsearch, Error, DEFAULT_ADDRESS,
 };
 
+use elasticsearch::http::transport::SingleNodeConnectionPool;
 use reqwest::StatusCode;
 use serde_json::json;
 use sysinfo::SystemExt;
@@ -24,9 +25,10 @@ fn running_proxy() -> bool {
     !system.get_process_by_name("Fiddler").is_empty()
 }
 
-pub fn create_conn_builder(addr: &str) -> ConnectionBuilder {
+pub fn create_builder(addr: &str) -> TransportBuilder {
     let url = Url::parse(addr).unwrap();
-    let mut builder = ConnectionBuilder::new(url.clone());
+    let conn_pool = SingleNodeConnectionPool::new(url.clone());
+    let mut builder = TransportBuilder::new(conn_pool);
     // assume if we're running with HTTPS then authentication is also enabled
     if url.scheme() == "https" {
         builder = builder.auth(Credentials::Basic("elastic".into(), "changeme".into()))
@@ -40,18 +42,18 @@ pub fn create_default() -> Elasticsearch {
 }
 
 pub fn create_for_url(url: &str) -> Elasticsearch {
-    let builder = create_conn_builder(url);
+    let builder = create_builder(url);
     create(builder)
 }
 
-pub fn create(mut connection_builder: ConnectionBuilder) -> Elasticsearch {
+pub fn create(mut builder: TransportBuilder) -> Elasticsearch {
     if running_proxy() {
         let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        connection_builder = connection_builder.proxy(proxy_url);
+        builder = builder.proxy(proxy_url);
     }
 
-    let connection = connection_builder.build().unwrap();
-    Elasticsearch::new(connection)
+    let transport = builder.build().unwrap();
+    Elasticsearch::new(transport)
 }
 
 /// index some documents into a posts index. If the posts index already exists, do nothing.

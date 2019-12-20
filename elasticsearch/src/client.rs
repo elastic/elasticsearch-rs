@@ -1,5 +1,5 @@
 use crate::{
-    http::{request::Body, response::Response, transport::Connection, Method},
+    http::{request::Body, response::Response, transport::Transport, Method},
     Error,
 };
 
@@ -24,13 +24,13 @@ where
 /// Root client for top level APIs
 #[derive(Clone, Debug, Default)]
 pub struct Elasticsearch {
-    connection: Connection,
+    transport: Transport,
 }
 
 impl Elasticsearch {
     /// Creates a new instance of the root client
-    pub fn new(connection: Connection) -> Self {
-        Elasticsearch { connection }
+    pub fn new(transport: Transport) -> Self {
+        Elasticsearch { transport }
     }
 
     /// Creates an asynchronous request that can be awaited
@@ -48,6 +48,6 @@ impl Elasticsearch {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        self.connection.send(method, path, query_string, body).await
+        self.transport.send(method, path, query_string, body).await
     }
 }

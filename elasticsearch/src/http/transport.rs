@@ -16,10 +16,11 @@ use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYP
 use serde::Serialize;
 use std::error;
 use std::fmt;
+use std::fmt::Debug;
 use std::io::{self, Write};
 use url::Url;
 
-/// Error that can occur when building a connection
+/// Error that can occur when building a [Transport]
 #[derive(Debug)]
 pub enum BuildError {
     /// IO error
@@ -66,22 +67,28 @@ impl fmt::Display for BuildError {
     }
 }
 
-/// The default address to Elasticsearch.
+/// Default address to Elasticsearch running on `http://localhost:9200`
 pub static DEFAULT_ADDRESS: &str = "http://localhost:9200";
 
-pub struct ConnectionBuilder {
+/// Builds a HTTP transport to make API calls to Elasticsearch
+pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
-    url: Url,
+    conn_pool: Box<dyn ConnectionPool>,
     credentials: Option<Credentials>,
     proxy: Option<Url>,
     disable_proxy: bool,
 }
 
-impl ConnectionBuilder {
-    pub fn new(url: Url) -> Self {
-        ConnectionBuilder {
+impl TransportBuilder {
+    /// Creates a new instance of [TransportBuilder]. Accepts a [ConnectionPool]
+    /// from which [Connection]s to Elasticsearch will be retrieved.
+    pub fn new<P>(conn_pool: P) -> Self
+    where
+        P: ConnectionPool + Debug + Clone + 'static,
+    {
+        Self {
             client_builder: reqwest::ClientBuilder::new(),
-            url,
+            conn_pool: Box::new(conn_pool),
             credentials: None,
             proxy: None,
             disable_proxy: false,
@@ -100,13 +107,14 @@ impl ConnectionBuilder {
         self
     }
 
+    /// Credentials for the client to use for authentication to Elasticsearch
     pub fn auth(mut self, credentials: Credentials) -> Self {
         self.credentials = Some(credentials);
         self
     }
 
-    /// Builds a connection to an Elasticsearch node
-    pub fn build(self) -> Result<Connection, BuildError> {
+    /// Builds a [Transport] to use to send API calls to Elasticsearch.
+    pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
 
         let mut headers = HeaderMap::new();
@@ -135,29 +143,44 @@ impl ConnectionBuilder {
         }
 
         let client = client_builder.build()?;
-        Ok(Connection {
-            url: self.url,
-            credentials: self.credentials,
+        Ok(Transport {
             client,
+            conn_pool: self.conn_pool,
+            credentials: self.credentials,
         })
     }
 }
 
-impl Default for ConnectionBuilder {
+impl Default for TransportBuilder {
+    /// Creates a default implementation using the default implementation of [SingleNodeConnectionPool].
     fn default() -> Self {
-        ConnectionBuilder::new(Url::parse(DEFAULT_ADDRESS).unwrap())
+        Self::new(SingleNodeConnectionPool::default())
     }
 }
 
 /// A connection to an Elasticsearch node, used to send an API request
 #[derive(Debug, Clone)]
 pub struct Connection {
-    client: reqwest::Client,
     url: Url,
-    credentials: Option<Credentials>,
 }
 
 impl Connection {
+    /// Creates a new instance of a [Connection]
+    pub fn new(url: Url) -> Self {
+        Self { url }
+    }
+}
+
+/// A HTTP transport responsible for making the API requests to Elasticsearch,
+/// using a [Connection] selected from a [ConnectionPool]
+#[derive(Debug, Clone)]
+pub struct Transport {
+    client: reqwest::Client,
+    credentials: Option<Credentials>,
+    conn_pool: Box<dyn ConnectionPool>,
+}
+
+impl Transport {
     fn method(&self, method: Method) -> reqwest::Method {
         match method {
             Method::Get => reqwest::Method::GET,
@@ -168,12 +191,16 @@ impl Connection {
         }
     }
 
-    pub fn new(url: Url) -> Connection {
-        Connection {
-            client: reqwest::Client::new(),
-            url,
-            credentials: None,
-        }
+    /// Creates a new instance of a [Transport] configured for use with
+    /// [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
+    ///
+    /// * `cloud_id`: The Elastic Cloud Id retrieved from the cloud web console, that uniquely
+    ///               identifies the deployment instance.
+    /// * `credentials`: A set of credentials the client should use to authenticate to Elasticsearch service.
+    pub fn cloud(cloud_id: &str, credentials: Credentials) -> Result<Transport, Error> {
+        let conn_pool = CloudConnectionPool::new(cloud_id)?;
+        let transport = TransportBuilder::new(conn_pool).auth(credentials).build()?;
+        Ok(transport)
     }
 
     /// Creates an asynchronous request that can be awaited
@@ -188,7 +215,8 @@ impl Connection {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        let url = self.url.join(path)?;
+        let connection = self.conn_pool.next();
+        let url = connection.url.join(path)?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, &url.to_string());
 
@@ -229,8 +257,222 @@ impl Connection {
     }
 }
 
-impl Default for Connection {
+impl Default for Transport {
     fn default() -> Self {
-        Connection::new(Url::parse(DEFAULT_ADDRESS).unwrap())
+        TransportBuilder::default().build().unwrap()
+    }
+}
+
+/// A pool of [Connection]s, used to make API calls to Elasticsearch.
+///
+/// A [ConnectionPool] manages the connections, with different implementations determining how
+/// to get the next [Connection]. The simplest type of [ConnectionPool] is [SingleNodeConnectionPool],
+/// which manages only a single connection, but other implementations may manage connections more
+/// dynamically at runtime, based upon the response to API calls.
+pub trait ConnectionPool: Debug + objekt::Clone {
+    /// Gets a reference to the next [Connection]
+    fn next(&self) -> &Connection;
+}
+
+clone_trait_object!(ConnectionPool);
+
+/// A connection pool that manages the single connection to an Elasticsearch cluster.
+#[derive(Debug, Clone)]
+pub struct SingleNodeConnectionPool {
+    connection: Connection,
+}
+
+impl SingleNodeConnectionPool {
+    /// Creates a new instance of [SingleNodeConnectionPool].
+    pub fn new(url: Url) -> Self {
+        Self {
+            connection: Connection::new(url),
+        }
+    }
+}
+
+impl Default for SingleNodeConnectionPool {
+    /// Creates a default instance of [SingleNodeConnectionPool], using [DEFAULT_ADDRESS].
+    fn default() -> Self {
+        Self::new(Url::parse(DEFAULT_ADDRESS).unwrap())
+    }
+}
+
+impl ConnectionPool for SingleNodeConnectionPool {
+    fn next(&self) -> &Connection {
+        &self.connection
+    }
+}
+
+/// An identifier that uniquely identifies an Elasticsearch cluster running
+/// on [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
+#[derive(Debug, Clone)]
+pub struct CloudId {
+    /// The name of the cluster
+    pub name: String,
+    /// The [url::Url] to the cluster
+    pub url: Url,
+}
+
+impl CloudId {
+    /// Parses a [CloudId] from a string slice representation of the id retrieved from the cloud
+    /// web console
+    pub fn parse(cloud_id: &str) -> Result<CloudId, Error> {
+        if cloud_id.is_empty() || !cloud_id.contains(':') {
+            return Err(Error::Lib(
+                "cloud_id should be of the form '<cluster name>:<base64 data>'".into(),
+            ));
+        }
+
+        let parts: Vec<&str> = cloud_id.splitn(2, ':').collect();
+        let name: String = parts[0].into();
+        if name.is_empty() {
+            return Err(Error::Lib("cloud_id cluster name cannot be empty".into()));
+        }
+
+        let data = parts[1];
+        let decoded_result = base64::decode(data);
+        if decoded_result.is_err() {
+            return Err(Error::Lib(format!("cannot base 64 decode '{}'", data)));
+        }
+
+        let decoded = decoded_result.unwrap();
+        let mut decoded_parts = decoded.split(|&b| b == b'$');
+        let domain_name;
+        let uuid;
+
+        match decoded_parts.next() {
+            Some(p) => {
+                match std::str::from_utf8(p) {
+                    Ok(s) => {
+                        domain_name = s.trim();
+                        if domain_name.is_empty() {
+                            return Err(Error::Lib("decoded '<base64 data>' must contain a domain name as the first part".into()));
+                        }
+                    }
+                    Err(_) => {
+                        return Err(Error::Lib(
+                            "decoded '<base64 data>' must contain a domain name as the first part"
+                                .into(),
+                        ))
+                    }
+                }
+            }
+            None => {
+                return Err(Error::Lib(
+                    "decoded '<base64 data>' must contain a domain name as the first part".into(),
+                ));
+            }
+        }
+
+        match decoded_parts.next() {
+            Some(p) => match std::str::from_utf8(p) {
+                Ok(s) => {
+                    uuid = s.trim();
+                    if uuid.is_empty() {
+                        return Err(Error::Lib(
+                            "decoded '<base64 data>' must contain a uuid as the second part".into(),
+                        ));
+                    }
+                }
+                Err(_) => {
+                    return Err(Error::Lib(
+                        "decoded '<base64 data>' must contain a uuid as the second part".into(),
+                    ))
+                }
+            },
+            None => {
+                return Err(Error::Lib(
+                    "decoded '<base64 data>' must contain at least two parts".into(),
+                ));
+            }
+        }
+
+        let url = Url::parse(format!("https://{}.{}", uuid, domain_name).as_ref())?;
+        Ok(CloudId { name, url })
+    }
+}
+
+/// A connection pool that manages the single connection to an Elasticsearch cluster running
+/// on [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
+#[derive(Debug, Clone)]
+pub struct CloudConnectionPool {
+    cloud_id: CloudId,
+    connection: Connection,
+}
+
+impl CloudConnectionPool {
+    /// Creates a new instance of [CloudConnectionPool].
+    pub fn new(cloud_id: &str) -> Result<Self, Error> {
+        let cloud = CloudId::parse(cloud_id)?;
+        let connection = Connection::new(cloud.url.clone());
+        Ok(Self {
+            cloud_id: cloud,
+            connection,
+        })
+    }
+}
+
+impl ConnectionPool for CloudConnectionPool {
+    fn next(&self) -> &Connection {
+        &self.connection
+    }
+}
+
+#[cfg(test)]
+pub mod tests {
+    use crate::http::transport::CloudId;
+    use url::Url;
+
+    #[test]
+    fn can_parse_cloud_id() {
+        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let cloud_id = format!("my_cluster:{}", base64);
+        let result = CloudId::parse(&cloud_id);
+        assert!(result.is_ok());
+        let cloud = result.unwrap();
+        assert_eq!("my_cluster", cloud.name);
+        assert_eq!(
+            Url::parse("https://3dadf823f05388497ea684236d918a1a.cloud-endpoint.example").unwrap(),
+            cloud.url
+        );
+    }
+
+    #[test]
+    fn cloud_id_must_contain_colon() {
+        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let cloud_id = format!("my_cluster{}", base64);
+        let cloud = CloudId::parse(&cloud_id);
+        assert!(cloud.is_err());
+    }
+
+    #[test]
+    fn cloud_id_second_part_must_be_base64() {
+        let cloud_id = "my_cluster:not_base_64";
+        let cloud = CloudId::parse(cloud_id);
+        assert!(cloud.is_err());
+    }
+
+    #[test]
+    fn cloud_id_first_cannot_be_empty() {
+        let base64 = base64::encode("cloud-endpoint.example$3dadf823f05388497ea684236d918a1a$3f26e1609cf54a0f80137a80de560da4");
+        let cloud_id = format!(":{}", base64);
+        let cloud = CloudId::parse(&cloud_id);
+        assert!(cloud.is_err());
+    }
+
+    #[test]
+    fn cloud_id_second_part_cannot_be_empty() {
+        let cloud_id = "cluster_name:";
+        let cloud = CloudId::parse(&cloud_id);
+        assert!(cloud.is_err());
+    }
+
+    #[test]
+    fn cloud_id_second_part_must_have_at_least_two_parts() {
+        let base64 = base64::encode("cloud-endpoint.example");
+        let cloud_id = format!("my_cluster:{}", base64);
+        let result = CloudId::parse(&cloud_id);
+        assert!(result.is_err());
     }
 }
