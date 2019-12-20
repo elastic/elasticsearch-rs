@@ -15,17 +15,22 @@
  * limitations under the License.
  *
  */
+use crate::http::transport::BuildError;
 use serde_json;
 use std::error;
 use std::fmt;
 use std::io;
 
-/// An error within the client. Errors that can occur include
-/// IO and parsing errors, as well as specific
+/// An error within the client.
+///
+/// Errors that can occur include IO and parsing errors, as well as specific
 /// errors from Elasticsearch and internal errors from this library
 #[derive(Debug)]
 pub enum Error {
-    /// An internal error from this library
+    /// An error building the client
+    Build(BuildError),
+
+    /// A general error from this library
     Lib(String),
 
     /// An error reported in a JSON response from Elasticsearch
@@ -65,6 +70,12 @@ impl From<url::ParseError> for Error {
     }
 }
 
+impl From<BuildError> for Error {
+    fn from(err: BuildError) -> Error {
+        Error::Build(err)
+    }
+}
+
 impl<'a> From<&'a mut reqwest::Response> for Error {
     fn from(err: &'a mut reqwest::Response) -> Error {
         // TODO: figure out how to read the response body synchronously
@@ -76,6 +87,7 @@ impl<'a> From<&'a mut reqwest::Response> for Error {
 impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
+            Error::Build(ref err) => err.description(),
             Error::Lib(ref err) => err,
             Error::Server(ref err) => err,
             Error::Http(ref err) => err.description(),
@@ -86,6 +98,7 @@ impl error::Error for Error {
 
     fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
+            Error::Build(ref err) => Some(err as &dyn error::Error),
             Error::Lib(_) => None,
             Error::Server(_) => None,
             Error::Http(ref err) => Some(err as &dyn error::Error),
@@ -98,6 +111,7 @@ impl error::Error for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
+            Error::Build(ref err) => fmt::Display::fmt(err, f),
             Error::Lib(ref s) => fmt::Display::fmt(s, f),
             Error::Server(ref s) => fmt::Display::fmt(s, f),
             Error::Http(ref err) => fmt::Display::fmt(err, f),

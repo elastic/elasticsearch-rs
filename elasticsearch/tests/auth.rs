@@ -27,7 +27,7 @@ async fn basic_auth_header() -> Result<(), failure::Error> {
         }
     });
 
-    let builder = client::create_conn_builder(format!("http://{}", server.addr()).as_ref())
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
         .auth(Credentials::Basic("username".into(), "password".into()));
 
     let client = client::create(builder);
@@ -54,7 +54,7 @@ async fn api_key_header() -> Result<(), failure::Error> {
         }
     });
 
-    let builder = client::create_conn_builder(format!("http://{}", server.addr()).as_ref())
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
         .auth(Credentials::ApiKey("id".into(), "api_key".into()));
 
     let client = client::create(builder);
@@ -72,7 +72,7 @@ async fn bearer_header() -> Result<(), failure::Error> {
         }
     });
 
-    let builder = client::create_conn_builder(format!("http://{}", server.addr()).as_ref())
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
         .auth(Credentials::Bearer("access_token".into()));
 
     let client = client::create(builder);
