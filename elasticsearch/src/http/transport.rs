@@ -184,6 +184,15 @@ impl Transport {
         }
     }
 
+    /// Creates a new instance of a [Transport] configured with a
+    /// [SingleNodeConnectionPool].
+    pub fn single_node(url: &str) -> Result<Transport, Error> {
+        let u = Url::parse(url)?;
+        let conn_pool = SingleNodeConnectionPool::new(u);
+        let transport = TransportBuilder::new(conn_pool).build()?;
+        Ok(transport)
+    }
+
     /// Creates a new instance of a [Transport] configured for use with
     /// [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
     ///

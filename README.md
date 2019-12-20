@@ -1,6 +1,6 @@
-# elasticsearch-rs: 
+# elasticsearch-rs
 
-Repository for the official Elasticsearch Rust Client.
+Repository for the official Elasticsearch Rust Client, `elasticsearch`.
 
 The project is still very much a _work in progress_ and in an _alpha_ state; 
 input and contributions welcome!
@@ -39,7 +39,7 @@ The workspace contains two packages
 
 A small executable to download REST API specs from GitHub and generate much of the client from the specs. Run with
 
-```
+```sh
 cargo run -p api_generator
 ```
 
@@ -65,28 +65,35 @@ _(Once client is released to crates.io!)_
 Add crate name and version to Cargo.toml. Choose the version
 that is comaptible with the version of Elasticsearch you're using
 
-```sh
+```toml
 [dependencies]
 elasticsearch = "*"
 ```
 
 #### Connecting
 
-Build a connection to Elasticsearch using the `ConnectionBuilder`, which allows
-setting of proxies and authentication schemes
+Build a transport to make API requests to Elasticsearch using the `TransportBuilder`, 
+which allows setting of proxies and authentication schemes
 
-```rust
-let url = Url::parse("http://localhost:9200").unwrap();
+```rust,no_run
+use elasticsearch::{
+    Elasticsearch, Error,
+    auth::Credentials, 
+    http::transport::{TransportBuilder, SingleNodeConnectionPool}
+};
+use url::Url;
 
-let conn = ConnectionBuilder::new(url)
-    .auth(Credentials::Basic("elastic".into(), "password".into()))
-    .build()?;
-```
+async fn run() -> Result<(), Error> {
 
-The connection can then be passed to the root client
-
-```rust
-let client = Elasticsearch::new(conn);
+    let conn_pool = SingleNodeConnectionPool::new(Url::parse("https://example.com").unwrap());
+    let transport = TransportBuilder::new(conn_pool)
+        .auth(Credentials::Basic("<username>".into(), "<password>".into()))
+        .disable_proxy()
+        .build()?;
+    
+    let client = Elasticsearch::new(transport);
+    Ok(())
+}
 ```
 
 #### Calling an API endpoint
@@ -94,31 +101,37 @@ let client = Elasticsearch::new(conn);
 The following will execute a `POST` request to `/_search?allow_no_indices=true` with
 a JSON body of `{"query":{"match_all":{}}}`
 
-```rust
-let url = Url::parse("http://localhost:9200").unwrap();
-let conn = ConnectionBuilder::new(url).build().unwrap();
-let client = Elasticsearch::new(conn);
+```rust,no_run
+use elasticsearch::{Elasticsearch, Error, SearchParts};
+use serde_json::{json, Value};
 
-// make a search API call
-let search_response = client
-    .search(SearchUrlParts::None)
-    .body(json!({
-        "query": {
-            "match_all": {}
-        }
-    }))
-    .allow_no_indices(true)
-    .send()
-    .await?;
+async fn run() -> Result<(), Error> {
 
-// get the HTTP response status code
-let status_code = search_response.status_code();
+    let client = Elasticsearch::default();
+    
+    // make a search API call
+    let search_response = client
+        .search(SearchParts::None)
+        .body(json!({
+            "query": {
+                "match_all": {}
+            }
+        }))
+        .allow_no_indices(true)
+        .send()
+        .await?;
+    
+    // get the HTTP response status code
+    let status_code = search_response.status_code();
+    
+    // read the response body. Consumes search_response
+    let response_body = search_response.read_body::<Value>().await?; 
+    
+    // read fields from the response body         
+    let took = response_body["took"].as_i64().unwrap();
 
-// read the response body. Consumes search_response
-let response_body = search_response.read_body::<Value>().await?; 
-
-// read fields from the response body         
-let took = response_body["took"].as_i64()?;
+    Ok(())
+}
 ```
 
 The client provides functions on each API builder struct
@@ -172,7 +185,7 @@ We do ask that you sign the [Contiributor License Agreement](https://www.elastic
 Using Rust nightly for development, whilst reqwest crate, the HTTP client used, has support for `async`
 in an alpha release and has a dependency which uses features that only work on nightly:
 
-```
+```sh
 > rustup show
 ...
 
