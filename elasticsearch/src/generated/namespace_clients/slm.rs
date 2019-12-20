@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -54,6 +55,7 @@ pub struct SlmDeleteLifecycle<'a> {
     parts: SlmDeleteLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -64,6 +66,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         SlmDeleteLifecycle {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -79,6 +82,11 @@ impl<'a> SlmDeleteLifecycle<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -100,6 +108,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -130,7 +139,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -163,6 +172,7 @@ pub struct SlmExecuteLifecycle<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -176,6 +186,7 @@ where
         SlmExecuteLifecycle {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -195,6 +206,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -208,6 +220,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -229,6 +246,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -259,7 +277,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -286,6 +304,7 @@ pub struct SlmExecuteRetention<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -299,6 +318,7 @@ where
         SlmExecuteRetention {
             client,
             parts: SlmExecuteRetentionParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -318,6 +338,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -331,6 +352,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -352,6 +378,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -382,7 +409,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -417,6 +444,7 @@ pub struct SlmGetLifecycle<'a> {
     parts: SlmGetLifecycleParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -427,6 +455,7 @@ impl<'a> SlmGetLifecycle<'a> {
         SlmGetLifecycle {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -442,6 +471,11 @@ impl<'a> SlmGetLifecycle<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -463,6 +497,7 @@ impl<'a> SlmGetLifecycle<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -493,7 +528,7 @@ impl<'a> SlmGetLifecycle<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -519,6 +554,7 @@ pub struct SlmGetStats<'a> {
     parts: SlmGetStatsParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -529,6 +565,7 @@ impl<'a> SlmGetStats<'a> {
         SlmGetStats {
             client,
             parts: SlmGetStatsParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -544,6 +581,11 @@ impl<'a> SlmGetStats<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -565,6 +607,7 @@ impl<'a> SlmGetStats<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -595,7 +638,7 @@ impl<'a> SlmGetStats<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -627,6 +670,7 @@ pub struct SlmPutLifecycle<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -640,6 +684,7 @@ where
         SlmPutLifecycle {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -659,6 +704,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -672,6 +718,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -693,6 +744,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -723,7 +775,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

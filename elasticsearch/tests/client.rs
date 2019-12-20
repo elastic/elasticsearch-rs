@@ -2,11 +2,13 @@ pub mod common;
 use common::*;
 
 use elasticsearch::SearchParts;
+use elasticsearch::http::headers::{X_OPAQUE_ID, HeaderValue};
 
 use crate::common::client::index_documents;
 use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
+use http::header::HeaderName;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
@@ -21,6 +23,25 @@ async fn default_user_agent_content_type_accept_headers() -> Result<(), failure:
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
     let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn x_opaque_id_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| {
+        async move {
+            assert_eq!(req.headers()["x-opaque-id"], "foo");
+            http::Response::default()
+        }
+    });
+
+    let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
+    let _response = client
+        .ping()
+        .header(HeaderName::from_static(X_OPAQUE_ID), HeaderValue::from_static("foo"))
+        .send()
+        .await?;
 
     Ok(())
 }

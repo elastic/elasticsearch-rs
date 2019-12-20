@@ -1,5 +1,5 @@
 use crate::{
-    http::{request::Body, response::Response, transport::Transport, Method},
+    http::{request::Body, response::Response, transport::Transport, Method, headers::HeaderMap},
     Error,
 };
 
@@ -41,6 +41,7 @@ impl Elasticsearch {
         &self,
         method: Method,
         path: &str,
+        headers: HeaderMap,
         query_string: Option<&Q>,
         body: Option<B>,
     ) -> Result<Response, Error>
@@ -48,6 +49,6 @@ impl Elasticsearch {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        self.transport.send(method, path, query_string, body).await
+        self.transport.send(method, path, headers, query_string, body).await
     }
 }

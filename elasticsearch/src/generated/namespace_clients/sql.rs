@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -50,6 +51,7 @@ pub struct SqlClearCursor<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -63,6 +65,7 @@ where
         SqlClearCursor {
             client,
             parts: SqlClearCursorParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -82,6 +85,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -95,6 +99,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -116,6 +125,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -146,7 +156,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -174,6 +184,7 @@ pub struct SqlQuery<'a, B> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -187,6 +198,7 @@ where
         SqlQuery {
             client,
             parts: SqlQueryParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -208,6 +220,7 @@ where
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             format: self.format,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -226,6 +239,11 @@ where
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
     pub fn format(mut self, format: &'a str) -> Self {
         self.format = Some(format);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -250,6 +268,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -283,7 +302,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -310,6 +329,7 @@ pub struct SqlTranslate<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -323,6 +343,7 @@ where
         SqlTranslate {
             client,
             parts: SqlTranslateParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -342,6 +363,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -355,6 +377,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -379,6 +406,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -409,7 +437,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

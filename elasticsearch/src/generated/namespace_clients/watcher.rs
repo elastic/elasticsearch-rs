@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -67,6 +68,7 @@ pub struct WatcherAckWatch<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -80,6 +82,7 @@ where
         WatcherAckWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -99,6 +102,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -112,6 +116,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -133,6 +142,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -163,7 +173,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -196,6 +206,7 @@ pub struct WatcherActivateWatch<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -209,6 +220,7 @@ where
         WatcherActivateWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -228,6 +240,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -241,6 +254,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -262,6 +280,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -292,7 +311,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -325,6 +344,7 @@ pub struct WatcherDeactivateWatch<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -338,6 +358,7 @@ where
         WatcherDeactivateWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -357,6 +378,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -370,6 +392,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -391,6 +418,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -421,7 +449,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -452,6 +480,7 @@ pub struct WatcherDeleteWatch<'a> {
     parts: WatcherDeleteWatchParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -462,6 +491,7 @@ impl<'a> WatcherDeleteWatch<'a> {
         WatcherDeleteWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -477,6 +507,11 @@ impl<'a> WatcherDeleteWatch<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -498,6 +533,7 @@ impl<'a> WatcherDeleteWatch<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Delete;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -528,7 +564,7 @@ impl<'a> WatcherDeleteWatch<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -565,6 +601,7 @@ pub struct WatcherExecuteWatch<'a, B> {
     debug: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -578,6 +615,7 @@ where
         WatcherExecuteWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             body: None,
             debug: None,
             error_trace: None,
@@ -599,6 +637,7 @@ where
             debug: self.debug,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -617,6 +656,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -638,6 +682,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -671,7 +716,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -702,6 +747,7 @@ pub struct WatcherGetWatch<'a> {
     parts: WatcherGetWatchParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -712,6 +758,7 @@ impl<'a> WatcherGetWatch<'a> {
         WatcherGetWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -727,6 +774,11 @@ impl<'a> WatcherGetWatch<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -748,6 +800,7 @@ impl<'a> WatcherGetWatch<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -778,7 +831,7 @@ impl<'a> WatcherGetWatch<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -811,6 +864,7 @@ pub struct WatcherPutWatch<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     if_primary_term: Option<i64>,
     if_seq_no: Option<i64>,
@@ -827,6 +881,7 @@ where
         WatcherPutWatch {
             client,
             parts,
+            headers: HeaderMap::new(),
             active: None,
             body: None,
             error_trace: None,
@@ -856,6 +911,7 @@ where
             active: self.active,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             if_primary_term: self.if_primary_term,
             if_seq_no: self.if_seq_no,
@@ -872,6 +928,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -908,6 +969,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -950,7 +1012,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -977,6 +1039,7 @@ pub struct WatcherStart<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -990,6 +1053,7 @@ where
         WatcherStart {
             client,
             parts: WatcherStartParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1009,6 +1073,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -1022,6 +1087,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1043,6 +1113,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1073,7 +1144,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1109,6 +1180,7 @@ pub struct WatcherStats<'a> {
     emit_stacktraces: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     metric: Option<&'a [&'a str]>,
     pretty: Option<bool>,
@@ -1120,6 +1192,7 @@ impl<'a> WatcherStats<'a> {
         WatcherStats {
             client,
             parts,
+            headers: HeaderMap::new(),
             emit_stacktraces: None,
             error_trace: None,
             filter_path: None,
@@ -1142,6 +1215,11 @@ impl<'a> WatcherStats<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1168,6 +1246,7 @@ impl<'a> WatcherStats<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1204,7 +1283,7 @@ impl<'a> WatcherStats<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1231,6 +1310,7 @@ pub struct WatcherStop<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -1244,6 +1324,7 @@ where
         WatcherStop {
             client,
             parts: WatcherStopParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1263,6 +1344,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             pretty: self.pretty,
             source: self.source,
@@ -1276,6 +1358,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1297,6 +1384,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1327,7 +1415,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

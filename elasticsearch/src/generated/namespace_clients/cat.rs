@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -60,6 +61,7 @@ pub struct CatAliases<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -74,6 +76,7 @@ impl<'a> CatAliases<'a> {
         CatAliases {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -105,6 +108,11 @@ impl<'a> CatAliases<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -146,6 +154,7 @@ impl<'a> CatAliases<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -194,7 +203,7 @@ impl<'a> CatAliases<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -232,6 +241,7 @@ pub struct CatAllocation<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -247,6 +257,7 @@ impl<'a> CatAllocation<'a> {
         CatAllocation {
             client,
             parts,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -285,6 +296,11 @@ impl<'a> CatAllocation<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -331,6 +347,7 @@ impl<'a> CatAllocation<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -385,7 +402,7 @@ impl<'a> CatAllocation<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -422,6 +439,7 @@ pub struct CatCount<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -435,6 +453,7 @@ impl<'a> CatCount<'a> {
         CatCount {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -465,6 +484,11 @@ impl<'a> CatCount<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -501,6 +525,7 @@ impl<'a> CatCount<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -546,7 +571,7 @@ impl<'a> CatCount<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -585,6 +610,7 @@ pub struct CatFielddata<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -598,6 +624,7 @@ impl<'a> CatFielddata<'a> {
         CatFielddata {
             client,
             parts,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             fields: None,
@@ -642,6 +669,11 @@ impl<'a> CatFielddata<'a> {
         self.h = Some(h);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return help information"]
     pub fn help(mut self, help: bool) -> Self {
         self.help = Some(help);
@@ -676,6 +708,7 @@ impl<'a> CatFielddata<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -727,7 +760,7 @@ impl<'a> CatFielddata<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -755,6 +788,7 @@ pub struct CatHealth<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -770,6 +804,7 @@ impl<'a> CatHealth<'a> {
         CatHealth {
             client,
             parts: CatHealthParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -802,6 +837,11 @@ impl<'a> CatHealth<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -848,6 +888,7 @@ impl<'a> CatHealth<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -899,7 +940,7 @@ impl<'a> CatHealth<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -925,6 +966,7 @@ pub struct CatHelp<'a> {
     parts: CatHelpParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -937,6 +979,7 @@ impl<'a> CatHelp<'a> {
         CatHelp {
             client,
             parts: CatHelpParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             help: None,
@@ -954,6 +997,11 @@ impl<'a> CatHelp<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -985,6 +1033,7 @@ impl<'a> CatHelp<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1021,7 +1070,7 @@ impl<'a> CatHelp<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1059,6 +1108,7 @@ pub struct CatIndices<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     health: Option<Health>,
     help: Option<bool>,
     human: Option<bool>,
@@ -1078,6 +1128,7 @@ impl<'a> CatIndices<'a> {
         CatIndices {
             client,
             parts,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1120,6 +1171,11 @@ impl<'a> CatIndices<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "A health status (\"green\", \"yellow\", or \"red\" to filter only indices matching the specified health status"]
@@ -1186,6 +1242,7 @@ impl<'a> CatIndices<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1252,7 +1309,7 @@ impl<'a> CatIndices<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1280,6 +1337,7 @@ pub struct CatMaster<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -1295,6 +1353,7 @@ impl<'a> CatMaster<'a> {
         CatMaster {
             client,
             parts: CatMasterParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1327,6 +1386,11 @@ impl<'a> CatMaster<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -1373,6 +1437,7 @@ impl<'a> CatMaster<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1424,7 +1489,7 @@ impl<'a> CatMaster<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1452,6 +1517,7 @@ pub struct CatNodeattrs<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -1467,6 +1533,7 @@ impl<'a> CatNodeattrs<'a> {
         CatNodeattrs {
             client,
             parts: CatNodeattrsParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1499,6 +1566,11 @@ impl<'a> CatNodeattrs<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -1545,6 +1617,7 @@ impl<'a> CatNodeattrs<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1596,7 +1669,7 @@ impl<'a> CatNodeattrs<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1626,6 +1699,7 @@ pub struct CatNodes<'a> {
     format: Option<&'a str>,
     full_id: Option<bool>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -1642,6 +1716,7 @@ impl<'a> CatNodes<'a> {
         CatNodes {
             client,
             parts: CatNodesParts::None,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1687,6 +1762,11 @@ impl<'a> CatNodes<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -1738,6 +1818,7 @@ impl<'a> CatNodes<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1798,7 +1879,7 @@ impl<'a> CatNodes<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1826,6 +1907,7 @@ pub struct CatPendingTasks<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -1842,6 +1924,7 @@ impl<'a> CatPendingTasks<'a> {
         CatPendingTasks {
             client,
             parts: CatPendingTasksParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1875,6 +1958,11 @@ impl<'a> CatPendingTasks<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -1926,6 +2014,7 @@ impl<'a> CatPendingTasks<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1980,7 +2069,7 @@ impl<'a> CatPendingTasks<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2008,6 +2097,7 @@ pub struct CatPlugins<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -2023,6 +2113,7 @@ impl<'a> CatPlugins<'a> {
         CatPlugins {
             client,
             parts: CatPluginsParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2055,6 +2146,11 @@ impl<'a> CatPlugins<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -2101,6 +2197,7 @@ impl<'a> CatPlugins<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2152,7 +2249,7 @@ impl<'a> CatPlugins<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2192,6 +2289,7 @@ pub struct CatRecovery<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     index: Option<&'a [&'a str]>,
@@ -2207,6 +2305,7 @@ impl<'a> CatRecovery<'a> {
         CatRecovery {
             client,
             parts,
+            headers: HeaderMap::new(),
             active_only: None,
             bytes: None,
             detailed: None,
@@ -2259,6 +2358,11 @@ impl<'a> CatRecovery<'a> {
         self.h = Some(h);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return help information"]
     pub fn help(mut self, help: bool) -> Self {
         self.help = Some(help);
@@ -2303,6 +2407,7 @@ impl<'a> CatRecovery<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2363,7 +2468,7 @@ impl<'a> CatRecovery<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2391,6 +2496,7 @@ pub struct CatRepositories<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -2406,6 +2512,7 @@ impl<'a> CatRepositories<'a> {
         CatRepositories {
             client,
             parts: CatRepositoriesParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2438,6 +2545,11 @@ impl<'a> CatRepositories<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -2484,6 +2596,7 @@ impl<'a> CatRepositories<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2535,7 +2648,7 @@ impl<'a> CatRepositories<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2573,6 +2686,7 @@ pub struct CatSegments<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
@@ -2586,6 +2700,7 @@ impl<'a> CatSegments<'a> {
         CatSegments {
             client,
             parts,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2624,6 +2739,11 @@ impl<'a> CatSegments<'a> {
         self.h = Some(h);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return help information"]
     pub fn help(mut self, help: bool) -> Self {
         self.help = Some(help);
@@ -2658,6 +2778,7 @@ impl<'a> CatSegments<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2706,7 +2827,7 @@ impl<'a> CatSegments<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2744,6 +2865,7 @@ pub struct CatShards<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -2760,6 +2882,7 @@ impl<'a> CatShards<'a> {
         CatShards {
             client,
             parts,
+            headers: HeaderMap::new(),
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2799,6 +2922,11 @@ impl<'a> CatShards<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -2850,6 +2978,7 @@ impl<'a> CatShards<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -2907,7 +3036,7 @@ impl<'a> CatShards<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -2944,6 +3073,7 @@ pub struct CatSnapshots<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
@@ -2960,6 +3090,7 @@ impl<'a> CatSnapshots<'a> {
         CatSnapshots {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2993,6 +3124,11 @@ impl<'a> CatSnapshots<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -3044,6 +3180,7 @@ impl<'a> CatSnapshots<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3098,7 +3235,7 @@ impl<'a> CatSnapshots<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3128,6 +3265,7 @@ pub struct CatTasks<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     node_id: Option<&'a [&'a str]>,
@@ -3144,6 +3282,7 @@ impl<'a> CatTasks<'a> {
         CatTasks {
             client,
             parts: CatTasksParts::None,
+            headers: HeaderMap::new(),
             actions: None,
             detailed: None,
             error_trace: None,
@@ -3189,6 +3328,11 @@ impl<'a> CatTasks<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -3240,6 +3384,7 @@ impl<'a> CatTasks<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3306,7 +3451,7 @@ impl<'a> CatTasks<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3342,6 +3487,7 @@ pub struct CatTemplates<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -3357,6 +3503,7 @@ impl<'a> CatTemplates<'a> {
         CatTemplates {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3389,6 +3536,11 @@ impl<'a> CatTemplates<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -3435,6 +3587,7 @@ impl<'a> CatTemplates<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3486,7 +3639,7 @@ impl<'a> CatTemplates<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -3523,6 +3676,7 @@ pub struct CatThreadPool<'a> {
     filter_path: Option<&'a [&'a str]>,
     format: Option<&'a str>,
     h: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
@@ -3539,6 +3693,7 @@ impl<'a> CatThreadPool<'a> {
         CatThreadPool {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3572,6 +3727,11 @@ impl<'a> CatThreadPool<'a> {
     #[doc = "Comma-separated list of column names to display"]
     pub fn h(mut self, h: &'a [&'a str]) -> Self {
         self.h = Some(h);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return help information"]
@@ -3623,6 +3783,7 @@ impl<'a> CatThreadPool<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -3677,7 +3838,7 @@ impl<'a> CatThreadPool<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

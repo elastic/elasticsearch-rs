@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -50,6 +51,7 @@ pub struct XpackInfo<'a> {
     categories: Option<&'a [&'a str]>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -60,6 +62,7 @@ impl<'a> XpackInfo<'a> {
         XpackInfo {
             client,
             parts: XpackInfoParts::None,
+            headers: HeaderMap::new(),
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -83,6 +86,11 @@ impl<'a> XpackInfo<'a> {
         self.filter_path = Some(filter_path);
         self
     }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
     #[doc = "Return human readable values for statistics."]
     pub fn human(mut self, human: bool) -> Self {
         self.human = Some(human);
@@ -102,6 +110,7 @@ impl<'a> XpackInfo<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -138,7 +147,7 @@ impl<'a> XpackInfo<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -164,6 +173,7 @@ pub struct XpackUsage<'a> {
     parts: XpackUsageParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -175,6 +185,7 @@ impl<'a> XpackUsage<'a> {
         XpackUsage {
             client,
             parts: XpackUsageParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -191,6 +202,11 @@ impl<'a> XpackUsage<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -217,6 +233,7 @@ impl<'a> XpackUsage<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -250,7 +267,7 @@ impl<'a> XpackUsage<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }

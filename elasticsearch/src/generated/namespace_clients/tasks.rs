@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -60,6 +61,7 @@ pub struct TasksCancel<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     nodes: Option<&'a [&'a str]>,
     parent_task_id: Option<&'a str>,
@@ -75,6 +77,7 @@ where
         TasksCancel {
             client,
             parts,
+            headers: HeaderMap::new(),
             actions: None,
             body: None,
             error_trace: None,
@@ -103,6 +106,7 @@ where
             actions: self.actions,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             nodes: self.nodes,
             parent_task_id: self.parent_task_id,
@@ -118,6 +122,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -149,6 +158,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -191,7 +201,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -222,6 +232,7 @@ pub struct TasksGet<'a> {
     parts: TasksGetParts<'a>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -234,6 +245,7 @@ impl<'a> TasksGet<'a> {
         TasksGet {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -251,6 +263,11 @@ impl<'a> TasksGet<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -282,6 +299,7 @@ impl<'a> TasksGet<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -318,7 +336,7 @@ impl<'a> TasksGet<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -347,6 +365,7 @@ pub struct TasksList<'a> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     group_by: Option<GroupBy>,
+    headers: HeaderMap,
     human: Option<bool>,
     nodes: Option<&'a [&'a str]>,
     parent_task_id: Option<&'a str>,
@@ -361,6 +380,7 @@ impl<'a> TasksList<'a> {
         TasksList {
             client,
             parts: TasksListParts::None,
+            headers: HeaderMap::new(),
             actions: None,
             detailed: None,
             error_trace: None,
@@ -398,6 +418,11 @@ impl<'a> TasksList<'a> {
     #[doc = "Group tasks by nodes or parent/child relationships"]
     pub fn group_by(mut self, group_by: GroupBy) -> Self {
         self.group_by = Some(group_by);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -439,6 +464,7 @@ impl<'a> TasksList<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -493,7 +519,7 @@ impl<'a> TasksList<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
