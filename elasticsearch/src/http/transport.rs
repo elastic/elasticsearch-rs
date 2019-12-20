@@ -299,6 +299,7 @@ impl Default for SingleNodeConnectionPool {
 }
 
 impl ConnectionPool for SingleNodeConnectionPool {
+    /// Gets a reference to the next [Connection]
     fn next(&self) -> &Connection {
         &self.connection
     }
@@ -306,6 +307,9 @@ impl ConnectionPool for SingleNodeConnectionPool {
 
 /// An identifier that uniquely identifies an Elasticsearch cluster running
 /// on [Elasticsearch service in Elastic Cloud](https://www.elastic.co/cloud/).
+///
+/// See the [Cloud Id documentation](https://www.elastic.co/guide/en/cloud/current/ec-cloud-id.html)
+/// for more details.
 #[derive(Debug, Clone)]
 pub struct CloudId {
     /// The name of the cluster
@@ -414,6 +418,7 @@ impl CloudConnectionPool {
 }
 
 impl ConnectionPool for CloudConnectionPool {
+    /// Gets a reference to the next [Connection]
     fn next(&self) -> &Connection {
         &self.connection
     }
