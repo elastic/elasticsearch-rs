@@ -158,6 +158,7 @@ impl<'a> RequestBuilder<'a> {
                     #builder_ident {
                         client,
                         parts: #enum_ty::None,
+                        headers: HeaderMap::new(),
                         #(#default_fields),*,
                     }
                 }
@@ -173,6 +174,7 @@ impl<'a> RequestBuilder<'a> {
                     #builder_ident {
                         client,
                         parts,
+                        headers: HeaderMap::new(),
                         #(#default_fields),*,
                     }
                 }
@@ -261,6 +263,49 @@ impl<'a> RequestBuilder<'a> {
         }
     }
 
+    /// Creates the AST for a builder fn to add a HTTP header
+    fn create_header_fn(field: &syn::Ident) -> syn::ImplItem {
+        let doc_attr = doc("Adds a HTTP header".into());
+
+        syn::ImplItem {
+            ident: ident("header"),
+            vis: syn::Visibility::Public,
+            defaultness: syn::Defaultness::Final,
+            attrs: vec![doc_attr],
+            node: syn::ImplItemKind::Method(
+                syn::MethodSig {
+                    unsafety: syn::Unsafety::Normal,
+                    constness: syn::Constness::NotConst,
+                    abi: None,
+                    decl: syn::FnDecl {
+                        inputs: vec![
+                            syn::FnArg::SelfValue(syn::Mutability::Mutable),
+                            syn::FnArg::Captured(
+                                syn::Pat::Path(None, path_none("key")),
+                                syn::parse_type("HeaderName").unwrap(),
+                            ),
+                            syn::FnArg::Captured(
+                                syn::Pat::Path(None, path_none("value")),
+                                syn::parse_type("HeaderValue").unwrap(),
+                            ),
+                        ],
+                        output: syn::FunctionRetTy::Ty(code_gen::ty("Self")),
+                        variadic: false,
+                    },
+                    generics: generics_none(),
+                },
+                syn::Block {
+                    stmts: vec![
+                        syn::Stmt::Semi(Box::new(parse_expr(
+                            quote!(self.#field.insert(key, value)),
+                        ))),
+                        syn::Stmt::Expr(Box::new(parse_expr(quote!(self)))),
+                    ],
+                },
+            ),
+        }
+    }
+
     /// Creates the AST for a builder fn for a builder impl
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
@@ -342,6 +387,16 @@ impl<'a> RequestBuilder<'a> {
             .map(Self::create_struct_field)
             .collect();
 
+        let headers_field_ident = ident("headers");
+
+        // add a field for HTTP headers
+        fields.push(syn::Field {
+           ident: Some(headers_field_ident.clone()),
+            vis: syn::Visibility::Inherited,
+            attrs: vec![],
+            ty: syn::parse_type("HeaderMap").unwrap(),
+        });
+
         if supports_body {
             fields.push(syn::Field {
                 ident: Some(ident("body")),
@@ -367,6 +422,8 @@ impl<'a> RequestBuilder<'a> {
         // collect all the functions for the builder struct
         let mut builder_fns: Vec<ImplItem> =
             endpoint.params.iter().map(Self::create_impl_fn).collect();
+
+        builder_fns.push(Self::create_header_fn(&headers_field_ident));
 
         // add a body impl if supported
         if supports_body {
@@ -464,9 +521,10 @@ impl<'a> RequestBuilder<'a> {
                 pub async fn send(self) -> Result<Response, Error> {
                       let path = self.parts.url();
                       let method = #method_expr;
+                      let headers = self.headers;
                       let query_string = #query_string_expr;
                       let body = #body_expr;
-                      let response = self.client.send(method, &path, query_string.as_ref(), body).await?;
+                      let response = self.client.send(method, &path, headers, query_string.as_ref(), body).await?;
                       Ok(response)
                 }
             }
@@ -540,6 +598,7 @@ impl<'a> RequestBuilder<'a> {
     fn create_default_fields(default_fields: &[&syn::Ident]) -> Vec<FieldValue> {
         default_fields
             .iter()
+            .filter(|&&part| part != &ident("headers"))
             .map(|part| syn::FieldValue {
                 attrs: vec![],
                 ident: ident(part),

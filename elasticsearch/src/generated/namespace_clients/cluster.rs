@@ -19,6 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
+        headers::{HeaderMap, HeaderName, HeaderValue},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -50,6 +51,7 @@ pub struct ClusterAllocationExplain<'a, B> {
     body: Option<B>,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
@@ -65,6 +67,7 @@ where
         ClusterAllocationExplain {
             client,
             parts: ClusterAllocationExplainParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -86,6 +89,7 @@ where
             body: Some(body.into()),
             error_trace: self.error_trace,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             include_disk_info: self.include_disk_info,
             include_yes_decisions: self.include_yes_decisions,
@@ -101,6 +105,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -135,6 +144,7 @@ where
             Some(_) => Method::Post,
             None => Method::Get,
         };
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -171,7 +181,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -198,6 +208,7 @@ pub struct ClusterGetSettings<'a> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     include_defaults: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -211,6 +222,7 @@ impl<'a> ClusterGetSettings<'a> {
         ClusterGetSettings {
             client,
             parts: ClusterGetSettingsParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -235,6 +247,11 @@ impl<'a> ClusterGetSettings<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -271,6 +288,7 @@ impl<'a> ClusterGetSettings<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -313,7 +331,7 @@ impl<'a> ClusterGetSettings<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -349,6 +367,7 @@ pub struct ClusterHealth<'a> {
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     level: Option<Level>,
     local: Option<bool>,
@@ -369,6 +388,7 @@ impl<'a> ClusterHealth<'a> {
         ClusterHealth {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
@@ -400,6 +420,11 @@ impl<'a> ClusterHealth<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -474,6 +499,7 @@ impl<'a> ClusterHealth<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -537,7 +563,7 @@ impl<'a> ClusterHealth<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -563,6 +589,7 @@ pub struct ClusterPendingTasks<'a> {
     parts: ClusterPendingTasksParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     local: Option<bool>,
     master_timeout: Option<&'a str>,
@@ -575,6 +602,7 @@ impl<'a> ClusterPendingTasks<'a> {
         ClusterPendingTasks {
             client,
             parts: ClusterPendingTasksParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -592,6 +620,11 @@ impl<'a> ClusterPendingTasks<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -623,6 +656,7 @@ impl<'a> ClusterPendingTasks<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -659,7 +693,7 @@ impl<'a> ClusterPendingTasks<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -687,6 +721,7 @@ pub struct ClusterPutSettings<'a, B> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     pretty: Option<bool>,
@@ -702,6 +737,7 @@ where
         ClusterPutSettings {
             client,
             parts: ClusterPutSettingsParts::None,
+            headers: HeaderMap::new(),
             body: None,
             error_trace: None,
             filter_path: None,
@@ -725,6 +761,7 @@ where
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             flat_settings: self.flat_settings,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             pretty: self.pretty,
@@ -745,6 +782,11 @@ where
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -776,6 +818,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Put;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -815,7 +858,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -841,6 +884,7 @@ pub struct ClusterRemoteInfo<'a> {
     parts: ClusterRemoteInfoParts,
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -851,6 +895,7 @@ impl<'a> ClusterRemoteInfo<'a> {
         ClusterRemoteInfo {
             client,
             parts: ClusterRemoteInfoParts::None,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             human: None,
@@ -866,6 +911,11 @@ impl<'a> ClusterRemoteInfo<'a> {
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -887,6 +937,7 @@ impl<'a> ClusterRemoteInfo<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -917,7 +968,7 @@ impl<'a> ClusterRemoteInfo<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -946,6 +997,7 @@ pub struct ClusterReroute<'a, B> {
     error_trace: Option<bool>,
     explain: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
     human: Option<bool>,
     master_timeout: Option<&'a str>,
     metric: Option<&'a [&'a str]>,
@@ -963,6 +1015,7 @@ where
         ClusterReroute {
             client,
             parts: ClusterRerouteParts::None,
+            headers: HeaderMap::new(),
             body: None,
             dry_run: None,
             error_trace: None,
@@ -990,6 +1043,7 @@ where
             error_trace: self.error_trace,
             explain: self.explain,
             filter_path: self.filter_path,
+            headers: self.headers,
             human: self.human,
             master_timeout: self.master_timeout,
             metric: self.metric,
@@ -1017,6 +1071,11 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
         self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1058,6 +1117,7 @@ where
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Post;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1106,7 +1166,7 @@ where
         let body = self.body;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1156,6 +1216,7 @@ pub struct ClusterState<'a> {
     expand_wildcards: Option<ExpandWildcards>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
@@ -1171,6 +1232,7 @@ impl<'a> ClusterState<'a> {
         ClusterState {
             client,
             parts,
+            headers: HeaderMap::new(),
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1209,6 +1271,11 @@ impl<'a> ClusterState<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1255,6 +1322,7 @@ impl<'a> ClusterState<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1309,7 +1377,7 @@ impl<'a> ClusterState<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
@@ -1345,6 +1413,7 @@ pub struct ClusterStats<'a> {
     error_trace: Option<bool>,
     filter_path: Option<&'a [&'a str]>,
     flat_settings: Option<bool>,
+    headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     source: Option<&'a str>,
@@ -1356,6 +1425,7 @@ impl<'a> ClusterStats<'a> {
         ClusterStats {
             client,
             parts,
+            headers: HeaderMap::new(),
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -1378,6 +1448,11 @@ impl<'a> ClusterStats<'a> {
     #[doc = "Return settings in flat format (default: false)"]
     pub fn flat_settings(mut self, flat_settings: bool) -> Self {
         self.flat_settings = Some(flat_settings);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
         self
     }
     #[doc = "Return human readable values for statistics."]
@@ -1404,6 +1479,7 @@ impl<'a> ClusterStats<'a> {
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
+        let headers = self.headers;
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
@@ -1440,7 +1516,7 @@ impl<'a> ClusterStats<'a> {
         let body = Option::<()>::None;
         let response = self
             .client
-            .send(method, &path, query_string.as_ref(), body)
+            .send(method, &path, headers, query_string.as_ref(), body)
             .await?;
         Ok(response)
     }
