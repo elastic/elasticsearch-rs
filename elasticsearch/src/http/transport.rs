@@ -233,8 +233,7 @@ impl Transport {
             let mut bytes_mut = BytesMut::with_capacity(1024);
             b.write(&mut bytes_mut)?;
             let bytes = bytes_mut.freeze();
-            // TODO: pass Bytes directly once reqwest is updated to Bytes ^0.5 crate
-            request_builder = request_builder.body(bytes.to_vec());
+            request_builder = request_builder.body(bytes);
         };
 
         if let Some(q) = query_string {

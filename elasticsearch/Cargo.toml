@@ -1,18 +1,20 @@
 [package]
 name = "elasticsearch"
 version = "7.5.0-alpha.1"
+edition = "2018"
 authors = ["Elastic and Contributors"]
 description = "Official Elasticsearch Rust client"
 repository = "https://github.com/elastic/elasticsearch-rs"
 keywords = ["elasticsearch", "elastic", "search", "lucene"]
+documentation = "https://docs.rs/elasticsearch/"
 license = "Apache-2.0"
-edition = "2018"
+readme = "../README.md"
 
 [dependencies]
 base64 = "0.11.0"
 bytes = "^0.5"
 objekt = "0.1.2"
-reqwest = { version = "0.10.0-alpha.2", features = ["gzip", "json"] }
+reqwest = { version = "0.10.0", features = ["gzip", "json", "native-tls"] }
 url = "1.7.2"
 serde = { version = "~1", features = ["derive"] }
 serde_json = "~1"
@@ -21,7 +23,7 @@ serde_with = "~1"
 [dev-dependencies]
 failure = "0.1.5"
 futures = "0.3.1"
-http = "0.1.15"
-hyper = { version = "=0.13.0-alpha.4", default-features = false, features = ["tcp"] }
+http = "0.2"
+hyper = { version = "0.13", default-features = false, features = ["tcp", "stream"] }
 sysinfo = "0.9.6"
-tokio = "=0.2.0-alpha.6"
+tokio = { version = "0.2.0", default-features = false, features = ["macros", "tcp", "time"] }
