@@ -139,20 +139,20 @@ pub enum SuggestMode {
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Time {
-    #[serde(rename = "d (Days)")]
-    DDays,
-    #[serde(rename = "h (Hours)")]
-    HHours,
-    #[serde(rename = "m (Minutes)")]
-    MMinutes,
-    #[serde(rename = "s (Seconds)")]
-    SSeconds,
-    #[serde(rename = "ms (Milliseconds)")]
-    MsMilliseconds,
-    #[serde(rename = "micros (Microseconds)")]
-    MicrosMicroseconds,
-    #[serde(rename = "nanos (Nanoseconds)")]
-    NanosNanoseconds,
+    #[serde(rename = "d")]
+    D,
+    #[serde(rename = "h")]
+    H,
+    #[serde(rename = "m")]
+    M,
+    #[serde(rename = "s")]
+    S,
+    #[serde(rename = "ms")]
+    Ms,
+    #[serde(rename = "micros")]
+    Micros,
+    #[serde(rename = "nanos")]
+    Nanos,
 }
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 pub enum Type {
