@@ -1,4 +1,4 @@
-/* Error type based on error type from es-rs:
+/* Error type based on the error type from es-rs:
  *
  * Copyright 2015-2018 Ben Ashford
  *
@@ -13,7 +13,6 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 use crate::http::transport::BuildError;
 use serde_json;
@@ -32,9 +31,6 @@ pub enum Error {
 
     /// A general error from this library
     Lib(String),
-
-    /// An error reported in a JSON response from Elasticsearch
-    Server(String),
 
     /// HTTP library error
     Http(reqwest::Error),
@@ -76,20 +72,11 @@ impl From<BuildError> for Error {
     }
 }
 
-impl<'a> From<&'a mut reqwest::Response> for Error {
-    fn from(err: &'a mut reqwest::Response) -> Error {
-        // TODO: figure out how to read the response body synchronously
-        //let body = err.text().await?;
-        Error::Server(format!("{} status code received", err.status()))
-    }
-}
-
 impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
             Error::Build(ref err) => err.description(),
             Error::Lib(ref err) => err,
-            Error::Server(ref err) => err,
             Error::Http(ref err) => err.description(),
             Error::Io(ref err) => err.description(),
             Error::Json(ref err) => err.description(),
@@ -100,7 +87,6 @@ impl error::Error for Error {
         match *self {
             Error::Build(ref err) => Some(err as &dyn error::Error),
             Error::Lib(_) => None,
-            Error::Server(_) => None,
             Error::Http(ref err) => Some(err as &dyn error::Error),
             Error::Io(ref err) => Some(err as &dyn error::Error),
             Error::Json(ref err) => Some(err as &dyn error::Error),
@@ -113,7 +99,6 @@ impl fmt::Display for Error {
         match *self {
             Error::Build(ref err) => fmt::Display::fmt(err, f),
             Error::Lib(ref s) => fmt::Display::fmt(s, f),
-            Error::Server(ref s) => fmt::Display::fmt(s, f),
             Error::Http(ref err) => fmt::Display::fmt(err, f),
             Error::Io(ref err) => fmt::Display::fmt(err, f),
             Error::Json(ref err) => fmt::Display::fmt(err, f),

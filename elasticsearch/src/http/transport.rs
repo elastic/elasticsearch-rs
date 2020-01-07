@@ -260,8 +260,17 @@ impl Transport {
             }
         }
 
-        let response = request_builder.send().await?;
-        Ok(Response::new(response))
+        let response = request_builder.send().await;
+        match response {
+            Ok(r) => Ok(Response::new(r)),
+            Err(e) => {
+                if e.is_timeout() {
+                    Err(Error::Lib(format!("Request timed out to {:?}", e.url())))
+                } else {
+                    Err(Error::Http(e))
+                }
+            }
+        }
     }
 }
 
@@ -434,8 +443,19 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
-    use crate::http::transport::CloudId;
+    use crate::auth::Credentials;
+    use crate::http::transport::{CloudId, TransportBuilder, SingleNodeConnectionPool};
     use url::Url;
+
+    #[test]
+    fn invalid_cert_credentials() {
+        let conn_pool = SingleNodeConnectionPool::default();
+        let builder = TransportBuilder::new(conn_pool)
+            .auth(Credentials::Cert(b"Nonsense".to_vec(), "".into()));
+
+        let res = builder.build();
+        assert!(res.is_err());
+    }
 
     #[test]
     fn can_parse_cloud_id() {
