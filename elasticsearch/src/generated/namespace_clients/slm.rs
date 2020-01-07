@@ -644,6 +644,116 @@ impl<'a> SlmGetStats<'a> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Slm Get Status API"]
+pub enum SlmGetStatusParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SlmGetStatusParts {
+    #[doc = "Builds a relative URL path to the Slm Get Status API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SlmGetStatusParts::None => "/_slm/status".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-get-status.html)."]
+pub struct SlmGetStatus<'a> {
+    client: Elasticsearch,
+    parts: SlmGetStatusParts,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a> SlmGetStatus<'a> {
+    #[doc = "Creates a new instance of [SlmGetStatus]"]
+    pub fn new(client: Elasticsearch) -> Self {
+        SlmGetStatus {
+            client,
+            parts: SlmGetStatusParts::None,
+            headers: HeaderMap::new(),
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Slm Get Status API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Get;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = Option::<()>::None;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Put Lifecycle API"]
 pub enum SlmPutLifecycleParts<'a> {
     #[doc = "PolicyId"]
@@ -780,6 +890,270 @@ where
         Ok(response)
     }
 }
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Slm Start API"]
+pub enum SlmStartParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SlmStartParts {
+    #[doc = "Builds a relative URL path to the Slm Start API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SlmStartParts::None => "/_slm/start".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-start.html)."]
+pub struct SlmStart<'a, B> {
+    client: Elasticsearch,
+    parts: SlmStartParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a, B> SlmStart<'a, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SlmStart]"]
+    pub fn new(client: Elasticsearch) -> Self {
+        SlmStart {
+            client,
+            parts: SlmStartParts::None,
+            headers: HeaderMap::new(),
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SlmStart<'a, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SlmStart {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Slm Start API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
+#[derive(Debug, Clone, PartialEq)]
+#[doc = "API parts for the Slm Stop API"]
+pub enum SlmStopParts {
+    #[doc = "No parts"]
+    None,
+}
+impl SlmStopParts {
+    #[doc = "Builds a relative URL path to the Slm Stop API"]
+    pub fn url(self) -> Cow<'static, str> {
+        match self {
+            SlmStopParts::None => "/_slm/stop".into(),
+        }
+    }
+}
+#[derive(Clone, Debug)]
+#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-stop.html)."]
+pub struct SlmStop<'a, B> {
+    client: Elasticsearch,
+    parts: SlmStopParts,
+    body: Option<B>,
+    error_trace: Option<bool>,
+    filter_path: Option<&'a [&'a str]>,
+    headers: HeaderMap,
+    human: Option<bool>,
+    pretty: Option<bool>,
+    source: Option<&'a str>,
+}
+impl<'a, B> SlmStop<'a, B>
+where
+    B: Body,
+{
+    #[doc = "Creates a new instance of [SlmStop]"]
+    pub fn new(client: Elasticsearch) -> Self {
+        SlmStop {
+            client,
+            parts: SlmStopParts::None,
+            headers: HeaderMap::new(),
+            body: None,
+            error_trace: None,
+            filter_path: None,
+            human: None,
+            pretty: None,
+            source: None,
+        }
+    }
+    #[doc = "The body for the API call"]
+    pub fn body<T>(self, body: T) -> SlmStop<'a, JsonBody<T>>
+    where
+        T: Serialize,
+    {
+        SlmStop {
+            client: self.client,
+            parts: self.parts,
+            body: Some(body.into()),
+            error_trace: self.error_trace,
+            filter_path: self.filter_path,
+            headers: self.headers,
+            human: self.human,
+            pretty: self.pretty,
+            source: self.source,
+        }
+    }
+    #[doc = "Include the stack trace of returned errors."]
+    pub fn error_trace(mut self, error_trace: bool) -> Self {
+        self.error_trace = Some(error_trace);
+        self
+    }
+    #[doc = "A comma-separated list of filters used to reduce the response."]
+    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+        self.filter_path = Some(filter_path);
+        self
+    }
+    #[doc = "Adds a HTTP header"]
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+    #[doc = "Return human readable values for statistics."]
+    pub fn human(mut self, human: bool) -> Self {
+        self.human = Some(human);
+        self
+    }
+    #[doc = "Pretty format the returned JSON response."]
+    pub fn pretty(mut self, pretty: bool) -> Self {
+        self.pretty = Some(pretty);
+        self
+    }
+    #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
+    pub fn source(mut self, source: &'a str) -> Self {
+        self.source = Some(source);
+        self
+    }
+    #[doc = "Creates an asynchronous call to the Slm Stop API that can be awaited"]
+    pub async fn send(self) -> Result<Response, Error> {
+        let path = self.parts.url();
+        let method = Method::Post;
+        let headers = self.headers;
+        let query_string = {
+            #[serde_with::skip_serializing_none]
+            #[derive(Serialize)]
+            struct QueryParams<'a> {
+                #[serde(rename = "error_trace")]
+                error_trace: Option<bool>,
+                #[serde(
+                    rename = "filter_path",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
+                filter_path: Option<&'a [&'a str]>,
+                #[serde(rename = "human")]
+                human: Option<bool>,
+                #[serde(rename = "pretty")]
+                pretty: Option<bool>,
+                #[serde(rename = "source")]
+                source: Option<&'a str>,
+            }
+            let query_params = QueryParams {
+                error_trace: self.error_trace,
+                filter_path: self.filter_path,
+                human: self.human,
+                pretty: self.pretty,
+                source: self.source,
+            };
+            Some(query_params)
+        };
+        let body = self.body;
+        let response = self
+            .client
+            .send(method, &path, headers, query_string.as_ref(), body)
+            .await?;
+        Ok(response)
+    }
+}
 #[doc = "Namespace client for Snapshot Lifecycle Management APIs"]
 pub struct Slm {
     client: Elasticsearch,
@@ -810,8 +1184,17 @@ impl Slm {
     pub fn get_stats<'a>(&self) -> SlmGetStats<'a> {
         SlmGetStats::new(self.client.clone())
     }
+    pub fn get_status<'a>(&self) -> SlmGetStatus<'a> {
+        SlmGetStatus::new(self.client.clone())
+    }
     pub fn put_lifecycle<'a>(&self, parts: SlmPutLifecycleParts<'a>) -> SlmPutLifecycle<'a, ()> {
         SlmPutLifecycle::new(self.client.clone(), parts)
+    }
+    pub fn start<'a>(&self) -> SlmStart<'a, ()> {
+        SlmStart::new(self.client.clone())
+    }
+    pub fn stop<'a>(&self) -> SlmStop<'a, ()> {
+        SlmStop::new(self.client.clone())
     }
 }
 impl Elasticsearch {
