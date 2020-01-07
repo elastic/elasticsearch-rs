@@ -6,6 +6,7 @@ use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use std::{collections::BTreeMap, str};
 use syn::{Field, FieldValue, ImplItem};
+use reqwest::Url;
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -483,12 +484,12 @@ impl<'a> RequestBuilder<'a> {
             endpoint.documentation.description.as_ref(),
             endpoint.documentation.url.as_ref(),
         ) {
-            (Some(d), Some(u)) if u != "TODO" => lit(format!(
+            (Some(d), Some(u)) if Url::parse(u).is_ok() => lit(format!(
                 "Builder for the [{} API]({}). {}",
                 api_name_for_docs, u, d
             )),
             (Some(d), None) => lit(format!("Builder for the {} API. {}", api_name_for_docs, d)),
-            (None, Some(u)) if u != "TODO" => lit(format!(
+            (None, Some(u)) if Url::parse(u).is_ok() => lit(format!(
                 "Builder for the [{} API]({}).",
                 api_name_for_docs, u
             )),

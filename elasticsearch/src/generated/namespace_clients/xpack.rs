@@ -167,7 +167,7 @@ impl XpackUsageParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Usage API](Retrieve information about xpack features usage)."]
+#[doc = "Builder for the Xpack Usage API"]
 pub struct XpackUsage<'a> {
     client: Elasticsearch,
     parts: XpackUsageParts,

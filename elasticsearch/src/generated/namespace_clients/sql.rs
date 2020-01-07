@@ -44,7 +44,7 @@ impl SqlClearCursorParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Clear Cursor API](Clear SQL cursor)."]
+#[doc = "Builder for the Sql Clear Cursor API"]
 pub struct SqlClearCursor<'a, B> {
     client: Elasticsearch,
     parts: SqlClearCursorParts,
@@ -176,7 +176,7 @@ impl SqlQueryParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Query API](Execute SQL)."]
+#[doc = "Builder for the Sql Query API"]
 pub struct SqlQuery<'a, B> {
     client: Elasticsearch,
     parts: SqlQueryParts,
@@ -322,7 +322,7 @@ impl SqlTranslateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Translate API](Translate SQL into Elasticsearch queries)."]
+#[doc = "Builder for the Sql Translate API"]
 pub struct SqlTranslate<'a, B> {
     client: Elasticsearch,
     parts: SqlTranslateParts,

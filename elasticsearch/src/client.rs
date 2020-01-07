@@ -5,7 +5,8 @@ use crate::{
 
 use serde::{Serialize, Serializer};
 
-/// Serializes an Option<&[&str]> with some value to a comma separated string of values.
+/// Serializes an `Option<&[&str]>` with
+/// `Some(value)` to a comma separated string of values.
 /// Used to serialize values within the query string
 pub fn serialize_coll_qs<S>(
     value: &Option<&[&str]>,
