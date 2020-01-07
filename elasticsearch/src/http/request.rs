@@ -7,7 +7,7 @@ use serde::Serialize;
 ///
 /// Some Elasticsearch APIs accept a body as part of the API call. Most APIs
 /// expect JSON, however, there are some APIs that expect newline-delimited JSON (NDJSON).
-/// [Body] allows modelling different API body implementations.
+/// The [Body] trait allows modelling different API body implementations.
 pub trait Body {
     /// Write to a buffer that will be written to the request stream
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error>;

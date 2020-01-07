@@ -1,3 +1,5 @@
+//! Authentication components
+
 /// Credentials for authentication
 #[derive(Debug, Clone)]
 pub enum Credentials {

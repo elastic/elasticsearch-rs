@@ -1,4 +1,4 @@
-//! Official Rust client fo [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+//! Official Rust client for [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 //!
 //! # Versions and Compatibility
 //!
@@ -15,12 +15,14 @@
 //! [dependencies]
 //! elasticsearch = "7.5.0-alpha.1"
 //! ```
-//! The following dependencies may also be useful
+//! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
 //! ```toml,no_run
 //! serde = "~1"
 //! serde_json = "~1"
 //! ```
+//! ## Create a client
+//!
 //! To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 //!
 //! ```rust,no_run
@@ -49,7 +51,7 @@
 //!
 //! If you're running against an Elasticsearch deployment in [Elastic Cloud](https://www.elastic.co/cloud/),
 //! a client can be created using a [Cloud ID](https://www.elastic.co/guide/en/cloud/current/ec-cloud-id.html)
-//! and credentials
+//! and credentials retrieved from the Cloud web console
 //!
 //! ```rust,no_run
 //! # use elasticsearch;
@@ -67,8 +69,9 @@
 //! # }
 //! ```
 //!
-//! More control over how the [Transport](http::transport::Transport) is configured can be
-//! achieved using [TransportBuilder](http::transport::TransportBuilder)
+//! More control over how a [Transport](http::transport::Transport) is configured can be
+//! achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport and
+//! passing it to create a new instance of [Elasticsearch]
 //!
 //! ```rust,no_run
 //! # use elasticsearch;
@@ -78,14 +81,15 @@
 //! # use elasticsearch::http::transport::{TransportBuilder, SingleNodeConnectionPool};
 //! # use elasticsearch::auth::Credentials;
 //! # async fn run() -> Result<(), Error> {
-//! let conn_pool = SingleNodeConnectionPool::new(Url::parse("https://example.com")?);
+//! let url = Url::parse("https://example.com")?;
+//! let conn_pool = SingleNodeConnectionPool::new(url);
 //! let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
 //! let client = Elasticsearch::new(transport);
 //! # Ok(())
 //! # }
 //! ```
 //!
-//! # Making API calls
+//! ## Making API calls
 //!
 //! The client exposes all stable Elasticsearch APIs, either on the root [Elasticsearch] client,
 //! or on a _namespace_ client such as [Cat](cat::Cat), that groups related APIs. All API functions
@@ -138,6 +142,26 @@ extern crate serde_json;
 
 pub mod auth;
 pub mod http;
+pub mod cat;
+pub mod ccr;
+pub mod cluster;
+pub mod enrich;
+pub mod graph;
+pub mod ilm;
+pub mod indices;
+pub mod ingest;
+pub mod license;
+pub mod migration;
+pub mod ml;
+pub mod nodes;
+pub mod security;
+pub mod slm;
+pub mod snapshot;
+pub mod sql;
+pub mod ssl;
+pub mod tasks;
+pub mod watcher;
+pub mod xpack;
 
 mod client;
 mod error;
@@ -145,7 +169,7 @@ mod generated;
 
 // exposes types within modules at the library root level
 pub use crate::{
-    client::*, error::*, generated::namespace_clients::*, generated::params, generated::root::*,
+    client::*, error::*, generated::params, generated::root::*,
     http::transport::DEFAULT_ADDRESS,
 };
 

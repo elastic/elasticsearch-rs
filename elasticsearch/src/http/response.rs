@@ -24,7 +24,7 @@ impl Response {
         self.0.headers()
     }
 
-    /// Reads the response body
+    /// Asynchronously read the response body
     pub async fn read_body<B>(self) -> Result<B, Error>
     where
         B: DeserializeOwned,
