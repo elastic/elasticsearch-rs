@@ -1,10 +1,33 @@
 //! Official Rust client for [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 //!
+//! `Elasticsearch` is the Official Rust client for Elasticsearch, providing an efficient and easy
+//! to use asynchronous client for all stable Elasticsearch APIs.
+//!
 //! # Versions and Compatibility
 //!
 //! | Rust client | Elasticsearch |
 //! |-------------|---------------|
 //! | 7.x         | 7.x           |
+//!
+//! The major version of the client is compatible with the same major version of Elasticsearch.
+//! Since Elasticsearch is developed following [Semantic Versioning](https://semver.org/) principles,
+//! Any minor/patch version of the client can be used against any minor/patch version of Elasticsearch
+//! **within the same major version lineage**. For example,
+//!
+//! - A `7.5.0` client can be used against `7.0.0` Elasticsearch
+//! - A `7.4.0` client can be used against `7.5.1` Elasticsearch
+//!
+//! In the former case, a 7.5.0 client may contain additional API functions that are not available
+//! in 7.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
+//! Elasticsearch, the respective API functions on the client will be compatible.
+//!
+//! In the latter case, a 7.4.0 client won't contain API functions for APIs that are introduced in
+//! Elasticsearch 7.5.0+, but for all other APIs available in Elasticsearch, the respective API
+//! functions on the client will be compatible.
+//!
+//! **No compatibility assurances are given** between different major versions of the client and
+//! Elasticsearch. Major differences likely exist between major versions of Elasticsearch, particularly
+//! around request and response object formats, but also around API urls and behaviour.
 //!
 //! # Getting started
 //!
