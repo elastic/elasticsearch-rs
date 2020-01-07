@@ -1,7 +1,7 @@
 //! Official Rust client for [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 //!
-//! `Elasticsearch` is the Official Rust client for Elasticsearch, providing an efficient and easy
-//! to use asynchronous client for all stable Elasticsearch APIs.
+//! `Elasticsearch` is an official Rust client for Elasticsearch, providing an efficient asynchronous
+//! client for all stable Elasticsearch APIs that's easy to use.
 //!
 //! # Versions and Compatibility
 //!
@@ -25,13 +25,13 @@
 //! Elasticsearch 7.5.0+, but for all other APIs available in Elasticsearch, the respective API
 //! functions on the client will be compatible.
 //!
-//! **No compatibility assurances are given** between different major versions of the client and
-//! Elasticsearch. Major differences likely exist between major versions of Elasticsearch, particularly
+//! **No compatibility assurances are given between different major versions of the client and
+//! Elasticsearch**. Major differences likely exist between major versions of Elasticsearch, particularly
 //! around request and response object formats, but also around API urls and behaviour.
 //!
 //! # Getting started
 //!
-//! Add the crate name and version to Cargo.toml. Choose the version that is compatible with
+//! Add the `elasticsearch` crate and version to Cargo.toml. Choose the version that is compatible with
 //! the version of Elasticsearch you're using
 //!
 //! ```toml,no_run
@@ -57,7 +57,7 @@
 //! # Ok(())
 //! # }
 //! ```
-//! You can create a client to make API calls against Elasticsearch running on a
+//! Alternatively, you can create a client to make API calls against Elasticsearch running on a
 //! specific [url::Url]
 //!
 //! ```rust,no_run
@@ -92,9 +92,9 @@
 //! # }
 //! ```
 //!
-//! More control over how a [Transport](http::transport::Transport) is configured can be
-//! achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport and
-//! passing it to create a new instance of [Elasticsearch]
+//! More control over how a [Transport](http::transport::Transport) is built can be
+//! achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport, and
+//! passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
 //!
 //! ```rust,no_run
 //! # use elasticsearch;
@@ -115,8 +115,11 @@
 //! ## Making API calls
 //!
 //! The client exposes all stable Elasticsearch APIs, either on the root [Elasticsearch] client,
-//! or on a _namespace_ client such as [Cat](cat::Cat), that groups related APIs. All API functions
-//! are `async` and can be `await`ed
+//! or on a _namespace_ client that groups related APIs, such as [Cat](cat::Cat), which groups the
+//! Cat related APIs. All API functions are `async` and can be `await`ed.
+//!
+//! The following makes an API call to `tweets/_search` with the json body
+//! `{"query":{"match":{"message":"Elasticsearch"}}}`
 //!
 //! ```rust,no_run
 //! # use elasticsearch;
@@ -145,7 +148,9 @@
 //! # Ok(())
 //! # }
 //! ```
-//!
+//! For APIs that contain parts of the Url path to be provided by the consumer, the Url path
+//! variants are modelled as an `enum`, such as [SearchParts] in the above example, which models
+//! the variants of the [Search] API.
 //!
 
 // also test examples in README
@@ -177,6 +182,7 @@ pub mod license;
 pub mod migration;
 pub mod ml;
 pub mod nodes;
+pub mod params;
 pub mod security;
 pub mod slm;
 pub mod snapshot;
@@ -192,7 +198,7 @@ mod generated;
 
 // exposes types within modules at the library root level
 pub use crate::{
-    client::*, error::*, generated::params, generated::root::*,
+    client::*, error::*, generated::root::*,
     http::transport::DEFAULT_ADDRESS,
 };
 
