@@ -31,11 +31,11 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Close Job API"]
-pub enum MlCloseJobParts<'a> {
+pub enum MlCloseJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlCloseJobParts<'a> {
+impl<'b> MlCloseJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Close Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -51,26 +51,26 @@ impl<'a> MlCloseJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html)."]
-pub struct MlCloseJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlCloseJobParts<'a>,
+pub struct MlCloseJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlCloseJobParts<'b>,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> MlCloseJob<'a, B>
+impl<'a, 'b, B> MlCloseJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlCloseJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlCloseJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlCloseJobParts<'b>) -> Self {
         MlCloseJob {
             client,
             parts,
@@ -92,7 +92,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlCloseJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlCloseJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -117,7 +117,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -142,12 +142,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until a job has closed. Default to 30 minutes"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -159,7 +159,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -168,7 +168,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
                 #[serde(rename = "human")]
@@ -176,9 +176,9 @@ where
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
@@ -202,11 +202,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar API"]
-pub enum MlDeleteCalendarParts<'a> {
+pub enum MlDeleteCalendarParts<'b> {
     #[doc = "CalendarId"]
-    CalendarId(&'a str),
+    CalendarId(&'b str),
 }
-impl<'a> MlDeleteCalendarParts<'a> {
+impl<'b> MlDeleteCalendarParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -221,19 +221,19 @@ impl<'a> MlDeleteCalendarParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Delete Calendar API"]
-pub struct MlDeleteCalendar<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteCalendarParts<'a>,
+pub struct MlDeleteCalendar<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteCalendarParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteCalendar<'a> {
+impl<'a, 'b> MlDeleteCalendar<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendar] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarParts<'b>) -> Self {
         MlDeleteCalendar {
             client,
             parts,
@@ -251,7 +251,7 @@ impl<'a> MlDeleteCalendar<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -271,7 +271,7 @@ impl<'a> MlDeleteCalendar<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -283,20 +283,20 @@ impl<'a> MlDeleteCalendar<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -317,11 +317,11 @@ impl<'a> MlDeleteCalendar<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar Event API"]
-pub enum MlDeleteCalendarEventParts<'a> {
+pub enum MlDeleteCalendarEventParts<'b> {
     #[doc = "CalendarId and EventId"]
-    CalendarIdEventId(&'a str, &'a str),
+    CalendarIdEventId(&'b str, &'b str),
 }
-impl<'a> MlDeleteCalendarEventParts<'a> {
+impl<'b> MlDeleteCalendarEventParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar Event API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -338,19 +338,19 @@ impl<'a> MlDeleteCalendarEventParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Delete Calendar Event API"]
-pub struct MlDeleteCalendarEvent<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteCalendarEventParts<'a>,
+pub struct MlDeleteCalendarEvent<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteCalendarEventParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteCalendarEvent<'a> {
+impl<'a, 'b> MlDeleteCalendarEvent<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendarEvent] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarEventParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarEventParts<'b>) -> Self {
         MlDeleteCalendarEvent {
             client,
             parts,
@@ -368,7 +368,7 @@ impl<'a> MlDeleteCalendarEvent<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -388,7 +388,7 @@ impl<'a> MlDeleteCalendarEvent<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -400,20 +400,20 @@ impl<'a> MlDeleteCalendarEvent<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -434,11 +434,11 @@ impl<'a> MlDeleteCalendarEvent<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Calendar Job API"]
-pub enum MlDeleteCalendarJobParts<'a> {
+pub enum MlDeleteCalendarJobParts<'b> {
     #[doc = "CalendarId and JobId"]
-    CalendarIdJobId(&'a str, &'a str),
+    CalendarIdJobId(&'b str, &'b str),
 }
-impl<'a> MlDeleteCalendarJobParts<'a> {
+impl<'b> MlDeleteCalendarJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Calendar Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -455,19 +455,19 @@ impl<'a> MlDeleteCalendarJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Delete Calendar Job API"]
-pub struct MlDeleteCalendarJob<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteCalendarJobParts<'a>,
+pub struct MlDeleteCalendarJob<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteCalendarJobParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteCalendarJob<'a> {
+impl<'a, 'b> MlDeleteCalendarJob<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendarJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteCalendarJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarJobParts<'b>) -> Self {
         MlDeleteCalendarJob {
             client,
             parts,
@@ -485,7 +485,7 @@ impl<'a> MlDeleteCalendarJob<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -505,7 +505,7 @@ impl<'a> MlDeleteCalendarJob<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -517,20 +517,20 @@ impl<'a> MlDeleteCalendarJob<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -551,11 +551,11 @@ impl<'a> MlDeleteCalendarJob<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Datafeed API"]
-pub enum MlDeleteDatafeedParts<'a> {
+pub enum MlDeleteDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlDeleteDatafeedParts<'a> {
+impl<'b> MlDeleteDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -570,20 +570,20 @@ impl<'a> MlDeleteDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html)."]
-pub struct MlDeleteDatafeed<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteDatafeedParts<'a>,
+pub struct MlDeleteDatafeed<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteDatafeedParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteDatafeed<'a> {
+impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteDatafeedParts<'b>) -> Self {
         MlDeleteDatafeed {
             client,
             parts,
@@ -602,7 +602,7 @@ impl<'a> MlDeleteDatafeed<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -627,7 +627,7 @@ impl<'a> MlDeleteDatafeed<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -639,14 +639,14 @@ impl<'a> MlDeleteDatafeed<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
                 #[serde(rename = "human")]
@@ -654,7 +654,7 @@ impl<'a> MlDeleteDatafeed<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -690,19 +690,19 @@ impl MlDeleteExpiredDataParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Delete Expired Data API"]
-pub struct MlDeleteExpiredData<'a> {
-    client: Elasticsearch,
+pub struct MlDeleteExpiredData<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: MlDeleteExpiredDataParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteExpiredData<'a> {
+impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         MlDeleteExpiredData {
             client,
             parts: MlDeleteExpiredDataParts::None,
@@ -720,7 +720,7 @@ impl<'a> MlDeleteExpiredData<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -740,7 +740,7 @@ impl<'a> MlDeleteExpiredData<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -752,20 +752,20 @@ impl<'a> MlDeleteExpiredData<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -786,11 +786,11 @@ impl<'a> MlDeleteExpiredData<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Filter API"]
-pub enum MlDeleteFilterParts<'a> {
+pub enum MlDeleteFilterParts<'b> {
     #[doc = "FilterId"]
-    FilterId(&'a str),
+    FilterId(&'b str),
 }
-impl<'a> MlDeleteFilterParts<'a> {
+impl<'b> MlDeleteFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -805,19 +805,19 @@ impl<'a> MlDeleteFilterParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Delete Filter API"]
-pub struct MlDeleteFilter<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteFilterParts<'a>,
+pub struct MlDeleteFilter<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteFilterParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteFilter<'a> {
+impl<'a, 'b> MlDeleteFilter<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteFilter] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteFilterParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteFilterParts<'b>) -> Self {
         MlDeleteFilter {
             client,
             parts,
@@ -835,7 +835,7 @@ impl<'a> MlDeleteFilter<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -855,7 +855,7 @@ impl<'a> MlDeleteFilter<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -867,20 +867,20 @@ impl<'a> MlDeleteFilter<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -901,13 +901,13 @@ impl<'a> MlDeleteFilter<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Forecast API"]
-pub enum MlDeleteForecastParts<'a> {
+pub enum MlDeleteForecastParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
     #[doc = "JobId and ForecastId"]
-    JobIdForecastId(&'a str, &'a str),
+    JobIdForecastId(&'b str, &'b str),
 }
-impl<'a> MlDeleteForecastParts<'a> {
+impl<'b> MlDeleteForecastParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Forecast API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -931,21 +931,21 @@ impl<'a> MlDeleteForecastParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html)."]
-pub struct MlDeleteForecast<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteForecastParts<'a>,
+pub struct MlDeleteForecast<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteForecastParts<'b>,
     allow_no_forecasts: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a> MlDeleteForecast<'a> {
+impl<'a, 'b> MlDeleteForecast<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteForecast] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteForecastParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteForecastParts<'b>) -> Self {
         MlDeleteForecast {
             client,
             parts,
@@ -970,7 +970,7 @@ impl<'a> MlDeleteForecast<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -990,12 +990,12 @@ impl<'a> MlDeleteForecast<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until the forecast(s) are deleted. Default to 30 seconds"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1007,7 +1007,7 @@ impl<'a> MlDeleteForecast<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_forecasts")]
                 allow_no_forecasts: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -1016,15 +1016,15 @@ impl<'a> MlDeleteForecast<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_forecasts: self.allow_no_forecasts,
@@ -1047,11 +1047,11 @@ impl<'a> MlDeleteForecast<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Job API"]
-pub enum MlDeleteJobParts<'a> {
+pub enum MlDeleteJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlDeleteJobParts<'a> {
+impl<'b> MlDeleteJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1066,21 +1066,21 @@ impl<'a> MlDeleteJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html)."]
-pub struct MlDeleteJob<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteJobParts<'a>,
+pub struct MlDeleteJob<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteJobParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a> MlDeleteJob<'a> {
+impl<'a, 'b> MlDeleteJob<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteJobParts<'b>) -> Self {
         MlDeleteJob {
             client,
             parts,
@@ -1100,7 +1100,7 @@ impl<'a> MlDeleteJob<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1125,7 +1125,7 @@ impl<'a> MlDeleteJob<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1142,14 +1142,14 @@ impl<'a> MlDeleteJob<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
                 #[serde(rename = "human")]
@@ -1157,7 +1157,7 @@ impl<'a> MlDeleteJob<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -1182,11 +1182,11 @@ impl<'a> MlDeleteJob<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Delete Model Snapshot API"]
-pub enum MlDeleteModelSnapshotParts<'a> {
+pub enum MlDeleteModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
-    JobIdSnapshotId(&'a str, &'a str),
+    JobIdSnapshotId(&'b str, &'b str),
 }
-impl<'a> MlDeleteModelSnapshotParts<'a> {
+impl<'b> MlDeleteModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Delete Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1203,19 +1203,19 @@ impl<'a> MlDeleteModelSnapshotParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html)."]
-pub struct MlDeleteModelSnapshot<'a> {
-    client: Elasticsearch,
-    parts: MlDeleteModelSnapshotParts<'a>,
+pub struct MlDeleteModelSnapshot<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlDeleteModelSnapshotParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlDeleteModelSnapshot<'a> {
+impl<'a, 'b> MlDeleteModelSnapshot<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteModelSnapshot] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlDeleteModelSnapshotParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlDeleteModelSnapshotParts<'b>) -> Self {
         MlDeleteModelSnapshot {
             client,
             parts,
@@ -1233,7 +1233,7 @@ impl<'a> MlDeleteModelSnapshot<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1253,7 +1253,7 @@ impl<'a> MlDeleteModelSnapshot<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1265,20 +1265,20 @@ impl<'a> MlDeleteModelSnapshot<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1299,11 +1299,11 @@ impl<'a> MlDeleteModelSnapshot<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Flush Job API"]
-pub enum MlFlushJobParts<'a> {
+pub enum MlFlushJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlFlushJobParts<'a> {
+impl<'b> MlFlushJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Flush Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1319,28 +1319,28 @@ impl<'a> MlFlushJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html)."]
-pub struct MlFlushJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlFlushJobParts<'a>,
-    advance_time: Option<&'a str>,
+pub struct MlFlushJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlFlushJobParts<'b>,
+    advance_time: Option<&'b str>,
     body: Option<B>,
     calc_interim: Option<bool>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    skip_time: Option<&'a str>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    skip_time: Option<&'b str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a, B> MlFlushJob<'a, B>
+impl<'a, 'b, B> MlFlushJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlFlushJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlFlushJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlFlushJobParts<'b>) -> Self {
         MlFlushJob {
             client,
             parts,
@@ -1359,12 +1359,12 @@ where
         }
     }
     #[doc = "Advances time to the given value generating results and updating the model for the advanced interval"]
-    pub fn advance_time(mut self, advance_time: &'a str) -> Self {
+    pub fn advance_time(mut self, advance_time: &'b str) -> Self {
         self.advance_time = Some(advance_time);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlFlushJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlFlushJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1391,7 +1391,7 @@ where
         self
     }
     #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -1401,7 +1401,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1421,17 +1421,17 @@ where
         self
     }
     #[doc = "Skips time to the given value without generating results or updating the model for the skipped interval"]
-    pub fn skip_time(mut self, skip_time: &'a str) -> Self {
+    pub fn skip_time(mut self, skip_time: &'b str) -> Self {
         self.skip_time = Some(skip_time);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "When used in conjunction with calc_interim, specifies the range of buckets on which to calculate interim results"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -1443,30 +1443,30 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "advance_time")]
-                advance_time: Option<&'a str>,
+                advance_time: Option<&'b str>,
                 #[serde(rename = "calc_interim")]
                 calc_interim: Option<bool>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "skip_time")]
-                skip_time: Option<&'a str>,
+                skip_time: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 advance_time: self.advance_time,
@@ -1492,11 +1492,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Forecast API"]
-pub enum MlForecastParts<'a> {
+pub enum MlForecastParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlForecastParts<'a> {
+impl<'b> MlForecastParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Forecast API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1512,25 +1512,25 @@ impl<'a> MlForecastParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Forecast API"]
-pub struct MlForecast<'a, B> {
-    client: Elasticsearch,
-    parts: MlForecastParts<'a>,
+pub struct MlForecast<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlForecastParts<'b>,
     body: Option<B>,
-    duration: Option<&'a str>,
+    duration: Option<&'b str>,
     error_trace: Option<bool>,
-    expires_in: Option<&'a str>,
-    filter_path: Option<&'a [&'a str]>,
+    expires_in: Option<&'b str>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlForecast<'a, B>
+impl<'a, 'b, B> MlForecast<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlForecast] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlForecastParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlForecastParts<'b>) -> Self {
         MlForecast {
             client,
             parts,
@@ -1546,7 +1546,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlForecast<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlForecast<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1565,7 +1565,7 @@ where
         }
     }
     #[doc = "The duration of the forecast"]
-    pub fn duration(mut self, duration: &'a str) -> Self {
+    pub fn duration(mut self, duration: &'b str) -> Self {
         self.duration = Some(duration);
         self
     }
@@ -1575,12 +1575,12 @@ where
         self
     }
     #[doc = "The time interval after which the forecast expires. Expired forecasts will be deleted at the first opportunity."]
-    pub fn expires_in(mut self, expires_in: &'a str) -> Self {
+    pub fn expires_in(mut self, expires_in: &'b str) -> Self {
         self.expires_in = Some(expires_in);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1600,7 +1600,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1612,24 +1612,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "duration")]
-                duration: Option<&'a str>,
+                duration: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expires_in")]
-                expires_in: Option<&'a str>,
+                expires_in: Option<&'b str>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 duration: self.duration,
@@ -1652,13 +1652,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Buckets API"]
-pub enum MlGetBucketsParts<'a> {
+pub enum MlGetBucketsParts<'b> {
     #[doc = "JobId and Timestamp"]
-    JobIdTimestamp(&'a str, &'a str),
+    JobIdTimestamp(&'b str, &'b str),
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetBucketsParts<'a> {
+impl<'b> MlGetBucketsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Buckets API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1682,32 +1682,32 @@ impl<'a> MlGetBucketsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html)."]
-pub struct MlGetBuckets<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetBucketsParts<'a>,
+pub struct MlGetBuckets<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetBucketsParts<'b>,
     anomaly_score: Option<f64>,
     body: Option<B>,
     desc: Option<bool>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
     exclude_interim: Option<bool>,
     expand: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    sort: Option<&'a str>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    sort: Option<&'b str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a, B> MlGetBuckets<'a, B>
+impl<'a, 'b, B> MlGetBuckets<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetBuckets] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetBucketsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetBucketsParts<'b>) -> Self {
         MlGetBuckets {
             client,
             parts,
@@ -1735,7 +1735,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetBuckets<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetBuckets<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1766,7 +1766,7 @@ where
         self
     }
     #[doc = "End time filter for buckets"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -1786,7 +1786,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1816,17 +1816,17 @@ where
         self
     }
     #[doc = "Sort buckets by a particular field"]
-    pub fn sort(mut self, sort: &'a str) -> Self {
+    pub fn sort(mut self, sort: &'b str) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Start time filter for buckets"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -1841,13 +1841,13 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "anomaly_score")]
                 anomaly_score: Option<f64>,
                 #[serde(rename = "desc")]
                 desc: Option<bool>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
@@ -1858,7 +1858,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -1868,11 +1868,11 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
-                sort: Option<&'a str>,
+                sort: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 anomaly_score: self.anomaly_score,
@@ -1902,11 +1902,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Calendar Events API"]
-pub enum MlGetCalendarEventsParts<'a> {
+pub enum MlGetCalendarEventsParts<'b> {
     #[doc = "CalendarId"]
-    CalendarId(&'a str),
+    CalendarId(&'b str),
 }
-impl<'a> MlGetCalendarEventsParts<'a> {
+impl<'b> MlGetCalendarEventsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Calendar Events API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1922,24 +1922,24 @@ impl<'a> MlGetCalendarEventsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Get Calendar Events API"]
-pub struct MlGetCalendarEvents<'a> {
-    client: Elasticsearch,
-    parts: MlGetCalendarEventsParts<'a>,
-    end: Option<&'a str>,
+pub struct MlGetCalendarEvents<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetCalendarEventsParts<'b>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
-    job_id: Option<&'a str>,
+    job_id: Option<&'b str>,
     pretty: Option<bool>,
     size: Option<i32>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a> MlGetCalendarEvents<'a> {
+impl<'a, 'b> MlGetCalendarEvents<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetCalendarEvents] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetCalendarEventsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetCalendarEventsParts<'b>) -> Self {
         MlGetCalendarEvents {
             client,
             parts,
@@ -1957,7 +1957,7 @@ impl<'a> MlGetCalendarEvents<'a> {
         }
     }
     #[doc = "Get events before this time"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -1967,7 +1967,7 @@ impl<'a> MlGetCalendarEvents<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1987,7 +1987,7 @@ impl<'a> MlGetCalendarEvents<'a> {
         self
     }
     #[doc = "Get events for the job. When this option is used calendar_id must be '_all'"]
-    pub fn job_id(mut self, job_id: &'a str) -> Self {
+    pub fn job_id(mut self, job_id: &'b str) -> Self {
         self.job_id = Some(job_id);
         self
     }
@@ -2002,12 +2002,12 @@ impl<'a> MlGetCalendarEvents<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Get events after this time"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -2019,30 +2019,30 @@ impl<'a> MlGetCalendarEvents<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "job_id")]
-                job_id: Option<&'a str>,
+                job_id: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 end: self.end,
@@ -2068,13 +2068,13 @@ impl<'a> MlGetCalendarEvents<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Calendars API"]
-pub enum MlGetCalendarsParts<'a> {
+pub enum MlGetCalendarsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "CalendarId"]
-    CalendarId(&'a str),
+    CalendarId(&'b str),
 }
-impl<'a> MlGetCalendarsParts<'a> {
+impl<'b> MlGetCalendarsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Calendars API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2090,25 +2090,25 @@ impl<'a> MlGetCalendarsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Get Calendars API"]
-pub struct MlGetCalendars<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetCalendarsParts<'a>,
+pub struct MlGetCalendars<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetCalendarsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlGetCalendars<'a, B>
+impl<'a, 'b, B> MlGetCalendars<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetCalendars] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetCalendarsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetCalendarsParts<'b>) -> Self {
         MlGetCalendars {
             client,
             parts,
@@ -2124,7 +2124,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetCalendars<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetCalendars<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2148,7 +2148,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2178,7 +2178,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2193,14 +2193,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -2210,7 +2210,7 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2233,13 +2233,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Categories API"]
-pub enum MlGetCategoriesParts<'a> {
+pub enum MlGetCategoriesParts<'b> {
     #[doc = "JobId and CategoryId"]
-    JobIdCategoryId(&'a str, i64),
+    JobIdCategoryId(&'b str, i64),
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetCategoriesParts<'a> {
+impl<'b> MlGetCategoriesParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Categories API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2264,25 +2264,25 @@ impl<'a> MlGetCategoriesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html)."]
-pub struct MlGetCategories<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetCategoriesParts<'a>,
+pub struct MlGetCategories<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetCategoriesParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlGetCategories<'a, B>
+impl<'a, 'b, B> MlGetCategories<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetCategories] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetCategoriesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetCategoriesParts<'b>) -> Self {
         MlGetCategories {
             client,
             parts,
@@ -2298,7 +2298,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetCategories<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetCategories<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2322,7 +2322,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2352,7 +2352,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2367,14 +2367,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -2384,7 +2384,7 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2407,13 +2407,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Datafeed Stats API"]
-pub enum MlGetDatafeedStatsParts<'a> {
+pub enum MlGetDatafeedStatsParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> MlGetDatafeedStatsParts<'a> {
+impl<'b> MlGetDatafeedStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Datafeed Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2430,20 +2430,20 @@ impl<'a> MlGetDatafeedStatsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html)."]
-pub struct MlGetDatafeedStats<'a> {
-    client: Elasticsearch,
-    parts: MlGetDatafeedStatsParts<'a>,
+pub struct MlGetDatafeedStats<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetDatafeedStatsParts<'b>,
     allow_no_datafeeds: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlGetDatafeedStats<'a> {
+impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetDatafeedStats] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetDatafeedStatsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetDatafeedStatsParts<'b>) -> Self {
         MlGetDatafeedStats {
             client,
             parts,
@@ -2467,7 +2467,7 @@ impl<'a> MlGetDatafeedStats<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2487,7 +2487,7 @@ impl<'a> MlGetDatafeedStats<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2499,7 +2499,7 @@ impl<'a> MlGetDatafeedStats<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -2508,13 +2508,13 @@ impl<'a> MlGetDatafeedStats<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
@@ -2536,13 +2536,13 @@ impl<'a> MlGetDatafeedStats<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Datafeeds API"]
-pub enum MlGetDatafeedsParts<'a> {
+pub enum MlGetDatafeedsParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> MlGetDatafeedsParts<'a> {
+impl<'b> MlGetDatafeedsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Datafeeds API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2558,20 +2558,20 @@ impl<'a> MlGetDatafeedsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html)."]
-pub struct MlGetDatafeeds<'a> {
-    client: Elasticsearch,
-    parts: MlGetDatafeedsParts<'a>,
+pub struct MlGetDatafeeds<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetDatafeedsParts<'b>,
     allow_no_datafeeds: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlGetDatafeeds<'a> {
+impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetDatafeeds] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetDatafeedsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetDatafeedsParts<'b>) -> Self {
         MlGetDatafeeds {
             client,
             parts,
@@ -2595,7 +2595,7 @@ impl<'a> MlGetDatafeeds<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2615,7 +2615,7 @@ impl<'a> MlGetDatafeeds<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2627,7 +2627,7 @@ impl<'a> MlGetDatafeeds<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -2636,13 +2636,13 @@ impl<'a> MlGetDatafeeds<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
@@ -2664,13 +2664,13 @@ impl<'a> MlGetDatafeeds<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Filters API"]
-pub enum MlGetFiltersParts<'a> {
+pub enum MlGetFiltersParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "FilterId"]
-    FilterId(&'a str),
+    FilterId(&'b str),
 }
-impl<'a> MlGetFiltersParts<'a> {
+impl<'b> MlGetFiltersParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Filters API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2686,21 +2686,21 @@ impl<'a> MlGetFiltersParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Get Filters API"]
-pub struct MlGetFilters<'a> {
-    client: Elasticsearch,
-    parts: MlGetFiltersParts<'a>,
+pub struct MlGetFilters<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetFiltersParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlGetFilters<'a> {
+impl<'a, 'b> MlGetFilters<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetFilters] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetFiltersParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetFiltersParts<'b>) -> Self {
         MlGetFilters {
             client,
             parts,
@@ -2720,7 +2720,7 @@ impl<'a> MlGetFilters<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2750,7 +2750,7 @@ impl<'a> MlGetFilters<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2762,14 +2762,14 @@ impl<'a> MlGetFilters<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -2779,7 +2779,7 @@ impl<'a> MlGetFilters<'a> {
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2802,11 +2802,11 @@ impl<'a> MlGetFilters<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Influencers API"]
-pub enum MlGetInfluencersParts<'a> {
+pub enum MlGetInfluencersParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetInfluencersParts<'a> {
+impl<'b> MlGetInfluencersParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Influencers API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2822,31 +2822,31 @@ impl<'a> MlGetInfluencersParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html)."]
-pub struct MlGetInfluencers<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetInfluencersParts<'a>,
+pub struct MlGetInfluencers<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetInfluencersParts<'b>,
     body: Option<B>,
     desc: Option<bool>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
     exclude_interim: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     influencer_score: Option<f64>,
     pretty: Option<bool>,
     size: Option<i32>,
-    sort: Option<&'a str>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    sort: Option<&'b str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a, B> MlGetInfluencers<'a, B>
+impl<'a, 'b, B> MlGetInfluencers<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetInfluencers] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetInfluencersParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetInfluencersParts<'b>) -> Self {
         MlGetInfluencers {
             client,
             parts,
@@ -2868,7 +2868,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetInfluencers<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetInfluencers<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2898,7 +2898,7 @@ where
         self
     }
     #[doc = "end timestamp for the requested influencers"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -2913,7 +2913,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2948,17 +2948,17 @@ where
         self
     }
     #[doc = "sort field for the requested influencers"]
-    pub fn sort(mut self, sort: &'a str) -> Self {
+    pub fn sort(mut self, sort: &'b str) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "start timestamp for the requested influencers"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -2973,11 +2973,11 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "desc")]
                 desc: Option<bool>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
@@ -2986,7 +2986,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -2998,11 +2998,11 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
-                sort: Option<&'a str>,
+                sort: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 desc: self.desc,
@@ -3031,13 +3031,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Job Stats API"]
-pub enum MlGetJobStatsParts<'a> {
+pub enum MlGetJobStatsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetJobStatsParts<'a> {
+impl<'b> MlGetJobStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Job Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3054,20 +3054,20 @@ impl<'a> MlGetJobStatsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html)."]
-pub struct MlGetJobStats<'a> {
-    client: Elasticsearch,
-    parts: MlGetJobStatsParts<'a>,
+pub struct MlGetJobStats<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetJobStatsParts<'b>,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlGetJobStats<'a> {
+impl<'a, 'b> MlGetJobStats<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetJobStats] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetJobStatsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetJobStatsParts<'b>) -> Self {
         MlGetJobStats {
             client,
             parts,
@@ -3091,7 +3091,7 @@ impl<'a> MlGetJobStats<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3111,7 +3111,7 @@ impl<'a> MlGetJobStats<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3123,7 +3123,7 @@ impl<'a> MlGetJobStats<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -3132,13 +3132,13 @@ impl<'a> MlGetJobStats<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
@@ -3160,13 +3160,13 @@ impl<'a> MlGetJobStats<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Jobs API"]
-pub enum MlGetJobsParts<'a> {
+pub enum MlGetJobsParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> MlGetJobsParts<'a> {
+impl<'b> MlGetJobsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Jobs API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3182,20 +3182,20 @@ impl<'a> MlGetJobsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html)."]
-pub struct MlGetJobs<'a> {
-    client: Elasticsearch,
-    parts: MlGetJobsParts<'a>,
+pub struct MlGetJobs<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlGetJobsParts<'b>,
     allow_no_jobs: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlGetJobs<'a> {
+impl<'a, 'b> MlGetJobs<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetJobs] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetJobsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetJobsParts<'b>) -> Self {
         MlGetJobs {
             client,
             parts,
@@ -3219,7 +3219,7 @@ impl<'a> MlGetJobs<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3239,7 +3239,7 @@ impl<'a> MlGetJobs<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3251,7 +3251,7 @@ impl<'a> MlGetJobs<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -3260,13 +3260,13 @@ impl<'a> MlGetJobs<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_jobs: self.allow_no_jobs,
@@ -3288,13 +3288,13 @@ impl<'a> MlGetJobs<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Model Snapshots API"]
-pub enum MlGetModelSnapshotsParts<'a> {
+pub enum MlGetModelSnapshotsParts<'b> {
     #[doc = "JobId and SnapshotId"]
-    JobIdSnapshotId(&'a str, &'a str),
+    JobIdSnapshotId(&'b str, &'b str),
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetModelSnapshotsParts<'a> {
+impl<'b> MlGetModelSnapshotsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Model Snapshots API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3318,29 +3318,29 @@ impl<'a> MlGetModelSnapshotsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html)."]
-pub struct MlGetModelSnapshots<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetModelSnapshotsParts<'a>,
+pub struct MlGetModelSnapshots<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetModelSnapshotsParts<'b>,
     body: Option<B>,
     desc: Option<bool>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     size: Option<i32>,
-    sort: Option<&'a str>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    sort: Option<&'b str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a, B> MlGetModelSnapshots<'a, B>
+impl<'a, 'b, B> MlGetModelSnapshots<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetModelSnapshots] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetModelSnapshotsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetModelSnapshotsParts<'b>) -> Self {
         MlGetModelSnapshots {
             client,
             parts,
@@ -3360,7 +3360,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetModelSnapshots<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetModelSnapshots<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3388,7 +3388,7 @@ where
         self
     }
     #[doc = "The filter 'end' query parameter"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -3398,7 +3398,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3428,17 +3428,17 @@ where
         self
     }
     #[doc = "Name of the field to sort on"]
-    pub fn sort(mut self, sort: &'a str) -> Self {
+    pub fn sort(mut self, sort: &'b str) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "The filter 'start' query parameter"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -3453,18 +3453,18 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "desc")]
                 desc: Option<bool>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -3474,11 +3474,11 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
-                sort: Option<&'a str>,
+                sort: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 desc: self.desc,
@@ -3505,11 +3505,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Overall Buckets API"]
-pub enum MlGetOverallBucketsParts<'a> {
+pub enum MlGetOverallBucketsParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetOverallBucketsParts<'a> {
+impl<'b> MlGetOverallBucketsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Overall Buckets API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3525,30 +3525,30 @@ impl<'a> MlGetOverallBucketsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html)."]
-pub struct MlGetOverallBuckets<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetOverallBucketsParts<'a>,
+pub struct MlGetOverallBuckets<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetOverallBucketsParts<'b>,
     allow_no_jobs: Option<bool>,
     body: Option<B>,
-    bucket_span: Option<&'a str>,
-    end: Option<&'a str>,
+    bucket_span: Option<&'b str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
     exclude_interim: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     overall_score: Option<f64>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
     top_n: Option<i32>,
 }
-impl<'a, B> MlGetOverallBuckets<'a, B>
+impl<'a, 'b, B> MlGetOverallBuckets<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetOverallBuckets] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetOverallBucketsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetOverallBucketsParts<'b>) -> Self {
         MlGetOverallBuckets {
             client,
             parts,
@@ -3574,7 +3574,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetOverallBuckets<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetOverallBuckets<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3598,12 +3598,12 @@ where
         }
     }
     #[doc = "The span of the overall buckets. Defaults to the longest job bucket_span"]
-    pub fn bucket_span(mut self, bucket_span: &'a str) -> Self {
+    pub fn bucket_span(mut self, bucket_span: &'b str) -> Self {
         self.bucket_span = Some(bucket_span);
         self
     }
     #[doc = "Returns overall buckets with timestamps earlier than this time"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -3618,7 +3618,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3643,12 +3643,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Returns overall buckets with timestamps after this time"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -3668,13 +3668,13 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_jobs")]
                 allow_no_jobs: Option<bool>,
                 #[serde(rename = "bucket_span")]
-                bucket_span: Option<&'a str>,
+                bucket_span: Option<&'b str>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
@@ -3683,7 +3683,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "overall_score")]
@@ -3691,9 +3691,9 @@ where
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
                 #[serde(rename = "top_n")]
                 top_n: Option<i32>,
             }
@@ -3723,11 +3723,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Get Records API"]
-pub enum MlGetRecordsParts<'a> {
+pub enum MlGetRecordsParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlGetRecordsParts<'a> {
+impl<'b> MlGetRecordsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Get Records API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3743,31 +3743,31 @@ impl<'a> MlGetRecordsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html)."]
-pub struct MlGetRecords<'a, B> {
-    client: Elasticsearch,
-    parts: MlGetRecordsParts<'a>,
+pub struct MlGetRecords<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlGetRecordsParts<'b>,
     body: Option<B>,
     desc: Option<bool>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
     exclude_interim: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     from: Option<i32>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     record_score: Option<f64>,
     size: Option<i32>,
-    sort: Option<&'a str>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
+    sort: Option<&'b str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
 }
-impl<'a, B> MlGetRecords<'a, B>
+impl<'a, 'b, B> MlGetRecords<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlGetRecords] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlGetRecordsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlGetRecordsParts<'b>) -> Self {
         MlGetRecords {
             client,
             parts,
@@ -3789,7 +3789,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlGetRecords<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlGetRecords<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3819,7 +3819,7 @@ where
         self
     }
     #[doc = "End time filter for records"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -3834,7 +3834,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3868,17 +3868,17 @@ where
         self
     }
     #[doc = "Sort records by a particular field"]
-    pub fn sort(mut self, sort: &'a str) -> Self {
+    pub fn sort(mut self, sort: &'b str) -> Self {
         self.sort = Some(sort);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Start time filter for records"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
@@ -3893,11 +3893,11 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "desc")]
                 desc: Option<bool>,
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "exclude_interim")]
@@ -3906,7 +3906,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "from")]
                 from: Option<i32>,
                 #[serde(rename = "human")]
@@ -3918,11 +3918,11 @@ where
                 #[serde(rename = "size")]
                 size: Option<i32>,
                 #[serde(rename = "sort")]
-                sort: Option<&'a str>,
+                sort: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
             }
             let query_params = QueryParams {
                 desc: self.desc,
@@ -3965,19 +3965,19 @@ impl MlInfoParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Info API"]
-pub struct MlInfo<'a> {
-    client: Elasticsearch,
+pub struct MlInfo<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: MlInfoParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlInfo<'a> {
+impl<'a, 'b> MlInfo<'a, 'b> {
     #[doc = "Creates a new instance of [MlInfo]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         MlInfo {
             client,
             parts: MlInfoParts::None,
@@ -3995,7 +3995,7 @@ impl<'a> MlInfo<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4015,7 +4015,7 @@ impl<'a> MlInfo<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4027,20 +4027,20 @@ impl<'a> MlInfo<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4061,11 +4061,11 @@ impl<'a> MlInfo<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Open Job API"]
-pub enum MlOpenJobParts<'a> {
+pub enum MlOpenJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlOpenJobParts<'a> {
+impl<'b> MlOpenJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Open Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4081,23 +4081,23 @@ impl<'a> MlOpenJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html)."]
-pub struct MlOpenJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlOpenJobParts<'a>,
+pub struct MlOpenJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlOpenJobParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlOpenJob<'a, B>
+impl<'a, 'b, B> MlOpenJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlOpenJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlOpenJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlOpenJobParts<'b>) -> Self {
         MlOpenJob {
             client,
             parts,
@@ -4111,7 +4111,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlOpenJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlOpenJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -4133,7 +4133,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4153,7 +4153,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4165,20 +4165,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4199,11 +4199,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Post Calendar Events API"]
-pub enum MlPostCalendarEventsParts<'a> {
+pub enum MlPostCalendarEventsParts<'b> {
     #[doc = "CalendarId"]
-    CalendarId(&'a str),
+    CalendarId(&'b str),
 }
-impl<'a> MlPostCalendarEventsParts<'a> {
+impl<'b> MlPostCalendarEventsParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Post Calendar Events API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4219,23 +4219,23 @@ impl<'a> MlPostCalendarEventsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Post Calendar Events API"]
-pub struct MlPostCalendarEvents<'a, B> {
-    client: Elasticsearch,
-    parts: MlPostCalendarEventsParts<'a>,
+pub struct MlPostCalendarEvents<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPostCalendarEventsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPostCalendarEvents<'a, B>
+impl<'a, 'b, B> MlPostCalendarEvents<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPostCalendarEvents] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPostCalendarEventsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPostCalendarEventsParts<'b>) -> Self {
         MlPostCalendarEvents {
             client,
             parts,
@@ -4249,7 +4249,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPostCalendarEvents<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPostCalendarEvents<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -4271,7 +4271,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4291,7 +4291,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4303,20 +4303,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4337,11 +4337,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Post Data API"]
-pub enum MlPostDataParts<'a> {
+pub enum MlPostDataParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlPostDataParts<'a> {
+impl<'b> MlPostDataParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Post Data API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4357,25 +4357,25 @@ impl<'a> MlPostDataParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html)."]
-pub struct MlPostData<'a, B> {
-    client: Elasticsearch,
-    parts: MlPostDataParts<'a>,
+pub struct MlPostData<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPostDataParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    reset_end: Option<&'a str>,
-    reset_start: Option<&'a str>,
-    source: Option<&'a str>,
+    reset_end: Option<&'b str>,
+    reset_start: Option<&'b str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPostData<'a, B>
+impl<'a, 'b, B> MlPostData<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPostData] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPostDataParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPostDataParts<'b>) -> Self {
         MlPostData {
             client,
             parts,
@@ -4391,7 +4391,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: Vec<T>) -> MlPostData<'a, NdBody<T>>
+    pub fn body<T>(self, body: Vec<T>) -> MlPostData<'a, 'b, NdBody<T>>
     where
         T: Body,
     {
@@ -4415,7 +4415,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4435,17 +4435,17 @@ where
         self
     }
     #[doc = "Optional parameter to specify the end of the bucket resetting range"]
-    pub fn reset_end(mut self, reset_end: &'a str) -> Self {
+    pub fn reset_end(mut self, reset_end: &'b str) -> Self {
         self.reset_end = Some(reset_end);
         self
     }
     #[doc = "Optional parameter to specify the start of the bucket resetting range"]
-    pub fn reset_start(mut self, reset_start: &'a str) -> Self {
+    pub fn reset_start(mut self, reset_start: &'b str) -> Self {
         self.reset_start = Some(reset_start);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4457,24 +4457,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "reset_end")]
-                reset_end: Option<&'a str>,
+                reset_end: Option<&'b str>,
                 #[serde(rename = "reset_start")]
-                reset_start: Option<&'a str>,
+                reset_start: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4497,11 +4497,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Preview Datafeed API"]
-pub enum MlPreviewDatafeedParts<'a> {
+pub enum MlPreviewDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlPreviewDatafeedParts<'a> {
+impl<'b> MlPreviewDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Preview Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4517,19 +4517,19 @@ impl<'a> MlPreviewDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html)."]
-pub struct MlPreviewDatafeed<'a> {
-    client: Elasticsearch,
-    parts: MlPreviewDatafeedParts<'a>,
+pub struct MlPreviewDatafeed<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MlPreviewDatafeedParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MlPreviewDatafeed<'a> {
+impl<'a, 'b> MlPreviewDatafeed<'a, 'b> {
     #[doc = "Creates a new instance of [MlPreviewDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPreviewDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPreviewDatafeedParts<'b>) -> Self {
         MlPreviewDatafeed {
             client,
             parts,
@@ -4547,7 +4547,7 @@ impl<'a> MlPreviewDatafeed<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4567,7 +4567,7 @@ impl<'a> MlPreviewDatafeed<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4579,20 +4579,20 @@ impl<'a> MlPreviewDatafeed<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4613,11 +4613,11 @@ impl<'a> MlPreviewDatafeed<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Calendar API"]
-pub enum MlPutCalendarParts<'a> {
+pub enum MlPutCalendarParts<'b> {
     #[doc = "CalendarId"]
-    CalendarId(&'a str),
+    CalendarId(&'b str),
 }
-impl<'a> MlPutCalendarParts<'a> {
+impl<'b> MlPutCalendarParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Calendar API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4632,23 +4632,23 @@ impl<'a> MlPutCalendarParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Put Calendar API"]
-pub struct MlPutCalendar<'a, B> {
-    client: Elasticsearch,
-    parts: MlPutCalendarParts<'a>,
+pub struct MlPutCalendar<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPutCalendarParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPutCalendar<'a, B>
+impl<'a, 'b, B> MlPutCalendar<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPutCalendar] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPutCalendarParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPutCalendarParts<'b>) -> Self {
         MlPutCalendar {
             client,
             parts,
@@ -4662,7 +4662,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutCalendar<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPutCalendar<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -4684,7 +4684,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4704,7 +4704,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4716,20 +4716,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4750,11 +4750,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Calendar Job API"]
-pub enum MlPutCalendarJobParts<'a> {
+pub enum MlPutCalendarJobParts<'b> {
     #[doc = "CalendarId and JobId"]
-    CalendarIdJobId(&'a str, &'a str),
+    CalendarIdJobId(&'b str, &'b str),
 }
-impl<'a> MlPutCalendarJobParts<'a> {
+impl<'b> MlPutCalendarJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Calendar Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4771,23 +4771,23 @@ impl<'a> MlPutCalendarJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Put Calendar Job API"]
-pub struct MlPutCalendarJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlPutCalendarJobParts<'a>,
+pub struct MlPutCalendarJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPutCalendarJobParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPutCalendarJob<'a, B>
+impl<'a, 'b, B> MlPutCalendarJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPutCalendarJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPutCalendarJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPutCalendarJobParts<'b>) -> Self {
         MlPutCalendarJob {
             client,
             parts,
@@ -4801,7 +4801,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutCalendarJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPutCalendarJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -4823,7 +4823,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4843,7 +4843,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4855,20 +4855,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -4889,11 +4889,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Datafeed API"]
-pub enum MlPutDatafeedParts<'a> {
+pub enum MlPutDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlPutDatafeedParts<'a> {
+impl<'b> MlPutDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -4908,23 +4908,23 @@ impl<'a> MlPutDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html)."]
-pub struct MlPutDatafeed<'a, B> {
-    client: Elasticsearch,
-    parts: MlPutDatafeedParts<'a>,
+pub struct MlPutDatafeed<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPutDatafeedParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPutDatafeed<'a, B>
+impl<'a, 'b, B> MlPutDatafeed<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPutDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPutDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPutDatafeedParts<'b>) -> Self {
         MlPutDatafeed {
             client,
             parts,
@@ -4938,7 +4938,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutDatafeed<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPutDatafeed<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -4960,7 +4960,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -4980,7 +4980,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -4992,20 +4992,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -5026,11 +5026,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Filter API"]
-pub enum MlPutFilterParts<'a> {
+pub enum MlPutFilterParts<'b> {
     #[doc = "FilterId"]
-    FilterId(&'a str),
+    FilterId(&'b str),
 }
-impl<'a> MlPutFilterParts<'a> {
+impl<'b> MlPutFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5045,23 +5045,23 @@ impl<'a> MlPutFilterParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Put Filter API"]
-pub struct MlPutFilter<'a, B> {
-    client: Elasticsearch,
-    parts: MlPutFilterParts<'a>,
+pub struct MlPutFilter<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPutFilterParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPutFilter<'a, B>
+impl<'a, 'b, B> MlPutFilter<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPutFilter] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPutFilterParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPutFilterParts<'b>) -> Self {
         MlPutFilter {
             client,
             parts,
@@ -5075,7 +5075,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutFilter<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPutFilter<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5097,7 +5097,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5117,7 +5117,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5129,20 +5129,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -5163,11 +5163,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Put Job API"]
-pub enum MlPutJobParts<'a> {
+pub enum MlPutJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlPutJobParts<'a> {
+impl<'b> MlPutJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Put Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5182,23 +5182,23 @@ impl<'a> MlPutJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html)."]
-pub struct MlPutJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlPutJobParts<'a>,
+pub struct MlPutJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlPutJobParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlPutJob<'a, B>
+impl<'a, 'b, B> MlPutJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlPutJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlPutJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlPutJobParts<'b>) -> Self {
         MlPutJob {
             client,
             parts,
@@ -5212,7 +5212,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlPutJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlPutJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5234,7 +5234,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5254,7 +5254,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5266,20 +5266,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -5300,11 +5300,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Revert Model Snapshot API"]
-pub enum MlRevertModelSnapshotParts<'a> {
+pub enum MlRevertModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
-    JobIdSnapshotId(&'a str, &'a str),
+    JobIdSnapshotId(&'b str, &'b str),
 }
-impl<'a> MlRevertModelSnapshotParts<'a> {
+impl<'b> MlRevertModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Revert Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5322,24 +5322,24 @@ impl<'a> MlRevertModelSnapshotParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html)."]
-pub struct MlRevertModelSnapshot<'a, B> {
-    client: Elasticsearch,
-    parts: MlRevertModelSnapshotParts<'a>,
+pub struct MlRevertModelSnapshot<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlRevertModelSnapshotParts<'b>,
     body: Option<B>,
     delete_intervening_results: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlRevertModelSnapshot<'a, B>
+impl<'a, 'b, B> MlRevertModelSnapshot<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlRevertModelSnapshot] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlRevertModelSnapshotParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlRevertModelSnapshotParts<'b>) -> Self {
         MlRevertModelSnapshot {
             client,
             parts,
@@ -5354,7 +5354,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlRevertModelSnapshot<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlRevertModelSnapshot<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5382,7 +5382,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5402,7 +5402,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -5414,7 +5414,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "delete_intervening_results")]
                 delete_intervening_results: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -5423,13 +5423,13 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 delete_intervening_results: self.delete_intervening_results,
@@ -5465,25 +5465,25 @@ impl MlSetUpgradeModeParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html)."]
-pub struct MlSetUpgradeMode<'a, B> {
-    client: Elasticsearch,
+pub struct MlSetUpgradeMode<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: MlSetUpgradeModeParts,
     body: Option<B>,
     enabled: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> MlSetUpgradeMode<'a, B>
+impl<'a, 'b, B> MlSetUpgradeMode<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlSetUpgradeMode]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         MlSetUpgradeMode {
             client,
             parts: MlSetUpgradeModeParts::None,
@@ -5499,7 +5499,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlSetUpgradeMode<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlSetUpgradeMode<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5528,7 +5528,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5548,12 +5548,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait before action times out. Defaults to 30 seconds"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -5565,7 +5565,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "enabled")]
                 enabled: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -5574,15 +5574,15 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 enabled: self.enabled,
@@ -5605,11 +5605,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Start Datafeed API"]
-pub enum MlStartDatafeedParts<'a> {
+pub enum MlStartDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlStartDatafeedParts<'a> {
+impl<'b> MlStartDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Start Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5625,26 +5625,26 @@ impl<'a> MlStartDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html)."]
-pub struct MlStartDatafeed<'a, B> {
-    client: Elasticsearch,
-    parts: MlStartDatafeedParts<'a>,
+pub struct MlStartDatafeed<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlStartDatafeedParts<'b>,
     body: Option<B>,
-    end: Option<&'a str>,
+    end: Option<&'b str>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    start: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    start: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> MlStartDatafeed<'a, B>
+impl<'a, 'b, B> MlStartDatafeed<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlStartDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlStartDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlStartDatafeedParts<'b>) -> Self {
         MlStartDatafeed {
             client,
             parts,
@@ -5661,7 +5661,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStartDatafeed<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlStartDatafeed<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5681,7 +5681,7 @@ where
         }
     }
     #[doc = "The end time when the datafeed should stop. When not set, the datafeed continues in real time"]
-    pub fn end(mut self, end: &'a str) -> Self {
+    pub fn end(mut self, end: &'b str) -> Self {
         self.end = Some(end);
         self
     }
@@ -5691,7 +5691,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5711,17 +5711,17 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "The start time from where the datafeed should begin"]
-    pub fn start(mut self, start: &'a str) -> Self {
+    pub fn start(mut self, start: &'b str) -> Self {
         self.start = Some(start);
         self
     }
     #[doc = "Controls the time to wait until a datafeed has started. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -5733,26 +5733,26 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "end")]
-                end: Option<&'a str>,
+                end: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "start")]
-                start: Option<&'a str>,
+                start: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 end: self.end,
@@ -5776,11 +5776,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Stop Datafeed API"]
-pub enum MlStopDatafeedParts<'a> {
+pub enum MlStopDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlStopDatafeedParts<'a> {
+impl<'b> MlStopDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Stop Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5796,26 +5796,26 @@ impl<'a> MlStopDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html)."]
-pub struct MlStopDatafeed<'a, B> {
-    client: Elasticsearch,
-    parts: MlStopDatafeedParts<'a>,
+pub struct MlStopDatafeed<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlStopDatafeedParts<'b>,
     allow_no_datafeeds: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     force: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> MlStopDatafeed<'a, B>
+impl<'a, 'b, B> MlStopDatafeed<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlStopDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlStopDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlStopDatafeedParts<'b>) -> Self {
         MlStopDatafeed {
             client,
             parts,
@@ -5837,7 +5837,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlStopDatafeed<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlStopDatafeed<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -5862,7 +5862,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -5887,12 +5887,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Controls the time to wait until a datafeed has stopped. Default to 20 seconds"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -5904,7 +5904,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_datafeeds")]
                 allow_no_datafeeds: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -5913,7 +5913,7 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "force")]
                 force: Option<bool>,
                 #[serde(rename = "human")]
@@ -5921,9 +5921,9 @@ where
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_datafeeds: self.allow_no_datafeeds,
@@ -5947,11 +5947,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Datafeed API"]
-pub enum MlUpdateDatafeedParts<'a> {
+pub enum MlUpdateDatafeedParts<'b> {
     #[doc = "DatafeedId"]
-    DatafeedId(&'a str),
+    DatafeedId(&'b str),
 }
-impl<'a> MlUpdateDatafeedParts<'a> {
+impl<'b> MlUpdateDatafeedParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Datafeed API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -5967,23 +5967,23 @@ impl<'a> MlUpdateDatafeedParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html)."]
-pub struct MlUpdateDatafeed<'a, B> {
-    client: Elasticsearch,
-    parts: MlUpdateDatafeedParts<'a>,
+pub struct MlUpdateDatafeed<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlUpdateDatafeedParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlUpdateDatafeed<'a, B>
+impl<'a, 'b, B> MlUpdateDatafeed<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlUpdateDatafeed] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlUpdateDatafeedParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlUpdateDatafeedParts<'b>) -> Self {
         MlUpdateDatafeed {
             client,
             parts,
@@ -5997,7 +5997,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateDatafeed<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlUpdateDatafeed<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6019,7 +6019,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6039,7 +6039,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6051,20 +6051,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6085,11 +6085,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Filter API"]
-pub enum MlUpdateFilterParts<'a> {
+pub enum MlUpdateFilterParts<'b> {
     #[doc = "FilterId"]
-    FilterId(&'a str),
+    FilterId(&'b str),
 }
-impl<'a> MlUpdateFilterParts<'a> {
+impl<'b> MlUpdateFilterParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Filter API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -6105,23 +6105,23 @@ impl<'a> MlUpdateFilterParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Update Filter API"]
-pub struct MlUpdateFilter<'a, B> {
-    client: Elasticsearch,
-    parts: MlUpdateFilterParts<'a>,
+pub struct MlUpdateFilter<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlUpdateFilterParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlUpdateFilter<'a, B>
+impl<'a, 'b, B> MlUpdateFilter<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlUpdateFilter] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlUpdateFilterParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlUpdateFilterParts<'b>) -> Self {
         MlUpdateFilter {
             client,
             parts,
@@ -6135,7 +6135,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateFilter<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlUpdateFilter<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6157,7 +6157,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6177,7 +6177,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6189,20 +6189,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6223,11 +6223,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Job API"]
-pub enum MlUpdateJobParts<'a> {
+pub enum MlUpdateJobParts<'b> {
     #[doc = "JobId"]
-    JobId(&'a str),
+    JobId(&'b str),
 }
-impl<'a> MlUpdateJobParts<'a> {
+impl<'b> MlUpdateJobParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Job API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -6243,23 +6243,23 @@ impl<'a> MlUpdateJobParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html)."]
-pub struct MlUpdateJob<'a, B> {
-    client: Elasticsearch,
-    parts: MlUpdateJobParts<'a>,
+pub struct MlUpdateJob<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlUpdateJobParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlUpdateJob<'a, B>
+impl<'a, 'b, B> MlUpdateJob<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlUpdateJob] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlUpdateJobParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlUpdateJobParts<'b>) -> Self {
         MlUpdateJob {
             client,
             parts,
@@ -6273,7 +6273,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateJob<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlUpdateJob<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6295,7 +6295,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6315,7 +6315,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6327,20 +6327,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6361,11 +6361,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ml Update Model Snapshot API"]
-pub enum MlUpdateModelSnapshotParts<'a> {
+pub enum MlUpdateModelSnapshotParts<'b> {
     #[doc = "JobId and SnapshotId"]
-    JobIdSnapshotId(&'a str, &'a str),
+    JobIdSnapshotId(&'b str, &'b str),
 }
-impl<'a> MlUpdateModelSnapshotParts<'a> {
+impl<'b> MlUpdateModelSnapshotParts<'b> {
     #[doc = "Builds a relative URL path to the Ml Update Model Snapshot API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -6383,23 +6383,23 @@ impl<'a> MlUpdateModelSnapshotParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html)."]
-pub struct MlUpdateModelSnapshot<'a, B> {
-    client: Elasticsearch,
-    parts: MlUpdateModelSnapshotParts<'a>,
+pub struct MlUpdateModelSnapshot<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: MlUpdateModelSnapshotParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlUpdateModelSnapshot<'a, B>
+impl<'a, 'b, B> MlUpdateModelSnapshot<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlUpdateModelSnapshot] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MlUpdateModelSnapshotParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MlUpdateModelSnapshotParts<'b>) -> Self {
         MlUpdateModelSnapshot {
             client,
             parts,
@@ -6413,7 +6413,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlUpdateModelSnapshot<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlUpdateModelSnapshot<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6435,7 +6435,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6455,7 +6455,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6467,20 +6467,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6515,23 +6515,23 @@ impl MlValidateParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Validate API"]
-pub struct MlValidate<'a, B> {
-    client: Elasticsearch,
+pub struct MlValidate<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: MlValidateParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlValidate<'a, B>
+impl<'a, 'b, B> MlValidate<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlValidate]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         MlValidate {
             client,
             parts: MlValidateParts::None,
@@ -6545,7 +6545,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlValidate<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlValidate<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6567,7 +6567,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6587,7 +6587,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6599,20 +6599,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6647,23 +6647,23 @@ impl MlValidateDetectorParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Ml Validate Detector API"]
-pub struct MlValidateDetector<'a, B> {
-    client: Elasticsearch,
+pub struct MlValidateDetector<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: MlValidateDetectorParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> MlValidateDetector<'a, B>
+impl<'a, 'b, B> MlValidateDetector<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [MlValidateDetector]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         MlValidateDetector {
             client,
             parts: MlValidateDetectorParts::None,
@@ -6677,7 +6677,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> MlValidateDetector<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> MlValidateDetector<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -6699,7 +6699,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -6719,7 +6719,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -6731,20 +6731,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -6764,192 +6764,219 @@ where
     }
 }
 #[doc = "Namespace client for Machine Learning APIs"]
-pub struct Ml {
-    client: Elasticsearch,
+pub struct Ml<'a> {
+    client: &'a Elasticsearch,
 }
-impl Ml {
+impl<'a> Ml<'a> {
     #[doc = "Creates a new instance of [Ml]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn close_job<'a>(&self, parts: MlCloseJobParts<'a>) -> MlCloseJob<'a, ()> {
-        MlCloseJob::new(self.client.clone(), parts)
+    pub fn close_job<'b>(&'a self, parts: MlCloseJobParts<'b>) -> MlCloseJob<'a, 'b, ()> {
+        MlCloseJob::new(&self.client, parts)
     }
-    pub fn delete_calendar<'a>(&self, parts: MlDeleteCalendarParts<'a>) -> MlDeleteCalendar<'a> {
-        MlDeleteCalendar::new(self.client.clone(), parts)
+    pub fn delete_calendar<'b>(
+        &'a self,
+        parts: MlDeleteCalendarParts<'b>,
+    ) -> MlDeleteCalendar<'a, 'b> {
+        MlDeleteCalendar::new(&self.client, parts)
     }
-    pub fn delete_calendar_event<'a>(
-        &self,
-        parts: MlDeleteCalendarEventParts<'a>,
-    ) -> MlDeleteCalendarEvent<'a> {
-        MlDeleteCalendarEvent::new(self.client.clone(), parts)
+    pub fn delete_calendar_event<'b>(
+        &'a self,
+        parts: MlDeleteCalendarEventParts<'b>,
+    ) -> MlDeleteCalendarEvent<'a, 'b> {
+        MlDeleteCalendarEvent::new(&self.client, parts)
     }
-    pub fn delete_calendar_job<'a>(
-        &self,
-        parts: MlDeleteCalendarJobParts<'a>,
-    ) -> MlDeleteCalendarJob<'a> {
-        MlDeleteCalendarJob::new(self.client.clone(), parts)
+    pub fn delete_calendar_job<'b>(
+        &'a self,
+        parts: MlDeleteCalendarJobParts<'b>,
+    ) -> MlDeleteCalendarJob<'a, 'b> {
+        MlDeleteCalendarJob::new(&self.client, parts)
     }
-    pub fn delete_datafeed<'a>(&self, parts: MlDeleteDatafeedParts<'a>) -> MlDeleteDatafeed<'a> {
-        MlDeleteDatafeed::new(self.client.clone(), parts)
+    pub fn delete_datafeed<'b>(
+        &'a self,
+        parts: MlDeleteDatafeedParts<'b>,
+    ) -> MlDeleteDatafeed<'a, 'b> {
+        MlDeleteDatafeed::new(&self.client, parts)
     }
-    pub fn delete_expired_data<'a>(&self) -> MlDeleteExpiredData<'a> {
-        MlDeleteExpiredData::new(self.client.clone())
+    pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b> {
+        MlDeleteExpiredData::new(&self.client)
     }
-    pub fn delete_filter<'a>(&self, parts: MlDeleteFilterParts<'a>) -> MlDeleteFilter<'a> {
-        MlDeleteFilter::new(self.client.clone(), parts)
+    pub fn delete_filter<'b>(&'a self, parts: MlDeleteFilterParts<'b>) -> MlDeleteFilter<'a, 'b> {
+        MlDeleteFilter::new(&self.client, parts)
     }
-    pub fn delete_forecast<'a>(&self, parts: MlDeleteForecastParts<'a>) -> MlDeleteForecast<'a> {
-        MlDeleteForecast::new(self.client.clone(), parts)
+    pub fn delete_forecast<'b>(
+        &'a self,
+        parts: MlDeleteForecastParts<'b>,
+    ) -> MlDeleteForecast<'a, 'b> {
+        MlDeleteForecast::new(&self.client, parts)
     }
-    pub fn delete_job<'a>(&self, parts: MlDeleteJobParts<'a>) -> MlDeleteJob<'a> {
-        MlDeleteJob::new(self.client.clone(), parts)
+    pub fn delete_job<'b>(&'a self, parts: MlDeleteJobParts<'b>) -> MlDeleteJob<'a, 'b> {
+        MlDeleteJob::new(&self.client, parts)
     }
-    pub fn delete_model_snapshot<'a>(
-        &self,
-        parts: MlDeleteModelSnapshotParts<'a>,
-    ) -> MlDeleteModelSnapshot<'a> {
-        MlDeleteModelSnapshot::new(self.client.clone(), parts)
+    pub fn delete_model_snapshot<'b>(
+        &'a self,
+        parts: MlDeleteModelSnapshotParts<'b>,
+    ) -> MlDeleteModelSnapshot<'a, 'b> {
+        MlDeleteModelSnapshot::new(&self.client, parts)
     }
-    pub fn flush_job<'a>(&self, parts: MlFlushJobParts<'a>) -> MlFlushJob<'a, ()> {
-        MlFlushJob::new(self.client.clone(), parts)
+    pub fn flush_job<'b>(&'a self, parts: MlFlushJobParts<'b>) -> MlFlushJob<'a, 'b, ()> {
+        MlFlushJob::new(&self.client, parts)
     }
-    pub fn forecast<'a>(&self, parts: MlForecastParts<'a>) -> MlForecast<'a, ()> {
-        MlForecast::new(self.client.clone(), parts)
+    pub fn forecast<'b>(&'a self, parts: MlForecastParts<'b>) -> MlForecast<'a, 'b, ()> {
+        MlForecast::new(&self.client, parts)
     }
-    pub fn get_buckets<'a>(&self, parts: MlGetBucketsParts<'a>) -> MlGetBuckets<'a, ()> {
-        MlGetBuckets::new(self.client.clone(), parts)
+    pub fn get_buckets<'b>(&'a self, parts: MlGetBucketsParts<'b>) -> MlGetBuckets<'a, 'b, ()> {
+        MlGetBuckets::new(&self.client, parts)
     }
-    pub fn get_calendar_events<'a>(
-        &self,
-        parts: MlGetCalendarEventsParts<'a>,
-    ) -> MlGetCalendarEvents<'a> {
-        MlGetCalendarEvents::new(self.client.clone(), parts)
+    pub fn get_calendar_events<'b>(
+        &'a self,
+        parts: MlGetCalendarEventsParts<'b>,
+    ) -> MlGetCalendarEvents<'a, 'b> {
+        MlGetCalendarEvents::new(&self.client, parts)
     }
-    pub fn get_calendars<'a>(&self, parts: MlGetCalendarsParts<'a>) -> MlGetCalendars<'a, ()> {
-        MlGetCalendars::new(self.client.clone(), parts)
+    pub fn get_calendars<'b>(
+        &'a self,
+        parts: MlGetCalendarsParts<'b>,
+    ) -> MlGetCalendars<'a, 'b, ()> {
+        MlGetCalendars::new(&self.client, parts)
     }
-    pub fn get_categories<'a>(&self, parts: MlGetCategoriesParts<'a>) -> MlGetCategories<'a, ()> {
-        MlGetCategories::new(self.client.clone(), parts)
+    pub fn get_categories<'b>(
+        &'a self,
+        parts: MlGetCategoriesParts<'b>,
+    ) -> MlGetCategories<'a, 'b, ()> {
+        MlGetCategories::new(&self.client, parts)
     }
-    pub fn get_datafeed_stats<'a>(
-        &self,
-        parts: MlGetDatafeedStatsParts<'a>,
-    ) -> MlGetDatafeedStats<'a> {
-        MlGetDatafeedStats::new(self.client.clone(), parts)
+    pub fn get_datafeed_stats<'b>(
+        &'a self,
+        parts: MlGetDatafeedStatsParts<'b>,
+    ) -> MlGetDatafeedStats<'a, 'b> {
+        MlGetDatafeedStats::new(&self.client, parts)
     }
-    pub fn get_datafeeds<'a>(&self, parts: MlGetDatafeedsParts<'a>) -> MlGetDatafeeds<'a> {
-        MlGetDatafeeds::new(self.client.clone(), parts)
+    pub fn get_datafeeds<'b>(&'a self, parts: MlGetDatafeedsParts<'b>) -> MlGetDatafeeds<'a, 'b> {
+        MlGetDatafeeds::new(&self.client, parts)
     }
-    pub fn get_filters<'a>(&self, parts: MlGetFiltersParts<'a>) -> MlGetFilters<'a> {
-        MlGetFilters::new(self.client.clone(), parts)
+    pub fn get_filters<'b>(&'a self, parts: MlGetFiltersParts<'b>) -> MlGetFilters<'a, 'b> {
+        MlGetFilters::new(&self.client, parts)
     }
-    pub fn get_influencers<'a>(
-        &self,
-        parts: MlGetInfluencersParts<'a>,
-    ) -> MlGetInfluencers<'a, ()> {
-        MlGetInfluencers::new(self.client.clone(), parts)
+    pub fn get_influencers<'b>(
+        &'a self,
+        parts: MlGetInfluencersParts<'b>,
+    ) -> MlGetInfluencers<'a, 'b, ()> {
+        MlGetInfluencers::new(&self.client, parts)
     }
-    pub fn get_job_stats<'a>(&self, parts: MlGetJobStatsParts<'a>) -> MlGetJobStats<'a> {
-        MlGetJobStats::new(self.client.clone(), parts)
+    pub fn get_job_stats<'b>(&'a self, parts: MlGetJobStatsParts<'b>) -> MlGetJobStats<'a, 'b> {
+        MlGetJobStats::new(&self.client, parts)
     }
-    pub fn get_jobs<'a>(&self, parts: MlGetJobsParts<'a>) -> MlGetJobs<'a> {
-        MlGetJobs::new(self.client.clone(), parts)
+    pub fn get_jobs<'b>(&'a self, parts: MlGetJobsParts<'b>) -> MlGetJobs<'a, 'b> {
+        MlGetJobs::new(&self.client, parts)
     }
-    pub fn get_model_snapshots<'a>(
-        &self,
-        parts: MlGetModelSnapshotsParts<'a>,
-    ) -> MlGetModelSnapshots<'a, ()> {
-        MlGetModelSnapshots::new(self.client.clone(), parts)
+    pub fn get_model_snapshots<'b>(
+        &'a self,
+        parts: MlGetModelSnapshotsParts<'b>,
+    ) -> MlGetModelSnapshots<'a, 'b, ()> {
+        MlGetModelSnapshots::new(&self.client, parts)
     }
-    pub fn get_overall_buckets<'a>(
-        &self,
-        parts: MlGetOverallBucketsParts<'a>,
-    ) -> MlGetOverallBuckets<'a, ()> {
-        MlGetOverallBuckets::new(self.client.clone(), parts)
+    pub fn get_overall_buckets<'b>(
+        &'a self,
+        parts: MlGetOverallBucketsParts<'b>,
+    ) -> MlGetOverallBuckets<'a, 'b, ()> {
+        MlGetOverallBuckets::new(&self.client, parts)
     }
-    pub fn get_records<'a>(&self, parts: MlGetRecordsParts<'a>) -> MlGetRecords<'a, ()> {
-        MlGetRecords::new(self.client.clone(), parts)
+    pub fn get_records<'b>(&'a self, parts: MlGetRecordsParts<'b>) -> MlGetRecords<'a, 'b, ()> {
+        MlGetRecords::new(&self.client, parts)
     }
-    pub fn info<'a>(&self) -> MlInfo<'a> {
-        MlInfo::new(self.client.clone())
+    pub fn info<'b>(&'a self) -> MlInfo<'a, 'b> {
+        MlInfo::new(&self.client)
     }
-    pub fn open_job<'a>(&self, parts: MlOpenJobParts<'a>) -> MlOpenJob<'a, ()> {
-        MlOpenJob::new(self.client.clone(), parts)
+    pub fn open_job<'b>(&'a self, parts: MlOpenJobParts<'b>) -> MlOpenJob<'a, 'b, ()> {
+        MlOpenJob::new(&self.client, parts)
     }
-    pub fn post_calendar_events<'a>(
-        &self,
-        parts: MlPostCalendarEventsParts<'a>,
-    ) -> MlPostCalendarEvents<'a, ()> {
-        MlPostCalendarEvents::new(self.client.clone(), parts)
+    pub fn post_calendar_events<'b>(
+        &'a self,
+        parts: MlPostCalendarEventsParts<'b>,
+    ) -> MlPostCalendarEvents<'a, 'b, ()> {
+        MlPostCalendarEvents::new(&self.client, parts)
     }
-    pub fn post_data<'a>(&self, parts: MlPostDataParts<'a>) -> MlPostData<'a, ()> {
-        MlPostData::new(self.client.clone(), parts)
+    pub fn post_data<'b>(&'a self, parts: MlPostDataParts<'b>) -> MlPostData<'a, 'b, ()> {
+        MlPostData::new(&self.client, parts)
     }
-    pub fn preview_datafeed<'a>(&self, parts: MlPreviewDatafeedParts<'a>) -> MlPreviewDatafeed<'a> {
-        MlPreviewDatafeed::new(self.client.clone(), parts)
+    pub fn preview_datafeed<'b>(
+        &'a self,
+        parts: MlPreviewDatafeedParts<'b>,
+    ) -> MlPreviewDatafeed<'a, 'b> {
+        MlPreviewDatafeed::new(&self.client, parts)
     }
-    pub fn put_calendar<'a>(&self, parts: MlPutCalendarParts<'a>) -> MlPutCalendar<'a, ()> {
-        MlPutCalendar::new(self.client.clone(), parts)
+    pub fn put_calendar<'b>(&'a self, parts: MlPutCalendarParts<'b>) -> MlPutCalendar<'a, 'b, ()> {
+        MlPutCalendar::new(&self.client, parts)
     }
-    pub fn put_calendar_job<'a>(
-        &self,
-        parts: MlPutCalendarJobParts<'a>,
-    ) -> MlPutCalendarJob<'a, ()> {
-        MlPutCalendarJob::new(self.client.clone(), parts)
+    pub fn put_calendar_job<'b>(
+        &'a self,
+        parts: MlPutCalendarJobParts<'b>,
+    ) -> MlPutCalendarJob<'a, 'b, ()> {
+        MlPutCalendarJob::new(&self.client, parts)
     }
-    pub fn put_datafeed<'a>(&self, parts: MlPutDatafeedParts<'a>) -> MlPutDatafeed<'a, ()> {
-        MlPutDatafeed::new(self.client.clone(), parts)
+    pub fn put_datafeed<'b>(&'a self, parts: MlPutDatafeedParts<'b>) -> MlPutDatafeed<'a, 'b, ()> {
+        MlPutDatafeed::new(&self.client, parts)
     }
-    pub fn put_filter<'a>(&self, parts: MlPutFilterParts<'a>) -> MlPutFilter<'a, ()> {
-        MlPutFilter::new(self.client.clone(), parts)
+    pub fn put_filter<'b>(&'a self, parts: MlPutFilterParts<'b>) -> MlPutFilter<'a, 'b, ()> {
+        MlPutFilter::new(&self.client, parts)
     }
-    pub fn put_job<'a>(&self, parts: MlPutJobParts<'a>) -> MlPutJob<'a, ()> {
-        MlPutJob::new(self.client.clone(), parts)
+    pub fn put_job<'b>(&'a self, parts: MlPutJobParts<'b>) -> MlPutJob<'a, 'b, ()> {
+        MlPutJob::new(&self.client, parts)
     }
-    pub fn revert_model_snapshot<'a>(
-        &self,
-        parts: MlRevertModelSnapshotParts<'a>,
-    ) -> MlRevertModelSnapshot<'a, ()> {
-        MlRevertModelSnapshot::new(self.client.clone(), parts)
+    pub fn revert_model_snapshot<'b>(
+        &'a self,
+        parts: MlRevertModelSnapshotParts<'b>,
+    ) -> MlRevertModelSnapshot<'a, 'b, ()> {
+        MlRevertModelSnapshot::new(&self.client, parts)
     }
-    pub fn set_upgrade_mode<'a>(&self) -> MlSetUpgradeMode<'a, ()> {
-        MlSetUpgradeMode::new(self.client.clone())
+    pub fn set_upgrade_mode<'b>(&'a self) -> MlSetUpgradeMode<'a, 'b, ()> {
+        MlSetUpgradeMode::new(&self.client)
     }
-    pub fn start_datafeed<'a>(&self, parts: MlStartDatafeedParts<'a>) -> MlStartDatafeed<'a, ()> {
-        MlStartDatafeed::new(self.client.clone(), parts)
+    pub fn start_datafeed<'b>(
+        &'a self,
+        parts: MlStartDatafeedParts<'b>,
+    ) -> MlStartDatafeed<'a, 'b, ()> {
+        MlStartDatafeed::new(&self.client, parts)
     }
-    pub fn stop_datafeed<'a>(&self, parts: MlStopDatafeedParts<'a>) -> MlStopDatafeed<'a, ()> {
-        MlStopDatafeed::new(self.client.clone(), parts)
+    pub fn stop_datafeed<'b>(
+        &'a self,
+        parts: MlStopDatafeedParts<'b>,
+    ) -> MlStopDatafeed<'a, 'b, ()> {
+        MlStopDatafeed::new(&self.client, parts)
     }
-    pub fn update_datafeed<'a>(
-        &self,
-        parts: MlUpdateDatafeedParts<'a>,
-    ) -> MlUpdateDatafeed<'a, ()> {
-        MlUpdateDatafeed::new(self.client.clone(), parts)
+    pub fn update_datafeed<'b>(
+        &'a self,
+        parts: MlUpdateDatafeedParts<'b>,
+    ) -> MlUpdateDatafeed<'a, 'b, ()> {
+        MlUpdateDatafeed::new(&self.client, parts)
     }
-    pub fn update_filter<'a>(&self, parts: MlUpdateFilterParts<'a>) -> MlUpdateFilter<'a, ()> {
-        MlUpdateFilter::new(self.client.clone(), parts)
+    pub fn update_filter<'b>(
+        &'a self,
+        parts: MlUpdateFilterParts<'b>,
+    ) -> MlUpdateFilter<'a, 'b, ()> {
+        MlUpdateFilter::new(&self.client, parts)
     }
-    pub fn update_job<'a>(&self, parts: MlUpdateJobParts<'a>) -> MlUpdateJob<'a, ()> {
-        MlUpdateJob::new(self.client.clone(), parts)
+    pub fn update_job<'b>(&'a self, parts: MlUpdateJobParts<'b>) -> MlUpdateJob<'a, 'b, ()> {
+        MlUpdateJob::new(&self.client, parts)
     }
-    pub fn update_model_snapshot<'a>(
-        &self,
-        parts: MlUpdateModelSnapshotParts<'a>,
-    ) -> MlUpdateModelSnapshot<'a, ()> {
-        MlUpdateModelSnapshot::new(self.client.clone(), parts)
+    pub fn update_model_snapshot<'b>(
+        &'a self,
+        parts: MlUpdateModelSnapshotParts<'b>,
+    ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
+        MlUpdateModelSnapshot::new(&self.client, parts)
     }
-    pub fn validate<'a>(&self) -> MlValidate<'a, ()> {
-        MlValidate::new(self.client.clone())
+    pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
+        MlValidate::new(&self.client)
     }
-    pub fn validate_detector<'a>(&self) -> MlValidateDetector<'a, ()> {
-        MlValidateDetector::new(self.client.clone())
+    pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
+        MlValidateDetector::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Machine Learning APIs"]
     pub fn ml(&self) -> Ml {
-        Ml::new(self.clone())
+        Ml::new(&self)
     }
 }

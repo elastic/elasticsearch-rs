@@ -31,13 +31,13 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Graph Explore API"]
-pub enum GraphExploreParts<'a> {
+pub enum GraphExploreParts<'b> {
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
     #[doc = "Index and Type"]
-    IndexType(&'a [&'a str], &'a [&'a str]),
+    IndexType(&'b [&'b str], &'b [&'b str]),
 }
-impl<'a> GraphExploreParts<'a> {
+impl<'b> GraphExploreParts<'b> {
     #[doc = "Builds a relative URL path to the Graph Explore API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -65,25 +65,25 @@ impl<'a> GraphExploreParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/current/graph-explore-api.html)."]
-pub struct GraphExplore<'a, B> {
-    client: Elasticsearch,
-    parts: GraphExploreParts<'a>,
+pub struct GraphExplore<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: GraphExploreParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    routing: Option<&'a str>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    routing: Option<&'b str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> GraphExplore<'a, B>
+impl<'a, 'b, B> GraphExplore<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: GraphExploreParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: GraphExploreParts<'b>) -> Self {
         GraphExplore {
             client,
             parts,
@@ -99,7 +99,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> GraphExplore<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> GraphExplore<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -123,7 +123,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -143,17 +143,17 @@ where
         self
     }
     #[doc = "Specific routing value"]
-    pub fn routing(mut self, routing: &'a str) -> Self {
+    pub fn routing(mut self, routing: &'b str) -> Self {
         self.routing = Some(routing);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -168,24 +168,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "routing")]
-                routing: Option<&'a str>,
+                routing: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -207,21 +207,21 @@ where
     }
 }
 #[doc = "Namespace client for Graph APIs"]
-pub struct Graph {
-    client: Elasticsearch,
+pub struct Graph<'a> {
+    client: &'a Elasticsearch,
 }
-impl Graph {
+impl<'a> Graph<'a> {
     #[doc = "Creates a new instance of [Graph]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn explore<'a>(&self, parts: GraphExploreParts<'a>) -> GraphExplore<'a, ()> {
-        GraphExplore::new(self.client.clone(), parts)
+    pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
+        GraphExplore::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Graph APIs"]
     pub fn graph(&self) -> Graph {
-        Graph::new(self.clone())
+        Graph::new(&self)
     }
 }

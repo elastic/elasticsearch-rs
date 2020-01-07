@@ -31,11 +31,11 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Delete Lifecycle API"]
-pub enum IlmDeleteLifecycleParts<'a> {
+pub enum IlmDeleteLifecycleParts<'b> {
     #[doc = "Policy"]
-    Policy(&'a str),
+    Policy(&'b str),
 }
-impl<'a> IlmDeleteLifecycleParts<'a> {
+impl<'b> IlmDeleteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Delete Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -50,19 +50,19 @@ impl<'a> IlmDeleteLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-delete-lifecycle.html)."]
-pub struct IlmDeleteLifecycle<'a> {
-    client: Elasticsearch,
-    parts: IlmDeleteLifecycleParts<'a>,
+pub struct IlmDeleteLifecycle<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: IlmDeleteLifecycleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> IlmDeleteLifecycle<'a> {
+impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmDeleteLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmDeleteLifecycleParts<'b>) -> Self {
         IlmDeleteLifecycle {
             client,
             parts,
@@ -80,7 +80,7 @@ impl<'a> IlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -100,7 +100,7 @@ impl<'a> IlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -112,20 +112,20 @@ impl<'a> IlmDeleteLifecycle<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -146,11 +146,11 @@ impl<'a> IlmDeleteLifecycle<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Explain Lifecycle API"]
-pub enum IlmExplainLifecycleParts<'a> {
+pub enum IlmExplainLifecycleParts<'b> {
     #[doc = "Index"]
-    Index(&'a str),
+    Index(&'b str),
 }
-impl<'a> IlmExplainLifecycleParts<'a> {
+impl<'b> IlmExplainLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Explain Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -166,21 +166,21 @@ impl<'a> IlmExplainLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-explain-lifecycle.html)."]
-pub struct IlmExplainLifecycle<'a> {
-    client: Elasticsearch,
-    parts: IlmExplainLifecycleParts<'a>,
+pub struct IlmExplainLifecycle<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: IlmExplainLifecycleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     only_errors: Option<bool>,
     only_managed: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> IlmExplainLifecycle<'a> {
+impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmExplainLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmExplainLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmExplainLifecycleParts<'b>) -> Self {
         IlmExplainLifecycle {
             client,
             parts,
@@ -200,7 +200,7 @@ impl<'a> IlmExplainLifecycle<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -230,7 +230,7 @@ impl<'a> IlmExplainLifecycle<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -242,14 +242,14 @@ impl<'a> IlmExplainLifecycle<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "only_errors")]
@@ -259,7 +259,7 @@ impl<'a> IlmExplainLifecycle<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -282,13 +282,13 @@ impl<'a> IlmExplainLifecycle<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Get Lifecycle API"]
-pub enum IlmGetLifecycleParts<'a> {
+pub enum IlmGetLifecycleParts<'b> {
     #[doc = "Policy"]
-    Policy(&'a str),
+    Policy(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> IlmGetLifecycleParts<'a> {
+impl<'b> IlmGetLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Get Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -304,19 +304,19 @@ impl<'a> IlmGetLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-lifecycle.html)."]
-pub struct IlmGetLifecycle<'a> {
-    client: Elasticsearch,
-    parts: IlmGetLifecycleParts<'a>,
+pub struct IlmGetLifecycle<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: IlmGetLifecycleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> IlmGetLifecycle<'a> {
+impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmGetLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmGetLifecycleParts<'b>) -> Self {
         IlmGetLifecycle {
             client,
             parts,
@@ -334,7 +334,7 @@ impl<'a> IlmGetLifecycle<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -354,7 +354,7 @@ impl<'a> IlmGetLifecycle<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -366,20 +366,20 @@ impl<'a> IlmGetLifecycle<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -414,19 +414,19 @@ impl IlmGetStatusParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-get-status.html)."]
-pub struct IlmGetStatus<'a> {
-    client: Elasticsearch,
+pub struct IlmGetStatus<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: IlmGetStatusParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> IlmGetStatus<'a> {
+impl<'a, 'b> IlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetStatus]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         IlmGetStatus {
             client,
             parts: IlmGetStatusParts::None,
@@ -444,7 +444,7 @@ impl<'a> IlmGetStatus<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -464,7 +464,7 @@ impl<'a> IlmGetStatus<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -476,20 +476,20 @@ impl<'a> IlmGetStatus<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -510,11 +510,11 @@ impl<'a> IlmGetStatus<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Move To Step API"]
-pub enum IlmMoveToStepParts<'a> {
+pub enum IlmMoveToStepParts<'b> {
     #[doc = "Index"]
-    Index(&'a str),
+    Index(&'b str),
 }
-impl<'a> IlmMoveToStepParts<'a> {
+impl<'b> IlmMoveToStepParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Move To Step API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -529,23 +529,23 @@ impl<'a> IlmMoveToStepParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-move-to-step.html)."]
-pub struct IlmMoveToStep<'a, B> {
-    client: Elasticsearch,
-    parts: IlmMoveToStepParts<'a>,
+pub struct IlmMoveToStep<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: IlmMoveToStepParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmMoveToStep<'a, B>
+impl<'a, 'b, B> IlmMoveToStep<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmMoveToStep] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmMoveToStepParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmMoveToStepParts<'b>) -> Self {
         IlmMoveToStep {
             client,
             parts,
@@ -559,7 +559,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmMoveToStep<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmMoveToStep<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -581,7 +581,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -601,7 +601,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -613,20 +613,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -647,11 +647,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Put Lifecycle API"]
-pub enum IlmPutLifecycleParts<'a> {
+pub enum IlmPutLifecycleParts<'b> {
     #[doc = "Policy"]
-    Policy(&'a str),
+    Policy(&'b str),
 }
-impl<'a> IlmPutLifecycleParts<'a> {
+impl<'b> IlmPutLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Put Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -666,23 +666,23 @@ impl<'a> IlmPutLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-put-lifecycle.html)."]
-pub struct IlmPutLifecycle<'a, B> {
-    client: Elasticsearch,
-    parts: IlmPutLifecycleParts<'a>,
+pub struct IlmPutLifecycle<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: IlmPutLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmPutLifecycle<'a, B>
+impl<'a, 'b, B> IlmPutLifecycle<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmPutLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmPutLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmPutLifecycleParts<'b>) -> Self {
         IlmPutLifecycle {
             client,
             parts,
@@ -696,7 +696,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmPutLifecycle<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmPutLifecycle<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -718,7 +718,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -738,7 +738,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -750,20 +750,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -784,11 +784,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Remove Policy API"]
-pub enum IlmRemovePolicyParts<'a> {
+pub enum IlmRemovePolicyParts<'b> {
     #[doc = "Index"]
-    Index(&'a str),
+    Index(&'b str),
 }
-impl<'a> IlmRemovePolicyParts<'a> {
+impl<'b> IlmRemovePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Remove Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -804,23 +804,23 @@ impl<'a> IlmRemovePolicyParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html)."]
-pub struct IlmRemovePolicy<'a, B> {
-    client: Elasticsearch,
-    parts: IlmRemovePolicyParts<'a>,
+pub struct IlmRemovePolicy<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: IlmRemovePolicyParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmRemovePolicy<'a, B>
+impl<'a, 'b, B> IlmRemovePolicy<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmRemovePolicy] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmRemovePolicyParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmRemovePolicyParts<'b>) -> Self {
         IlmRemovePolicy {
             client,
             parts,
@@ -834,7 +834,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRemovePolicy<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmRemovePolicy<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -856,7 +856,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -876,7 +876,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -888,20 +888,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -922,11 +922,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ilm Retry API"]
-pub enum IlmRetryParts<'a> {
+pub enum IlmRetryParts<'b> {
     #[doc = "Index"]
-    Index(&'a str),
+    Index(&'b str),
 }
-impl<'a> IlmRetryParts<'a> {
+impl<'b> IlmRetryParts<'b> {
     #[doc = "Builds a relative URL path to the Ilm Retry API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -942,23 +942,23 @@ impl<'a> IlmRetryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-retry-policy.html)."]
-pub struct IlmRetry<'a, B> {
-    client: Elasticsearch,
-    parts: IlmRetryParts<'a>,
+pub struct IlmRetry<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: IlmRetryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmRetry<'a, B>
+impl<'a, 'b, B> IlmRetry<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmRetry] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: IlmRetryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: IlmRetryParts<'b>) -> Self {
         IlmRetry {
             client,
             parts,
@@ -972,7 +972,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmRetry<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmRetry<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -994,7 +994,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1014,7 +1014,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1026,20 +1026,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1074,23 +1074,23 @@ impl IlmStartParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-start.html)."]
-pub struct IlmStart<'a, B> {
-    client: Elasticsearch,
+pub struct IlmStart<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: IlmStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmStart<'a, B>
+impl<'a, 'b, B> IlmStart<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmStart]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         IlmStart {
             client,
             parts: IlmStartParts::None,
@@ -1104,7 +1104,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStart<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmStart<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1126,7 +1126,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1146,7 +1146,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1158,20 +1158,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1206,23 +1206,23 @@ impl IlmStopParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-stop.html)."]
-pub struct IlmStop<'a, B> {
-    client: Elasticsearch,
+pub struct IlmStop<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: IlmStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> IlmStop<'a, B>
+impl<'a, 'b, B> IlmStop<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [IlmStop]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         IlmStop {
             client,
             parts: IlmStopParts::None,
@@ -1236,7 +1236,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> IlmStop<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> IlmStop<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1258,7 +1258,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1278,7 +1278,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1290,20 +1290,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1323,54 +1323,60 @@ where
     }
 }
 #[doc = "Namespace client for Index Lifecycle Management APIs"]
-pub struct Ilm {
-    client: Elasticsearch,
+pub struct Ilm<'a> {
+    client: &'a Elasticsearch,
 }
-impl Ilm {
+impl<'a> Ilm<'a> {
     #[doc = "Creates a new instance of [Ilm]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn delete_lifecycle<'a>(
-        &self,
-        parts: IlmDeleteLifecycleParts<'a>,
-    ) -> IlmDeleteLifecycle<'a> {
-        IlmDeleteLifecycle::new(self.client.clone(), parts)
+    pub fn delete_lifecycle<'b>(
+        &'a self,
+        parts: IlmDeleteLifecycleParts<'b>,
+    ) -> IlmDeleteLifecycle<'a, 'b> {
+        IlmDeleteLifecycle::new(&self.client, parts)
     }
-    pub fn explain_lifecycle<'a>(
-        &self,
-        parts: IlmExplainLifecycleParts<'a>,
-    ) -> IlmExplainLifecycle<'a> {
-        IlmExplainLifecycle::new(self.client.clone(), parts)
+    pub fn explain_lifecycle<'b>(
+        &'a self,
+        parts: IlmExplainLifecycleParts<'b>,
+    ) -> IlmExplainLifecycle<'a, 'b> {
+        IlmExplainLifecycle::new(&self.client, parts)
     }
-    pub fn get_lifecycle<'a>(&self, parts: IlmGetLifecycleParts<'a>) -> IlmGetLifecycle<'a> {
-        IlmGetLifecycle::new(self.client.clone(), parts)
+    pub fn get_lifecycle<'b>(&'a self, parts: IlmGetLifecycleParts<'b>) -> IlmGetLifecycle<'a, 'b> {
+        IlmGetLifecycle::new(&self.client, parts)
     }
-    pub fn get_status<'a>(&self) -> IlmGetStatus<'a> {
-        IlmGetStatus::new(self.client.clone())
+    pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
+        IlmGetStatus::new(&self.client)
     }
-    pub fn move_to_step<'a>(&self, parts: IlmMoveToStepParts<'a>) -> IlmMoveToStep<'a, ()> {
-        IlmMoveToStep::new(self.client.clone(), parts)
+    pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {
+        IlmMoveToStep::new(&self.client, parts)
     }
-    pub fn put_lifecycle<'a>(&self, parts: IlmPutLifecycleParts<'a>) -> IlmPutLifecycle<'a, ()> {
-        IlmPutLifecycle::new(self.client.clone(), parts)
+    pub fn put_lifecycle<'b>(
+        &'a self,
+        parts: IlmPutLifecycleParts<'b>,
+    ) -> IlmPutLifecycle<'a, 'b, ()> {
+        IlmPutLifecycle::new(&self.client, parts)
     }
-    pub fn remove_policy<'a>(&self, parts: IlmRemovePolicyParts<'a>) -> IlmRemovePolicy<'a, ()> {
-        IlmRemovePolicy::new(self.client.clone(), parts)
+    pub fn remove_policy<'b>(
+        &'a self,
+        parts: IlmRemovePolicyParts<'b>,
+    ) -> IlmRemovePolicy<'a, 'b, ()> {
+        IlmRemovePolicy::new(&self.client, parts)
     }
-    pub fn retry<'a>(&self, parts: IlmRetryParts<'a>) -> IlmRetry<'a, ()> {
-        IlmRetry::new(self.client.clone(), parts)
+    pub fn retry<'b>(&'a self, parts: IlmRetryParts<'b>) -> IlmRetry<'a, 'b, ()> {
+        IlmRetry::new(&self.client, parts)
     }
-    pub fn start<'a>(&self) -> IlmStart<'a, ()> {
-        IlmStart::new(self.client.clone())
+    pub fn start<'b>(&'a self) -> IlmStart<'a, 'b, ()> {
+        IlmStart::new(&self.client)
     }
-    pub fn stop<'a>(&self) -> IlmStop<'a, ()> {
-        IlmStop::new(self.client.clone())
+    pub fn stop<'b>(&'a self) -> IlmStop<'a, 'b, ()> {
+        IlmStop::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Index Lifecycle Management APIs"]
     pub fn ilm(&self) -> Ilm {
-        Ilm::new(self.clone())
+        Ilm::new(&self)
     }
 }

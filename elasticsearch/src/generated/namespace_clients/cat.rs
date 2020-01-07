@@ -31,13 +31,13 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Aliases API"]
-pub enum CatAliasesParts<'a> {
+pub enum CatAliasesParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Name"]
-    Name(&'a [&'a str]),
+    Name(&'b [&'b str]),
 }
-impl<'a> CatAliasesParts<'a> {
+impl<'b> CatAliasesParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Aliases API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -54,25 +54,25 @@ impl<'a> CatAliasesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html). Shows information about currently configured aliases to indices including filter and routing infos."]
-pub struct CatAliases<'a> {
-    client: Elasticsearch,
-    parts: CatAliasesParts<'a>,
+pub struct CatAliases<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatAliasesParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatAliases<'a> {
+impl<'a, 'b> CatAliases<'a, 'b> {
     #[doc = "Creates a new instance of [CatAliases] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatAliasesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatAliasesParts<'b>) -> Self {
         CatAliases {
             client,
             parts,
@@ -96,17 +96,17 @@ impl<'a> CatAliases<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -136,12 +136,12 @@ impl<'a> CatAliases<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -158,18 +158,18 @@ impl<'a> CatAliases<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -179,9 +179,9 @@ impl<'a> CatAliases<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -210,13 +210,13 @@ impl<'a> CatAliases<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Allocation API"]
-pub enum CatAllocationParts<'a> {
+pub enum CatAllocationParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "NodeId"]
-    NodeId(&'a [&'a str]),
+    NodeId(&'b [&'b str]),
 }
-impl<'a> CatAllocationParts<'a> {
+impl<'b> CatAllocationParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Allocation API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -233,27 +233,27 @@ impl<'a> CatAllocationParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-allocation.html). Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
-pub struct CatAllocation<'a> {
-    client: Elasticsearch,
-    parts: CatAllocationParts<'a>,
+pub struct CatAllocation<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatAllocationParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatAllocation<'a> {
+impl<'a, 'b> CatAllocation<'a, 'b> {
     #[doc = "Creates a new instance of [CatAllocation] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatAllocationParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatAllocationParts<'b>) -> Self {
         CatAllocation {
             client,
             parts,
@@ -284,17 +284,17 @@ impl<'a> CatAllocation<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -319,7 +319,7 @@ impl<'a> CatAllocation<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -329,12 +329,12 @@ impl<'a> CatAllocation<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -351,7 +351,7 @@ impl<'a> CatAllocation<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -360,11 +360,11 @@ impl<'a> CatAllocation<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -372,13 +372,13 @@ impl<'a> CatAllocation<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -409,13 +409,13 @@ impl<'a> CatAllocation<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Count API"]
-pub enum CatCountParts<'a> {
+pub enum CatCountParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> CatCountParts<'a> {
+impl<'b> CatCountParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Count API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -432,24 +432,24 @@ impl<'a> CatCountParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html). Provides quick access to the document count of the entire cluster, or individual indices."]
-pub struct CatCount<'a> {
-    client: Elasticsearch,
-    parts: CatCountParts<'a>,
+pub struct CatCount<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatCountParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatCount<'a> {
+impl<'a, 'b> CatCount<'a, 'b> {
     #[doc = "Creates a new instance of [CatCount] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatCountParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatCountParts<'b>) -> Self {
         CatCount {
             client,
             parts,
@@ -472,17 +472,17 @@ impl<'a> CatCount<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -507,12 +507,12 @@ impl<'a> CatCount<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -529,18 +529,18 @@ impl<'a> CatCount<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -548,9 +548,9 @@ impl<'a> CatCount<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -578,13 +578,13 @@ impl<'a> CatCount<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Fielddata API"]
-pub enum CatFielddataParts<'a> {
+pub enum CatFielddataParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Fields"]
-    Fields(&'a [&'a str]),
+    Fields(&'b [&'b str]),
 }
-impl<'a> CatFielddataParts<'a> {
+impl<'b> CatFielddataParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Fielddata API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -601,26 +601,26 @@ impl<'a> CatFielddataParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Fielddata API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-fielddata.html). Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
-pub struct CatFielddata<'a> {
-    client: Elasticsearch,
-    parts: CatFielddataParts<'a>,
+pub struct CatFielddata<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatFielddataParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    fields: Option<&'a [&'a str]>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    fields: Option<&'b [&'b str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatFielddata<'a> {
+impl<'a, 'b> CatFielddata<'a, 'b> {
     #[doc = "Creates a new instance of [CatFielddata] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatFielddataParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatFielddataParts<'b>) -> Self {
         CatFielddata {
             client,
             parts,
@@ -650,22 +650,22 @@ impl<'a> CatFielddata<'a> {
         self
     }
     #[doc = "A comma-separated list of fields to return in the output"]
-    pub fn fields(mut self, fields: &'a [&'a str]) -> Self {
+    pub fn fields(mut self, fields: &'b [&'b str]) -> Self {
         self.fields = Some(fields);
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -690,12 +690,12 @@ impl<'a> CatFielddata<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -712,22 +712,22 @@ impl<'a> CatFielddata<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "fields", serialize_with = "crate::client::serialize_coll_qs")]
-                fields: Option<&'a [&'a str]>,
+                fields: Option<&'b [&'b str]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -735,9 +735,9 @@ impl<'a> CatFielddata<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -781,26 +781,26 @@ impl CatHealthParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-health.html). Returns a concise representation of the cluster health."]
-pub struct CatHealth<'a> {
-    client: Elasticsearch,
+pub struct CatHealth<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatHealthParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     ts: Option<bool>,
     v: Option<bool>,
 }
-impl<'a> CatHealth<'a> {
+impl<'a, 'b> CatHealth<'a, 'b> {
     #[doc = "Creates a new instance of [CatHealth]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatHealth {
             client,
             parts: CatHealthParts::None,
@@ -825,17 +825,17 @@ impl<'a> CatHealth<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -860,12 +860,12 @@ impl<'a> CatHealth<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -892,18 +892,18 @@ impl<'a> CatHealth<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -911,9 +911,9 @@ impl<'a> CatHealth<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "ts")]
@@ -961,21 +961,21 @@ impl CatHelpParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Help API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html). Returns help for the Cat APIs."]
-pub struct CatHelp<'a> {
-    client: Elasticsearch,
+pub struct CatHelp<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatHelpParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
 }
-impl<'a> CatHelp<'a> {
+impl<'a, 'b> CatHelp<'a, 'b> {
     #[doc = "Creates a new instance of [CatHelp]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatHelp {
             client,
             parts: CatHelpParts::None,
@@ -995,7 +995,7 @@ impl<'a> CatHelp<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1020,12 +1020,12 @@ impl<'a> CatHelp<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1037,14 +1037,14 @@ impl<'a> CatHelp<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -1052,9 +1052,9 @@ impl<'a> CatHelp<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1077,13 +1077,13 @@ impl<'a> CatHelp<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Indices API"]
-pub enum CatIndicesParts<'a> {
+pub enum CatIndicesParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> CatIndicesParts<'a> {
+impl<'b> CatIndicesParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Indices API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1100,31 +1100,31 @@ impl<'a> CatIndicesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html). Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
-pub struct CatIndices<'a> {
-    client: Elasticsearch,
-    parts: CatIndicesParts<'a>,
+pub struct CatIndices<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatIndicesParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     health: Option<Health>,
     help: Option<bool>,
     human: Option<bool>,
     include_unloaded_segments: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
     pri: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatIndices<'a> {
+impl<'a, 'b> CatIndices<'a, 'b> {
     #[doc = "Creates a new instance of [CatIndices] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatIndicesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatIndicesParts<'b>) -> Self {
         CatIndices {
             client,
             parts,
@@ -1159,17 +1159,17 @@ impl<'a> CatIndices<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1204,7 +1204,7 @@ impl<'a> CatIndices<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1219,12 +1219,12 @@ impl<'a> CatIndices<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1246,7 +1246,7 @@ impl<'a> CatIndices<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -1255,11 +1255,11 @@ impl<'a> CatIndices<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "health")]
                 health: Option<Health>,
                 #[serde(rename = "help")]
@@ -1271,15 +1271,15 @@ impl<'a> CatIndices<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "pri")]
                 pri: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -1330,26 +1330,26 @@ impl CatMasterParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Master API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-master.html). Returns information about the master node."]
-pub struct CatMaster<'a> {
-    client: Elasticsearch,
+pub struct CatMaster<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatMasterParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatMaster<'a> {
+impl<'a, 'b> CatMaster<'a, 'b> {
     #[doc = "Creates a new instance of [CatMaster]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatMaster {
             client,
             parts: CatMasterParts::None,
@@ -1374,17 +1374,17 @@ impl<'a> CatMaster<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1409,7 +1409,7 @@ impl<'a> CatMaster<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1419,12 +1419,12 @@ impl<'a> CatMaster<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1441,18 +1441,18 @@ impl<'a> CatMaster<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -1460,13 +1460,13 @@ impl<'a> CatMaster<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -1510,26 +1510,26 @@ impl CatNodeattrsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Nodeattrs API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodeattrs.html). Returns information about custom node attributes."]
-pub struct CatNodeattrs<'a> {
-    client: Elasticsearch,
+pub struct CatNodeattrs<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatNodeattrsParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatNodeattrs<'a> {
+impl<'a, 'b> CatNodeattrs<'a, 'b> {
     #[doc = "Creates a new instance of [CatNodeattrs]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatNodeattrs {
             client,
             parts: CatNodeattrsParts::None,
@@ -1554,17 +1554,17 @@ impl<'a> CatNodeattrs<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1589,7 +1589,7 @@ impl<'a> CatNodeattrs<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1599,12 +1599,12 @@ impl<'a> CatNodeattrs<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1621,18 +1621,18 @@ impl<'a> CatNodeattrs<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -1640,13 +1640,13 @@ impl<'a> CatNodeattrs<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -1690,29 +1690,29 @@ impl CatNodesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Nodes API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-nodes.html). Returns basic statistics about performance of cluster nodes."]
-pub struct CatNodes<'a> {
-    client: Elasticsearch,
+pub struct CatNodes<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatNodesParts,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
     full_id: Option<bool>,
-    h: Option<&'a [&'a str]>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatNodes<'a> {
+impl<'a, 'b> CatNodes<'a, 'b> {
     #[doc = "Creates a new instance of [CatNodes]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatNodes {
             client,
             parts: CatNodesParts::None,
@@ -1745,12 +1745,12 @@ impl<'a> CatNodes<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
@@ -1760,7 +1760,7 @@ impl<'a> CatNodes<'a> {
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1785,7 +1785,7 @@ impl<'a> CatNodes<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1795,12 +1795,12 @@ impl<'a> CatNodes<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1822,7 +1822,7 @@ impl<'a> CatNodes<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -1831,13 +1831,13 @@ impl<'a> CatNodes<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "full_id")]
                 full_id: Option<bool>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -1845,13 +1845,13 @@ impl<'a> CatNodes<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -1900,27 +1900,27 @@ impl CatPendingTasksParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-pending-tasks.html). Returns a concise representation of the cluster pending tasks."]
-pub struct CatPendingTasks<'a> {
-    client: Elasticsearch,
+pub struct CatPendingTasks<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatPendingTasksParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatPendingTasks<'a> {
+impl<'a, 'b> CatPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [CatPendingTasks]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatPendingTasks {
             client,
             parts: CatPendingTasksParts::None,
@@ -1946,17 +1946,17 @@ impl<'a> CatPendingTasks<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -1981,7 +1981,7 @@ impl<'a> CatPendingTasks<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1991,12 +1991,12 @@ impl<'a> CatPendingTasks<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2018,18 +2018,18 @@ impl<'a> CatPendingTasks<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -2037,13 +2037,13 @@ impl<'a> CatPendingTasks<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -2090,26 +2090,26 @@ impl CatPluginsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Plugins API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-plugins.html). Returns information about installed plugins across nodes node."]
-pub struct CatPlugins<'a> {
-    client: Elasticsearch,
+pub struct CatPlugins<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatPluginsParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatPlugins<'a> {
+impl<'a, 'b> CatPlugins<'a, 'b> {
     #[doc = "Creates a new instance of [CatPlugins]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatPlugins {
             client,
             parts: CatPluginsParts::None,
@@ -2134,17 +2134,17 @@ impl<'a> CatPlugins<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2169,7 +2169,7 @@ impl<'a> CatPlugins<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2179,12 +2179,12 @@ impl<'a> CatPlugins<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2201,18 +2201,18 @@ impl<'a> CatPlugins<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -2220,13 +2220,13 @@ impl<'a> CatPlugins<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -2256,13 +2256,13 @@ impl<'a> CatPlugins<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Recovery API"]
-pub enum CatRecoveryParts<'a> {
+pub enum CatRecoveryParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> CatRecoveryParts<'a> {
+impl<'b> CatRecoveryParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Recovery API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2279,29 +2279,29 @@ impl<'a> CatRecoveryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-recovery.html). Returns information about index shard recoveries, both on-going completed."]
-pub struct CatRecovery<'a> {
-    client: Elasticsearch,
-    parts: CatRecoveryParts<'a>,
+pub struct CatRecovery<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatRecoveryParts<'b>,
     active_only: Option<bool>,
     bytes: Option<Bytes>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    index: Option<&'a [&'a str]>,
+    index: Option<&'b [&'b str]>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatRecovery<'a> {
+impl<'a, 'b> CatRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [CatRecovery] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatRecoveryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatRecoveryParts<'b>) -> Self {
         CatRecovery {
             client,
             parts,
@@ -2344,17 +2344,17 @@ impl<'a> CatRecovery<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2374,7 +2374,7 @@ impl<'a> CatRecovery<'a> {
         self
     }
     #[doc = "Comma-separated list or wildcard expression of index names to limit the returned information"]
-    pub fn index(mut self, index: &'a [&'a str]) -> Self {
+    pub fn index(mut self, index: &'b [&'b str]) -> Self {
         self.index = Some(index);
         self
     }
@@ -2384,12 +2384,12 @@ impl<'a> CatRecovery<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2411,7 +2411,7 @@ impl<'a> CatRecovery<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "active_only")]
                 active_only: Option<bool>,
                 #[serde(rename = "bytes")]
@@ -2424,23 +2424,23 @@ impl<'a> CatRecovery<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "index", serialize_with = "crate::client::serialize_coll_qs")]
-                index: Option<&'a [&'a str]>,
+                index: Option<&'b [&'b str]>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -2489,26 +2489,26 @@ impl CatRepositoriesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Repositories API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-repositories.html). Returns information about snapshot repositories registered in the cluster."]
-pub struct CatRepositories<'a> {
-    client: Elasticsearch,
+pub struct CatRepositories<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatRepositoriesParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatRepositories<'a> {
+impl<'a, 'b> CatRepositories<'a, 'b> {
     #[doc = "Creates a new instance of [CatRepositories]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatRepositories {
             client,
             parts: CatRepositoriesParts::None,
@@ -2533,17 +2533,17 @@ impl<'a> CatRepositories<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2568,7 +2568,7 @@ impl<'a> CatRepositories<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2578,12 +2578,12 @@ impl<'a> CatRepositories<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2600,18 +2600,18 @@ impl<'a> CatRepositories<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -2619,13 +2619,13 @@ impl<'a> CatRepositories<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -2655,13 +2655,13 @@ impl<'a> CatRepositories<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Segments API"]
-pub enum CatSegmentsParts<'a> {
+pub enum CatSegmentsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> CatSegmentsParts<'a> {
+impl<'b> CatSegmentsParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Segments API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2678,25 +2678,25 @@ impl<'a> CatSegmentsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-segments.html). Provides low-level information about the segments in the shards of an index."]
-pub struct CatSegments<'a> {
-    client: Elasticsearch,
-    parts: CatSegmentsParts<'a>,
+pub struct CatSegments<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatSegmentsParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatSegments<'a> {
+impl<'a, 'b> CatSegments<'a, 'b> {
     #[doc = "Creates a new instance of [CatSegments] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatSegmentsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatSegmentsParts<'b>) -> Self {
         CatSegments {
             client,
             parts,
@@ -2725,17 +2725,17 @@ impl<'a> CatSegments<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2760,12 +2760,12 @@ impl<'a> CatSegments<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2782,7 +2782,7 @@ impl<'a> CatSegments<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -2791,11 +2791,11 @@ impl<'a> CatSegments<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -2803,9 +2803,9 @@ impl<'a> CatSegments<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -2834,13 +2834,13 @@ impl<'a> CatSegments<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Shards API"]
-pub enum CatShardsParts<'a> {
+pub enum CatShardsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> CatShardsParts<'a> {
+impl<'b> CatShardsParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Shards API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2857,28 +2857,28 @@ impl<'a> CatShardsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-shards.html). Provides a detailed view of shard allocation on nodes."]
-pub struct CatShards<'a> {
-    client: Elasticsearch,
-    parts: CatShardsParts<'a>,
+pub struct CatShards<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatShardsParts<'b>,
     bytes: Option<Bytes>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatShards<'a> {
+impl<'a, 'b> CatShards<'a, 'b> {
     #[doc = "Creates a new instance of [CatShards] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatShardsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatShardsParts<'b>) -> Self {
         CatShards {
             client,
             parts,
@@ -2910,17 +2910,17 @@ impl<'a> CatShards<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -2945,7 +2945,7 @@ impl<'a> CatShards<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -2955,12 +2955,12 @@ impl<'a> CatShards<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2982,7 +2982,7 @@ impl<'a> CatShards<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "bytes")]
                 bytes: Option<Bytes>,
                 #[serde(rename = "error_trace")]
@@ -2991,11 +2991,11 @@ impl<'a> CatShards<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -3003,13 +3003,13 @@ impl<'a> CatShards<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -3043,13 +3043,13 @@ impl<'a> CatShards<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Snapshots API"]
-pub enum CatSnapshotsParts<'a> {
+pub enum CatSnapshotsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Repository"]
-    Repository(&'a [&'a str]),
+    Repository(&'b [&'b str]),
 }
-impl<'a> CatSnapshotsParts<'a> {
+impl<'b> CatSnapshotsParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Snapshots API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3066,27 +3066,27 @@ impl<'a> CatSnapshotsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Snapshots API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-snapshots.html). Returns all snapshots in a specific repository."]
-pub struct CatSnapshots<'a> {
-    client: Elasticsearch,
-    parts: CatSnapshotsParts<'a>,
+pub struct CatSnapshots<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatSnapshotsParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatSnapshots<'a> {
+impl<'a, 'b> CatSnapshots<'a, 'b> {
     #[doc = "Creates a new instance of [CatSnapshots] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatSnapshotsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatSnapshotsParts<'b>) -> Self {
         CatSnapshots {
             client,
             parts,
@@ -3112,17 +3112,17 @@ impl<'a> CatSnapshots<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3147,7 +3147,7 @@ impl<'a> CatSnapshots<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3157,12 +3157,12 @@ impl<'a> CatSnapshots<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3184,18 +3184,18 @@ impl<'a> CatSnapshots<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -3203,13 +3203,13 @@ impl<'a> CatSnapshots<'a> {
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -3256,29 +3256,29 @@ impl CatTasksParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about the tasks currently executing on one or more nodes in the cluster."]
-pub struct CatTasks<'a> {
-    client: Elasticsearch,
+pub struct CatTasks<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: CatTasksParts,
-    actions: Option<&'a [&'a str]>,
+    actions: Option<&'b [&'b str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
-    node_id: Option<&'a [&'a str]>,
+    node_id: Option<&'b [&'b str]>,
     parent_task: Option<i64>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a> CatTasks<'a> {
+impl<'a, 'b> CatTasks<'a, 'b> {
     #[doc = "Creates a new instance of [CatTasks]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         CatTasks {
             client,
             parts: CatTasksParts::None,
@@ -3301,7 +3301,7 @@ impl<'a> CatTasks<'a> {
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
-    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
+    pub fn actions(mut self, actions: &'b [&'b str]) -> Self {
         self.actions = Some(actions);
         self
     }
@@ -3316,17 +3316,17 @@ impl<'a> CatTasks<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3346,7 +3346,7 @@ impl<'a> CatTasks<'a> {
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn node_id(mut self, node_id: &'a [&'a str]) -> Self {
+    pub fn node_id(mut self, node_id: &'b [&'b str]) -> Self {
         self.node_id = Some(node_id);
         self
     }
@@ -3361,12 +3361,12 @@ impl<'a> CatTasks<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3388,12 +3388,12 @@ impl<'a> CatTasks<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(
                     rename = "actions",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                actions: Option<&'a [&'a str]>,
+                actions: Option<&'b [&'b str]>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -3402,11 +3402,11 @@ impl<'a> CatTasks<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -3415,15 +3415,15 @@ impl<'a> CatTasks<'a> {
                     rename = "node_id",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                node_id: Option<&'a [&'a str]>,
+                node_id: Option<&'b [&'b str]>,
                 #[serde(rename = "parent_task")]
                 parent_task: Option<i64>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "time")]
                 time: Option<Time>,
                 #[serde(rename = "v")]
@@ -3458,13 +3458,13 @@ impl<'a> CatTasks<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Templates API"]
-pub enum CatTemplatesParts<'a> {
+pub enum CatTemplatesParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> CatTemplatesParts<'a> {
+impl<'b> CatTemplatesParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Templates API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3480,26 +3480,26 @@ impl<'a> CatTemplatesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Templates API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-templates.html). Returns information about existing templates."]
-pub struct CatTemplates<'a> {
-    client: Elasticsearch,
-    parts: CatTemplatesParts<'a>,
+pub struct CatTemplates<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatTemplatesParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
-    source: Option<&'a str>,
+    s: Option<&'b [&'b str]>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatTemplates<'a> {
+impl<'a, 'b> CatTemplates<'a, 'b> {
     #[doc = "Creates a new instance of [CatTemplates] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatTemplatesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatTemplatesParts<'b>) -> Self {
         CatTemplates {
             client,
             parts,
@@ -3524,17 +3524,17 @@ impl<'a> CatTemplates<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3559,7 +3559,7 @@ impl<'a> CatTemplates<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3569,12 +3569,12 @@ impl<'a> CatTemplates<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3591,18 +3591,18 @@ impl<'a> CatTemplates<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -3610,13 +3610,13 @@ impl<'a> CatTemplates<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -3646,13 +3646,13 @@ impl<'a> CatTemplates<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cat Thread Pool API"]
-pub enum CatThreadPoolParts<'a> {
+pub enum CatThreadPoolParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "ThreadPoolPatterns"]
-    ThreadPoolPatterns(&'a [&'a str]),
+    ThreadPoolPatterns(&'b [&'b str]),
 }
-impl<'a> CatThreadPoolParts<'a> {
+impl<'b> CatThreadPoolParts<'b> {
     #[doc = "Builds a relative URL path to the Cat Thread Pool API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3669,27 +3669,27 @@ impl<'a> CatThreadPoolParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cat Thread Pool API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-thread-pool.html). Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
-pub struct CatThreadPool<'a> {
-    client: Elasticsearch,
-    parts: CatThreadPoolParts<'a>,
+pub struct CatThreadPool<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: CatThreadPoolParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
-    h: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
+    h: Option<&'b [&'b str]>,
     headers: HeaderMap,
     help: Option<bool>,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    s: Option<&'a [&'a str]>,
+    s: Option<&'b [&'b str]>,
     size: Option<Size>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     v: Option<bool>,
 }
-impl<'a> CatThreadPool<'a> {
+impl<'a, 'b> CatThreadPool<'a, 'b> {
     #[doc = "Creates a new instance of [CatThreadPool] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: CatThreadPoolParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: CatThreadPoolParts<'b>) -> Self {
         CatThreadPool {
             client,
             parts,
@@ -3715,17 +3715,17 @@ impl<'a> CatThreadPool<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
     #[doc = "Comma-separated list of column names to display"]
-    pub fn h(mut self, h: &'a [&'a str]) -> Self {
+    pub fn h(mut self, h: &'b [&'b str]) -> Self {
         self.h = Some(h);
         self
     }
@@ -3750,7 +3750,7 @@ impl<'a> CatThreadPool<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -3760,7 +3760,7 @@ impl<'a> CatThreadPool<'a> {
         self
     }
     #[doc = "Comma-separated list of column names or column aliases to sort by"]
-    pub fn s(mut self, s: &'a [&'a str]) -> Self {
+    pub fn s(mut self, s: &'b [&'b str]) -> Self {
         self.s = Some(s);
         self
     }
@@ -3770,7 +3770,7 @@ impl<'a> CatThreadPool<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3787,18 +3787,18 @@ impl<'a> CatThreadPool<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "h", serialize_with = "crate::client::serialize_coll_qs")]
-                h: Option<&'a [&'a str]>,
+                h: Option<&'b [&'b str]>,
                 #[serde(rename = "help")]
                 help: Option<bool>,
                 #[serde(rename = "human")]
@@ -3806,15 +3806,15 @@ impl<'a> CatThreadPool<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "s", serialize_with = "crate::client::serialize_coll_qs")]
-                s: Option<&'a [&'a str]>,
+                s: Option<&'b [&'b str]>,
                 #[serde(rename = "size")]
                 size: Option<Size>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "v")]
                 v: Option<bool>,
             }
@@ -3844,98 +3844,98 @@ impl<'a> CatThreadPool<'a> {
     }
 }
 #[doc = "Namespace client for Cat APIs"]
-pub struct Cat {
-    client: Elasticsearch,
+pub struct Cat<'a> {
+    client: &'a Elasticsearch,
 }
-impl Cat {
+impl<'a> Cat<'a> {
     #[doc = "Creates a new instance of [Cat]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
     #[doc = "Shows information about currently configured aliases to indices including filter and routing infos."]
-    pub fn aliases<'a>(&self, parts: CatAliasesParts<'a>) -> CatAliases<'a> {
-        CatAliases::new(self.client.clone(), parts)
+    pub fn aliases<'b>(&'a self, parts: CatAliasesParts<'b>) -> CatAliases<'a, 'b> {
+        CatAliases::new(&self.client, parts)
     }
     #[doc = "Provides a snapshot of how many shards are allocated to each data node and how much disk space they are using."]
-    pub fn allocation<'a>(&self, parts: CatAllocationParts<'a>) -> CatAllocation<'a> {
-        CatAllocation::new(self.client.clone(), parts)
+    pub fn allocation<'b>(&'a self, parts: CatAllocationParts<'b>) -> CatAllocation<'a, 'b> {
+        CatAllocation::new(&self.client, parts)
     }
     #[doc = "Provides quick access to the document count of the entire cluster, or individual indices."]
-    pub fn count<'a>(&self, parts: CatCountParts<'a>) -> CatCount<'a> {
-        CatCount::new(self.client.clone(), parts)
+    pub fn count<'b>(&'a self, parts: CatCountParts<'b>) -> CatCount<'a, 'b> {
+        CatCount::new(&self.client, parts)
     }
     #[doc = "Shows how much heap memory is currently being used by fielddata on every data node in the cluster."]
-    pub fn fielddata<'a>(&self, parts: CatFielddataParts<'a>) -> CatFielddata<'a> {
-        CatFielddata::new(self.client.clone(), parts)
+    pub fn fielddata<'b>(&'a self, parts: CatFielddataParts<'b>) -> CatFielddata<'a, 'b> {
+        CatFielddata::new(&self.client, parts)
     }
     #[doc = "Returns a concise representation of the cluster health."]
-    pub fn health<'a>(&self) -> CatHealth<'a> {
-        CatHealth::new(self.client.clone())
+    pub fn health<'b>(&'a self) -> CatHealth<'a, 'b> {
+        CatHealth::new(&self.client)
     }
     #[doc = "Returns help for the Cat APIs."]
-    pub fn help<'a>(&self) -> CatHelp<'a> {
-        CatHelp::new(self.client.clone())
+    pub fn help<'b>(&'a self) -> CatHelp<'a, 'b> {
+        CatHelp::new(&self.client)
     }
     #[doc = "Returns information about indices: number of primaries and replicas, document counts, disk size, ..."]
-    pub fn indices<'a>(&self, parts: CatIndicesParts<'a>) -> CatIndices<'a> {
-        CatIndices::new(self.client.clone(), parts)
+    pub fn indices<'b>(&'a self, parts: CatIndicesParts<'b>) -> CatIndices<'a, 'b> {
+        CatIndices::new(&self.client, parts)
     }
     #[doc = "Returns information about the master node."]
-    pub fn master<'a>(&self) -> CatMaster<'a> {
-        CatMaster::new(self.client.clone())
+    pub fn master<'b>(&'a self) -> CatMaster<'a, 'b> {
+        CatMaster::new(&self.client)
     }
     #[doc = "Returns information about custom node attributes."]
-    pub fn nodeattrs<'a>(&self) -> CatNodeattrs<'a> {
-        CatNodeattrs::new(self.client.clone())
+    pub fn nodeattrs<'b>(&'a self) -> CatNodeattrs<'a, 'b> {
+        CatNodeattrs::new(&self.client)
     }
     #[doc = "Returns basic statistics about performance of cluster nodes."]
-    pub fn nodes<'a>(&self) -> CatNodes<'a> {
-        CatNodes::new(self.client.clone())
+    pub fn nodes<'b>(&'a self) -> CatNodes<'a, 'b> {
+        CatNodes::new(&self.client)
     }
     #[doc = "Returns a concise representation of the cluster pending tasks."]
-    pub fn pending_tasks<'a>(&self) -> CatPendingTasks<'a> {
-        CatPendingTasks::new(self.client.clone())
+    pub fn pending_tasks<'b>(&'a self) -> CatPendingTasks<'a, 'b> {
+        CatPendingTasks::new(&self.client)
     }
     #[doc = "Returns information about installed plugins across nodes node."]
-    pub fn plugins<'a>(&self) -> CatPlugins<'a> {
-        CatPlugins::new(self.client.clone())
+    pub fn plugins<'b>(&'a self) -> CatPlugins<'a, 'b> {
+        CatPlugins::new(&self.client)
     }
     #[doc = "Returns information about index shard recoveries, both on-going completed."]
-    pub fn recovery<'a>(&self, parts: CatRecoveryParts<'a>) -> CatRecovery<'a> {
-        CatRecovery::new(self.client.clone(), parts)
+    pub fn recovery<'b>(&'a self, parts: CatRecoveryParts<'b>) -> CatRecovery<'a, 'b> {
+        CatRecovery::new(&self.client, parts)
     }
     #[doc = "Returns information about snapshot repositories registered in the cluster."]
-    pub fn repositories<'a>(&self) -> CatRepositories<'a> {
-        CatRepositories::new(self.client.clone())
+    pub fn repositories<'b>(&'a self) -> CatRepositories<'a, 'b> {
+        CatRepositories::new(&self.client)
     }
     #[doc = "Provides low-level information about the segments in the shards of an index."]
-    pub fn segments<'a>(&self, parts: CatSegmentsParts<'a>) -> CatSegments<'a> {
-        CatSegments::new(self.client.clone(), parts)
+    pub fn segments<'b>(&'a self, parts: CatSegmentsParts<'b>) -> CatSegments<'a, 'b> {
+        CatSegments::new(&self.client, parts)
     }
     #[doc = "Provides a detailed view of shard allocation on nodes."]
-    pub fn shards<'a>(&self, parts: CatShardsParts<'a>) -> CatShards<'a> {
-        CatShards::new(self.client.clone(), parts)
+    pub fn shards<'b>(&'a self, parts: CatShardsParts<'b>) -> CatShards<'a, 'b> {
+        CatShards::new(&self.client, parts)
     }
     #[doc = "Returns all snapshots in a specific repository."]
-    pub fn snapshots<'a>(&self, parts: CatSnapshotsParts<'a>) -> CatSnapshots<'a> {
-        CatSnapshots::new(self.client.clone(), parts)
+    pub fn snapshots<'b>(&'a self, parts: CatSnapshotsParts<'b>) -> CatSnapshots<'a, 'b> {
+        CatSnapshots::new(&self.client, parts)
     }
     #[doc = "Returns information about the tasks currently executing on one or more nodes in the cluster."]
-    pub fn tasks<'a>(&self) -> CatTasks<'a> {
-        CatTasks::new(self.client.clone())
+    pub fn tasks<'b>(&'a self) -> CatTasks<'a, 'b> {
+        CatTasks::new(&self.client)
     }
     #[doc = "Returns information about existing templates."]
-    pub fn templates<'a>(&self, parts: CatTemplatesParts<'a>) -> CatTemplates<'a> {
-        CatTemplates::new(self.client.clone(), parts)
+    pub fn templates<'b>(&'a self, parts: CatTemplatesParts<'b>) -> CatTemplates<'a, 'b> {
+        CatTemplates::new(&self.client, parts)
     }
     #[doc = "Returns cluster-wide thread pool statistics per node.\nBy default the active, queue and rejected statistics are returned for all thread pools."]
-    pub fn thread_pool<'a>(&self, parts: CatThreadPoolParts<'a>) -> CatThreadPool<'a> {
-        CatThreadPool::new(self.client.clone(), parts)
+    pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
+        CatThreadPool::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cat APIs"]
     pub fn cat(&self) -> Cat {
-        Cat::new(self.clone())
+        Cat::new(&self)
     }
 }

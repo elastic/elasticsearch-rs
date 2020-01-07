@@ -126,10 +126,10 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
         v.push_str("Option<");
     }
 
-    let str_type = "&'a str";
+    let str_type = "&'b str";
     match kind {
         TypeKind::None => v.push_str(str_type),
-        TypeKind::List => v.push_str(format!("&'a [{}]", str_type).as_ref()),
+        TypeKind::List => v.push_str(format!("&'b [{}]", str_type).as_ref()),
         TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
         TypeKind::String => v.push_str(str_type),
         TypeKind::Text => v.push_str(str_type),
@@ -150,10 +150,10 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
     syn::parse_type(v.as_str()).unwrap()
 }
 
-/// A standard `'a` lifetime
-pub fn lifetime_a() -> syn::Lifetime {
+/// A standard `'b` lifetime
+pub fn lifetime_b() -> syn::Lifetime {
     syn::Lifetime {
-        ident: syn::Ident::new("'a"),
+        ident: syn::Ident::new("'b"),
     }
 }
 
@@ -170,9 +170,9 @@ impl<T: GetPath> HasLifetime for T {
     }
 }
 
-/// Generics with a standard `'a` lifetime
-pub fn generics_a() -> syn::Generics {
-    generics(vec![lifetime_a()], vec![])
+/// Generics with a standard `'b` lifetime
+pub fn generics_b() -> syn::Generics {
+    generics(vec![lifetime_b()], vec![])
 }
 
 /// Generics with no parameters.
@@ -201,9 +201,9 @@ pub fn ty_path(ty: &str, lifetimes: Vec<syn::Lifetime>, types: Vec<syn::Ty>) -> 
     syn::Ty::Path(None, path(ty, lifetimes, types))
 }
 
-/// AST for a path type with a `'a` lifetime.
-pub fn ty_a(ty: &str) -> syn::Ty {
-    ty_path(ty, vec![lifetime_a()], vec![])
+/// AST for a path type with a `'b` lifetime.
+pub fn ty_b(ty: &str) -> syn::Ty {
+    ty_path(ty, vec![lifetime_b()], vec![])
 }
 
 /// AST for a simple path type.

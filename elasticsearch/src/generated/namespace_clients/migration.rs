@@ -31,13 +31,13 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Migration Deprecations API"]
-pub enum MigrationDeprecationsParts<'a> {
+pub enum MigrationDeprecationsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a str),
+    Index(&'b str),
 }
-impl<'a> MigrationDeprecationsParts<'a> {
+impl<'b> MigrationDeprecationsParts<'b> {
     #[doc = "Builds a relative URL path to the Migration Deprecations API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -54,19 +54,19 @@ impl<'a> MigrationDeprecationsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html)."]
-pub struct MigrationDeprecations<'a> {
-    client: Elasticsearch,
-    parts: MigrationDeprecationsParts<'a>,
+pub struct MigrationDeprecations<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: MigrationDeprecationsParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> MigrationDeprecations<'a> {
+impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: MigrationDeprecationsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: MigrationDeprecationsParts<'b>) -> Self {
         MigrationDeprecations {
             client,
             parts,
@@ -84,7 +84,7 @@ impl<'a> MigrationDeprecations<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -104,7 +104,7 @@ impl<'a> MigrationDeprecations<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -116,20 +116,20 @@ impl<'a> MigrationDeprecations<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -149,24 +149,24 @@ impl<'a> MigrationDeprecations<'a> {
     }
 }
 #[doc = "Namespace client for Migration APIs"]
-pub struct Migration {
-    client: Elasticsearch,
+pub struct Migration<'a> {
+    client: &'a Elasticsearch,
 }
-impl Migration {
+impl<'a> Migration<'a> {
     #[doc = "Creates a new instance of [Migration]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn deprecations<'a>(
-        &self,
-        parts: MigrationDeprecationsParts<'a>,
-    ) -> MigrationDeprecations<'a> {
-        MigrationDeprecations::new(self.client.clone(), parts)
+    pub fn deprecations<'b>(
+        &'a self,
+        parts: MigrationDeprecationsParts<'b>,
+    ) -> MigrationDeprecations<'a, 'b> {
+        MigrationDeprecations::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Migration APIs"]
     pub fn migration(&self) -> Migration {
-        Migration::new(self.clone())
+        Migration::new(&self)
     }
 }

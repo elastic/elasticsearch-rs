@@ -49,13 +49,13 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             #(#builders)*
 
             #namespace_doc
-            pub struct #namespace_client_name {
-                client: Elasticsearch
+            pub struct #namespace_client_name<'a> {
+                client: &'a Elasticsearch
             }
 
-            impl #namespace_client_name {
+            impl<'a> #namespace_client_name<'a> {
                 #new_namespace_client_doc
-                pub fn new(client: Elasticsearch) -> Self {
+                pub fn new(client: &'a Elasticsearch) -> Self {
                     Self {
                         client
                     }
@@ -66,7 +66,7 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             impl Elasticsearch {
                 #namespace_fn_doc
                 pub fn #namespace_name(&self) -> #namespace_client_name {
-                    #namespace_client_name::new(self.clone())
+                    #namespace_client_name::new(&self)
                 }
             }
         ));

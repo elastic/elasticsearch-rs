@@ -45,25 +45,25 @@ impl ClusterAllocationExplainParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html). Provides explanations for shard allocations in the cluster."]
-pub struct ClusterAllocationExplain<'a, B> {
-    client: Elasticsearch,
+pub struct ClusterAllocationExplain<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: ClusterAllocationExplainParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     include_disk_info: Option<bool>,
     include_yes_decisions: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> ClusterAllocationExplain<'a, B>
+impl<'a, 'b, B> ClusterAllocationExplain<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterAllocationExplain]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterAllocationExplain {
             client,
             parts: ClusterAllocationExplainParts::None,
@@ -79,7 +79,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> ClusterAllocationExplain<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -103,7 +103,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -133,7 +133,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -148,14 +148,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "include_disk_info")]
@@ -165,7 +165,7 @@ where
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -202,23 +202,23 @@ impl ClusterGetSettingsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Returns cluster settings."]
-pub struct ClusterGetSettings<'a> {
-    client: Elasticsearch,
+pub struct ClusterGetSettings<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: ClusterGetSettingsParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     include_defaults: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a> ClusterGetSettings<'a> {
+impl<'a, 'b> ClusterGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterGetSettings]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterGetSettings {
             client,
             parts: ClusterGetSettingsParts::None,
@@ -240,7 +240,7 @@ impl<'a> ClusterGetSettings<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -265,7 +265,7 @@ impl<'a> ClusterGetSettings<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -275,12 +275,12 @@ impl<'a> ClusterGetSettings<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -292,14 +292,14 @@ impl<'a> ClusterGetSettings<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human")]
@@ -307,13 +307,13 @@ impl<'a> ClusterGetSettings<'a> {
                 #[serde(rename = "include_defaults")]
                 include_defaults: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -338,13 +338,13 @@ impl<'a> ClusterGetSettings<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Health API"]
-pub enum ClusterHealthParts<'a> {
+pub enum ClusterHealthParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Index"]
-    Index(&'a [&'a str]),
+    Index(&'b [&'b str]),
 }
-impl<'a> ClusterHealthParts<'a> {
+impl<'b> ClusterHealthParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Health API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -361,30 +361,30 @@ impl<'a> ClusterHealthParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html). Returns basic information about the health of the cluster."]
-pub struct ClusterHealth<'a> {
-    client: Elasticsearch,
-    parts: ClusterHealthParts<'a>,
+pub struct ClusterHealth<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterHealthParts<'b>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     level: Option<Level>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
-    wait_for_active_shards: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
+    wait_for_active_shards: Option<&'b str>,
     wait_for_events: Option<WaitForEvents>,
     wait_for_no_initializing_shards: Option<bool>,
     wait_for_no_relocating_shards: Option<bool>,
-    wait_for_nodes: Option<&'a str>,
+    wait_for_nodes: Option<&'b str>,
     wait_for_status: Option<WaitForStatus>,
 }
-impl<'a> ClusterHealth<'a> {
+impl<'a, 'b> ClusterHealth<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: ClusterHealthParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: ClusterHealthParts<'b>) -> Self {
         ClusterHealth {
             client,
             parts,
@@ -418,7 +418,7 @@ impl<'a> ClusterHealth<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -443,7 +443,7 @@ impl<'a> ClusterHealth<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -453,17 +453,17 @@ impl<'a> ClusterHealth<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
     #[doc = "Wait until the specified number of shards is active"]
-    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'a str) -> Self {
+    pub fn wait_for_active_shards(mut self, wait_for_active_shards: &'b str) -> Self {
         self.wait_for_active_shards = Some(wait_for_active_shards);
         self
     }
@@ -486,7 +486,7 @@ impl<'a> ClusterHealth<'a> {
         self
     }
     #[doc = "Wait until the specified number of nodes is available"]
-    pub fn wait_for_nodes(mut self, wait_for_nodes: &'a str) -> Self {
+    pub fn wait_for_nodes(mut self, wait_for_nodes: &'b str) -> Self {
         self.wait_for_nodes = Some(wait_for_nodes);
         self
     }
@@ -503,7 +503,7 @@ impl<'a> ClusterHealth<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
@@ -512,7 +512,7 @@ impl<'a> ClusterHealth<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "level")]
@@ -520,15 +520,15 @@ impl<'a> ClusterHealth<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
                 #[serde(rename = "wait_for_active_shards")]
-                wait_for_active_shards: Option<&'a str>,
+                wait_for_active_shards: Option<&'b str>,
                 #[serde(rename = "wait_for_events")]
                 wait_for_events: Option<WaitForEvents>,
                 #[serde(rename = "wait_for_no_initializing_shards")]
@@ -536,7 +536,7 @@ impl<'a> ClusterHealth<'a> {
                 #[serde(rename = "wait_for_no_relocating_shards")]
                 wait_for_no_relocating_shards: Option<bool>,
                 #[serde(rename = "wait_for_nodes")]
-                wait_for_nodes: Option<&'a str>,
+                wait_for_nodes: Option<&'b str>,
                 #[serde(rename = "wait_for_status")]
                 wait_for_status: Option<WaitForStatus>,
             }
@@ -584,21 +584,21 @@ impl ClusterPendingTasksParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html). Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
-pub struct ClusterPendingTasks<'a> {
-    client: Elasticsearch,
+pub struct ClusterPendingTasks<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: ClusterPendingTasksParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> ClusterPendingTasks<'a> {
+impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterPendingTasks]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterPendingTasks {
             client,
             parts: ClusterPendingTasksParts::None,
@@ -618,7 +618,7 @@ impl<'a> ClusterPendingTasks<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -638,7 +638,7 @@ impl<'a> ClusterPendingTasks<'a> {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -648,7 +648,7 @@ impl<'a> ClusterPendingTasks<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -660,24 +660,24 @@ impl<'a> ClusterPendingTasks<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -714,26 +714,26 @@ impl ClusterPutSettingsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Updates the cluster settings."]
-pub struct ClusterPutSettings<'a, B> {
-    client: Elasticsearch,
+pub struct ClusterPutSettings<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: ClusterPutSettingsParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> ClusterPutSettings<'a, B>
+impl<'a, 'b, B> ClusterPutSettings<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterPutSettings]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterPutSettings {
             client,
             parts: ClusterPutSettingsParts::None,
@@ -750,7 +750,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterPutSettings<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> ClusterPutSettings<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -775,7 +775,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -795,7 +795,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -805,12 +805,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -822,26 +822,26 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -879,19 +879,19 @@ impl ClusterRemoteInfoParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html). Returns the information about configured remote clusters."]
-pub struct ClusterRemoteInfo<'a> {
-    client: Elasticsearch,
+pub struct ClusterRemoteInfo<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: ClusterRemoteInfoParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> ClusterRemoteInfo<'a> {
+impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterRemoteInfo]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterRemoteInfo {
             client,
             parts: ClusterRemoteInfoParts::None,
@@ -909,7 +909,7 @@ impl<'a> ClusterRemoteInfo<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -929,7 +929,7 @@ impl<'a> ClusterRemoteInfo<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -941,20 +941,20 @@ impl<'a> ClusterRemoteInfo<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -989,29 +989,29 @@ impl ClusterRerouteParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html). Allows to manually change the allocation of individual shards in the cluster."]
-pub struct ClusterReroute<'a, B> {
-    client: Elasticsearch,
+pub struct ClusterReroute<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: ClusterRerouteParts,
     body: Option<B>,
     dry_run: Option<bool>,
     error_trace: Option<bool>,
     explain: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
-    metric: Option<&'a [&'a str]>,
+    master_timeout: Option<&'b str>,
+    metric: Option<&'b [&'b str]>,
     pretty: Option<bool>,
     retry_failed: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> ClusterReroute<'a, B>
+impl<'a, 'b, B> ClusterReroute<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [ClusterReroute]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         ClusterReroute {
             client,
             parts: ClusterRerouteParts::None,
@@ -1031,7 +1031,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> ClusterReroute<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> ClusterReroute<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1069,7 +1069,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1084,12 +1084,12 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
     #[doc = "Limit the information returned to the specified metrics. Defaults to all but metadata"]
-    pub fn metric(mut self, metric: &'a [&'a str]) -> Self {
+    pub fn metric(mut self, metric: &'b [&'b str]) -> Self {
         self.metric = Some(metric);
         self
     }
@@ -1104,12 +1104,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1121,7 +1121,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "dry_run")]
                 dry_run: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -1132,21 +1132,21 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "metric", serialize_with = "crate::client::serialize_coll_qs")]
-                metric: Option<&'a [&'a str]>,
+                metric: Option<&'b [&'b str]>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "retry_failed")]
                 retry_failed: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 dry_run: self.dry_run,
@@ -1173,15 +1173,15 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster State API"]
-pub enum ClusterStateParts<'a> {
+pub enum ClusterStateParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Metric"]
-    Metric(&'a [&'a str]),
+    Metric(&'b [&'b str]),
     #[doc = "Metric and Index"]
-    MetricIndex(&'a [&'a str], &'a [&'a str]),
+    MetricIndex(&'b [&'b str], &'b [&'b str]),
 }
-impl<'a> ClusterStateParts<'a> {
+impl<'b> ClusterStateParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster State API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1208,27 +1208,27 @@ impl<'a> ClusterStateParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html). Returns a comprehensive information about the state of the cluster."]
-pub struct ClusterState<'a> {
-    client: Elasticsearch,
-    parts: ClusterStateParts<'a>,
+pub struct ClusterState<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterStateParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     wait_for_metadata_version: Option<i64>,
-    wait_for_timeout: Option<&'a str>,
+    wait_for_timeout: Option<&'b str>,
 }
-impl<'a> ClusterState<'a> {
+impl<'a, 'b> ClusterState<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: ClusterStateParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: ClusterStateParts<'b>) -> Self {
         ClusterState {
             client,
             parts,
@@ -1264,7 +1264,7 @@ impl<'a> ClusterState<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1294,7 +1294,7 @@ impl<'a> ClusterState<'a> {
         self
     }
     #[doc = "Specify timeout for connection to master"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1304,7 +1304,7 @@ impl<'a> ClusterState<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1314,7 +1314,7 @@ impl<'a> ClusterState<'a> {
         self
     }
     #[doc = "The maximum time to wait for wait_for_metadata_version before timing out"]
-    pub fn wait_for_timeout(mut self, wait_for_timeout: &'a str) -> Self {
+    pub fn wait_for_timeout(mut self, wait_for_timeout: &'b str) -> Self {
         self.wait_for_timeout = Some(wait_for_timeout);
         self
     }
@@ -1326,7 +1326,7 @@ impl<'a> ClusterState<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -1337,7 +1337,7 @@ impl<'a> ClusterState<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human")]
@@ -1347,15 +1347,15 @@ impl<'a> ClusterState<'a> {
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "wait_for_metadata_version")]
                 wait_for_metadata_version: Option<i64>,
                 #[serde(rename = "wait_for_timeout")]
-                wait_for_timeout: Option<&'a str>,
+                wait_for_timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
@@ -1384,13 +1384,13 @@ impl<'a> ClusterState<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Cluster Stats API"]
-pub enum ClusterStatsParts<'a> {
+pub enum ClusterStatsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "NodeId"]
-    NodeId(&'a [&'a str]),
+    NodeId(&'b [&'b str]),
 }
-impl<'a> ClusterStatsParts<'a> {
+impl<'b> ClusterStatsParts<'b> {
     #[doc = "Builds a relative URL path to the Cluster Stats API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1407,21 +1407,21 @@ impl<'a> ClusterStatsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html). Returns high-level overview of cluster statistics."]
-pub struct ClusterStats<'a> {
-    client: Elasticsearch,
-    parts: ClusterStatsParts<'a>,
+pub struct ClusterStats<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: ClusterStatsParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a> ClusterStats<'a> {
+impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: ClusterStatsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: ClusterStatsParts<'b>) -> Self {
         ClusterStats {
             client,
             parts,
@@ -1441,7 +1441,7 @@ impl<'a> ClusterStats<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1466,12 +1466,12 @@ impl<'a> ClusterStats<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1483,14 +1483,14 @@ impl<'a> ClusterStats<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "flat_settings")]
                 flat_settings: Option<bool>,
                 #[serde(rename = "human")]
@@ -1498,9 +1498,9 @@ impl<'a> ClusterStats<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1522,54 +1522,54 @@ impl<'a> ClusterStats<'a> {
     }
 }
 #[doc = "Namespace client for Cluster APIs"]
-pub struct Cluster {
-    client: Elasticsearch,
+pub struct Cluster<'a> {
+    client: &'a Elasticsearch,
 }
-impl Cluster {
+impl<'a> Cluster<'a> {
     #[doc = "Creates a new instance of [Cluster]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
     #[doc = "Provides explanations for shard allocations in the cluster."]
-    pub fn allocation_explain<'a>(&self) -> ClusterAllocationExplain<'a, ()> {
-        ClusterAllocationExplain::new(self.client.clone())
+    pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
+        ClusterAllocationExplain::new(&self.client)
     }
     #[doc = "Returns cluster settings."]
-    pub fn get_settings<'a>(&self) -> ClusterGetSettings<'a> {
-        ClusterGetSettings::new(self.client.clone())
+    pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
+        ClusterGetSettings::new(&self.client)
     }
     #[doc = "Returns basic information about the health of the cluster."]
-    pub fn health<'a>(&self, parts: ClusterHealthParts<'a>) -> ClusterHealth<'a> {
-        ClusterHealth::new(self.client.clone(), parts)
+    pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
+        ClusterHealth::new(&self.client, parts)
     }
     #[doc = "Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
-    pub fn pending_tasks<'a>(&self) -> ClusterPendingTasks<'a> {
-        ClusterPendingTasks::new(self.client.clone())
+    pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
+        ClusterPendingTasks::new(&self.client)
     }
     #[doc = "Updates the cluster settings."]
-    pub fn put_settings<'a>(&self) -> ClusterPutSettings<'a, ()> {
-        ClusterPutSettings::new(self.client.clone())
+    pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
+        ClusterPutSettings::new(&self.client)
     }
     #[doc = "Returns the information about configured remote clusters."]
-    pub fn remote_info<'a>(&self) -> ClusterRemoteInfo<'a> {
-        ClusterRemoteInfo::new(self.client.clone())
+    pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
+        ClusterRemoteInfo::new(&self.client)
     }
     #[doc = "Allows to manually change the allocation of individual shards in the cluster."]
-    pub fn reroute<'a>(&self) -> ClusterReroute<'a, ()> {
-        ClusterReroute::new(self.client.clone())
+    pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
+        ClusterReroute::new(&self.client)
     }
     #[doc = "Returns a comprehensive information about the state of the cluster."]
-    pub fn state<'a>(&self, parts: ClusterStateParts<'a>) -> ClusterState<'a> {
-        ClusterState::new(self.client.clone(), parts)
+    pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
+        ClusterState::new(&self.client, parts)
     }
     #[doc = "Returns high-level overview of cluster statistics."]
-    pub fn stats<'a>(&self, parts: ClusterStatsParts<'a>) -> ClusterStats<'a> {
-        ClusterStats::new(self.client.clone(), parts)
+    pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
+        ClusterStats::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Cluster APIs"]
     pub fn cluster(&self) -> Cluster {
-        Cluster::new(self.clone())
+        Cluster::new(&self)
     }
 }

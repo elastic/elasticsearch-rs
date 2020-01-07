@@ -31,11 +31,11 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Cleanup Repository API"]
-pub enum SnapshotCleanupRepositoryParts<'a> {
+pub enum SnapshotCleanupRepositoryParts<'b> {
     #[doc = "Repository"]
-    Repository(&'a str),
+    Repository(&'b str),
 }
-impl<'a> SnapshotCleanupRepositoryParts<'a> {
+impl<'b> SnapshotCleanupRepositoryParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Cleanup Repository API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -51,25 +51,25 @@ impl<'a> SnapshotCleanupRepositoryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Removes stale data from repository."]
-pub struct SnapshotCleanupRepository<'a, B> {
-    client: Elasticsearch,
-    parts: SnapshotCleanupRepositoryParts<'a>,
+pub struct SnapshotCleanupRepository<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SnapshotCleanupRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> SnapshotCleanupRepository<'a, B>
+impl<'a, 'b, B> SnapshotCleanupRepository<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCleanupRepository] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotCleanupRepositoryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotCleanupRepositoryParts<'b>) -> Self {
         SnapshotCleanupRepository {
             client,
             parts,
@@ -85,7 +85,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCleanupRepository<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SnapshotCleanupRepository<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -109,7 +109,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -124,7 +124,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -134,12 +134,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -151,24 +151,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -191,11 +191,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Create API"]
-pub enum SnapshotCreateParts<'a> {
+pub enum SnapshotCreateParts<'b> {
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'a str, &'a str),
+    RepositorySnapshot(&'b str, &'b str),
 }
-impl<'a> SnapshotCreateParts<'a> {
+impl<'b> SnapshotCreateParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Create API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -212,25 +212,25 @@ impl<'a> SnapshotCreateParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a snapshot in a repository."]
-pub struct SnapshotCreate<'a, B> {
-    client: Elasticsearch,
-    parts: SnapshotCreateParts<'a>,
+pub struct SnapshotCreate<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SnapshotCreateParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a, B> SnapshotCreate<'a, B>
+impl<'a, 'b, B> SnapshotCreate<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCreate] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotCreateParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateParts<'b>) -> Self {
         SnapshotCreate {
             client,
             parts,
@@ -246,7 +246,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCreate<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SnapshotCreate<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -270,7 +270,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -285,7 +285,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -295,7 +295,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -312,22 +312,22 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -352,11 +352,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Create Repository API"]
-pub enum SnapshotCreateRepositoryParts<'a> {
+pub enum SnapshotCreateRepositoryParts<'b> {
     #[doc = "Repository"]
-    Repository(&'a str),
+    Repository(&'b str),
 }
-impl<'a> SnapshotCreateRepositoryParts<'a> {
+impl<'b> SnapshotCreateRepositoryParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Create Repository API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -371,26 +371,26 @@ impl<'a> SnapshotCreateRepositoryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Creates a repository."]
-pub struct SnapshotCreateRepository<'a, B> {
-    client: Elasticsearch,
-    parts: SnapshotCreateRepositoryParts<'a>,
+pub struct SnapshotCreateRepository<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SnapshotCreateRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
     verify: Option<bool>,
 }
-impl<'a, B> SnapshotCreateRepository<'a, B>
+impl<'a, 'b, B> SnapshotCreateRepository<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotCreateRepository] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotCreateRepositoryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateRepositoryParts<'b>) -> Self {
         SnapshotCreateRepository {
             client,
             parts,
@@ -407,7 +407,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotCreateRepository<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SnapshotCreateRepository<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -432,7 +432,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -447,7 +447,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -457,12 +457,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -479,24 +479,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
                 #[serde(rename = "verify")]
                 verify: Option<bool>,
             }
@@ -522,11 +522,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Delete API"]
-pub enum SnapshotDeleteParts<'a> {
+pub enum SnapshotDeleteParts<'b> {
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'a str, &'a str),
+    RepositorySnapshot(&'b str, &'b str),
 }
-impl<'a> SnapshotDeleteParts<'a> {
+impl<'b> SnapshotDeleteParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Delete API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -543,20 +543,20 @@ impl<'a> SnapshotDeleteParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a snapshot."]
-pub struct SnapshotDelete<'a> {
-    client: Elasticsearch,
-    parts: SnapshotDeleteParts<'a>,
+pub struct SnapshotDelete<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SnapshotDeleteParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SnapshotDelete<'a> {
+impl<'a, 'b> SnapshotDelete<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDelete] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotDeleteParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteParts<'b>) -> Self {
         SnapshotDelete {
             client,
             parts,
@@ -575,7 +575,7 @@ impl<'a> SnapshotDelete<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -590,7 +590,7 @@ impl<'a> SnapshotDelete<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -600,7 +600,7 @@ impl<'a> SnapshotDelete<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -612,22 +612,22 @@ impl<'a> SnapshotDelete<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -649,11 +649,11 @@ impl<'a> SnapshotDelete<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Delete Repository API"]
-pub enum SnapshotDeleteRepositoryParts<'a> {
+pub enum SnapshotDeleteRepositoryParts<'b> {
     #[doc = "Repository"]
-    Repository(&'a [&'a str]),
+    Repository(&'b [&'b str]),
 }
-impl<'a> SnapshotDeleteRepositoryParts<'a> {
+impl<'b> SnapshotDeleteRepositoryParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Delete Repository API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -669,21 +669,21 @@ impl<'a> SnapshotDeleteRepositoryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Deletes a repository."]
-pub struct SnapshotDeleteRepository<'a> {
-    client: Elasticsearch,
-    parts: SnapshotDeleteRepositoryParts<'a>,
+pub struct SnapshotDeleteRepository<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SnapshotDeleteRepositoryParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a> SnapshotDeleteRepository<'a> {
+impl<'a, 'b> SnapshotDeleteRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDeleteRepository] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotDeleteRepositoryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteRepositoryParts<'b>) -> Self {
         SnapshotDeleteRepository {
             client,
             parts,
@@ -703,7 +703,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -718,7 +718,7 @@ impl<'a> SnapshotDeleteRepository<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -728,12 +728,12 @@ impl<'a> SnapshotDeleteRepository<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -745,24 +745,24 @@ impl<'a> SnapshotDeleteRepository<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -785,11 +785,11 @@ impl<'a> SnapshotDeleteRepository<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Get API"]
-pub enum SnapshotGetParts<'a> {
+pub enum SnapshotGetParts<'b> {
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'a str, &'a [&'a str]),
+    RepositorySnapshot(&'b str, &'b [&'b str]),
 }
-impl<'a> SnapshotGetParts<'a> {
+impl<'b> SnapshotGetParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -807,22 +807,22 @@ impl<'a> SnapshotGetParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a snapshot."]
-pub struct SnapshotGet<'a> {
-    client: Elasticsearch,
-    parts: SnapshotGetParts<'a>,
+pub struct SnapshotGet<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SnapshotGetParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     verbose: Option<bool>,
 }
-impl<'a> SnapshotGet<'a> {
+impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGet] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotGetParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotGetParts<'b>) -> Self {
         SnapshotGet {
             client,
             parts,
@@ -843,7 +843,7 @@ impl<'a> SnapshotGet<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -863,7 +863,7 @@ impl<'a> SnapshotGet<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -873,7 +873,7 @@ impl<'a> SnapshotGet<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -890,24 +890,24 @@ impl<'a> SnapshotGet<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "verbose")]
                 verbose: Option<bool>,
             }
@@ -933,13 +933,13 @@ impl<'a> SnapshotGet<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Get Repository API"]
-pub enum SnapshotGetRepositoryParts<'a> {
+pub enum SnapshotGetRepositoryParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Repository"]
-    Repository(&'a [&'a str]),
+    Repository(&'b [&'b str]),
 }
-impl<'a> SnapshotGetRepositoryParts<'a> {
+impl<'b> SnapshotGetRepositoryParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Get Repository API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -956,21 +956,21 @@ impl<'a> SnapshotGetRepositoryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about a repository."]
-pub struct SnapshotGetRepository<'a> {
-    client: Elasticsearch,
-    parts: SnapshotGetRepositoryParts<'a>,
+pub struct SnapshotGetRepository<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SnapshotGetRepositoryParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     local: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SnapshotGetRepository<'a> {
+impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGetRepository] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotGetRepositoryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotGetRepositoryParts<'b>) -> Self {
         SnapshotGetRepository {
             client,
             parts,
@@ -990,7 +990,7 @@ impl<'a> SnapshotGetRepository<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1010,7 +1010,7 @@ impl<'a> SnapshotGetRepository<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1020,7 +1020,7 @@ impl<'a> SnapshotGetRepository<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1032,24 +1032,24 @@ impl<'a> SnapshotGetRepository<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "local")]
                 local: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1072,11 +1072,11 @@ impl<'a> SnapshotGetRepository<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Restore API"]
-pub enum SnapshotRestoreParts<'a> {
+pub enum SnapshotRestoreParts<'b> {
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'a str, &'a str),
+    RepositorySnapshot(&'b str, &'b str),
 }
-impl<'a> SnapshotRestoreParts<'a> {
+impl<'b> SnapshotRestoreParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Restore API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1094,25 +1094,25 @@ impl<'a> SnapshotRestoreParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Restores a snapshot."]
-pub struct SnapshotRestore<'a, B> {
-    client: Elasticsearch,
-    parts: SnapshotRestoreParts<'a>,
+pub struct SnapshotRestore<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SnapshotRestoreParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a, B> SnapshotRestore<'a, B>
+impl<'a, 'b, B> SnapshotRestore<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotRestore] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotRestoreParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotRestoreParts<'b>) -> Self {
         SnapshotRestore {
             client,
             parts,
@@ -1128,7 +1128,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotRestore<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SnapshotRestore<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1152,7 +1152,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1167,7 +1167,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1177,7 +1177,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1194,22 +1194,22 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -1234,15 +1234,15 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Status API"]
-pub enum SnapshotStatusParts<'a> {
+pub enum SnapshotStatusParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Repository"]
-    Repository(&'a str),
+    Repository(&'b str),
     #[doc = "Repository and Snapshot"]
-    RepositorySnapshot(&'a str, &'a [&'a str]),
+    RepositorySnapshot(&'b str, &'b [&'b str]),
 }
-impl<'a> SnapshotStatusParts<'a> {
+impl<'b> SnapshotStatusParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Status API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1269,21 +1269,21 @@ impl<'a> SnapshotStatusParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Returns information about the status of a snapshot."]
-pub struct SnapshotStatus<'a> {
-    client: Elasticsearch,
-    parts: SnapshotStatusParts<'a>,
+pub struct SnapshotStatus<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SnapshotStatusParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     ignore_unavailable: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SnapshotStatus<'a> {
+impl<'a, 'b> SnapshotStatus<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotStatus] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotStatusParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotStatusParts<'b>) -> Self {
         SnapshotStatus {
             client,
             parts,
@@ -1303,7 +1303,7 @@ impl<'a> SnapshotStatus<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1323,7 +1323,7 @@ impl<'a> SnapshotStatus<'a> {
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1333,7 +1333,7 @@ impl<'a> SnapshotStatus<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1345,24 +1345,24 @@ impl<'a> SnapshotStatus<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "ignore_unavailable")]
                 ignore_unavailable: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1385,11 +1385,11 @@ impl<'a> SnapshotStatus<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Snapshot Verify Repository API"]
-pub enum SnapshotVerifyRepositoryParts<'a> {
+pub enum SnapshotVerifyRepositoryParts<'b> {
     #[doc = "Repository"]
-    Repository(&'a str),
+    Repository(&'b str),
 }
-impl<'a> SnapshotVerifyRepositoryParts<'a> {
+impl<'b> SnapshotVerifyRepositoryParts<'b> {
     #[doc = "Builds a relative URL path to the Snapshot Verify Repository API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1405,25 +1405,25 @@ impl<'a> SnapshotVerifyRepositoryParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-snapshots.html). Verifies a repository."]
-pub struct SnapshotVerifyRepository<'a, B> {
-    client: Elasticsearch,
-    parts: SnapshotVerifyRepositoryParts<'a>,
+pub struct SnapshotVerifyRepository<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SnapshotVerifyRepositoryParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
 }
-impl<'a, B> SnapshotVerifyRepository<'a, B>
+impl<'a, 'b, B> SnapshotVerifyRepository<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SnapshotVerifyRepository] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SnapshotVerifyRepositoryParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SnapshotVerifyRepositoryParts<'b>) -> Self {
         SnapshotVerifyRepository {
             client,
             parts,
@@ -1439,7 +1439,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SnapshotVerifyRepository<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SnapshotVerifyRepository<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1463,7 +1463,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1478,7 +1478,7 @@ where
         self
     }
     #[doc = "Explicit operation timeout for connection to master node"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -1488,12 +1488,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -1505,24 +1505,24 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1544,73 +1544,73 @@ where
     }
 }
 #[doc = "Namespace client for Snapshot APIs"]
-pub struct Snapshot {
-    client: Elasticsearch,
+pub struct Snapshot<'a> {
+    client: &'a Elasticsearch,
 }
-impl Snapshot {
+impl<'a> Snapshot<'a> {
     #[doc = "Creates a new instance of [Snapshot]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
     #[doc = "Removes stale data from repository."]
-    pub fn cleanup_repository<'a>(
-        &self,
-        parts: SnapshotCleanupRepositoryParts<'a>,
-    ) -> SnapshotCleanupRepository<'a, ()> {
-        SnapshotCleanupRepository::new(self.client.clone(), parts)
+    pub fn cleanup_repository<'b>(
+        &'a self,
+        parts: SnapshotCleanupRepositoryParts<'b>,
+    ) -> SnapshotCleanupRepository<'a, 'b, ()> {
+        SnapshotCleanupRepository::new(&self.client, parts)
     }
     #[doc = "Creates a snapshot in a repository."]
-    pub fn create<'a>(&self, parts: SnapshotCreateParts<'a>) -> SnapshotCreate<'a, ()> {
-        SnapshotCreate::new(self.client.clone(), parts)
+    pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
+        SnapshotCreate::new(&self.client, parts)
     }
     #[doc = "Creates a repository."]
-    pub fn create_repository<'a>(
-        &self,
-        parts: SnapshotCreateRepositoryParts<'a>,
-    ) -> SnapshotCreateRepository<'a, ()> {
-        SnapshotCreateRepository::new(self.client.clone(), parts)
+    pub fn create_repository<'b>(
+        &'a self,
+        parts: SnapshotCreateRepositoryParts<'b>,
+    ) -> SnapshotCreateRepository<'a, 'b, ()> {
+        SnapshotCreateRepository::new(&self.client, parts)
     }
     #[doc = "Deletes a snapshot."]
-    pub fn delete<'a>(&self, parts: SnapshotDeleteParts<'a>) -> SnapshotDelete<'a> {
-        SnapshotDelete::new(self.client.clone(), parts)
+    pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
+        SnapshotDelete::new(&self.client, parts)
     }
     #[doc = "Deletes a repository."]
-    pub fn delete_repository<'a>(
-        &self,
-        parts: SnapshotDeleteRepositoryParts<'a>,
-    ) -> SnapshotDeleteRepository<'a> {
-        SnapshotDeleteRepository::new(self.client.clone(), parts)
+    pub fn delete_repository<'b>(
+        &'a self,
+        parts: SnapshotDeleteRepositoryParts<'b>,
+    ) -> SnapshotDeleteRepository<'a, 'b> {
+        SnapshotDeleteRepository::new(&self.client, parts)
     }
     #[doc = "Returns information about a snapshot."]
-    pub fn get<'a>(&self, parts: SnapshotGetParts<'a>) -> SnapshotGet<'a> {
-        SnapshotGet::new(self.client.clone(), parts)
+    pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
+        SnapshotGet::new(&self.client, parts)
     }
     #[doc = "Returns information about a repository."]
-    pub fn get_repository<'a>(
-        &self,
-        parts: SnapshotGetRepositoryParts<'a>,
-    ) -> SnapshotGetRepository<'a> {
-        SnapshotGetRepository::new(self.client.clone(), parts)
+    pub fn get_repository<'b>(
+        &'a self,
+        parts: SnapshotGetRepositoryParts<'b>,
+    ) -> SnapshotGetRepository<'a, 'b> {
+        SnapshotGetRepository::new(&self.client, parts)
     }
     #[doc = "Restores a snapshot."]
-    pub fn restore<'a>(&self, parts: SnapshotRestoreParts<'a>) -> SnapshotRestore<'a, ()> {
-        SnapshotRestore::new(self.client.clone(), parts)
+    pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {
+        SnapshotRestore::new(&self.client, parts)
     }
     #[doc = "Returns information about the status of a snapshot."]
-    pub fn status<'a>(&self, parts: SnapshotStatusParts<'a>) -> SnapshotStatus<'a> {
-        SnapshotStatus::new(self.client.clone(), parts)
+    pub fn status<'b>(&'a self, parts: SnapshotStatusParts<'b>) -> SnapshotStatus<'a, 'b> {
+        SnapshotStatus::new(&self.client, parts)
     }
     #[doc = "Verifies a repository."]
-    pub fn verify_repository<'a>(
-        &self,
-        parts: SnapshotVerifyRepositoryParts<'a>,
-    ) -> SnapshotVerifyRepository<'a, ()> {
-        SnapshotVerifyRepository::new(self.client.clone(), parts)
+    pub fn verify_repository<'b>(
+        &'a self,
+        parts: SnapshotVerifyRepositoryParts<'b>,
+    ) -> SnapshotVerifyRepository<'a, 'b, ()> {
+        SnapshotVerifyRepository::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot APIs"]
     pub fn snapshot(&self) -> Snapshot {
-        Snapshot::new(self.clone())
+        Snapshot::new(&self)
     }
 }

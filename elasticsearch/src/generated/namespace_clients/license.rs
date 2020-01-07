@@ -45,19 +45,19 @@ impl LicenseDeleteParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-license.html)."]
-pub struct LicenseDelete<'a> {
-    client: Elasticsearch,
+pub struct LicenseDelete<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: LicenseDeleteParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> LicenseDelete<'a> {
+impl<'a, 'b> LicenseDelete<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseDelete]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicenseDelete {
             client,
             parts: LicenseDeleteParts::None,
@@ -75,7 +75,7 @@ impl<'a> LicenseDelete<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -95,7 +95,7 @@ impl<'a> LicenseDelete<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -107,20 +107,20 @@ impl<'a> LicenseDelete<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -155,20 +155,20 @@ impl LicenseGetParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html)."]
-pub struct LicenseGet<'a> {
-    client: Elasticsearch,
+pub struct LicenseGet<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: LicenseGetParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     local: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> LicenseGet<'a> {
+impl<'a, 'b> LicenseGet<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGet]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicenseGet {
             client,
             parts: LicenseGetParts::None,
@@ -187,7 +187,7 @@ impl<'a> LicenseGet<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -212,7 +212,7 @@ impl<'a> LicenseGet<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -224,14 +224,14 @@ impl<'a> LicenseGet<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "local")]
@@ -239,7 +239,7 @@ impl<'a> LicenseGet<'a> {
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -275,19 +275,19 @@ impl LicenseGetBasicStatusParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get Basic Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-basic-status.html)."]
-pub struct LicenseGetBasicStatus<'a> {
-    client: Elasticsearch,
+pub struct LicenseGetBasicStatus<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: LicenseGetBasicStatusParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> LicenseGetBasicStatus<'a> {
+impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGetBasicStatus]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicenseGetBasicStatus {
             client,
             parts: LicenseGetBasicStatusParts::None,
@@ -305,7 +305,7 @@ impl<'a> LicenseGetBasicStatus<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -325,7 +325,7 @@ impl<'a> LicenseGetBasicStatus<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -337,20 +337,20 @@ impl<'a> LicenseGetBasicStatus<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -385,19 +385,19 @@ impl LicenseGetTrialStatusParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Get Trial Status API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trial-status.html)."]
-pub struct LicenseGetTrialStatus<'a> {
-    client: Elasticsearch,
+pub struct LicenseGetTrialStatus<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: LicenseGetTrialStatusParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> LicenseGetTrialStatus<'a> {
+impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGetTrialStatus]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicenseGetTrialStatus {
             client,
             parts: LicenseGetTrialStatusParts::None,
@@ -415,7 +415,7 @@ impl<'a> LicenseGetTrialStatus<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -435,7 +435,7 @@ impl<'a> LicenseGetTrialStatus<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -447,20 +447,20 @@ impl<'a> LicenseGetTrialStatus<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -495,24 +495,24 @@ impl LicensePostParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post API](https://www.elastic.co/guide/en/elasticsearch/reference/master/update-license.html)."]
-pub struct LicensePost<'a, B> {
-    client: Elasticsearch,
+pub struct LicensePost<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: LicensePostParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> LicensePost<'a, B>
+impl<'a, 'b, B> LicensePost<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [LicensePost]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicensePost {
             client,
             parts: LicensePostParts::None,
@@ -532,7 +532,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePost<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> LicensePost<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -555,7 +555,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -575,7 +575,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -587,7 +587,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -596,13 +596,13 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 acknowledge: self.acknowledge,
@@ -638,24 +638,24 @@ impl LicensePostStartBasicParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post Start Basic API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-basic.html)."]
-pub struct LicensePostStartBasic<'a, B> {
-    client: Elasticsearch,
+pub struct LicensePostStartBasic<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: LicensePostStartBasicParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> LicensePostStartBasic<'a, B>
+impl<'a, 'b, B> LicensePostStartBasic<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [LicensePostStartBasic]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicensePostStartBasic {
             client,
             parts: LicensePostStartBasicParts::None,
@@ -675,7 +675,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> LicensePostStartBasic<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -698,7 +698,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -718,7 +718,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -730,7 +730,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -739,13 +739,13 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 acknowledge: self.acknowledge,
@@ -781,25 +781,25 @@ impl LicensePostStartTrialParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [License Post Start Trial API](https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trial.html)."]
-pub struct LicensePostStartTrial<'a, B> {
-    client: Elasticsearch,
+pub struct LicensePostStartTrial<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: LicensePostStartTrialParts,
     acknowledge: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    ty: Option<&'a str>,
+    source: Option<&'b str>,
+    ty: Option<&'b str>,
 }
-impl<'a, B> LicensePostStartTrial<'a, B>
+impl<'a, 'b, B> LicensePostStartTrial<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [LicensePostStartTrial]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         LicensePostStartTrial {
             client,
             parts: LicensePostStartTrialParts::None,
@@ -820,7 +820,7 @@ where
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> LicensePostStartTrial<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -844,7 +844,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -864,12 +864,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "The type of trial license to generate (default: \"trial\")"]
-    pub fn ty(mut self, ty: &'a str) -> Self {
+    pub fn ty(mut self, ty: &'b str) -> Self {
         self.ty = Some(ty);
         self
     }
@@ -881,7 +881,7 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "acknowledge")]
                 acknowledge: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -890,15 +890,15 @@ where
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "type")]
-                ty: Option<&'a str>,
+                ty: Option<&'b str>,
             }
             let query_params = QueryParams {
                 acknowledge: self.acknowledge,
@@ -920,39 +920,39 @@ where
     }
 }
 #[doc = "Namespace client for License APIs"]
-pub struct License {
-    client: Elasticsearch,
+pub struct License<'a> {
+    client: &'a Elasticsearch,
 }
-impl License {
+impl<'a> License<'a> {
     #[doc = "Creates a new instance of [License]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn delete<'a>(&self) -> LicenseDelete<'a> {
-        LicenseDelete::new(self.client.clone())
+    pub fn delete<'b>(&'a self) -> LicenseDelete<'a, 'b> {
+        LicenseDelete::new(&self.client)
     }
-    pub fn get<'a>(&self) -> LicenseGet<'a> {
-        LicenseGet::new(self.client.clone())
+    pub fn get<'b>(&'a self) -> LicenseGet<'a, 'b> {
+        LicenseGet::new(&self.client)
     }
-    pub fn get_basic_status<'a>(&self) -> LicenseGetBasicStatus<'a> {
-        LicenseGetBasicStatus::new(self.client.clone())
+    pub fn get_basic_status<'b>(&'a self) -> LicenseGetBasicStatus<'a, 'b> {
+        LicenseGetBasicStatus::new(&self.client)
     }
-    pub fn get_trial_status<'a>(&self) -> LicenseGetTrialStatus<'a> {
-        LicenseGetTrialStatus::new(self.client.clone())
+    pub fn get_trial_status<'b>(&'a self) -> LicenseGetTrialStatus<'a, 'b> {
+        LicenseGetTrialStatus::new(&self.client)
     }
-    pub fn post<'a>(&self) -> LicensePost<'a, ()> {
-        LicensePost::new(self.client.clone())
+    pub fn post<'b>(&'a self) -> LicensePost<'a, 'b, ()> {
+        LicensePost::new(&self.client)
     }
-    pub fn post_start_basic<'a>(&self) -> LicensePostStartBasic<'a, ()> {
-        LicensePostStartBasic::new(self.client.clone())
+    pub fn post_start_basic<'b>(&'a self) -> LicensePostStartBasic<'a, 'b, ()> {
+        LicensePostStartBasic::new(&self.client)
     }
-    pub fn post_start_trial<'a>(&self) -> LicensePostStartTrial<'a, ()> {
-        LicensePostStartTrial::new(self.client.clone())
+    pub fn post_start_trial<'b>(&'a self) -> LicensePostStartTrial<'a, 'b, ()> {
+        LicensePostStartTrial::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for License APIs"]
     pub fn license(&self) -> License {
-        License::new(self.clone())
+        License::new(&self)
     }
 }

@@ -31,13 +31,13 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Cancel API"]
-pub enum TasksCancelParts<'a> {
+pub enum TasksCancelParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "TaskId"]
-    TaskId(&'a str),
+    TaskId(&'b str),
 }
-impl<'a> TasksCancelParts<'a> {
+impl<'b> TasksCancelParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Cancel API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -54,26 +54,26 @@ impl<'a> TasksCancelParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Cancels a task, if it can be cancelled through an API."]
-pub struct TasksCancel<'a, B> {
-    client: Elasticsearch,
-    parts: TasksCancelParts<'a>,
-    actions: Option<&'a [&'a str]>,
+pub struct TasksCancel<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: TasksCancelParts<'b>,
+    actions: Option<&'b [&'b str]>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    nodes: Option<&'a [&'a str]>,
-    parent_task_id: Option<&'a str>,
+    nodes: Option<&'b [&'b str]>,
+    parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> TasksCancel<'a, B>
+impl<'a, 'b, B> TasksCancel<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [TasksCancel] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: TasksCancelParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: TasksCancelParts<'b>) -> Self {
         TasksCancel {
             client,
             parts,
@@ -90,12 +90,12 @@ where
         }
     }
     #[doc = "A comma-separated list of actions that should be cancelled. Leave empty to cancel all."]
-    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
+    pub fn actions(mut self, actions: &'b [&'b str]) -> Self {
         self.actions = Some(actions);
         self
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> TasksCancel<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> TasksCancel<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -120,7 +120,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -135,12 +135,12 @@ where
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn nodes(mut self, nodes: &'a [&'a str]) -> Self {
+    pub fn nodes(mut self, nodes: &'b [&'b str]) -> Self {
         self.nodes = Some(nodes);
         self
     }
     #[doc = "Cancel tasks with specified parent task id (node_id:task_number). Set to -1 to cancel all."]
-    pub fn parent_task_id(mut self, parent_task_id: &'a str) -> Self {
+    pub fn parent_task_id(mut self, parent_task_id: &'b str) -> Self {
         self.parent_task_id = Some(parent_task_id);
         self
     }
@@ -150,7 +150,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -162,29 +162,29 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(
                     rename = "actions",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                actions: Option<&'a [&'a str]>,
+                actions: Option<&'b [&'b str]>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "nodes", serialize_with = "crate::client::serialize_coll_qs")]
-                nodes: Option<&'a [&'a str]>,
+                nodes: Option<&'b [&'b str]>,
                 #[serde(rename = "parent_task_id")]
-                parent_task_id: Option<&'a str>,
+                parent_task_id: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 actions: self.actions,
@@ -208,11 +208,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Tasks Get API"]
-pub enum TasksGetParts<'a> {
+pub enum TasksGetParts<'b> {
     #[doc = "TaskId"]
-    TaskId(&'a str),
+    TaskId(&'b str),
 }
-impl<'a> TasksGetParts<'a> {
+impl<'b> TasksGetParts<'b> {
     #[doc = "Builds a relative URL path to the Tasks Get API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -227,21 +227,21 @@ impl<'a> TasksGetParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns information about a task."]
-pub struct TasksGet<'a> {
-    client: Elasticsearch,
-    parts: TasksGetParts<'a>,
+pub struct TasksGet<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: TasksGetParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a> TasksGet<'a> {
+impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: TasksGetParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: TasksGetParts<'b>) -> Self {
         TasksGet {
             client,
             parts,
@@ -261,7 +261,7 @@ impl<'a> TasksGet<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -281,12 +281,12 @@ impl<'a> TasksGet<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -303,22 +303,22 @@ impl<'a> TasksGet<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -357,26 +357,26 @@ impl TasksListParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html). Returns a list of tasks."]
-pub struct TasksList<'a> {
-    client: Elasticsearch,
+pub struct TasksList<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: TasksListParts,
-    actions: Option<&'a [&'a str]>,
+    actions: Option<&'b [&'b str]>,
     detailed: Option<bool>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     group_by: Option<GroupBy>,
     headers: HeaderMap,
     human: Option<bool>,
-    nodes: Option<&'a [&'a str]>,
-    parent_task_id: Option<&'a str>,
+    nodes: Option<&'b [&'b str]>,
+    parent_task_id: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    timeout: Option<&'a str>,
+    source: Option<&'b str>,
+    timeout: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a> TasksList<'a> {
+impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates a new instance of [TasksList]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         TasksList {
             client,
             parts: TasksListParts::None,
@@ -396,7 +396,7 @@ impl<'a> TasksList<'a> {
         }
     }
     #[doc = "A comma-separated list of actions that should be returned. Leave empty to return all."]
-    pub fn actions(mut self, actions: &'a [&'a str]) -> Self {
+    pub fn actions(mut self, actions: &'b [&'b str]) -> Self {
         self.actions = Some(actions);
         self
     }
@@ -411,7 +411,7 @@ impl<'a> TasksList<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -431,12 +431,12 @@ impl<'a> TasksList<'a> {
         self
     }
     #[doc = "A comma-separated list of node IDs or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes"]
-    pub fn nodes(mut self, nodes: &'a [&'a str]) -> Self {
+    pub fn nodes(mut self, nodes: &'b [&'b str]) -> Self {
         self.nodes = Some(nodes);
         self
     }
     #[doc = "Return tasks with specified parent task id (node_id:task_number). Set to -1 to return all."]
-    pub fn parent_task_id(mut self, parent_task_id: &'a str) -> Self {
+    pub fn parent_task_id(mut self, parent_task_id: &'b str) -> Self {
         self.parent_task_id = Some(parent_task_id);
         self
     }
@@ -446,12 +446,12 @@ impl<'a> TasksList<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'a str) -> Self {
+    pub fn timeout(mut self, timeout: &'b str) -> Self {
         self.timeout = Some(timeout);
         self
     }
@@ -468,12 +468,12 @@ impl<'a> TasksList<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(
                     rename = "actions",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                actions: Option<&'a [&'a str]>,
+                actions: Option<&'b [&'b str]>,
                 #[serde(rename = "detailed")]
                 detailed: Option<bool>,
                 #[serde(rename = "error_trace")]
@@ -482,21 +482,21 @@ impl<'a> TasksList<'a> {
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "group_by")]
                 group_by: Option<GroupBy>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "nodes", serialize_with = "crate::client::serialize_coll_qs")]
-                nodes: Option<&'a [&'a str]>,
+                nodes: Option<&'b [&'b str]>,
                 #[serde(rename = "parent_task_id")]
-                parent_task_id: Option<&'a str>,
+                parent_task_id: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "timeout")]
-                timeout: Option<&'a str>,
+                timeout: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -525,30 +525,30 @@ impl<'a> TasksList<'a> {
     }
 }
 #[doc = "Namespace client for Tasks APIs"]
-pub struct Tasks {
-    client: Elasticsearch,
+pub struct Tasks<'a> {
+    client: &'a Elasticsearch,
 }
-impl Tasks {
+impl<'a> Tasks<'a> {
     #[doc = "Creates a new instance of [Tasks]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
     #[doc = "Cancels a task, if it can be cancelled through an API."]
-    pub fn cancel<'a>(&self, parts: TasksCancelParts<'a>) -> TasksCancel<'a, ()> {
-        TasksCancel::new(self.client.clone(), parts)
+    pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
+        TasksCancel::new(&self.client, parts)
     }
     #[doc = "Returns information about a task."]
-    pub fn get<'a>(&self, parts: TasksGetParts<'a>) -> TasksGet<'a> {
-        TasksGet::new(self.client.clone(), parts)
+    pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
+        TasksGet::new(&self.client, parts)
     }
     #[doc = "Returns a list of tasks."]
-    pub fn list<'a>(&self) -> TasksList<'a> {
-        TasksList::new(self.client.clone())
+    pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
+        TasksList::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Tasks APIs"]
     pub fn tasks(&self) -> Tasks {
-        Tasks::new(self.clone())
+        Tasks::new(&self)
     }
 }

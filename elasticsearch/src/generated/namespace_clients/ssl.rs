@@ -45,19 +45,19 @@ impl SslCertificatesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html)."]
-pub struct SslCertificates<'a> {
-    client: Elasticsearch,
+pub struct SslCertificates<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SslCertificatesParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SslCertificates<'a> {
+impl<'a, 'b> SslCertificates<'a, 'b> {
     #[doc = "Creates a new instance of [SslCertificates]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SslCertificates {
             client,
             parts: SslCertificatesParts::None,
@@ -75,7 +75,7 @@ impl<'a> SslCertificates<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -95,7 +95,7 @@ impl<'a> SslCertificates<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -107,20 +107,20 @@ impl<'a> SslCertificates<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -140,21 +140,21 @@ impl<'a> SslCertificates<'a> {
     }
 }
 #[doc = "Namespace client for Ssl APIs"]
-pub struct Ssl {
-    client: Elasticsearch,
+pub struct Ssl<'a> {
+    client: &'a Elasticsearch,
 }
-impl Ssl {
+impl<'a> Ssl<'a> {
     #[doc = "Creates a new instance of [Ssl]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn certificates<'a>(&self) -> SslCertificates<'a> {
-        SslCertificates::new(self.client.clone())
+    pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
+        SslCertificates::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Ssl APIs"]
     pub fn ssl(&self) -> Ssl {
-        Ssl::new(self.clone())
+        Ssl::new(&self)
     }
 }

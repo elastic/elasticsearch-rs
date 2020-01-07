@@ -130,7 +130,7 @@ impl<'a> RequestBuilder<'a> {
                 {
                     #[serde_with::skip_serializing_none]
                     #[derive(Serialize)]
-                    struct #query_struct_ty<'a> {
+                    struct #query_struct_ty<'b> {
                         #(#struct_fields,)*
                     }
                     let query_params = #query_struct_ty {
@@ -155,7 +155,7 @@ impl<'a> RequestBuilder<'a> {
             let doc = doc(format!("Creates a new instance of [{}]", &builder_name));
             quote!(
                 #doc
-                pub fn new(client: Elasticsearch) -> Self {
+                pub fn new(client: &'a Elasticsearch) -> Self {
                     #builder_ident {
                         client,
                         parts: #enum_ty::None,
@@ -171,7 +171,7 @@ impl<'a> RequestBuilder<'a> {
             ));
             quote!(
                 #doc
-                pub fn new(client: Elasticsearch, parts: #enum_ty) -> Self {
+                pub fn new(client: &'a Elasticsearch, parts: #enum_ty) -> Self {
                     #builder_ident {
                         client,
                         parts,
@@ -210,7 +210,7 @@ impl<'a> RequestBuilder<'a> {
                 syn::parse_type("Vec<T>").unwrap(),
                 quote!(Some(NdBody(body))),
                 syn::FunctionRetTy::Ty(code_gen::ty(
-                    format!("{}<'a, NdBody<T>> where T: Body", &builder_name).as_ref(),
+                    format!("{}<'a, 'b, NdBody<T>> where T: Body", &builder_name).as_ref(),
                 )),
             )
         } else {
@@ -218,7 +218,7 @@ impl<'a> RequestBuilder<'a> {
                 syn::parse_type("T").unwrap(),
                 quote!(Some(body.into())),
                 syn::FunctionRetTy::Ty(code_gen::ty(
-                    format!("{}<'a, JsonBody<T>> where T: Serialize", &builder_name).as_ref(),
+                    format!("{}<'a, 'b, JsonBody<T>> where T: Serialize", &builder_name).as_ref(),
                 )),
             )
         };
@@ -467,13 +467,13 @@ impl<'a> RequestBuilder<'a> {
         let (builder_expr, builder_impl) = {
             if supports_body {
                 (
-                    quote!(#builder_ident<'a, B>),
-                    quote!(impl<'a, B> #builder_ident<'a, B> where B: Body),
+                    quote!(#builder_ident<'a, 'b, B>),
+                    quote!(impl<'a, 'b, B> #builder_ident<'a, 'b, B> where B: Body),
                 )
             } else {
                 (
-                    quote!(#builder_ident<'a>),
-                    quote!(impl<'a> #builder_ident<'a>),
+                    quote!(#builder_ident<'a, 'b>),
+                    quote!(impl<'a, 'b> #builder_ident<'a, 'b>),
                 )
             }
         };
@@ -509,7 +509,7 @@ impl<'a> RequestBuilder<'a> {
             #[derive(Clone, Debug)]
             #[doc = #builder_doc]
             pub struct #builder_expr {
-                client: Elasticsearch,
+                client: &'a Elasticsearch,
                 parts: #enum_ty,
                 #(#fields),*,
             }
@@ -546,10 +546,12 @@ impl<'a> RequestBuilder<'a> {
         let (fn_name, builder_ident_ret) = {
             let i = ident(name);
             let b = builder_ident.clone();
-            if endpoint.supports_body() {
-                (quote!(#i<'a>), quote!(#b<'a, ()>))
-            } else {
-                (quote!(#i<'a>), quote!(#b<'a>))
+
+            match (endpoint.supports_body(), is_root_method) {
+                (true, true) => (quote!(#i<'a, 'b>), quote!(#b<'a, 'b, ()>)),
+                (false, true) => (quote!(#i<'a, 'b>), quote!(#b<'a, 'b>)),
+                (true, false) => (quote!(#i<'b>), quote!(#b<'a, 'b, ()>)),
+                (false, false) => (quote!(#i<'b>), quote!(#b<'a, 'b>)),
             }
         };
 
@@ -560,16 +562,16 @@ impl<'a> RequestBuilder<'a> {
 
         let clone_expr = {
             if is_root_method {
-                quote!(self.clone())
+                quote!(&self)
             } else {
-                quote!(self.client.clone())
+                quote!(&self.client)
             }
         };
 
         if enum_builder.contains_single_parameterless_part() {
             quote!(
                 #method_doc
-                pub fn #fn_name(&self) -> #builder_ident_ret {
+                pub fn #fn_name(&'a self) -> #builder_ident_ret {
                     #builder_ident::new(#clone_expr)
                 }
             )
@@ -577,7 +579,7 @@ impl<'a> RequestBuilder<'a> {
             let (enum_ty, _, _) = enum_builder.clone().build();
             quote!(
                 #method_doc
-                pub fn #fn_name(&self, parts: #enum_ty) -> #builder_ident_ret {
+                pub fn #fn_name(&'a self, parts: #enum_ty) -> #builder_ident_ret {
                     #builder_ident::new(#clone_expr, parts)
                 }
             )
