@@ -81,7 +81,7 @@
 //! # use elasticsearch::Error;
 //! # use elasticsearch::Elasticsearch;
 //! # use url::Url;
-//! # use elasticsearch::http::transport::{Transport};
+//! # use elasticsearch::http::transport::Transport;
 //! # use elasticsearch::auth::Credentials;
 //! # async fn run() -> Result<(), Error> {
 //! let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
@@ -118,6 +118,106 @@
 //! or on a _namespace_ client that groups related APIs, such as [Cat](cat::Cat), which groups the
 //! Cat related APIs. All API functions are `async` and can be `await`ed.
 //!
+//! The following makes an API call to the cat indices API
+//!
+//! ```rust,no_run
+//! # use elasticsearch;
+//! # use elasticsearch::{Elasticsearch, Error, cat::CatIndicesParts};
+//! # use url::Url;
+//! # use elasticsearch::auth::Credentials;
+//! # use serde_json::{json, Value};
+//! # async fn run() -> Result<(), Error> {
+//! # let client = Elasticsearch::default();
+//! let response = client
+//!     .cat()
+//!     .indices(CatIndicesParts::Index(&["*"]))
+//!     .send()
+//!     .await?;
+//!
+//! let response_body = response.read_body::<Value>().await?;
+//! for record in response_body.as_array().unwrap() {
+//!     // print the name of each index
+//!     println!("{}", record["index"].as_str().unwrap());
+//! }
+//! # Ok(())
+//! # }
+//! ```
+//! For APIs that contain parts of the Url path to be provided by the consumer, the Url path
+//! variants are modelled as an `enum`, such as [CatIndicesParts] in the above example, which models
+//! the variants of the [CatIndices] API.
+//!
+//! ### Indexing
+//!
+//! Indexing a single document can be achieved with the index API
+//!
+//! ```rust,no_run
+//! # use elasticsearch;
+//! # use elasticsearch::{Elasticsearch, Error, SearchParts, IndexParts};
+//! # use url::Url;
+//! # use elasticsearch::auth::Credentials;
+//! # use serde_json::{json, Value};
+//! # async fn run() -> Result<(), Error> {
+//! # let client = Elasticsearch::default();
+//! let response = client
+//!     .index(IndexParts::IndexId("tweets", "1"))
+//!     .body(json!({
+//!         "id": 1,
+//!         "user": "kimchy",
+//!         "post_date": "2009-11-15T00:00:00Z",
+//!         "message": "Trying out Elasticsearch, so far so good?"
+//!     }))
+//!     .send()
+//!     .await?;
+//!
+//! let successful = response.status_code().is_success();
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! For indexing multiple documents, the bulk API is a better option, allowing multiple operations
+//! to be sent in one API call
+//!
+//! ```rust,no_run
+//! # use elasticsearch;
+//! # use elasticsearch::{Elasticsearch, Error, IndexParts, BulkParts, http::request::JsonBody};
+//! # use url::Url;
+//! # use elasticsearch::auth::Credentials;
+//! # use serde_json::{json, Value};
+//! # async fn run() -> Result<(), Error> {
+//! # let client = Elasticsearch::default();
+//! let mut body: Vec<JsonBody<_>> = Vec::with_capacity(4);
+//!
+//! // add the first operation and document
+//! body.push(json!({"index": {"_id": "1"}}).into());
+//! body.push(json!({
+//!     "id": 1,
+//!     "user": "kimchy",
+//!     "post_date": "2009-11-15T00:00:00Z",
+//!     "message": "Trying out Elasticsearch, so far so good?"
+//! }).into());
+//!
+//! // add the second operation and document
+//! body.push(json!({"index": {"_id": "2"}}).into());
+//! body.push(json!({
+//!     "id": 2,
+//!     "user": "forloop",
+//!     "post_date": "2020-01-08T00:00:00Z",
+//!     "message": "Bulk indexing with the rust client, yeah!"
+//! }).into());
+//!
+//! let response = client
+//!     .bulk(BulkParts::Index("tweets"))
+//!     .body(body)
+//!     .send()
+//!     .await?;
+//!
+//! let response_body = response.read_body::<Value>().await?;
+//! let successful = response_body["errors"].as_bool().unwrap() == false;
+//! # Ok(())
+//! # }
+//! ```
+//! ### Searching
+//!
 //! The following makes an API call to `tweets/_search` with the json body
 //! `{"query":{"match":{"message":"Elasticsearch"}}}`
 //!
@@ -136,7 +236,7 @@
 //!     .body(json!({
 //!         "query": {
 //!             "match": {
-//!                 "message": "Elasticsearch"
+//!                 "message": "Elasticsearch rust"
 //!             }
 //!         }
 //!     }))
@@ -145,12 +245,57 @@
 //!
 //! let response_body = response.read_body::<Value>().await?;
 //! let took = response_body["took"].as_i64().unwrap();
+//! for hit in response_body["hits"]["hits"].as_array().unwrap() {
+//!     // print the source document
+//!     println!("{:?}", hit["_source"]);
+//! }
 //! # Ok(())
 //! # }
 //! ```
-//! For APIs that contain parts of the Url path to be provided by the consumer, the Url path
-//! variants are modelled as an `enum`, such as [SearchParts] in the above example, which models
-//! the variants of the [Search] API.
+//!
+//! ## Request bodies
+//!
+//! For APIs that expect JSON, the `body` associated function of the API constrains the input
+//! to a type that implements [serde::Serialize] trait. An example of this was the indexing a single
+//! document example above.
+//!
+//! Some APIs expect newline delimited JSON
+//! (NDJSON) however, so the `body` associated for these APIs constrain the input to a vector of
+//! types that implement [Body] trait.  An example of this was the bulk indexing multiple documents
+//! above.
+//!
+//! The [Body] trait represents the body of an API call, allowing for different body implementations.
+//! As well as those to represent JSON and NDJSON, a few other types also have implementations for
+//! [Body], such as byte slice. Whilst these can't be passed to the API functions directly,
+//! [Elasticsearch::send] can be used
+//!
+//! ```rust,no_run
+//! # use elasticsearch;
+//! # use elasticsearch::{Elasticsearch, Error, SearchParts};
+//! # use url::Url;
+//! # use elasticsearch::auth::Credentials;
+//! # use serde_json::{json, Value};
+//! # use http::HeaderMap;
+//! # use elasticsearch::http::Method;
+//! # async fn run() -> Result<(), Error> {
+//! # let client = Elasticsearch::default();
+//! let body = b"{\"query\":{\"match_all\":{}}}";
+//!
+//! let response = client
+//!     .send(Method::Post,
+//!         SearchParts::Index(&["tweets"]).url().as_ref(),
+//!         HeaderMap::new(),
+//!         Option::<&Value>::None,
+//!         Some(body.as_ref())
+//!     )
+//!     .await?;
+//!
+//! # Ok(())
+//! # }
+//! ```
+//!
+//!
+//!
 //!
 
 // also test examples in README

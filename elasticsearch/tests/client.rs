@@ -9,6 +9,7 @@ use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
 use http::header::HeaderName;
+use http::HeaderMap;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
@@ -155,6 +156,26 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
     let response_body = response.read_body::<Value>().await?;
 
     assert_eq!(response_body["hits"]["hits"].as_array().unwrap().len(), 1);
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn byte_slice_body() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let body = b"{\"query\":{\"match_all\":{}}}";
+
+    let response = client
+        .send(elasticsearch::http::Method::Post,
+              SearchParts::None.url().as_ref(),
+            HeaderMap::new(),
+            Option::<&Value>::None,
+              Some(body.as_ref())
+        )
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    let _response_body = response.read_body::<Value>().await?;
 
     Ok(())
 }
