@@ -60,14 +60,12 @@ All API functions are `async` only, and can be `await`ed.
 
 #### Installing
 
-_(Once client is released to crates.io!)_
-
-Add crate name and version to Cargo.toml. Choose the version
-that is comaptible with the version of Elasticsearch you're using
+Add `elasticsearch` crate and version to Cargo.toml. Choose the version
+that is compatible with the version of Elasticsearch you're using
 
 ```toml
 [dependencies]
-elasticsearch = "*"
+elasticsearch = "7.5.1-alpha1"
 ```
 
 #### Connecting

@@ -36,7 +36,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "7.5.0-alpha.1"
+//! elasticsearch = "7.5.1-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
