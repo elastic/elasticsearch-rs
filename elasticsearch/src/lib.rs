@@ -143,8 +143,8 @@
 //! # }
 //! ```
 //! For APIs that contain parts of the Url path to be provided by the consumer, the Url path
-//! variants are modelled as an `enum`, such as [CatIndicesParts] in the above example, which models
-//! the variants of the [CatIndices] API.
+//! variants are modelled as an `enum`, such as [CatIndicesParts](cat::CatIndicesParts) in the above example, which models
+//! the variants of the [CatIndices](cat::CatIndices) API.
 //!
 //! ### Indexing
 //!
@@ -261,12 +261,12 @@
 //!
 //! Some APIs expect newline delimited JSON
 //! (NDJSON) however, so the `body` associated for these APIs constrain the input to a vector of
-//! types that implement [Body] trait.  An example of this was the bulk indexing multiple documents
+//! types that implement [Body](http::request::Body) trait.  An example of this was the bulk indexing multiple documents
 //! above.
 //!
-//! The [Body] trait represents the body of an API call, allowing for different body implementations.
+//! The [Body](http::request::Body) trait represents the body of an API call, allowing for different body implementations.
 //! As well as those to represent JSON and NDJSON, a few other types also have implementations for
-//! [Body], such as byte slice. Whilst these can't be passed to the API functions directly,
+//! [Body](http::request::Body), such as byte slice. Whilst these can't be passed to the API functions directly,
 //! [Elasticsearch::send] can be used
 //!
 //! ```rust,no_run
