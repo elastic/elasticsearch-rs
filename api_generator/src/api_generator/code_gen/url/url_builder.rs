@@ -1,5 +1,19 @@
-// Parts modified from https://github.com/elastic-rs/elastic
-// Licensed under Apache 2.0: https://github.com/elastic-rs/elastic/blob/51298dd64278f34d2db911bd1a35eb757c336198/LICENSE-APACHE
+/* Some types from or based on types from elastic: https://github.com/elastic-rs/elastic
+ *
+ * Licensed under Apache 2.0: https://github.com/elastic-rs/elastic/blob/51298dd64278f34d2db911bd1a35eb757c336198/LICENSE-APACHE
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 use crate::api_generator::code_gen::*;
 use crate::api_generator::{Path, Type, TypeKind};
@@ -138,7 +152,7 @@ impl<'a> UrlBuilder<'a> {
         }
     }
 
-    /// Build an allocated url from the path literals and params.
+    /// Build the AST for an allocated url from the path literals and params.
     fn build_owned(self) -> syn::Block {
         let lit_len_expr = Self::literal_length_expr(&self.path);
 
@@ -164,7 +178,7 @@ impl<'a> UrlBuilder<'a> {
         syn::Block { stmts }
     }
 
-    /// Build a literal path
+    /// Build the AST for a literal path
     fn build_borrowed_literal(self) -> syn::Expr {
         let path: Vec<&'a str> = self
             .path
