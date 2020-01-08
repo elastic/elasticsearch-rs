@@ -178,7 +178,7 @@ impl<'a> EnumBuilder<'a> {
 
         let (enum_ty, generics) = {
             if self.has_lifetime {
-                (ty_a(self.ident.as_ref()), generics_a())
+                (ty_b(self.ident.as_ref()), generics_b())
             } else {
                 (ty(self.ident.as_ref()), generics_none())
             }
@@ -365,25 +365,25 @@ mod tests {
 
         let (enum_ty, enum_decl, enum_impl) = EnumBuilder::from(&endpoint).build();
 
-        assert_eq!(ty_a("SearchParts"), enum_ty);
+        assert_eq!(ty_b("SearchParts"), enum_ty);
 
         let expected_decl = quote!(
             #[derive(Debug, Clone, PartialEq)]
             #[doc = "API parts for the Search API"]
-            pub enum SearchParts<'a> {
+            pub enum SearchParts<'b> {
                 #[doc = "No parts"]
                 None,
                 #[doc = "Index"]
-                Index(&'a [&'a str]),
+                Index(&'b [&'b str]),
                 #[doc = "Index and Type"]
-                IndexType(&'a [&'a str], &'a [&'a str]),
+                IndexType(&'b [&'b str], &'b [&'b str]),
             }
         );
 
         ast_eq(expected_decl, enum_decl);
 
         let expected_impl = quote!(
-            impl<'a> SearchParts<'a> {
+            impl<'b> SearchParts<'b> {
                 #[doc = "Builds a relative URL path to the Search API"]
                 pub fn url(self) -> Cow<'static, str> {
                     match self {

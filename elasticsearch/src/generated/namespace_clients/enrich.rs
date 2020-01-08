@@ -31,11 +31,11 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Delete Policy API"]
-pub enum EnrichDeletePolicyParts<'a> {
+pub enum EnrichDeletePolicyParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> EnrichDeletePolicyParts<'a> {
+impl<'b> EnrichDeletePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Delete Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -50,19 +50,19 @@ impl<'a> EnrichDeletePolicyParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-delete-policy.html)."]
-pub struct EnrichDeletePolicy<'a> {
-    client: Elasticsearch,
-    parts: EnrichDeletePolicyParts<'a>,
+pub struct EnrichDeletePolicy<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: EnrichDeletePolicyParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> EnrichDeletePolicy<'a> {
+impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichDeletePolicy] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: EnrichDeletePolicyParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: EnrichDeletePolicyParts<'b>) -> Self {
         EnrichDeletePolicy {
             client,
             parts,
@@ -80,7 +80,7 @@ impl<'a> EnrichDeletePolicy<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -100,7 +100,7 @@ impl<'a> EnrichDeletePolicy<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -112,20 +112,20 @@ impl<'a> EnrichDeletePolicy<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -146,11 +146,11 @@ impl<'a> EnrichDeletePolicy<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Execute Policy API"]
-pub enum EnrichExecutePolicyParts<'a> {
+pub enum EnrichExecutePolicyParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> EnrichExecutePolicyParts<'a> {
+impl<'b> EnrichExecutePolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Execute Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -166,24 +166,24 @@ impl<'a> EnrichExecutePolicyParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-execute-policy.html)."]
-pub struct EnrichExecutePolicy<'a, B> {
-    client: Elasticsearch,
-    parts: EnrichExecutePolicyParts<'a>,
+pub struct EnrichExecutePolicy<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: EnrichExecutePolicyParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
     wait_for_completion: Option<bool>,
 }
-impl<'a, B> EnrichExecutePolicy<'a, B>
+impl<'a, 'b, B> EnrichExecutePolicy<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [EnrichExecutePolicy] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: EnrichExecutePolicyParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: EnrichExecutePolicyParts<'b>) -> Self {
         EnrichExecutePolicy {
             client,
             parts,
@@ -198,7 +198,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> EnrichExecutePolicy<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> EnrichExecutePolicy<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -221,7 +221,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -241,7 +241,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -258,20 +258,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "wait_for_completion")]
                 wait_for_completion: Option<bool>,
             }
@@ -295,13 +295,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Get Policy API"]
-pub enum EnrichGetPolicyParts<'a> {
+pub enum EnrichGetPolicyParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> EnrichGetPolicyParts<'a> {
+impl<'b> EnrichGetPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Get Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -317,19 +317,19 @@ impl<'a> EnrichGetPolicyParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-get-policy.html)."]
-pub struct EnrichGetPolicy<'a> {
-    client: Elasticsearch,
-    parts: EnrichGetPolicyParts<'a>,
+pub struct EnrichGetPolicy<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: EnrichGetPolicyParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> EnrichGetPolicy<'a> {
+impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichGetPolicy] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: EnrichGetPolicyParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: EnrichGetPolicyParts<'b>) -> Self {
         EnrichGetPolicy {
             client,
             parts,
@@ -347,7 +347,7 @@ impl<'a> EnrichGetPolicy<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -367,7 +367,7 @@ impl<'a> EnrichGetPolicy<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -379,20 +379,20 @@ impl<'a> EnrichGetPolicy<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -413,11 +413,11 @@ impl<'a> EnrichGetPolicy<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Enrich Put Policy API"]
-pub enum EnrichPutPolicyParts<'a> {
+pub enum EnrichPutPolicyParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> EnrichPutPolicyParts<'a> {
+impl<'b> EnrichPutPolicyParts<'b> {
     #[doc = "Builds a relative URL path to the Enrich Put Policy API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -432,23 +432,23 @@ impl<'a> EnrichPutPolicyParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-put-policy.html)."]
-pub struct EnrichPutPolicy<'a, B> {
-    client: Elasticsearch,
-    parts: EnrichPutPolicyParts<'a>,
+pub struct EnrichPutPolicy<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: EnrichPutPolicyParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> EnrichPutPolicy<'a, B>
+impl<'a, 'b, B> EnrichPutPolicy<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [EnrichPutPolicy] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: EnrichPutPolicyParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: EnrichPutPolicyParts<'b>) -> Self {
         EnrichPutPolicy {
             client,
             parts,
@@ -462,7 +462,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> EnrichPutPolicy<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> EnrichPutPolicy<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -484,7 +484,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -504,7 +504,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -516,20 +516,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -564,19 +564,19 @@ impl EnrichStatsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-stats.html)."]
-pub struct EnrichStats<'a> {
-    client: Elasticsearch,
+pub struct EnrichStats<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: EnrichStatsParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> EnrichStats<'a> {
+impl<'a, 'b> EnrichStats<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichStats]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         EnrichStats {
             client,
             parts: EnrichStatsParts::None,
@@ -594,7 +594,7 @@ impl<'a> EnrichStats<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -614,7 +614,7 @@ impl<'a> EnrichStats<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -626,20 +626,20 @@ impl<'a> EnrichStats<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -659,36 +659,42 @@ impl<'a> EnrichStats<'a> {
     }
 }
 #[doc = "Namespace client for Enrich APIs"]
-pub struct Enrich {
-    client: Elasticsearch,
+pub struct Enrich<'a> {
+    client: &'a Elasticsearch,
 }
-impl Enrich {
+impl<'a> Enrich<'a> {
     #[doc = "Creates a new instance of [Enrich]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn delete_policy<'a>(&self, parts: EnrichDeletePolicyParts<'a>) -> EnrichDeletePolicy<'a> {
-        EnrichDeletePolicy::new(self.client.clone(), parts)
+    pub fn delete_policy<'b>(
+        &'a self,
+        parts: EnrichDeletePolicyParts<'b>,
+    ) -> EnrichDeletePolicy<'a, 'b> {
+        EnrichDeletePolicy::new(&self.client, parts)
     }
-    pub fn execute_policy<'a>(
-        &self,
-        parts: EnrichExecutePolicyParts<'a>,
-    ) -> EnrichExecutePolicy<'a, ()> {
-        EnrichExecutePolicy::new(self.client.clone(), parts)
+    pub fn execute_policy<'b>(
+        &'a self,
+        parts: EnrichExecutePolicyParts<'b>,
+    ) -> EnrichExecutePolicy<'a, 'b, ()> {
+        EnrichExecutePolicy::new(&self.client, parts)
     }
-    pub fn get_policy<'a>(&self, parts: EnrichGetPolicyParts<'a>) -> EnrichGetPolicy<'a> {
-        EnrichGetPolicy::new(self.client.clone(), parts)
+    pub fn get_policy<'b>(&'a self, parts: EnrichGetPolicyParts<'b>) -> EnrichGetPolicy<'a, 'b> {
+        EnrichGetPolicy::new(&self.client, parts)
     }
-    pub fn put_policy<'a>(&self, parts: EnrichPutPolicyParts<'a>) -> EnrichPutPolicy<'a, ()> {
-        EnrichPutPolicy::new(self.client.clone(), parts)
+    pub fn put_policy<'b>(
+        &'a self,
+        parts: EnrichPutPolicyParts<'b>,
+    ) -> EnrichPutPolicy<'a, 'b, ()> {
+        EnrichPutPolicy::new(&self.client, parts)
     }
-    pub fn stats<'a>(&self) -> EnrichStats<'a> {
-        EnrichStats::new(self.client.clone())
+    pub fn stats<'b>(&'a self) -> EnrichStats<'a, 'b> {
+        EnrichStats::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Enrich APIs"]
     pub fn enrich(&self) -> Enrich {
-        Enrich::new(self.clone())
+        Enrich::new(&self)
     }
 }

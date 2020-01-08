@@ -45,20 +45,20 @@ impl XpackInfoParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/info-api.html)."]
-pub struct XpackInfo<'a> {
-    client: Elasticsearch,
+pub struct XpackInfo<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: XpackInfoParts,
-    categories: Option<&'a [&'a str]>,
+    categories: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> XpackInfo<'a> {
+impl<'a, 'b> XpackInfo<'a, 'b> {
     #[doc = "Creates a new instance of [XpackInfo]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         XpackInfo {
             client,
             parts: XpackInfoParts::None,
@@ -72,7 +72,7 @@ impl<'a> XpackInfo<'a> {
         }
     }
     #[doc = "Comma-separated list of info categories. Can be any of: build, license, features"]
-    pub fn categories(mut self, categories: &'a [&'a str]) -> Self {
+    pub fn categories(mut self, categories: &'b [&'b str]) -> Self {
         self.categories = Some(categories);
         self
     }
@@ -82,7 +82,7 @@ impl<'a> XpackInfo<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -102,7 +102,7 @@ impl<'a> XpackInfo<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -114,25 +114,25 @@ impl<'a> XpackInfo<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(
                     rename = "categories",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                categories: Option<&'a [&'a str]>,
+                categories: Option<&'b [&'b str]>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 categories: self.categories,
@@ -168,20 +168,20 @@ impl XpackUsageParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Xpack Usage API"]
-pub struct XpackUsage<'a> {
-    client: Elasticsearch,
+pub struct XpackUsage<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: XpackUsageParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    master_timeout: Option<&'a str>,
+    master_timeout: Option<&'b str>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> XpackUsage<'a> {
+impl<'a, 'b> XpackUsage<'a, 'b> {
     #[doc = "Creates a new instance of [XpackUsage]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         XpackUsage {
             client,
             parts: XpackUsageParts::None,
@@ -200,7 +200,7 @@ impl<'a> XpackUsage<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -215,7 +215,7 @@ impl<'a> XpackUsage<'a> {
         self
     }
     #[doc = "Specify timeout for watch write operation"]
-    pub fn master_timeout(mut self, master_timeout: &'a str) -> Self {
+    pub fn master_timeout(mut self, master_timeout: &'b str) -> Self {
         self.master_timeout = Some(master_timeout);
         self
     }
@@ -225,7 +225,7 @@ impl<'a> XpackUsage<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -237,22 +237,22 @@ impl<'a> XpackUsage<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "master_timeout")]
-                master_timeout: Option<&'a str>,
+                master_timeout: Option<&'b str>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -273,24 +273,24 @@ impl<'a> XpackUsage<'a> {
     }
 }
 #[doc = "Namespace client for X-Pack APIs"]
-pub struct Xpack {
-    client: Elasticsearch,
+pub struct Xpack<'a> {
+    client: &'a Elasticsearch,
 }
-impl Xpack {
+impl<'a> Xpack<'a> {
     #[doc = "Creates a new instance of [Xpack]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn info<'a>(&self) -> XpackInfo<'a> {
-        XpackInfo::new(self.client.clone())
+    pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
+        XpackInfo::new(&self.client)
     }
-    pub fn usage<'a>(&self) -> XpackUsage<'a> {
-        XpackUsage::new(self.client.clone())
+    pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
+        XpackUsage::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for X-Pack APIs"]
     pub fn xpack(&self) -> Xpack {
-        Xpack::new(self.clone())
+        Xpack::new(&self)
     }
 }

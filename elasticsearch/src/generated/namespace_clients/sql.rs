@@ -45,23 +45,23 @@ impl SqlClearCursorParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Sql Clear Cursor API"]
-pub struct SqlClearCursor<'a, B> {
-    client: Elasticsearch,
+pub struct SqlClearCursor<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SqlClearCursorParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SqlClearCursor<'a, B>
+impl<'a, 'b, B> SqlClearCursor<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SqlClearCursor]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SqlClearCursor {
             client,
             parts: SqlClearCursorParts::None,
@@ -75,7 +75,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlClearCursor<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SqlClearCursor<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -97,7 +97,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -117,7 +117,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -129,20 +129,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -177,24 +177,24 @@ impl SqlQueryParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Sql Query API"]
-pub struct SqlQuery<'a, B> {
-    client: Elasticsearch,
+pub struct SqlQuery<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SqlQueryParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
-    format: Option<&'a str>,
+    filter_path: Option<&'b [&'b str]>,
+    format: Option<&'b str>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SqlQuery<'a, B>
+impl<'a, 'b, B> SqlQuery<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SqlQuery]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SqlQuery {
             client,
             parts: SqlQueryParts::None,
@@ -209,7 +209,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlQuery<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SqlQuery<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -232,12 +232,12 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
     #[doc = "a short version of the Accept header, e.g. json, yaml"]
-    pub fn format(mut self, format: &'a str) -> Self {
+    pub fn format(mut self, format: &'b str) -> Self {
         self.format = Some(format);
         self
     }
@@ -257,7 +257,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -272,22 +272,22 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "format")]
-                format: Option<&'a str>,
+                format: Option<&'b str>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -323,23 +323,23 @@ impl SqlTranslateParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Sql Translate API"]
-pub struct SqlTranslate<'a, B> {
-    client: Elasticsearch,
+pub struct SqlTranslate<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SqlTranslateParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SqlTranslate<'a, B>
+impl<'a, 'b, B> SqlTranslate<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SqlTranslate]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SqlTranslate {
             client,
             parts: SqlTranslateParts::None,
@@ -353,7 +353,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SqlTranslate<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SqlTranslate<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -375,7 +375,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -395,7 +395,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -410,20 +410,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -443,27 +443,27 @@ where
     }
 }
 #[doc = "Namespace client for Sql APIs"]
-pub struct Sql {
-    client: Elasticsearch,
+pub struct Sql<'a> {
+    client: &'a Elasticsearch,
 }
-impl Sql {
+impl<'a> Sql<'a> {
     #[doc = "Creates a new instance of [Sql]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn clear_cursor<'a>(&self) -> SqlClearCursor<'a, ()> {
-        SqlClearCursor::new(self.client.clone())
+    pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
+        SqlClearCursor::new(&self.client)
     }
-    pub fn query<'a>(&self) -> SqlQuery<'a, ()> {
-        SqlQuery::new(self.client.clone())
+    pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
+        SqlQuery::new(&self.client)
     }
-    pub fn translate<'a>(&self) -> SqlTranslate<'a, ()> {
-        SqlTranslate::new(self.client.clone())
+    pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
+        SqlTranslate::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Sql APIs"]
     pub fn sql(&self) -> Sql {
-        Sql::new(self.clone())
+        Sql::new(&self)
     }
 }

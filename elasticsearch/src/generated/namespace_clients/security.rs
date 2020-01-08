@@ -45,19 +45,19 @@ impl SecurityAuthenticateParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-authenticate.html)."]
-pub struct SecurityAuthenticate<'a> {
-    client: Elasticsearch,
+pub struct SecurityAuthenticate<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SecurityAuthenticateParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityAuthenticate<'a> {
+impl<'a, 'b> SecurityAuthenticate<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityAuthenticate]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityAuthenticate {
             client,
             parts: SecurityAuthenticateParts::None,
@@ -75,7 +75,7 @@ impl<'a> SecurityAuthenticate<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -95,7 +95,7 @@ impl<'a> SecurityAuthenticate<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -107,20 +107,20 @@ impl<'a> SecurityAuthenticate<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -141,13 +141,13 @@ impl<'a> SecurityAuthenticate<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Change Password API"]
-pub enum SecurityChangePasswordParts<'a> {
+pub enum SecurityChangePasswordParts<'b> {
     #[doc = "Username"]
-    Username(&'a str),
+    Username(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> SecurityChangePasswordParts<'a> {
+impl<'b> SecurityChangePasswordParts<'b> {
     #[doc = "Builds a relative URL path to the Security Change Password API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -164,24 +164,24 @@ impl<'a> SecurityChangePasswordParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-change-password.html)."]
-pub struct SecurityChangePassword<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityChangePasswordParts<'a>,
+pub struct SecurityChangePassword<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityChangePasswordParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityChangePassword<'a, B>
+impl<'a, 'b, B> SecurityChangePassword<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityChangePassword] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityChangePasswordParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityChangePasswordParts<'b>) -> Self {
         SecurityChangePassword {
             client,
             parts,
@@ -196,7 +196,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityChangePassword<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityChangePassword<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -219,7 +219,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -244,7 +244,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -256,14 +256,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -271,7 +271,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -293,11 +293,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Realms API"]
-pub enum SecurityClearCachedRealmsParts<'a> {
+pub enum SecurityClearCachedRealmsParts<'b> {
     #[doc = "Realms"]
-    Realms(&'a [&'a str]),
+    Realms(&'b [&'b str]),
 }
-impl<'a> SecurityClearCachedRealmsParts<'a> {
+impl<'b> SecurityClearCachedRealmsParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Realms API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -314,24 +314,24 @@ impl<'a> SecurityClearCachedRealmsParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-cache.html)."]
-pub struct SecurityClearCachedRealms<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityClearCachedRealmsParts<'a>,
+pub struct SecurityClearCachedRealms<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityClearCachedRealmsParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
-    usernames: Option<&'a [&'a str]>,
+    source: Option<&'b str>,
+    usernames: Option<&'b [&'b str]>,
 }
-impl<'a, B> SecurityClearCachedRealms<'a, B>
+impl<'a, 'b, B> SecurityClearCachedRealms<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRealms] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRealmsParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRealmsParts<'b>) -> Self {
         SecurityClearCachedRealms {
             client,
             parts,
@@ -346,7 +346,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRealms<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -369,7 +369,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -389,12 +389,12 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "Comma-separated list of usernames to clear from the cache"]
-    pub fn usernames(mut self, usernames: &'a [&'a str]) -> Self {
+    pub fn usernames(mut self, usernames: &'b [&'b str]) -> Self {
         self.usernames = Some(usernames);
         self
     }
@@ -406,25 +406,25 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(
                     rename = "usernames",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                usernames: Option<&'a [&'a str]>,
+                usernames: Option<&'b [&'b str]>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -446,11 +446,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Clear Cached Roles API"]
-pub enum SecurityClearCachedRolesParts<'a> {
+pub enum SecurityClearCachedRolesParts<'b> {
     #[doc = "Name"]
-    Name(&'a [&'a str]),
+    Name(&'b [&'b str]),
 }
-impl<'a> SecurityClearCachedRolesParts<'a> {
+impl<'b> SecurityClearCachedRolesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Clear Cached Roles API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -467,23 +467,23 @@ impl<'a> SecurityClearCachedRolesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-clear-role-cache.html)."]
-pub struct SecurityClearCachedRoles<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityClearCachedRolesParts<'a>,
+pub struct SecurityClearCachedRoles<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityClearCachedRolesParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityClearCachedRoles<'a, B>
+impl<'a, 'b, B> SecurityClearCachedRoles<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRoles] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityClearCachedRolesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRolesParts<'b>) -> Self {
         SecurityClearCachedRoles {
             client,
             parts,
@@ -497,7 +497,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityClearCachedRoles<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -519,7 +519,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -539,7 +539,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -551,20 +551,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -599,24 +599,24 @@ impl SecurityCreateApiKeyParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html)."]
-pub struct SecurityCreateApiKey<'a, B> {
-    client: Elasticsearch,
+pub struct SecurityCreateApiKey<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SecurityCreateApiKeyParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityCreateApiKey<'a, B>
+impl<'a, 'b, B> SecurityCreateApiKey<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityCreateApiKey]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityCreateApiKey {
             client,
             parts: SecurityCreateApiKeyParts::None,
@@ -631,7 +631,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityCreateApiKey<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -654,7 +654,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -679,7 +679,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -691,14 +691,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -706,7 +706,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -728,11 +728,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Privileges API"]
-pub enum SecurityDeletePrivilegesParts<'a> {
+pub enum SecurityDeletePrivilegesParts<'b> {
     #[doc = "Application and Name"]
-    ApplicationName(&'a str, &'a str),
+    ApplicationName(&'b str, &'b str),
 }
-impl<'a> SecurityDeletePrivilegesParts<'a> {
+impl<'b> SecurityDeletePrivilegesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Privileges API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -749,20 +749,20 @@ impl<'a> SecurityDeletePrivilegesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Security Delete Privileges API"]
-pub struct SecurityDeletePrivileges<'a> {
-    client: Elasticsearch,
-    parts: SecurityDeletePrivilegesParts<'a>,
+pub struct SecurityDeletePrivileges<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityDeletePrivilegesParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityDeletePrivileges<'a> {
+impl<'a, 'b> SecurityDeletePrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeletePrivileges] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityDeletePrivilegesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityDeletePrivilegesParts<'b>) -> Self {
         SecurityDeletePrivileges {
             client,
             parts,
@@ -781,7 +781,7 @@ impl<'a> SecurityDeletePrivileges<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -806,7 +806,7 @@ impl<'a> SecurityDeletePrivileges<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -818,14 +818,14 @@ impl<'a> SecurityDeletePrivileges<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -833,7 +833,7 @@ impl<'a> SecurityDeletePrivileges<'a> {
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -855,11 +855,11 @@ impl<'a> SecurityDeletePrivileges<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Role API"]
-pub enum SecurityDeleteRoleParts<'a> {
+pub enum SecurityDeleteRoleParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> SecurityDeleteRoleParts<'a> {
+impl<'b> SecurityDeleteRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -874,20 +874,20 @@ impl<'a> SecurityDeleteRoleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role.html)."]
-pub struct SecurityDeleteRole<'a> {
-    client: Elasticsearch,
-    parts: SecurityDeleteRoleParts<'a>,
+pub struct SecurityDeleteRole<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityDeleteRoleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityDeleteRole<'a> {
+impl<'a, 'b> SecurityDeleteRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRole] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleParts<'b>) -> Self {
         SecurityDeleteRole {
             client,
             parts,
@@ -906,7 +906,7 @@ impl<'a> SecurityDeleteRole<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -931,7 +931,7 @@ impl<'a> SecurityDeleteRole<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -943,14 +943,14 @@ impl<'a> SecurityDeleteRole<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -958,7 +958,7 @@ impl<'a> SecurityDeleteRole<'a> {
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -980,11 +980,11 @@ impl<'a> SecurityDeleteRole<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete Role Mapping API"]
-pub enum SecurityDeleteRoleMappingParts<'a> {
+pub enum SecurityDeleteRoleMappingParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> SecurityDeleteRoleMappingParts<'a> {
+impl<'b> SecurityDeleteRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -999,20 +999,20 @@ impl<'a> SecurityDeleteRoleMappingParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-role-mapping.html)."]
-pub struct SecurityDeleteRoleMapping<'a> {
-    client: Elasticsearch,
-    parts: SecurityDeleteRoleMappingParts<'a>,
+pub struct SecurityDeleteRoleMapping<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityDeleteRoleMappingParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityDeleteRoleMapping<'a> {
+impl<'a, 'b> SecurityDeleteRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRoleMapping] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteRoleMappingParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleMappingParts<'b>) -> Self {
         SecurityDeleteRoleMapping {
             client,
             parts,
@@ -1031,7 +1031,7 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1056,7 +1056,7 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1068,14 +1068,14 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -1083,7 +1083,7 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1105,11 +1105,11 @@ impl<'a> SecurityDeleteRoleMapping<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Delete User API"]
-pub enum SecurityDeleteUserParts<'a> {
+pub enum SecurityDeleteUserParts<'b> {
     #[doc = "Username"]
-    Username(&'a str),
+    Username(&'b str),
 }
-impl<'a> SecurityDeleteUserParts<'a> {
+impl<'b> SecurityDeleteUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Delete User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1124,20 +1124,20 @@ impl<'a> SecurityDeleteUserParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-delete-user.html)."]
-pub struct SecurityDeleteUser<'a> {
-    client: Elasticsearch,
-    parts: SecurityDeleteUserParts<'a>,
+pub struct SecurityDeleteUser<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityDeleteUserParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityDeleteUser<'a> {
+impl<'a, 'b> SecurityDeleteUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteUser] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityDeleteUserParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteUserParts<'b>) -> Self {
         SecurityDeleteUser {
             client,
             parts,
@@ -1156,7 +1156,7 @@ impl<'a> SecurityDeleteUser<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1181,7 +1181,7 @@ impl<'a> SecurityDeleteUser<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1193,14 +1193,14 @@ impl<'a> SecurityDeleteUser<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -1208,7 +1208,7 @@ impl<'a> SecurityDeleteUser<'a> {
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1230,11 +1230,11 @@ impl<'a> SecurityDeleteUser<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Disable User API"]
-pub enum SecurityDisableUserParts<'a> {
+pub enum SecurityDisableUserParts<'b> {
     #[doc = "Username"]
-    Username(&'a str),
+    Username(&'b str),
 }
-impl<'a> SecurityDisableUserParts<'a> {
+impl<'b> SecurityDisableUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Disable User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1250,24 +1250,24 @@ impl<'a> SecurityDisableUserParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-disable-user.html)."]
-pub struct SecurityDisableUser<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityDisableUserParts<'a>,
+pub struct SecurityDisableUser<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityDisableUserParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityDisableUser<'a, B>
+impl<'a, 'b, B> SecurityDisableUser<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityDisableUser] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityDisableUserParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityDisableUserParts<'b>) -> Self {
         SecurityDisableUser {
             client,
             parts,
@@ -1282,7 +1282,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityDisableUser<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityDisableUser<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1305,7 +1305,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1330,7 +1330,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1342,14 +1342,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -1357,7 +1357,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1379,11 +1379,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Enable User API"]
-pub enum SecurityEnableUserParts<'a> {
+pub enum SecurityEnableUserParts<'b> {
     #[doc = "Username"]
-    Username(&'a str),
+    Username(&'b str),
 }
-impl<'a> SecurityEnableUserParts<'a> {
+impl<'b> SecurityEnableUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Enable User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1399,24 +1399,24 @@ impl<'a> SecurityEnableUserParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-enable-user.html)."]
-pub struct SecurityEnableUser<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityEnableUserParts<'a>,
+pub struct SecurityEnableUser<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityEnableUserParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityEnableUser<'a, B>
+impl<'a, 'b, B> SecurityEnableUser<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityEnableUser] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityEnableUserParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityEnableUserParts<'b>) -> Self {
         SecurityEnableUser {
             client,
             parts,
@@ -1431,7 +1431,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityEnableUser<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityEnableUser<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1454,7 +1454,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1479,7 +1479,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1491,14 +1491,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -1506,7 +1506,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1542,24 +1542,24 @@ impl SecurityGetApiKeyParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html)."]
-pub struct SecurityGetApiKey<'a> {
-    client: Elasticsearch,
+pub struct SecurityGetApiKey<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SecurityGetApiKeyParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
-    id: Option<&'a str>,
-    name: Option<&'a str>,
+    id: Option<&'b str>,
+    name: Option<&'b str>,
     owner: Option<bool>,
     pretty: Option<bool>,
-    realm_name: Option<&'a str>,
-    source: Option<&'a str>,
-    username: Option<&'a str>,
+    realm_name: Option<&'b str>,
+    source: Option<&'b str>,
+    username: Option<&'b str>,
 }
-impl<'a> SecurityGetApiKey<'a> {
+impl<'a, 'b> SecurityGetApiKey<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetApiKey]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityGetApiKey {
             client,
             parts: SecurityGetApiKeyParts::None,
@@ -1582,7 +1582,7 @@ impl<'a> SecurityGetApiKey<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1597,12 +1597,12 @@ impl<'a> SecurityGetApiKey<'a> {
         self
     }
     #[doc = "API key id of the API key to be retrieved"]
-    pub fn id(mut self, id: &'a str) -> Self {
+    pub fn id(mut self, id: &'b str) -> Self {
         self.id = Some(id);
         self
     }
     #[doc = "API key name of the API key to be retrieved"]
-    pub fn name(mut self, name: &'a str) -> Self {
+    pub fn name(mut self, name: &'b str) -> Self {
         self.name = Some(name);
         self
     }
@@ -1617,17 +1617,17 @@ impl<'a> SecurityGetApiKey<'a> {
         self
     }
     #[doc = "realm name of the user who created this API key to be retrieved"]
-    pub fn realm_name(mut self, realm_name: &'a str) -> Self {
+    pub fn realm_name(mut self, realm_name: &'b str) -> Self {
         self.realm_name = Some(realm_name);
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
     #[doc = "user name of the user who created this API key to be retrieved"]
-    pub fn username(mut self, username: &'a str) -> Self {
+    pub fn username(mut self, username: &'b str) -> Self {
         self.username = Some(username);
         self
     }
@@ -1639,30 +1639,30 @@ impl<'a> SecurityGetApiKey<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "id")]
-                id: Option<&'a str>,
+                id: Option<&'b str>,
                 #[serde(rename = "name")]
-                name: Option<&'a str>,
+                name: Option<&'b str>,
                 #[serde(rename = "owner")]
                 owner: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "realm_name")]
-                realm_name: Option<&'a str>,
+                realm_name: Option<&'b str>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
                 #[serde(rename = "username")]
-                username: Option<&'a str>,
+                username: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1702,19 +1702,19 @@ impl SecurityGetBuiltinPrivilegesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-builtin-privileges.html)."]
-pub struct SecurityGetBuiltinPrivileges<'a> {
-    client: Elasticsearch,
+pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetBuiltinPrivileges<'a> {
+impl<'a, 'b> SecurityGetBuiltinPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetBuiltinPrivileges]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityGetBuiltinPrivileges {
             client,
             parts: SecurityGetBuiltinPrivilegesParts::None,
@@ -1732,7 +1732,7 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1752,7 +1752,7 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1764,20 +1764,20 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1798,15 +1798,15 @@ impl<'a> SecurityGetBuiltinPrivileges<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Privileges API"]
-pub enum SecurityGetPrivilegesParts<'a> {
+pub enum SecurityGetPrivilegesParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "Application"]
-    Application(&'a str),
+    Application(&'b str),
     #[doc = "Application and Name"]
-    ApplicationName(&'a str, &'a str),
+    ApplicationName(&'b str, &'b str),
 }
-impl<'a> SecurityGetPrivilegesParts<'a> {
+impl<'b> SecurityGetPrivilegesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Privileges API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1830,19 +1830,19 @@ impl<'a> SecurityGetPrivilegesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
-pub struct SecurityGetPrivileges<'a> {
-    client: Elasticsearch,
-    parts: SecurityGetPrivilegesParts<'a>,
+pub struct SecurityGetPrivileges<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityGetPrivilegesParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetPrivileges<'a> {
+impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetPrivileges] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityGetPrivilegesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityGetPrivilegesParts<'b>) -> Self {
         SecurityGetPrivileges {
             client,
             parts,
@@ -1860,7 +1860,7 @@ impl<'a> SecurityGetPrivileges<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1880,7 +1880,7 @@ impl<'a> SecurityGetPrivileges<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1892,20 +1892,20 @@ impl<'a> SecurityGetPrivileges<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1926,13 +1926,13 @@ impl<'a> SecurityGetPrivileges<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Role API"]
-pub enum SecurityGetRoleParts<'a> {
+pub enum SecurityGetRoleParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> SecurityGetRoleParts<'a> {
+impl<'b> SecurityGetRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -1948,19 +1948,19 @@ impl<'a> SecurityGetRoleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role.html)."]
-pub struct SecurityGetRole<'a> {
-    client: Elasticsearch,
-    parts: SecurityGetRoleParts<'a>,
+pub struct SecurityGetRole<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityGetRoleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetRole<'a> {
+impl<'a, 'b> SecurityGetRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRole] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleParts<'b>) -> Self {
         SecurityGetRole {
             client,
             parts,
@@ -1978,7 +1978,7 @@ impl<'a> SecurityGetRole<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1998,7 +1998,7 @@ impl<'a> SecurityGetRole<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2010,20 +2010,20 @@ impl<'a> SecurityGetRole<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2044,13 +2044,13 @@ impl<'a> SecurityGetRole<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get Role Mapping API"]
-pub enum SecurityGetRoleMappingParts<'a> {
+pub enum SecurityGetRoleMappingParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
     #[doc = "No parts"]
     None,
 }
-impl<'a> SecurityGetRoleMappingParts<'a> {
+impl<'b> SecurityGetRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2066,19 +2066,19 @@ impl<'a> SecurityGetRoleMappingParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html)."]
-pub struct SecurityGetRoleMapping<'a> {
-    client: Elasticsearch,
-    parts: SecurityGetRoleMappingParts<'a>,
+pub struct SecurityGetRoleMapping<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityGetRoleMappingParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetRoleMapping<'a> {
+impl<'a, 'b> SecurityGetRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRoleMapping] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityGetRoleMappingParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleMappingParts<'b>) -> Self {
         SecurityGetRoleMapping {
             client,
             parts,
@@ -2096,7 +2096,7 @@ impl<'a> SecurityGetRoleMapping<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2116,7 +2116,7 @@ impl<'a> SecurityGetRoleMapping<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2128,20 +2128,20 @@ impl<'a> SecurityGetRoleMapping<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2176,23 +2176,23 @@ impl SecurityGetTokenParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-token.html)."]
-pub struct SecurityGetToken<'a, B> {
-    client: Elasticsearch,
+pub struct SecurityGetToken<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SecurityGetTokenParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityGetToken<'a, B>
+impl<'a, 'b, B> SecurityGetToken<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityGetToken]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityGetToken {
             client,
             parts: SecurityGetTokenParts::None,
@@ -2206,7 +2206,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityGetToken<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityGetToken<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2228,7 +2228,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2248,7 +2248,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2260,20 +2260,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2294,13 +2294,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Get User API"]
-pub enum SecurityGetUserParts<'a> {
+pub enum SecurityGetUserParts<'b> {
     #[doc = "Username"]
-    Username(&'a [&'a str]),
+    Username(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
-impl<'a> SecurityGetUserParts<'a> {
+impl<'b> SecurityGetUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Get User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2317,19 +2317,19 @@ impl<'a> SecurityGetUserParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-user.html)."]
-pub struct SecurityGetUser<'a> {
-    client: Elasticsearch,
-    parts: SecurityGetUserParts<'a>,
+pub struct SecurityGetUser<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SecurityGetUserParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetUser<'a> {
+impl<'a, 'b> SecurityGetUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUser] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityGetUserParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityGetUserParts<'b>) -> Self {
         SecurityGetUser {
             client,
             parts,
@@ -2347,7 +2347,7 @@ impl<'a> SecurityGetUser<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2367,7 +2367,7 @@ impl<'a> SecurityGetUser<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2379,20 +2379,20 @@ impl<'a> SecurityGetUser<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2427,19 +2427,19 @@ impl SecurityGetUserPrivilegesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-privileges.html)."]
-pub struct SecurityGetUserPrivileges<'a> {
-    client: Elasticsearch,
+pub struct SecurityGetUserPrivileges<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SecurityGetUserPrivilegesParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SecurityGetUserPrivileges<'a> {
+impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUserPrivileges]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityGetUserPrivileges {
             client,
             parts: SecurityGetUserPrivilegesParts::None,
@@ -2457,7 +2457,7 @@ impl<'a> SecurityGetUserPrivileges<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2477,7 +2477,7 @@ impl<'a> SecurityGetUserPrivileges<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2489,20 +2489,20 @@ impl<'a> SecurityGetUserPrivileges<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2523,13 +2523,13 @@ impl<'a> SecurityGetUserPrivileges<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Has Privileges API"]
-pub enum SecurityHasPrivilegesParts<'a> {
+pub enum SecurityHasPrivilegesParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "User"]
-    User(&'a str),
+    User(&'b str),
 }
-impl<'a> SecurityHasPrivilegesParts<'a> {
+impl<'b> SecurityHasPrivilegesParts<'b> {
     #[doc = "Builds a relative URL path to the Security Has Privileges API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -2546,23 +2546,23 @@ impl<'a> SecurityHasPrivilegesParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-has-privileges.html)."]
-pub struct SecurityHasPrivileges<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityHasPrivilegesParts<'a>,
+pub struct SecurityHasPrivileges<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityHasPrivilegesParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityHasPrivileges<'a, B>
+impl<'a, 'b, B> SecurityHasPrivileges<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityHasPrivileges] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityHasPrivilegesParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityHasPrivilegesParts<'b>) -> Self {
         SecurityHasPrivileges {
             client,
             parts,
@@ -2576,7 +2576,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityHasPrivileges<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2598,7 +2598,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2618,7 +2618,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2633,20 +2633,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2681,23 +2681,23 @@ impl SecurityInvalidateApiKeyParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-api-key.html)."]
-pub struct SecurityInvalidateApiKey<'a, B> {
-    client: Elasticsearch,
+pub struct SecurityInvalidateApiKey<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SecurityInvalidateApiKeyParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityInvalidateApiKey<'a, B>
+impl<'a, 'b, B> SecurityInvalidateApiKey<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityInvalidateApiKey]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityInvalidateApiKey {
             client,
             parts: SecurityInvalidateApiKeyParts::None,
@@ -2711,7 +2711,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateApiKey<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2733,7 +2733,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2753,7 +2753,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2765,20 +2765,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2813,23 +2813,23 @@ impl SecurityInvalidateTokenParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-invalidate-token.html)."]
-pub struct SecurityInvalidateToken<'a, B> {
-    client: Elasticsearch,
+pub struct SecurityInvalidateToken<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SecurityInvalidateTokenParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityInvalidateToken<'a, B>
+impl<'a, 'b, B> SecurityInvalidateToken<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityInvalidateToken]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityInvalidateToken {
             client,
             parts: SecurityInvalidateTokenParts::None,
@@ -2843,7 +2843,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityInvalidateToken<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -2865,7 +2865,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -2885,7 +2885,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -2897,20 +2897,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -2945,24 +2945,24 @@ impl SecurityPutPrivilegesParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the Security Put Privileges API"]
-pub struct SecurityPutPrivileges<'a, B> {
-    client: Elasticsearch,
+pub struct SecurityPutPrivileges<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SecurityPutPrivilegesParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityPutPrivileges<'a, B>
+impl<'a, 'b, B> SecurityPutPrivileges<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityPutPrivileges]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SecurityPutPrivileges {
             client,
             parts: SecurityPutPrivilegesParts::None,
@@ -2977,7 +2977,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityPutPrivileges<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3000,7 +3000,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3025,7 +3025,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3037,14 +3037,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -3052,7 +3052,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3074,11 +3074,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put Role API"]
-pub enum SecurityPutRoleParts<'a> {
+pub enum SecurityPutRoleParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> SecurityPutRoleParts<'a> {
+impl<'b> SecurityPutRoleParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put Role API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3093,24 +3093,24 @@ impl<'a> SecurityPutRoleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role.html)."]
-pub struct SecurityPutRole<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityPutRoleParts<'a>,
+pub struct SecurityPutRole<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityPutRoleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityPutRole<'a, B>
+impl<'a, 'b, B> SecurityPutRole<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityPutRole] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleParts<'b>) -> Self {
         SecurityPutRole {
             client,
             parts,
@@ -3125,7 +3125,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRole<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityPutRole<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3148,7 +3148,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3173,7 +3173,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3185,14 +3185,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -3200,7 +3200,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3222,11 +3222,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put Role Mapping API"]
-pub enum SecurityPutRoleMappingParts<'a> {
+pub enum SecurityPutRoleMappingParts<'b> {
     #[doc = "Name"]
-    Name(&'a str),
+    Name(&'b str),
 }
-impl<'a> SecurityPutRoleMappingParts<'a> {
+impl<'b> SecurityPutRoleMappingParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put Role Mapping API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3241,24 +3241,24 @@ impl<'a> SecurityPutRoleMappingParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-role-mapping.html)."]
-pub struct SecurityPutRoleMapping<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityPutRoleMappingParts<'a>,
+pub struct SecurityPutRoleMapping<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityPutRoleMappingParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityPutRoleMapping<'a, B>
+impl<'a, 'b, B> SecurityPutRoleMapping<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityPutRoleMapping] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityPutRoleMappingParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleMappingParts<'b>) -> Self {
         SecurityPutRoleMapping {
             client,
             parts,
@@ -3273,7 +3273,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityPutRoleMapping<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3296,7 +3296,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3321,7 +3321,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3333,14 +3333,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -3348,7 +3348,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3370,11 +3370,11 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Security Put User API"]
-pub enum SecurityPutUserParts<'a> {
+pub enum SecurityPutUserParts<'b> {
     #[doc = "Username"]
-    Username(&'a str),
+    Username(&'b str),
 }
-impl<'a> SecurityPutUserParts<'a> {
+impl<'b> SecurityPutUserParts<'b> {
     #[doc = "Builds a relative URL path to the Security Put User API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -3389,24 +3389,24 @@ impl<'a> SecurityPutUserParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-put-user.html)."]
-pub struct SecurityPutUser<'a, B> {
-    client: Elasticsearch,
-    parts: SecurityPutUserParts<'a>,
+pub struct SecurityPutUser<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SecurityPutUserParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
     refresh: Option<Refresh>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SecurityPutUser<'a, B>
+impl<'a, 'b, B> SecurityPutUser<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SecurityPutUser] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SecurityPutUserParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SecurityPutUserParts<'b>) -> Self {
         SecurityPutUser {
             client,
             parts,
@@ -3421,7 +3421,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SecurityPutUser<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SecurityPutUser<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -3444,7 +3444,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -3469,7 +3469,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -3481,14 +3481,14 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
@@ -3496,7 +3496,7 @@ where
                 #[serde(rename = "refresh")]
                 refresh: Option<Refresh>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -3517,129 +3517,135 @@ where
     }
 }
 #[doc = "Namespace client for Security APIs"]
-pub struct Security {
-    client: Elasticsearch,
+pub struct Security<'a> {
+    client: &'a Elasticsearch,
 }
-impl Security {
+impl<'a> Security<'a> {
     #[doc = "Creates a new instance of [Security]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn authenticate<'a>(&self) -> SecurityAuthenticate<'a> {
-        SecurityAuthenticate::new(self.client.clone())
+    pub fn authenticate<'b>(&'a self) -> SecurityAuthenticate<'a, 'b> {
+        SecurityAuthenticate::new(&self.client)
     }
-    pub fn change_password<'a>(
-        &self,
-        parts: SecurityChangePasswordParts<'a>,
-    ) -> SecurityChangePassword<'a, ()> {
-        SecurityChangePassword::new(self.client.clone(), parts)
+    pub fn change_password<'b>(
+        &'a self,
+        parts: SecurityChangePasswordParts<'b>,
+    ) -> SecurityChangePassword<'a, 'b, ()> {
+        SecurityChangePassword::new(&self.client, parts)
     }
-    pub fn clear_cached_realms<'a>(
-        &self,
-        parts: SecurityClearCachedRealmsParts<'a>,
-    ) -> SecurityClearCachedRealms<'a, ()> {
-        SecurityClearCachedRealms::new(self.client.clone(), parts)
+    pub fn clear_cached_realms<'b>(
+        &'a self,
+        parts: SecurityClearCachedRealmsParts<'b>,
+    ) -> SecurityClearCachedRealms<'a, 'b, ()> {
+        SecurityClearCachedRealms::new(&self.client, parts)
     }
-    pub fn clear_cached_roles<'a>(
-        &self,
-        parts: SecurityClearCachedRolesParts<'a>,
-    ) -> SecurityClearCachedRoles<'a, ()> {
-        SecurityClearCachedRoles::new(self.client.clone(), parts)
+    pub fn clear_cached_roles<'b>(
+        &'a self,
+        parts: SecurityClearCachedRolesParts<'b>,
+    ) -> SecurityClearCachedRoles<'a, 'b, ()> {
+        SecurityClearCachedRoles::new(&self.client, parts)
     }
-    pub fn create_api_key<'a>(&self) -> SecurityCreateApiKey<'a, ()> {
-        SecurityCreateApiKey::new(self.client.clone())
+    pub fn create_api_key<'b>(&'a self) -> SecurityCreateApiKey<'a, 'b, ()> {
+        SecurityCreateApiKey::new(&self.client)
     }
-    pub fn delete_privileges<'a>(
-        &self,
-        parts: SecurityDeletePrivilegesParts<'a>,
-    ) -> SecurityDeletePrivileges<'a> {
-        SecurityDeletePrivileges::new(self.client.clone(), parts)
+    pub fn delete_privileges<'b>(
+        &'a self,
+        parts: SecurityDeletePrivilegesParts<'b>,
+    ) -> SecurityDeletePrivileges<'a, 'b> {
+        SecurityDeletePrivileges::new(&self.client, parts)
     }
-    pub fn delete_role<'a>(&self, parts: SecurityDeleteRoleParts<'a>) -> SecurityDeleteRole<'a> {
-        SecurityDeleteRole::new(self.client.clone(), parts)
+    pub fn delete_role<'b>(
+        &'a self,
+        parts: SecurityDeleteRoleParts<'b>,
+    ) -> SecurityDeleteRole<'a, 'b> {
+        SecurityDeleteRole::new(&self.client, parts)
     }
-    pub fn delete_role_mapping<'a>(
-        &self,
-        parts: SecurityDeleteRoleMappingParts<'a>,
-    ) -> SecurityDeleteRoleMapping<'a> {
-        SecurityDeleteRoleMapping::new(self.client.clone(), parts)
+    pub fn delete_role_mapping<'b>(
+        &'a self,
+        parts: SecurityDeleteRoleMappingParts<'b>,
+    ) -> SecurityDeleteRoleMapping<'a, 'b> {
+        SecurityDeleteRoleMapping::new(&self.client, parts)
     }
-    pub fn delete_user<'a>(&self, parts: SecurityDeleteUserParts<'a>) -> SecurityDeleteUser<'a> {
-        SecurityDeleteUser::new(self.client.clone(), parts)
+    pub fn delete_user<'b>(
+        &'a self,
+        parts: SecurityDeleteUserParts<'b>,
+    ) -> SecurityDeleteUser<'a, 'b> {
+        SecurityDeleteUser::new(&self.client, parts)
     }
-    pub fn disable_user<'a>(
-        &self,
-        parts: SecurityDisableUserParts<'a>,
-    ) -> SecurityDisableUser<'a, ()> {
-        SecurityDisableUser::new(self.client.clone(), parts)
+    pub fn disable_user<'b>(
+        &'a self,
+        parts: SecurityDisableUserParts<'b>,
+    ) -> SecurityDisableUser<'a, 'b, ()> {
+        SecurityDisableUser::new(&self.client, parts)
     }
-    pub fn enable_user<'a>(
-        &self,
-        parts: SecurityEnableUserParts<'a>,
-    ) -> SecurityEnableUser<'a, ()> {
-        SecurityEnableUser::new(self.client.clone(), parts)
+    pub fn enable_user<'b>(
+        &'a self,
+        parts: SecurityEnableUserParts<'b>,
+    ) -> SecurityEnableUser<'a, 'b, ()> {
+        SecurityEnableUser::new(&self.client, parts)
     }
-    pub fn get_api_key<'a>(&self) -> SecurityGetApiKey<'a> {
-        SecurityGetApiKey::new(self.client.clone())
+    pub fn get_api_key<'b>(&'a self) -> SecurityGetApiKey<'a, 'b> {
+        SecurityGetApiKey::new(&self.client)
     }
-    pub fn get_builtin_privileges<'a>(&self) -> SecurityGetBuiltinPrivileges<'a> {
-        SecurityGetBuiltinPrivileges::new(self.client.clone())
+    pub fn get_builtin_privileges<'b>(&'a self) -> SecurityGetBuiltinPrivileges<'a, 'b> {
+        SecurityGetBuiltinPrivileges::new(&self.client)
     }
-    pub fn get_privileges<'a>(
-        &self,
-        parts: SecurityGetPrivilegesParts<'a>,
-    ) -> SecurityGetPrivileges<'a> {
-        SecurityGetPrivileges::new(self.client.clone(), parts)
+    pub fn get_privileges<'b>(
+        &'a self,
+        parts: SecurityGetPrivilegesParts<'b>,
+    ) -> SecurityGetPrivileges<'a, 'b> {
+        SecurityGetPrivileges::new(&self.client, parts)
     }
-    pub fn get_role<'a>(&self, parts: SecurityGetRoleParts<'a>) -> SecurityGetRole<'a> {
-        SecurityGetRole::new(self.client.clone(), parts)
+    pub fn get_role<'b>(&'a self, parts: SecurityGetRoleParts<'b>) -> SecurityGetRole<'a, 'b> {
+        SecurityGetRole::new(&self.client, parts)
     }
-    pub fn get_role_mapping<'a>(
-        &self,
-        parts: SecurityGetRoleMappingParts<'a>,
-    ) -> SecurityGetRoleMapping<'a> {
-        SecurityGetRoleMapping::new(self.client.clone(), parts)
+    pub fn get_role_mapping<'b>(
+        &'a self,
+        parts: SecurityGetRoleMappingParts<'b>,
+    ) -> SecurityGetRoleMapping<'a, 'b> {
+        SecurityGetRoleMapping::new(&self.client, parts)
     }
-    pub fn get_token<'a>(&self) -> SecurityGetToken<'a, ()> {
-        SecurityGetToken::new(self.client.clone())
+    pub fn get_token<'b>(&'a self) -> SecurityGetToken<'a, 'b, ()> {
+        SecurityGetToken::new(&self.client)
     }
-    pub fn get_user<'a>(&self, parts: SecurityGetUserParts<'a>) -> SecurityGetUser<'a> {
-        SecurityGetUser::new(self.client.clone(), parts)
+    pub fn get_user<'b>(&'a self, parts: SecurityGetUserParts<'b>) -> SecurityGetUser<'a, 'b> {
+        SecurityGetUser::new(&self.client, parts)
     }
-    pub fn get_user_privileges<'a>(&self) -> SecurityGetUserPrivileges<'a> {
-        SecurityGetUserPrivileges::new(self.client.clone())
+    pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
+        SecurityGetUserPrivileges::new(&self.client)
     }
-    pub fn has_privileges<'a>(
-        &self,
-        parts: SecurityHasPrivilegesParts<'a>,
-    ) -> SecurityHasPrivileges<'a, ()> {
-        SecurityHasPrivileges::new(self.client.clone(), parts)
+    pub fn has_privileges<'b>(
+        &'a self,
+        parts: SecurityHasPrivilegesParts<'b>,
+    ) -> SecurityHasPrivileges<'a, 'b, ()> {
+        SecurityHasPrivileges::new(&self.client, parts)
     }
-    pub fn invalidate_api_key<'a>(&self) -> SecurityInvalidateApiKey<'a, ()> {
-        SecurityInvalidateApiKey::new(self.client.clone())
+    pub fn invalidate_api_key<'b>(&'a self) -> SecurityInvalidateApiKey<'a, 'b, ()> {
+        SecurityInvalidateApiKey::new(&self.client)
     }
-    pub fn invalidate_token<'a>(&self) -> SecurityInvalidateToken<'a, ()> {
-        SecurityInvalidateToken::new(self.client.clone())
+    pub fn invalidate_token<'b>(&'a self) -> SecurityInvalidateToken<'a, 'b, ()> {
+        SecurityInvalidateToken::new(&self.client)
     }
-    pub fn put_privileges<'a>(&self) -> SecurityPutPrivileges<'a, ()> {
-        SecurityPutPrivileges::new(self.client.clone())
+    pub fn put_privileges<'b>(&'a self) -> SecurityPutPrivileges<'a, 'b, ()> {
+        SecurityPutPrivileges::new(&self.client)
     }
-    pub fn put_role<'a>(&self, parts: SecurityPutRoleParts<'a>) -> SecurityPutRole<'a, ()> {
-        SecurityPutRole::new(self.client.clone(), parts)
+    pub fn put_role<'b>(&'a self, parts: SecurityPutRoleParts<'b>) -> SecurityPutRole<'a, 'b, ()> {
+        SecurityPutRole::new(&self.client, parts)
     }
-    pub fn put_role_mapping<'a>(
-        &self,
-        parts: SecurityPutRoleMappingParts<'a>,
-    ) -> SecurityPutRoleMapping<'a, ()> {
-        SecurityPutRoleMapping::new(self.client.clone(), parts)
+    pub fn put_role_mapping<'b>(
+        &'a self,
+        parts: SecurityPutRoleMappingParts<'b>,
+    ) -> SecurityPutRoleMapping<'a, 'b, ()> {
+        SecurityPutRoleMapping::new(&self.client, parts)
     }
-    pub fn put_user<'a>(&self, parts: SecurityPutUserParts<'a>) -> SecurityPutUser<'a, ()> {
-        SecurityPutUser::new(self.client.clone(), parts)
+    pub fn put_user<'b>(&'a self, parts: SecurityPutUserParts<'b>) -> SecurityPutUser<'a, 'b, ()> {
+        SecurityPutUser::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Security APIs"]
     pub fn security(&self) -> Security {
-        Security::new(self.clone())
+        Security::new(&self)
     }
 }

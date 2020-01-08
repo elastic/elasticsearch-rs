@@ -31,11 +31,11 @@ use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Delete Lifecycle API"]
-pub enum SlmDeleteLifecycleParts<'a> {
+pub enum SlmDeleteLifecycleParts<'b> {
     #[doc = "PolicyId"]
-    PolicyId(&'a str),
+    PolicyId(&'b str),
 }
-impl<'a> SlmDeleteLifecycleParts<'a> {
+impl<'b> SlmDeleteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Delete Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -50,19 +50,19 @@ impl<'a> SlmDeleteLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-delete.html)."]
-pub struct SlmDeleteLifecycle<'a> {
-    client: Elasticsearch,
-    parts: SlmDeleteLifecycleParts<'a>,
+pub struct SlmDeleteLifecycle<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SlmDeleteLifecycleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SlmDeleteLifecycle<'a> {
+impl<'a, 'b> SlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmDeleteLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SlmDeleteLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SlmDeleteLifecycleParts<'b>) -> Self {
         SlmDeleteLifecycle {
             client,
             parts,
@@ -80,7 +80,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -100,7 +100,7 @@ impl<'a> SlmDeleteLifecycle<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -112,20 +112,20 @@ impl<'a> SlmDeleteLifecycle<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -146,11 +146,11 @@ impl<'a> SlmDeleteLifecycle<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Execute Lifecycle API"]
-pub enum SlmExecuteLifecycleParts<'a> {
+pub enum SlmExecuteLifecycleParts<'b> {
     #[doc = "PolicyId"]
-    PolicyId(&'a str),
+    PolicyId(&'b str),
 }
-impl<'a> SlmExecuteLifecycleParts<'a> {
+impl<'b> SlmExecuteLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Execute Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -166,23 +166,23 @@ impl<'a> SlmExecuteLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute.html)."]
-pub struct SlmExecuteLifecycle<'a, B> {
-    client: Elasticsearch,
-    parts: SlmExecuteLifecycleParts<'a>,
+pub struct SlmExecuteLifecycle<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SlmExecuteLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SlmExecuteLifecycle<'a, B>
+impl<'a, 'b, B> SlmExecuteLifecycle<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmExecuteLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SlmExecuteLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SlmExecuteLifecycleParts<'b>) -> Self {
         SlmExecuteLifecycle {
             client,
             parts,
@@ -196,7 +196,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteLifecycle<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SlmExecuteLifecycle<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -218,7 +218,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -238,7 +238,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -250,20 +250,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -298,23 +298,23 @@ impl SlmExecuteRetentionParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-execute-retention.html)."]
-pub struct SlmExecuteRetention<'a, B> {
-    client: Elasticsearch,
+pub struct SlmExecuteRetention<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SlmExecuteRetentionParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SlmExecuteRetention<'a, B>
+impl<'a, 'b, B> SlmExecuteRetention<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmExecuteRetention]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SlmExecuteRetention {
             client,
             parts: SlmExecuteRetentionParts::None,
@@ -328,7 +328,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmExecuteRetention<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SlmExecuteRetention<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -350,7 +350,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -370,7 +370,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -382,20 +382,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -416,13 +416,13 @@ where
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Get Lifecycle API"]
-pub enum SlmGetLifecycleParts<'a> {
+pub enum SlmGetLifecycleParts<'b> {
     #[doc = "PolicyId"]
-    PolicyId(&'a [&'a str]),
+    PolicyId(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
-impl<'a> SlmGetLifecycleParts<'a> {
+impl<'b> SlmGetLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Get Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -439,19 +439,19 @@ impl<'a> SlmGetLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-get.html)."]
-pub struct SlmGetLifecycle<'a> {
-    client: Elasticsearch,
-    parts: SlmGetLifecycleParts<'a>,
+pub struct SlmGetLifecycle<'a, 'b> {
+    client: &'a Elasticsearch,
+    parts: SlmGetLifecycleParts<'b>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SlmGetLifecycle<'a> {
+impl<'a, 'b> SlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SlmGetLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SlmGetLifecycleParts<'b>) -> Self {
         SlmGetLifecycle {
             client,
             parts,
@@ -469,7 +469,7 @@ impl<'a> SlmGetLifecycle<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -489,7 +489,7 @@ impl<'a> SlmGetLifecycle<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -501,20 +501,20 @@ impl<'a> SlmGetLifecycle<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -549,19 +549,19 @@ impl SlmGetStatsParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/slm-get-stats.html)."]
-pub struct SlmGetStats<'a> {
-    client: Elasticsearch,
+pub struct SlmGetStats<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SlmGetStatsParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SlmGetStats<'a> {
+impl<'a, 'b> SlmGetStats<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetStats]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SlmGetStats {
             client,
             parts: SlmGetStatsParts::None,
@@ -579,7 +579,7 @@ impl<'a> SlmGetStats<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -599,7 +599,7 @@ impl<'a> SlmGetStats<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -611,20 +611,20 @@ impl<'a> SlmGetStats<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -659,19 +659,19 @@ impl SlmGetStatusParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-get-status.html)."]
-pub struct SlmGetStatus<'a> {
-    client: Elasticsearch,
+pub struct SlmGetStatus<'a, 'b> {
+    client: &'a Elasticsearch,
     parts: SlmGetStatusParts,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a> SlmGetStatus<'a> {
+impl<'a, 'b> SlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [SlmGetStatus]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SlmGetStatus {
             client,
             parts: SlmGetStatusParts::None,
@@ -689,7 +689,7 @@ impl<'a> SlmGetStatus<'a> {
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -709,7 +709,7 @@ impl<'a> SlmGetStatus<'a> {
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -721,20 +721,20 @@ impl<'a> SlmGetStatus<'a> {
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -755,11 +755,11 @@ impl<'a> SlmGetStatus<'a> {
 }
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Slm Put Lifecycle API"]
-pub enum SlmPutLifecycleParts<'a> {
+pub enum SlmPutLifecycleParts<'b> {
     #[doc = "PolicyId"]
-    PolicyId(&'a str),
+    PolicyId(&'b str),
 }
-impl<'a> SlmPutLifecycleParts<'a> {
+impl<'b> SlmPutLifecycleParts<'b> {
     #[doc = "Builds a relative URL path to the Slm Put Lifecycle API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
@@ -774,23 +774,23 @@ impl<'a> SlmPutLifecycleParts<'a> {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-api-put.html)."]
-pub struct SlmPutLifecycle<'a, B> {
-    client: Elasticsearch,
-    parts: SlmPutLifecycleParts<'a>,
+pub struct SlmPutLifecycle<'a, 'b, B> {
+    client: &'a Elasticsearch,
+    parts: SlmPutLifecycleParts<'b>,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SlmPutLifecycle<'a, B>
+impl<'a, 'b, B> SlmPutLifecycle<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmPutLifecycle] with the specified API parts"]
-    pub fn new(client: Elasticsearch, parts: SlmPutLifecycleParts<'a>) -> Self {
+    pub fn new(client: &'a Elasticsearch, parts: SlmPutLifecycleParts<'b>) -> Self {
         SlmPutLifecycle {
             client,
             parts,
@@ -804,7 +804,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmPutLifecycle<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SlmPutLifecycle<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -826,7 +826,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -846,7 +846,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -858,20 +858,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -906,23 +906,23 @@ impl SlmStartParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-start.html)."]
-pub struct SlmStart<'a, B> {
-    client: Elasticsearch,
+pub struct SlmStart<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SlmStartParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SlmStart<'a, B>
+impl<'a, 'b, B> SlmStart<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmStart]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SlmStart {
             client,
             parts: SlmStartParts::None,
@@ -936,7 +936,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmStart<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SlmStart<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -958,7 +958,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -978,7 +978,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -990,20 +990,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1038,23 +1038,23 @@ impl SlmStopParts {
 }
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/current/slm-stop.html)."]
-pub struct SlmStop<'a, B> {
-    client: Elasticsearch,
+pub struct SlmStop<'a, 'b, B> {
+    client: &'a Elasticsearch,
     parts: SlmStopParts,
     body: Option<B>,
     error_trace: Option<bool>,
-    filter_path: Option<&'a [&'a str]>,
+    filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
     pretty: Option<bool>,
-    source: Option<&'a str>,
+    source: Option<&'b str>,
 }
-impl<'a, B> SlmStop<'a, B>
+impl<'a, 'b, B> SlmStop<'a, 'b, B>
 where
     B: Body,
 {
     #[doc = "Creates a new instance of [SlmStop]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         SlmStop {
             client,
             parts: SlmStopParts::None,
@@ -1068,7 +1068,7 @@ where
         }
     }
     #[doc = "The body for the API call"]
-    pub fn body<T>(self, body: T) -> SlmStop<'a, JsonBody<T>>
+    pub fn body<T>(self, body: T) -> SlmStop<'a, 'b, JsonBody<T>>
     where
         T: Serialize,
     {
@@ -1090,7 +1090,7 @@ where
         self
     }
     #[doc = "A comma-separated list of filters used to reduce the response."]
-    pub fn filter_path(mut self, filter_path: &'a [&'a str]) -> Self {
+    pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
         self
     }
@@ -1110,7 +1110,7 @@ where
         self
     }
     #[doc = "The URL-encoded request definition. Useful for libraries that do not accept a request body for non-POST requests."]
-    pub fn source(mut self, source: &'a str) -> Self {
+    pub fn source(mut self, source: &'b str) -> Self {
         self.source = Some(source);
         self
     }
@@ -1122,20 +1122,20 @@ where
         let query_string = {
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
-            struct QueryParams<'a> {
+            struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
-                filter_path: Option<&'a [&'a str]>,
+                filter_path: Option<&'b [&'b str]>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "pretty")]
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
-                source: Option<&'a str>,
+                source: Option<&'b str>,
             }
             let query_params = QueryParams {
                 error_trace: self.error_trace,
@@ -1155,51 +1155,54 @@ where
     }
 }
 #[doc = "Namespace client for Snapshot Lifecycle Management APIs"]
-pub struct Slm {
-    client: Elasticsearch,
+pub struct Slm<'a> {
+    client: &'a Elasticsearch,
 }
-impl Slm {
+impl<'a> Slm<'a> {
     #[doc = "Creates a new instance of [Slm]"]
-    pub fn new(client: Elasticsearch) -> Self {
+    pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    pub fn delete_lifecycle<'a>(
-        &self,
-        parts: SlmDeleteLifecycleParts<'a>,
-    ) -> SlmDeleteLifecycle<'a> {
-        SlmDeleteLifecycle::new(self.client.clone(), parts)
+    pub fn delete_lifecycle<'b>(
+        &'a self,
+        parts: SlmDeleteLifecycleParts<'b>,
+    ) -> SlmDeleteLifecycle<'a, 'b> {
+        SlmDeleteLifecycle::new(&self.client, parts)
     }
-    pub fn execute_lifecycle<'a>(
-        &self,
-        parts: SlmExecuteLifecycleParts<'a>,
-    ) -> SlmExecuteLifecycle<'a, ()> {
-        SlmExecuteLifecycle::new(self.client.clone(), parts)
+    pub fn execute_lifecycle<'b>(
+        &'a self,
+        parts: SlmExecuteLifecycleParts<'b>,
+    ) -> SlmExecuteLifecycle<'a, 'b, ()> {
+        SlmExecuteLifecycle::new(&self.client, parts)
     }
-    pub fn execute_retention<'a>(&self) -> SlmExecuteRetention<'a, ()> {
-        SlmExecuteRetention::new(self.client.clone())
+    pub fn execute_retention<'b>(&'a self) -> SlmExecuteRetention<'a, 'b, ()> {
+        SlmExecuteRetention::new(&self.client)
     }
-    pub fn get_lifecycle<'a>(&self, parts: SlmGetLifecycleParts<'a>) -> SlmGetLifecycle<'a> {
-        SlmGetLifecycle::new(self.client.clone(), parts)
+    pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
+        SlmGetLifecycle::new(&self.client, parts)
     }
-    pub fn get_stats<'a>(&self) -> SlmGetStats<'a> {
-        SlmGetStats::new(self.client.clone())
+    pub fn get_stats<'b>(&'a self) -> SlmGetStats<'a, 'b> {
+        SlmGetStats::new(&self.client)
     }
-    pub fn get_status<'a>(&self) -> SlmGetStatus<'a> {
-        SlmGetStatus::new(self.client.clone())
+    pub fn get_status<'b>(&'a self) -> SlmGetStatus<'a, 'b> {
+        SlmGetStatus::new(&self.client)
     }
-    pub fn put_lifecycle<'a>(&self, parts: SlmPutLifecycleParts<'a>) -> SlmPutLifecycle<'a, ()> {
-        SlmPutLifecycle::new(self.client.clone(), parts)
+    pub fn put_lifecycle<'b>(
+        &'a self,
+        parts: SlmPutLifecycleParts<'b>,
+    ) -> SlmPutLifecycle<'a, 'b, ()> {
+        SlmPutLifecycle::new(&self.client, parts)
     }
-    pub fn start<'a>(&self) -> SlmStart<'a, ()> {
-        SlmStart::new(self.client.clone())
+    pub fn start<'b>(&'a self) -> SlmStart<'a, 'b, ()> {
+        SlmStart::new(&self.client)
     }
-    pub fn stop<'a>(&self) -> SlmStop<'a, ()> {
-        SlmStop::new(self.client.clone())
+    pub fn stop<'b>(&'a self) -> SlmStop<'a, 'b, ()> {
+        SlmStop::new(&self.client)
     }
 }
 impl Elasticsearch {
     #[doc = "Creates a namespace client for Snapshot Lifecycle Management APIs"]
     pub fn slm(&self) -> Slm {
-        Slm::new(self.clone())
+        Slm::new(&self)
     }
 }
