@@ -308,7 +308,7 @@ type _DoctestReadme = ();
 //#![deny(missing_docs)]
 
 #[macro_use]
-extern crate objekt;
+extern crate dyn_clone;
 extern crate reqwest;
 extern crate serde;
 extern crate serde_json;

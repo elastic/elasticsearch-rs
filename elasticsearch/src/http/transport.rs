@@ -286,7 +286,7 @@ impl Default for Transport {
 /// to get the next [Connection]. The simplest type of [ConnectionPool] is [SingleNodeConnectionPool],
 /// which manages only a single connection, but other implementations may manage connections more
 /// dynamically at runtime, based upon the response to API calls.
-pub trait ConnectionPool: Debug + objekt::Clone {
+pub trait ConnectionPool: Debug + dyn_clone::DynClone {
     /// Gets a reference to the next [Connection]
     fn next(&self) -> &Connection;
 }

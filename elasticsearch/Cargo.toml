@@ -13,7 +13,7 @@ readme = "../README.md"
 [dependencies]
 base64 = "0.11.0"
 bytes = "^0.5"
-objekt = "0.1.2"
+dyn-clone = "1.0.1"
 reqwest = { version = "0.10.0", features = ["gzip", "json", "native-tls"] }
 url = "1.7.2"
 serde = { version = "~1", features = ["derive"] }
