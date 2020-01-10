@@ -49,7 +49,7 @@ pub fn create_for_url(url: &str) -> Elasticsearch {
 pub fn create(mut builder: TransportBuilder) -> Elasticsearch {
     if running_proxy() {
         let proxy_url = Url::parse("http://localhost:8888").unwrap();
-        builder = builder.proxy(proxy_url);
+        builder = builder.proxy(proxy_url, None, None);
     }
 
     let transport = builder.build().unwrap();

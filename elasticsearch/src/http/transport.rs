@@ -76,6 +76,7 @@ pub struct TransportBuilder {
     conn_pool: Box<dyn ConnectionPool>,
     credentials: Option<Credentials>,
     proxy: Option<Url>,
+    proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
 }
 
@@ -91,17 +92,28 @@ impl TransportBuilder {
             conn_pool: Box::new(conn_pool),
             credentials: None,
             proxy: None,
+            proxy_credentials: None,
             disable_proxy: false,
         }
     }
 
-    /// Configures a proxy
-    pub fn proxy(mut self, url: Url) -> Self {
+    /// Configures a proxy.
+    ///
+    /// An optional username and password will be used to set the
+    /// `Proxy-Authorization` header using Basic Authentication.
+    pub fn proxy(mut self, url: Url, username: Option<&str>, password: Option<&str>) -> Self {
         self.proxy = Some(url);
+        if let Some(u) = username {
+            let p = password.unwrap_or("");
+            self.proxy_credentials = Some(Credentials::Basic(u.into(), p.into()));
+        }
+
         self
     }
 
-    /// Whether to disable proxies, including system proxies
+    /// Whether to disable proxies, including system proxies.
+    ///
+    /// NOTE: System proxies are enabled by default.
     pub fn disable_proxy(mut self) -> Self {
         self.disable_proxy = true;
         self
@@ -130,10 +142,14 @@ impl TransportBuilder {
         if self.disable_proxy {
             client_builder = client_builder.no_proxy();
         } else if let Some(url) = self.proxy {
-            client_builder = match url.scheme() {
-                "https" => client_builder.proxy(reqwest::Proxy::https(url)?),
-                _ => client_builder.proxy(reqwest::Proxy::http(url)?),
-            };
+            let mut proxy = reqwest::Proxy::all(url)?;
+            if let Some(c) = self.proxy_credentials {
+                proxy = match c {
+                    Credentials::Basic(u, p) => proxy.basic_auth(&u, &p),
+                    _ => proxy,
+                };
+            }
+            client_builder = client_builder.proxy(proxy);
         }
 
         let client = client_builder.build()?;
