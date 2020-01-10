@@ -9,8 +9,29 @@ use serde::Serialize;
 /// expect JSON, however, there are some APIs that expect newline-delimited JSON (NDJSON).
 /// The [Body] trait allows modelling different API body implementations.
 pub trait Body {
+    /// A ready-made immutable buffer that can be used to avoid writing
+    ///
+    /// If this method returns `Some`, the bytes must be the same as
+    /// what would be written by `write`.
+    fn bytes(&self) -> Option<Bytes> {
+        None
+    }
+
     /// Write to a buffer that will be written to the request stream
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error>;
+}
+
+impl<'a, B: ?Sized> Body for &'a B
+where
+    B: Body,
+{
+    fn bytes(&self) -> Option<Bytes> {
+        (**self).bytes()
+    }
+
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
+        (**self).write(bytes)
+    }
 }
 
 /// A JSON body of an API call.
@@ -79,42 +100,38 @@ where
 }
 
 impl Body for Bytes {
+    fn bytes(&self) -> Option<Bytes> {
+        Some(self.clone())
+    }
+
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-        bytes.resize(self.len(), 0);
-        bytes.copy_from_slice(&self[..]);
-        Ok(())
+        self.as_ref().write(bytes)
     }
 }
 
 impl Body for Vec<u8> {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-        bytes.resize(self.len(), 0);
-        bytes.copy_from_slice(&self[..]);
-        Ok(())
+        self.as_slice().write(bytes)
     }
 }
 
-impl Body for &'static [u8] {
+impl<'a> Body for &'a [u8] {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-        bytes.resize(self.len(), 0);
-        bytes.copy_from_slice(&self[..]);
+        bytes.reserve(self.len());
+        bytes.put_slice(*self);
         Ok(())
     }
 }
 
 impl Body for String {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-        bytes.resize(self.len(), 0);
-        bytes.copy_from_slice(self.as_bytes());
-        Ok(())
+        self.as_bytes().write(bytes)
     }
 }
 
-impl Body for &'static str {
+impl<'a> Body for &'a str {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-        bytes.resize(self.len(), 0);
-        bytes.copy_from_slice(self.as_bytes());
-        Ok(())
+        self.as_bytes().write(bytes)
     }
 }
 
@@ -132,7 +149,7 @@ mod tests {
 
     #[test]
     fn serialize_into_jsonbody_writes_to_bytes() -> Result<(), failure::Error> {
-        let mut bytes = BytesMut::with_capacity(21);
+        let mut bytes = BytesMut::new();
         let body: JsonBody<_> = json!({"foo":"bar","baz":1}).into();
         let _ = body.write(&mut bytes)?;
         // NOTE: serde_json writes properties lexicographically
@@ -143,7 +160,7 @@ mod tests {
 
     #[test]
     fn bodies_into_ndbody_writes_to_bytes() -> Result<(), failure::Error> {
-        let mut bytes = BytesMut::with_capacity(22);
+        let mut bytes = BytesMut::new();
         let mut bodies: Vec<JsonBody<_>> = Vec::with_capacity(2);
         bodies.push(json!({"item":1}).into());
         bodies.push(json!({"item":2}).into());
@@ -160,6 +177,19 @@ mod tests {
         let mut bytes_mut = BytesMut::with_capacity(21);
         let bytes = bytes::Bytes::from(&b"{\"foo\":\"bar\",\"baz\":1}"[..]);
         let _ = bytes.write(&mut bytes_mut)?;
+        assert_eq!(&bytes[..], &bytes_mut[..]);
+
+        Ok(())
+    }
+
+    #[test]
+    fn bytes_body_returns_usable_buf() -> Result<(), failure::Error> {
+        let mut bytes_mut = BytesMut::with_capacity(21);
+        let buf = bytes::Bytes::from(&b"{\"foo\":\"bar\",\"baz\":1}"[..]);
+
+        let bytes = buf.bytes().expect("bytes always returns Some");
+        let _ = buf.write(&mut bytes_mut)?;
+        assert_eq!(&buf[..], &bytes_mut[..]);
         assert_eq!(&bytes[..], &bytes_mut[..]);
 
         Ok(())
