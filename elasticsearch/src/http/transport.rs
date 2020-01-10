@@ -129,10 +129,10 @@ impl TransportBuilder {
 
         if self.disable_proxy {
             client_builder = client_builder.no_proxy();
-        } else if let Some(url) = &self.proxy {
+        } else if let Some(url) = self.proxy {
             client_builder = match url.scheme() {
-                "https" => client_builder.proxy(reqwest::Proxy::https(&url.to_string())?),
-                _ => client_builder.proxy(reqwest::Proxy::http(&url.to_string())?),
+                "https" => client_builder.proxy(reqwest::Proxy::https(url)?),
+                _ => client_builder.proxy(reqwest::Proxy::http(url)?),
             };
         }
 
@@ -222,7 +222,7 @@ impl Transport {
         let connection = self.conn_pool.next();
         let url = connection.url.join(path)?;
         let reqwest_method = self.method(method);
-        let mut request_builder = self.client.request(reqwest_method, &url.to_string());
+        let mut request_builder = self.client.request(reqwest_method, url);
 
         let mut headers = headers;
         headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
