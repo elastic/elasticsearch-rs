@@ -73,6 +73,7 @@ impl From<BuildError> for Error {
 }
 
 impl error::Error for Error {
+    #[allow(warnings)]
     fn description(&self) -> &str {
         match *self {
             Error::Build(ref err) => err.description(),

@@ -42,6 +42,7 @@ impl From<reqwest::Error> for BuildError {
 }
 
 impl error::Error for BuildError {
+    #[allow(warnings)]
     fn description(&self) -> &str {
         match *self {
             BuildError::Io(ref err) => err.description(),

@@ -134,6 +134,7 @@ impl std::fmt::Display for DownloadSpecsErrors {
 }
 
 impl StdError for DownloadSpecsErrors {
+    #[allow(warnings)]
     fn description(&self) -> &str {
         match self {
             DownloadSpecsErrors::IoErr(err) => err.description(),
