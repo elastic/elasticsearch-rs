@@ -306,9 +306,6 @@ type _DoctestReadme = ();
 
 #[macro_use]
 extern crate dyn_clone;
-extern crate reqwest;
-extern crate serde;
-extern crate serde_json;
 
 pub mod auth;
 pub mod http;
