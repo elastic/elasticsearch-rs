@@ -9,7 +9,7 @@
 //! |-------------|---------------|
 //! | 7.x         | 7.x           |
 //!
-//! The major version of the client is compatible with the same major version of Elasticsearch.
+//! A major version of the client is compatible with the same major version of Elasticsearch.
 //! Since Elasticsearch is developed following [Semantic Versioning](https://semver.org/) principles,
 //! Any minor/patch version of the client can be used against any minor/patch version of Elasticsearch
 //! **within the same major version lineage**. For example,
@@ -49,23 +49,20 @@
 //! To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::Error;
-//! # use elasticsearch::Elasticsearch;
-//! # async fn run() -> Result<(), Error> {
+//! # use elasticsearch::{Error, Elasticsearch};
+//! # fn run() {
 //! let client = Elasticsearch::default();
-//! # Ok(())
 //! # }
 //! ```
 //! Alternatively, you can create a client to make API calls against Elasticsearch running on a
 //! specific [url::Url]
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::Error;
-//! # use elasticsearch::Elasticsearch;
-//! # use elasticsearch::http::transport::{Transport, SingleNodeConnectionPool};
-//! # async fn run() -> Result<(), Error> {
+//! # use elasticsearch::{
+//! #     Error, Elasticsearch,
+//! #     http::transport::{Transport, SingleNodeConnectionPool}
+//! # };
+//! # fn run() -> Result<(), Error> {
 //! let transport = Transport::single_node("https://example.com")?;
 //! let client = Elasticsearch::new(transport);
 //! # Ok(())
@@ -77,13 +74,13 @@
 //! and credentials retrieved from the Cloud web console
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::Error;
-//! # use elasticsearch::Elasticsearch;
+//! # use elasticsearch::{
+//! #     auth::Credentials,
+//! #     Error, Elasticsearch,
+//! #     http::transport::Transport,
+//! # };
 //! # use url::Url;
-//! # use elasticsearch::http::transport::Transport;
-//! # use elasticsearch::auth::Credentials;
-//! # async fn run() -> Result<(), Error> {
+//! # fn run() -> Result<(), Error> {
 //! let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
 //! let credentials = Credentials::Basic("<username>".into(), "<password>".into());
 //! let transport = Transport::cloud(cloud_id, credentials)?;
@@ -97,13 +94,13 @@
 //! passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::Error;
-//! # use elasticsearch::Elasticsearch;
+//! # use elasticsearch::{
+//! #     auth::Credentials,
+//! #     Error, Elasticsearch,
+//! #     http::transport::{TransportBuilder,SingleNodeConnectionPool},
+//! # };
 //! # use url::Url;
-//! # use elasticsearch::http::transport::{TransportBuilder, SingleNodeConnectionPool};
-//! # use elasticsearch::auth::Credentials;
-//! # async fn run() -> Result<(), Error> {
+//! # fn run() -> Result<(), Error> {
 //! let url = Url::parse("https://example.com")?;
 //! let conn_pool = SingleNodeConnectionPool::new(url);
 //! let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;

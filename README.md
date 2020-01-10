@@ -1,35 +1,35 @@
-# elasticsearch-rs
+# elasticsearch
 
-Repository for the official Elasticsearch Rust Client, `elasticsearch`.
+An official Rust Client for Elasticsearch.
 
 The project is still very much a _work in progress_ and in an _alpha_ state; 
 input and contributions welcome!
 
 ## Versions and Compatibility
 
-<table>
-    <tr>
-        <th><b>Rust client<b></th>
-        <th><b>Elasticsearch<b></th>
-        <th><b>Status</b></th>
-    </tr>
-    <tr>
-    	<td><code>7.x</code></td>
-    	<td><code>7.x</code></td>
-    	<td><code>alpha</code></td>
-    </tr>
-</table>
+| Rust client | Elasticsearch | Status |
+|-------------|---------------|--------|
+| 7.x         | 7.x           | alpha  |
 
-The Rust client is largely generated from the REST API specs of Elasticsearch. 
-As such, the API functions available align with the version of the specs from which
-they're generated. Elasticsearch strives to adhere to [Semantic Versioning](https://semver.org/),
-which is reflected in the specs and thus this client.
+A major version of the client is compatible with the same major version of Elasticsearch.
+Since Elasticsearch is developed following [Semantic Versioning](https://semver.org/) principles,
+Any minor/patch version of the client can be used against any minor/patch version of Elasticsearch
+**within the same major version lineage**. For example,
 
-What this means in practice is that a 7.x Rust client is compatible with Elasticsearch 7.x. Where
-the client minor version is greater than Elasticsearch minor version, it may contain API functions
-for APIs that are not available in the version of Elasticsearch, but all other API functions will
-be compatible. Where the client minor version is less than Elasticsearch minor version, all API
-functions will be compatible. 
+- A `7.5.0` client can be used against `7.0.0` Elasticsearch
+- A `7.4.0` client can be used against `7.5.1` Elasticsearch
+
+In the former case, a 7.5.0 client may contain additional API functions that are not available
+in 7.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
+Elasticsearch, the respective API functions on the client will be compatible.
+
+In the latter case, a 7.4.0 client won't contain API functions for APIs that are introduced in
+Elasticsearch 7.5.0+, but for all other APIs available in Elasticsearch, the respective API
+functions on the client will be compatible.
+
+**No compatibility assurances are given between different major versions of the client and
+Elasticsearch**. Major differences likely exist between major versions of Elasticsearch, particularly
+around request and response object formats, but also around API urls and behaviour.
 
 ## Overview
 
@@ -68,33 +68,85 @@ that is compatible with the version of Elasticsearch you're using
 elasticsearch = "7.5.1-alpha1"
 ```
 
-#### Connecting
+The following _optional_ dependencies may also be useful to create requests and read responses
+
+```toml
+serde = "~1"
+serde_json = "~1"
+```
+
+#### Create a client
 
 Build a transport to make API requests to Elasticsearch using the `TransportBuilder`, 
 which allows setting of proxies and authentication schemes
 
+ To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
+
+```rust,no_run
+use elasticsearch::{Error, Elasticsearch};
+
+fn run() {
+    let client = Elasticsearch::default();
+}
+```
+Alternatively, you can create a client to make API calls against Elasticsearch running on a specific url
+
 ```rust,no_run
 use elasticsearch::{
-    Elasticsearch, Error,
-    auth::Credentials, 
-    http::transport::{TransportBuilder, SingleNodeConnectionPool}
+    Error, Elasticsearch, 
+    http::transport::{Transport, SingleNodeConnectionPool}
 };
-use url::Url;
 
-async fn run() -> Result<(), Error> {
-
-    let conn_pool = SingleNodeConnectionPool::new(Url::parse("https://example.com").unwrap());
-    let transport = TransportBuilder::new(conn_pool)
-        .auth(Credentials::Basic("<username>".into(), "<password>".into()))
-        .disable_proxy()
-        .build()?;
-    
+fn run() -> Result<(), Error> {
+    let transport = Transport::single_node("https://example.com")?;
     let client = Elasticsearch::new(transport);
     Ok(())
 }
 ```
 
-#### Calling an API endpoint
+ If you're running against an Elasticsearch deployment in [Elastic Cloud](https://www.elastic.co/cloud/),
+ a client can be created using a [Cloud ID](https://www.elastic.co/guide/en/cloud/current/ec-cloud-id.html)
+ and credentials retrieved from the Cloud web console
+
+```rust,no_run
+use elasticsearch::{
+    auth::Credentials,
+    Error, Elasticsearch, 
+    http::transport::Transport,
+};
+use url::Url;
+
+fn run() -> Result<(), Error> {
+    let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
+    let credentials = Credentials::Basic("<username>".into(), "<password>".into());
+    let transport = Transport::cloud(cloud_id, credentials)?;
+    let client = Elasticsearch::new(transport);
+    Ok(())
+}
+```
+
+ More control over how a [Transport](http::transport::Transport) is built can be
+ achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport, and
+ passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
+
+```rust,no_run
+use elasticsearch::{
+    auth::Credentials,
+    Error, Elasticsearch, 
+    http::transport::{TransportBuilder,SingleNodeConnectionPool},
+};
+use url::Url;
+
+fn run() -> Result<(), Error> {
+    let url = Url::parse("https://example.com")?;
+    let conn_pool = SingleNodeConnectionPool::new(url);
+    let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
+    let client = Elasticsearch::new(transport);
+    Ok(())
+}
+```
+
+#### Making API calls
 
 The following will execute a `POST` request to `/_search?allow_no_indices=true` with
 a JSON body of `{"query":{"match_all":{}}}`
@@ -157,12 +209,16 @@ The `quote` and `syn` crates help
     - Start simple and iterate
     - Design of the API is conducive to ease of use
     - Asynchronous only
-    - Control API invariants through arguments on API function
+    - Control API invariants through arguments on API function. For example
     
-      e.g. `client.delete_script("script_id".into()).send()?;`
-      
-      An id must always be provided for a script, so the `delete_script()` function must accept
-      it as a value.
+      ```norun
+      client.delete_script(DeleteScriptParts::Id("script_id"))
+          .send()
+          .await?;
+      ```
+    
+      An id must always be provided for a delete script API call, so the `delete_script()` function 
+      must accept it as a value.
 
 ## Contributing
 
@@ -176,12 +232,12 @@ to address it, please assign the issue to yourself, so that others know that it 
 
 ### Sign the Contributor License Agreement
 
-We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement) before we can accept pull requests from you.
+We do ask that you sign the [Contiributor License Agreement](https://www.elastic.co/contributor-agreement) 
+before we can accept pull requests from you.
 
 ### Current Setup
 
-Using Rust nightly for development, whilst reqwest crate, the HTTP client used, has support for `async`
-in an alpha release and has a dependency which uses features that only work on nightly:
+Use Rust nightly for development for now:
 
 ```sh
 > rustup show
@@ -194,7 +250,7 @@ nightly-x86_64-pc-windows-msvc (default)
 rustc 1.41.0-nightly (a44774c3a 2019-11-25)
 ```
 
-It is expected to move to stable once dependencies compile on stable.
+It is expected to move to rust stable once dependencies compile on stable.
 
 ### Coding styleguide
 
