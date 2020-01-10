@@ -42,10 +42,9 @@ where
 {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         let writer = bytes.writer();
-        match serde_json::to_writer(writer, &self.0) {
-            Ok(_) => Ok(()),
-            Err(e) => Err(Error::Json(e)),
-        }
+        serde_json::to_writer(writer, &self.0)?;
+
+        Ok(())
     }
 }
 

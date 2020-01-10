@@ -25,7 +25,12 @@ use std::io;
 /// Errors that can occur include IO and parsing errors, as well as specific
 /// errors from Elasticsearch and internal errors from this library
 #[derive(Debug)]
-pub enum Error {
+pub struct Error {
+    kind: Kind,
+}
+
+#[derive(Debug)]
+enum Kind {
     /// An error building the client
     Build(BuildError),
 
@@ -44,65 +49,72 @@ pub enum Error {
 
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Error {
-        Error::Io(err)
+        Error {
+            kind: Kind::Io(err),
+        }
     }
 }
 
 impl From<reqwest::Error> for Error {
     fn from(err: reqwest::Error) -> Error {
-        Error::Http(err)
+        Error {
+            kind: Kind::Http(err)
+        }
     }
 }
 
 impl From<serde_json::error::Error> for Error {
     fn from(err: serde_json::error::Error) -> Error {
-        Error::Json(err)
+        Error {
+            kind: Kind::Json(err)
+        }
     }
 }
 
 impl From<url::ParseError> for Error {
     fn from(err: url::ParseError) -> Error {
-        Error::Lib(err.to_string())
+        Error {
+            kind: Kind::Lib(err.to_string())
+        }
     }
 }
 
 impl From<BuildError> for Error {
     fn from(err: BuildError) -> Error {
-        Error::Build(err)
+        Error {
+            kind: Kind::Build(err)
+        }
+    }
+}
+
+impl Error {
+    pub(crate) fn lib(err: impl Into<String>) -> Self {
+        Error {
+            kind: Kind::Lib(err.into())
+        }
     }
 }
 
 impl error::Error for Error {
-    #[allow(warnings)]
-    fn description(&self) -> &str {
-        match *self {
-            Error::Build(ref err) => err.description(),
-            Error::Lib(ref err) => err,
-            Error::Http(ref err) => err.description(),
-            Error::Io(ref err) => err.description(),
-            Error::Json(ref err) => err.description(),
-        }
-    }
-
-    fn cause(&self) -> Option<&dyn error::Error> {
-        match *self {
-            Error::Build(ref err) => Some(err as &dyn error::Error),
-            Error::Lib(_) => None,
-            Error::Http(ref err) => Some(err as &dyn error::Error),
-            Error::Io(ref err) => Some(err as &dyn error::Error),
-            Error::Json(ref err) => Some(err as &dyn error::Error),
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match &self.kind {
+            Kind::Build(err) => Some(err),
+            Kind::Lib(_) => None,
+            Kind::Http(err) => Some(err),
+            Kind::Io(err) => Some(err),
+            Kind::Json(err) => Some(err),
         }
     }
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match *self {
-            Error::Build(ref err) => fmt::Display::fmt(err, f),
-            Error::Lib(ref s) => fmt::Display::fmt(s, f),
-            Error::Http(ref err) => fmt::Display::fmt(err, f),
-            Error::Io(ref err) => fmt::Display::fmt(err, f),
-            Error::Json(ref err) => fmt::Display::fmt(err, f),
+        match &self.kind {
+            Kind::Build(err) => err.fmt(f),
+            Kind::Lib(err) => err.fmt(f),
+            Kind::Http(err) => err.fmt(f),
+            Kind::Io(err) => err.fmt(f),
+            Kind::Json(err) => err.fmt(f),
         }
     }
 }
