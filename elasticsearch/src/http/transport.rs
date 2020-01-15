@@ -85,7 +85,7 @@ impl TransportBuilder {
     /// from which [Connection]s to Elasticsearch will be retrieved.
     pub fn new<P>(conn_pool: P) -> Self
     where
-        P: ConnectionPool + Debug + Clone + 'static,
+        P: ConnectionPool + Debug + Clone + Send + 'static,
     {
         Self {
             client_builder: reqwest::ClientBuilder::new(),
@@ -303,7 +303,7 @@ impl Default for Transport {
 /// to get the next [Connection]. The simplest type of [ConnectionPool] is [SingleNodeConnectionPool],
 /// which manages only a single connection, but other implementations may manage connections more
 /// dynamically at runtime, based upon the response to API calls.
-pub trait ConnectionPool: Debug + dyn_clone::DynClone {
+pub trait ConnectionPool: Debug + dyn_clone::DynClone + Sync + Send {
     /// Gets a reference to the next [Connection]
     fn next(&self) -> &Connection;
 }
