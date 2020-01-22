@@ -133,7 +133,10 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
         TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
         TypeKind::String => v.push_str(str_type),
         TypeKind::Text => v.push_str(str_type),
-        TypeKind::Boolean => v.push_str("bool"),
+        TypeKind::Boolean => match name {
+            "track_total_hits" => v.push_str("TrackTotalHits"),
+            _ => v.push_str("bool"),
+        },
         TypeKind::Number => v.push_str("i64"),
         TypeKind::Float => v.push_str("f32"),
         TypeKind::Double => v.push_str("f64"),

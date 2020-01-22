@@ -1,25 +1,25 @@
 pub mod common;
 use common::*;
 
-use elasticsearch::SearchParts;
-use elasticsearch::http::headers::{X_OPAQUE_ID, HeaderValue};
+use elasticsearch::{
+    http::headers::{HeaderValue, X_OPAQUE_ID},
+    params::TrackTotalHits,
+    SearchParts,
+};
 
 use crate::common::client::index_documents;
+use http::{header::HeaderName, HeaderMap};
 use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
-use http::header::HeaderName;
-use http::HeaderMap;
 
 #[tokio::test]
 async fn default_user_agent_content_type_accept_headers() -> Result<(), failure::Error> {
-    let server = server::http(move |req| {
-        async move {
-            assert_eq!(req.headers()["user-agent"], DEFAULT_USER_AGENT);
-            assert_eq!(req.headers()["content-type"], "application/json");
-            assert_eq!(req.headers()["accept"], "application/json");
-            http::Response::default()
-        }
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["user-agent"], DEFAULT_USER_AGENT);
+        assert_eq!(req.headers()["content-type"], "application/json");
+        assert_eq!(req.headers()["accept"], "application/json");
+        http::Response::default()
     });
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
@@ -30,17 +30,18 @@ async fn default_user_agent_content_type_accept_headers() -> Result<(), failure:
 
 #[tokio::test]
 async fn x_opaque_id_header() -> Result<(), failure::Error> {
-    let server = server::http(move |req| {
-        async move {
-            assert_eq!(req.headers()["x-opaque-id"], "foo");
-            http::Response::default()
-        }
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["x-opaque-id"], "foo");
+        http::Response::default()
     });
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
     let _response = client
         .ping()
-        .header(HeaderName::from_static(X_OPAQUE_ID), HeaderValue::from_static("foo"))
+        .header(
+            HeaderName::from_static(X_OPAQUE_ID),
+            HeaderValue::from_static("foo"),
+        )
         .send()
         .await?;
 
@@ -49,16 +50,14 @@ async fn x_opaque_id_header() -> Result<(), failure::Error> {
 
 #[tokio::test]
 async fn serialize_querystring() -> Result<(), failure::Error> {
-    let server = server::http(move |req| {
-        async move {
-            assert_eq!(req.method(), Method::GET);
-            assert_eq!(req.uri().path(), "/_search");
-            assert_eq!(
+    let server = server::http(move |req| async move {
+        assert_eq!(req.method(), Method::GET);
+        assert_eq!(req.uri().path(), "/_search");
+        assert_eq!(
                 req.uri().query(),
-                Some("filter_path=took%2C_shards&pretty=true&q=title%3AElasticsearch")
+                Some("filter_path=took%2C_shards&pretty=true&q=title%3AElasticsearch&track_total_hits=100000")
             );
-            http::Response::default()
-        }
+        http::Response::default()
     });
 
     let client = client::create_for_url(format!("http://{}", server.addr()).as_ref());
@@ -66,6 +65,7 @@ async fn serialize_querystring() -> Result<(), failure::Error> {
         .search(SearchParts::None)
         .pretty(true)
         .filter_path(&["took", "_shards"])
+        .track_total_hits(TrackTotalHits::Count(100_000))
         .q("title:Elasticsearch")
         .send()
         .await?;
@@ -166,11 +166,12 @@ async fn byte_slice_body() -> Result<(), failure::Error> {
     let body = b"{\"query\":{\"match_all\":{}}}";
 
     let response = client
-        .send(elasticsearch::http::Method::Post,
-              SearchParts::None.url().as_ref(),
+        .send(
+            elasticsearch::http::Method::Post,
+            SearchParts::None.url().as_ref(),
             HeaderMap::new(),
             Option::<&Value>::None,
-              Some(body.as_ref())
+            Some(body.as_ref()),
         )
         .await?;
 
