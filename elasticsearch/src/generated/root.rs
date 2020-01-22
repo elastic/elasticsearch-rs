@@ -5982,7 +5982,7 @@ pub struct Search<'a, 'b, B> {
     terminate_after: Option<i64>,
     timeout: Option<&'b str>,
     track_scores: Option<bool>,
-    track_total_hits: Option<bool>,
+    track_total_hits: Option<TrackTotalHits>,
     typed_keys: Option<bool>,
     version: Option<bool>,
 }
@@ -6331,7 +6331,7 @@ where
         self
     }
     #[doc = "Indicate if the number of documents that match the query should be tracked"]
-    pub fn track_total_hits(mut self, track_total_hits: bool) -> Self {
+    pub fn track_total_hits(mut self, track_total_hits: TrackTotalHits) -> Self {
         self.track_total_hits = Some(track_total_hits);
         self
     }
@@ -6467,7 +6467,7 @@ where
                 #[serde(rename = "track_scores")]
                 track_scores: Option<bool>,
                 #[serde(rename = "track_total_hits")]
-                track_total_hits: Option<bool>,
+                track_total_hits: Option<TrackTotalHits>,
                 #[serde(rename = "typed_keys")]
                 typed_keys: Option<bool>,
                 #[serde(rename = "version")]

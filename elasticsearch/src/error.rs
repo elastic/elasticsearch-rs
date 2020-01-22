@@ -58,7 +58,7 @@ impl From<io::Error> for Error {
 impl From<reqwest::Error> for Error {
     fn from(err: reqwest::Error) -> Error {
         Error {
-            kind: Kind::Http(err)
+            kind: Kind::Http(err),
         }
     }
 }
@@ -66,7 +66,7 @@ impl From<reqwest::Error> for Error {
 impl From<serde_json::error::Error> for Error {
     fn from(err: serde_json::error::Error) -> Error {
         Error {
-            kind: Kind::Json(err)
+            kind: Kind::Json(err),
         }
     }
 }
@@ -74,7 +74,7 @@ impl From<serde_json::error::Error> for Error {
 impl From<url::ParseError> for Error {
     fn from(err: url::ParseError) -> Error {
         Error {
-            kind: Kind::Lib(err.to_string())
+            kind: Kind::Lib(err.to_string()),
         }
     }
 }
@@ -82,7 +82,7 @@ impl From<url::ParseError> for Error {
 impl From<BuildError> for Error {
     fn from(err: BuildError) -> Error {
         Error {
-            kind: Kind::Build(err)
+            kind: Kind::Build(err),
         }
     }
 }
@@ -90,7 +90,7 @@ impl From<BuildError> for Error {
 impl Error {
     pub(crate) fn lib(err: impl Into<String>) -> Self {
         Error {
-            kind: Kind::Lib(err.into())
+            kind: Kind::Lib(err.into()),
         }
     }
 }

@@ -2,7 +2,10 @@ use crate::{
     auth::Credentials,
     error::Error,
     http::{
-        headers::{DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, USER_AGENT},
+        headers::{
+            HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, DEFAULT_ACCEPT,
+            DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
+        },
         request::Body,
         response::Response,
         Method,
@@ -367,7 +370,7 @@ impl CloudId {
     pub fn parse(cloud_id: &str) -> Result<CloudId, Error> {
         if cloud_id.is_empty() || !cloud_id.contains(':') {
             return Err(Error::lib(
-                "cloud_id should be of the form '<cluster name>:<base64 data>'"
+                "cloud_id should be of the form '<cluster name>:<base64 data>'",
             ));
         }
 
@@ -399,14 +402,14 @@ impl CloudId {
                     }
                     Err(_) => {
                         return Err(Error::lib(
-                            "decoded '<base64 data>' must contain a domain name as the first part"
+                            "decoded '<base64 data>' must contain a domain name as the first part",
                         ))
                     }
                 }
             }
             None => {
                 return Err(Error::lib(
-                    "decoded '<base64 data>' must contain a domain name as the first part"
+                    "decoded '<base64 data>' must contain a domain name as the first part",
                 ));
             }
         }
@@ -417,19 +420,19 @@ impl CloudId {
                     uuid = s.trim();
                     if uuid.is_empty() {
                         return Err(Error::lib(
-                            "decoded '<base64 data>' must contain a uuid as the second part"
+                            "decoded '<base64 data>' must contain a uuid as the second part",
                         ));
                     }
                 }
                 Err(_) => {
                     return Err(Error::lib(
-                        "decoded '<base64 data>' must contain a uuid as the second part"
+                        "decoded '<base64 data>' must contain a uuid as the second part",
                     ))
                 }
             },
             None => {
                 return Err(Error::lib(
-                    "decoded '<base64 data>' must contain at least two parts"
+                    "decoded '<base64 data>' must contain at least two parts",
                 ));
             }
         }
@@ -469,7 +472,7 @@ impl ConnectionPool for CloudConnectionPool {
 #[cfg(test)]
 pub mod tests {
     use crate::auth::Credentials;
-    use crate::http::transport::{CloudId, Connection, TransportBuilder, SingleNodeConnectionPool};
+    use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
     use url::Url;
 
     #[test]
@@ -538,14 +541,20 @@ pub mod tests {
     fn connection_url_with_no_trailing_slash() {
         let url = Url::parse("http://10.1.2.3/path_with_no_trailing_slash").unwrap();
         let conn = Connection::new(url);
-        assert_eq!(conn.url.as_str(), "http://10.1.2.3/path_with_no_trailing_slash/");
+        assert_eq!(
+            conn.url.as_str(),
+            "http://10.1.2.3/path_with_no_trailing_slash/"
+        );
     }
 
     #[test]
     fn connection_url_with_trailing_slash() {
         let url = Url::parse("http://10.1.2.3/path_with_trailing_slash/").unwrap();
         let conn = Connection::new(url);
-        assert_eq!(conn.url.as_str(), "http://10.1.2.3/path_with_trailing_slash/");
+        assert_eq!(
+            conn.url.as_str(),
+            "http://10.1.2.3/path_with_trailing_slash/"
+        );
     }
 
     #[test]

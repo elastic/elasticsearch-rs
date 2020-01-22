@@ -41,9 +41,9 @@ impl Drop for Server {
 }
 
 pub fn http<F, Fut>(func: F) -> Server
-    where
-        F: Fn(http::Request<hyper::Body>) -> Fut + Clone + Send + 'static,
-        Fut: Future<Output = http::Response<hyper::Body>> + Send + 'static,
+where
+    F: Fn(http::Request<hyper::Body>) -> Fut + Clone + Send + 'static,
+    Fut: Future<Output = http::Response<hyper::Body>> + Send + 'static,
 {
     //Spawn new runtime in thread to prevent reactor execution context conflict
     thread::spawn(move || {
@@ -91,6 +91,6 @@ pub fn http<F, Fut>(func: F) -> Server
             shutdown_tx: Some(shutdown_tx),
         }
     })
-        .join()
-        .unwrap()
+    .join()
+    .unwrap()
 }
