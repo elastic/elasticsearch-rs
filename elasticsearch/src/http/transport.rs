@@ -178,7 +178,7 @@ impl Connection {
     /// Creates a new instance of a [Connection].
     ///
     /// If the passed [url::Url] does not have a trailing forward slash, a new
-    /// url is constructed from the passed url with a trailing slash.
+    /// url is constructed from the passed url, with a trailing slash.
     pub fn new(url: Url) -> Self {
         let url = if !url.path().ends_with('/') {
             Url::parse(format!("{}/", url.as_str()).as_ref()).unwrap()
