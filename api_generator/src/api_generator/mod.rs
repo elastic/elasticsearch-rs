@@ -334,6 +334,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 
     let mut file = OpenOptions::new().append(true).write(true).open(&path)?;
     file.write_all(input.as_bytes())?;
+    file.write(b"\n")?;
 
     Ok(())
 }
