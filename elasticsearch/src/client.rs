@@ -1,5 +1,5 @@
 use crate::{
-    http::{request::Body, response::Response, transport::Transport, Method, headers::HeaderMap},
+    http::{headers::HeaderMap, request::Body, response::Response, transport::Transport, Method},
     Error,
 };
 
@@ -50,6 +50,8 @@ impl Elasticsearch {
         B: Body,
         Q: Serialize + ?Sized,
     {
-        self.transport.send(method, path, headers, query_string, body).await
+        self.transport
+            .send(method, path, headers, query_string, body)
+            .await
     }
 }

@@ -4,9 +4,9 @@ use crate::api_generator::{
 };
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
+use reqwest::Url;
 use std::{collections::BTreeMap, str};
 use syn::{Field, FieldValue, ImplItem};
-use reqwest::Url;
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -392,7 +392,7 @@ impl<'a> RequestBuilder<'a> {
 
         // add a field for HTTP headers
         fields.push(syn::Field {
-           ident: Some(headers_field_ident.clone()),
+            ident: Some(headers_field_ident.clone()),
             vis: syn::Visibility::Inherited,
             attrs: vec![],
             ty: syn::parse_type("HeaderMap").unwrap(),

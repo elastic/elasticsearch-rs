@@ -31,7 +31,10 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
                     static ref PARENS_REGEX: Regex = Regex::new(r"^(.*?)\s*\(.*?\)\s*$").unwrap();
                 }
                 if let Some(c) = PARENS_REGEX.captures(v) {
-                    (c.get(1).unwrap().as_str().to_owned(), syn::Ident::from(c.get(1).unwrap().as_str().to_pascal_case()))
+                    (
+                        c.get(1).unwrap().as_str().to_owned(),
+                        syn::Ident::from(c.get(1).unwrap().as_str().to_pascal_case()),
+                    )
                 } else {
                     (v.to_owned(), syn::Ident::from(v.to_pascal_case()))
                 }

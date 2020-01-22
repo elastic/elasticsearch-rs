@@ -297,7 +297,7 @@
 
 // also test examples in README
 #![feature(external_doc)]
-#[doc(include="../../README.md")]
+#[doc(include = "../../README.md")]
 #[cfg(doctest)]
 type _DoctestReadme = ();
 
@@ -308,12 +308,12 @@ type _DoctestReadme = ();
 extern crate dyn_clone;
 
 pub mod auth;
-pub mod http;
 pub mod cat;
 pub mod ccr;
 pub mod cluster;
 pub mod enrich;
 pub mod graph;
+pub mod http;
 pub mod ilm;
 pub mod indices;
 pub mod ingest;
@@ -336,10 +336,7 @@ mod error;
 mod generated;
 
 // exposes types within modules at the library root level
-pub use crate::{
-    client::*, error::*, generated::root::*,
-    http::transport::DEFAULT_ADDRESS,
-};
+pub use crate::{client::*, error::*, generated::root::*, http::transport::DEFAULT_ADDRESS};
 
 #[cfg(test)]
 pub mod tests {
