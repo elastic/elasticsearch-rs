@@ -291,7 +291,6 @@ pub fn generate(
     write_file(root, generated_dir, "root.rs")?;
 
     let generated_modules = fs::read_dir(generated_dir)?
-        .into_iter()
         .map(|r| {
             let path = r.unwrap().path();
             format!("pub mod {};", path.file_stem().unwrap().to_string_lossy())
@@ -334,7 +333,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 
     let mut file = OpenOptions::new().append(true).write(true).open(&path)?;
     file.write_all(input.as_bytes())?;
-    file.write(b"\n")?;
+    file.write_all(b"\n")?;
 
     Ok(())
 }

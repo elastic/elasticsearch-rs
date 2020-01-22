@@ -24,7 +24,7 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         .iter()
         .filter(|v| !v.is_empty())
         .map(|v| {
-            if !v.contains("(") {
+            if !v.contains('(') {
                 (v.to_owned(), syn::Ident::from(v.to_pascal_case()))
             } else {
                 lazy_static! {

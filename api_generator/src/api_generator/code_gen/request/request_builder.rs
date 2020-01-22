@@ -368,13 +368,13 @@ impl<'a> RequestBuilder<'a> {
         accepts_nd_body: bool,
     ) -> Tokens {
         // TODO: lazy_static! for this?
-        let common_fields: Vec<Field> = common_params
+        let mut common_fields: Vec<Field> = common_params
             .iter()
             .map(Self::create_struct_field)
             .collect();
 
         // TODO: lazy_static! for this?
-        let common_builder_fns: Vec<ImplItem> =
+        let mut common_builder_fns: Vec<ImplItem> =
             common_params.iter().map(Self::create_impl_fn).collect();
 
         let supports_body = endpoint.supports_body();
@@ -408,8 +408,7 @@ impl<'a> RequestBuilder<'a> {
         }
 
         // Combine common fields with struct fields, sort and deduplicate
-        // clone common_fields, since quote!() consumes the Vec<Field>
-        fields.append(&mut common_fields.to_vec().clone());
+        fields.append(&mut common_fields);
         fields.sort_by(|a, b| a.ident.cmp(&b.ident));
         fields.dedup_by(|a, b| a.ident.eq(&b.ident));
 
@@ -438,8 +437,7 @@ impl<'a> RequestBuilder<'a> {
         }
 
         // Combine common fns with builder fns, sort and deduplicate.
-        // clone is required, since quote!() consumes the Vec<Item>
-        builder_fns.append(&mut common_builder_fns.to_vec().clone());
+        builder_fns.append(&mut common_builder_fns);
         builder_fns.sort_by(|a, b| a.ident.cmp(&b.ident));
         builder_fns.dedup_by(|a, b| a.ident.eq(&b.ident));
 

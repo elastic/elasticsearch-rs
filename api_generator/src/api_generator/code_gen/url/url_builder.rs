@@ -340,7 +340,7 @@ impl<'a> UrlBuilder<'a> {
         syn::Stmt::Local(Box::new(syn::Local {
             pat: Box::new(syn::Pat::Ident(
                 syn::BindingMode::ByValue(syn::Mutability::Mutable),
-                url_ident.to_owned(),
+                url_ident,
                 None,
             )),
             ty: None,
