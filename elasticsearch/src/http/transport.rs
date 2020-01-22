@@ -175,8 +175,17 @@ pub struct Connection {
 }
 
 impl Connection {
-    /// Creates a new instance of a [Connection]
+    /// Creates a new instance of a [Connection].
+    ///
+    /// If the passed [url::Url] does not have a trailing forward slash, a new
+    /// url is constructed from the passed url, with a trailing slash.
     pub fn new(url: Url) -> Self {
+        let url = if !url.path().ends_with('/') {
+            Url::parse(format!("{}/", url.as_str()).as_ref()).unwrap()
+        } else {
+            url
+        };
+
         Self { url }
     }
 }
@@ -236,7 +245,7 @@ impl Transport {
         Q: Serialize + ?Sized,
     {
         let connection = self.conn_pool.next();
-        let url = connection.url.join(path)?;
+        let url = connection.url.join(path.trim_start_matches('/'))?;
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, url);
 
@@ -460,7 +469,7 @@ impl ConnectionPool for CloudConnectionPool {
 #[cfg(test)]
 pub mod tests {
     use crate::auth::Credentials;
-    use crate::http::transport::{CloudId, TransportBuilder, SingleNodeConnectionPool};
+    use crate::http::transport::{CloudId, Connection, TransportBuilder, SingleNodeConnectionPool};
     use url::Url;
 
     #[test]
@@ -523,5 +532,33 @@ pub mod tests {
         let cloud_id = format!("my_cluster:{}", base64);
         let result = CloudId::parse(&cloud_id);
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn connection_url_with_no_trailing_slash() {
+        let url = Url::parse("http://10.1.2.3/path_with_no_trailing_slash").unwrap();
+        let conn = Connection::new(url);
+        assert_eq!(conn.url.as_str(), "http://10.1.2.3/path_with_no_trailing_slash/");
+    }
+
+    #[test]
+    fn connection_url_with_trailing_slash() {
+        let url = Url::parse("http://10.1.2.3/path_with_trailing_slash/").unwrap();
+        let conn = Connection::new(url);
+        assert_eq!(conn.url.as_str(), "http://10.1.2.3/path_with_trailing_slash/");
+    }
+
+    #[test]
+    fn connection_url_with_no_path_and_no_trailing_slash() {
+        let url = Url::parse("http://10.1.2.3").unwrap();
+        let conn = Connection::new(url);
+        assert_eq!(conn.url.as_str(), "http://10.1.2.3/");
+    }
+
+    #[test]
+    fn connection_url_with_no_path_and_trailing_slash() {
+        let url = Url::parse("http://10.1.2.3/").unwrap();
+        let conn = Connection::new(url);
+        assert_eq!(conn.url.as_str(), "http://10.1.2.3/");
     }
 }
