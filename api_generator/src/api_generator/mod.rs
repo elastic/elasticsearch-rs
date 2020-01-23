@@ -233,6 +233,7 @@ pub struct Common {
 /// An enum defined in the REST API specs
 pub struct ApiEnum {
     pub name: String,
+    pub description: Option<String>,
     pub values: Vec<String>,
 }
 
@@ -385,6 +386,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
                 enums.insert(ApiEnum {
                     name: param.0.to_string(),
+                    description: param.1.description.clone(),
                     values: options,
                 });
             }

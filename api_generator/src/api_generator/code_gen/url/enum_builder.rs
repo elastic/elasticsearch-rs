@@ -135,7 +135,7 @@ impl<'a> EnumBuilder<'a> {
     fn parts_none() -> syn::Variant {
         syn::Variant {
             ident: ident("None"),
-            attrs: vec![doc("No parts".into())],
+            attrs: vec![doc("No parts")],
             data: syn::VariantData::Unit,
             discriminant: None,
         }

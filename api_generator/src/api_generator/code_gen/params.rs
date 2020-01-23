@@ -42,8 +42,14 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         })
         .unzip();
 
+    let doc = match &e.description {
+        Some(description) => Some(code_gen::doc(description)),
+        None => None,
+    };
+
     let generated_enum_tokens = quote!(
         #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
+        #doc
         pub enum #name {
             #(#[serde(rename = #renames)] #variants),*
         }

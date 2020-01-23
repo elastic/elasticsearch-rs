@@ -41,7 +41,7 @@ fn ident<I: AsRef<str>>(name: I) -> syn::Ident {
 }
 
 /// AST for document attribute
-fn doc(comment: String) -> syn::Attribute {
+fn doc<I: Into<String>>(comment: I) -> syn::Attribute {
     syn::Attribute {
         style: syn::AttrStyle::Outer,
         value: syn::MetaItem::NameValue(ident("doc".to_string()), lit(comment)),

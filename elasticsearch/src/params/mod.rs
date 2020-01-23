@@ -3,7 +3,7 @@
 pub use super::generated::params::*;
 use serde::{Deserialize, Serialize};
 
-/// Allows you to control how the total number of hits should be tracked.
+/// Control how the total number of hits should be tracked.
 ///
 /// When set to `Track` with a value `true`, the response will always track the number of hits that
 /// match the query accurately.

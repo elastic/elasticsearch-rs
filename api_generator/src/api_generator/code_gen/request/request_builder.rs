@@ -227,7 +227,7 @@ impl<'a> RequestBuilder<'a> {
             ident: ident("body<T>"),
             vis: syn::Visibility::Public,
             defaultness: syn::Defaultness::Final,
-            attrs: vec![doc("The body for the API call".into())],
+            attrs: vec![doc("The body for the API call")],
             node: syn::ImplItemKind::Method(
                 syn::MethodSig {
                     unsafety: syn::Unsafety::Normal,
@@ -266,7 +266,7 @@ impl<'a> RequestBuilder<'a> {
 
     /// Creates the AST for a builder fn to add a HTTP header
     fn create_header_fn(field: &syn::Ident) -> syn::ImplItem {
-        let doc_attr = doc("Adds a HTTP header".into());
+        let doc_attr = doc("Adds a HTTP header");
 
         syn::ImplItem {
             ident: ident("header"),
@@ -315,7 +315,7 @@ impl<'a> RequestBuilder<'a> {
         let value_ident = ident(&name);
         let ty = typekind_to_ty(&f.0, f.1.ty, true);
         let doc_attr = match &f.1.description {
-            Some(docs) => vec![doc(docs.into())],
+            Some(docs) => vec![doc(docs)],
             _ => vec![],
         };
 
@@ -554,7 +554,7 @@ impl<'a> RequestBuilder<'a> {
         };
 
         let method_doc = match &endpoint.documentation.description {
-            Some(description) => Some(doc(description.into())),
+            Some(description) => Some(doc(description)),
             _ => None,
         };
 
