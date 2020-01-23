@@ -213,6 +213,11 @@ impl Transport {
         }
     }
 
+    fn bytes_mut(&self) -> BytesMut {
+        // NOTE: These could be pooled or re-used
+        BytesMut::with_capacity(1024)
+    }
+
     /// Creates a new instance of a [Transport] configured with a
     /// [SingleNodeConnectionPool].
     pub fn single_node(url: &str) -> Result<Transport, Error> {
@@ -259,9 +264,14 @@ impl Transport {
         request_builder = request_builder.headers(headers);
 
         if let Some(b) = body {
-            let mut bytes_mut = BytesMut::with_capacity(1024);
-            b.write(&mut bytes_mut)?;
-            let bytes = bytes_mut.freeze();
+            let bytes = if let Some(bytes) = b.bytes() {
+                bytes
+            } else {
+                let mut bytes_mut = self.bytes_mut();
+                b.write(&mut bytes_mut)?;
+                bytes_mut.split().freeze()
+            };
+
             request_builder = request_builder.body(bytes);
         };
 
