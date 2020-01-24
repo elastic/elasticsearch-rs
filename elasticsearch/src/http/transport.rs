@@ -1,3 +1,5 @@
+//! HTTP transport and connection components
+
 use crate::{
     auth::Credentials,
     error::Error,

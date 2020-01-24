@@ -483,12 +483,12 @@ impl<'a> RequestBuilder<'a> {
             endpoint.documentation.url.as_ref(),
         ) {
             (Some(d), Some(u)) if Url::parse(u).is_ok() => lit(format!(
-                "Builder for the [{} API]({}). {}",
+                "Builder for the [{} API]({})\n\n{}",
                 api_name_for_docs, u, d
             )),
-            (Some(d), None) => lit(format!("Builder for the {} API. {}", api_name_for_docs, d)),
+            (Some(d), None) => lit(format!("Builder for the {} API\n\n{}", api_name_for_docs, d)),
             (None, Some(u)) if Url::parse(u).is_ok() => lit(format!(
-                "Builder for the [{} API]({}).",
+                "Builder for the [{} API]({})",
                 api_name_for_docs, u
             )),
             _ => lit(format!("Builder for the {} API", api_name_for_docs)),
@@ -553,17 +553,27 @@ impl<'a> RequestBuilder<'a> {
             }
         };
 
-        let method_doc = match &endpoint.documentation.description {
-            Some(description) => Some(doc(description)),
-            _ => None,
+        let api_name_for_docs = split_on_pascal_case(builder_name);
+        let method_doc = match (
+            endpoint.documentation.description.as_ref(),
+            endpoint.documentation.url.as_ref(),
+        ) {
+            (Some(d), Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({})\n\n{}",
+                api_name_for_docs, u, d)
+            ),
+            (Some(d), None) => doc(format!("{} API\n\n{}", api_name_for_docs, d)),
+            (None, Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({})",
+                api_name_for_docs, u
+            )),
+            _ => doc(format!("{} API", api_name_for_docs)),
         };
 
-        let clone_expr = {
-            if is_root_method {
-                quote!(&self)
-            } else {
-                quote!(&self.client)
-            }
+        let clone_expr = if is_root_method {
+            quote!(&self)
+        } else {
+            quote!(&self.client)
         };
 
         if enum_builder.contains_single_parameterless_part() {
@@ -610,7 +620,7 @@ impl<'a> RequestBuilder<'a> {
     }
 
     /// builds the AST that represent the builder structs
-    /// and the ctor function for the builder struct on the namespace client
+    /// and the ctor function for the builder struct on the root/namespace client
     pub fn build(self) -> (Tokens, Tokens) {
         let builder_struct = Self::create_builder_struct(
             self.builder_name,

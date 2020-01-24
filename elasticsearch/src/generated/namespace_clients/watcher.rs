@@ -61,7 +61,7 @@ impl<'b> WatcherAckWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Ack Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html)."]
+#[doc = "Builder for the [Watcher Ack Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html)"]
 pub struct WatcherAckWatch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherAckWatchParts<'b>,
@@ -199,7 +199,7 @@ impl<'b> WatcherActivateWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html)."]
+#[doc = "Builder for the [Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html)"]
 pub struct WatcherActivateWatch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherActivateWatchParts<'b>,
@@ -337,7 +337,7 @@ impl<'b> WatcherDeactivateWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html)."]
+#[doc = "Builder for the [Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html)"]
 pub struct WatcherDeactivateWatch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherDeactivateWatchParts<'b>,
@@ -474,7 +474,7 @@ impl<'b> WatcherDeleteWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Delete Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html)."]
+#[doc = "Builder for the [Watcher Delete Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html)"]
 pub struct WatcherDeleteWatch<'a, 'b> {
     client: &'a Elasticsearch,
     parts: WatcherDeleteWatchParts<'b>,
@@ -593,7 +593,7 @@ impl<'b> WatcherExecuteWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Execute Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html)."]
+#[doc = "Builder for the [Watcher Execute Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html)"]
 pub struct WatcherExecuteWatch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherExecuteWatchParts<'b>,
@@ -741,7 +741,7 @@ impl<'b> WatcherGetWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Get Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html)."]
+#[doc = "Builder for the [Watcher Get Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html)"]
 pub struct WatcherGetWatch<'a, 'b> {
     client: &'a Elasticsearch,
     parts: WatcherGetWatchParts<'b>,
@@ -856,7 +856,7 @@ impl<'b> WatcherPutWatchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Put Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html)."]
+#[doc = "Builder for the [Watcher Put Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html)"]
 pub struct WatcherPutWatch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherPutWatchParts<'b>,
@@ -1032,7 +1032,7 @@ impl WatcherStartParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Start API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html)."]
+#[doc = "Builder for the [Watcher Start API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html)"]
 pub struct WatcherStart<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherStartParts,
@@ -1173,7 +1173,7 @@ impl<'b> WatcherStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html)."]
+#[doc = "Builder for the [Watcher Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html)"]
 pub struct WatcherStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: WatcherStatsParts<'b>,
@@ -1303,7 +1303,7 @@ impl WatcherStopParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Watcher Stop API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html)."]
+#[doc = "Builder for the [Watcher Stop API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html)"]
 pub struct WatcherStop<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: WatcherStopParts,
@@ -1429,45 +1429,55 @@ impl<'a> Watcher<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
+    #[doc = "[Watcher Ack Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-ack-watch.html)"]
     pub fn ack_watch<'b>(&'a self, parts: WatcherAckWatchParts<'b>) -> WatcherAckWatch<'a, 'b, ()> {
         WatcherAckWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Activate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-activate-watch.html)"]
     pub fn activate_watch<'b>(
         &'a self,
         parts: WatcherActivateWatchParts<'b>,
     ) -> WatcherActivateWatch<'a, 'b, ()> {
         WatcherActivateWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Deactivate Watch API](https://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-deactivate-watch.html)"]
     pub fn deactivate_watch<'b>(
         &'a self,
         parts: WatcherDeactivateWatchParts<'b>,
     ) -> WatcherDeactivateWatch<'a, 'b, ()> {
         WatcherDeactivateWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Delete Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-delete-watch.html)"]
     pub fn delete_watch<'b>(
         &'a self,
         parts: WatcherDeleteWatchParts<'b>,
     ) -> WatcherDeleteWatch<'a, 'b> {
         WatcherDeleteWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Execute Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-execute-watch.html)"]
     pub fn execute_watch<'b>(
         &'a self,
         parts: WatcherExecuteWatchParts<'b>,
     ) -> WatcherExecuteWatch<'a, 'b, ()> {
         WatcherExecuteWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Get Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-get-watch.html)"]
     pub fn get_watch<'b>(&'a self, parts: WatcherGetWatchParts<'b>) -> WatcherGetWatch<'a, 'b> {
         WatcherGetWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Put Watch API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-put-watch.html)"]
     pub fn put_watch<'b>(&'a self, parts: WatcherPutWatchParts<'b>) -> WatcherPutWatch<'a, 'b, ()> {
         WatcherPutWatch::new(&self.client, parts)
     }
+    #[doc = "[Watcher Start API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-start.html)"]
     pub fn start<'b>(&'a self) -> WatcherStart<'a, 'b, ()> {
         WatcherStart::new(&self.client)
     }
+    #[doc = "[Watcher Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stats.html)"]
     pub fn stats<'b>(&'a self, parts: WatcherStatsParts<'b>) -> WatcherStats<'a, 'b> {
         WatcherStats::new(&self.client, parts)
     }
+    #[doc = "[Watcher Stop API](http://www.elastic.co/guide/en/elasticsearch/reference/current/watcher-api-stop.html)"]
     pub fn stop<'b>(&'a self) -> WatcherStop<'a, 'b, ()> {
         WatcherStop::new(&self.client)
     }
