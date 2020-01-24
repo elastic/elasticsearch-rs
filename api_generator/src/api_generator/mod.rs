@@ -176,10 +176,10 @@ impl DocumentationUrlString {
         match url::Url::parse(&s) {
             Ok(u) => {
                 let mut u = u;
-                if u.path().contains("/master/") {
-                    u.set_path(u.path().replace("/master/", format!("/{}.{}/", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
-                } else if u.path().contains("/current/") {
-                    u.set_path(u.path().replace("/current/", format!("/{}.{}/", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                if u.path().contains("/master") {
+                    u.set_path(u.path().replace("/master", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                } else if u.path().contains("/current") {
+                    u.set_path(u.path().replace("/current", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
                 }
                 u.into_string()
             },

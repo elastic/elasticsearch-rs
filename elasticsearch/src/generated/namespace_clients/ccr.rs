@@ -548,7 +548,7 @@ impl<'b> CcrForgetFollowerParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/current)"]
+#[doc = "Builder for the [Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5)"]
 pub struct CcrForgetFollower<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrForgetFollowerParts<'b>,
@@ -1603,7 +1603,7 @@ impl<'b> CcrUnfollowParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/current)"]
+#[doc = "Builder for the [Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5)"]
 pub struct CcrUnfollow<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrUnfollowParts<'b>,
@@ -1748,7 +1748,7 @@ impl<'a> Ccr<'a> {
     pub fn follow_stats<'b>(&'a self, parts: CcrFollowStatsParts<'b>) -> CcrFollowStats<'a, 'b> {
         CcrFollowStats::new(&self.client, parts)
     }
-    #[doc = "[Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/current)"]
+    #[doc = "[Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5)"]
     pub fn forget_follower<'b>(
         &'a self,
         parts: CcrForgetFollowerParts<'b>,
@@ -1801,7 +1801,7 @@ impl<'a> Ccr<'a> {
     pub fn stats<'b>(&'a self) -> CcrStats<'a, 'b> {
         CcrStats::new(&self.client)
     }
-    #[doc = "[Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/current)"]
+    #[doc = "[Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5)"]
     pub fn unfollow<'b>(&'a self, parts: CcrUnfollowParts<'b>) -> CcrUnfollow<'a, 'b, ()> {
         CcrUnfollow::new(&self.client, parts)
     }
