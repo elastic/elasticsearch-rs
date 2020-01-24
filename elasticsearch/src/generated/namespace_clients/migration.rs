@@ -53,7 +53,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html)"]
+#[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/migration-api-deprecation.html)"]
 pub struct MigrationDeprecations<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MigrationDeprecationsParts<'b>,
@@ -157,7 +157,7 @@ impl<'a> Migration<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/current/migration-api-deprecation.html)"]
+    #[doc = "[Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/migration-api-deprecation.html)"]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,

@@ -49,7 +49,7 @@ impl<'b> IngestDeletePipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/delete-pipeline-api.html)\n\nDeletes a pipeline."]
 pub struct IngestDeletePipeline<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestDeletePipelineParts<'b>,
@@ -187,7 +187,7 @@ impl<'b> IngestGetPipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/get-pipeline-api.html)\n\nReturns a pipeline."]
 pub struct IngestGetPipeline<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestGetPipelineParts<'b>,
@@ -307,7 +307,7 @@ impl IngestProcessorGrokParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
 pub struct IngestProcessorGrok<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestProcessorGrokParts,
@@ -422,7 +422,7 @@ impl<'b> IngestPutPipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IngestPutPipelineParts<'b>,
@@ -585,7 +585,7 @@ impl<'b> IngestSimulateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IngestSimulateParts<'b>,
@@ -725,32 +725,32 @@ impl<'a> Ingest<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/delete-pipeline-api.html)\n\nDeletes a pipeline."]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: IngestDeletePipelineParts<'b>,
     ) -> IngestDeletePipeline<'a, 'b> {
         IngestDeletePipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html)\n\nReturns a pipeline."]
+    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/get-pipeline-api.html)\n\nReturns a pipeline."]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: IngestGetPipelineParts<'b>,
     ) -> IngestGetPipeline<'a, 'b> {
         IngestGetPipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
     pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
         IngestProcessorGrok::new(&self.client)
     }
-    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/master/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: IngestPutPipelineParts<'b>,
     ) -> IngestPutPipeline<'a, 'b, ()> {
         IngestPutPipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
     pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
         IngestSimulate::new(&self.client, parts)
     }
