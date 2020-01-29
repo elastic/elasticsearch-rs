@@ -64,7 +64,7 @@ impl<'b> BulkParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html). Allows to perform multiple index/update/delete operations in a single request."]
+#[doc = "Builder for the [Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
 pub struct Bulk<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: BulkParts<'b>,
@@ -313,7 +313,7 @@ impl<'b> ClearScrollParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#_clear_scroll_api). Explicitly clears the search context for a scroll."]
+#[doc = "Builder for the [Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
 pub struct ClearScroll<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClearScrollParts<'b>,
@@ -468,7 +468,7 @@ impl<'b> CountParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-count.html). Returns number of documents matching a query."]
+#[doc = "Builder for the [Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-count.html)\n\nReturns number of documents matching a query."]
 pub struct Count<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CountParts<'b>,
@@ -780,7 +780,7 @@ impl<'b> CreateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+#[doc = "Builder for the [Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
 pub struct Create<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CreateParts<'b>,
@@ -1008,7 +1008,7 @@ impl<'b> DeleteParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html). Removes a document from the index."]
+#[doc = "Builder for the [Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete.html)\n\nRemoves a document from the index."]
 pub struct Delete<'a, 'b> {
     client: &'a Elasticsearch,
     parts: DeleteParts<'b>,
@@ -1218,7 +1218,7 @@ impl<'b> DeleteByQueryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html). Deletes documents matching the provided query."]
+#[doc = "Builder for the [Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
 pub struct DeleteByQuery<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: DeleteByQueryParts<'b>,
@@ -1720,7 +1720,7 @@ impl<'b> DeleteByQueryRethrottleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html). Changes the number of requests per second for a particular Delete By Query operation."]
+#[doc = "Builder for the [Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
 pub struct DeleteByQueryRethrottle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: DeleteByQueryRethrottleParts<'b>,
@@ -1868,7 +1868,7 @@ impl<'b> DeleteScriptParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Deletes a script."]
+#[doc = "Builder for the [Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nDeletes a script."]
 pub struct DeleteScript<'a, 'b> {
     client: &'a Elasticsearch,
     parts: DeleteScriptParts<'b>,
@@ -2017,7 +2017,7 @@ impl<'b> ExistsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document exists in an index."]
+#[doc = "Builder for the [Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns information about whether a document exists in an index."]
 pub struct Exists<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ExistsParts<'b>,
@@ -2259,7 +2259,7 @@ impl<'b> ExistsSourceParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns information about whether a document source exists in an index."]
+#[doc = "Builder for the [Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
 pub struct ExistsSource<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ExistsSourceParts<'b>,
@@ -2488,7 +2488,7 @@ impl<'b> ExplainParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html). Returns information about why a specific matches (or doesn't match) a query."]
+#[doc = "Builder for the [Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
 pub struct Explain<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ExplainParts<'b>,
@@ -2777,7 +2777,7 @@ impl<'b> FieldCapsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html). Returns the information about the capabilities of fields among multiple indices."]
+#[doc = "Builder for the [Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
 pub struct FieldCaps<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: FieldCapsParts<'b>,
@@ -2986,7 +2986,7 @@ impl<'b> GetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns a document."]
+#[doc = "Builder for the [Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns a document."]
 pub struct Get<'a, 'b> {
     client: &'a Elasticsearch,
     parts: GetParts<'b>,
@@ -3213,7 +3213,7 @@ impl<'b> GetScriptParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Returns a script."]
+#[doc = "Builder for the [Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nReturns a script."]
 pub struct GetScript<'a, 'b> {
     client: &'a Elasticsearch,
     parts: GetScriptParts<'b>,
@@ -3353,7 +3353,7 @@ impl<'b> GetSourceParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html). Returns the source of a document."]
+#[doc = "Builder for the [Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns the source of a document."]
 pub struct GetSource<'a, 'b> {
     client: &'a Elasticsearch,
     parts: GetSourceParts<'b>,
@@ -3600,7 +3600,7 @@ impl<'b> IndexParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html). Creates or updates a document in an index."]
+#[doc = "Builder for the [Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-index_.html)\n\nCreates or updates a document in an index."]
 pub struct Index<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndexParts<'b>,
@@ -3842,7 +3842,7 @@ impl InfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns basic information about the cluster."]
+#[doc = "Builder for the [Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/index.html)\n\nReturns basic information about the cluster."]
 pub struct Info<'a, 'b> {
     client: &'a Elasticsearch,
     parts: InfoParts,
@@ -3972,7 +3972,7 @@ impl<'b> MgetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html). Allows to get multiple documents in one request."]
+#[doc = "Builder for the [Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
 pub struct Mget<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MgetParts<'b>,
@@ -4230,7 +4230,7 @@ impl<'b> MsearchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html). Allows to execute several search operations in one request."]
+#[doc = "Builder for the [Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
 pub struct Msearch<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MsearchParts<'b>,
@@ -4465,7 +4465,7 @@ impl<'b> MsearchTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html). Allows to execute several search template operations in one request."]
+#[doc = "Builder for the [Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
 pub struct MsearchTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MsearchTemplateParts<'b>,
@@ -4664,7 +4664,7 @@ impl<'b> MtermvectorsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html). Returns multiple termvectors in one request."]
+#[doc = "Builder for the [Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
 pub struct Mtermvectors<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MtermvectorsParts<'b>,
@@ -4931,7 +4931,7 @@ impl PingParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html). Returns whether the cluster is running."]
+#[doc = "Builder for the [Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/index.html)\n\nReturns whether the cluster is running."]
 pub struct Ping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: PingParts,
@@ -5056,7 +5056,7 @@ impl<'b> PutScriptParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html). Creates or updates a script."]
+#[doc = "Builder for the [Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nCreates or updates a script."]
 pub struct PutScript<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: PutScriptParts<'b>,
@@ -5221,7 +5221,7 @@ impl ReindexParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
+#[doc = "Builder for the [Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
 pub struct Reindex<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ReindexParts,
@@ -5447,7 +5447,7 @@ impl<'b> ReindexRethrottleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html). Changes the number of requests per second for a particular Reindex operation."]
+#[doc = "Builder for the [Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
 pub struct ReindexRethrottle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ReindexRethrottleParts<'b>,
@@ -5598,7 +5598,7 @@ impl<'b> RenderSearchTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html#_validating_templates). Allows to use the Mustache language to pre-render a search definition."]
+#[doc = "Builder for the [Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct RenderSearchTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: RenderSearchTemplateParts<'b>,
@@ -5741,7 +5741,7 @@ impl<'b> ScrollParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll). Allows to retrieve a large numbers of results from a single search request."]
+#[doc = "Builder for the [Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
 pub struct Scroll<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ScrollParts<'b>,
@@ -5932,7 +5932,7 @@ impl<'b> SearchParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html). Returns results matching a query."]
+#[doc = "Builder for the [Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-search.html)\n\nReturns results matching a query."]
 pub struct Search<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SearchParts<'b>,
@@ -6557,7 +6557,7 @@ impl<'b> SearchShardsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/master/search-shards.html). Returns information about the indices and shards that a search request would be executed against."]
+#[doc = "Builder for the [Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
 pub struct SearchShards<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SearchShardsParts<'b>,
@@ -6781,7 +6781,7 @@ impl<'b> SearchTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html). Allows to use the Mustache language to pre-render a search definition."]
+#[doc = "Builder for the [Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
 pub struct SearchTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SearchTemplateParts<'b>,
@@ -7091,7 +7091,7 @@ impl<'b> TermvectorsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html). Returns information and statistics about terms in the fields of a particular document."]
+#[doc = "Builder for the [Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
 pub struct Termvectors<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TermvectorsParts<'b>,
@@ -7367,7 +7367,7 @@ impl<'b> UpdateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html). Updates a document with a script or partial document."]
+#[doc = "Builder for the [Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update.html)\n\nUpdates a document with a script or partial document."]
 pub struct Update<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: UpdateParts<'b>,
@@ -7649,7 +7649,7 @@ impl<'b> UpdateByQueryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html). Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+#[doc = "Builder for the [Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
 pub struct UpdateByQuery<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: UpdateByQueryParts<'b>,
@@ -8184,7 +8184,7 @@ impl<'b> UpdateByQueryRethrottleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html). Changes the number of requests per second for a particular Update By Query operation."]
+#[doc = "Builder for the [Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
 pub struct UpdateByQueryRethrottle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: UpdateByQueryRethrottleParts<'b>,
@@ -8313,166 +8313,166 @@ where
     }
 }
 impl Elasticsearch {
-    #[doc = "Allows to perform multiple index/update/delete operations in a single request."]
+    #[doc = "[Bulk API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-bulk.html)\n\nAllows to perform multiple index/update/delete operations in a single request."]
     pub fn bulk<'a, 'b>(&'a self, parts: BulkParts<'b>) -> Bulk<'a, 'b, ()> {
         Bulk::new(&self, parts)
     }
-    #[doc = "Explicitly clears the search context for a scroll."]
+    #[doc = "[Clear Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-request-body.html#_clear_scroll_api)\n\nExplicitly clears the search context for a scroll."]
     pub fn clear_scroll<'a, 'b>(&'a self, parts: ClearScrollParts<'b>) -> ClearScroll<'a, 'b, ()> {
         ClearScroll::new(&self, parts)
     }
-    #[doc = "Returns number of documents matching a query."]
+    #[doc = "[Count API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-count.html)\n\nReturns number of documents matching a query."]
     pub fn count<'a, 'b>(&'a self, parts: CountParts<'b>) -> Count<'a, 'b, ()> {
         Count::new(&self, parts)
     }
-    #[doc = "Creates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
+    #[doc = "[Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-index_.html)\n\nCreates a new document in the index.\n\nReturns a 409 response when a document with a same ID already exists in the index."]
     pub fn create<'a, 'b>(&'a self, parts: CreateParts<'b>) -> Create<'a, 'b, ()> {
         Create::new(&self, parts)
     }
-    #[doc = "Removes a document from the index."]
+    #[doc = "[Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete.html)\n\nRemoves a document from the index."]
     pub fn delete<'a, 'b>(&'a self, parts: DeleteParts<'b>) -> Delete<'a, 'b> {
         Delete::new(&self, parts)
     }
-    #[doc = "Deletes documents matching the provided query."]
+    #[doc = "[Delete By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete-by-query.html)\n\nDeletes documents matching the provided query."]
     pub fn delete_by_query<'a, 'b>(
         &'a self,
         parts: DeleteByQueryParts<'b>,
     ) -> DeleteByQuery<'a, 'b, ()> {
         DeleteByQuery::new(&self, parts)
     }
-    #[doc = "Changes the number of requests per second for a particular Delete By Query operation."]
+    #[doc = "[Delete By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-delete-by-query.html)\n\nChanges the number of requests per second for a particular Delete By Query operation."]
     pub fn delete_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: DeleteByQueryRethrottleParts<'b>,
     ) -> DeleteByQueryRethrottle<'a, 'b, ()> {
         DeleteByQueryRethrottle::new(&self, parts)
     }
-    #[doc = "Deletes a script."]
+    #[doc = "[Delete Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nDeletes a script."]
     pub fn delete_script<'a, 'b>(&'a self, parts: DeleteScriptParts<'b>) -> DeleteScript<'a, 'b> {
         DeleteScript::new(&self, parts)
     }
-    #[doc = "Returns information about whether a document exists in an index."]
+    #[doc = "[Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns information about whether a document exists in an index."]
     pub fn exists<'a, 'b>(&'a self, parts: ExistsParts<'b>) -> Exists<'a, 'b> {
         Exists::new(&self, parts)
     }
-    #[doc = "Returns information about whether a document source exists in an index."]
+    #[doc = "[Exists Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns information about whether a document source exists in an index."]
     pub fn exists_source<'a, 'b>(&'a self, parts: ExistsSourceParts<'b>) -> ExistsSource<'a, 'b> {
         ExistsSource::new(&self, parts)
     }
-    #[doc = "Returns information about why a specific matches (or doesn't match) a query."]
+    #[doc = "[Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-explain.html)\n\nReturns information about why a specific matches (or doesn't match) a query."]
     pub fn explain<'a, 'b>(&'a self, parts: ExplainParts<'b>) -> Explain<'a, 'b, ()> {
         Explain::new(&self, parts)
     }
-    #[doc = "Returns the information about the capabilities of fields among multiple indices."]
+    #[doc = "[Field Caps API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-field-caps.html)\n\nReturns the information about the capabilities of fields among multiple indices."]
     pub fn field_caps<'a, 'b>(&'a self, parts: FieldCapsParts<'b>) -> FieldCaps<'a, 'b, ()> {
         FieldCaps::new(&self, parts)
     }
-    #[doc = "Returns a document."]
+    #[doc = "[Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns a document."]
     pub fn get<'a, 'b>(&'a self, parts: GetParts<'b>) -> Get<'a, 'b> {
         Get::new(&self, parts)
     }
-    #[doc = "Returns a script."]
+    #[doc = "[Get Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nReturns a script."]
     pub fn get_script<'a, 'b>(&'a self, parts: GetScriptParts<'b>) -> GetScript<'a, 'b> {
         GetScript::new(&self, parts)
     }
-    #[doc = "Returns the source of a document."]
+    #[doc = "[Get Source API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-get.html)\n\nReturns the source of a document."]
     pub fn get_source<'a, 'b>(&'a self, parts: GetSourceParts<'b>) -> GetSource<'a, 'b> {
         GetSource::new(&self, parts)
     }
-    #[doc = "Creates or updates a document in an index."]
+    #[doc = "[Index API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-index_.html)\n\nCreates or updates a document in an index."]
     pub fn index<'a, 'b>(&'a self, parts: IndexParts<'b>) -> Index<'a, 'b, ()> {
         Index::new(&self, parts)
     }
-    #[doc = "Returns basic information about the cluster."]
+    #[doc = "[Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/index.html)\n\nReturns basic information about the cluster."]
     pub fn info<'a, 'b>(&'a self) -> Info<'a, 'b> {
         Info::new(&self)
     }
-    #[doc = "Allows to get multiple documents in one request."]
+    #[doc = "[Mget API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-multi-get.html)\n\nAllows to get multiple documents in one request."]
     pub fn mget<'a, 'b>(&'a self, parts: MgetParts<'b>) -> Mget<'a, 'b, ()> {
         Mget::new(&self, parts)
     }
-    #[doc = "Allows to execute several search operations in one request."]
+    #[doc = "[Msearch API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-multi-search.html)\n\nAllows to execute several search operations in one request."]
     pub fn msearch<'a, 'b>(&'a self, parts: MsearchParts<'b>) -> Msearch<'a, 'b, ()> {
         Msearch::new(&self, parts)
     }
-    #[doc = "Allows to execute several search template operations in one request."]
+    #[doc = "[Msearch Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-multi-search.html)\n\nAllows to execute several search template operations in one request."]
     pub fn msearch_template<'a, 'b>(
         &'a self,
         parts: MsearchTemplateParts<'b>,
     ) -> MsearchTemplate<'a, 'b, ()> {
         MsearchTemplate::new(&self, parts)
     }
-    #[doc = "Returns multiple termvectors in one request."]
+    #[doc = "[Mtermvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-multi-termvectors.html)\n\nReturns multiple termvectors in one request."]
     pub fn mtermvectors<'a, 'b>(
         &'a self,
         parts: MtermvectorsParts<'b>,
     ) -> Mtermvectors<'a, 'b, ()> {
         Mtermvectors::new(&self, parts)
     }
-    #[doc = "Returns whether the cluster is running."]
+    #[doc = "[Ping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/index.html)\n\nReturns whether the cluster is running."]
     pub fn ping<'a, 'b>(&'a self) -> Ping<'a, 'b> {
         Ping::new(&self)
     }
-    #[doc = "Creates or updates a script."]
+    #[doc = "[Put Script API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/modules-scripting.html)\n\nCreates or updates a script."]
     pub fn put_script<'a, 'b>(&'a self, parts: PutScriptParts<'b>) -> PutScript<'a, 'b, ()> {
         PutScript::new(&self, parts)
     }
-    #[doc = "Allows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
+    #[doc = "[Reindex API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-reindex.html)\n\nAllows to copy documents from one index to another, optionally filtering the source\ndocuments by a query, changing the destination index settings, or fetching the\ndocuments from a remote cluster."]
     pub fn reindex<'a, 'b>(&'a self) -> Reindex<'a, 'b, ()> {
         Reindex::new(&self)
     }
-    #[doc = "Changes the number of requests per second for a particular Reindex operation."]
+    #[doc = "[Reindex Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-reindex.html)\n\nChanges the number of requests per second for a particular Reindex operation."]
     pub fn reindex_rethrottle<'a, 'b>(
         &'a self,
         parts: ReindexRethrottleParts<'b>,
     ) -> ReindexRethrottle<'a, 'b, ()> {
         ReindexRethrottle::new(&self, parts)
     }
-    #[doc = "Allows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Render Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-template.html#_validating_templates)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn render_search_template<'a, 'b>(
         &'a self,
         parts: RenderSearchTemplateParts<'b>,
     ) -> RenderSearchTemplate<'a, 'b, ()> {
         RenderSearchTemplate::new(&self, parts)
     }
-    #[doc = "Allows to retrieve a large numbers of results from a single search request."]
+    #[doc = "[Scroll API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-request-body.html#request-body-search-scroll)\n\nAllows to retrieve a large numbers of results from a single search request."]
     pub fn scroll<'a, 'b>(&'a self, parts: ScrollParts<'b>) -> Scroll<'a, 'b, ()> {
         Scroll::new(&self, parts)
     }
-    #[doc = "Returns results matching a query."]
+    #[doc = "[Search API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-search.html)\n\nReturns results matching a query."]
     pub fn search<'a, 'b>(&'a self, parts: SearchParts<'b>) -> Search<'a, 'b, ()> {
         Search::new(&self, parts)
     }
-    #[doc = "Returns information about the indices and shards that a search request would be executed against."]
+    #[doc = "[Search Shards API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-shards.html)\n\nReturns information about the indices and shards that a search request would be executed against."]
     pub fn search_shards<'a, 'b>(
         &'a self,
         parts: SearchShardsParts<'b>,
     ) -> SearchShards<'a, 'b, ()> {
         SearchShards::new(&self, parts)
     }
-    #[doc = "Allows to use the Mustache language to pre-render a search definition."]
+    #[doc = "[Search Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/search-template.html)\n\nAllows to use the Mustache language to pre-render a search definition."]
     pub fn search_template<'a, 'b>(
         &'a self,
         parts: SearchTemplateParts<'b>,
     ) -> SearchTemplate<'a, 'b, ()> {
         SearchTemplate::new(&self, parts)
     }
-    #[doc = "Returns information and statistics about terms in the fields of a particular document."]
+    #[doc = "[Termvectors API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-termvectors.html)\n\nReturns information and statistics about terms in the fields of a particular document."]
     pub fn termvectors<'a, 'b>(&'a self, parts: TermvectorsParts<'b>) -> Termvectors<'a, 'b, ()> {
         Termvectors::new(&self, parts)
     }
-    #[doc = "Updates a document with a script or partial document."]
+    #[doc = "[Update API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update.html)\n\nUpdates a document with a script or partial document."]
     pub fn update<'a, 'b>(&'a self, parts: UpdateParts<'b>) -> Update<'a, 'b, ()> {
         Update::new(&self, parts)
     }
-    #[doc = "Performs an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
+    #[doc = "[Update By Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update-by-query.html)\n\nPerforms an update on every document in the index without changing the source,\nfor example to pick up a mapping change."]
     pub fn update_by_query<'a, 'b>(
         &'a self,
         parts: UpdateByQueryParts<'b>,
     ) -> UpdateByQuery<'a, 'b, ()> {
         UpdateByQuery::new(&self, parts)
     }
-    #[doc = "Changes the number of requests per second for a particular Update By Query operation."]
+    #[doc = "[Update By Query Rethrottle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docs-update-by-query.html)\n\nChanges the number of requests per second for a particular Update By Query operation."]
     pub fn update_by_query_rethrottle<'a, 'b>(
         &'a self,
         parts: UpdateByQueryRethrottleParts<'b>,

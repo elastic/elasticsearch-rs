@@ -451,12 +451,15 @@ impl<'a> Sql<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
+    #[doc = "Sql Clear Cursor API"]
     pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
         SqlClearCursor::new(&self.client)
     }
+    #[doc = "Sql Query API"]
     pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
         SqlQuery::new(&self.client)
     }
+    #[doc = "Sql Translate API"]
     pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
         SqlTranslate::new(&self.client)
     }

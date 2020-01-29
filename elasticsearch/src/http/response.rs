@@ -1,3 +1,5 @@
+//! HTTP response components
+
 extern crate reqwest;
 
 use crate::error::Error;

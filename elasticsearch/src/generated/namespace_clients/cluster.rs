@@ -44,7 +44,7 @@ impl ClusterAllocationExplainParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-allocation-explain.html). Provides explanations for shard allocations in the cluster."]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterAllocationExplainParts,
@@ -201,7 +201,7 @@ impl ClusterGetSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Returns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-update-settings.html)\n\nReturns cluster settings."]
 pub struct ClusterGetSettings<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterGetSettingsParts,
@@ -360,7 +360,7 @@ impl<'b> ClusterHealthParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-health.html). Returns basic information about the health of the cluster."]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterHealthParts<'b>,
@@ -583,7 +583,7 @@ impl ClusterPendingTasksParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-pending.html). Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterPendingTasksParts,
@@ -713,7 +713,7 @@ impl ClusterPutSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-update-settings.html). Updates the cluster settings."]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-update-settings.html)\n\nUpdates the cluster settings."]
 pub struct ClusterPutSettings<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterPutSettingsParts,
@@ -878,7 +878,7 @@ impl ClusterRemoteInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-remote-info.html). Returns the information about configured remote clusters."]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterRemoteInfoParts,
@@ -988,7 +988,7 @@ impl ClusterRerouteParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-reroute.html). Allows to manually change the allocation of individual shards in the cluster."]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterRerouteParts,
@@ -1207,7 +1207,7 @@ impl<'b> ClusterStateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-state.html). Returns a comprehensive information about the state of the cluster."]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStateParts<'b>,
@@ -1406,7 +1406,7 @@ impl<'b> ClusterStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-stats.html). Returns high-level overview of cluster statistics."]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStatsParts<'b>,
@@ -1530,39 +1530,39 @@ impl<'a> Cluster<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "Provides explanations for shard allocations in the cluster."]
+    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
         ClusterAllocationExplain::new(&self.client)
     }
-    #[doc = "Returns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-update-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(&self.client)
     }
-    #[doc = "Returns basic information about the health of the cluster."]
+    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
     pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
         ClusterHealth::new(&self.client, parts)
     }
-    #[doc = "Returns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
         ClusterPendingTasks::new(&self.client)
     }
-    #[doc = "Updates the cluster settings."]
+    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-update-settings.html)\n\nUpdates the cluster settings."]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
         ClusterPutSettings::new(&self.client)
     }
-    #[doc = "Returns the information about configured remote clusters."]
+    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
     pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
         ClusterRemoteInfo::new(&self.client)
     }
-    #[doc = "Allows to manually change the allocation of individual shards in the cluster."]
+    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
     pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
         ClusterReroute::new(&self.client)
     }
-    #[doc = "Returns a comprehensive information about the state of the cluster."]
+    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
     pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
         ClusterState::new(&self.client, parts)
     }
-    #[doc = "Returns high-level overview of cluster statistics."]
+    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
     pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
         ClusterStats::new(&self.client, parts)
     }

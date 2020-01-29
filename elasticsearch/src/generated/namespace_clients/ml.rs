@@ -50,7 +50,7 @@ impl<'b> MlCloseJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-close-job.html)."]
+#[doc = "Builder for the [Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-close-job.html)"]
 pub struct MlCloseJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlCloseJobParts<'b>,
@@ -569,7 +569,7 @@ impl<'b> MlDeleteDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-datafeed.html)."]
+#[doc = "Builder for the [Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-datafeed.html)"]
 pub struct MlDeleteDatafeed<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteDatafeedParts<'b>,
@@ -930,7 +930,7 @@ impl<'b> MlDeleteForecastParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-forecast.html)."]
+#[doc = "Builder for the [Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-forecast.html)"]
 pub struct MlDeleteForecast<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteForecastParts<'b>,
@@ -1065,7 +1065,7 @@ impl<'b> MlDeleteJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-job.html)."]
+#[doc = "Builder for the [Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-job.html)"]
 pub struct MlDeleteJob<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteJobParts<'b>,
@@ -1202,7 +1202,7 @@ impl<'b> MlDeleteModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-delete-snapshot.html)."]
+#[doc = "Builder for the [Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-snapshot.html)"]
 pub struct MlDeleteModelSnapshot<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlDeleteModelSnapshotParts<'b>,
@@ -1318,7 +1318,7 @@ impl<'b> MlFlushJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-flush-job.html)."]
+#[doc = "Builder for the [Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-flush-job.html)"]
 pub struct MlFlushJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlFlushJobParts<'b>,
@@ -1681,7 +1681,7 @@ impl<'b> MlGetBucketsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-bucket.html)."]
+#[doc = "Builder for the [Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-bucket.html)"]
 pub struct MlGetBuckets<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetBucketsParts<'b>,
@@ -2263,7 +2263,7 @@ impl<'b> MlGetCategoriesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html)."]
+#[doc = "Builder for the [Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-category.html)"]
 pub struct MlGetCategories<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetCategoriesParts<'b>,
@@ -2429,7 +2429,7 @@ impl<'b> MlGetDatafeedStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed-stats.html)."]
+#[doc = "Builder for the [Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-datafeed-stats.html)"]
 pub struct MlGetDatafeedStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetDatafeedStatsParts<'b>,
@@ -2557,7 +2557,7 @@ impl<'b> MlGetDatafeedsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-datafeed.html)."]
+#[doc = "Builder for the [Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-datafeed.html)"]
 pub struct MlGetDatafeeds<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetDatafeedsParts<'b>,
@@ -2821,7 +2821,7 @@ impl<'b> MlGetInfluencersParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-influencer.html)."]
+#[doc = "Builder for the [Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-influencer.html)"]
 pub struct MlGetInfluencers<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetInfluencersParts<'b>,
@@ -3053,7 +3053,7 @@ impl<'b> MlGetJobStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job-stats.html)."]
+#[doc = "Builder for the [Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-job-stats.html)"]
 pub struct MlGetJobStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetJobStatsParts<'b>,
@@ -3181,7 +3181,7 @@ impl<'b> MlGetJobsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-job.html)."]
+#[doc = "Builder for the [Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-job.html)"]
 pub struct MlGetJobs<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlGetJobsParts<'b>,
@@ -3317,7 +3317,7 @@ impl<'b> MlGetModelSnapshotsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-snapshot.html)."]
+#[doc = "Builder for the [Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-snapshot.html)"]
 pub struct MlGetModelSnapshots<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetModelSnapshotsParts<'b>,
@@ -3524,7 +3524,7 @@ impl<'b> MlGetOverallBucketsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-overall-buckets.html)."]
+#[doc = "Builder for the [Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-overall-buckets.html)"]
 pub struct MlGetOverallBuckets<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetOverallBucketsParts<'b>,
@@ -3742,7 +3742,7 @@ impl<'b> MlGetRecordsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-record.html)."]
+#[doc = "Builder for the [Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-record.html)"]
 pub struct MlGetRecords<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlGetRecordsParts<'b>,
@@ -4080,7 +4080,7 @@ impl<'b> MlOpenJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-open-job.html)."]
+#[doc = "Builder for the [Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-open-job.html)"]
 pub struct MlOpenJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlOpenJobParts<'b>,
@@ -4356,7 +4356,7 @@ impl<'b> MlPostDataParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-post-data.html)."]
+#[doc = "Builder for the [Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-post-data.html)"]
 pub struct MlPostData<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPostDataParts<'b>,
@@ -4516,7 +4516,7 @@ impl<'b> MlPreviewDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-preview-datafeed.html)."]
+#[doc = "Builder for the [Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-preview-datafeed.html)"]
 pub struct MlPreviewDatafeed<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MlPreviewDatafeedParts<'b>,
@@ -4907,7 +4907,7 @@ impl<'b> MlPutDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-datafeed.html)."]
+#[doc = "Builder for the [Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-put-datafeed.html)"]
 pub struct MlPutDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutDatafeedParts<'b>,
@@ -5181,7 +5181,7 @@ impl<'b> MlPutJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-job.html)."]
+#[doc = "Builder for the [Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-put-job.html)"]
 pub struct MlPutJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlPutJobParts<'b>,
@@ -5321,7 +5321,7 @@ impl<'b> MlRevertModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-revert-snapshot.html)."]
+#[doc = "Builder for the [Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-revert-snapshot.html)"]
 pub struct MlRevertModelSnapshot<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlRevertModelSnapshotParts<'b>,
@@ -5464,7 +5464,7 @@ impl MlSetUpgradeModeParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-set-upgrade-mode.html)."]
+#[doc = "Builder for the [Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-set-upgrade-mode.html)"]
 pub struct MlSetUpgradeMode<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlSetUpgradeModeParts,
@@ -5624,7 +5624,7 @@ impl<'b> MlStartDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-start-datafeed.html)."]
+#[doc = "Builder for the [Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-start-datafeed.html)"]
 pub struct MlStartDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlStartDatafeedParts<'b>,
@@ -5795,7 +5795,7 @@ impl<'b> MlStopDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-stop-datafeed.html)."]
+#[doc = "Builder for the [Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-stop-datafeed.html)"]
 pub struct MlStopDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlStopDatafeedParts<'b>,
@@ -5966,7 +5966,7 @@ impl<'b> MlUpdateDatafeedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-datafeed.html)."]
+#[doc = "Builder for the [Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-datafeed.html)"]
 pub struct MlUpdateDatafeed<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateDatafeedParts<'b>,
@@ -6242,7 +6242,7 @@ impl<'b> MlUpdateJobParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-job.html)."]
+#[doc = "Builder for the [Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-job.html)"]
 pub struct MlUpdateJob<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateJobParts<'b>,
@@ -6382,7 +6382,7 @@ impl<'b> MlUpdateModelSnapshotParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-update-snapshot.html)."]
+#[doc = "Builder for the [Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-snapshot.html)"]
 pub struct MlUpdateModelSnapshot<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MlUpdateModelSnapshotParts<'b>,
@@ -6772,204 +6772,249 @@ impl<'a> Ml<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
+    #[doc = "[Ml Close Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-close-job.html)"]
     pub fn close_job<'b>(&'a self, parts: MlCloseJobParts<'b>) -> MlCloseJob<'a, 'b, ()> {
         MlCloseJob::new(&self.client, parts)
     }
+    #[doc = "Ml Delete Calendar API"]
     pub fn delete_calendar<'b>(
         &'a self,
         parts: MlDeleteCalendarParts<'b>,
     ) -> MlDeleteCalendar<'a, 'b> {
         MlDeleteCalendar::new(&self.client, parts)
     }
+    #[doc = "Ml Delete Calendar Event API"]
     pub fn delete_calendar_event<'b>(
         &'a self,
         parts: MlDeleteCalendarEventParts<'b>,
     ) -> MlDeleteCalendarEvent<'a, 'b> {
         MlDeleteCalendarEvent::new(&self.client, parts)
     }
+    #[doc = "Ml Delete Calendar Job API"]
     pub fn delete_calendar_job<'b>(
         &'a self,
         parts: MlDeleteCalendarJobParts<'b>,
     ) -> MlDeleteCalendarJob<'a, 'b> {
         MlDeleteCalendarJob::new(&self.client, parts)
     }
+    #[doc = "[Ml Delete Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-datafeed.html)"]
     pub fn delete_datafeed<'b>(
         &'a self,
         parts: MlDeleteDatafeedParts<'b>,
     ) -> MlDeleteDatafeed<'a, 'b> {
         MlDeleteDatafeed::new(&self.client, parts)
     }
+    #[doc = "Ml Delete Expired Data API"]
     pub fn delete_expired_data<'b>(&'a self) -> MlDeleteExpiredData<'a, 'b> {
         MlDeleteExpiredData::new(&self.client)
     }
+    #[doc = "Ml Delete Filter API"]
     pub fn delete_filter<'b>(&'a self, parts: MlDeleteFilterParts<'b>) -> MlDeleteFilter<'a, 'b> {
         MlDeleteFilter::new(&self.client, parts)
     }
+    #[doc = "[Ml Delete Forecast API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-forecast.html)"]
     pub fn delete_forecast<'b>(
         &'a self,
         parts: MlDeleteForecastParts<'b>,
     ) -> MlDeleteForecast<'a, 'b> {
         MlDeleteForecast::new(&self.client, parts)
     }
+    #[doc = "[Ml Delete Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-job.html)"]
     pub fn delete_job<'b>(&'a self, parts: MlDeleteJobParts<'b>) -> MlDeleteJob<'a, 'b> {
         MlDeleteJob::new(&self.client, parts)
     }
+    #[doc = "[Ml Delete Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-delete-snapshot.html)"]
     pub fn delete_model_snapshot<'b>(
         &'a self,
         parts: MlDeleteModelSnapshotParts<'b>,
     ) -> MlDeleteModelSnapshot<'a, 'b> {
         MlDeleteModelSnapshot::new(&self.client, parts)
     }
+    #[doc = "[Ml Flush Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-flush-job.html)"]
     pub fn flush_job<'b>(&'a self, parts: MlFlushJobParts<'b>) -> MlFlushJob<'a, 'b, ()> {
         MlFlushJob::new(&self.client, parts)
     }
+    #[doc = "Ml Forecast API"]
     pub fn forecast<'b>(&'a self, parts: MlForecastParts<'b>) -> MlForecast<'a, 'b, ()> {
         MlForecast::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-bucket.html)"]
     pub fn get_buckets<'b>(&'a self, parts: MlGetBucketsParts<'b>) -> MlGetBuckets<'a, 'b, ()> {
         MlGetBuckets::new(&self.client, parts)
     }
+    #[doc = "Ml Get Calendar Events API"]
     pub fn get_calendar_events<'b>(
         &'a self,
         parts: MlGetCalendarEventsParts<'b>,
     ) -> MlGetCalendarEvents<'a, 'b> {
         MlGetCalendarEvents::new(&self.client, parts)
     }
+    #[doc = "Ml Get Calendars API"]
     pub fn get_calendars<'b>(
         &'a self,
         parts: MlGetCalendarsParts<'b>,
     ) -> MlGetCalendars<'a, 'b, ()> {
         MlGetCalendars::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Categories API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-category.html)"]
     pub fn get_categories<'b>(
         &'a self,
         parts: MlGetCategoriesParts<'b>,
     ) -> MlGetCategories<'a, 'b, ()> {
         MlGetCategories::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Datafeed Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-datafeed-stats.html)"]
     pub fn get_datafeed_stats<'b>(
         &'a self,
         parts: MlGetDatafeedStatsParts<'b>,
     ) -> MlGetDatafeedStats<'a, 'b> {
         MlGetDatafeedStats::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-datafeed.html)"]
     pub fn get_datafeeds<'b>(&'a self, parts: MlGetDatafeedsParts<'b>) -> MlGetDatafeeds<'a, 'b> {
         MlGetDatafeeds::new(&self.client, parts)
     }
+    #[doc = "Ml Get Filters API"]
     pub fn get_filters<'b>(&'a self, parts: MlGetFiltersParts<'b>) -> MlGetFilters<'a, 'b> {
         MlGetFilters::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Influencers API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-influencer.html)"]
     pub fn get_influencers<'b>(
         &'a self,
         parts: MlGetInfluencersParts<'b>,
     ) -> MlGetInfluencers<'a, 'b, ()> {
         MlGetInfluencers::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Job Stats API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-job-stats.html)"]
     pub fn get_job_stats<'b>(&'a self, parts: MlGetJobStatsParts<'b>) -> MlGetJobStats<'a, 'b> {
         MlGetJobStats::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-job.html)"]
     pub fn get_jobs<'b>(&'a self, parts: MlGetJobsParts<'b>) -> MlGetJobs<'a, 'b> {
         MlGetJobs::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Model Snapshots API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-snapshot.html)"]
     pub fn get_model_snapshots<'b>(
         &'a self,
         parts: MlGetModelSnapshotsParts<'b>,
     ) -> MlGetModelSnapshots<'a, 'b, ()> {
         MlGetModelSnapshots::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Overall Buckets API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-overall-buckets.html)"]
     pub fn get_overall_buckets<'b>(
         &'a self,
         parts: MlGetOverallBucketsParts<'b>,
     ) -> MlGetOverallBuckets<'a, 'b, ()> {
         MlGetOverallBuckets::new(&self.client, parts)
     }
+    #[doc = "[Ml Get Records API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-get-record.html)"]
     pub fn get_records<'b>(&'a self, parts: MlGetRecordsParts<'b>) -> MlGetRecords<'a, 'b, ()> {
         MlGetRecords::new(&self.client, parts)
     }
+    #[doc = "Ml Info API"]
     pub fn info<'b>(&'a self) -> MlInfo<'a, 'b> {
         MlInfo::new(&self.client)
     }
+    #[doc = "[Ml Open Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-open-job.html)"]
     pub fn open_job<'b>(&'a self, parts: MlOpenJobParts<'b>) -> MlOpenJob<'a, 'b, ()> {
         MlOpenJob::new(&self.client, parts)
     }
+    #[doc = "Ml Post Calendar Events API"]
     pub fn post_calendar_events<'b>(
         &'a self,
         parts: MlPostCalendarEventsParts<'b>,
     ) -> MlPostCalendarEvents<'a, 'b, ()> {
         MlPostCalendarEvents::new(&self.client, parts)
     }
+    #[doc = "[Ml Post Data API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-post-data.html)"]
     pub fn post_data<'b>(&'a self, parts: MlPostDataParts<'b>) -> MlPostData<'a, 'b, ()> {
         MlPostData::new(&self.client, parts)
     }
+    #[doc = "[Ml Preview Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-preview-datafeed.html)"]
     pub fn preview_datafeed<'b>(
         &'a self,
         parts: MlPreviewDatafeedParts<'b>,
     ) -> MlPreviewDatafeed<'a, 'b> {
         MlPreviewDatafeed::new(&self.client, parts)
     }
+    #[doc = "Ml Put Calendar API"]
     pub fn put_calendar<'b>(&'a self, parts: MlPutCalendarParts<'b>) -> MlPutCalendar<'a, 'b, ()> {
         MlPutCalendar::new(&self.client, parts)
     }
+    #[doc = "Ml Put Calendar Job API"]
     pub fn put_calendar_job<'b>(
         &'a self,
         parts: MlPutCalendarJobParts<'b>,
     ) -> MlPutCalendarJob<'a, 'b, ()> {
         MlPutCalendarJob::new(&self.client, parts)
     }
+    #[doc = "[Ml Put Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-put-datafeed.html)"]
     pub fn put_datafeed<'b>(&'a self, parts: MlPutDatafeedParts<'b>) -> MlPutDatafeed<'a, 'b, ()> {
         MlPutDatafeed::new(&self.client, parts)
     }
+    #[doc = "Ml Put Filter API"]
     pub fn put_filter<'b>(&'a self, parts: MlPutFilterParts<'b>) -> MlPutFilter<'a, 'b, ()> {
         MlPutFilter::new(&self.client, parts)
     }
+    #[doc = "[Ml Put Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-put-job.html)"]
     pub fn put_job<'b>(&'a self, parts: MlPutJobParts<'b>) -> MlPutJob<'a, 'b, ()> {
         MlPutJob::new(&self.client, parts)
     }
+    #[doc = "[Ml Revert Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-revert-snapshot.html)"]
     pub fn revert_model_snapshot<'b>(
         &'a self,
         parts: MlRevertModelSnapshotParts<'b>,
     ) -> MlRevertModelSnapshot<'a, 'b, ()> {
         MlRevertModelSnapshot::new(&self.client, parts)
     }
+    #[doc = "[Ml Set Upgrade Mode API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-set-upgrade-mode.html)"]
     pub fn set_upgrade_mode<'b>(&'a self) -> MlSetUpgradeMode<'a, 'b, ()> {
         MlSetUpgradeMode::new(&self.client)
     }
+    #[doc = "[Ml Start Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-start-datafeed.html)"]
     pub fn start_datafeed<'b>(
         &'a self,
         parts: MlStartDatafeedParts<'b>,
     ) -> MlStartDatafeed<'a, 'b, ()> {
         MlStartDatafeed::new(&self.client, parts)
     }
+    #[doc = "[Ml Stop Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-stop-datafeed.html)"]
     pub fn stop_datafeed<'b>(
         &'a self,
         parts: MlStopDatafeedParts<'b>,
     ) -> MlStopDatafeed<'a, 'b, ()> {
         MlStopDatafeed::new(&self.client, parts)
     }
+    #[doc = "[Ml Update Datafeed API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-datafeed.html)"]
     pub fn update_datafeed<'b>(
         &'a self,
         parts: MlUpdateDatafeedParts<'b>,
     ) -> MlUpdateDatafeed<'a, 'b, ()> {
         MlUpdateDatafeed::new(&self.client, parts)
     }
+    #[doc = "Ml Update Filter API"]
     pub fn update_filter<'b>(
         &'a self,
         parts: MlUpdateFilterParts<'b>,
     ) -> MlUpdateFilter<'a, 'b, ()> {
         MlUpdateFilter::new(&self.client, parts)
     }
+    #[doc = "[Ml Update Job API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-job.html)"]
     pub fn update_job<'b>(&'a self, parts: MlUpdateJobParts<'b>) -> MlUpdateJob<'a, 'b, ()> {
         MlUpdateJob::new(&self.client, parts)
     }
+    #[doc = "[Ml Update Model Snapshot API](http://www.elastic.co/guide/en/elasticsearch/reference/7.5/ml-update-snapshot.html)"]
     pub fn update_model_snapshot<'b>(
         &'a self,
         parts: MlUpdateModelSnapshotParts<'b>,
     ) -> MlUpdateModelSnapshot<'a, 'b, ()> {
         MlUpdateModelSnapshot::new(&self.client, parts)
     }
+    #[doc = "Ml Validate API"]
     pub fn validate<'b>(&'a self) -> MlValidate<'a, 'b, ()> {
         MlValidate::new(&self.client)
     }
+    #[doc = "Ml Validate Detector API"]
     pub fn validate_detector<'b>(&'a self) -> MlValidateDetector<'a, 'b, ()> {
         MlValidateDetector::new(&self.client)
     }

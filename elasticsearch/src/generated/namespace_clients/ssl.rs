@@ -44,7 +44,7 @@ impl SslCertificatesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html)."]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/security-api-ssl.html)"]
 pub struct SslCertificates<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SslCertificatesParts,
@@ -148,6 +148,7 @@ impl<'a> Ssl<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
+    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/security-api-ssl.html)"]
     pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
         SslCertificates::new(&self.client)
     }

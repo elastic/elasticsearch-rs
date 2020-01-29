@@ -49,7 +49,7 @@ impl<'b> EnrichDeletePolicyParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-delete-policy.html)."]
+#[doc = "Builder for the [Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-delete-policy.html)"]
 pub struct EnrichDeletePolicy<'a, 'b> {
     client: &'a Elasticsearch,
     parts: EnrichDeletePolicyParts<'b>,
@@ -165,7 +165,7 @@ impl<'b> EnrichExecutePolicyParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-execute-policy.html)."]
+#[doc = "Builder for the [Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-execute-policy.html)"]
 pub struct EnrichExecutePolicy<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: EnrichExecutePolicyParts<'b>,
@@ -316,7 +316,7 @@ impl<'b> EnrichGetPolicyParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-get-policy.html)."]
+#[doc = "Builder for the [Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-get-policy.html)"]
 pub struct EnrichGetPolicy<'a, 'b> {
     client: &'a Elasticsearch,
     parts: EnrichGetPolicyParts<'b>,
@@ -431,7 +431,7 @@ impl<'b> EnrichPutPolicyParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-put-policy.html)."]
+#[doc = "Builder for the [Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-put-policy.html)"]
 pub struct EnrichPutPolicy<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: EnrichPutPolicyParts<'b>,
@@ -563,7 +563,7 @@ impl EnrichStatsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/current/enrich-stats.html)."]
+#[doc = "Builder for the [Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-stats.html)"]
 pub struct EnrichStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: EnrichStatsParts,
@@ -667,27 +667,32 @@ impl<'a> Enrich<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
+    #[doc = "[Enrich Delete Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-delete-policy.html)"]
     pub fn delete_policy<'b>(
         &'a self,
         parts: EnrichDeletePolicyParts<'b>,
     ) -> EnrichDeletePolicy<'a, 'b> {
         EnrichDeletePolicy::new(&self.client, parts)
     }
+    #[doc = "[Enrich Execute Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-execute-policy.html)"]
     pub fn execute_policy<'b>(
         &'a self,
         parts: EnrichExecutePolicyParts<'b>,
     ) -> EnrichExecutePolicy<'a, 'b, ()> {
         EnrichExecutePolicy::new(&self.client, parts)
     }
+    #[doc = "[Enrich Get Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-get-policy.html)"]
     pub fn get_policy<'b>(&'a self, parts: EnrichGetPolicyParts<'b>) -> EnrichGetPolicy<'a, 'b> {
         EnrichGetPolicy::new(&self.client, parts)
     }
+    #[doc = "[Enrich Put Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-put-policy.html)"]
     pub fn put_policy<'b>(
         &'a self,
         parts: EnrichPutPolicyParts<'b>,
     ) -> EnrichPutPolicy<'a, 'b, ()> {
         EnrichPutPolicy::new(&self.client, parts)
     }
+    #[doc = "[Enrich Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/enrich-stats.html)"]
     pub fn stats<'b>(&'a self) -> EnrichStats<'a, 'b> {
         EnrichStats::new(&self.client)
     }

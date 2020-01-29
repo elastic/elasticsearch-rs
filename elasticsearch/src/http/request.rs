@@ -1,3 +1,5 @@
+//! HTTP request components
+
 use crate::error::Error;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, Bytes, BytesMut};

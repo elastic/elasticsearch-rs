@@ -17,6 +17,8 @@ use serde::de::{MapAccess, Visitor};
 use std::marker::PhantomData;
 use std::str::FromStr;
 use void::Void;
+use url;
+use semver::Version;
 
 mod code_gen;
 
@@ -146,10 +148,64 @@ pub struct Body {
     pub serialize: Option<String>,
 }
 
+lazy_static! {
+    static ref MAJOR_MINOR_VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
+}
+
+/// Wraps the URL string to replace master or current in URL path with the
+/// major.minor version of the api_generator.
+fn documentation_url_string<'de, D>(deserializer: D) -> Result<String, D::Error>
+    where
+        D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    Ok(DocumentationUrlString::replace_version_in_url(s))
+}
+
+/// A Documentation URL string
+#[derive(Debug, Deserialize, PartialEq, Clone)]
+pub struct DocumentationUrlString(#[serde(deserialize_with = "documentation_url_string")] pub String);
+
+impl DocumentationUrlString {
+    fn from_url(s: String) -> Self {
+        let s = Self::replace_version_in_url(s);
+        Self(s)
+    }
+
+    fn replace_version_in_url(s: String) -> String {
+        match url::Url::parse(&s) {
+            Ok(u) => {
+                let mut u = u;
+                if u.path().contains("/master") {
+                    u.set_path(u.path().replace("/master", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                } else if u.path().contains("/current") {
+                    u.set_path(u.path().replace("/current", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                }
+                u.into_string()
+            },
+            Err(_) => s
+        }
+    }
+}
+
+impl core::ops::Deref for DocumentationUrlString {
+    type Target = String;
+
+    fn deref(self: &'_ Self) -> &'_ Self::Target {
+        &self.0
+    }
+}
+
+impl fmt::Display for DocumentationUrlString {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 /// Documentation for an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Documentation {
-    pub url: Option<String>,
+    pub url: Option<DocumentationUrlString>,
     pub description: Option<String>,
 }
 
@@ -158,7 +214,7 @@ impl FromStr for Documentation {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(Documentation {
-            url: Some(s.to_string()),
+            url: Some(DocumentationUrlString::from_url(s.to_owned())),
             description: None,
         })
     }
