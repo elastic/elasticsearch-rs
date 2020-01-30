@@ -95,7 +95,12 @@ where
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         for line in &self.0 {
             line.write(bytes)?;
-            bytes.put_u8(b'\n');
+            // only write a newline if the T impl does not
+            if let Some(b) = bytes.last() {
+                if b != &(b'\n') {
+                    bytes.put_u8(b'\n');
+                }
+            }
         }
         Ok(())
     }
@@ -104,6 +109,16 @@ where
 impl Body for Bytes {
     fn bytes(&self) -> Option<Bytes> {
         Some(self.clone())
+    }
+
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
+        self.as_ref().write(bytes)
+    }
+}
+
+impl Body for BytesMut {
+    fn bytes(&self) -> Option<Bytes> {
+        Some(self.clone().freeze())
     }
 
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
