@@ -486,7 +486,10 @@ impl<'a> RequestBuilder<'a> {
                 "Builder for the [{} API]({})\n\n{}",
                 api_name_for_docs, u, d
             )),
-            (Some(d), None) => lit(format!("Builder for the {} API\n\n{}", api_name_for_docs, d)),
+            (Some(d), None) => lit(format!(
+                "Builder for the {} API\n\n{}",
+                api_name_for_docs, d
+            )),
             (None, Some(u)) if Url::parse(u).is_ok() => lit(format!(
                 "Builder for the [{} API]({})",
                 api_name_for_docs, u
@@ -558,15 +561,13 @@ impl<'a> RequestBuilder<'a> {
             endpoint.documentation.description.as_ref(),
             endpoint.documentation.url.as_ref(),
         ) {
-            (Some(d), Some(u)) if Url::parse(u).is_ok() => doc(format!(
-                "[{} API]({})\n\n{}",
-                api_name_for_docs, u, d)
-            ),
+            (Some(d), Some(u)) if Url::parse(u).is_ok() => {
+                doc(format!("[{} API]({})\n\n{}", api_name_for_docs, u, d))
+            }
             (Some(d), None) => doc(format!("{} API\n\n{}", api_name_for_docs, d)),
-            (None, Some(u)) if Url::parse(u).is_ok() => doc(format!(
-                "[{} API]({})",
-                api_name_for_docs, u
-            )),
+            (None, Some(u)) if Url::parse(u).is_ok() => {
+                doc(format!("[{} API]({})", api_name_for_docs, u))
+            }
             _ => doc(format!("{} API", api_name_for_docs)),
         };
 
