@@ -1,3 +1,5 @@
+# elasticsearch
+
 Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearch).
 
 Full documentation is available at https://docs.rs/elasticsearch
@@ -17,14 +19,14 @@ Any minor/patch version of the client can be used against any minor/patch versio
 **within the same major version lineage**. For example,
 
 - A `7.5.0` client can be used against `7.0.0` Elasticsearch
-- A `7.4.0` client can be used against `7.5.1` Elasticsearch
+- A `7.5.0` client can be used against `7.6.0` Elasticsearch
 
 In the former case, a 7.5.0 client may contain additional API functions that are not available
 in 7.0.0 Elasticsearch. In this case, these APIs cannot be used, but for any APIs available in
 Elasticsearch, the respective API functions on the client will be compatible.
 
-In the latter case, a 7.4.0 client won't contain API functions for APIs that are introduced in
-Elasticsearch 7.5.0+, but for all other APIs available in Elasticsearch, the respective API
+In the latter case, a 7.5.0 client won't contain API functions for APIs that are introduced in
+Elasticsearch 7.6.0+, but for all other APIs available in Elasticsearch, the respective API
 functions on the client will be compatible.
 
 **No compatibility assurances are given between different major versions of the client and
@@ -45,7 +47,7 @@ that is compatible with the version of Elasticsearch you're using
 
 ```toml
 [dependencies]
-elasticsearch = "7.5.2-alpha1"
+elasticsearch = "7.6.0-alpha.1"
 ```
 
 The following _optional_ dependencies may also be useful to create requests and read responses
