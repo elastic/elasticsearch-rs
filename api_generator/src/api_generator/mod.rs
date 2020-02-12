@@ -13,12 +13,12 @@ use std::{
 
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
+use semver::Version;
 use serde::de::{MapAccess, Visitor};
 use std::marker::PhantomData;
 use std::str::FromStr;
-use void::Void;
 use url;
-use semver::Version;
+use void::Void;
 
 mod code_gen;
 
@@ -149,14 +149,15 @@ pub struct Body {
 }
 
 lazy_static! {
-    static ref MAJOR_MINOR_VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
+    static ref MAJOR_MINOR_VERSION: Version =
+        semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
 
 /// Wraps the URL string to replace master or current in URL path with the
 /// major.minor version of the api_generator.
 fn documentation_url_string<'de, D>(deserializer: D) -> Result<String, D::Error>
-    where
-        D: Deserializer<'de>,
+where
+    D: Deserializer<'de>,
 {
     let s = String::deserialize(deserializer)?;
     Ok(DocumentationUrlString::replace_version_in_url(s))
@@ -164,7 +165,9 @@ fn documentation_url_string<'de, D>(deserializer: D) -> Result<String, D::Error>
 
 /// A Documentation URL string
 #[derive(Debug, Deserialize, PartialEq, Clone)]
-pub struct DocumentationUrlString(#[serde(deserialize_with = "documentation_url_string")] pub String);
+pub struct DocumentationUrlString(
+    #[serde(deserialize_with = "documentation_url_string")] pub String,
+);
 
 impl DocumentationUrlString {
     fn from_url(s: String) -> Self {
@@ -177,13 +180,35 @@ impl DocumentationUrlString {
             Ok(u) => {
                 let mut u = u;
                 if u.path().contains("/master") {
-                    u.set_path(u.path().replace("/master", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                    u.set_path(
+                        u.path()
+                            .replace(
+                                "/master",
+                                format!(
+                                    "/{}.{}",
+                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
+                                )
+                                .as_str(),
+                            )
+                            .as_str(),
+                    );
                 } else if u.path().contains("/current") {
-                    u.set_path(u.path().replace("/current", format!("/{}.{}", MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor).as_str()).as_str());
+                    u.set_path(
+                        u.path()
+                            .replace(
+                                "/current",
+                                format!(
+                                    "/{}.{}",
+                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
+                                )
+                                .as_str(),
+                            )
+                            .as_str(),
+                    );
                 }
                 u.into_string()
-            },
-            Err(_) => s
+            }
+            Err(_) => s,
         }
     }
 }
