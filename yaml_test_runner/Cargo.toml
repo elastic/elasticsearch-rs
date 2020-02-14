@@ -1,0 +1,19 @@
+[package]
+name = "yaml_test_runner"
+version = "7.6.0-alpha.1"
+edition = "2018"
+authors = ["Elastic and Contributors"]
+description = "Generates and runs tests from Elasticsearch's YAML test specs"
+repository = "https://github.com/elastic/elasticsearch-rs"
+
+[dependencies]
+elasticsearch = { version = "7.6.0-alpha.1", path = "../elasticsearch" }
+
+clap = "~2"
+failure = "0.1.6"
+quote = "~0.3"
+reqwest = "~0.9"
+serde = "~1"
+serde_json = "~1"
+syn = { version = "~0.11", features = ["full"] }
+yaml-rust = "0.4.3"

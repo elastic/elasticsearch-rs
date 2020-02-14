@@ -5,3 +5,4 @@ Cargo.lock
 .idea
 .vscode/
 *.log
+yaml_test_runner/yaml/
