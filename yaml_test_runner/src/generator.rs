@@ -1,10 +1,27 @@
 use quote::Tokens;
+
 use std::fs;
 use std::path::PathBuf;
 use yaml_rust::{
     yaml::{Array, Hash},
     Yaml, YamlLoader,
 };
+
+struct YamlTest {
+    setup: Option<Tokens>,
+    teardown: Option<Tokens>,
+    tests: Vec<(String, Tokens)>
+}
+
+impl YamlTest {
+    pub fn new(len: usize) -> Self {
+        Self {
+            setup: None,
+            teardown: None,
+            tests: Vec::with_capacity(len),
+        }
+    }
+}
 
 pub fn generate_tests_from_yaml(download_dir: &PathBuf) -> Result<(), failure::Error> {
     let paths = fs::read_dir(download_dir).unwrap();
@@ -21,9 +38,7 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf) -> Result<(), failure::E
 
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
                     let docs = YamlLoader::load_from_str(&yaml).unwrap();
-                    let mut setup: Option<Tokens> = None;
-                    let mut teardown: Option<Tokens> = None;
-                    let mut tests: Vec<(String, Tokens)> = Vec::with_capacity(docs.len());
+                    let mut test = YamlTest::new(docs.len());
 
                     for doc in docs {
                         println!("{:?}", &entry.path());
@@ -34,10 +49,10 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf) -> Result<(), failure::E
                                 (Yaml::String(name), Yaml::Array(steps)) => {
                                     let tokens = read_steps(steps)?;
                                     match name.as_str() {
-                                        "setup" => setup = Some(tokens),
-                                        "teardown" => teardown = Some(tokens),
+                                        "setup" => test.setup = Some(tokens),
+                                        "teardown" => test.teardown = Some(tokens),
                                         name => {
-                                            tests.push((name.to_owned(), tokens));
+                                            test.tests.push((name.to_owned(), tokens));
                                         }
                                     };
                                 }
@@ -57,6 +72,8 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf) -> Result<(), failure::E
                             )));
                         }
                     }
+
+                    println!("{:?}", test.tests);
                 }
             }
         }
@@ -70,11 +87,14 @@ fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
     for step in steps {
         if let Some(mut hash) = step.clone().into_hash() {
             let mut entries = hash.entries();
-            let first = entries.next().unwrap();
+            let mut first = entries.next().unwrap();
 
-            match (first.key().as_str().unwrap(), first.get()) {
+            let mut key = first.key().as_str().unwrap();
+            let mut value = first.get().clone();
+
+            match (key, value) {
                 ("skip", Yaml::Hash(h)) => {}
-                ("do", Yaml::Hash(h)) => {
+                ("do", Yaml::Hash(ref mut h)) => {
                     read_do(h, &mut tokens)?;
                 }
                 ("set", Yaml::Hash(h)) => {}
@@ -101,6 +121,37 @@ fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
     Ok(tokens)
 }
 
-fn read_do(hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
-    Ok(())
+fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+
+    let mut entries = hash.entries();
+
+    let headers = String::from("headers");
+    let catch = String::from("catch");
+    let node_selector = String::from("node_selector");
+
+    let result: Result<Vec<_>, _> = entries
+        .into_iter()
+        .map(|entry| {
+            match (entry.key(), entry.get()) {
+                (Yaml::String(headers), Yaml::Hash(h)) => Ok(()),
+                (Yaml::String(catch), Yaml::String(s)) => Ok(()),
+                (Yaml::String(node_selector), _) => Ok(()),
+                (Yaml::String(s), Yaml::Hash(h)) => {
+                    let fn_name = s.clone().replace(".", "().");
+                    let fn_name_ident = syn::Ident::from(fn_name);
+
+                    tokens.append(quote! {
+                        let response = client.#fn_name_ident().await?;
+                    });
+                    Ok(())
+                },
+                (k, v) => Err(failure::err_msg(format!("{:?} and {:?} are not a string and hash", &k, &v))),
+            }
+        })
+        .collect();
+
+    match result {
+        Ok(_) => Ok(()),
+        Err(e) => Err(e)
+    }
 }

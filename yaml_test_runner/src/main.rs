@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate quote;
+
 use clap::{App, Arg};
 use std::path::PathBuf;
 
