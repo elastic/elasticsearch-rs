@@ -4,6 +4,11 @@ FROM rustlang/rust:${RUST_VERSION}
 # create app directory
 WORKDIR /usr/src/elasticsearch-rs
 
-# install app dependencies
-COPY ./elasticsearch .
+# copy just the Cargo.toml (and certs), and create a "fake" lib.rs so that Docker caches all the dependencies
+COPY .ci/certs ./../.ci/certs
+COPY elasticsearch/Cargo.toml .
+RUN mkdir src && echo "// dummy file" > src/lib.rs && cargo build --tests
+
+# install app dependencies and build
+COPY elasticsearch .
 RUN cargo build --tests
