@@ -10,5 +10,6 @@ COPY elasticsearch/Cargo.toml .
 RUN mkdir src && echo "// dummy file" > src/lib.rs && cargo build --tests
 
 # install app dependencies and build
+COPY README.md ./../
 COPY elasticsearch .
 RUN cargo build --tests
