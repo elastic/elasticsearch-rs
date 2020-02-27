@@ -13,8 +13,8 @@ pub enum CertificateValidation {
     /// (or IP address) matches the names identified by the CommonName (CN) or Subject Alternative
     /// Name (SAN) within the certificate.
     ///
-    /// Typically, the certificate provided to the client will be the certificate used by the
-    /// server, or the Certificate Authority (CA) used to generated the certificate.
+    /// Typically, the certificate provided to the client will the Certificate Authority (CA)
+    /// used to generated the certificate.
     ///
     /// This is useful for self-signed certificates where the certificate contains the CommonName (CN)
     /// or a Subject Alternative Name (SAN) that matches the server hostname.
@@ -22,8 +22,8 @@ pub enum CertificateValidation {
     /// Validates that the certificate provided by the server is signed by a trusted
     /// Certificate Authority (CA), but does not perform hostname verification.
     ///
-    /// Typically, the certificate provided to the client will be the certificate used by the
-    /// server, or the Certificate Authority (CA) used to generated the certificate.
+    /// Typically, the certificate provided to the client will be the Certificate Authority (CA)
+    /// used to generated the certificate.
     ///
     /// This is useful for self-signed certificates that **do not** contain the CommonName (CN)
     /// or a Subject Alternative Name (SAN) that matches the server hostname.
