@@ -56,6 +56,7 @@ docker run \
   --network=elasticsearch \
   --env "ES_TEST_SERVER=${elasticsearch_url}" \
   --env "RUST_VERSION=${RUST_VERSION}" \
+  --env "RUST_BACKTRACE=${RUST_BACKTRACE}" \
   --name elasticsearch-rs \
   --rm \
   elastic/elasticsearch-rs \

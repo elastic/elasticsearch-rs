@@ -43,14 +43,14 @@ trap {
   cleanup
 }
 
-$ESC = [char]27
+$version = $env:ELASTICSEARCH_VERSION
 
-if ($null -eq $env:ELASTICSEARCH_VERSION) {
+if ($null -eq $version) {
   Write-Error "ERROR: Required environment variable [ELASTICSEARCH_VERSION] not set"
   exit 1
 }
 
-$moniker = $env:ELASTICSEARCH_VERSION -replace "[^a-zA-Z\d]", "-"
+$moniker = $version -replace "[^a-zA-Z\d]", "-"
 $suffix = "rest-test"
 
 if (!$NODE_NAME) {
@@ -71,6 +71,32 @@ if (!$NETWORK_NAME) {
   $NETWORK_NAME= "${moniker}${suffix}"
 }
 
+function log {
+  [CmdletBinding()]
+  param(
+    [string]
+    [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+    $Message,
+
+    [string]
+    [ValidateSet("Success", "Info", "Error")]
+    $Level
+  )
+
+  $ESC = [char]27
+
+  if (!$Level) {
+    $Level = "Info"
+  }
+
+  switch ($Level) {
+    "Success" { $levelMessage = "[32;1mSUCCESS:" }
+    "Info" { $levelMessage = "[34;1mINFO:" }
+    "Error" { $levelMessage = "[31;1mERROR:" }
+  }
+
+  Write-Output "$ESC$levelMessage$ESC[0m $message$ESC[0m"
+}
 
 function cleanup_volume {
   param(
@@ -78,9 +104,10 @@ function cleanup_volume {
     $Name
   )
 
-  if ("$(docker volume ls --quiet --filter name="$Name")") {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m Removing volume $Name$ESC[0m"
-    docker volume rm "$Name"
+  $volume = docker volume ls --quiet --filter name="$Name"
+  if ($volume) {
+    log "Removing volume $Name"
+    docker volume rm "$Name" > $null
   }
 }
 
@@ -90,14 +117,8 @@ function container_running {
     $Name
   )
 
-  $output = "$(docker ps --quiet --filter name="$Name")"
-  Write-Output "container_running output $output"
-
-  if ($output) {
-    return $true
-  } else {
-    return $false
-  }
+  $container = docker ps --quiet --filter name="$Name"
+  return [bool]$container
 }
 
 function cleanup_node {
@@ -106,21 +127,33 @@ function cleanup_node {
     $Name
   )
 
-  if ("$(docker ps --quiet --filter name="$Name")") {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m Removing container $Name$ESC[0m"
-    docker container rm --force --volumes "$Name"
-    cleanup_volume "$Name-${suffix}-data"
+  $container = docker ps --quiet --filter name="$Name"
+  if ($container) {
+    log "Removing container $Name"
+    docker container rm --force --volumes "$Name" > $null
+    cleanup_volume "$Name-${suffix}-data" > $null
   }
 }
+
+function get_network {
+  param(
+    [string]
+    $Name
+  )
+
+  return docker network ls --quiet --filter name="$Name"
+}
+
 function cleanup_network {
   param(
     [string]
     $Name
   )
 
-  if ("$(docker network ls --quiet --filter name="$Name")") {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m Removing network ${Name}$ESC[0m"
-    docker network rm "$Name"
+  $network = get_network $Name
+  if ($network) {
+    log "Removing network $Name"
+    docker network rm "$Name" > $null
   }
 }
 
@@ -131,83 +164,84 @@ function cleanup {
   )
 
   if ((-not $DETACH) -or $Cleanup) {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m clean the node and volume on startup (1) OR on exit if not detached$ESC[0m"
-    cleanup_node "$NODE_NAME"
+    log "Clean the node and volume on startup (1) OR on exit if not detached"
+    cleanup_node $NODE_NAME
   }
   if (-not $DETACH) {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m clean the network if not detached (start and exit)$ESC[0m"
-    cleanup_network "$NETWORK_NAME"
+    log "Clean the network if not detached (start and exit)"
+    cleanup_network $NETWORK_NAME
   }
 }
 
 if ($CLEANUP) {
   #trap - EXIT
-  if ("$(docker network ls --quiet --filter name=${NETWORK_NAME})" -eq "") {
-    Write-Output "$ESC[34;1mINFO:$ESC[0m $NETWORK_NAME is already deleted$ESC[0m"
+  $network = get_network $NETWORK_NAME
+
+  if (-not $network) {
+    log "$NETWORK_NAME is already deleted"
     exit 0
   }
-  $containers = $(docker network inspect --format '{{ range $key, $value := .Containers }}{{ println .Name}}{{ end }}' ${NETWORK_NAME})
 
+  $containers = docker network inspect --format '{{ range $key, $value := .Containers }}{{ println .Name}}{{ end }}' $NETWORK_NAME
   foreach($container in $containers) {
-    cleanup_node "$container"
+    cleanup_node $container
   }
 
-  cleanup_network "$NETWORK_NAME"
-  Write-Output "$ESC[32;1mSUCCESS:$ESC[0m Cleaned up and exiting$ESC[0m"
+  cleanup_network $NETWORK_NAME
+  log "Cleaned up and exiting" -Level Success
   exit 0
 }
 
-Write-Output "$ESC[34;1mINFO:$ESC[0m Making sure previous run leftover infrastructure is removed$ESC[0m"
+log "Making sure previous run leftover infrastructure is removed"
 cleanup -Cleanup
+log "Creating network $NETWORK_NAME if it does not exist already"
 
-Write-Output "$ESC[34;1mINFO:$ESC[0m Creating network $NETWORK_NAME if it does not exist already$ESC[0m"
-
-docker network inspect "$NETWORK_NAME" | Out-Null
+docker network inspect $NETWORK_NAME 2>&1>$null
 if ($LASTEXITCODE -ne 0) {
-  docker network create "$NETWORK_NAME"
+  docker network create "$NETWORK_NAME" > $null
 }
 
 $environment = @(
-"--env", "node.name=`"$NODE_NAME`"",
-"--env", "cluster.name=`"$CLUSTER_NAME`"",
-"--env", "cluster.initial_master_nodes=`"$MASTER_NODE_NAME`"",
-"--env", "discovery.seed_hosts=`"$MASTER_NODE_NAME`"",
-"--env", "cluster.routing.allocation.disk.threshold_enabled=false",
-"--env", "bootstrap.memory_lock=true",
-"--env", "node.attr.testattr=test",
-"--env", "path.repo=/tmp",
-"--env", "repositories.url.allowed_urls=http://snapshot.test*"
+  "--env", "node.name=`"$NODE_NAME`"",
+  "--env", "cluster.name=`"$CLUSTER_NAME`"",
+  "--env", "cluster.initial_master_nodes=`"$MASTER_NODE_NAME`"",
+  "--env", "discovery.seed_hosts=`"$MASTER_NODE_NAME`"",
+  "--env", "cluster.routing.allocation.disk.threshold_enabled=false",
+  "--env", "bootstrap.memory_lock=true",
+  "--env", "node.attr.testattr=test",
+  "--env", "path.repo=/tmp",
+  "--env", "repositories.url.allowed_urls=http://snapshot.test*"
 )
 
 $volumes = @(
-"--volume", "${volume_name}:/usr/share/elasticsearch/data"
+  "--volume", "${volume_name}:/usr/share/elasticsearch/data"
 )
 
-if (-not ($env:ELASTICSEARCH_VERSION -contains "oss")) {
+if (-not ($version -contains "oss")) {
   $environment += @(
-  "--env", "ELASTIC_PASSWORD=`"$ELASTIC_PASSWORD`"",
-  "--env", "xpack.license.self_generated.type=trial",
-  "--env", "xpack.security.enabled=true",
-  "--env", "xpack.security.http.ssl.enabled=true",
-  "--env", "xpack.security.http.ssl.verification_mode=certificate",
-  "--env", "xpack.security.http.ssl.key=certs/testnode.key",
-  "--env", "xpack.security.http.ssl.certificate=certs/testnode.crt",
-  "--env", "xpack.security.http.ssl.certificate_authorities=certs/ca.crt",
-  "--env", "xpack.security.transport.ssl.enabled=true",
-  "--env", "xpack.security.transport.ssl.key=certs/testnode.key",
-  "--env", "xpack.security.transport.ssl.certificate=certs/testnode.crt",
-  "--env", "xpack.security.transport.ssl.certificate_authorities=certs/ca.crt"
+    "--env", "ELASTIC_PASSWORD=`"$ELASTIC_PASSWORD`"",
+    "--env", "xpack.license.self_generated.type=trial",
+    "--env", "xpack.security.enabled=true",
+    "--env", "xpack.security.http.ssl.enabled=true",
+    "--env", "xpack.security.http.ssl.verification_mode=certificate",
+    "--env", "xpack.security.http.ssl.key=certs/testnode.key",
+    "--env", "xpack.security.http.ssl.certificate=certs/testnode.crt",
+    "--env", "xpack.security.http.ssl.certificate_authorities=certs/ca.crt",
+    "--env", "xpack.security.transport.ssl.enabled=true",
+    "--env", "xpack.security.transport.ssl.key=certs/testnode.key",
+    "--env", "xpack.security.transport.ssl.certificate=certs/testnode.crt",
+    "--env", "xpack.security.transport.ssl.certificate_authorities=certs/ca.crt"
   )
 
   $volumes += @(
-  "--volume", "`"${SSL_CERT}:/usr/share/elasticsearch/config/certs/testnode.crt`"",
-  "--volume", "`"${SSL_KEY}:/usr/share/elasticsearch/config/certs/testnode.key`"",
-  "--volume", "`"${SSL_CA}:/usr/share/elasticsearch/config/certs/ca.crt`""
+    "--volume", "`"${SSL_CERT}:/usr/share/elasticsearch/config/certs/testnode.crt`"",
+    "--volume", "`"${SSL_KEY}:/usr/share/elasticsearch/config/certs/testnode.key`"",
+    "--volume", "`"${SSL_CA}:/usr/share/elasticsearch/config/certs/ca.crt`""
   )
 }
 
 $url="http://$NODE_NAME"
-if (-not ($env:ELASTICSEARCH_VERSION -contains "oss")) {
+if (-not ($version -contains "oss")) {
   $url="https://elastic:$ELASTIC_PASSWORD@$NODE_NAME"
 }
 
@@ -216,7 +250,7 @@ if ($NODE_NAME -eq "instance") {
   $cert_validation_flags = "--cacert /usr/share/elasticsearch/config/certs/ca.pem --resolve ${NODE_NAME}:443:127.0.0.1"
 }
 
-Write-Output "$ESC[34;1mINFO:$ESC[0m Starting container $NODE_NAME $ESC[0m"
+log "Starting container $NODE_NAME"
 
 if ($DETACH) {
   $d = "true"
@@ -234,34 +268,33 @@ docker run `
   --ulimit nofile=65536:65536 `
   --ulimit memlock=-1:-1 `
   --detach="$d" `
-  --health-cmd="`"curl ${cert_validation_flags} --fail ${url}:9200/_cluster/health || exit 1`"" `
+  --health-cmd="`"curl $cert_validation_flags --fail ${url}:9200/_cluster/health || exit 1`"" `
   --health-interval=2s `
   --health-retries=20 `
   --health-timeout=2s `
-  --rm docker.elastic.co/elasticsearch/"$($env:ELASTICSEARCH_VERSION)"
+  --rm docker.elastic.co/elasticsearch/"$version" > $null
 
 if ($DETACH) {
-  while((!$(container_running -Name $NODE_NAME)) -or ((container_running -Name $NODE_NAME) -and ("$(docker inspect -f '{{.State.Health.Status}}' ${NODE_NAME})" -eq "starting"))) {
+  while((!$(container_running -Name $NODE_NAME)) -or ((container_running -Name $NODE_NAME) -and ($(docker inspect -f '{{.State.Health.Status}}' $NODE_NAME) -eq "starting"))) {
     Start-Sleep 2;
-    Write-Output ""
-    docker inspect -f '{{range .State.Health.Log}}{{.Output}}{{end}}' "$NODE_NAME"
-    Write-Output "$ESC[34;1mINFO:$ESC[0m waiting for node $NODE_NAME to be up$ESC[0m"
+    $logs = docker inspect -f '{{json .State.Health.Log}}' $NODE_NAME | ConvertFrom-Json
+    $lastLog = $logs[$logs.Length-1]
+    Write-Output $lastLog.Output
+    log "waiting for node $NODE_NAME to be up"
   }
 
   # Always show the node getting started logs, this is very useful both on CI as well as while developing
-  if (container_running -Name "$NODE_NAME") {
-    docker logs "$NODE_NAME"
+  if (container_running -Name $NODE_NAME) {
+    docker logs $NODE_NAME
   }
 
   if (!$(container_running -Name $NODE_NAME) -or ("$(docker inspect -f '{{.State.Health.Status}}' ${NODE_NAME})" -ne "healthy")) {
     cleanup -Cleanup
-    Write-Output ""
-    Write-Output "$ESC[31;1mERROR:$ESC[0m Failed to start $($env:ELASTICSEARCH_VERSION) in detached mode beyond health checks$ESC[0m"
-    Write-Output "$ESC[31;1mERROR:$ESC[0m dumped the docker log before shutting the node down$ESC[0m"
+    log "Failed to start $version in detached mode beyond health checks" -Level Error
+    log "dumped the docker log before shutting the node down" -Level Error
     exit 1
   } else {
-    Write-Output ""
-    Write-Output "$ESC[32;1mSUCCESS:$ESC[0m Detached and healthy: ${NODE_NAME} on docker network: ${NETWORK_NAME}$ESC[0m"
+    log "Detached and healthy: $NODE_NAME on docker network: $NETWORK_NAME" -Level Success
     $es_host = $url
     if (!$es_host) {
       $es_host = $NODE_NAME
@@ -270,7 +303,12 @@ if ($DETACH) {
       $es_host = "localhost"
     }
 
-    Write-Output "$ESC[32;1mSUCCESS:$ESC[0m Running on: ${es_host}:${HTTP_PORT}$ESC[0m"
+    log "Running on: ${es_host}:${HTTP_PORT}" -Level Success
+
+    # set the environment variable for running locally
+    $localUri = New-Object -TypeName System.UriBuilder -ArgumentList "${es_host}:${HTTP_PORT}"
+    $localUri.Host = "localhost"
+    $env:ES_TEST_SERVER = $localUri.ToString();
     exit 0
   }
 }
