@@ -9,6 +9,7 @@ use reqwest::StatusCode;
 use serde_json::json;
 use sysinfo::SystemExt;
 use url::Url;
+use elasticsearch::cert::CertificateValidation;
 
 /// Gets the address to the Elasticsearch instance from environment variables
 /// and assumes an instance running locally on the default port otherwise
@@ -25,13 +26,19 @@ fn running_proxy() -> bool {
     !system.get_process_by_name("Fiddler").is_empty()
 }
 
+pub fn create_default_builder() -> TransportBuilder {
+    create_builder(cluster_addr().as_str())
+}
+
 pub fn create_builder(addr: &str) -> TransportBuilder {
     let url = Url::parse(addr).unwrap();
     let conn_pool = SingleNodeConnectionPool::new(url.clone());
     let mut builder = TransportBuilder::new(conn_pool);
-    // assume if we're running with HTTPS then authentication is also enabled
+    // assume if we're running with HTTPS then authentication is also enabled and disable
+    // certificate validation - we'll change this for tests that need to.
     if url.scheme() == "https" {
         builder = builder.auth(Credentials::Basic("elastic".into(), "changeme".into()))
+            .cert_validation(CertificateValidation::None)
     }
 
     builder

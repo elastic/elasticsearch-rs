@@ -306,6 +306,7 @@ extern crate dyn_clone;
 pub mod auth;
 pub mod cat;
 pub mod ccr;
+pub mod cert;
 pub mod cluster;
 pub mod enrich;
 pub mod graph;

@@ -2,6 +2,7 @@
 
 use crate::{
     auth::Credentials,
+    cert::CertificateValidation,
     error::Error,
     http::{
         headers::{
@@ -79,6 +80,7 @@ pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
     conn_pool: Box<dyn ConnectionPool>,
     credentials: Option<Credentials>,
+    cert_validation: Option<CertificateValidation>,
     proxy: Option<Url>,
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
@@ -95,6 +97,7 @@ impl TransportBuilder {
             client_builder: reqwest::ClientBuilder::new(),
             conn_pool: Box::new(conn_pool),
             credentials: None,
+            cert_validation: None,
             proxy: None,
             proxy_credentials: None,
             disable_proxy: false,
@@ -129,6 +132,14 @@ impl TransportBuilder {
         self
     }
 
+    /// Validation applied to the certificate provided to establish a HTTPS connection.
+    /// By default, full validation is applied. When using a self-signed certificate,
+    /// different validation can be applied.
+    pub fn cert_validation(mut self, validation: CertificateValidation) -> Self {
+        self.cert_validation = Some(validation);
+        self
+    }
+
     /// Builds a [Transport] to use to send API calls to Elasticsearch.
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
@@ -142,6 +153,18 @@ impl TransportBuilder {
                 _ => client_builder,
             }
         };
+
+        if let Some(v) = self.cert_validation {
+            client_builder = match v {
+                CertificateValidation::Default => client_builder,
+                CertificateValidation::Full(c) => client_builder.add_root_certificate(c),
+                CertificateValidation::Certificate(c) => {
+                    client_builder = client_builder.add_root_certificate(c);
+                    client_builder.danger_accept_invalid_hostnames(true)
+                }
+                CertificateValidation::None => client_builder.danger_accept_invalid_certs(true),
+            }
+        }
 
         if self.disable_proxy {
             client_builder = client_builder.no_proxy();
