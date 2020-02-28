@@ -26,7 +26,6 @@ pub fn use_declarations() -> Tokens {
         };
         use std::borrow::Cow;
         use serde::Serialize;
-        use serde_with;
     )
 }
 

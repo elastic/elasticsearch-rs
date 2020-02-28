@@ -17,7 +17,6 @@ use semver::Version;
 use serde::de::{MapAccess, Visitor};
 use std::marker::PhantomData;
 use std::str::FromStr;
-use url;
 use void::Void;
 
 mod code_gen;

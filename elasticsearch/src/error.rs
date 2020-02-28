@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 use crate::http::transport::BuildError;
-use serde_json;
 use std::error;
 use std::fmt;
 use std::io;

@@ -27,7 +27,6 @@ use crate::{
     params::*,
 };
 use serde::Serialize;
-use serde_with;
 use std::borrow::Cow;
 #[derive(Debug, Clone, PartialEq)]
 #[doc = "API parts for the Ccr Delete Auto Follow Pattern API"]

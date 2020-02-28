@@ -20,7 +20,6 @@ use crate::api_generator::{Path, Type, TypeKind};
 use quote::ToTokens;
 use serde::{Deserialize, Deserializer};
 use std::{collections::BTreeMap, fmt, iter::Iterator, str};
-use syn;
 
 /// A URL path
 #[derive(Debug, Deserialize, PartialEq, Clone)]

@@ -14,7 +14,6 @@ use crate::{
     },
 };
 
-use base64;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
 use serde::Serialize;

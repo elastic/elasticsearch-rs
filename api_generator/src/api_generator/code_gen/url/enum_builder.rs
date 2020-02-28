@@ -18,7 +18,6 @@
 use crate::api_generator::code_gen::url::url_builder::{IntoExpr, UrlBuilder};
 use crate::api_generator::{code_gen::*, ApiEndpoint, Path};
 use inflector::Inflector;
-use syn;
 
 /// Builder for request url parts enum
 ///
