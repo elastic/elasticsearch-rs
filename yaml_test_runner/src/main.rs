@@ -10,7 +10,7 @@ use std::fs;
 mod generator;
 mod github;
 
-fn main() {
+fn main() -> Result<(), failure::Error> {
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg(Arg::with_name("branch")
@@ -62,10 +62,12 @@ fn main() {
     }
 
     if download_rest_specs {
-        api_generator::rest_spec::download_specs(branch, &rest_specs_dir)
+        api_generator::rest_spec::download_specs(branch, &rest_specs_dir)?;
     }
 
-    let api = api_generator::generator::read_api(branch, &rest_specs_dir).unwrap();
+    let api = api_generator::generator::read_api(branch, &rest_specs_dir)?;
 
-    generator::generate_tests_from_yaml(&download_dir, &api).unwrap();
+    generator::generate_tests_from_yaml(&download_dir, &api)?;
+
+    Ok(())
 }

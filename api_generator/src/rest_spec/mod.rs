@@ -35,7 +35,7 @@ struct RestApiSpec {
     links: Links,
 }
 
-pub fn download_specs(branch: &str, download_dir: &PathBuf) {
+pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
     let spec_urls = [
         ("core".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/rest-api-spec/src/main/resources/rest-api-spec/api".to_string()),
         ("xpack".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/x-pack/plugin/src/test/resources/rest-api-spec/api".to_string())];
@@ -52,17 +52,19 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) {
         })
         .collect();
 
-    fs::create_dir_all(download_dir).unwrap();
+    fs::create_dir_all(download_dir)?;
     for spec in specs {
-        download_endpoints(&spec, &download_dir);
+        download_endpoints(&spec, &download_dir)?;
     }
+
+    Ok(())
 }
 
-fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
+fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) -> Result<(), failure::Error> {
     let mut response = reqwest::get(&spec.url).unwrap();
     let rest_api_specs: Vec<RestApiSpec> = response.json().unwrap();
-
     println!("Downloading {} specs from {}", spec.dir, spec.branch);
-    download_specs_to_dir(rest_api_specs.as_slice(), download_dir).unwrap();
+    download_specs_to_dir(rest_api_specs.as_slice(), download_dir)?;
     println!("Done downloading {} specs from {}", spec.dir, spec.branch);
+    Ok(())
 }
