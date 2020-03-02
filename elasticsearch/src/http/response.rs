@@ -21,6 +21,22 @@ impl Response {
         self.0.status()
     }
 
+    /// Turn the response into an `Error` if Elasticsearch returned an error.
+    pub fn error_for_status_code(self) -> Result<Self, Error> {
+        match self.0.error_for_status_ref() {
+            Ok(_) => Ok(self),
+            Err(err) => Err(err.into()),
+        }
+    }
+
+    /// Turn the response into an `Error` if Elasticsearch returned an error.
+    pub fn error_for_status_code_ref(&self) -> Result<&Self, Error> {
+        match self.0.error_for_status_ref() {
+            Ok(_) => Ok(self),
+            Err(err) => Err(err.into()),
+        }
+    }
+
     /// The response headers
     pub fn headers(&self) -> &HeaderMap {
         self.0.headers()
