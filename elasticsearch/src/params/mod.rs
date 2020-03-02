@@ -18,3 +18,27 @@ pub enum TrackTotalHits {
     /// Accurately track the number of hits up to the specified value
     Count(i64),
 }
+
+/// Control how the `_source` field is returned with every hit.
+///
+/// By default operations return the contents of the `_source` field
+/// unless you have used the `stored_fields` parameter or if the `_source` field is disabled.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SourceFilter {
+    /// Whether `_source` retrieval should be enabled (`true`) or disabled (`false`)
+    Enable(bool),
+
+    /// A wildcard pattern to control what parts of `_source` should be returned
+    Include(String),
+
+    /// A collection of wildcard patterns to control what parts of `_source` should be returned
+    Includes(Vec<String>),
+
+    /// A collection of wildcard patterns to control what parts of `_source` should
+    /// and should not be returned
+    IncludesExcludes {
+        includes: Vec<String>,
+        excludes: Vec<String>
+    }
+}

@@ -1,15 +1,15 @@
 use elasticsearch::{
-    auth::Credentials, http::request::JsonBody, http::response::Response,
-    http::transport::TransportBuilder, indices::IndicesExistsParts, params::Refresh, BulkParts,
-    Elasticsearch, Error, DEFAULT_ADDRESS,
+    auth::Credentials, http::response::Response, http::transport::TransportBuilder,
+    indices::IndicesExistsParts, params::Refresh, BulkOperation, BulkParts, Elasticsearch, Error,
+    DEFAULT_ADDRESS,
 };
 
+use elasticsearch::cert::CertificateValidation;
 use elasticsearch::http::transport::SingleNodeConnectionPool;
 use reqwest::StatusCode;
 use serde_json::json;
 use sysinfo::SystemExt;
 use url::Url;
-use elasticsearch::cert::CertificateValidation;
 
 /// Gets the address to the Elasticsearch instance from environment variables
 /// and assumes an instance running locally on the default port otherwise
@@ -37,7 +37,8 @@ pub fn create_builder(addr: &str) -> TransportBuilder {
     // assume if we're running with HTTPS then authentication is also enabled and disable
     // certificate validation - we'll change this for tests that need to.
     if url.scheme() == "https" {
-        builder = builder.auth(Credentials::Basic("elastic".into(), "changeme".into()))
+        builder = builder
+            .auth(Credentials::Basic("elastic".into(), "changeme".into()))
             .cert_validation(CertificateValidation::None)
     }
 
@@ -78,12 +79,10 @@ pub async fn index_documents(client: &Elasticsearch) -> Result<Response, Error> 
         .await?;
 
     if exists_response.status_code() == StatusCode::NOT_FOUND {
-        let mut body: Vec<JsonBody<_>> = vec![];
+        let mut body: Vec<BulkOperation<_>> = vec![];
         for i in 1..11 {
-            let op = json!({"index": {"_id": i}}).into();
-            let doc = json!({"title":"Elasticsearch"}).into();
+            let op = BulkOperation::index(i.to_string(), json!({"title":"Elasticsearch"})).into();
             body.push(op);
-            body.push(doc);
         }
 
         client

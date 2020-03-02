@@ -1,14 +1,12 @@
 use crate::http::request::Body;
-use crate::params::VersionType;
+use crate::params::{VersionType, SourceFilter};
 use crate::Error;
 use bytes::buf::BufMutExt;
 use bytes::{BufMut, BytesMut};
-use serde;
 use serde::{
     ser::{SerializeMap, Serializer},
     Deserialize, Serialize,
 };
-use serde_with;
 
 /// Bulk operation action
 #[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq)]
@@ -32,16 +30,17 @@ enum BulkAction {
 /// the specific bulk action metadata such as the id of the source document, index, etc.
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Default)]
-struct BulkMetadata<'a> {
-    _index: Option<&'a str>,
+struct BulkMetadata {
+    _index: Option<String>,
     // TODO: intentionally omit type for now, as it's going away.
-    //_type: Option<&'a str>,
-    _id: &'a str,
-    pipeline: Option<&'a str>,
+    //_type: Option<String>,
+    _id: String,
+    pipeline: Option<String>,
     if_seq_no: Option<i64>,
     if_primary_term: Option<i64>,
-    routing: Option<&'a str>,
+    routing: Option<String>,
     retry_on_conflict: Option<i32>,
+    _source: Option<SourceFilter>,
     version: Option<i64>,
     version_type: Option<VersionType>,
 }
@@ -50,15 +49,15 @@ struct BulkMetadata<'a> {
 ///
 /// The header contains the bulk action and the specific action metadata
 /// such as the id of the source document, index, etc.
-struct BulkHeader<'a> {
+struct BulkHeader {
     action: BulkAction,
-    metadata: BulkMetadata<'a>,
+    metadata: BulkMetadata,
 }
 
-impl<'a> Serialize for BulkHeader<'a> {
+impl Serialize for BulkHeader {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-        where
-            S: Serializer,
+    where
+        S: Serializer,
     {
         let mut map = serializer.serialize_map(Some(1))?;
         let action = match self.action {
@@ -138,39 +137,51 @@ impl<'a> Serialize for BulkHeader<'a> {
 /// # Ok(())
 /// # }
 /// ```
-pub struct BulkOperation<'a, B> {
-    header: BulkHeader<'a>,
+pub struct BulkOperation<B> {
+    header: BulkHeader,
     source: Option<B>,
 }
 
-impl<'a, B> BulkOperation<'a, B>
-    where
-        B: Serialize,
+impl<B> BulkOperation<B>
+where
+    B: Serialize,
 {
     /// Creates a new instance of a bulk create operation
-    pub fn create(id: &'a str, source: B) -> BulkCreateOperation<'a, B> {
+    pub fn create<S>(id: S, source: B) -> BulkCreateOperation<B>
+    where
+        S: Into<String>,
+    {
         BulkCreateOperation::new(id, source)
     }
 
     /// Creates a new instance of a bulk index operation
-    pub fn index(id: &'a str, source: B) -> BulkIndexOperation<'a, B> {
+    pub fn index<S>(id: S, source: B) -> BulkIndexOperation<B>
+    where
+        S: Into<String>,
+    {
         BulkIndexOperation::new(id, source)
     }
 
     /// Creates a new instance of a bulk delete operation
-    pub fn delete(id: &'a str) -> BulkDeleteOperation<'a, B> {
+    pub fn delete<S>(id: S) -> BulkDeleteOperation<B>
+    where
+        S: Into<String>,
+    {
         BulkDeleteOperation::new(id)
     }
 
     /// Creates a new instance of a bulk update operation
-    pub fn update(id: &'a str, source: B) -> BulkUpdateOperation<'a, B> {
+    pub fn update<S>(id: S, source: B) -> BulkUpdateOperation<B>
+    where
+        S: Into<String>,
+    {
         BulkUpdateOperation::new(id, source)
     }
 }
 
-impl<'a, B> Body for BulkOperation<'a, B>
-    where
-        B: Serialize,
+impl<B> Body for BulkOperation<B>
+where
+    B: Serialize,
 {
     fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
         let writer = bytes.writer();
@@ -188,19 +199,22 @@ impl<'a, B> Body for BulkOperation<'a, B>
 }
 
 /// Bulk create operation
-pub struct BulkCreateOperation<'a, B> {
-    operation: BulkOperation<'a, B>,
+pub struct BulkCreateOperation<B> {
+    operation: BulkOperation<B>,
 }
 
-impl<'a, B> BulkCreateOperation<'a, B> {
+impl<B> BulkCreateOperation<B> {
     /// Creates a new instance of [BulkCreateOperation]
-    pub fn new(id: &'a str, source: B) -> Self {
+    pub fn new<S>(id: S, source: B) -> Self
+    where
+        S: Into<String>,
+    {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Create,
                     metadata: BulkMetadata {
-                        _id: id,
+                        _id: id.into(),
                         ..Default::default()
                     },
                 },
@@ -212,47 +226,59 @@ impl<'a, B> BulkCreateOperation<'a, B> {
     /// specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
-    /// in one Bulk API call will operate against the same index however, it is better to specify
+    /// in one Bulk API call will operate against the same index, specify
     /// the index on [Bulk](struct.Bulk.html) using [BulkParts::Index](enum.BulkParts.html),
-    /// and omit specifying the same index for each bulk operation.
-    pub fn index(mut self, index: &'a str) -> Self {
-        self.operation.header.metadata._index = Some(index);
+    /// and omit specifying the index on each bulk operation.
+    pub fn index<S>(mut self, index: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._index = Some(index.into());
         self
     }
 
     /// The ID of the pipeline to use to preprocess incoming documents
-    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
-        self.operation.header.metadata.pipeline = Some(pipeline);
+    pub fn pipeline<S>(mut self, pipeline: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.pipeline = Some(pipeline.into());
         self
     }
 
     /// Target the specified primary shard
-    pub fn routing(mut self, routing: &'a str) -> Self {
-        self.operation.header.metadata.routing = Some(routing);
+    pub fn routing<S>(mut self, routing: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.routing = Some(routing.into());
         self
     }
 }
 
-impl<'a, B> From<BulkCreateOperation<'a, B>> for BulkOperation<'a, B> {
-    fn from(b: BulkCreateOperation<'a, B>) -> Self {
+impl<B> From<BulkCreateOperation<B>> for BulkOperation<B> {
+    fn from(b: BulkCreateOperation<B>) -> Self {
         b.operation
     }
 }
 
 /// Bulk index operation
-pub struct BulkIndexOperation<'a, B> {
-    operation: BulkOperation<'a, B>,
+pub struct BulkIndexOperation<B> {
+    operation: BulkOperation<B>,
 }
 
-impl<'a, B> BulkIndexOperation<'a, B> {
+impl<B> BulkIndexOperation<B> {
     /// Creates a new instance of [BulkIndexOperation]
-    pub fn new(id: &'a str, source: B) -> Self {
+    pub fn new<S>(id: S, source: B) -> Self
+    where
+        S: Into<String>,
+    {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Index,
                     metadata: BulkMetadata {
-                        _id: id,
+                        _id: id.into(),
                         ..Default::default()
                     },
                 },
@@ -264,23 +290,32 @@ impl<'a, B> BulkIndexOperation<'a, B> {
     /// specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
-    /// in one Bulk API call will operate against the same index however, it is better to specify
+    /// in one Bulk API call will operate against the same index, specify
     /// the index on [Bulk](struct.Bulk.html) using [BulkParts::Index](enum.BulkParts.html),
-    /// and omit specifying the same index for each bulk operation.
-    pub fn index(mut self, index: &'a str) -> Self {
-        self.operation.header.metadata._index = Some(index);
+    /// and omit specifying the index on each bulk operation.
+    pub fn index<S>(mut self, index: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._index = Some(index.into());
         self
     }
 
     /// The ID of the pipeline to use to preprocess incoming documents
-    pub fn pipeline(mut self, pipeline: &'a str) -> Self {
-        self.operation.header.metadata.pipeline = Some(pipeline);
+    pub fn pipeline<S>(mut self, pipeline: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.pipeline = Some(pipeline.into());
         self
     }
 
     /// Target the specified primary shard
-    pub fn routing(mut self, routing: &'a str) -> Self {
-        self.operation.header.metadata.routing = Some(routing);
+    pub fn routing<S>(mut self, routing: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.routing = Some(routing.into());
         self
     }
 
@@ -310,26 +345,33 @@ impl<'a, B> BulkIndexOperation<'a, B> {
     }
 }
 
-impl<'a, B> From<BulkIndexOperation<'a, B>> for BulkOperation<'a, B> {
-    fn from(b: BulkIndexOperation<'a, B>) -> Self {
+impl<B> From<BulkIndexOperation<B>> for BulkOperation<B> {
+    fn from(b: BulkIndexOperation<B>) -> Self {
         b.operation
     }
 }
 
 /// Bulk delete operation
-pub struct BulkDeleteOperation<'a, B> {
-    operation: BulkOperation<'a, B>,
+///
+/// The bulk delete operation is generic over `B` to allow delete operations to be specified
+/// in a collection of operations over `B`, even though the source of any delete operation will
+/// always be `None`
+pub struct BulkDeleteOperation<B> {
+    operation: BulkOperation<B>,
 }
 
-impl<'a, B> BulkDeleteOperation<'a, B> {
+impl<B> BulkDeleteOperation<B> {
     /// Creates a new instance of [BulkDeleteOperation]
-    pub fn new(id: &'a str) -> Self {
+    pub fn new<S>(id: S) -> Self
+    where
+        S: Into<String>,
+    {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Delete,
                     metadata: BulkMetadata {
-                        _id: id,
+                        _id: id.into(),
                         ..Default::default()
                     },
                 },
@@ -341,17 +383,23 @@ impl<'a, B> BulkDeleteOperation<'a, B> {
     /// specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
-    /// in one Bulk API call will operate against the same index however, it is better to specify
+    /// in one Bulk API call will operate against the same index, specify
     /// the index on [Bulk](struct.Bulk.html) using [BulkParts::Index](enum.BulkParts.html),
-    /// and omit specifying the same index for each bulk operation.
-    pub fn index(mut self, index: &'a str) -> Self {
-        self.operation.header.metadata._index = Some(index);
+    /// and omit specifying the index on each bulk operation.
+    pub fn index<S>(mut self, index: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._index = Some(index.into());
         self
     }
 
     /// Target the specified primary shard
-    pub fn routing(mut self, routing: &'a str) -> Self {
-        self.operation.header.metadata.routing = Some(routing);
+    pub fn routing<S>(mut self, routing: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.routing = Some(routing.into());
         self
     }
 
@@ -381,29 +429,32 @@ impl<'a, B> BulkDeleteOperation<'a, B> {
     }
 }
 
-impl<'a, B> From<BulkDeleteOperation<'a, B>> for BulkOperation<'a, B> {
-    fn from(b: BulkDeleteOperation<'a, B>) -> Self {
+impl<B> From<BulkDeleteOperation<B>> for BulkOperation<B> {
+    fn from(b: BulkDeleteOperation<B>) -> Self {
         b.operation
     }
 }
 
 /// Bulk update operation
-pub struct BulkUpdateOperation<'a, B> {
-    operation: BulkOperation<'a, B>,
+pub struct BulkUpdateOperation<B> {
+    operation: BulkOperation<B>,
 }
 
-impl<'a, B> BulkUpdateOperation<'a, B>
-    where
-        B: serde::Serialize,
+impl<B> BulkUpdateOperation<B>
+where
+    B: serde::Serialize,
 {
     /// Creates a new instance of [BulkUpdateOperation]
-    pub fn new(id: &'a str, source: B) -> Self {
+    pub fn new<S>(id: S, source: B) -> Self
+    where
+        S: Into<String>,
+    {
         Self {
             operation: BulkOperation {
                 header: BulkHeader {
                     action: BulkAction::Update,
                     metadata: BulkMetadata {
-                        _id: id,
+                        _id: id.into(),
                         ..Default::default()
                     },
                 },
@@ -415,17 +466,23 @@ impl<'a, B> BulkUpdateOperation<'a, B>
     /// specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
-    /// in one Bulk API call will operate against the same index however, it is better to specify
+    /// in one Bulk API call will operate against the same index, specify
     /// the index on [Bulk](struct.Bulk.html) using [BulkParts::Index](enum.BulkParts.html),
-    /// and omit specifying the same index for each bulk operation.
-    pub fn index(mut self, index: &'a str) -> Self {
-        self.operation.header.metadata._index = Some(index);
+    /// and omit specifying the index on each bulk operation.
+    pub fn index<S>(mut self, index: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata._index = Some(index.into());
         self
     }
 
     /// Target the specified primary shard
-    pub fn routing(mut self, routing: &'a str) -> Self {
-        self.operation.header.metadata.routing = Some(routing);
+    pub fn routing<S>(mut self, routing: S) -> Self
+    where
+        S: Into<String>,
+    {
+        self.operation.header.metadata.routing = Some(routing.into());
         self
     }
 
@@ -459,10 +516,18 @@ impl<'a, B> BulkUpdateOperation<'a, B>
         self.operation.header.metadata.retry_on_conflict = Some(retry_on_conflict);
         self
     }
+
+    /// specify how the `_source` field is returned for the update operation.
+    ///
+    /// This can also be specified as part of the update action source payload instead.
+    pub fn source(mut self, source: SourceFilter) -> Self {
+        self.operation.header.metadata._source = Some(source);
+        self
+    }
 }
 
-impl<'a, B> From<BulkUpdateOperation<'a, B>> for BulkOperation<'a, B> {
-    fn from(b: BulkUpdateOperation<'a, B>) -> Self {
+impl<B> From<BulkUpdateOperation<B>> for BulkOperation<B> {
+    fn from(b: BulkUpdateOperation<B>) -> Self {
         b.operation
     }
 }
@@ -477,6 +542,8 @@ mod tests {
     use serde::Serialize;
     use serde_json::{json, Value};
     use std::{cmp::Ordering, str};
+    use crate::generated::params::VersionType;
+    use crate::params::SourceFilter;
 
     pub fn compare(a: &[u8], b: &[u8]) -> Ordering {
         a.iter()
@@ -491,20 +558,33 @@ mod tests {
         let mut bytes = BytesMut::new();
         let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
 
-        ops.push(BulkOperation::index("1", json!({ "foo": "index" })).into());
-        ops.push(BulkOperation::create("2", json!({ "bar": "create" })).into());
-        ops.push(BulkOperation::update("3", json!({ "baz": "update" })).into());
+        ops.push(BulkOperation::index("1", json!({ "foo": "index" }))
+            .pipeline("pipeline")
+            .routing("routing")
+            .if_seq_no(1)
+            .if_primary_term(2)
+            .version(3)
+            .version_type(VersionType::Internal)
+            .into());
+        ops.push(BulkOperation::create("2", json!({ "bar": "create" }))
+            .pipeline("pipeline")
+            .routing("routing")
+            .index("create_index")
+            .into());
+        ops.push(BulkOperation::update("3", json!({ "baz": "update" }))
+            .source(SourceFilter::Enable(false))
+            .into());
         ops.push(BulkOperation::delete("4").into());
 
         let body = NdBody(ops);
         let _ = body.write(&mut bytes)?;
 
         let mut expected = BytesMut::new();
-        expected.put_slice(b"{\"index\":{\"_id\":\"1\"}}\n");
+        expected.put_slice(b"{\"index\":{\"_id\":\"1\",\"pipeline\":\"pipeline\",\"if_seq_no\":1,\"if_primary_term\":2,\"routing\":\"routing\",\"version\":3,\"version_type\":\"internal\"}}\n");
         expected.put_slice(b"{\"foo\":\"index\"}\n");
-        expected.put_slice(b"{\"create\":{\"_id\":\"2\"}}\n");
+        expected.put_slice(b"{\"create\":{\"_index\":\"create_index\",\"_id\":\"2\",\"pipeline\":\"pipeline\",\"routing\":\"routing\"}}\n");
         expected.put_slice(b"{\"bar\":\"create\"}\n");
-        expected.put_slice(b"{\"update\":{\"_id\":\"3\"}}\n");
+        expected.put_slice(b"{\"update\":{\"_id\":\"3\",\"_source\":false}}\n");
         expected.put_slice(b"{\"baz\":\"update\"}\n");
         expected.put_slice(b"{\"delete\":{\"_id\":\"4\"}}\n");
 
@@ -546,8 +626,8 @@ mod tests {
             }
 
             pub fn push<B>(&mut self, op: BulkOperation<B>) -> Result<(), Error>
-                where
-                    B: Serialize,
+            where
+                B: Serialize,
             {
                 op.write(&mut self.buf)
             }
