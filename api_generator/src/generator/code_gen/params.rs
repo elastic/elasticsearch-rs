@@ -1,4 +1,4 @@
-use crate::api_generator::*;
+use crate::generator::*;
 
 use inflector::Inflector;
 use quote::Tokens;

@@ -1,8 +1,11 @@
 #[macro_use]
 extern crate quote;
 
+extern crate api_generator;
+
 use clap::{App, Arg};
 use std::path::PathBuf;
+use std::fs;
 
 mod generator;
 mod github;
@@ -25,15 +28,44 @@ fn main() {
             .help("The GitHub access token. Required to increase the rate limit to be able to download all yaml tests")
             .required(true)
             .takes_value(true))
+        .arg(Arg::with_name("path")
+            .short("p")
+            .long("path")
+            .value_name("PATH")
+            .help("The path to the rest API specs. Required to build a representation of the client API.")
+            .required(true)
+            .takes_value(true))
         .get_matches();
 
     let branch = matches
         .value_of("branch")
         .expect("missing 'branch' argument");
     let token = matches.value_of("token").expect("missing 'token' argument");
+    let path = matches.value_of("path").expect("missing 'path' argument");
+    let rest_specs_dir = PathBuf::from(path);
     let download_dir = PathBuf::from("./yaml_test_runner/yaml");
 
-    //github::download_test_suites(token, branch, &download_dir);
+    github::download_test_suites(token, branch, &download_dir);
 
-    generator::generate_tests_from_yaml(&download_dir).unwrap();
+    let mut last_downloaded_version = rest_specs_dir.clone();
+    last_downloaded_version.push("last_downloaded_version");
+
+    let mut download_rest_specs = true;
+    if last_downloaded_version.exists() {
+        let version = fs::read_to_string(last_downloaded_version)
+            .expect("Could not rest specs last_downloaded version into string");
+
+        if version == branch {
+            println!("rest specs for branch {} already downloaded in {:?}", branch, &rest_specs_dir);
+            download_rest_specs = false;
+        }
+    }
+
+    if download_rest_specs {
+        api_generator::rest_spec::download_specs(branch, &rest_specs_dir)
+    }
+
+    let api = api_generator::generator::read_api(branch, &rest_specs_dir).unwrap();
+
+    generator::generate_tests_from_yaml(&download_dir, &api).unwrap();
 }

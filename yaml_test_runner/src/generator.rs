@@ -6,11 +6,12 @@ use yaml_rust::{
     yaml::{Array, Hash},
     Yaml, YamlLoader,
 };
+use api_generator::generator::Api;
 
 struct YamlTest {
     setup: Option<Tokens>,
     teardown: Option<Tokens>,
-    tests: Vec<(String, Tokens)>
+    tests: Vec<(String, Tokens)>,
 }
 
 impl YamlTest {
@@ -23,13 +24,13 @@ impl YamlTest {
     }
 }
 
-pub fn generate_tests_from_yaml(download_dir: &PathBuf) -> Result<(), failure::Error> {
+pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(), failure::Error> {
     let paths = fs::read_dir(download_dir).unwrap();
     for entry in paths {
         if let Ok(entry) = entry {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {
-                    generate_tests_from_yaml(&entry.path())?;
+                    generate_tests_from_yaml(&entry.path(), api)?;
                 } else if file_type.is_file() {
                     let file_name = entry.file_name().to_string_lossy().into_owned();
                     if !file_name.ends_with(".yml") && !file_name.ends_with(".yaml") {
@@ -122,7 +123,6 @@ fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
 }
 
 fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
-
     let mut entries = hash.entries();
 
     let headers = String::from("headers");
@@ -131,27 +131,28 @@ fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
 
     let result: Result<Vec<_>, _> = entries
         .into_iter()
-        .map(|entry| {
-            match (entry.key(), entry.get()) {
-                (Yaml::String(headers), Yaml::Hash(h)) => Ok(()),
-                (Yaml::String(catch), Yaml::String(s)) => Ok(()),
-                (Yaml::String(node_selector), _) => Ok(()),
-                (Yaml::String(s), Yaml::Hash(h)) => {
-                    let fn_name = s.clone().replace(".", "().");
-                    let fn_name_ident = syn::Ident::from(fn_name);
+        .map(|entry| match (entry.key(), entry.get()) {
+            (Yaml::String(headers), Yaml::Hash(h)) => Ok(()),
+            (Yaml::String(catch), Yaml::String(s)) => Ok(()),
+            (Yaml::String(node_selector), _) => Ok(()),
+            (Yaml::String(s), Yaml::Hash(h)) => {
+                let fn_name = s.clone().replace(".", "().");
+                let fn_name_ident = syn::Ident::from(fn_name);
 
-                    tokens.append(quote! {
-                        let response = client.#fn_name_ident().await?;
-                    });
-                    Ok(())
-                },
-                (k, v) => Err(failure::err_msg(format!("{:?} and {:?} are not a string and hash", &k, &v))),
+                tokens.append(quote! {
+                    let response = client.#fn_name_ident().await?;
+                });
+                Ok(())
             }
+            (k, v) => Err(failure::err_msg(format!(
+                "{:?} and {:?} are not a string and hash",
+                &k, &v
+            ))),
         })
         .collect();
 
     match result {
         Ok(_) => Ok(()),
-        Err(e) => Err(e)
+        Err(e) => Err(e),
     }
 }

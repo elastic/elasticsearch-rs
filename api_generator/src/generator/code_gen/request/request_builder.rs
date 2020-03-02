@@ -1,4 +1,4 @@
-use crate::api_generator::{
+use crate::generator::{
     code_gen, code_gen::url::enum_builder::EnumBuilder, code_gen::*, ApiEndpoint, HttpMethod, Type,
     TypeKind,
 };
@@ -367,13 +367,11 @@ impl<'a> RequestBuilder<'a> {
         enum_builder: &EnumBuilder,
         accepts_nd_body: bool,
     ) -> Tokens {
-        // TODO: lazy_static! for this?
         let mut common_fields: Vec<Field> = common_params
             .iter()
             .map(Self::create_struct_field)
             .collect();
 
-        // TODO: lazy_static! for this?
         let mut common_builder_fns: Vec<ImplItem> =
             common_params.iter().map(Self::create_impl_fn).collect();
 

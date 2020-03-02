@@ -1,7 +1,7 @@
-use crate::api_generator::*;
+use crate::generator::*;
 
-use crate::api_generator::code_gen::request::request_builder::RequestBuilder;
-use crate::api_generator::code_gen::*;
+use crate::generator::code_gen::request::request_builder::RequestBuilder;
+use crate::generator::code_gen::*;
 use inflector::Inflector;
 use quote::Tokens;
 

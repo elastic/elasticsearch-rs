@@ -1,4 +1,4 @@
-use crate::api_generator::code_gen::url::url_builder::PathString;
+use crate::generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
 use serde::{Deserialize, Deserializer};
 use serde_json::Value;
@@ -148,7 +148,7 @@ pub struct Body {
 }
 
 lazy_static! {
-    static ref MAJOR_MINOR_VERSION: Version =
+    static ref VERSION: Version =
         semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
 
@@ -185,7 +185,7 @@ impl DocumentationUrlString {
                                 "/master",
                                 format!(
                                     "/{}.{}",
-                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
+                                    VERSION.major, VERSION.minor
                                 )
                                 .as_str(),
                             )
@@ -198,7 +198,7 @@ impl DocumentationUrlString {
                                 "/current",
                                 format!(
                                     "/{}.{}",
-                                    MAJOR_MINOR_VERSION.major, MAJOR_MINOR_VERSION.minor
+                                    VERSION.major, VERSION.minor
                                 )
                                 .as_str(),
                             )
@@ -420,7 +420,7 @@ fn write_file(input: String, dir: &PathBuf, file: &str) -> Result<(), failure::E
 }
 
 /// Reads Api from a directory of REST Api specs
-fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
+pub fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error> {
     let paths = fs::read_dir(download_dir)?;
     let mut namespaces = BTreeMap::new();
     let mut enums: HashSet<ApiEnum> = HashSet::new();
@@ -434,7 +434,7 @@ fn read_api(branch: &str, download_dir: &PathBuf) -> Result<Api, failure::Error>
 
         if name
             .unwrap()
-            .map(|name| !name.starts_with('_'))
+            .map(|name| name.ends_with(".json") && !name.starts_with('_'))
             .unwrap_or(true)
         {
             let mut file = File::open(&path)?;

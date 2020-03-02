@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-use crate::api_generator::code_gen::*;
-use crate::api_generator::{Path, Type, TypeKind};
+use crate::generator::code_gen::*;
+use crate::generator::{Path, Type, TypeKind};
 use quote::ToTokens;
 use serde::{Deserialize, Deserializer};
 use std::{collections::BTreeMap, fmt, iter::Iterator, str};

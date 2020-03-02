@@ -8,6 +8,7 @@ repository = "https://github.com/elastic/elasticsearch-rs"
 
 [dependencies]
 elasticsearch = { version = "7.6.0-alpha.1", path = "../elasticsearch" }
+api_generator = { version = "7.6.0-alpha.1", path = "../api_generator" }
 
 clap = "~2"
 failure = "0.1.6"

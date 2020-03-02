@@ -5,6 +5,7 @@ use std::fmt::Formatter;
 use std::fs::File;
 use std::path::PathBuf;
 use std::{fs, io};
+use io::Write;
 
 struct YamlTestSuite {
     dir: String,
@@ -36,7 +37,20 @@ struct GitHubContent {
     links: Links,
 }
 
+/// Downloads the yaml tests if not already downloaded
 pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
+
+    let mut last_downloaded_version = download_dir.clone();
+    last_downloaded_version.push("last_downloaded_version");
+    if last_downloaded_version.exists() {
+        let version = fs::read_to_string(&last_downloaded_version)
+            .expect("Unable to read last_downloaded_version of yaml tests");
+        if version == branch {
+            println!("yaml tests for branch {} already downloaded", branch);
+            return;
+        }
+    }
+
     let test_suite_map = [
         ("oss".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/rest-api-spec/src/main/resources/rest-api-spec/test".to_string()),
         ("xpack".to_string(), "https://api.github.com/repos/elastic/elasticsearch/contents/x-pack/plugin/src/test/resources/rest-api-spec/test".to_string())];
@@ -65,6 +79,11 @@ pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
     for suite in test_suites {
         download_tests(&client, &suite, &download_dir).unwrap();
     }
+
+    File::create(last_downloaded_version)
+        .expect("failed to create last_downloaded_version file")
+        .write_all(branch.as_bytes())
+        .expect("unable to write branch to last_downloaded_version file");
 }
 
 fn download_tests(

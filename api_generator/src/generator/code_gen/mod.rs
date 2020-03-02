@@ -4,7 +4,7 @@ pub mod request;
 pub mod root;
 pub mod url;
 
-use crate::api_generator::TypeKind;
+use crate::generator::TypeKind;
 use inflector::Inflector;
 use quote::Tokens;
 use std::str;

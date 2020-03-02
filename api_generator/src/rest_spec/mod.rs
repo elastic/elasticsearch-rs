@@ -1,5 +1,3 @@
-extern crate reqwest;
-
 mod parallel_downloading;
 
 use parallel_downloading::download_specs_to_dir;
