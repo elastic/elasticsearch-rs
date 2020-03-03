@@ -1,4 +1,7 @@
-# elasticsearch
+# elasticsearch [![Latest Version]][crates.io] [![Docs]][docs.rs]
+
+[crates.io]: https://crates.io/crates/elasticsearch
+[docs.rs]: https://docs.rs/elasticsearch
 
 Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearch).
 
@@ -60,9 +63,10 @@ serde_json = "~1"
 ### Create a client
 
 Build a transport to make API requests to Elasticsearch using the `TransportBuilder`, 
-which allows setting of proxies and authentication schemes
+which allows setting of proxies, authentication schemes, certificate validation, and
+other transport related settings.
 
- To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
+To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 
 ```rust,no_run
 use elasticsearch::{Error, Elasticsearch};
@@ -100,6 +104,7 @@ use url::Url;
 
 fn run() -> Result<(), Error> {
     let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
+    // can use other types of Credentials too, like Bearer or ApiKey
     let credentials = Credentials::Basic("<username>".into(), "<password>".into());
     let transport = Transport::cloud(cloud_id, credentials)?;
     let client = Elasticsearch::new(transport);
@@ -107,9 +112,9 @@ fn run() -> Result<(), Error> {
 }
 ```
 
- More control over how a [Transport](http::transport::Transport) is built can be
- achieved using [TransportBuilder](http::transport::TransportBuilder) to build a transport, and
- passing it to [Elasticsearch::new] create a new instance of [Elasticsearch]
+ More control over how a `Transport` is built can be
+ achieved using `TransportBuilder` to build a transport, and
+ passing it to `Elasticsearch::new()` create a new instance of `Elasticsearch`
 
 ```rust,no_run
 use elasticsearch::{
