@@ -33,42 +33,45 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(),
                     generate_tests_from_yaml(&entry.path(), api)?;
                 } else if file_type.is_file() {
                     let file_name = entry.file_name().to_string_lossy().into_owned();
+
+                    // skip non-yaml files
                     if !file_name.ends_with(".yml") && !file_name.ends_with(".yaml") {
                         continue;
                     }
 
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
+
+                    // a yaml test can contain multiple yaml docs
                     let docs = YamlLoader::load_from_str(&yaml).unwrap();
                     let mut test = YamlTest::new(docs.len());
 
                     for doc in docs {
-                        println!("{:?}", &entry.path());
-                        if let Some(mut hash) = doc.into_hash() {
-                            let entries = hash.entries();
-                            let first = entries.into_iter().next().unwrap();
-                            match (first.key(), first.get()) {
+                        //println!("{:?}", &entry.path());
+                        if let Some(mut hash) = doc.as_hash() {
+
+                            let (first_key, first_value) = hash.iter().next().unwrap();
+                            match (first_key, first_value) {
                                 (Yaml::String(name), Yaml::Array(steps)) => {
                                     let tokens = read_steps(steps)?;
                                     match name.as_str() {
                                         "setup" => test.setup = Some(tokens),
                                         "teardown" => test.teardown = Some(tokens),
-                                        name => {
-                                            test.tests.push((name.to_owned(), tokens));
-                                        }
+                                        name => test.tests.push((name.to_owned(), tokens)),
                                     };
                                 }
                                 (k, v) => {
                                     return Err(failure::err_msg(format!(
-                                        "{:?} and {:?} in {:?} is not a string and array",
+                                        "Expected string key and array value in {:?}, but found {:?} and {:?}",
+                                        &entry.path(),
                                         &k,
                                         &v,
-                                        &entry.path()
-                                    )))
+                                    )));
                                 }
                             }
                         } else {
                             return Err(failure::err_msg(format!(
-                                "{:?} is not a hash",
+                                "Expected hash but found {:?} in {:?}",
+                                &doc,
                                 &entry.path()
                             )));
                         }
@@ -123,36 +126,50 @@ fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
 }
 
 fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
-    let mut entries = hash.entries();
+    let results: Vec<Result<(), failure::Error>> = hash
+        .iter()
+        .map(|(k, v)| {
+            match k.as_str() {
+                Some(key) => {
+                    match key {
+                        "headers" => Ok(()),
+                        "catch" => Ok(()),
+                        "node_selector" => Ok(()),
+                        api_call => {
+                            let fn_name = api_call.clone().replace(".", "().");
+                            let fn_name_ident = syn::Ident::from(fn_name);
 
-    let headers = String::from("headers");
-    let catch = String::from("catch");
-    let node_selector = String::from("node_selector");
-
-    let result: Result<Vec<_>, _> = entries
-        .into_iter()
-        .map(|entry| match (entry.key(), entry.get()) {
-            (Yaml::String(headers), Yaml::Hash(h)) => Ok(()),
-            (Yaml::String(catch), Yaml::String(s)) => Ok(()),
-            (Yaml::String(node_selector), _) => Ok(()),
-            (Yaml::String(s), Yaml::Hash(h)) => {
-                let fn_name = s.clone().replace(".", "().");
-                let fn_name_ident = syn::Ident::from(fn_name);
-
-                tokens.append(quote! {
-                    let response = client.#fn_name_ident().await?;
-                });
-                Ok(())
+                            tokens.append(quote! {
+                                let response = client.#fn_name_ident().await?;
+                            });
+                            Ok(())
+                        },
+                    }
+                },
+                None => Err(failure::err_msg(format!("expected string key but found {:?}", k)))
             }
-            (k, v) => Err(failure::err_msg(format!(
-                "{:?} and {:?} are not a string and hash",
-                &k, &v
-            ))),
         })
         .collect();
 
-    match result {
-        Ok(_) => Ok(()),
-        Err(e) => Err(e),
+    ok_or_accumulate(results)
+}
+
+fn ok_or_accumulate(
+    results: Vec<Result<(), failure::Error>>,
+) -> Result<(), failure::Error> {
+    let errs = results
+        .into_iter()
+        .filter_map(|r| r.err())
+        .collect::<Vec<_>>();
+    if errs.is_empty() {
+        Ok(())
+    } else {
+        let msg = errs
+            .iter()
+            .map(|e| e.to_string())
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        Err(failure::err_msg(msg))
     }
 }
