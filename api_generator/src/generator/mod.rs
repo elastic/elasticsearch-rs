@@ -136,7 +136,7 @@ pub struct Path {
 /// The URL components of an API endpoint
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct Url {
-    paths: Vec<Path>,
+    pub paths: Vec<Path>,
 }
 
 /// Body of an API endpoint
@@ -284,11 +284,11 @@ where
 pub struct ApiEndpoint {
     #[serde(deserialize_with = "string_or_struct")]
     documentation: Documentation,
-    stability: String,
-    url: Url,
+    pub stability: String,
+    pub url: Url,
     #[serde(default = "BTreeMap::new")]
-    params: BTreeMap<String, Type>,
-    body: Option<Body>,
+    pub params: BTreeMap<String, Type>,
+    pub body: Option<Body>,
 }
 
 impl ApiEndpoint {
@@ -546,7 +546,7 @@ where
 
 /// formats tokens using rustfmt
 /// https://github.com/bcmyers/num-format/blob/b7a99480b8087924d291887b13d8c38b7ce43a36/num-format-dev/src/rustfmt.rs
-fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
+pub fn rust_fmt<S>(module: S) -> Result<String, failure::Error>
 where
     S: Into<String>,
 {

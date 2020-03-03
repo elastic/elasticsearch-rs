@@ -44,6 +44,7 @@ fn main() -> Result<(), failure::Error> {
     let path = matches.value_of("path").expect("missing 'path' argument");
     let rest_specs_dir = PathBuf::from(path);
     let download_dir = PathBuf::from("./yaml_test_runner/yaml");
+    let generated_dir = PathBuf::from("./yaml_test_runner/src/generated");
 
     github::download_test_suites(token, branch, &download_dir);
 
@@ -67,7 +68,7 @@ fn main() -> Result<(), failure::Error> {
 
     let api = api_generator::generator::read_api(branch, &rest_specs_dir)?;
 
-    generator::generate_tests_from_yaml(&download_dir, &api)?;
+    generator::generate_tests_from_yaml(&api, &download_dir, &download_dir, &generated_dir)?;
 
     Ok(())
 }

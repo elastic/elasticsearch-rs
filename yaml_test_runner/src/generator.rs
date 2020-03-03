@@ -2,11 +2,10 @@ use quote::Tokens;
 
 use std::fs;
 use std::path::PathBuf;
-use yaml_rust::{
-    yaml::{Array, Hash},
-    Yaml, YamlLoader,
-};
-use api_generator::generator::Api;
+use yaml_rust::{yaml::{Array, Hash}, Yaml, YamlLoader, YamlEmitter};
+use api_generator::generator::{Api, ApiEndpoint};
+use std::fs::{File, OpenOptions};
+use std::io::Write;
 
 struct YamlTest {
     setup: Option<Tokens>,
@@ -24,13 +23,13 @@ impl YamlTest {
     }
 }
 
-pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(), failure::Error> {
+pub fn generate_tests_from_yaml(api: &Api, base_download_dir: &PathBuf, download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
     let paths = fs::read_dir(download_dir).unwrap();
     for entry in paths {
         if let Ok(entry) = entry {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {
-                    generate_tests_from_yaml(&entry.path(), api)?;
+                    generate_tests_from_yaml(api, base_download_dir, &entry.path(), generated_dir)?;
                 } else if file_type.is_file() {
                     let file_name = entry.file_name().to_string_lossy().into_owned();
 
@@ -42,17 +41,22 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(),
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
 
                     // a yaml test can contain multiple yaml docs
-                    let docs = YamlLoader::load_from_str(&yaml).unwrap();
+                    let result = YamlLoader::load_from_str(&yaml);
+                    if result.is_err() {
+                        println!("error reading {:?}: {}", &entry.path(), result.err().unwrap().to_string());
+                        continue;
+                    }
+
+                    let docs = result.unwrap();
                     let mut test = YamlTest::new(docs.len());
 
                     for doc in docs {
-                        //println!("{:?}", &entry.path());
-                        if let Some(mut hash) = doc.as_hash() {
+                        if let Some(hash) = doc.as_hash() {
 
                             let (first_key, first_value) = hash.iter().next().unwrap();
                             match (first_key, first_value) {
                                 (Yaml::String(name), Yaml::Array(steps)) => {
-                                    let tokens = read_steps(steps)?;
+                                    let tokens = read_steps(api, steps)?;
                                     match name.as_str() {
                                         "setup" => test.setup = Some(tokens),
                                         "teardown" => test.teardown = Some(tokens),
@@ -77,7 +81,7 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(),
                         }
                     }
 
-                    println!("{:?}", test.tests);
+                    write_test(test, &entry.path(), base_download_dir, generated_dir)?;
                 }
             }
         }
@@ -86,24 +90,57 @@ pub fn generate_tests_from_yaml(download_dir: &PathBuf, api: &Api) -> Result<(),
     Ok(())
 }
 
-fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
+fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
+    let path = {
+        let yaml_file: String = path.to_string_lossy().into_owned();
+        let file = yaml_file.replace(base_download_dir.to_str().unwrap(), generated_dir.to_str().unwrap());
+        let mut path = PathBuf::from(file);
+        path.set_extension("rs");
+        path
+    };
+
+    fs::create_dir_all(&path.parent().unwrap())?;
+    let mut file = OpenOptions::new().create(true).append(true).open(&path)?;
+    file.write_all(
+        "// -----------------------------------------------
+// ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
+// ████╗  ██║██╔═══██╗╚══██╔══╝██║██╔════╝██╔════╝
+// ██╔██╗ ██║██║   ██║   ██║   ██║██║     █████╗
+// ██║╚██╗██║██║   ██║   ██║   ██║██║     ██╔══╝
+// ██║ ╚████║╚██████╔╝   ██║   ██║╚██████╗███████╗
+// ╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝ ╚═════╝╚══════╝
+// -----------------------------------------------
+//
+// This file is generated,
+// Please do not edit it manually.
+// Run the following in the root of the repo:
+//
+// cargo run -p yaml_test_runner -- --branch <branch> --token <token> --path <rest specs path>
+//
+// -----------------------------------------------
+"
+            .as_bytes(),
+    )?;
+
+    Ok(())
+}
+
+
+
+fn read_steps(api: &Api, steps: &Array) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
     for step in steps {
-        if let Some(mut hash) = step.clone().into_hash() {
-            let mut entries = hash.entries();
-            let mut first = entries.next().unwrap();
+        if let Some(hash) = step.as_hash() {
+            let (k, v) = hash.iter().next().unwrap();
 
-            let mut key = first.key().as_str().unwrap();
-            let mut value = first.get().clone();
+            let key = k.as_str().unwrap();
 
-            match (key, value) {
+            match (key, v) {
                 ("skip", Yaml::Hash(h)) => {}
-                ("do", Yaml::Hash(ref mut h)) => {
-                    read_do(h, &mut tokens)?;
-                }
+                ("do", Yaml::Hash(h)) => read_do(api,h, &mut tokens)?,
                 ("set", Yaml::Hash(h)) => {}
                 ("transform_and_set", Yaml::Hash(h)) => {}
-                ("match", Yaml::Hash(h)) => {}
+                ("match", Yaml::Hash(h)) => read_match(api, h, &mut tokens)?,
                 ("contains", Yaml::Hash(h)) => {}
                 ("is_true", Yaml::Hash(h)) => {}
                 ("is_true", Yaml::String(s)) => {}
@@ -125,7 +162,11 @@ fn read_steps(steps: &Array) -> Result<Tokens, failure::Error> {
     Ok(tokens)
 }
 
-fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+fn read_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+    Ok(())
+}
+
+fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
     let results: Vec<Result<(), failure::Error>> = hash
         .iter()
         .map(|(k, v)| {
@@ -135,12 +176,70 @@ fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
                         "headers" => Ok(()),
                         "catch" => Ok(()),
                         "node_selector" => Ok(()),
+                        "warnings" => Ok(()),
                         api_call => {
-                            let fn_name = api_call.clone().replace(".", "().");
+
+                            let c = v.as_hash();
+                            if c.is_none() {
+                                return Err(failure::err_msg(format!("Expected hash but found {:?}", v)));
+                            }
+
+                            let endpoint = endpoint_from_api_call(api, &api_call);
+
+                            if endpoint.is_none() {
+                                return Ok(());
+                            }
+
+                            let endpoint = endpoint.unwrap();
+                            let mut parts: Vec<(&str, &Yaml)> = vec![];
+                            let mut params: Vec<(&str, &Yaml)> = vec![];
+                            let mut body_call: Option<Tokens> = None;
+
+                            for (k,v) in c.unwrap().iter() {
+                                let key = k.as_str().unwrap();
+
+                                if endpoint.params.contains_key(key) {
+                                    params.push((key, v));
+                                } else if key == "body" {
+                                    body_call = create_body_call(v);
+                                } else {
+                                    parts.push((key, v));
+                                }
+                            }
+
+                            let fn_name = api_call.replace(".", "().");
                             let fn_name_ident = syn::Ident::from(fn_name);
 
+                            let params_calls = match params.len() {
+                                0 => None,
+                                _ => {
+                                    let mut tokens = Tokens::new();
+                                    for (n, v) in params {
+                                        let param_ident = syn::Ident::from(n);
+
+                                        match v {
+                                            Yaml::String(s) => tokens.append(quote! {
+                                                .#param_ident(#s)
+                                            }),
+                                            Yaml::Boolean(b) => tokens.append(quote! {
+                                                .#param_ident(#b)
+                                            }),
+                                            Yaml::Integer(i) => tokens.append(quote! {
+                                                .#param_ident(#i)
+                                            }),
+                                            _ => println!("Unsupported value {:?}", v),
+                                        }
+                                    }
+
+                                    Some(tokens)
+                                }
+                            };
+
                             tokens.append(quote! {
-                                let response = client.#fn_name_ident().await?;
+                                let response = client.#fn_name_ident()
+                                    #params_calls
+                                    #body_call
+                                    .await?;
                             });
                             Ok(())
                         },
@@ -152,6 +251,53 @@ fn read_do(hash: &mut Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
         .collect();
 
     ok_or_accumulate(results)
+}
+
+fn create_body_call(v: &Yaml) -> Option<Tokens> {
+    match v {
+        Yaml::String(s) => Some(quote!(.body(json!(#s)))),
+        _ => {
+            let mut s = String::new();
+            {
+                let mut emitter = YamlEmitter::new(&mut s);
+                emitter.dump(v).unwrap();
+            }
+            let v: serde_json::Value = serde_yaml::from_str(&s).unwrap();
+            let json = serde_json::to_string(&v).unwrap();
+            let ident = syn::Ident::from(json);
+            Some(quote!(.body(json!(#ident))))
+        }
+    }
+}
+
+fn endpoint_from_api_call<'a>(api: &'a Api, api_call: &str) -> Option<&'a ApiEndpoint> {
+    let api_call_path: Vec<&str> = api_call.split('.').collect();
+    match api_call_path.len() {
+        1 => match api.root.get(api_call_path[0]) {
+            Some(endpoint) => Some(endpoint),
+            None => {
+                println!("No ApiEndpoint found for {}. skipping", api_call_path[0]);
+                None
+            }
+        },
+        _ => {
+            match api.namespaces.get(api_call_path[0]) {
+                Some(namespace) => {
+                    match namespace.get(api_call_path[1]) {
+                        Some(endpoint) => Some(endpoint),
+                        None => {
+                            println!("No ApiEndpoint found for {:?}. skipping", &api_call_path);
+                            None
+                        }
+                    }
+                },
+                None => {
+                    println!("No ApiEndpoint found for {:?}. skipping", &api_call_path);
+                    None
+                }
+            }
+        },
+    }
 }
 
 fn ok_or_accumulate(
