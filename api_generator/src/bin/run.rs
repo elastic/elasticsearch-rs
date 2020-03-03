@@ -1,16 +1,16 @@
 extern crate dialoguer;
-
 extern crate api_generator;
 
+use api_generator::{
+    generator,
+    rest_spec
+};
 use dialoguer::Input;
 use std::path::PathBuf;
 use std::{
     fs::{self, File},
     io::Write,
 };
-
-use api_generator::generator;
-use api_generator::rest_spec;
 
 fn main() -> Result<(), failure::Error> {
     // This must be run from the src root directory, with cargo run -p api_generator

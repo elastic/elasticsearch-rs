@@ -19,7 +19,7 @@ use std::marker::PhantomData;
 use std::str::FromStr;
 use void::Void;
 
-mod code_gen;
+pub mod code_gen;
 
 /// A complete API specification parsed from the REST API specs
 pub struct Api {

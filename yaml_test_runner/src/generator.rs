@@ -1,3 +1,4 @@
+use inflector::Inflector;
 use quote::Tokens;
 
 use std::fs;
@@ -87,20 +88,57 @@ pub fn generate_tests_from_yaml(api: &Api, base_download_dir: &PathBuf, download
         }
     }
 
+    write_mod_files(&generated_dir)?;
+
+    Ok(())
+}
+
+fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
+    let paths = fs::read_dir(generated_dir).unwrap();
+    let mut mods = vec![];
+    for path in paths {
+        if let Ok(entry) = path {
+            let file_type = entry.file_type().unwrap();
+            let path = entry.path();
+            let name = path.file_stem().unwrap().to_string_lossy();
+            if name.into_owned() != "mod" {
+                mods.push(format!("pub mod {};", path.file_stem().unwrap().to_string_lossy()));
+            }
+
+            if file_type.is_dir() {
+                write_mod_files(&entry.path())?;
+            }
+        }
+    }
+
+    let mut path = generated_dir.clone();
+    path.push("mod.rs");
+    let mut file = File::create(&path)?;
+    let generated_mods: String = mods.join("\n");
+    file.write_all(generated_mods.as_bytes())?;
     Ok(())
 }
 
 fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
     let path = {
-        let yaml_file: String = path.to_string_lossy().into_owned();
-        let file = yaml_file.replace(base_download_dir.to_str().unwrap(), generated_dir.to_str().unwrap());
+        let file: String = {
+            let yaml_file: String = path.to_string_lossy().into_owned()
+                .replace(base_download_dir.to_str().unwrap(), generated_dir.to_str().unwrap());
+            yaml_file
+            //let path = fs::canonicalize(PathBuf::from(yaml_file))?;
+            //path.to_string_lossy().into_owned().replace(".", "_")
+        };
+
+        println!("{}", file);
         let mut path = PathBuf::from(file);
         path.set_extension("rs");
+        // modules can't start with a number
+        path.set_file_name(format!("_{}", &path.file_name().unwrap().to_string_lossy().into_owned()));
         path
     };
 
     fs::create_dir_all(&path.parent().unwrap())?;
-    let mut file = OpenOptions::new().create(true).append(true).open(&path)?;
+    let mut file = File::create(&path)?;
     file.write_all(
         "// -----------------------------------------------
 // ███╗   ██╗ ██████╗ ████████╗██╗ ██████╗███████╗
@@ -122,10 +160,67 @@ fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, gener
             .as_bytes(),
     )?;
 
+    let (setup_fn, setup_call) = if let Some(s) = &test.setup {
+        (Some(quote!{
+            async fn setup(client: &Elasticsearch) -> Result<(), failure::Error> {
+                #s
+            }
+        }),
+         Some(quote!{ setup(&client).await?; }))
+    } else {
+        (None, None)
+    };
+
+    let (teardown_fn, teardown_call) = if let Some(t) = &test.teardown {
+        (Some(quote!{
+            async fn teardown(client: &Elasticsearch) -> Result<(), failure::Error> {
+                #t
+            }
+        }), Some(quote!{ teardown(&client).await?; }))
+    } else {
+        (None, None)
+    };
+
+    let tests: Vec<Tokens> = test.tests
+        .iter()
+        .map(|(name, steps)| {
+            let method_name = name
+                .replace(" ", "_")
+                .to_lowercase()
+                .to_snake_case();
+
+            let method_name_ident = syn::Ident::from(method_name);
+            quote! {
+                #[tokio::test]
+                async fn #method_name_ident() -> Result<(), failure::Error> {
+                    let client = client::create();
+                    #setup_call
+                    #steps
+                    #teardown_call
+                    Ok(())
+                }
+            }
+        })
+        .collect();
+
+    let tokens = quote! {
+        #[cfg(test)]
+        pub mod tests {
+            use crate::client;
+
+            #setup_fn
+            #teardown_fn
+            #(#tests)*
+        }
+    };
+
+    let generated = api_generator::generator::rust_fmt(tokens.to_string())?;
+    let mut file = OpenOptions::new().append(true).open(&path)?;
+    file.write_all(generated.as_bytes())?;
+    file.write_all(b"\n")?;
+
     Ok(())
 }
-
-
 
 fn read_steps(api: &Api, steps: &Array) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
@@ -163,6 +258,7 @@ fn read_steps(api: &Api, steps: &Array) -> Result<Tokens, failure::Error> {
 }
 
 fn read_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+    // TODO: implement
     Ok(())
 }
 
@@ -215,7 +311,7 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                                 _ => {
                                     let mut tokens = Tokens::new();
                                     for (n, v) in params {
-                                        let param_ident = syn::Ident::from(n);
+                                        let param_ident = syn::Ident::from(api_generator::generator::code_gen::valid_name(n));
 
                                         match v {
                                             Yaml::String(s) => tokens.append(quote! {
@@ -276,7 +372,7 @@ fn endpoint_from_api_call<'a>(api: &'a Api, api_call: &str) -> Option<&'a ApiEnd
         1 => match api.root.get(api_call_path[0]) {
             Some(endpoint) => Some(endpoint),
             None => {
-                println!("No ApiEndpoint found for {}. skipping", api_call_path[0]);
+                println!("No ApiEndpoint found for {}. skipping", &api_call);
                 None
             }
         },
@@ -286,13 +382,13 @@ fn endpoint_from_api_call<'a>(api: &'a Api, api_call: &str) -> Option<&'a ApiEnd
                     match namespace.get(api_call_path[1]) {
                         Some(endpoint) => Some(endpoint),
                         None => {
-                            println!("No ApiEndpoint found for {:?}. skipping", &api_call_path);
+                            println!("No ApiEndpoint found for {}. skipping", &api_call);
                             None
                         }
                     }
                 },
                 None => {
-                    println!("No ApiEndpoint found for {:?}. skipping", &api_call_path);
+                    println!("No ApiEndpoint found for {}. skipping", &api_call);
                     None
                 }
             }

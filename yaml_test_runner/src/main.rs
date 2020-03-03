@@ -10,6 +10,11 @@ use std::fs;
 mod generator;
 mod github;
 
+#[cfg(test)]
+mod generated;
+
+pub mod client;
+
 fn main() -> Result<(), failure::Error> {
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
@@ -68,6 +73,10 @@ fn main() -> Result<(), failure::Error> {
 
     let api = api_generator::generator::read_api(branch, &rest_specs_dir)?;
 
+    // delete existing generated files first
+    if generated_dir.exists() {
+        fs::remove_dir_all(&generated_dir)?;
+    }
     generator::generate_tests_from_yaml(&api, &download_dir, &download_dir, &generated_dir)?;
 
     Ok(())

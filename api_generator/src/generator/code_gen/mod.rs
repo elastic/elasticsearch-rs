@@ -54,7 +54,7 @@ pub fn parse_expr(input: quote::Tokens) -> syn::Expr {
 }
 
 /// Ensures that the name generated is one that is valid for Rust
-fn valid_name(s: &str) -> &str {
+pub fn valid_name(s: &str) -> &str {
     match s {
         "type" => "ty",
         s => s,
