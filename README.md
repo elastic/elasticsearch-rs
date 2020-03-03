@@ -1,7 +1,11 @@
-# elasticsearch [![Latest Version]][crates.io] [![Docs]][docs.rs]
+# elasticsearch &emsp; [![Latest Version]][crates.io] [![Docs]][docs.rs] [![Apache-2 licensed]][license]
 
+[Latest Version]: https://img.shields.io/crates/v/elasticsearch.svg
 [crates.io]: https://crates.io/crates/elasticsearch
+[Docs]: https://docs.rs/elasticsearch/badge.svg
 [docs.rs]: https://docs.rs/elasticsearch
+[Apache-2 licensed]: https://img.shields.io/crates/l/elasticsearch.svg
+[license]: ./LICENSE
 
 Official Rust Client for [Elasticsearch](https://github.com/elastic/elasticsearch).
 
