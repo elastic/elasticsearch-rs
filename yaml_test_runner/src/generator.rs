@@ -121,19 +121,18 @@ fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
 
 fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
     let path = {
-        let file: String = {
-            let yaml_file: String = path.to_string_lossy().into_owned()
-                .replace(base_download_dir.to_str().unwrap(), generated_dir.to_str().unwrap());
-            yaml_file
-            //let path = fs::canonicalize(PathBuf::from(yaml_file))?;
-            //path.to_string_lossy().into_owned().replace(".", "_")
-        };
+        let mut relative = path.strip_prefix(&base_download_dir)?.to_path_buf();
+        relative.set_extension("");
+        // directories and files will form the module names so ensure they're valid
+        let clean: String = relative.to_string_lossy().into_owned().replace(".", "_").replace("-", "_");
+        relative = PathBuf::from(clean);
 
-        println!("{}", file);
-        let mut path = PathBuf::from(file);
+        let mut path = generated_dir.join(relative);
         path.set_extension("rs");
         // modules can't start with a number
         path.set_file_name(format!("_{}", &path.file_name().unwrap().to_string_lossy().into_owned()));
+
+        println!("{:?}", path);
         path
     };
 

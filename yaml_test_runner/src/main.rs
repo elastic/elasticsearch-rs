@@ -1,7 +1,9 @@
 #[macro_use]
 extern crate quote;
-
 extern crate api_generator;
+#[macro_use]
+#[cfg(test)]
+extern crate serde_json;
 
 use clap::{App, Arg};
 use std::path::PathBuf;
