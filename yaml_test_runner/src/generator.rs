@@ -25,7 +25,7 @@ impl YamlTest {
 }
 
 pub fn generate_tests_from_yaml(api: &Api, base_download_dir: &PathBuf, download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
-    let paths = fs::read_dir(download_dir).unwrap();
+    let paths = fs::read_dir(download_dir)?;
     for entry in paths {
         if let Ok(entry) = entry {
             if let Ok(file_type) = entry.file_type() {
@@ -40,49 +40,90 @@ pub fn generate_tests_from_yaml(api: &Api, base_download_dir: &PathBuf, download
                     }
 
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
-
                     // a yaml test can contain multiple yaml docs
                     let result = YamlLoader::load_from_str(&yaml);
                     if result.is_err() {
-                        println!("error reading {:?}: {}", &entry.path(), result.err().unwrap().to_string());
+                        println!("error reading {:?}: {}. skipping", &entry.path(), result.err().unwrap().to_string());
                         continue;
                     }
 
                     let docs = result.unwrap();
                     let mut test = YamlTest::new(docs.len());
 
-                    for doc in docs {
-                        if let Some(hash) = doc.as_hash() {
-
-                            let (first_key, first_value) = hash.iter().next().unwrap();
-                            match (first_key, first_value) {
-                                (Yaml::String(name), Yaml::Array(steps)) => {
-                                    let tokens = read_steps(api, steps)?;
-                                    match name.as_str() {
-                                        "setup" => test.setup = Some(tokens),
-                                        "teardown" => test.teardown = Some(tokens),
-                                        name => test.tests.push((name.to_owned(), tokens)),
-                                    };
+                    let results : Vec<Result<(), failure::Error>> = docs
+                        .iter()
+                        .map(|doc| {
+                            if let Some(hash) = doc.as_hash() {
+                                let (first_key, first_value) = hash.iter().next().unwrap();
+                                match (first_key, first_value) {
+                                    (Yaml::String(name), Yaml::Array(steps)) => {
+                                        let tokens = read_steps(api, steps)?;
+                                        match name.as_str() {
+                                            "setup" => test.setup = Some(tokens),
+                                            "teardown" => test.teardown = Some(tokens),
+                                            name => test.tests.push((name.to_owned(), tokens)),
+                                        };
+                                        Ok(())
+                                    }
+                                    (k, v) => {
+                                        Err(failure::err_msg(format!(
+                                            "expected string key and array value in {:?}, but found {:?} and {:?}",
+                                            &entry.path(),
+                                            &k,
+                                            &v,
+                                        )))
+                                    }
                                 }
-                                (k, v) => {
-                                    return Err(failure::err_msg(format!(
-                                        "Expected string key and array value in {:?}, but found {:?} and {:?}",
-                                        &entry.path(),
-                                        &k,
-                                        &v,
-                                    )));
-                                }
+                            } else {
+                                Err(failure::err_msg(format!(
+                                    "expected hash but found {:?}",
+                                    &doc
+                                )))
                             }
-                        } else {
-                            return Err(failure::err_msg(format!(
-                                "Expected hash but found {:?} in {:?}",
-                                &doc,
-                                &entry.path()
-                            )));
-                        }
-                    }
 
-                    write_test(test, &entry.path(), base_download_dir, generated_dir)?;
+
+                        })
+                        .collect();
+
+                        //if there has been an Err in any step of the file, don't writ
+                        match ok_or_accumulate(results) {
+                            Ok(_) => write_test_file(test, &entry.path(), base_download_dir, generated_dir)?,
+                            Err(e) => println!("error(s) creating test file for {:?}\n{}", &entry.path(), e)
+                        }
+
+
+
+                    // for doc in docs {
+                    //     if let Some(hash) = doc.as_hash() {
+                    //         let (first_key, first_value) = hash.iter().next().unwrap();
+                    //         match (first_key, first_value) {
+                    //             (Yaml::String(name), Yaml::Array(steps)) => {
+                    //                 let tokens = read_steps(api, steps)?;
+                    //                 match name.as_str() {
+                    //                     "setup" => test.setup = Some(tokens),
+                    //                     "teardown" => test.teardown = Some(tokens),
+                    //                     name => test.tests.push((name.to_owned(), tokens)),
+                    //                 };
+                    //             }
+                    //             (k, v) => {
+                    //                 return Err(failure::err_msg(format!(
+                    //                     "Expected string key and array value in {:?}, but found {:?} and {:?}",
+                    //                     &entry.path(),
+                    //                     &k,
+                    //                     &v,
+                    //                 )));
+                    //             }
+                    //         }
+                    //     } else {
+                    //         return Err(failure::err_msg(format!(
+                    //             "Expected hash but found {:?} in {:?}",
+                    //             &doc,
+                    //             &entry.path()
+                    //         )));
+                    //     }
+                    // }
+
+
                 }
             }
         }
@@ -119,7 +160,7 @@ fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
     Ok(())
 }
 
-fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
+fn write_test_file(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, generated_dir: &PathBuf) -> Result<(), failure::Error> {
     let path = {
         let mut relative = path.strip_prefix(&base_download_dir)?.to_path_buf();
         relative.set_extension("");
@@ -131,8 +172,6 @@ fn write_test(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, gener
         path.set_extension("rs");
         // modules can't start with a number
         path.set_file_name(format!("_{}", &path.file_name().unwrap().to_string_lossy().into_owned()));
-
-        println!("{:?}", path);
         path
     };
 
@@ -273,26 +312,18 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                         "node_selector" => Ok(()),
                         "warnings" => Ok(()),
                         api_call => {
-
                             let c = v.as_hash();
                             if c.is_none() {
-                                return Err(failure::err_msg(format!("Expected hash but found {:?}", v)));
+                                return Err(failure::err_msg(format!("expected hash value for {} but found {:?}", &api_call, v)));
                             }
 
-                            let endpoint = endpoint_from_api_call(api, &api_call);
-
-                            if endpoint.is_none() {
-                                return Ok(());
-                            }
-
-                            let endpoint = endpoint.unwrap();
+                            let endpoint = endpoint_from_api_call(api, &api_call)?;
                             let mut parts: Vec<(&str, &Yaml)> = vec![];
                             let mut params: Vec<(&str, &Yaml)> = vec![];
                             let mut body_call: Option<Tokens> = None;
 
                             for (k,v) in c.unwrap().iter() {
                                 let key = k.as_str().unwrap();
-
                                 if endpoint.params.contains_key(key) {
                                     params.push((key, v));
                                 } else if key == "body" {
@@ -322,6 +353,23 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                                             Yaml::Integer(i) => tokens.append(quote! {
                                                 .#param_ident(#i)
                                             }),
+                                            Yaml::Array(arr) => {
+                                                // only support param string arrays for now
+                                                let result: Vec<_> = arr
+                                                    .iter()
+                                                    .map(|i| {
+                                                        match i {
+                                                            Yaml::String(s) => Ok(s),
+                                                            y => Err(failure::err_msg(format!("Unsupported array value {:?}", y)))
+                                                        }
+                                                    })
+                                                    .filter_map(Result::ok)
+                                                    .collect();
+
+                                                tokens.append(quote! {
+                                                    .#param_ident(&[#(#result,)*])
+                                                });
+                                            }
                                             _ => println!("Unsupported value {:?}", v),
                                         }
                                     }
@@ -365,31 +413,22 @@ fn create_body_call(v: &Yaml) -> Option<Tokens> {
     }
 }
 
-fn endpoint_from_api_call<'a>(api: &'a Api, api_call: &str) -> Option<&'a ApiEndpoint> {
+fn endpoint_from_api_call<'a>(api: &'a Api, api_call: &str) -> Result<&'a ApiEndpoint, failure::Error> {
     let api_call_path: Vec<&str> = api_call.split('.').collect();
     match api_call_path.len() {
         1 => match api.root.get(api_call_path[0]) {
-            Some(endpoint) => Some(endpoint),
-            None => {
-                println!("No ApiEndpoint found for {}. skipping", &api_call);
-                None
-            }
+            Some(endpoint) => Ok(endpoint),
+            None => Err(failure::err_msg(format!("No ApiEndpoint found for {}. skipping", &api_call)))
         },
         _ => {
             match api.namespaces.get(api_call_path[0]) {
                 Some(namespace) => {
                     match namespace.get(api_call_path[1]) {
-                        Some(endpoint) => Some(endpoint),
-                        None => {
-                            println!("No ApiEndpoint found for {}. skipping", &api_call);
-                            None
-                        }
+                        Some(endpoint) => Ok(endpoint),
+                        None => Err(failure::err_msg(format!("No ApiEndpoint found for {}. skipping", &api_call)))
                     }
                 },
-                None => {
-                    println!("No ApiEndpoint found for {}. skipping", &api_call);
-                    None
-                }
+                None => Err(failure::err_msg(format!("No ApiEndpoint found for {}. skipping", &api_call)))
             }
         },
     }
