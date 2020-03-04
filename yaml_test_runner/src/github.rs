@@ -1,3 +1,4 @@
+use io::Write;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION};
 use serde::Deserialize;
 use std::error::Error as StdError;
@@ -5,7 +6,6 @@ use std::fmt::Formatter;
 use std::fs::File;
 use std::path::PathBuf;
 use std::{fs, io};
-use io::Write;
 
 struct YamlTestSuite {
     dir: String,
@@ -39,7 +39,6 @@ struct GitHubContent {
 
 /// Downloads the yaml tests if not already downloaded
 pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
-
     let mut last_downloaded_version = download_dir.clone();
     last_downloaded_version.push("last_downloaded_version");
     if last_downloaded_version.exists() {

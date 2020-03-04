@@ -148,8 +148,7 @@ pub struct Body {
 }
 
 lazy_static! {
-    static ref VERSION: Version =
-        semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
+    static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
 
 /// Wraps the URL string to replace master or current in URL path with the
@@ -183,11 +182,7 @@ impl DocumentationUrlString {
                         u.path()
                             .replace(
                                 "/master",
-                                format!(
-                                    "/{}.{}",
-                                    VERSION.major, VERSION.minor
-                                )
-                                .as_str(),
+                                format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
                             )
                             .as_str(),
                     );
@@ -196,11 +191,7 @@ impl DocumentationUrlString {
                         u.path()
                             .replace(
                                 "/current",
-                                format!(
-                                    "/{}.{}",
-                                    VERSION.major, VERSION.minor
-                                )
-                                .as_str(),
+                                format!("/{}.{}", VERSION.major, VERSION.minor).as_str(),
                             )
                             .as_str(),
                     );

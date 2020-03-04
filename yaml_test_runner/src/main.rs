@@ -6,8 +6,8 @@ extern crate api_generator;
 extern crate serde_json;
 
 use clap::{App, Arg};
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 
 mod generator;
 mod github;
@@ -64,7 +64,10 @@ fn main() -> Result<(), failure::Error> {
             .expect("Could not rest specs last_downloaded version into string");
 
         if version == branch {
-            println!("rest specs for branch {} already downloaded in {:?}", branch, &rest_specs_dir);
+            println!(
+                "rest specs for branch {} already downloaded in {:?}",
+                branch, &rest_specs_dir
+            );
             download_rest_specs = false;
         }
     }

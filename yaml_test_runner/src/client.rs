@@ -1,13 +1,8 @@
 use elasticsearch::{
     auth::Credentials,
-    http::{
-        transport::{
-            TransportBuilder,
-            SingleNodeConnectionPool
-        }
-    },
+    cert::CertificateValidation,
+    http::transport::{SingleNodeConnectionPool, TransportBuilder},
     Elasticsearch, DEFAULT_ADDRESS,
-    cert::CertificateValidation
 };
 use sysinfo::SystemExt;
 use url::Url;
@@ -43,4 +38,3 @@ pub fn create() -> Elasticsearch {
     let transport = builder.build().unwrap();
     Elasticsearch::new(transport)
 }
-

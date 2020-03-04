@@ -1,10 +1,7 @@
-extern crate dialoguer;
 extern crate api_generator;
+extern crate dialoguer;
 
-use api_generator::{
-    generator,
-    rest_spec
-};
+use api_generator::{generator, rest_spec};
 use dialoguer::Input;
 use std::path::PathBuf;
 use std::{
@@ -16,7 +13,8 @@ fn main() -> Result<(), failure::Error> {
     // This must be run from the src root directory, with cargo run -p api_generator
     let download_dir = fs::canonicalize(PathBuf::from("./api_generator/rest_specs"))?;
     let generated_dir = fs::canonicalize(PathBuf::from("./elasticsearch/src/generated"))?;
-    let last_downloaded_version = PathBuf::from("./api_generator/rest_specs/last_downloaded_version");
+    let last_downloaded_version =
+        PathBuf::from("./api_generator/rest_specs/last_downloaded_version");
 
     let mut download_specs = false;
     let mut answer = String::new();
