@@ -1,7 +1,7 @@
 use inflector::Inflector;
 use quote::Tokens;
 
-use api_generator::generator::{Api, ApiEndpoint};
+use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use std::fs;
 use std::fs::{File, OpenOptions};
@@ -113,7 +113,7 @@ pub fn generate_tests_from_yaml(
                             write_test_file(test, &entry.path(), base_download_dir, generated_dir)?
                         }
                         Err(e) => {
-                            println!("Error creating test file for {:?}:\n{}", &entry.path(), e)
+                            println!("Error creating test file for {:?}. skipping:\n{}", &entry.path(), e)
                         }
                     }
                 }
@@ -346,8 +346,10 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                             let endpoint = endpoint_from_api_call(api, &api_call)?;
                             let components = api_call_components(api, endpoint, hash.unwrap());
 
+                            // TODO: move into components construction
                             let parts_variant = parts_variant(api_call, &components.parts, endpoint)?;
 
+                            // TODO: move into components construction
                             let params_calls = match &components.params.len() {
                                 0 => None,
                                 _ => {
@@ -471,15 +473,14 @@ fn parts_variant(
         };
     }
 
-    let path_parts = match endpoint.url.paths.len() {
-        1 => Some(endpoint.url.paths[0].path.params()),
+    let path = match endpoint.url.paths.len() {
+        1 => Some(&endpoint.url.paths[0]),
         _ => {
-            let paths: Vec<Vec<_>> = endpoint.url.paths.iter().map(|p| p.path.params()).collect();
-
             // get the matching path parts
-            let matching_path_parts = paths
-                .into_iter()
-                .filter(|p| {
+            let matching_path_parts = endpoint.url.paths
+                .iter()
+                .filter(|path| {
+                    let p = path.path.params();
                     if p.len() != parts.len() {
                         return false;
                     }
@@ -494,19 +495,20 @@ fn parts_variant(
 
             match matching_path_parts.len() {
                 0 => None,
-                _ => Some(matching_path_parts[0].clone()),
+                _ => Some(matching_path_parts[0]),
             }
         }
     };
 
-    if path_parts.is_none() {
+    if path.is_none() {
         return Err(failure::err_msg(format!(
-            "No path_parts for '{}' API with parts {:?}",
+            "No path for '{}' API with URL parts {:?}",
             &api_call, parts
         )));
     }
 
-    let path_parts = path_parts.unwrap();
+    let path = path.unwrap();
+    let path_parts = path.path.params();
     let variant_name = {
         let v = path_parts
             .iter()
@@ -520,14 +522,18 @@ fn parts_variant(
         .clone()
         .into_iter()
         // don't rely on URL parts being ordered in the yaml test
-        .sorted_by(|(p, v), (p2, v2)| {
+        .sorted_by(|(p, _), (p2, _)| {
             let f = path_parts.iter().position(|x| x == p).unwrap();
             let s = path_parts.iter().position(|x| x == p2).unwrap();
             f.cmp(&s)
         })
         .map(|(p, v)| {
+            let ty = path.parts.get(p).unwrap();
             match v {
-                Yaml::String(s) => Ok(quote! { #s }),
+                Yaml::String(s) => match ty.ty {
+                    TypeKind::List => Ok(quote! { &[#s] }),
+                    _ => Ok(quote! { #s })
+                },
                 Yaml::Boolean(b) => Ok(quote! { #b }),
                 Yaml::Integer(i) => Ok(quote! { #i }),
                 Yaml::Array(arr) => {
@@ -628,7 +634,7 @@ fn endpoint_from_api_call<'a>(
         1 => match api.root.get(api_call_path[0]) {
             Some(endpoint) => Ok(endpoint),
             None => Err(failure::err_msg(format!(
-                "No ApiEndpoint found for {}. skipping",
+                "No ApiEndpoint found for {}",
                 &api_call
             ))),
         },
@@ -636,18 +642,20 @@ fn endpoint_from_api_call<'a>(
             Some(namespace) => match namespace.get(api_call_path[1]) {
                 Some(endpoint) => Ok(endpoint),
                 None => Err(failure::err_msg(format!(
-                    "No ApiEndpoint found for {}. skipping",
+                    "No ApiEndpoint found for {}",
                     &api_call
                 ))),
             },
             None => Err(failure::err_msg(format!(
-                "No ApiEndpoint found for {}. skipping",
+                "No ApiEndpoint found for {}",
                 &api_call
             ))),
         },
     }
 }
 
+/// Checks whether there are any Errs in the collection, and accumulates them into one
+/// error message if there are.
 fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>], indent: usize) -> Result<(), failure::Error> {
     let errs = results
         .into_iter()
