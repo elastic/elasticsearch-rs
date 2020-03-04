@@ -1,7 +1,7 @@
 use inflector::Inflector;
 use quote::Tokens;
 
-use api_generator::generator::{Api, ApiEndpoint, TypeKind};
+use api_generator::generator::{Api, ApiEndpoint, TypeKind, ApiEnum};
 use itertools::Itertools;
 use std::fs;
 use std::fs::{File, OpenOptions};
@@ -34,7 +34,7 @@ struct ApiCall<'a> {
     parts: Vec<(&'a str, &'a Yaml)>,
     params: Vec<(&'a str, &'a Yaml)>,
     body_call: Option<Tokens>,
-    ignore: Option<i64>
+    ignore: Option<i64>,
 }
 
 pub fn generate_tests_from_yaml(
@@ -112,9 +112,11 @@ pub fn generate_tests_from_yaml(
                         Ok(_) => {
                             write_test_file(test, &entry.path(), base_download_dir, generated_dir)?
                         }
-                        Err(e) => {
-                            println!("Error creating test file for {:?}. skipping:\n{}", &entry.path(), e)
-                        }
+                        Err(e) => println!(
+                            "Error creating test file for {:?}. skipping:\n{}",
+                            &entry.path(),
+                            e
+                        ),
                     }
                 }
             }
@@ -255,6 +257,7 @@ fn write_test_file(
         #[cfg(test)]
         pub mod tests {
             use elasticsearch::*;
+            use elasticsearch::params::*;
             use crate::client;
 
             #setup_fn
@@ -347,7 +350,8 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                             let components = api_call_components(api, endpoint, hash.unwrap());
 
                             // TODO: move into components construction
-                            let parts_variant = parts_variant(api_call, &components.parts, endpoint)?;
+                            let parts_variant =
+                                parts_variant(api_call, &components.parts, endpoint)?;
 
                             // TODO: move into components construction
                             let params_calls = match &components.params.len() {
@@ -359,13 +363,35 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                                             api_generator::generator::code_gen::valid_name(n),
                                         );
 
+                                        let ty = match endpoint.params.get(*n) {
+                                            Some(t) => Ok(t),
+                                            None => match api.common_params.get(*n) {
+                                                Some(t) => Ok(t),
+                                                None => Err(failure::err_msg(format!("No param found for {}", n)))
+                                            }
+                                        }?;
+
+                                        let kind = ty.ty;
+
                                         match v {
-                                            Yaml::String(s) => tokens.append(quote! {
+                                            Yaml::String(s) =>
+                                                tokens.append(quote! {
                                                 .#param_ident(#s)
                                             }),
-                                            Yaml::Boolean(b) => tokens.append(quote! {
-                                                .#param_ident(#b)
-                                            }),
+                                            Yaml::Boolean(b) => {
+                                                match kind {
+                                                    TypeKind::Enum => {
+                                                        let enum_name = syn::Ident::from(n.to_pascal_case());
+                                                        let variant = syn::Ident::from(b.to_string().to_pascal_case());
+                                                        tokens.append(quote! {
+                                                            .#param_ident(#enum_name::#variant)
+                                                        })
+                                                    }
+                                                    _ => tokens.append(quote! {
+                                                        .#param_ident(#b)
+                                                    }),
+                                                }
+                                            },
                                             Yaml::Integer(i) => tokens.append(quote! {
                                                 .#param_ident(#i)
                                             }),
@@ -429,16 +455,14 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Ha
 
     for (k, v) in hash.iter() {
         let key = k.as_str().unwrap();
-        if endpoint.params.contains_key(key)
-            || api.common_params.contains_key(key)
-        {
+        if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
             params.push((key, v));
         } else if key == "body" {
             body_call = create_body_call(endpoint, v);
         } else if key == "ignore" {
             ignore = match v.as_i64() {
                 Some(i) => Some(i),
-                None => v.as_vec().unwrap()[0].as_i64()
+                None => v.as_vec().unwrap()[0].as_i64(),
             }
         } else {
             parts.push((key, v));
@@ -449,7 +473,7 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Ha
         parts,
         params,
         body_call,
-        ignore
+        ignore,
     }
 }
 
@@ -477,7 +501,9 @@ fn parts_variant(
         1 => Some(&endpoint.url.paths[0]),
         _ => {
             // get the matching path parts
-            let matching_path_parts = endpoint.url.paths
+            let matching_path_parts = endpoint
+                .url
+                .paths
                 .iter()
                 .filter(|path| {
                     let p = path.path.params();
@@ -528,11 +554,15 @@ fn parts_variant(
             f.cmp(&s)
         })
         .map(|(p, v)| {
-            let ty = path.parts.get(p).unwrap();
+            let ty = match path.parts.get(p) {
+                Some(t) => Ok(t),
+                None => Err(failure::err_msg(format!("No URL part found for {} in {}", p, &path.path)))
+            }?;
+
             match v {
                 Yaml::String(s) => match ty.ty {
                     TypeKind::List => Ok(quote! { &[#s] }),
-                    _ => Ok(quote! { #s })
+                    _ => Ok(quote! { #s }),
                 },
                 Yaml::Boolean(b) => Ok(quote! { #b }),
                 Yaml::Integer(i) => Ok(quote! { #i }),
@@ -548,13 +578,11 @@ fn parts_variant(
 
                     match ok_or_accumulate(&result, 0) {
                         Ok(_) => {
-                            let result: Vec<_> = result
-                                .into_iter()
-                                .filter_map(Result::ok)
-                                .collect();
+                            let result: Vec<_> =
+                                result.into_iter().filter_map(Result::ok).collect();
                             Ok(quote! { &[#(#result,)*] })
-                        },
-                        Err(e) => Err(failure::err_msg(e))
+                        }
+                        Err(e) => Err(failure::err_msg(e)),
                     }
                 }
                 _ => Err(failure::err_msg(format!("Unsupported value {:?}", v))),
@@ -564,15 +592,12 @@ fn parts_variant(
 
     match ok_or_accumulate(&part_tokens, 0) {
         Ok(_) => {
-            let part_tokens: Vec<Tokens> = part_tokens
-                .into_iter()
-                .filter_map(Result::ok)
-                .collect();
+            let part_tokens: Vec<Tokens> = part_tokens.into_iter().filter_map(Result::ok).collect();
             Ok(Some(
                 quote! { #enum_name::#variant_name(#(#part_tokens,)*) },
             ))
-        },
-        Err(e) => Err(failure::err_msg(e))
+        }
+        Err(e) => Err(failure::err_msg(e)),
     }
 }
 
@@ -582,22 +607,28 @@ fn parts_variant(
 /// usually a Hash. To get the JSON representation back requires converting
 /// back to JSON
 fn create_body_call(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
+    let accepts_nd_body = match &endpoint.body {
+        Some(b) => match &b.serialize {
+            Some(s) => s == "bulk",
+            _ => false,
+        },
+        None => false,
+    };
+
     match v {
-        Yaml::String(s) => Some(quote!(.body(json!(#s)))),
+        Yaml::String(s) => {
+            if accepts_nd_body {
+                Some(quote!(.body(vec![#s])))
+            } else {
+                Some(quote!(.body(#s)))
+            }
+        },
         _ => {
             let mut s = String::new();
             {
                 let mut emitter = YamlEmitter::new(&mut s);
                 emitter.dump(v).unwrap();
             }
-
-            let accepts_nd_body = match &endpoint.body {
-                Some(b) => match &b.serialize {
-                    Some(s) => s == "bulk",
-                    _ => false,
-                },
-                None => false,
-            };
 
             if accepts_nd_body {
                 let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
@@ -656,7 +687,10 @@ fn endpoint_from_api_call<'a>(
 
 /// Checks whether there are any Errs in the collection, and accumulates them into one
 /// error message if there are.
-fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>], indent: usize) -> Result<(), failure::Error> {
+fn ok_or_accumulate<T>(
+    results: &[Result<T, failure::Error>],
+    indent: usize,
+) -> Result<(), failure::Error> {
     let errs = results
         .into_iter()
         .filter_map(|r| r.as_ref().err())

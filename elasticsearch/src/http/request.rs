@@ -11,7 +11,7 @@ use serde::Serialize;
 /// expect JSON, however, there are some APIs that expect newline-delimited JSON (NDJSON).
 /// The [Body] trait allows modelling different API body implementations.
 pub trait Body {
-    /// An existing immutable buffer that can be used to avoid writing
+    /// An existing immutable buffer that can be used to avoid
     /// having to write to another buffer that will then be written to the request stream.
     ///
     /// If this method returns `Some`, the bytes must be the same as
