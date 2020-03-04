@@ -7,6 +7,8 @@ use yaml_rust::{yaml::{Array, Hash}, Yaml, YamlLoader, YamlEmitter};
 use api_generator::generator::{Api, ApiEndpoint};
 use std::fs::{File, OpenOptions};
 use std::io::Write;
+use itertools::Itertools;
+use syn::parse::path;
 
 struct YamlTest {
     setup: Option<Tokens>,
@@ -85,45 +87,11 @@ pub fn generate_tests_from_yaml(api: &Api, base_download_dir: &PathBuf, download
                         })
                         .collect();
 
-                        //if there has been an Err in any step of the file, don't writ
-                        match ok_or_accumulate(results) {
-                            Ok(_) => write_test_file(test, &entry.path(), base_download_dir, generated_dir)?,
-                            Err(e) => println!("error(s) creating test file for {:?}\n{}", &entry.path(), e)
-                        }
-
-
-
-                    // for doc in docs {
-                    //     if let Some(hash) = doc.as_hash() {
-                    //         let (first_key, first_value) = hash.iter().next().unwrap();
-                    //         match (first_key, first_value) {
-                    //             (Yaml::String(name), Yaml::Array(steps)) => {
-                    //                 let tokens = read_steps(api, steps)?;
-                    //                 match name.as_str() {
-                    //                     "setup" => test.setup = Some(tokens),
-                    //                     "teardown" => test.teardown = Some(tokens),
-                    //                     name => test.tests.push((name.to_owned(), tokens)),
-                    //                 };
-                    //             }
-                    //             (k, v) => {
-                    //                 return Err(failure::err_msg(format!(
-                    //                     "Expected string key and array value in {:?}, but found {:?} and {:?}",
-                    //                     &entry.path(),
-                    //                     &k,
-                    //                     &v,
-                    //                 )));
-                    //             }
-                    //         }
-                    //     } else {
-                    //         return Err(failure::err_msg(format!(
-                    //             "Expected hash but found {:?} in {:?}",
-                    //             &doc,
-                    //             &entry.path()
-                    //         )));
-                    //     }
-                    // }
-
-
+                    //if there has been an Err in any step of the yaml test file, don't create a test for it
+                    match ok_or_accumulate(results) {
+                        Ok(_) => write_test_file(test, &entry.path(), base_download_dir, generated_dir)?,
+                        Err(e) => println!("error(s) creating test file for {:?}\n{}", &entry.path(), e)
+                    }
                 }
             }
         }
@@ -244,6 +212,7 @@ fn write_test_file(test: YamlTest, path: &PathBuf, base_download_dir: &PathBuf, 
     let tokens = quote! {
         #[cfg(test)]
         pub mod tests {
+            use elasticsearch::*;
             use crate::client;
 
             #setup_fn
@@ -307,10 +276,22 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
             match k.as_str() {
                 Some(key) => {
                     match key {
-                        "headers" => Ok(()),
-                        "catch" => Ok(()),
-                        "node_selector" => Ok(()),
-                        "warnings" => Ok(()),
+                        "headers" => {
+                            // TODO: implement
+                            Ok(())
+                        },
+                        "catch" => {
+                            // TODO: implement
+                            Ok(())
+                        },
+                        "node_selector" => {
+                            // TODO: implement
+                            Ok(())
+                        },
+                        "warnings" => {
+                            // TODO: implement
+                            Ok(())
+                        },
                         api_call => {
                             let c = v.as_hash();
                             if c.is_none() {
@@ -322,16 +303,24 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                             let mut params: Vec<(&str, &Yaml)> = vec![];
                             let mut body_call: Option<Tokens> = None;
 
+                            // TODO: use ignore
+                            let mut ignore: Option<i64> = None;
+
                             for (k,v) in c.unwrap().iter() {
                                 let key = k.as_str().unwrap();
-                                if endpoint.params.contains_key(key) {
+                                if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
                                     params.push((key, v));
                                 } else if key == "body" {
                                     body_call = create_body_call(v);
-                                } else {
+                                } else if key == "ignore" {
+                                    ignore = Some(v.as_i64().unwrap());
+                                }
+                                else {
                                     parts.push((key, v));
                                 }
                             }
+
+                            let parts_variant = parts_variant(api_call, &parts, endpoint)?;
 
                             let fn_name = api_call.replace(".", "().");
                             let fn_name_ident = syn::Ident::from(fn_name);
@@ -354,7 +343,7 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                                                 .#param_ident(#i)
                                             }),
                                             Yaml::Array(arr) => {
-                                                // only support param string arrays for now
+                                                // only support param string arrays
                                                 let result: Vec<_> = arr
                                                     .iter()
                                                     .map(|i| {
@@ -379,9 +368,10 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                             };
 
                             tokens.append(quote! {
-                                let response = client.#fn_name_ident()
+                                let response = client.#fn_name_ident(#parts_variant)
                                     #params_calls
                                     #body_call
+                                    .send()
                                     .await?;
                             });
                             Ok(())
@@ -394,6 +384,103 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
         .collect();
 
     ok_or_accumulate(results)
+}
+
+fn parts_variant(api_call: &str, parts: &Vec<(&str, &Yaml)>, endpoint: &ApiEndpoint) -> Result<Option<Tokens>, failure::Error> {
+    // TODO: ideally, this should share the logic from EnumBuilder
+    let enum_name = {
+        let name = api_call.to_pascal_case().replace(".", "");
+        syn::Ident::from(format!("{}Parts", name))
+    };
+
+    if parts.is_empty() {
+        return match endpoint.url.paths.len() {
+            1 => Ok(None),
+            _ => Ok(Some(quote!(#enum_name::None)))
+        }
+    }
+
+    let path_parts = match endpoint.url.paths.len() {
+        1 => Some(endpoint.url.paths[0].path.params()),
+        _ => {
+            let paths: Vec<Vec<_>> = endpoint.url.paths
+                .iter()
+                .map(|p| p.path.params())
+                .collect();
+
+            // get the matching path parts
+            let matching_path_parts = paths
+                .into_iter()
+                .filter(|p| {
+                    if p.len() != parts.len() {
+                        return false;
+                    }
+
+                    let contains = parts.iter().filter_map(|i| {
+                        if p.contains(&i.0) {
+                            Some(())
+                        } else {
+                            None
+                        }
+                    }).collect::<Vec<_>>();
+                    contains.len() == parts.len()
+                })
+                .collect::<Vec<_>>();
+
+            match matching_path_parts.len() {
+                0 => None,
+                _ => Some(matching_path_parts[0].clone())
+            }
+        }
+    };
+
+    if path_parts.is_none() {
+        return Err(failure::err_msg(format!("No path_parts for {} with parts {:?}", &api_call, parts)));
+    }
+
+    let path_parts = path_parts.unwrap();
+    let variant_name = {
+        let j = path_parts
+            .iter()
+            .map(|k| k.to_pascal_case())
+            .collect::<Vec<_>>()
+            .join("");
+        syn::Ident::from(j)
+    };
+
+    let part_tokens = parts
+        .clone()
+        .into_iter()
+        .sorted_by(|(p, v), (p2, v2)| {
+            let f = path_parts.iter().position(|x| x == p).unwrap();
+            let s = path_parts.iter().position(|x| x == p2).unwrap();
+            f.cmp(&s)
+        })
+        .map(|(p,v)| {
+            match v {
+                Yaml::String(s) => quote! { #s },
+                Yaml::Boolean(b) => quote! { #b },
+                Yaml::Integer(i) => quote! { #i },
+                Yaml::Array(arr) => {
+                    // only support param string arrays
+                    let result: Vec<_> = arr
+                        .iter()
+                        .map(|i| {
+                            match i {
+                                Yaml::String(s) => Ok(s),
+                                y => Err(failure::err_msg(format!("Unsupported array value {:?}", y)))
+                            }
+                        })
+                        .filter_map(Result::ok)
+                        .collect();
+                    quote! { &[#(#result,)*] }
+                },
+                _ => panic!(format!("Unsupported value {:?}", v)),
+            }
+        })
+        .collect::<Vec<Tokens>>();
+
+    Ok(Some(quote!{ #enum_name::#variant_name(#(#part_tokens,)*) }))
 }
 
 fn create_body_call(v: &Yaml) -> Option<Tokens> {

@@ -12,6 +12,7 @@ api_generator = { version = "7.6.0-alpha.1", path = "../api_generator" }
 
 clap = "~2"
 failure = "0.1.6"
+itertools = "0.8.2"
 Inflector = "0.11.4"
 quote = "~0.3"
 reqwest = "~0.9"
