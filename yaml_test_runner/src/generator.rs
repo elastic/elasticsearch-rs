@@ -432,9 +432,12 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Ha
         {
             params.push((key, v));
         } else if key == "body" {
-            body_call = create_body_call(v);
+            body_call = create_body_call(endpoint, v);
         } else if key == "ignore" {
-            ignore = Some(v.as_i64().unwrap());
+            ignore = match v.as_i64() {
+                Some(i) => Some(i),
+                None => v.as_vec().unwrap()[0].as_i64()
+            }
         } else {
             parts.push((key, v));
         }
