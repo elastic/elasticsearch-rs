@@ -62,7 +62,7 @@ pub fn generate_tests_from_yaml(
                     let result = YamlLoader::load_from_str(&yaml);
                     if result.is_err() {
                         println!(
-                            "error reading {:?}: {}. skipping",
+                            "Error reading {:?}. skipping:\n\t{}",
                             &entry.path(),
                             result.err().unwrap().to_string()
                         );
@@ -108,12 +108,12 @@ pub fn generate_tests_from_yaml(
                         .collect();
 
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
-                    match ok_or_accumulate(results, 1) {
+                    match ok_or_accumulate(&results, 1) {
                         Ok(_) => {
                             write_test_file(test, &entry.path(), base_download_dir, generated_dir)?
                         }
                         Err(e) => {
-                            println!("error(s) creating test file for {:?}\n{}", &entry.path(), e)
+                            println!("Error creating test file for {:?}:\n{}", &entry.path(), e)
                         }
                     }
                 }
@@ -415,7 +415,7 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
         })
         .collect();
 
-    ok_or_accumulate(results, 0)
+    ok_or_accumulate(&results, 0)
 }
 
 fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Hash) -> ApiCall<'a> {
@@ -462,8 +462,8 @@ fn parts_variant(
         syn::Ident::from(format!("{}Parts", name))
     };
 
-    // Enum variants containing no URL parts where there is only a single API URL are not
-    // required to be passed in the API
+    // Enum variants containing no URL parts where there is only a single API URL,
+    // are not required to be passed in the API
     if parts.is_empty() {
         return match endpoint.url.paths.len() {
             1 => Ok(None),
@@ -501,7 +501,7 @@ fn parts_variant(
 
     if path_parts.is_none() {
         return Err(failure::err_msg(format!(
-            "No path_parts for {} with parts {:?}",
+            "No path_parts for '{}' API with parts {:?}",
             &api_call, parts
         )));
     }
@@ -516,7 +516,7 @@ fn parts_variant(
         syn::Ident::from(v)
     };
 
-    let part_tokens = parts
+    let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
         .clone()
         .into_iter()
         // don't rely on URL parts being ordered in the yaml test
@@ -527,9 +527,9 @@ fn parts_variant(
         })
         .map(|(p, v)| {
             match v {
-                Yaml::String(s) => quote! { #s },
-                Yaml::Boolean(b) => quote! { #b },
-                Yaml::Integer(i) => quote! { #i },
+                Yaml::String(s) => Ok(quote! { #s }),
+                Yaml::Boolean(b) => Ok(quote! { #b }),
+                Yaml::Integer(i) => Ok(quote! { #i }),
                 Yaml::Array(arr) => {
                     // only support param string arrays
                     let result: Vec<_> = arr
@@ -538,18 +538,36 @@ fn parts_variant(
                             Yaml::String(s) => Ok(s),
                             y => Err(failure::err_msg(format!("Unsupported array value {:?}", y))),
                         })
-                        .filter_map(Result::ok)
                         .collect();
-                    quote! { &[#(#result,)*] }
+
+                    match ok_or_accumulate(&result, 0) {
+                        Ok(_) => {
+                            let result: Vec<_> = result
+                                .into_iter()
+                                .filter_map(Result::ok)
+                                .collect();
+                            Ok(quote! { &[#(#result,)*] })
+                        },
+                        Err(e) => Err(failure::err_msg(e))
+                    }
                 }
-                _ => panic!(format!("Unsupported value {:?}", v)),
+                _ => Err(failure::err_msg(format!("Unsupported value {:?}", v))),
             }
         })
-        .collect::<Vec<Tokens>>();
+        .collect();
 
-    Ok(Some(
-        quote! { #enum_name::#variant_name(#(#part_tokens,)*) },
-    ))
+    match ok_or_accumulate(&part_tokens, 0) {
+        Ok(_) => {
+            let part_tokens: Vec<Tokens> = part_tokens
+                .into_iter()
+                .filter_map(Result::ok)
+                .collect();
+            Ok(Some(
+                quote! { #enum_name::#variant_name(#(#part_tokens,)*) },
+            ))
+        },
+        Err(e) => Err(failure::err_msg(e))
+    }
 }
 
 /// Creates the body function call from a YAML value.
@@ -557,7 +575,7 @@ fn parts_variant(
 /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
 /// usually a Hash. To get the JSON representation back requires converting
 /// back to JSON
-fn create_body_call(v: &Yaml) -> Option<Tokens> {
+fn create_body_call(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
     match v {
         Yaml::String(s) => Some(quote!(.body(json!(#s)))),
         _ => {
@@ -566,10 +584,32 @@ fn create_body_call(v: &Yaml) -> Option<Tokens> {
                 let mut emitter = YamlEmitter::new(&mut s);
                 emitter.dump(v).unwrap();
             }
-            let v: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-            let json = serde_json::to_string(&v).unwrap();
-            let ident = syn::Ident::from(json);
-            Some(quote!(.body(json!(#ident))))
+
+            let accepts_nd_body = match &endpoint.body {
+                Some(b) => match &b.serialize {
+                    Some(s) => s == "bulk",
+                    _ => false,
+                },
+                None => false,
+            };
+
+            if accepts_nd_body {
+                let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
+                let json: Vec<Tokens> = values
+                    .iter()
+                    .map(|value| {
+                        let json = serde_json::to_string(&value).unwrap();
+                        let ident = syn::Ident::from(json);
+                        quote!(json!(#ident))
+                    })
+                    .collect();
+                Some(quote!(.body(vec![ #(#json),* ])))
+            } else {
+                let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
+                let json = serde_json::to_string(&value).unwrap();
+                let ident = syn::Ident::from(json);
+                Some(quote!(.body(json!(#ident))))
+            }
         }
     }
 }
@@ -608,10 +648,10 @@ fn endpoint_from_api_call<'a>(
     }
 }
 
-fn ok_or_accumulate(results: Vec<Result<(), failure::Error>>, indent: usize) -> Result<(), failure::Error> {
+fn ok_or_accumulate<T>(results: &[Result<T, failure::Error>], indent: usize) -> Result<(), failure::Error> {
     let errs = results
         .into_iter()
-        .filter_map(|r| r.err())
+        .filter_map(|r| r.as_ref().err())
         .collect::<Vec<_>>();
     if errs.is_empty() {
         Ok(())
