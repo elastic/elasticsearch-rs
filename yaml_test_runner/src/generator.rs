@@ -12,8 +12,10 @@ use yaml_rust::{
     yaml::{Array, Hash},
     Yaml, YamlEmitter, YamlLoader,
 };
+use std::collections::HashSet;
 
 struct YamlTest {
+    namespaces: HashSet<String>,
     setup: Option<Tokens>,
     teardown: Option<Tokens>,
     tests: Vec<(String, Tokens)>,
@@ -22,6 +24,7 @@ struct YamlTest {
 impl YamlTest {
     pub fn new(len: usize) -> Self {
         Self {
+            namespaces: HashSet::with_capacity(len),
             setup: None,
             teardown: None,
             tests: Vec::with_capacity(len),
@@ -31,6 +34,7 @@ impl YamlTest {
 
 /// The components of an API call
 struct ApiCall<'a> {
+    namespace: Option<&'a str>,
     parts: Vec<(&'a str, &'a Yaml)>,
     params: Vec<(&'a str, &'a Yaml)>,
     body_call: Option<Tokens>,
@@ -79,7 +83,7 @@ pub fn generate_tests_from_yaml(
                                 let (first_key, first_value) = hash.iter().next().unwrap();
                                 match (first_key, first_value) {
                                     (Yaml::String(name), Yaml::Array(steps)) => {
-                                        let tokens = read_steps(api, steps)?;
+                                        let tokens = read_steps(api, &mut test, steps)?;
                                         match name.as_str() {
                                             "setup" => test.setup = Some(tokens),
                                             "teardown" => test.teardown = Some(tokens),
@@ -253,11 +257,20 @@ fn write_test_file(
         })
         .collect();
 
+    let namespaces: Vec<Tokens> = test.namespaces
+        .iter()
+        .map(|n| {
+            let ident = syn::Ident::from(n.as_str());
+            quote!(use elasticsearch::#ident::*;)
+        })
+        .collect();
+
     let tokens = quote! {
         #[cfg(test)]
         pub mod tests {
             use elasticsearch::*;
             use elasticsearch::params::*;
+            #(#namespaces)*
             use crate::client;
 
             #setup_fn
@@ -274,7 +287,7 @@ fn write_test_file(
     Ok(())
 }
 
-fn read_steps(api: &Api, steps: &Array) -> Result<Tokens, failure::Error> {
+fn read_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
     for step in steps {
         if let Some(hash) = step.as_hash() {
@@ -284,7 +297,7 @@ fn read_steps(api: &Api, steps: &Array) -> Result<Tokens, failure::Error> {
 
             match (key, v) {
                 ("skip", Yaml::Hash(h)) => {}
-                ("do", Yaml::Hash(h)) => read_do(api, h, &mut tokens)?,
+                ("do", Yaml::Hash(h)) => read_do(api, test, h, &mut tokens)?,
                 ("set", Yaml::Hash(h)) => {}
                 ("transform_and_set", Yaml::Hash(h)) => {}
                 ("match", Yaml::Hash(h)) => read_match(api, h, &mut tokens)?,
@@ -314,7 +327,7 @@ fn read_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure
     Ok(())
 }
 
-fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+fn read_do(api: &Api, test: &mut YamlTest, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
     let results: Vec<Result<(), failure::Error>> = hash
         .iter()
         .map(|(k, v)| {
@@ -347,7 +360,11 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
                             }
 
                             let endpoint = endpoint_from_api_call(api, &api_call)?;
-                            let components = api_call_components(api, endpoint, hash.unwrap());
+                            let components = api_call_components(api, endpoint, api_call, hash.unwrap());
+
+                            if let Some(n) = components.namespace {
+                                test.namespaces.insert(n.to_owned());
+                            }
 
                             // TODO: move into components construction
                             let parts_variant =
@@ -446,7 +463,7 @@ fn read_do(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::E
     ok_or_accumulate(&results, 0)
 }
 
-fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Hash) -> ApiCall<'a> {
+fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, api_call: &'a str, hash: &'a Hash) -> ApiCall<'a> {
     let mut parts: Vec<(&str, &Yaml)> = vec![];
     let mut params: Vec<(&str, &Yaml)> = vec![];
     let mut body_call: Option<Tokens> = None;
@@ -469,7 +486,14 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, hash: &'a Ha
         }
     }
 
+    let namespace: Option<&str> = if api_call.contains(".") {
+        Some(api_call.splitn(2, ".").collect::<Vec<_>>()[0])
+    } else {
+        None
+    };
+
     ApiCall {
+        namespace,
         parts,
         params,
         body_call,
