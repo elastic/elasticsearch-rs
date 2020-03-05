@@ -34,6 +34,24 @@ pub struct Api {
     pub enums: Vec<ApiEnum>,
 }
 
+impl Api {
+    /// Find the right ApiEndpoint from the REST API specs for the API call
+    /// defined in the YAML test.
+    ///
+    /// The REST API specs model only the stable APIs
+    /// currently, so no endpoint will be found for experimental or beta APIs
+    pub fn endpoint_for_api_call<'a>(&self, api_call: &str) -> Option<&ApiEndpoint> {
+        let api_call_path: Vec<&str> = api_call.split('.').collect();
+        match api_call_path.len() {
+            1 => self.root.get(api_call_path[0]),
+            _ => match self.namespaces.get(api_call_path[0]) {
+                Some(namespace) => namespace.get(api_call_path[1]),
+                None => None,
+            },
+        }
+    }
+}
+
 /// A HTTP method in the REST API spec
 #[derive(Debug, Eq, PartialEq, Deserialize, Clone, Copy, Ord, PartialOrd)]
 pub enum HttpMethod {

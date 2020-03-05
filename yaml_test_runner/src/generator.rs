@@ -375,14 +375,21 @@ fn read_do(api: &Api, test: &mut YamlTest, hash: &Hash, tokens: &mut Tokens) -> 
                                 )));
                             }
 
-                            let endpoint = endpoint_from_api_call(api, &api_call)?;
+                            let endpoint = match api.endpoint_for_api_call(api_call) {
+                                Some(e) => Ok(e),
+                                None => {
+                                    Err(failure::err_msg(format!("no API found for {}", &api_call)))
+                                }
+                            }?;
+
                             let ApiCall {
                                 namespace,
                                 function,
                                 parts,
                                 params,
                                 body,
-                                ignore  } = api_call_components(api, endpoint, api_call, hash.unwrap())?;
+                                ignore,
+                            } = api_call_components(api, endpoint, api_call, hash.unwrap())?;
 
                             // capture any namespaces used in the test
                             if let Some(n) = namespace {
@@ -730,40 +737,6 @@ fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
                 Some(quote!(.body(json!(#ident))))
             }
         }
-    }
-}
-
-/// Find the right ApiEndpoint from the REST API specs for the API call
-/// defined in the YAML test.
-///
-/// The REST API specs model only the stable APIs
-/// currently, so no endpoint will be found for experimental or beta APIs
-fn endpoint_from_api_call<'a>(
-    api: &'a Api,
-    api_call: &str,
-) -> Result<&'a ApiEndpoint, failure::Error> {
-    let api_call_path: Vec<&str> = api_call.split('.').collect();
-    match api_call_path.len() {
-        1 => match api.root.get(api_call_path[0]) {
-            Some(endpoint) => Ok(endpoint),
-            None => Err(failure::err_msg(format!(
-                "No ApiEndpoint found for {}",
-                &api_call
-            ))),
-        },
-        _ => match api.namespaces.get(api_call_path[0]) {
-            Some(namespace) => match namespace.get(api_call_path[1]) {
-                Some(endpoint) => Ok(endpoint),
-                None => Err(failure::err_msg(format!(
-                    "No ApiEndpoint found for {}",
-                    &api_call
-                ))),
-            },
-            None => Err(failure::err_msg(format!(
-                "No ApiEndpoint found for {}",
-                &api_call
-            ))),
-        },
     }
 }
 
