@@ -635,8 +635,14 @@ fn parts_variant(
                     },
                     _ => Ok(quote! { #s }),
                 },
-                Yaml::Boolean(b) => Ok(quote! { #b }),
-                Yaml::Integer(i) => Ok(quote! { #i }),
+                Yaml::Boolean(b) => {
+                    let s = b.to_string();
+                    Ok(quote! { #s })
+                },
+                Yaml::Integer(i) => {
+                    let s = i.to_string();
+                    Ok(quote! { #s })
+                },
                 Yaml::Array(arr) => {
                     // only support param string arrays
                     let result: Vec<_> = arr
@@ -651,7 +657,7 @@ fn parts_variant(
                         Ok(_) => {
                             let result: Vec<_> =
                                 result.into_iter().filter_map(Result::ok).collect();
-                            Ok(quote! { &[#(#result,)*] })
+                            Ok(quote! { &[#(#result),*] })
                         }
                         Err(e) => Err(failure::err_msg(e)),
                     }
@@ -665,7 +671,7 @@ fn parts_variant(
         Ok(_) => {
             let part_tokens: Vec<Tokens> = part_tokens.into_iter().filter_map(Result::ok).collect();
             Ok(Some(
-                quote! { #enum_name::#variant_name(#(#part_tokens,)*) },
+                quote! { #enum_name::#variant_name(#(#part_tokens),*) },
             ))
         }
         Err(e) => Err(failure::err_msg(e)),
