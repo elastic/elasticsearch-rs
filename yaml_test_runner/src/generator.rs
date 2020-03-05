@@ -3,6 +3,7 @@ use quote::Tokens;
 
 use api_generator::generator::{Api, ApiEndpoint, TypeKind, ApiEnum};
 use itertools::Itertools;
+use regex::Regex;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
@@ -216,16 +217,34 @@ fn write_test_file(
     let (teardown_fn, teardown_call) =
         generate_fixture("teardown", &test.teardown);
 
+    let mut method_names = HashSet::new();
+
     let tests: Vec<Tokens> = test
         .tests
         .iter()
         .map(|(name, steps)| {
-            let method_name = name.replace(" ", "_").to_lowercase().to_snake_case();
+            let method_name = {
+                let mut method_name = name.replace(" ", "_").to_lowercase().to_snake_case();
 
-            let method_name_ident = syn::Ident::from(method_name);
+                // some method descriptions are the same in YAML tests, which would result in
+                // duplicate generated test function names. Deduplicate by appending incrementing number
+                while !method_names.insert(method_name.clone()) {
+                    lazy_static! {
+                        static ref ENDING_DIGITS_REGEX: Regex = Regex::new(r"^(.*?)_(\d*?)$").unwrap();
+                    }
+                    if let Some(c) = ENDING_DIGITS_REGEX.captures(&method_name) {
+                        let name = c.get(1).unwrap().as_str();
+                        let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
+                        method_name = format!("{}_{}", name, n + 1);
+                    } else {
+                        method_name = format!("{}_2", method_name);
+                    }
+                }
+                syn::Ident::from(method_name)
+            };
             quote! {
                 #[tokio::test]
-                async fn #method_name_ident() -> Result<(), failure::Error> {
+                async fn #method_name() -> Result<(), failure::Error> {
                     let client = client::create();
                     #setup_call
                     #steps

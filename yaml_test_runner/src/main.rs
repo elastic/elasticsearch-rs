@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate lazy_static;
+#[macro_use]
 extern crate quote;
 extern crate api_generator;
 #[macro_use]
