@@ -170,7 +170,7 @@ fn write_test_file(
     let path = {
         let mut relative = path.strip_prefix(&base_download_dir)?.to_path_buf();
         relative.set_extension("");
-        // directories and files will form the module names so ensure they're valid
+        // directories and files will form the module names so ensure they're valid module names
         let clean: String = relative
             .to_string_lossy()
             .into_owned()
@@ -180,7 +180,7 @@ fn write_test_file(
 
         let mut path = generated_dir.join(relative);
         path.set_extension("rs");
-        // modules can't start with a number
+        // modules can't start with a number so prefix with underscore
         path.set_file_name(format!(
             "_{}",
             &path.file_name().unwrap().to_string_lossy().into_owned()
@@ -211,31 +211,10 @@ fn write_test_file(
         .as_bytes(),
     )?;
 
-    let (setup_fn, setup_call) = if let Some(s) = &test.setup {
-        (
-            Some(quote! {
-                async fn setup(client: &Elasticsearch) -> Result<(), failure::Error> {
-                    #s
-                }
-            }),
-            Some(quote! { setup(&client).await?; }),
-        )
-    } else {
-        (None, None)
-    };
-
-    let (teardown_fn, teardown_call) = if let Some(t) = &test.teardown {
-        (
-            Some(quote! {
-                async fn teardown(client: &Elasticsearch) -> Result<(), failure::Error> {
-                    #t
-                }
-            }),
-            Some(quote! { teardown(&client).await?; }),
-        )
-    } else {
-        (None, None)
-    };
+    let (setup_fn, setup_call) =
+        generate_fixture("setup", &test.setup);
+    let (teardown_fn, teardown_call) =
+        generate_fixture("teardown", &test.teardown);
 
     let tests: Vec<Tokens> = test
         .tests
@@ -285,6 +264,23 @@ fn write_test_file(
     file.write_all(b"\n")?;
 
     Ok(())
+}
+
+fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Option<Tokens>) {
+    if let Some(t) = tokens {
+        let ident = syn::Ident::from(name);
+        (
+            Some(quote! {
+                async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
+                    #t
+                    Ok(())
+                }
+            }),
+            Some(quote! { #ident(&client).await?; }),
+        )
+    } else {
+        (None, None)
+    }
 }
 
 fn read_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, failure::Error> {
