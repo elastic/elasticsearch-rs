@@ -36,9 +36,10 @@ impl YamlTest {
 /// The components of an API call
 struct ApiCall<'a> {
     namespace: Option<&'a str>,
-    parts: Vec<(&'a str, &'a Yaml)>,
-    params: Vec<(&'a str, &'a Yaml)>,
-    body_call: Option<Tokens>,
+    function: syn::Ident,
+    parts: Option<Tokens>,
+    params: Option<Tokens>,
+    body: Option<Tokens>,
     ignore: Option<i64>,
 }
 
@@ -375,120 +376,23 @@ fn read_do(api: &Api, test: &mut YamlTest, hash: &Hash, tokens: &mut Tokens) -> 
                             }
 
                             let endpoint = endpoint_from_api_call(api, &api_call)?;
-                            let components = api_call_components(api, endpoint, api_call, hash.unwrap());
+                            let ApiCall {
+                                namespace,
+                                function,
+                                parts,
+                                params,
+                                body,
+                                ignore  } = api_call_components(api, endpoint, api_call, hash.unwrap())?;
 
-                            if let Some(n) = components.namespace {
+                            // capture any namespaces used in the test
+                            if let Some(n) = namespace {
                                 test.namespaces.insert(n.to_owned());
                             }
 
-                            // TODO: move into components construction
-                            let parts_variant =
-                                parts_variant(api_call, &components.parts, endpoint)?;
-
-                            // TODO: move into components construction
-                            let params_calls = match &components.params.len() {
-                                0 => None,
-                                _ => {
-                                    let mut tokens = Tokens::new();
-                                    for (n, v) in &components.params {
-                                        let param_ident = syn::Ident::from(
-                                            api_generator::generator::code_gen::valid_name(n),
-                                        );
-
-                                        let ty = match endpoint.params.get(*n) {
-                                            Some(t) => Ok(t),
-                                            None => match api.common_params.get(*n) {
-                                                Some(t) => Ok(t),
-                                                None => Err(failure::err_msg(format!("No param found for {}", n)))
-                                            }
-                                        }?;
-
-                                        let kind = ty.ty;
-
-                                        match v {
-                                            Yaml::String(s) => {
-                                                match kind {
-                                                    TypeKind::Enum => {
-                                                        let e: String = n.to_pascal_case();
-                                                        let enum_name = syn::Ident::from(e.as_str());
-                                                        let variant = if s.is_empty() {
-                                                            // TODO: Should we simply omit empty Refresh tests?
-                                                            if e == "Refresh" {
-                                                                syn::Ident::from("True")
-                                                            } else if e == "Size" {
-                                                                syn::Ident::from("Unspecified")
-                                                            } else {
-                                                                panic!(format!("Unhandled empty value for {}", &e));
-                                                            }
-                                                        } else {
-                                                            syn::Ident::from(s.to_pascal_case().replace("_", ""))
-                                                        };
-
-                                                        tokens.append(quote! {
-                                                            .#param_ident(#enum_name::#variant)
-                                                        })
-                                                    },
-                                                    TypeKind::List => {
-                                                        let values: Vec<&str> = s.split(',').collect();
-                                                        tokens.append(quote! {
-                                                        .#param_ident(&[#(#values),*])
-                                                        })
-                                                    },
-                                                    _ => tokens.append(quote! {
-                                                        .#param_ident(#s)
-                                                    }),
-                                                }
-                                            },
-                                            Yaml::Boolean(b) => {
-                                                match kind {
-                                                    TypeKind::Enum => {
-                                                        let enum_name = syn::Ident::from(n.to_pascal_case());
-                                                        let variant = syn::Ident::from(b.to_string().to_pascal_case());
-                                                        tokens.append(quote! {
-                                                            .#param_ident(#enum_name::#variant)
-                                                        })
-                                                    }
-                                                    _ => tokens.append(quote! {
-                                                        .#param_ident(#b)
-                                                    }),
-                                                }
-                                            },
-                                            Yaml::Integer(i) => tokens.append(quote! {
-                                                .#param_ident(#i)
-                                            }),
-                                            Yaml::Array(arr) => {
-                                                // only support param string arrays
-                                                let result: Vec<_> = arr
-                                                    .iter()
-                                                    .map(|i| match i {
-                                                        Yaml::String(s) => Ok(s),
-                                                        y => Err(failure::err_msg(format!(
-                                                            "Unsupported array value {:?}",
-                                                            y
-                                                        ))),
-                                                    })
-                                                    .filter_map(Result::ok)
-                                                    .collect();
-
-                                                tokens.append(quote! {
-                                                    .#param_ident(&[#(#result,)*])
-                                                });
-                                            }
-                                            _ => println!("Unsupported value {:?}", v),
-                                        }
-                                    }
-
-                                    Some(tokens)
-                                }
-                            };
-
-                            let fn_call = syn::Ident::from(api_call.replace(".", "()."));
-                            let body_call = components.body_call;
-
                             tokens.append(quote! {
-                                let response = client.#fn_call(#parts_variant)
-                                    #params_calls
-                                    #body_call
+                                let response = client.#function(#parts)
+                                    #params
+                                    #body
                                     .send()
                                     .await?;
                             });
@@ -507,11 +411,108 @@ fn read_do(api: &Api, test: &mut YamlTest, hash: &Hash, tokens: &mut Tokens) -> 
     ok_or_accumulate(&results, 0)
 }
 
-fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, api_call: &'a str, hash: &'a Hash) -> ApiCall<'a> {
+fn generated_params(api: &Api, endpoint: &ApiEndpoint, params: &[(&str, &Yaml)]) -> Result<Option<Tokens>, failure::Error> {
+    match params.len() {
+        0 => Ok(None),
+        _ => {
+            let mut tokens = Tokens::new();
+            for (n, v) in params {
+                let param_ident = syn::Ident::from(
+                    api_generator::generator::code_gen::valid_name(n),
+                );
+
+                let ty = match endpoint.params.get(*n) {
+                    Some(t) => Ok(t),
+                    None => match api.common_params.get(*n) {
+                        Some(t) => Ok(t),
+                        None => Err(failure::err_msg(format!("No param found for {}", n)))
+                    }
+                }?;
+
+                let kind = ty.ty;
+
+                match v {
+                    Yaml::String(s) => {
+                        match kind {
+                            TypeKind::Enum => {
+                                let e: String = n.to_pascal_case();
+                                let enum_name = syn::Ident::from(e.as_str());
+                                let variant = if s.is_empty() {
+                                    // TODO: Should we simply omit empty Refresh tests?
+                                    if e == "Refresh" {
+                                        syn::Ident::from("True")
+                                    } else if e == "Size" {
+                                        syn::Ident::from("Unspecified")
+                                    } else {
+                                        panic!(format!("Unhandled empty value for {}", &e));
+                                    }
+                                } else {
+                                    syn::Ident::from(s.to_pascal_case().replace("_", ""))
+                                };
+
+                                tokens.append(quote! {
+                                                            .#param_ident(#enum_name::#variant)
+                                                        })
+                            },
+                            TypeKind::List => {
+                                let values: Vec<&str> = s.split(',').collect();
+                                tokens.append(quote! {
+                                                        .#param_ident(&[#(#values),*])
+                                                        })
+                            },
+                            _ => tokens.append(quote! {
+                                                        .#param_ident(#s)
+                                                    }),
+                        }
+                    },
+                    Yaml::Boolean(b) => {
+                        match kind {
+                            TypeKind::Enum => {
+                                let enum_name = syn::Ident::from(n.to_pascal_case());
+                                let variant = syn::Ident::from(b.to_string().to_pascal_case());
+                                tokens.append(quote! {
+                                                            .#param_ident(#enum_name::#variant)
+                                                        })
+                            }
+                            _ => tokens.append(quote! {
+                                                        .#param_ident(#b)
+                                                    }),
+                        }
+                    },
+                    Yaml::Integer(i) => tokens.append(quote! {
+                                                .#param_ident(#i)
+                                            }),
+                    Yaml::Array(arr) => {
+                        // only support param string arrays
+                        let result: Vec<_> = arr
+                            .iter()
+                            .map(|i| match i {
+                                Yaml::String(s) => Ok(s),
+                                y => Err(failure::err_msg(format!(
+                                    "Unsupported array value {:?}",
+                                    y
+                                ))),
+                            })
+                            .filter_map(Result::ok)
+                            .collect();
+
+                        tokens.append(quote! {
+                                                    .#param_ident(&[#(#result),*])
+                                                });
+                    }
+                    _ => println!("Unsupported value {:?}", v),
+                }
+            }
+
+            Ok(Some(tokens))
+        }
+    }
+}
+
+fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, api_call: &'a str, hash: &'a Hash) -> Result<ApiCall<'a>, failure::Error> {
     let mut parts: Vec<(&str, &Yaml)> = vec![];
     let mut params: Vec<(&str, &Yaml)> = vec![];
-    let mut body_call: Option<Tokens> = None;
-    // TODO: use ignore value in the test
+    let mut body: Option<Tokens> = None;
     let mut ignore: Option<i64> = None;
 
     for (k, v) in hash.iter() {
@@ -519,7 +520,7 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, api_call: &'
         if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
             params.push((key, v));
         } else if key == "body" {
-            body_call = create_body_call(endpoint, v);
+            body = generate_body(endpoint, v);
         } else if key == "ignore" {
             ignore = match v.as_i64() {
                 Some(i) => Some(i),
@@ -530,25 +531,29 @@ fn api_call_components<'a>(api: &'a Api, endpoint: &'a ApiEndpoint, api_call: &'
         }
     }
 
+    let parts = generate_parts(api_call, endpoint, &parts)?;
+    let params = generated_params(api, endpoint, &params)?;
+    let function = syn::Ident::from(api_call.replace(".", "()."));
     let namespace: Option<&str> = if api_call.contains(".") {
         Some(api_call.splitn(2, ".").collect::<Vec<_>>()[0])
     } else {
         None
     };
 
-    ApiCall {
+    Ok(ApiCall {
         namespace,
+        function,
         parts,
         params,
-        body_call,
+        body,
         ignore,
-    }
+    })
 }
 
-fn parts_variant(
+fn generate_parts(
     api_call: &str,
-    parts: &Vec<(&str, &Yaml)>,
     endpoint: &ApiEndpoint,
+    parts: &[(&str, &Yaml)],
 ) -> Result<Option<Tokens>, failure::Error> {
     // TODO: ideally, this should share the logic from EnumBuilder
     let enum_name = {
@@ -622,7 +627,7 @@ fn parts_variant(
             f.cmp(&s)
         })
         .map(|(p, v)| {
-            let ty = match path.parts.get(p) {
+            let ty = match path.parts.get(*p) {
                 Some(t) => Ok(t),
                 None => Err(failure::err_msg(format!("No URL part found for {} in {}", p, &path.path)))
             }?;
@@ -683,7 +688,7 @@ fn parts_variant(
 /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
 /// usually a Hash. To get the JSON representation back requires converting
 /// back to JSON
-fn create_body_call(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
+fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
     let accepts_nd_body = match &endpoint.body {
         Some(b) => match &b.serialize {
             Some(s) => s == "bulk",
