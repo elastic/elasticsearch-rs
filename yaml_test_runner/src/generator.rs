@@ -391,10 +391,39 @@ fn read_do(api: &Api, test: &mut YamlTest, hash: &Hash, tokens: &mut Tokens) -> 
                                         let kind = ty.ty;
 
                                         match v {
-                                            Yaml::String(s) =>
-                                                tokens.append(quote! {
-                                                .#param_ident(#s)
-                                            }),
+                                            Yaml::String(s) => {
+                                                match kind {
+                                                    TypeKind::Enum => {
+                                                        let e: String = n.to_pascal_case();
+                                                        let enum_name = syn::Ident::from(e.as_str());
+                                                        let variant = if s.is_empty() {
+                                                            // TODO: Should we simply omit empty Refresh tests?
+                                                            if e == "Refresh" {
+                                                                syn::Ident::from("True")
+                                                            } else if e == "Size" {
+                                                                syn::Ident::from("Unspecified")
+                                                            } else {
+                                                                panic!(format!("Unhandled empty value for {}", &e));
+                                                            }
+                                                        } else {
+                                                            syn::Ident::from(s.to_pascal_case().replace("_", ""))
+                                                        };
+
+                                                        tokens.append(quote! {
+                                                            .#param_ident(#enum_name::#variant)
+                                                        })
+                                                    },
+                                                    TypeKind::List => {
+                                                        let values: Vec<&str> = s.split(',').collect();
+                                                        tokens.append(quote! {
+                                                        .#param_ident(&[#(#values),*])
+                                                        })
+                                                    },
+                                                    _ => tokens.append(quote! {
+                                                        .#param_ident(#s)
+                                                    }),
+                                                }
+                                            },
                                             Yaml::Boolean(b) => {
                                                 match kind {
                                                     TypeKind::Enum => {
@@ -585,7 +614,10 @@ fn parts_variant(
 
             match v {
                 Yaml::String(s) => match ty.ty {
-                    TypeKind::List => Ok(quote! { &[#s] }),
+                    TypeKind::List => {
+                        let values: Vec<&str> = s.split(',').collect();
+                        Ok(quote! { &[#(#values),*] })
+                    },
                     _ => Ok(quote! { #s }),
                 },
                 Yaml::Boolean(b) => Ok(quote! { #b }),
