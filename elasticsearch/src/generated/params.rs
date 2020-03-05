@@ -128,6 +128,8 @@ pub enum SearchType {
 #[derive(Debug, PartialEq, Deserialize, Serialize, Clone, Copy)]
 #[doc = "The multiplier in which to display values"]
 pub enum Size {
+    #[serde(rename = "")]
+    Unspecified,
     #[serde(rename = "k")]
     K,
     #[serde(rename = "m")]

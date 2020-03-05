@@ -5,11 +5,9 @@ use quote::Tokens;
 use regex::Regex;
 
 pub fn generate(api: &Api) -> Result<String, failure::Error> {
-    let mut tokens = quote::Tokens::new();
-    let header = quote!(
+    let mut tokens = quote!(
         use serde::{Serialize, Deserialize};
     );
-    tokens.append(header);
     for e in &api.enums {
         generate_param(&mut tokens, &e);
     }
@@ -22,9 +20,11 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
     let (renames, variants): (Vec<String>, Vec<syn::Ident>) = e
         .values
         .iter()
-        .filter(|v| !v.is_empty())
         .map(|v| {
-            if !v.contains('(') {
+            if v.is_empty() {
+                (v.to_owned(), syn::Ident::from("Unspecified"))
+            }
+            else if !v.contains('(') {
                 (v.to_owned(), syn::Ident::from(v.to_pascal_case()))
             } else {
                 lazy_static! {
