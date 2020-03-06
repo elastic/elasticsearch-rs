@@ -379,6 +379,10 @@ impl<'a> ApiCall<'a> {
                             let values: Vec<&str> = s.split(',').collect();
                             Ok(quote! { &[#(#values),*] })
                         },
+                        TypeKind::Long => {
+                            let l = s.parse::<i64>().unwrap();
+                            Ok(quote! { #l })
+                        },
                         _ => Ok(quote! { #s }),
                     },
                     Yaml::Boolean(b) => {
