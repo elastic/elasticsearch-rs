@@ -1,7 +1,7 @@
 use inflector::Inflector;
 use quote::Tokens;
 
-use api_generator::generator::{Api, ApiEndpoint, ApiEnum, TypeKind};
+use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashSet;
@@ -348,16 +348,21 @@ impl<'a> ApiCall<'a> {
                         TypeKind::List => {
                             let values: Vec<&str> = s.split(',').collect();
                             Ok(quote! { &[#(#values),*] })
-                        }
+                        },
                         _ => Ok(quote! { #s }),
                     },
                     Yaml::Boolean(b) => {
                         let s = b.to_string();
                         Ok(quote! { #s })
                     }
-                    Yaml::Integer(i) => {
-                        let s = i.to_string();
-                        Ok(quote! { #s })
+                    Yaml::Integer(i) => match ty.ty {
+                        TypeKind::Long => {
+                            Ok(quote!{ #i })
+                        },
+                        _ => {
+                            let s = i.to_string();
+                            Ok(quote! { #s })
+                        },
                     }
                     Yaml::Array(arr) => {
                         // only support param string arrays
@@ -376,7 +381,18 @@ impl<'a> ApiCall<'a> {
                             Ok(_) => {
                                 let result: Vec<_> =
                                     result.into_iter().filter_map(Result::ok).collect();
-                                Ok(quote! { &[#(#result),*] })
+
+                                match ty.ty {
+                                    // Some APIs specify a part is a string in the REST API spec
+                                    // but is really a list, which is what a YAML test might pass
+                                    // e.g. security.get_role_mapping.
+                                    // see https://github.com/elastic/elasticsearch/pull/53207
+                                    TypeKind::String => {
+                                        let s = result.iter().join(",");
+                                        Ok(quote! { #s })
+                                    },
+                                    _ => Ok(quote! { &[#(#result),*] })
+                                }
                             }
                             Err(e) => Err(failure::err_msg(e)),
                         }
