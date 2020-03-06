@@ -291,6 +291,7 @@ where
 /// An API endpoint defined in the REST API specs
 #[derive(Debug, PartialEq, Deserialize, Clone)]
 pub struct ApiEndpoint {
+    pub full_name: Option<String>,
     #[serde(deserialize_with = "string_or_struct")]
     documentation: Documentation,
     pub stability: String,
@@ -532,6 +533,7 @@ where
 
     // get the first (and only) endpoint name and endpoint body
     let mut first_endpoint = endpoint.into_iter().next().unwrap();
+    first_endpoint.1.full_name = Some(first_endpoint.0.clone());
 
     // sort the HTTP methods so that we can easily pattern match on them later
     for path in first_endpoint.1.url.paths.iter_mut() {

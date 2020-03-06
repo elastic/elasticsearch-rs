@@ -9,12 +9,12 @@ use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::PathBuf;
-use syn::parse::path;
 use yaml_rust::{
     yaml::{Array, Hash},
     Yaml, YamlEmitter, YamlLoader,
 };
 
+/// The components of a test file, constructed from a yaml file
 struct YamlTest {
     namespaces: HashSet<String>,
     setup: Option<Tokens>,
@@ -41,6 +41,416 @@ struct ApiCall<'a> {
     params: Option<Tokens>,
     body: Option<Tokens>,
     ignore: Option<i64>,
+}
+
+// TODO: continue moving API call parts to this impl
+impl<'a> ApiCall<'a> {
+    pub fn try_from(
+        api: &'a Api,
+        endpoint: &'a ApiEndpoint,
+        hash: &'a Hash,
+    ) -> Result<ApiCall<'a>, failure::Error> {
+        let mut parts: Vec<(&str, &Yaml)> = vec![];
+        let mut params: Vec<(&str, &Yaml)> = vec![];
+        let mut body: Option<Tokens> = None;
+        let mut ignore: Option<i64> = None;
+
+        // work out what's a URL part and what's a param in the supplied
+        // arguments for the API call
+        for (k, v) in hash.iter() {
+            let key = k.as_str().unwrap();
+            if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
+                params.push((key, v));
+            } else if key == "body" {
+                body = Self::generate_body(endpoint, v);
+            } else if key == "ignore" {
+                ignore = match v.as_i64() {
+                    Some(i) => Some(i),
+                    // handle ignore as an array of i64
+                    None => v.as_vec().unwrap()[0].as_i64(),
+                }
+            } else {
+                parts.push((key, v));
+            }
+        }
+
+        let api_call = endpoint.full_name.as_ref().unwrap();
+        let parts = Self::generate_parts(api_call, endpoint, &parts)?;
+        let params = Self::generate_params(api, endpoint, &params)?;
+        let function = syn::Ident::from(api_call.replace(".", "()."));
+        let namespace: Option<&str> = if api_call.contains(".") {
+            Some(api_call.splitn(2, ".").collect::<Vec<_>>()[0])
+        } else {
+            None
+        };
+
+        Ok(ApiCall {
+            namespace,
+            function,
+            parts,
+            params,
+            body,
+            ignore,
+        })
+    }
+
+    fn generate_params(
+        api: &Api,
+        endpoint: &ApiEndpoint,
+        params: &[(&str, &Yaml)],
+    ) -> Result<Option<Tokens>, failure::Error> {
+        match params.len() {
+            0 => Ok(None),
+            _ => {
+                let mut tokens = Tokens::new();
+                for (n, v) in params {
+                    let param_ident =
+                        syn::Ident::from(api_generator::generator::code_gen::valid_name(n));
+
+                    let ty = match endpoint.params.get(*n) {
+                        Some(t) => Ok(t),
+                        None => match api.common_params.get(*n) {
+                            Some(t) => Ok(t),
+                            None => Err(failure::err_msg(format!("No param found for {}", n))),
+                        },
+                    }?;
+
+                    let kind = ty.ty;
+
+                    match v {
+                        Yaml::String(ref s) => {
+                            match kind {
+                                TypeKind::Enum => {
+                                    let e: String = n.to_pascal_case();
+                                    let enum_name = syn::Ident::from(e.as_str());
+                                    let variant = if s.is_empty() {
+                                        // TODO: Should we simply omit empty Refresh tests?
+                                        if e == "Refresh" {
+                                            syn::Ident::from("True")
+                                        } else if e == "Size" {
+                                            syn::Ident::from("Unspecified")
+                                        } else {
+                                            //TODO: propagate as Err
+                                            panic!(format!("Unhandled empty value for {}", &e));
+                                        }
+                                    } else {
+                                        syn::Ident::from(s.to_pascal_case().replace("_", ""))
+                                    };
+
+                                    tokens.append(quote! {
+                                        .#param_ident(#enum_name::#variant)
+                                    })
+                                }
+                                TypeKind::List => {
+                                    let values: Vec<&str> = s.split(',').collect();
+                                    tokens.append(quote! {
+                                    .#param_ident(&[#(#values),*])
+                                    })
+                                }
+                                TypeKind::Boolean => {
+                                    let b = s.parse::<bool>()?;
+                                    tokens.append(quote! {
+                                        .#param_ident(#b)
+                                    });
+                                }
+                                TypeKind::Double => {
+                                    let f = s.parse::<f64>()?;
+                                    tokens.append(quote! {
+                                        .#param_ident(#f)
+                                    });
+                                }
+                                _ => tokens.append(quote! {
+                                    .#param_ident(#s)
+                                }),
+                            }
+                        }
+                        Yaml::Boolean(ref b) => match kind {
+                            TypeKind::Enum => {
+                                let enum_name = syn::Ident::from(n.to_pascal_case());
+                                let variant = syn::Ident::from(b.to_string().to_pascal_case());
+                                tokens.append(quote! {
+                                    .#param_ident(#enum_name::#variant)
+                                })
+                            }
+                            TypeKind::List => {
+                                // TODO: _source filter can be true|false|list of strings
+                                let s = b.to_string();
+                                tokens.append(quote! {
+                                    .#param_ident(&[#s])
+                                })
+                            }
+                            _ => {
+                                if n == &"track_total_hits" {
+                                    tokens.append(quote! {
+                                        .#param_ident(#b.into())
+                                    });
+                                } else {
+                                    tokens.append(quote! {
+                                        .#param_ident(#b)
+                                    });
+                                }
+                            }
+                        },
+                        Yaml::Integer(ref i) => match kind {
+                            TypeKind::String => {
+                                let s = i.to_string();
+                                tokens.append(quote! {
+                                    .#param_ident(#s)
+                                })
+                            }
+                            TypeKind::Integer => {
+                                // yaml-rust parses all as i64
+                                let int = *i as i32;
+                                tokens.append(quote! {
+                                    .#param_ident(#int)
+                                });
+                            }
+                            TypeKind::Float => {
+                                // yaml-rust parses all as i64
+                                let f = *i as f32;
+                                tokens.append(quote! {
+                                    .#param_ident(#f)
+                                });
+                            }
+                            TypeKind::Double => {
+                                // yaml-rust parses all as i64
+                                let f = *i as f64;
+                                tokens.append(quote! {
+                                    .#param_ident(#f)
+                                });
+                            }
+                            _ => {
+                                if n == &"track_total_hits" {
+                                    tokens.append(quote! {
+                                        .#param_ident(#i.into())
+                                    });
+                                } else {
+                                    tokens.append(quote! {
+                                        .#param_ident(#i)
+                                    });
+                                }
+                            }
+                        },
+                        Yaml::Array(arr) => {
+                            // only support param string arrays
+                            let result: Vec<_> = arr
+                                .iter()
+                                .map(|i| match i {
+                                    Yaml::String(s) => Ok(s),
+                                    y => Err(failure::err_msg(format!(
+                                        "Unsupported array value {:?}",
+                                        y
+                                    ))),
+                                })
+                                .filter_map(Result::ok)
+                                .collect();
+
+                            tokens.append(quote! {
+                                .#param_ident(&[#(#result),*])
+                            });
+                        }
+                        _ => println!("Unsupported value {:?}", v),
+                    }
+                }
+
+                Ok(Some(tokens))
+            }
+        }
+    }
+
+    fn generate_parts(
+        api_call: &str,
+        endpoint: &ApiEndpoint,
+        parts: &[(&str, &Yaml)],
+    ) -> Result<Option<Tokens>, failure::Error> {
+        // TODO: ideally, this should share the logic from EnumBuilder
+        let enum_name = {
+            let name = api_call.to_pascal_case().replace(".", "");
+            syn::Ident::from(format!("{}Parts", name))
+        };
+
+        // Enum variants containing no URL parts where there is only a single API URL,
+        // are not required to be passed in the API
+        if parts.is_empty() {
+            return match endpoint.url.paths.len() {
+                1 => Ok(None),
+                _ => Ok(Some(quote!(#enum_name::None))),
+            };
+        }
+
+        let path = match endpoint.url.paths.len() {
+            1 => Some(&endpoint.url.paths[0]),
+            _ => {
+                // get the matching path parts
+                let matching_path_parts = endpoint
+                    .url
+                    .paths
+                    .iter()
+                    .filter(|path| {
+                        let p = path.path.params();
+                        if p.len() != parts.len() {
+                            return false;
+                        }
+
+                        let contains = parts
+                            .iter()
+                            .filter_map(|i| if p.contains(&i.0) { Some(()) } else { None })
+                            .collect::<Vec<_>>();
+                        contains.len() == parts.len()
+                    })
+                    .collect::<Vec<_>>();
+
+                match matching_path_parts.len() {
+                    0 => None,
+                    _ => Some(matching_path_parts[0]),
+                }
+            }
+        };
+
+        if path.is_none() {
+            return Err(failure::err_msg(format!(
+                "No path for '{}' API with URL parts {:?}",
+                &api_call, parts
+            )));
+        }
+
+        let path = path.unwrap();
+        let path_parts = path.path.params();
+        let variant_name = {
+            let v = path_parts
+                .iter()
+                .map(|k| k.to_pascal_case())
+                .collect::<Vec<_>>()
+                .join("");
+            syn::Ident::from(v)
+        };
+
+        let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
+            .clone()
+            .into_iter()
+            // don't rely on URL parts being ordered in the yaml test
+            .sorted_by(|(p, _), (p2, _)| {
+                let f = path_parts.iter().position(|x| x == p).unwrap();
+                let s = path_parts.iter().position(|x| x == p2).unwrap();
+                f.cmp(&s)
+            })
+            .map(|(p, v)| {
+                let ty = match path.parts.get(*p) {
+                    Some(t) => Ok(t),
+                    None => Err(failure::err_msg(format!(
+                        "No URL part found for {} in {}",
+                        p, &path.path
+                    ))),
+                }?;
+
+                match v {
+                    Yaml::String(s) => match ty.ty {
+                        TypeKind::List => {
+                            let values: Vec<&str> = s.split(',').collect();
+                            Ok(quote! { &[#(#values),*] })
+                        }
+                        _ => Ok(quote! { #s }),
+                    },
+                    Yaml::Boolean(b) => {
+                        let s = b.to_string();
+                        Ok(quote! { #s })
+                    }
+                    Yaml::Integer(i) => {
+                        let s = i.to_string();
+                        Ok(quote! { #s })
+                    }
+                    Yaml::Array(arr) => {
+                        // only support param string arrays
+                        let result: Vec<_> = arr
+                            .iter()
+                            .map(|i| match i {
+                                Yaml::String(s) => Ok(s),
+                                y => Err(failure::err_msg(format!(
+                                    "Unsupported array value {:?}",
+                                    y
+                                ))),
+                            })
+                            .collect();
+
+                        match ok_or_accumulate(&result, 0) {
+                            Ok(_) => {
+                                let result: Vec<_> =
+                                    result.into_iter().filter_map(Result::ok).collect();
+                                Ok(quote! { &[#(#result),*] })
+                            }
+                            Err(e) => Err(failure::err_msg(e)),
+                        }
+                    }
+                    _ => Err(failure::err_msg(format!("Unsupported value {:?}", v))),
+                }
+            })
+            .collect();
+
+        match ok_or_accumulate(&part_tokens, 0) {
+            Ok(_) => {
+                let part_tokens: Vec<Tokens> =
+                    part_tokens.into_iter().filter_map(Result::ok).collect();
+                Ok(Some(
+                    quote! { #enum_name::#variant_name(#(#part_tokens),*) },
+                ))
+            }
+            Err(e) => Err(failure::err_msg(e)),
+        }
+    }
+
+    /// Creates the body function call from a YAML value.
+    ///
+    /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
+    /// usually a Hash. To get the JSON representation back requires converting
+    /// back to JSON
+    fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
+        let accepts_nd_body = match &endpoint.body {
+            Some(b) => match &b.serialize {
+                Some(s) => s == "bulk",
+                _ => false,
+            },
+            None => false,
+        };
+
+        match v {
+            Yaml::String(s) => {
+                if accepts_nd_body {
+                    Some(quote!(.body(vec![#s])))
+                } else {
+                    Some(quote!(.body(#s)))
+                }
+            }
+            _ => {
+                let mut s = String::new();
+                {
+                    let mut emitter = YamlEmitter::new(&mut s);
+                    emitter.dump(v).unwrap();
+                }
+
+                if accepts_nd_body {
+                    let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
+                    let json: Vec<Tokens> = values
+                        .iter()
+                        .map(|value| {
+                            let json = serde_json::to_string(&value).unwrap();
+                            let ident = syn::Ident::from(json);
+                            if value.is_string() {
+                                quote!(#ident)
+                            } else {
+                                quote!(JsonBody::from(json!(#ident)))
+                            }
+                        })
+                        .collect();
+                    Some(quote!(.body(vec![ #(#json),* ])))
+                } else {
+                    let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
+                    let json = serde_json::to_string(&value).unwrap();
+                    let ident = syn::Ident::from(json);
+                    Some(quote!(.body(json!(#ident))))
+                }
+            }
+        }
+    }
 }
 
 pub fn generate_tests_from_yaml(
@@ -85,7 +495,7 @@ pub fn generate_tests_from_yaml(
                                 let (first_key, first_value) = hash.iter().next().unwrap();
                                 match (first_key, first_value) {
                                     (Yaml::String(name), Yaml::Array(steps)) => {
-                                        let tokens = read_steps(api, &mut test, steps)?;
+                                        let tokens = parse_steps(api, &mut test, steps)?;
                                         match name.as_str() {
                                             "setup" => test.setup = Some(tokens),
                                             "teardown" => test.teardown = Some(tokens),
@@ -134,6 +544,7 @@ pub fn generate_tests_from_yaml(
     Ok(())
 }
 
+/// Writes a mod.rs file in each generated directory
 fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
     let paths = fs::read_dir(generated_dir).unwrap();
     let mut mods = vec![];
@@ -215,8 +626,7 @@ fn write_test_file(
 
     let (setup_fn, setup_call) = generate_fixture("setup", &test.setup);
     let (teardown_fn, teardown_call) = generate_fixture("teardown", &test.teardown);
-
-    let mut method_names = HashSet::new();
+    let mut seen_method_names = HashSet::new();
 
     let tests: Vec<Tokens> = test
         .tests
@@ -227,7 +637,7 @@ fn write_test_file(
 
                 // some method descriptions are the same in YAML tests, which would result in
                 // duplicate generated test function names. Deduplicate by appending incrementing number
-                while !method_names.insert(method_name.clone()) {
+                while !seen_method_names.insert(method_name.clone()) {
                     lazy_static! {
                         static ref ENDING_DIGITS_REGEX: Regex =
                             Regex::new(r"^(.*?)_(\d*?)$").unwrap();
@@ -237,7 +647,7 @@ fn write_test_file(
                         let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
                         method_name = format!("{}_{}", name, n + 1);
                     } else {
-                        method_name = format!("{}_2", method_name);
+                        method_name.push_str("_2");
                     }
                 }
                 syn::Ident::from(method_name)
@@ -288,6 +698,7 @@ fn write_test_file(
     Ok(())
 }
 
+/// Generates the AST for the fixture fn and its invocation
 fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Option<Tokens>) {
     if let Some(t) = tokens {
         let ident = syn::Ident::from(name);
@@ -305,7 +716,7 @@ fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Opt
     }
 }
 
-fn read_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, failure::Error> {
+fn parse_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
     for step in steps {
         if let Some(hash) = step.as_hash() {
@@ -315,10 +726,10 @@ fn read_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, f
 
             match (key, v) {
                 ("skip", Yaml::Hash(h)) => {}
-                ("do", Yaml::Hash(h)) => read_do(api, test, h, &mut tokens)?,
+                ("do", Yaml::Hash(h)) => parse_do(api, test, h, &mut tokens)?,
                 ("set", Yaml::Hash(h)) => {}
                 ("transform_and_set", Yaml::Hash(h)) => {}
-                ("match", Yaml::Hash(h)) => read_match(api, h, &mut tokens)?,
+                ("match", Yaml::Hash(h)) => parse_match(api, h, &mut tokens)?,
                 ("contains", Yaml::Hash(h)) => {}
                 ("is_true", Yaml::Hash(h)) => {}
                 ("is_true", Yaml::String(s)) => {}
@@ -340,12 +751,12 @@ fn read_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, f
     Ok(tokens)
 }
 
-fn read_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+fn parse_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
     // TODO: implement
     Ok(())
 }
 
-fn read_do(
+fn parse_do(
     api: &Api,
     test: &mut YamlTest,
     hash: &Hash,
@@ -385,7 +796,7 @@ fn read_do(
                             let endpoint = match api.endpoint_for_api_call(api_call) {
                                 Some(e) => Ok(e),
                                 None => {
-                                    Err(failure::err_msg(format!("no API found for {}", &api_call)))
+                                    Err(failure::err_msg(format!("no API found for {}", api_call)))
                                 }
                             }?;
 
@@ -396,7 +807,7 @@ fn read_do(
                                 params,
                                 body,
                                 ignore,
-                            } = api_call_components(api, endpoint, api_call, hash.unwrap())?;
+                            } = ApiCall::try_from(api, endpoint, hash.unwrap())?;
 
                             // capture any namespaces used in the test
                             if let Some(n) = namespace {
@@ -423,385 +834,6 @@ fn read_do(
         .collect();
 
     ok_or_accumulate(&results, 0)
-}
-
-fn generate_params(
-    api: &Api,
-    endpoint: &ApiEndpoint,
-    params: &[(&str, &Yaml)],
-) -> Result<Option<Tokens>, failure::Error> {
-    match params.len() {
-        0 => Ok(None),
-        _ => {
-            let mut tokens = Tokens::new();
-            for (n, v) in params {
-                let param_ident =
-                    syn::Ident::from(api_generator::generator::code_gen::valid_name(n));
-
-                let ty = match endpoint.params.get(*n) {
-                    Some(t) => Ok(t),
-                    None => match api.common_params.get(*n) {
-                        Some(t) => Ok(t),
-                        None => Err(failure::err_msg(format!("No param found for {}", n))),
-                    },
-                }?;
-
-                let kind = ty.ty;
-
-                match v {
-                    Yaml::String(ref s) => {
-                        match kind {
-                            TypeKind::Enum => {
-                                let e: String = n.to_pascal_case();
-                                let enum_name = syn::Ident::from(e.as_str());
-                                let variant = if s.is_empty() {
-                                    // TODO: Should we simply omit empty Refresh tests?
-                                    if e == "Refresh" {
-                                        syn::Ident::from("True")
-                                    } else if e == "Size" {
-                                        syn::Ident::from("Unspecified")
-                                    } else {
-                                        //TODO: propagate as Err
-                                        panic!(format!("Unhandled empty value for {}", &e));
-                                    }
-                                } else {
-                                    syn::Ident::from(s.to_pascal_case().replace("_", ""))
-                                };
-
-                                tokens.append(quote! {
-                                    .#param_ident(#enum_name::#variant)
-                                })
-                            }
-                            TypeKind::List => {
-                                let values: Vec<&str> = s.split(',').collect();
-                                tokens.append(quote! {
-                                .#param_ident(&[#(#values),*])
-                                })
-                            }
-                            TypeKind::Boolean => {
-                                let b = s.parse::<bool>()?;
-                                tokens.append(quote! {
-                                    .#param_ident(#b)
-                                });
-                            },
-                            _ => tokens.append(quote! {
-                                .#param_ident(#s)
-                            }),
-                        }
-                    }
-                    Yaml::Boolean(ref b) => match kind {
-                        TypeKind::Enum => {
-                            let enum_name = syn::Ident::from(n.to_pascal_case());
-                            let variant = syn::Ident::from(b.to_string().to_pascal_case());
-                            tokens.append(quote! {
-                            .#param_ident(#enum_name::#variant)
-                        })
-                        }
-                        TypeKind::List => {
-                            // TODO: _source filter can be true|false|list of strings
-                            let s = b.to_string();
-                            tokens.append(quote! {
-                            .#param_ident(&[#s])
-                        })
-                        }
-                        _ => {
-                            if n == &"track_total_hits" {
-                                tokens.append(quote! {
-                                    .#param_ident(#b.into())
-                                });
-                            } else {
-                                tokens.append(quote! {
-                                    .#param_ident(#b)
-                                });
-                            }
-                        },
-                    },
-                    Yaml::Integer(ref i) => match kind {
-                        TypeKind::String => {
-                            let s = i.to_string();
-                            tokens.append(quote! {
-                                .#param_ident(#s)
-                            })
-                        }
-                        TypeKind::Integer | TypeKind::Number => {
-                            let int = *i as i32;
-                            tokens.append(quote! {
-                                .#param_ident(#int)
-                            });
-                        },
-                        _ => {
-                            if n == &"track_total_hits" {
-                                tokens.append(quote! {
-                                    .#param_ident(#i.into())
-                                });
-                            } else {
-                                tokens.append(quote! {
-                                    .#param_ident(#i)
-                                });
-                            }
-                        },
-                    },
-                    Yaml::Array(arr) => {
-                        // only support param string arrays
-                        let result: Vec<_> = arr
-                            .iter()
-                            .map(|i| match i {
-                                Yaml::String(s) => Ok(s),
-                                y => Err(failure::err_msg(format!(
-                                    "Unsupported array value {:?}",
-                                    y
-                                ))),
-                            })
-                            .filter_map(Result::ok)
-                            .collect();
-
-                        tokens.append(quote! {
-                            .#param_ident(&[#(#result),*])
-                        });
-                    }
-                    _ => println!("Unsupported value {:?}", v),
-                }
-            }
-
-            Ok(Some(tokens))
-        }
-    }
-}
-
-fn api_call_components<'a>(
-    api: &'a Api,
-    endpoint: &'a ApiEndpoint,
-    api_call: &'a str,
-    hash: &'a Hash,
-) -> Result<ApiCall<'a>, failure::Error> {
-    let mut parts: Vec<(&str, &Yaml)> = vec![];
-    let mut params: Vec<(&str, &Yaml)> = vec![];
-    let mut body: Option<Tokens> = None;
-    let mut ignore: Option<i64> = None;
-
-    for (k, v) in hash.iter() {
-        let key = k.as_str().unwrap();
-        if endpoint.params.contains_key(key) || api.common_params.contains_key(key) {
-            params.push((key, v));
-        } else if key == "body" {
-            body = generate_body(endpoint, v);
-        } else if key == "ignore" {
-            ignore = match v.as_i64() {
-                Some(i) => Some(i),
-                None => v.as_vec().unwrap()[0].as_i64(),
-            }
-        } else {
-            parts.push((key, v));
-        }
-    }
-
-    let parts = generate_parts(api_call, endpoint, &parts)?;
-    let params = generate_params(api, endpoint, &params)?;
-    let function = syn::Ident::from(api_call.replace(".", "()."));
-    let namespace: Option<&str> = if api_call.contains(".") {
-        Some(api_call.splitn(2, ".").collect::<Vec<_>>()[0])
-    } else {
-        None
-    };
-
-    Ok(ApiCall {
-        namespace,
-        function,
-        parts,
-        params,
-        body,
-        ignore,
-    })
-}
-
-fn generate_parts(
-    api_call: &str,
-    endpoint: &ApiEndpoint,
-    parts: &[(&str, &Yaml)],
-) -> Result<Option<Tokens>, failure::Error> {
-    // TODO: ideally, this should share the logic from EnumBuilder
-    let enum_name = {
-        let name = api_call.to_pascal_case().replace(".", "");
-        syn::Ident::from(format!("{}Parts", name))
-    };
-
-    // Enum variants containing no URL parts where there is only a single API URL,
-    // are not required to be passed in the API
-    if parts.is_empty() {
-        return match endpoint.url.paths.len() {
-            1 => Ok(None),
-            _ => Ok(Some(quote!(#enum_name::None))),
-        };
-    }
-
-    let path = match endpoint.url.paths.len() {
-        1 => Some(&endpoint.url.paths[0]),
-        _ => {
-            // get the matching path parts
-            let matching_path_parts = endpoint
-                .url
-                .paths
-                .iter()
-                .filter(|path| {
-                    let p = path.path.params();
-                    if p.len() != parts.len() {
-                        return false;
-                    }
-
-                    let contains = parts
-                        .iter()
-                        .filter_map(|i| if p.contains(&i.0) { Some(()) } else { None })
-                        .collect::<Vec<_>>();
-                    contains.len() == parts.len()
-                })
-                .collect::<Vec<_>>();
-
-            match matching_path_parts.len() {
-                0 => None,
-                _ => Some(matching_path_parts[0]),
-            }
-        }
-    };
-
-    if path.is_none() {
-        return Err(failure::err_msg(format!(
-            "No path for '{}' API with URL parts {:?}",
-            &api_call, parts
-        )));
-    }
-
-    let path = path.unwrap();
-    let path_parts = path.path.params();
-    let variant_name = {
-        let v = path_parts
-            .iter()
-            .map(|k| k.to_pascal_case())
-            .collect::<Vec<_>>()
-            .join("");
-        syn::Ident::from(v)
-    };
-
-    let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
-        .clone()
-        .into_iter()
-        // don't rely on URL parts being ordered in the yaml test
-        .sorted_by(|(p, _), (p2, _)| {
-            let f = path_parts.iter().position(|x| x == p).unwrap();
-            let s = path_parts.iter().position(|x| x == p2).unwrap();
-            f.cmp(&s)
-        })
-        .map(|(p, v)| {
-            let ty = match path.parts.get(*p) {
-                Some(t) => Ok(t),
-                None => Err(failure::err_msg(format!(
-                    "No URL part found for {} in {}",
-                    p, &path.path
-                ))),
-            }?;
-
-            match v {
-                Yaml::String(s) => match ty.ty {
-                    TypeKind::List => {
-                        let values: Vec<&str> = s.split(',').collect();
-                        Ok(quote! { &[#(#values),*] })
-                    }
-                    _ => Ok(quote! { #s }),
-                },
-                Yaml::Boolean(b) => {
-                    let s = b.to_string();
-                    Ok(quote! { #s })
-                }
-                Yaml::Integer(i) => {
-                    let s = i.to_string();
-                    Ok(quote! { #s })
-                }
-                Yaml::Array(arr) => {
-                    // only support param string arrays
-                    let result: Vec<_> = arr
-                        .iter()
-                        .map(|i| match i {
-                            Yaml::String(s) => Ok(s),
-                            y => Err(failure::err_msg(format!("Unsupported array value {:?}", y))),
-                        })
-                        .collect();
-
-                    match ok_or_accumulate(&result, 0) {
-                        Ok(_) => {
-                            let result: Vec<_> =
-                                result.into_iter().filter_map(Result::ok).collect();
-                            Ok(quote! { &[#(#result),*] })
-                        }
-                        Err(e) => Err(failure::err_msg(e)),
-                    }
-                }
-                _ => Err(failure::err_msg(format!("Unsupported value {:?}", v))),
-            }
-        })
-        .collect();
-
-    match ok_or_accumulate(&part_tokens, 0) {
-        Ok(_) => {
-            let part_tokens: Vec<Tokens> = part_tokens.into_iter().filter_map(Result::ok).collect();
-            Ok(Some(
-                quote! { #enum_name::#variant_name(#(#part_tokens),*) },
-            ))
-        }
-        Err(e) => Err(failure::err_msg(e)),
-    }
-}
-
-/// Creates the body function call from a YAML value.
-///
-/// When reading a body from the YAML test, it'll be converted to a Yaml variant,
-/// usually a Hash. To get the JSON representation back requires converting
-/// back to JSON
-fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
-    let accepts_nd_body = match &endpoint.body {
-        Some(b) => match &b.serialize {
-            Some(s) => s == "bulk",
-            _ => false,
-        },
-        None => false,
-    };
-
-    match v {
-        Yaml::String(s) => {
-            if accepts_nd_body {
-                Some(quote!(.body(vec![#s])))
-            } else {
-                Some(quote!(.body(#s)))
-            }
-        }
-        _ => {
-            let mut s = String::new();
-            {
-                let mut emitter = YamlEmitter::new(&mut s);
-                emitter.dump(v).unwrap();
-            }
-
-            if accepts_nd_body {
-                let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
-                let json: Vec<Tokens> = values
-                    .iter()
-                    .map(|value| {
-                        let json = serde_json::to_string(&value).unwrap();
-                        let ident = syn::Ident::from(json);
-                        if value.is_string() {
-                            quote!(#ident)
-                        } else {
-                            quote!(JsonBody::from(json!(#ident)))
-                        }
-                    })
-                    .collect();
-                Some(quote!(.body(vec![ #(#json),* ])))
-            } else {
-                let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                let json = serde_json::to_string(&value).unwrap();
-                let ident = syn::Ident::from(json);
-                Some(quote!(.body(json!(#ident))))
-            }
-        }
-    }
 }
 
 /// Checks whether there are any Errs in the collection, and accumulates them into one
