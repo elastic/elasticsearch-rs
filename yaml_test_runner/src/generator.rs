@@ -43,8 +43,8 @@ struct ApiCall<'a> {
     ignore: Option<i64>,
 }
 
-// TODO: continue moving API call parts to this impl
 impl<'a> ApiCall<'a> {
+    /// Try to create an API call
     pub fn try_from(
         api: &'a Api,
         endpoint: &'a ApiEndpoint,
@@ -117,29 +117,48 @@ impl<'a> ApiCall<'a> {
 
                     let kind = ty.ty;
 
+                    fn create_enum(n: &str, s: &str) -> Tokens {
+                        let e: String = n.to_pascal_case();
+                        let enum_name = syn::Ident::from(e.as_str());
+                        let variant = if s.is_empty() {
+                            // TODO: Should we simply omit empty Refresh tests?
+                            if e == "Refresh" {
+                                syn::Ident::from("True")
+                            } else if e == "Size" {
+                                syn::Ident::from("Unspecified")
+                            } else {
+                                //TODO: propagate as Err
+                                panic!(format!("Unhandled empty value for {}", &e));
+                            }
+                        } else {
+                            syn::Ident::from(s.to_pascal_case())
+                        };
+
+                        quote!(#enum_name::#variant)
+                    }
+
                     match v {
                         Yaml::String(ref s) => {
                             match kind {
                                 TypeKind::Enum => {
-                                    let e: String = n.to_pascal_case();
-                                    let enum_name = syn::Ident::from(e.as_str());
-                                    let variant = if s.is_empty() {
-                                        // TODO: Should we simply omit empty Refresh tests?
-                                        if e == "Refresh" {
-                                            syn::Ident::from("True")
-                                        } else if e == "Size" {
-                                            syn::Ident::from("Unspecified")
-                                        } else {
-                                            //TODO: propagate as Err
-                                            panic!(format!("Unhandled empty value for {}", &e));
-                                        }
-                                    } else {
-                                        syn::Ident::from(s.to_pascal_case().replace("_", ""))
-                                    };
+                                    if n == &"expand_wildcards" {
+                                        // expand_wildcards might be defined as a comma-separated
+                                        // string. e.g.
+                                        let idents: Vec<Tokens> = s.split(',')
+                                            .collect::<Vec<_>>()
+                                            .iter()
+                                            .map(|e| create_enum(n,e))
+                                            .collect();
 
-                                    tokens.append(quote! {
-                                        .#param_ident(#enum_name::#variant)
-                                    })
+                                        tokens.append(quote! {
+                                            .#param_ident(&[#(#idents),*])
+                                        });
+                                    } else {
+                                        let e = create_enum(n, s.as_str());
+                                        tokens.append(quote! {
+                                            .#param_ident(#e)
+                                        });
+                                    }
                                 }
                                 TypeKind::List => {
                                     let values: Vec<&str> = s.split(',').collect();
@@ -233,7 +252,7 @@ impl<'a> ApiCall<'a> {
                         },
                         Yaml::Array(arr) => {
                             // only support param string arrays
-                            let result: Vec<_> = arr
+                            let result: Vec<&String> = arr
                                 .iter()
                                 .map(|i| match i {
                                     Yaml::String(s) => Ok(s),
@@ -245,9 +264,20 @@ impl<'a> ApiCall<'a> {
                                 .filter_map(Result::ok)
                                 .collect();
 
-                            tokens.append(quote! {
-                                .#param_ident(&[#(#result),*])
-                            });
+                            if n == &"expand_wildcards" {
+                                let result : Vec<Tokens> = result
+                                    .iter()
+                                    .map(|s| create_enum(n, s.as_str()))
+                                    .collect();
+
+                                tokens.append(quote! {
+                                    .#param_ident(&[#(#result),*])
+                                });
+                            } else {
+                                tokens.append(quote! {
+                                    .#param_ident(&[#(#result),*])
+                                });
+                            }
                         }
                         _ => println!("Unsupported value {:?}", v),
                     }
