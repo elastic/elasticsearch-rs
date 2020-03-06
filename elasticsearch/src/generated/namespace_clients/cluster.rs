@@ -364,7 +364,7 @@ pub struct ClusterHealth<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterHealthParts<'b>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -412,7 +412,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -506,7 +506,7 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -1212,7 +1212,7 @@ pub struct ClusterState<'a, 'b> {
     parts: ClusterStateParts<'b>,
     allow_no_indices: Option<bool>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     flat_settings: Option<bool>,
     headers: HeaderMap,
@@ -1258,7 +1258,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -1331,7 +1331,7 @@ impl<'a, 'b> ClusterState<'a, 'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"

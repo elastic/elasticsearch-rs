@@ -128,12 +128,26 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
     let str_type = "&'b str";
     match kind {
         TypeKind::None => v.push_str(str_type),
-        TypeKind::List => v.push_str(format!("&'b [{}]", str_type).as_ref()),
-        TypeKind::Enum => v.push_str(name.to_pascal_case().as_str()),
+        TypeKind::List => {
+            v.push_str("&'b [");
+            v.push_str(str_type);
+            v.push_str("]");
+        },
+        TypeKind::Enum => match name {
+            // opened https://github.com/elastic/elasticsearch/issues/53212
+            // to discuss whether this really should be a collection
+            "expand_wildcards" => {
+                // Expand wildcards should
+                v.push_str("&'b [");
+                v.push_str(name.to_pascal_case().as_str());
+                v.push_str("]");
+            },
+            _ => v.push_str(name.to_pascal_case().as_str())
+        },
         TypeKind::String => v.push_str(str_type),
         TypeKind::Text => v.push_str(str_type),
         TypeKind::Boolean => match name {
-            "track_total_hits" => v.push_str("TrackTotalHits"),
+            "track_total_hits" => v.push_str(name.to_pascal_case().as_str()),
             _ => v.push_str("bool"),
         },
         TypeKind::Number => v.push_str("i64"),

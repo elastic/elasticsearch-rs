@@ -478,7 +478,7 @@ pub struct Count<'a, 'b, B> {
     default_operator: Option<DefaultOperator>,
     df: Option<&'b str>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -587,7 +587,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -681,7 +681,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -1231,7 +1231,7 @@ pub struct DeleteByQuery<'a, 'b, B> {
     default_operator: Option<DefaultOperator>,
     df: Option<&'b str>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     from: Option<i64>,
     headers: HeaderMap,
@@ -1406,7 +1406,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -1587,7 +1587,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -2783,7 +2783,7 @@ pub struct FieldCaps<'a, 'b, B> {
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     fields: Option<&'b [&'b str]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -2849,7 +2849,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -2910,7 +2910,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "fields", serialize_with = "crate::client::serialize_coll_qs")]
                 fields: Option<&'b [&'b str]>,
                 #[serde(
@@ -5949,7 +5949,7 @@ pub struct Search<'a, 'b, B> {
     df: Option<&'b str>,
     docvalue_fields: Option<&'b [&'b str]>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     from: Option<i64>,
@@ -6170,7 +6170,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -6395,7 +6395,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
                 #[serde(
@@ -6563,7 +6563,7 @@ pub struct SearchShards<'a, 'b, B> {
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
     human: Option<bool>,
@@ -6632,7 +6632,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -6698,7 +6698,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
@@ -6787,7 +6787,7 @@ pub struct SearchTemplate<'a, 'b, B> {
     allow_no_indices: Option<bool>,
     body: Option<B>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     explain: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -6874,7 +6874,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -6970,7 +6970,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,
                 #[serde(
@@ -7663,7 +7663,7 @@ pub struct UpdateByQuery<'a, 'b, B> {
     default_operator: Option<DefaultOperator>,
     df: Option<&'b str>,
     error_trace: Option<bool>,
-    expand_wildcards: Option<ExpandWildcards>,
+    expand_wildcards: Option<&'b [ExpandWildcards]>,
     filter_path: Option<&'b [&'b str]>,
     from: Option<i64>,
     headers: HeaderMap,
@@ -7851,7 +7851,7 @@ where
         self
     }
     #[doc = "Whether to expand wildcard expression to concrete indices that are open, closed or both."]
-    pub fn expand_wildcards(mut self, expand_wildcards: ExpandWildcards) -> Self {
+    pub fn expand_wildcards(mut self, expand_wildcards: &'b [ExpandWildcards]) -> Self {
         self.expand_wildcards = Some(expand_wildcards);
         self
     }
@@ -8044,7 +8044,7 @@ where
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
-                expand_wildcards: Option<ExpandWildcards>,
+                expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
                     serialize_with = "crate::client::serialize_coll_qs"
