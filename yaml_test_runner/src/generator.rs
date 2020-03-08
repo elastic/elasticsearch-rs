@@ -117,24 +117,27 @@ impl<'a> ApiCall<'a> {
 
                     let kind = ty.ty;
 
-                    fn create_enum(n: &str, s: &str) -> Tokens {
-                        let e: String = n.to_pascal_case();
+                    fn create_enum(enum_name: &str, variant: &str, options: &[serde_json::Value]) -> Result<Tokens, failure::Error> {
+                        if !variant.is_empty() && !options.contains(&serde_json::Value::String(variant.to_owned())) {
+                            return Err(failure::err_msg(format!("options {:?} does not contain value {}", &options, variant)));
+                        }
+
+                        let e: String = enum_name.to_pascal_case();
                         let enum_name = syn::Ident::from(e.as_str());
-                        let variant = if s.is_empty() {
+                        let variant = if variant.is_empty() {
                             // TODO: Should we simply omit empty Refresh tests?
                             if e == "Refresh" {
                                 syn::Ident::from("True")
                             } else if e == "Size" {
                                 syn::Ident::from("Unspecified")
                             } else {
-                                //TODO: propagate as Err
-                                panic!(format!("Unhandled empty value for {}", &e));
+                                return Err(failure::err_msg(format!("Unhandled empty value for {}", &e)));
                             }
                         } else {
-                            syn::Ident::from(s.to_pascal_case())
+                            syn::Ident::from(variant.to_pascal_case())
                         };
 
-                        quote!(#enum_name::#variant)
+                        Ok(quote!(#enum_name::#variant))
                     }
 
                     match v {
@@ -144,17 +147,27 @@ impl<'a> ApiCall<'a> {
                                     if n == &"expand_wildcards" {
                                         // expand_wildcards might be defined as a comma-separated
                                         // string. e.g.
-                                        let idents: Vec<Tokens> = s.split(',')
+                                        let idents: Vec<Result<Tokens, failure::Error>> = s.split(',')
                                             .collect::<Vec<_>>()
                                             .iter()
-                                            .map(|e| create_enum(n,e))
+                                            .map(|e| create_enum(n,e, &ty.options))
                                             .collect();
 
-                                        tokens.append(quote! {
-                                            .#param_ident(&[#(#idents),*])
-                                        });
+                                        match ok_or_accumulate(&idents, 0) {
+                                            Ok(_) => {
+                                                let idents: Vec<Tokens> = idents
+                                                    .into_iter()
+                                                    .filter_map(Result::ok)
+                                                    .collect();
+
+                                                tokens.append(quote! {
+                                                    .#param_ident(&[#(#idents),*])
+                                                });
+                                            },
+                                            Err(e) => return Err(failure::err_msg(e))
+                                        }
                                     } else {
-                                        let e = create_enum(n, s.as_str());
+                                        let e = create_enum(n, s.as_str(), &ty.options)?;
                                         tokens.append(quote! {
                                             .#param_ident(#e)
                                         });
@@ -163,7 +176,7 @@ impl<'a> ApiCall<'a> {
                                 TypeKind::List => {
                                     let values: Vec<&str> = s.split(',').collect();
                                     tokens.append(quote! {
-                                    .#param_ident(&[#(#values),*])
+                                        .#param_ident(&[#(#values),*])
                                     })
                                 }
                                 TypeKind::Boolean => {
@@ -265,14 +278,24 @@ impl<'a> ApiCall<'a> {
                                 .collect();
 
                             if n == &"expand_wildcards" {
-                                let result : Vec<Tokens> = result
+                                let result : Vec<Result<Tokens, failure::Error>> = result
                                     .iter()
-                                    .map(|s| create_enum(n, s.as_str()))
+                                    .map(|s| create_enum(n, s.as_str(), &ty.options))
                                     .collect();
 
-                                tokens.append(quote! {
-                                    .#param_ident(&[#(#result),*])
-                                });
+                                match ok_or_accumulate(&result, 0) {
+                                    Ok(_) => {
+                                        let result: Vec<Tokens> = result
+                                            .into_iter()
+                                            .filter_map(Result::ok)
+                                            .collect();
+
+                                        tokens.append(quote! {
+                                            .#param_ident(&[#(#result),*])
+                                        });
+                                    },
+                                    Err(e) => return Err(failure::err_msg(e))
+                                }
                             } else {
                                 tokens.append(quote! {
                                     .#param_ident(&[#(#result),*])
