@@ -203,6 +203,12 @@ impl<'a> ApiCall<'a> {
                                     tokens.append(quote! {
                                         .#param_ident(#f)
                                     });
+                                },
+                                TypeKind::Integer => {
+                                    let i = s.parse::<i32>()?;
+                                    tokens.append(quote! {
+                                        .#param_ident(#i)
+                                    });
                                 }
                                 _ => tokens.append(quote! {
                                     .#param_ident(#s)
