@@ -10,7 +10,7 @@ use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::PathBuf;
 use yaml_rust::{
-    yaml::{Array, Hash},
+    yaml::{Hash},
     Yaml, YamlEmitter, YamlLoader,
 };
 
@@ -78,8 +78,8 @@ impl<'a> ApiCall<'a> {
         let parts = Self::generate_parts(api_call, endpoint, &parts)?;
         let params = Self::generate_params(api, endpoint, &params)?;
         let function = syn::Ident::from(api_call.replace(".", "()."));
-        let namespace: Option<&str> = if api_call.contains(".") {
-            Some(api_call.splitn(2, ".").collect::<Vec<_>>()[0])
+        let namespace: Option<&str> = if api_call.contains('.') {
+            Some(api_call.splitn(2, '.').collect::<Vec<_>>()[0])
         } else {
             None
         };
@@ -400,8 +400,7 @@ impl<'a> ApiCall<'a> {
         };
 
         let part_tokens: Vec<Result<Tokens, failure::Error>> = parts
-            .clone()
-            .into_iter()
+            .iter()
             // don't rely on URL parts being ordered in the yaml test
             .sorted_by(|(p, _), (p2, _)| {
                 let f = path_parts.iter().position(|x| x == p).unwrap();
@@ -808,7 +807,7 @@ fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Opt
     }
 }
 
-fn parse_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, failure::Error> {
+fn parse_steps(api: &Api, test: &mut YamlTest, steps: &[Yaml]) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
     for step in steps {
         if let Some(hash) = step.as_hash() {
@@ -817,22 +816,22 @@ fn parse_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, 
             let key = k.as_str().unwrap();
 
             match (key, v) {
-                ("skip", Yaml::Hash(h)) => {}
+                ("skip", Yaml::Hash(_h)) => {}
                 ("do", Yaml::Hash(h)) => parse_do(api, test, h, &mut tokens)?,
-                ("set", Yaml::Hash(h)) => {}
-                ("transform_and_set", Yaml::Hash(h)) => {}
+                ("set", Yaml::Hash(_h)) => {}
+                ("transform_and_set", Yaml::Hash(_h)) => {}
                 ("match", Yaml::Hash(h)) => parse_match(api, h, &mut tokens)?,
-                ("contains", Yaml::Hash(h)) => {}
-                ("is_true", Yaml::Hash(h)) => {}
-                ("is_true", Yaml::String(s)) => {}
-                ("is_false", Yaml::Hash(h)) => {}
-                ("is_false", Yaml::String(s)) => {}
-                ("length", Yaml::Hash(h)) => {}
-                ("eq", Yaml::Hash(h)) => {}
-                ("gte", Yaml::Hash(h)) => {}
-                ("lte", Yaml::Hash(h)) => {}
-                ("gt", Yaml::Hash(h)) => {}
-                ("lt", Yaml::Hash(h)) => {}
+                ("contains", Yaml::Hash(_h)) => {}
+                ("is_true", Yaml::Hash(_h)) => {}
+                ("is_true", Yaml::String(_s)) => {}
+                ("is_false", Yaml::Hash(_h)) => {}
+                ("is_false", Yaml::String(_s)) => {}
+                ("length", Yaml::Hash(_h)) => {}
+                ("eq", Yaml::Hash(_h)) => {}
+                ("gte", Yaml::Hash(_h)) => {}
+                ("lte", Yaml::Hash(_h)) => {}
+                ("gt", Yaml::Hash(_h)) => {}
+                ("lt", Yaml::Hash(_h)) => {}
                 (op, _) => return Err(failure::err_msg(format!("unknown step operation: {}", op))),
             }
         } else {
@@ -843,7 +842,7 @@ fn parse_steps(api: &Api, test: &mut YamlTest, steps: &Array) -> Result<Tokens, 
     Ok(tokens)
 }
 
-fn parse_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+fn parse_match(_api: &Api, _hash: &Hash, _tokens: &mut Tokens) -> Result<(), failure::Error> {
     // TODO: implement
     Ok(())
 }
@@ -898,7 +897,7 @@ fn parse_do(
                                 parts,
                                 params,
                                 body,
-                                ignore,
+                                ignore: _ignore,
                             } = ApiCall::try_from(api, endpoint, hash.unwrap())?;
 
                             // capture any namespaces used in the test
@@ -935,7 +934,7 @@ fn ok_or_accumulate<T>(
     indent: usize,
 ) -> Result<(), failure::Error> {
     let errs = results
-        .into_iter()
+        .iter()
         .filter_map(|r| r.as_ref().err())
         .collect::<Vec<_>>();
     if errs.is_empty() {
