@@ -324,6 +324,15 @@ impl<'a> ApiCall<'a> {
         // Enum variants containing no URL parts where there is only a single API URL,
         // are not required to be passed in the API
         if parts.is_empty() {
+            let param_counts = endpoint.url.paths
+                .iter()
+                .map(|p| p.path.params().len())
+                .collect::<Vec<usize>>();
+
+            if !param_counts.contains(&0) {
+                return Err(failure::err_msg(format!("No path for '{}' API with no URL parts", api_call)));
+            }
+
             return match endpoint.url.paths.len() {
                 1 => Ok(None),
                 _ => Ok(Some(quote!(#enum_name::None))),
@@ -331,7 +340,14 @@ impl<'a> ApiCall<'a> {
         }
 
         let path = match endpoint.url.paths.len() {
-            1 => Some(&endpoint.url.paths[0]),
+            1 => {
+                let path = &endpoint.url.paths[0];
+                if path.path.params().len() == parts.len() {
+                    Some(path)
+                } else {
+                    None
+                }
+            },
             _ => {
                 // get the matching path parts
                 let matching_path_parts = endpoint
