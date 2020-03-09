@@ -117,9 +117,18 @@ impl<'a> ApiCall<'a> {
 
                     let kind = ty.ty;
 
-                    fn create_enum(enum_name: &str, variant: &str, options: &[serde_json::Value]) -> Result<Tokens, failure::Error> {
-                        if !variant.is_empty() && !options.contains(&serde_json::Value::String(variant.to_owned())) {
-                            return Err(failure::err_msg(format!("options {:?} does not contain value {}", &options, variant)));
+                    fn create_enum(
+                        enum_name: &str,
+                        variant: &str,
+                        options: &[serde_json::Value],
+                    ) -> Result<Tokens, failure::Error> {
+                        if !variant.is_empty()
+                            && !options.contains(&serde_json::Value::String(variant.to_owned()))
+                        {
+                            return Err(failure::err_msg(format!(
+                                "options {:?} does not contain value {}",
+                                &options, variant
+                            )));
                         }
 
                         let e: String = enum_name.to_pascal_case();
@@ -131,7 +140,10 @@ impl<'a> ApiCall<'a> {
                             } else if e == "Size" {
                                 syn::Ident::from("Unspecified")
                             } else {
-                                return Err(failure::err_msg(format!("Unhandled empty value for {}", &e)));
+                                return Err(failure::err_msg(format!(
+                                    "Unhandled empty value for {}",
+                                    &e
+                                )));
                             }
                         } else {
                             syn::Ident::from(variant.to_pascal_case())
@@ -147,10 +159,11 @@ impl<'a> ApiCall<'a> {
                                     if n == &"expand_wildcards" {
                                         // expand_wildcards might be defined as a comma-separated
                                         // string. e.g.
-                                        let idents: Vec<Result<Tokens, failure::Error>> = s.split(',')
+                                        let idents: Vec<Result<Tokens, failure::Error>> = s
+                                            .split(',')
                                             .collect::<Vec<_>>()
                                             .iter()
-                                            .map(|e| create_enum(n,e, &ty.options))
+                                            .map(|e| create_enum(n, e, &ty.options))
                                             .collect();
 
                                         match ok_or_accumulate(&idents, 0) {
@@ -163,8 +176,8 @@ impl<'a> ApiCall<'a> {
                                                 tokens.append(quote! {
                                                     .#param_ident(&[#(#idents),*])
                                                 });
-                                            },
-                                            Err(e) => return Err(failure::err_msg(e))
+                                            }
+                                            Err(e) => return Err(failure::err_msg(e)),
                                         }
                                     } else {
                                         let e = create_enum(n, s.as_str(), &ty.options)?;
@@ -212,15 +225,9 @@ impl<'a> ApiCall<'a> {
                                 })
                             }
                             _ => {
-                                if n == &"track_total_hits" {
-                                    tokens.append(quote! {
-                                        .#param_ident(#b.into())
-                                    });
-                                } else {
-                                    tokens.append(quote! {
-                                        .#param_ident(#b)
-                                    });
-                                }
+                                tokens.append(quote! {
+                                    .#param_ident(#b)
+                                });
                             }
                         },
                         Yaml::Integer(ref i) => match kind {
@@ -252,15 +259,9 @@ impl<'a> ApiCall<'a> {
                                 });
                             }
                             _ => {
-                                if n == &"track_total_hits" {
-                                    tokens.append(quote! {
-                                        .#param_ident(#i.into())
-                                    });
-                                } else {
-                                    tokens.append(quote! {
-                                        .#param_ident(#i)
-                                    });
-                                }
+                                tokens.append(quote! {
+                                    .#param_ident(#i)
+                                });
                             }
                         },
                         Yaml::Array(arr) => {
@@ -278,23 +279,21 @@ impl<'a> ApiCall<'a> {
                                 .collect();
 
                             if n == &"expand_wildcards" {
-                                let result : Vec<Result<Tokens, failure::Error>> = result
+                                let result: Vec<Result<Tokens, failure::Error>> = result
                                     .iter()
                                     .map(|s| create_enum(n, s.as_str(), &ty.options))
                                     .collect();
 
                                 match ok_or_accumulate(&result, 0) {
                                     Ok(_) => {
-                                        let result: Vec<Tokens> = result
-                                            .into_iter()
-                                            .filter_map(Result::ok)
-                                            .collect();
+                                        let result: Vec<Tokens> =
+                                            result.into_iter().filter_map(Result::ok).collect();
 
                                         tokens.append(quote! {
                                             .#param_ident(&[#(#result),*])
                                         });
-                                    },
-                                    Err(e) => return Err(failure::err_msg(e))
+                                    }
+                                    Err(e) => return Err(failure::err_msg(e)),
                                 }
                             } else {
                                 tokens.append(quote! {
@@ -401,11 +400,11 @@ impl<'a> ApiCall<'a> {
                         TypeKind::List => {
                             let values: Vec<&str> = s.split(',').collect();
                             Ok(quote! { &[#(#values),*] })
-                        },
+                        }
                         TypeKind::Long => {
                             let l = s.parse::<i64>().unwrap();
                             Ok(quote! { #l })
-                        },
+                        }
                         _ => Ok(quote! { #s }),
                     },
                     Yaml::Boolean(b) => {
@@ -413,14 +412,12 @@ impl<'a> ApiCall<'a> {
                         Ok(quote! { #s })
                     }
                     Yaml::Integer(i) => match ty.ty {
-                        TypeKind::Long => {
-                            Ok(quote!{ #i })
-                        },
+                        TypeKind::Long => Ok(quote! { #i }),
                         _ => {
                             let s = i.to_string();
                             Ok(quote! { #s })
-                        },
-                    }
+                        }
+                    },
                     Yaml::Array(arr) => {
                         // only support param string arrays
                         let result: Vec<_> = arr
@@ -447,8 +444,8 @@ impl<'a> ApiCall<'a> {
                                     TypeKind::String => {
                                         let s = result.iter().join(",");
                                         Ok(quote! { #s })
-                                    },
-                                    _ => Ok(quote! { &[#(#result),*] })
+                                    }
+                                    _ => Ok(quote! { &[#(#result),*] }),
                                 }
                             }
                             Err(e) => Err(failure::err_msg(e)),

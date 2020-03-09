@@ -97,7 +97,7 @@ impl GetPath for syn::Ty {
     fn get_path(&self) -> &syn::Path {
         match *self {
             syn::Ty::Path(_, ref p) => &p,
-            _ => panic!("Only path types are supported."),
+            ref p => panic!(format!("Expected syn::Ty::Path, but found {:?}", p)),
         }
     }
 }
@@ -119,7 +119,8 @@ impl<T: GetPath> GetIdent for T {
 }
 
 /// Gets the Ty syntax token for a TypeKind
-fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
+/// TODO: This function is serving too many purposes. Refactor it
+fn typekind_to_ty(name: &str, kind: TypeKind, required: bool, fn_arg: bool) -> syn::Ty {
     let mut v = String::new();
     if !required {
         v.push_str("Option<");
@@ -132,7 +133,7 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
             v.push_str("&'b [");
             v.push_str(str_type);
             v.push_str("]");
-        },
+        }
         TypeKind::Enum => match name {
             // opened https://github.com/elastic/elasticsearch/issues/53212
             // to discuss whether this really should be a collection
@@ -141,13 +142,19 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
                 v.push_str("&'b [");
                 v.push_str(name.to_pascal_case().as_str());
                 v.push_str("]");
-            },
-            _ => v.push_str(name.to_pascal_case().as_str())
+            }
+            _ => v.push_str(name.to_pascal_case().as_str()),
         },
         TypeKind::String => v.push_str(str_type),
         TypeKind::Text => v.push_str(str_type),
         TypeKind::Boolean => match name {
-            "track_total_hits" => v.push_str(name.to_pascal_case().as_str()),
+            "track_total_hits" => {
+                if fn_arg {
+                    v.push_str(format!("Into<{}>", name.to_pascal_case()).as_str())
+                } else {
+                    v.push_str(name.to_pascal_case().as_str())
+                }
+            }
             _ => v.push_str("bool"),
         },
         TypeKind::Number => v.push_str("i64"),

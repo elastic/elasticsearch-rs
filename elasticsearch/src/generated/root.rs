@@ -6330,8 +6330,8 @@ where
         self
     }
     #[doc = "Indicate if the number of documents that match the query should be tracked"]
-    pub fn track_total_hits(mut self, track_total_hits: TrackTotalHits) -> Self {
-        self.track_total_hits = Some(track_total_hits);
+    pub fn track_total_hits<T: Into<TrackTotalHits>>(mut self, track_total_hits: T) -> Self {
+        self.track_total_hits = Some(track_total_hits.into());
         self
     }
     #[doc = "Specify whether aggregation and suggester names should be prefixed by their respective types in the response"]

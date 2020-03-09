@@ -122,7 +122,7 @@ impl<'a> EnumBuilder<'a> {
                             ident: None,
                             vis: syn::Visibility::Inherited,
                             attrs: vec![],
-                            ty: typekind_to_ty(p, ty, true),
+                            ty: typekind_to_ty(p, ty, true, false),
                         }
                     })
                     .collect(),

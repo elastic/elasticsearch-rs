@@ -6,7 +6,7 @@ use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
 use std::{collections::BTreeMap, str};
-use syn::{Field, FieldValue, ImplItem};
+use syn::{Field, FieldValue, ImplItem, TraitBoundModifier, TyParamBound};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -310,10 +310,36 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a builder fn for a builder impl
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
+        let (ty, value_ident, fn_generics) = {
+            let ty = typekind_to_ty(&f.0, f.1.ty, true, true);
+            match ty {
+                syn::Ty::Path(ref _q, ref p) => {
+                    if p.get_ident().as_ref() == "Into" {
+                        let ty = syn::parse_type("T").unwrap();
+                        let ident = code_gen::ident(format!("{}.into()", &name));
+                        let ty_param = syn::TyParam {
+                            ident: code_gen::ident("T"),
+                            default: None,
+                            attrs: vec![],
+                            bounds: vec![TyParamBound::Trait(
+                                syn::PolyTraitRef {
+                                    trait_ref: p.clone(),
+                                    bound_lifetimes: vec![],
+                                },
+                                TraitBoundModifier::None,
+                            )],
+                        };
+                        let generics = generics(vec![], vec![ty_param]);
+                        (ty, ident, generics)
+                    } else {
+                        (ty, ident(&name), generics_none())
+                    }
+                }
+                _ => (ty, ident(&name), generics_none()),
+            }
+        };
         let impl_ident = ident(&name);
         let field_ident = ident(&name);
-        let value_ident = ident(&name);
-        let ty = typekind_to_ty(&f.0, f.1.ty, true);
         let doc_attr = match &f.1.description {
             Some(docs) => vec![doc(docs)],
             _ => vec![],
@@ -340,7 +366,7 @@ impl<'a> RequestBuilder<'a> {
                         output: syn::FunctionRetTy::Ty(code_gen::ty("Self")),
                         variadic: false,
                     },
-                    generics: generics_none(),
+                    generics: fn_generics,
                 },
                 // generates a fn body of the form
                 // --------
@@ -599,7 +625,7 @@ impl<'a> RequestBuilder<'a> {
             ident: Some(ident(valid_name(&f.0).to_lowercase())),
             vis: syn::Visibility::Inherited,
             attrs: vec![],
-            ty: typekind_to_ty(&f.0, f.1.ty, false),
+            ty: typekind_to_ty(&f.0, f.1.ty, false, false),
         }
     }
 
