@@ -1,8 +1,7 @@
 use crate::http::request::Body;
-use crate::params::{VersionType, SourceFilter};
+use crate::params::{SourceFilter, VersionType};
 use crate::Error;
-use bytes::buf::BufMutExt;
-use bytes::{BufMut, BytesMut};
+use bytes::{buf::BufMutExt, BufMut, Bytes, BytesMut};
 use serde::{
     ser::{SerializeMap, Serializer},
     Deserialize, Serialize,
@@ -71,18 +70,18 @@ impl Serialize for BulkHeader {
     }
 }
 
-/// Bulk operation
-///
 /// A bulk operation consists of a header that indicates the bulk action and the related metadata
 /// for the action, and an optional source document.
 ///
-/// A collection of bulk operations can be sent to the [Bulk API](struct.Bulk.html) in the body of the API call
+/// A collection of bulk operations can be sent to the [Bulk API](struct.Bulk.html) in the body of the API call.
 ///
+/// For serializing a collection of bulk operations that model the source document of each bulk operation
+/// using different structs, take a look at [BulkOperations].
 ///
 /// # Example
 ///
 /// Using [serde_json]'s `json!` macro to constuct [serde_json::Value] from JSON literals, for
-/// the source for each bulk operation
+/// the source document of each bulk operation
 ///
 /// ```rust,no_run
 /// # use elasticsearch::{
@@ -146,7 +145,7 @@ impl<B> BulkOperation<B>
 where
     B: Serialize,
 {
-    /// Creates a new instance of a bulk create operation
+    /// Creates a new instance of a [bulk create operation](BulkCreateOperation)
     pub fn create<S>(id: S, source: B) -> BulkCreateOperation<B>
     where
         S: Into<String>,
@@ -154,7 +153,7 @@ where
         BulkCreateOperation::new(id, source)
     }
 
-    /// Creates a new instance of a bulk index operation
+    /// Creates a new instance of a [bulk index operation](BulkIndexOperation)
     pub fn index<S>(id: S, source: B) -> BulkIndexOperation<B>
     where
         S: Into<String>,
@@ -162,7 +161,7 @@ where
         BulkIndexOperation::new(id, source)
     }
 
-    /// Creates a new instance of a bulk delete operation
+    /// Creates a new instance of a [bulk delete operation](BulkDeleteOperation)
     pub fn delete<S>(id: S) -> BulkDeleteOperation<B>
     where
         S: Into<String>,
@@ -170,7 +169,7 @@ where
         BulkDeleteOperation::new(id)
     }
 
-    /// Creates a new instance of a bulk update operation
+    /// Creates a new instance of a [bulk update operation](BulkUpdateOperation)
     pub fn update<S>(id: S, source: B) -> BulkUpdateOperation<B>
     where
         S: Into<String>,
@@ -223,7 +222,7 @@ impl<B> BulkCreateOperation<B> {
         }
     }
 
-    /// specify the name of the index to perform the bulk update operation against.
+    /// Specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
     /// in one Bulk API call will operate against the same index, specify
@@ -287,7 +286,7 @@ impl<B> BulkIndexOperation<B> {
         }
     }
 
-    /// specify the name of the index to perform the bulk update operation against.
+    /// Specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
     /// in one Bulk API call will operate against the same index, specify
@@ -380,7 +379,7 @@ impl<B> BulkDeleteOperation<B> {
         }
     }
 
-    /// specify the name of the index to perform the bulk update operation against.
+    /// Specify the name of the index to perform the bulk update operation against.
     ///
     /// Each bulk operation can specify an index to operate against. If all bulk operations
     /// in one Bulk API call will operate against the same index, specify
@@ -403,20 +402,20 @@ impl<B> BulkDeleteOperation<B> {
         self
     }
 
-    /// specify a sequence number to use for optimistic concurrency control
+    /// Specify a sequence number to use for optimistic concurrency control
     pub fn if_seq_no(mut self, seq_no: i64) -> Self {
         self.operation.header.metadata.if_seq_no = Some(seq_no);
         self
     }
 
     // TODO? Should seq_no and primary_term be set together with one function call?
-    /// specify a primary term to use for optimistic concurrency control
+    /// Specify a primary term to use for optimistic concurrency control
     pub fn if_primary_term(mut self, primary_term: i64) -> Self {
         self.operation.header.metadata.if_primary_term = Some(primary_term);
         self
     }
 
-    /// specify a version number to use for optimistic concurrency control
+    /// Specify a version number to use for optimistic concurrency control
     pub fn version(mut self, version: i64) -> Self {
         self.operation.header.metadata.version = Some(version);
         self
@@ -520,8 +519,11 @@ where
     /// specify how the `_source` field is returned for the update operation.
     ///
     /// This can also be specified as part of the update action source payload instead.
-    pub fn source(mut self, source: SourceFilter) -> Self {
-        self.operation.header.metadata._source = Some(source);
+    pub fn source<S>(mut self, source: S) -> Self
+    where
+        S: Into<SourceFilter>,
+    {
+        self.operation.header.metadata._source = Some(source.into());
         self
     }
 }
@@ -532,18 +534,127 @@ impl<B> From<BulkUpdateOperation<B>> for BulkOperation<B> {
     }
 }
 
+/// A collection of bulk operations.
+///
+/// A collection of bulk operations can perform operations against multiple different indices,
+/// specifying a different source document for each. When modelling source documents with
+/// different structs, it becomes difficult to construct a collection of bulk operations with such
+/// a setup. [BulkOperations] alleviates this difficulty by serializing bulk operations ahead of
+/// time of the bulk API call, into an internal byte buffer, using the buffered bytes as the body of
+/// the bulk API call.
+///
+/// # Example
+///
+/// Using [BulkOperations] to construct a collection of bulk operations that use different
+/// structs to model source documents
+///
+/// ```rust,no_run
+/// # use elasticsearch::{
+/// #     BulkOperation,
+/// #     BulkOperations,
+/// #     BulkParts,
+/// #     auth::Credentials,
+/// #     Error, Elasticsearch,
+/// #     http::transport::{TransportBuilder,SingleNodeConnectionPool},
+/// # };
+/// # use url::Url;
+/// # use serde::Serialize;
+/// # use serde_json::{json, Value};
+/// # async fn run() -> Result<(), Error> {
+/// # let url = Url::parse("https://example.com")?;
+/// # let conn_pool = SingleNodeConnectionPool::new(url);
+/// # let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
+/// # let client = Elasticsearch::new(transport);
+/// #[derive(Serialize)]
+/// struct IndexDoc<'a> {
+///     foo: &'a str,
+/// }
+///
+/// #[derive(Serialize)]
+/// struct CreateDoc<'a> {
+///     bar: &'a str,
+/// }
+///
+/// #[derive(Serialize)]
+/// struct UpdateDoc<'a> {
+///     baz: &'a str,
+/// }
+///
+/// let mut ops = BulkOperations::new();
+/// ops.push(BulkOperation::index("1", IndexDoc { foo: "index" })
+///     .pipeline("pipeline")
+///     .index("index_doc")
+///     .routing("routing")
+/// )?;
+/// ops.push(BulkOperation::create("2", CreateDoc { bar: "create" }))?;
+/// ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }))?;
+/// ops.push(BulkOperation::<()>::delete("4"))?;
+///
+/// let bulk_response = client.bulk(BulkParts::Index("tweets"))
+///     .body(vec![ops])
+///     .send()
+///     .await?;
+///
+/// # Ok(())
+/// # }
+/// ```
+pub struct BulkOperations {
+    buf: BytesMut,
+}
+
+impl BulkOperations {
+    /// Initializes a new instance of [BulkOperations]
+    pub fn new() -> Self {
+        Self {
+            buf: BytesMut::new(),
+        }
+    }
+
+    /// Initializes a new instance of [BulkOperations], using the passed
+    /// [bytes::BytesMut] as the buffer to write operations to
+    pub fn with_bytes(buf: BytesMut) -> Self {
+        Self { buf }
+    }
+
+    /// Pushes a bulk operation into the collection of bulk operations.
+    ///
+    /// The operation is serialized and written to the underlying byte buffer.
+    pub fn push<O, B>(&mut self, op: O) -> Result<(), Error>
+    where
+        O: Into<BulkOperation<B>>,
+        B: Serialize,
+    {
+        op.into().write(&mut self.buf)
+    }
+}
+
+impl Default for BulkOperations {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Body for BulkOperations {
+    fn bytes(&self) -> Option<Bytes> {
+        Some(self.buf.clone().freeze())
+    }
+
+    fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
+        self.buf.write(bytes)
+    }
+}
+
 #[cfg(test)]
 mod tests {
+    use crate::generated::params::VersionType;
     use crate::{
         http::request::{Body, NdBody},
-        BulkOperation, Error,
+        BulkOperation, BulkOperations,
     };
-    use bytes::{BufMut, Bytes, BytesMut};
+    use bytes::{BufMut, BytesMut};
     use serde::Serialize;
     use serde_json::{json, Value};
     use std::{cmp::Ordering, str};
-    use crate::generated::params::VersionType;
-    use crate::params::SourceFilter;
 
     pub fn compare(a: &[u8], b: &[u8]) -> Ordering {
         a.iter()
@@ -558,23 +669,44 @@ mod tests {
         let mut bytes = BytesMut::new();
         let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
 
-        ops.push(BulkOperation::index("1", json!({ "foo": "index" }))
-            .pipeline("pipeline")
-            .routing("routing")
-            .if_seq_no(1)
-            .if_primary_term(2)
-            .version(3)
-            .version_type(VersionType::Internal)
-            .into());
-        ops.push(BulkOperation::create("2", json!({ "bar": "create" }))
-            .pipeline("pipeline")
-            .routing("routing")
-            .index("create_index")
-            .into());
-        ops.push(BulkOperation::update("3", json!({ "baz": "update" }))
-            .source(SourceFilter::Enable(false))
-            .into());
-        ops.push(BulkOperation::delete("4").into());
+        ops.push(
+            BulkOperation::index("1", json!({ "foo": "index" }))
+                .pipeline("pipeline")
+                .routing("routing")
+                .if_seq_no(1)
+                .if_primary_term(2)
+                .version(3)
+                .version_type(VersionType::Internal)
+                .into(),
+        );
+        ops.push(
+            BulkOperation::create("2", json!({ "bar": "create" }))
+                .pipeline("pipeline")
+                .routing("routing")
+                .index("create_index")
+                .into(),
+        );
+        ops.push(
+            BulkOperation::update("3", json!({ "baz": "update_1" }))
+                .source(false)
+                .into(),
+        );
+        ops.push(
+            BulkOperation::update("4", json!({ "baz": "update_2" }))
+                .source("baz")
+                .into(),
+        );
+        ops.push(
+            BulkOperation::update("5", json!({ "baz": "update_3" }))
+                .source(vec!["baz"])
+                .into(),
+        );
+        ops.push(
+            BulkOperation::update("6", json!({ "baz": "update_4" }))
+                .source((vec!["baz"], vec!["bar"]))
+                .into(),
+        );
+        ops.push(BulkOperation::delete("7").into());
 
         let body = NdBody(ops);
         let _ = body.write(&mut bytes)?;
@@ -585,8 +717,14 @@ mod tests {
         expected.put_slice(b"{\"create\":{\"_index\":\"create_index\",\"_id\":\"2\",\"pipeline\":\"pipeline\",\"routing\":\"routing\"}}\n");
         expected.put_slice(b"{\"bar\":\"create\"}\n");
         expected.put_slice(b"{\"update\":{\"_id\":\"3\",\"_source\":false}}\n");
-        expected.put_slice(b"{\"baz\":\"update\"}\n");
-        expected.put_slice(b"{\"delete\":{\"_id\":\"4\"}}\n");
+        expected.put_slice(b"{\"baz\":\"update_1\"}\n");
+        expected.put_slice(b"{\"update\":{\"_id\":\"4\",\"_source\":\"baz\"}}\n");
+        expected.put_slice(b"{\"baz\":\"update_2\"}\n");
+        expected.put_slice(b"{\"update\":{\"_id\":\"5\",\"_source\":[\"baz\"]}}\n");
+        expected.put_slice(b"{\"baz\":\"update_3\"}\n");
+        expected.put_slice(b"{\"update\":{\"_id\":\"6\",\"_source\":{\"includes\":[\"baz\"],\"excludes\":[\"bar\"]}}}\n");
+        expected.put_slice(b"{\"baz\":\"update_4\"}\n");
+        expected.put_slice(b"{\"delete\":{\"_id\":\"7\"}}\n");
 
         assert_eq!(
             compare(&expected[..], &bytes[..]),
@@ -614,35 +752,6 @@ mod tests {
             baz: &'a str,
         }
 
-        struct BulkOperations {
-            buf: BytesMut,
-        }
-
-        impl BulkOperations {
-            pub fn new() -> Self {
-                Self {
-                    buf: BytesMut::new(),
-                }
-            }
-
-            pub fn push<B>(&mut self, op: BulkOperation<B>) -> Result<(), Error>
-            where
-                B: Serialize,
-            {
-                op.write(&mut self.buf)
-            }
-        }
-
-        impl Body for BulkOperations {
-            fn bytes(&self) -> Option<Bytes> {
-                Some(self.buf.clone().freeze())
-            }
-
-            fn write(&self, bytes: &mut BytesMut) -> Result<(), Error> {
-                self.buf.write(bytes)
-            }
-        }
-
         let mut bytes = BytesMut::new();
         let mut ops = BulkOperations::new();
 
@@ -650,12 +759,11 @@ mod tests {
             BulkOperation::index("1", IndexDoc { foo: "index" })
                 .pipeline("pipeline")
                 .index("index_doc")
-                .routing("routing")
-                .into(),
+                .routing("routing"),
         )?;
-        ops.push(BulkOperation::create("2", CreateDoc { bar: "create" }).into())?;
-        ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }).into())?;
-        ops.push(BulkOperation::<()>::delete("4").into())?;
+        ops.push(BulkOperation::create("2", CreateDoc { bar: "create" }))?;
+        ops.push(BulkOperation::update("3", UpdateDoc { baz: "update" }))?;
+        ops.push(BulkOperation::<()>::delete("4"))?;
 
         let body = NdBody(vec![ops]);
         let _ = body.write(&mut bytes)?;
