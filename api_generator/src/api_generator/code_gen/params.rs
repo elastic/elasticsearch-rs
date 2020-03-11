@@ -23,8 +23,7 @@ fn generate_param(tokens: &mut Tokens, e: &ApiEnum) {
         .map(|v| {
             if v.is_empty() {
                 (v.to_owned(), syn::Ident::from("Unspecified"))
-            }
-            else if !v.contains('(') {
+            } else if !v.contains('(') {
                 (v.to_owned(), syn::Ident::from(v.to_pascal_case()))
             } else {
                 lazy_static! {

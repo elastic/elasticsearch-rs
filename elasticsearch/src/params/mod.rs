@@ -85,8 +85,16 @@ impl From<(Vec<String>, Vec<String>)> for SourceFilter {
 impl<'a> From<(Vec<&'a str>, Vec<&'a str>)> for SourceFilter {
     fn from(includes_excludes: (Vec<&'a str>, Vec<&'a str>)) -> Self {
         SourceFilter::IncludesExcludes {
-            includes: includes_excludes.0.iter().map(|s| (*s).to_string()).collect(),
-            excludes: includes_excludes.1.iter().map(|s| (*s).to_string()).collect(),
+            includes: includes_excludes
+                .0
+                .iter()
+                .map(|s| (*s).to_string())
+                .collect(),
+            excludes: includes_excludes
+                .1
+                .iter()
+                .map(|s| (*s).to_string())
+                .collect(),
         }
     }
 }
