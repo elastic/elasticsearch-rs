@@ -331,9 +331,10 @@ pub mod xpack;
 mod client;
 mod error;
 mod generated;
+mod root;
 
 // exposes types within modules at the library root level
-pub use crate::{client::*, error::*, generated::root::*, http::transport::DEFAULT_ADDRESS};
+pub use crate::{client::*, error::*, http::transport::DEFAULT_ADDRESS, root::*};
 
 #[cfg(test)]
 pub mod tests {

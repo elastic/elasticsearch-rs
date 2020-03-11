@@ -20,8 +20,7 @@ fn expected_error_message() -> String {
 /// Default certificate validation with a self signed certificate
 #[tokio::test]
 async fn default_certificate_validation() -> Result<(), failure::Error> {
-    let builder = client::create_default_builder()
-        .cert_validation(CertificateValidation::Default);
+    let builder = client::create_default_builder().cert_validation(CertificateValidation::Default);
     let client = client::create(builder);
     let result = client.ping().send().await;
 
@@ -33,7 +32,12 @@ async fn default_certificate_validation() -> Result<(), failure::Error> {
         Err(e) => {
             let expected = expected_error_message();
             let actual = e.to_string();
-            assert!(actual.contains(&expected), "Expected error message to contain '{}' but was '{}'", expected, actual);
+            assert!(
+                actual.contains(&expected),
+                "Expected error message to contain '{}' but was '{}'",
+                expected,
+                actual
+            );
             Ok(())
         }
     }
@@ -90,7 +94,12 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
         Err(e) => {
             let expected = "unable to get local issuer certificate";
             let actual = e.to_string();
-            assert!(actual.contains(expected), "Expected error message to contain '{}' but was '{}'", expected, actual);
+            assert!(
+                actual.contains(expected),
+                "Expected error message to contain '{}' but was '{}'",
+                expected,
+                actual
+            );
             Ok(())
         }
     }
@@ -126,7 +135,12 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
         Err(e) => {
             let expected = "unable to get local issuer certificate";
             let actual = e.to_string();
-            assert!(actual.contains(expected), "Expected error message to contain '{}' but was '{}'", expected, actual);
+            assert!(
+                actual.contains(expected),
+                "Expected error message to contain '{}' but was '{}'",
+                expected,
+                actual
+            );
             Ok(())
         }
     }
@@ -148,8 +162,8 @@ async fn certificate_certificate_ca_validation() -> Result<(), failure::Error> {
 #[tokio::test]
 async fn fail_certificate_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_CERT)?;
-    let builder = client::create_default_builder()
-        .cert_validation(CertificateValidation::Certificate(cert));
+    let builder =
+        client::create_default_builder().cert_validation(CertificateValidation::Certificate(cert));
 
     let client = client::create(builder);
     let result = client.ping().send().await;
@@ -162,7 +176,12 @@ async fn fail_certificate_certificate_validation() -> Result<(), failure::Error>
         Err(e) => {
             let expected = expected_error_message();
             let actual = e.to_string();
-            assert!(actual.contains(&expected), "Expected error message to contain '{}' but was '{}'", expected, actual);
+            assert!(
+                actual.contains(&expected),
+                "Expected error message to contain '{}' but was '{}'",
+                expected,
+                actual
+            );
             Ok(())
         }
     }
