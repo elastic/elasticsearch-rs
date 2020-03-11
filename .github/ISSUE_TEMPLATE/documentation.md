@@ -2,7 +2,7 @@
 name: Documentation
 about: Suggest documentation to help using this project
 title: "[DOCS]"
-labels: ''
+labels: documentation
 assignees: ''
 
 ---
