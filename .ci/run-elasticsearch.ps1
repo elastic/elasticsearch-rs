@@ -278,8 +278,12 @@ if ($DETACH) {
   while((!$(container_running -Name $NODE_NAME)) -or ((container_running -Name $NODE_NAME) -and ($(docker inspect -f '{{.State.Health.Status}}' $NODE_NAME) -eq "starting"))) {
     Start-Sleep 2;
     $logs = docker inspect -f '{{json .State.Health.Log}}' $NODE_NAME | ConvertFrom-Json
-    $lastLog = $logs[$logs.Length-1]
-    Write-Output $lastLog.Output
+    if ($logs) {
+      $lastLog = $logs[$logs.Length-1]
+      Write-Output $lastLog.Output
+    } else {
+      Write-Output "No logs from docker inspect"
+    }
     log "waiting for node $NODE_NAME to be up"
   }
 

@@ -4,16 +4,23 @@ param (
     $ELASTICSEARCH_VERSION,
 
     [string]
+    [Parameter(Mandatory = $false)]
     [ValidateSet("oss", "xpack")]
-    $TEST_SUITE = "oss",
+    $TEST_SUITE = "xpack",
 
     # TODO: move to stable once elasticsearch-rs compiles on stable
     [string]
+    [Parameter(Mandatory = $false)]
     $RUST_VERSION = "nightly",
 
     [string]
     [ValidateSet("1", "full")]
-    $RUST_BACKTRACE
+    [Parameter(Mandatory = $false)]
+    $RUST_BACKTRACE,
+
+    [string]
+    [Parameter(Mandatory = $false)]
+    $CARGO_TEST_FLAGS = "--all-features"
 )
 
 trap {
@@ -117,7 +124,7 @@ docker run `
   --name elasticsearch-rs `
   --rm `
 elastic/elasticsearch-rs `
-cargo test
+cargo test $CARGO_TEST_FLAGS
 
 if ($LASTEXITCODE) {
     docker rm elasticsearch-rs

@@ -55,6 +55,7 @@ async fn none_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server contains the one given to the client
 /// within the authority chain, and hostname matches
 #[tokio::test]
+#[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
 async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(CA_CERT)?;
     let builder =
@@ -66,7 +67,7 @@ async fn full_certificate_ca_validation() -> Result<(), failure::Error> {
 
 /// Certificate provided by the server is the one given to the client and hostname matches
 #[tokio::test]
-#[cfg(windows)]
+#[cfg(all(windows, any(feature = "native-tls", feature = "rustls-tls")))]
 async fn full_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
     let builder =
@@ -79,7 +80,7 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server is the one given to the client. This fails on Linux because
 /// it appears that it also needs the CA for the cert
 #[tokio::test]
-#[cfg(unix)]
+#[cfg(all(unix, any(feature = "native-tls", feature = "rustls-tls")))]
 async fn full_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
     let builder =
@@ -107,7 +108,7 @@ async fn full_certificate_validation() -> Result<(), failure::Error> {
 
 /// Certificate provided by the server is the one given to the client
 #[tokio::test]
-#[cfg(windows)]
+#[cfg(all(windows, feature = "native-tls"))]
 async fn certificate_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
     let builder =
@@ -120,7 +121,7 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server is the one given to the client. This fails on Linux because
 /// it appears that it also needs the CA for the cert
 #[tokio::test]
-#[cfg(unix)]
+#[cfg(all(unix, feature = "native-tls"))]
 async fn certificate_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_SAN_CERT)?;
     let builder =
@@ -149,6 +150,7 @@ async fn certificate_certificate_validation() -> Result<(), failure::Error> {
 /// Certificate provided by the server contains the one given to the client
 /// within the authority chain
 #[tokio::test]
+#[cfg(feature = "native-tls")]
 async fn certificate_certificate_ca_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(CA_CERT)?;
     let builder =
@@ -160,6 +162,7 @@ async fn certificate_certificate_ca_validation() -> Result<(), failure::Error> {
 
 /// Certificate provided by the server does not match the one given to the client
 #[tokio::test]
+#[cfg(feature = "native-tls")]
 async fn fail_certificate_certificate_validation() -> Result<(), failure::Error> {
     let cert = Certificate::from_pem(TESTNODE_CERT)?;
     let builder =
