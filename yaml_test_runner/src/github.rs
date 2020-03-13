@@ -154,7 +154,7 @@ fn download(
                 fs::create_dir_all(&content_path)?;
                 download(client, &content.url, &content_path)?;
             }
-            t => panic!(format!("Unexpected GitHub content type: {}", t)),
+            t => return Err(DownloadError::InvalidType(format!("Unexpected GitHub content type: {}", t))),
         }
     }
 
@@ -165,6 +165,7 @@ fn download(
 pub enum DownloadError {
     IoErr(io::Error),
     HttpError(reqwest::Error),
+    InvalidType(String)
 }
 
 impl std::fmt::Display for DownloadError {
@@ -172,6 +173,7 @@ impl std::fmt::Display for DownloadError {
         match self {
             DownloadError::IoErr(err) => write!(f, "IoErr {}", err),
             DownloadError::HttpError(err) => write!(f, "HttpError {}", err),
+            DownloadError::InvalidType(s) => write!(f, "InvalidType {}", s),
         }
     }
 }
@@ -182,6 +184,7 @@ impl StdError for DownloadError {
         match self {
             DownloadError::IoErr(err) => err.description(),
             DownloadError::HttpError(err) => err.description(),
+            DownloadError::InvalidType(s) => s.as_ref(),
         }
     }
 }

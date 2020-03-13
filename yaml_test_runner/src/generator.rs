@@ -816,7 +816,21 @@ fn parse_steps(api: &Api, test: &mut YamlTest, steps: &[Yaml]) -> Result<Tokens,
             let key = k.as_str().unwrap();
 
             match (key, v) {
-                ("skip", Yaml::Hash(_h)) => {}
+                ("skip", Yaml::Hash(h)) => {
+                    match parse_skip(h) {
+                        Ok(skip) => {
+                            if let Some(api_version) = api.version() {
+                                if skip.matches(&api_version) {
+                                    let reason = skip.reason.unwrap_or("");
+
+                                    // TODO: Communicate this in a different way - Don't use an error. Probably need to push components of a test into its own struct
+                                    return Err(failure::err_msg(format!("Skipping test because skip version '{}' are met. {}", skip.version.unwrap(), reason)))
+                                }
+                            }
+                        }
+                        Err(e) => return Err(failure::err_msg(e.to_string()))
+                    }
+                }
                 ("do", Yaml::Hash(h)) => parse_do(api, test, h, &mut tokens)?,
                 ("set", Yaml::Hash(_h)) => {}
                 ("transform_and_set", Yaml::Hash(_h)) => {}
@@ -834,6 +848,8 @@ fn parse_steps(api: &Api, test: &mut YamlTest, steps: &[Yaml]) -> Result<Tokens,
                 ("lt", Yaml::Hash(_h)) => {}
                 (op, _) => return Err(failure::err_msg(format!("unknown step operation: {}", op))),
             }
+
+
         } else {
             return Err(failure::err_msg(format!("{:?} is not a hash", &step)));
         }
@@ -842,8 +858,66 @@ fn parse_steps(api: &Api, test: &mut YamlTest, steps: &[Yaml]) -> Result<Tokens,
     Ok(tokens)
 }
 
-fn parse_match(_api: &Api, _hash: &Hash, _tokens: &mut Tokens) -> Result<(), failure::Error> {
-    // TODO: implement
+struct Skip<'a> {
+    version_requirements: Option<semver::VersionReq>,
+    version: Option<&'a str>,
+    reason: Option<&'a str>,
+    features: Option<&'a str>,
+}
+
+impl<'a> Skip<'a> {
+    pub fn matches(&self, version: &semver::Version) -> bool {
+        match &self.version_requirements {
+            Some(r) => r.matches(version),
+            None => false
+        }
+    }
+}
+
+fn parse_skip(hash: &Hash) -> Result<Skip, failure::Error> {
+    let version = hash.get(&Yaml::from_str("version")).map_or_else(|| None,|y| y.as_str());
+    let reason = hash.get(&Yaml::from_str("reason")).map_or_else(|| None,|y| y.as_str());
+    let features = hash.get(&Yaml::from_str("features")).map_or_else(|| None,|y| y.as_str());
+    let version_requirements = if let Some(v) = version {
+        lazy_static!{
+            static ref VERSION_REGEX: Regex = Regex::new(r"^([\w\.]+)?\s*?\-\s*?([\w\.]+)?$").unwrap();
+        }
+
+        if let Some(c) = VERSION_REGEX.captures(v) {
+            match (c.get(1), c.get(2)) {
+                (Some(start), Some(end)) => {
+                    Some(semver::VersionReq::parse(format!(">={},<={}", start.as_str(), end.as_str()).as_ref()).unwrap())
+                },
+                (Some(start), None) => {
+                    Some(semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref()).unwrap())
+                },
+                (None, Some(end)) => {
+                    Some(semver::VersionReq::parse(format!("<={}", end.as_str()).as_ref()).unwrap())
+                },
+                (None, None) => {
+                    None
+                }
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+
+    Ok(Skip {
+        version,
+        version_requirements,
+        reason,
+        features
+    })
+}
+
+fn parse_match(_api: &Api, _hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+
+
+
+
     Ok(())
 }
 

@@ -63,7 +63,7 @@ fn main() -> Result<(), failure::Error> {
     let mut download_rest_specs = true;
     if last_downloaded_rest_spec_version.exists() {
         let version = fs::read_to_string(last_downloaded_rest_spec_version)
-            .expect("Could not rest specs last_downloaded version into string");
+            .expect("Could not read rest specs last_downloaded version into string");
 
         if version == branch {
             println!(
