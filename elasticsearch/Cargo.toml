@@ -11,9 +11,13 @@ documentation = "https://docs.rs/elasticsearch/"
 license = "Apache-2.0"
 readme = "../README.md"
 
+[package.metadata."docs.rs"]
+all-features = true
+
 [features]
 default = ["native-tls"]
 
+# optional TLS
 native-tls = ["reqwest/native-tls"]
 rustls-tls = ["reqwest/rustls-tls"]
 
@@ -21,7 +25,7 @@ rustls-tls = ["reqwest/rustls-tls"]
 base64 = "^0.11"
 bytes = "^0.5"
 dyn-clone = "~1"
-reqwest = { version = "~0.10", default-features = false, features = ["gzip", "json"] }
+reqwest = { version = "~0.10", default-features = false, features = ["default-tls", "gzip", "json"] }
 url = "^2.1"
 serde = { version = "~1", features = ["derive"] }
 serde_json = "~1"

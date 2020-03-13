@@ -23,6 +23,7 @@ use std::fmt;
 use std::fmt::Debug;
 use std::io::{self, Write};
 use url::Url;
+use crate::auth::ClientCertificate;
 
 /// Error that can occur when building a [Transport]
 #[derive(Debug)]
@@ -80,6 +81,7 @@ pub struct TransportBuilder {
     client_builder: reqwest::ClientBuilder,
     conn_pool: Box<dyn ConnectionPool>,
     credentials: Option<Credentials>,
+    #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
     cert_validation: Option<CertificateValidation>,
     proxy: Option<Url>,
     proxy_credentials: Option<Credentials>,
@@ -144,23 +146,43 @@ impl TransportBuilder {
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
 
-        if let Some(c) = &self.credentials {
-            client_builder = match c {
-                Credentials::Cert(b, p) => {
-                    let pkcs12 = reqwest::Identity::from_pkcs12_der(&b, p)?;
-                    client_builder.identity(pkcs12)
+        #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+        {
+            if let Some(c) = &self.credentials {
+                match c {
+                    Credentials::Certificate(client_cert) => {
+                        client_builder = match client_cert {
+                            #[cfg(feature = "native-tls")]
+                            ClientCertificate::Pkcs12(b, p) => {
+                                let password = match p {
+                                    Some(pass) => pass.as_str(),
+                                    None => ""
+                                };
+                                let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
+                                client_builder.identity(pkcs12)
+                            },
+                            #[cfg(feature = "rustls-tls")]
+                            ClientCertificate::Pem(b) => {
+                                let pem = reqwest::Identity::from_pem(b)?;
+                                client_builder.identity(pem)
+                            },
+                        }
+                    }
+                    _ => { },
                 }
-                _ => client_builder,
-            }
-        };
+            };
+        }
 
         if let Some(v) = self.cert_validation {
             client_builder = match v {
                 CertificateValidation::Default => client_builder,
+                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 CertificateValidation::Full(c) => client_builder.add_root_certificate(c),
+                #[cfg(feature = "native-tls")]
                 CertificateValidation::Certificate(c) => {
-                    client_builder = client_builder.add_root_certificate(c);
-                    client_builder.danger_accept_invalid_hostnames(true)
+                    client_builder
+                        .add_root_certificate(c)
+                        .danger_accept_invalid_hostnames(true)
                 }
                 CertificateValidation::None => client_builder.danger_accept_invalid_certs(true),
             }
@@ -307,7 +329,8 @@ impl Transport {
             request_builder = match c {
                 Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
                 Credentials::Bearer(t) => request_builder.bearer_auth(t),
-                Credentials::Cert(_, _) => request_builder,
+                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+                Credentials::Certificate(_) => request_builder,
                 Credentials::ApiKey(i, k) => {
                     let mut header_value = b"ApiKey ".to_vec();
                     {
@@ -505,15 +528,27 @@ impl ConnectionPool for CloudConnectionPool {
 
 #[cfg(test)]
 pub mod tests {
-    use crate::auth::Credentials;
+    use crate::auth::ClientCertificate;
     use crate::http::transport::{CloudId, Connection, SingleNodeConnectionPool, TransportBuilder};
     use url::Url;
 
     #[test]
-    fn invalid_cert_credentials() {
+    #[cfg(feature = "native-tls")]
+    fn invalid_pkcs12_cert_credentials() {
         let conn_pool = SingleNodeConnectionPool::default();
         let builder = TransportBuilder::new(conn_pool)
-            .auth(Credentials::Cert(b"Nonsense".to_vec(), "".into()));
+            .auth(ClientCertificate::Pkcs12(b"Nonsense".to_vec(), None).into());
+
+        let res = builder.build();
+        assert!(res.is_err());
+    }
+
+    #[test]
+    #[cfg(feature = "rustls-tls")]
+    fn invalid_pem_cert_credentials() {
+        let conn_pool = SingleNodeConnectionPool::default();
+        let builder = TransportBuilder::new(conn_pool)
+            .auth(ClientCertificate::Pem(b"Nonsense".to_vec()).into());
 
         let res = builder.build();
         assert!(res.is_err());
