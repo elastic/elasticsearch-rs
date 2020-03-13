@@ -38,7 +38,7 @@ struct GitHubContent {
 }
 
 /// Downloads the yaml tests if not already downloaded
-pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
+pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
     let mut last_downloaded_version = download_dir.clone();
     last_downloaded_version.push("last_downloaded_version");
     if last_downloaded_version.exists() {
@@ -46,7 +46,7 @@ pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
             .expect("Unable to read last_downloaded_version of yaml tests");
         if version == branch {
             println!("yaml tests for branch {} already downloaded", branch);
-            return;
+            return Ok(());
         }
     }
 
@@ -74,15 +74,23 @@ pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) {
         .build()
         .unwrap();
 
-    fs::create_dir_all(download_dir).unwrap();
+    // delete existing yaml tests
+    if download_dir.exists() {
+        fs::remove_dir_all(&download_dir)?;
+    }
+
+    fs::create_dir_all(download_dir)?;
+
     for suite in test_suites {
-        download_tests(&client, &suite, &download_dir).unwrap();
+        download_tests(&client, &suite, &download_dir)?;
     }
 
     File::create(last_downloaded_version)
         .expect("failed to create last_downloaded_version file")
         .write_all(branch.as_bytes())
         .expect("unable to write branch to last_downloaded_version file");
+
+    Ok(())
 }
 
 fn download_tests(

@@ -55,14 +55,14 @@ fn main() -> Result<(), failure::Error> {
     let download_dir = PathBuf::from("./yaml_test_runner/yaml");
     let generated_dir = PathBuf::from("./yaml_test_runner/src/generated");
 
-    github::download_test_suites(token, branch, &download_dir);
+    github::download_test_suites(token, branch, &download_dir)?;
 
-    let mut last_downloaded_version = rest_specs_dir.clone();
-    last_downloaded_version.push("last_downloaded_version");
+    let mut last_downloaded_rest_spec_version = rest_specs_dir.clone();
+    last_downloaded_rest_spec_version.push("last_downloaded_version");
 
     let mut download_rest_specs = true;
-    if last_downloaded_version.exists() {
-        let version = fs::read_to_string(last_downloaded_version)
+    if last_downloaded_rest_spec_version.exists() {
+        let version = fs::read_to_string(last_downloaded_rest_spec_version)
             .expect("Could not rest specs last_downloaded version into string");
 
         if version == branch {
