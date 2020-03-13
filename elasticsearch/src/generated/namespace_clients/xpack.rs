@@ -166,7 +166,7 @@ impl XpackUsageParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Xpack Usage API"]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/usage-api.html)"]
 pub struct XpackUsage<'a, 'b> {
     client: &'a Elasticsearch,
     parts: XpackUsageParts,
@@ -284,7 +284,7 @@ impl<'a> Xpack<'a> {
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(&self.client)
     }
-    #[doc = "Xpack Usage API"]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/usage-api.html)"]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(&self.client)
     }

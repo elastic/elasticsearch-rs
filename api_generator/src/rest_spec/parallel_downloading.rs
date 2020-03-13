@@ -19,10 +19,10 @@ pub(super) enum DownloadSpecsErrors {
 /// Downloads the given specs to the provided director in parallel, displaying progress bars for
 /// each file.
 pub(super) fn download_specs_to_dir(
+    client: reqwest::blocking::Client,
     specs: &[RestApiSpec],
     download_dir: &PathBuf,
 ) -> Result<(), DownloadSpecsErrors> {
-    let client = reqwest::Client::new();
     let sty = ProgressStyle::default_bar()
         .template("{spinner:.green} {msg} [{elapsed_precise} (ETA: {eta})] [{bar:40.cyan/blue}] {bytes}/{total_bytes}")
         .progress_chars("#>-");

@@ -4,16 +4,23 @@ param (
     $ELASTICSEARCH_VERSION,
 
     [string]
+    [Parameter(Mandatory = $false)]
     [ValidateSet("oss", "xpack")]
-    $TEST_SUITE = "oss",
+    $TEST_SUITE = "xpack",
 
     # TODO: move to stable once elasticsearch-rs compiles on stable
     [string]
+    [Parameter(Mandatory = $false)]
     $RUST_VERSION = "nightly",
 
     [string]
     [ValidateSet("1", "full")]
-    $RUST_BACKTRACE
+    [Parameter(Mandatory = $false)]
+    $RUST_BACKTRACE,
+
+    [string]
+    [Parameter(Mandatory = $false)]
+    $CARGO_TEST_FLAGS = "--all-features"
 )
 
 trap {
@@ -60,7 +67,9 @@ function log {
 }
 
 function cleanup {
-    $status=$?
+    param(
+        $RunExitCode
+    )
 
     $runParams = @{
       NODE_NAME= $NODE_NAME
@@ -71,12 +80,12 @@ function cleanup {
     ./.ci/run-elasticsearch.ps1 @runParams
 
     # Report status and exit
-    if ($status -eq 0) {
+    if ($RunExitCode -eq 0) {
       log "run-tests" -Level Success
       exit 0
     } else {
       log "failure during run-tests" -Level Error
-      exit $status
+      exit $RunExitCode
     }
 }
 
@@ -117,10 +126,12 @@ docker run `
   --name elasticsearch-rs `
   --rm `
 elastic/elasticsearch-rs `
-cargo test
+cargo test $CARGO_TEST_FLAGS
 
-if ($LASTEXITCODE) {
+$runExitCode = $LASTEXITCODE
+
+if ($runExitCode -ne 0) {
     docker rm elasticsearch-rs
 }
 
-cleanup
+cleanup $runExitCode

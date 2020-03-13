@@ -61,10 +61,15 @@ pub fn download_specs(branch: &str, download_dir: &PathBuf) -> Result<(), failur
 }
 
 fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) -> Result<(), failure::Error> {
-    let mut response = reqwest::get(&spec.url).unwrap();
+    let client = reqwest::blocking::ClientBuilder::new()
+        .user_agent(concat!("RustApiGenerator/", env!("CARGO_PKG_VERSION")))
+        .build()
+        .unwrap();
+
+    let response = client.get(&spec.url).send().unwrap();
     let rest_api_specs: Vec<RestApiSpec> = response.json().unwrap();
     println!("Downloading {} specs from {}", spec.dir, spec.branch);
-    download_specs_to_dir(rest_api_specs.as_slice(), download_dir)?;
+    download_specs_to_dir(client,rest_api_specs.as_slice(), download_dir).unwrap();
     println!("Done downloading {} specs from {}", spec.dir, spec.branch);
     Ok(())
 }

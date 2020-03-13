@@ -29,6 +29,13 @@
 //! Elasticsearch**. Major differences likely exist between major versions of Elasticsearch, particularly
 //! around request and response object formats, but also around API urls and behaviour.
 //!
+//! # Features
+//!
+//! The following are a list of Cargo features that can be enabled or disabled:
+//!
+//! - **native-tls** *(enabled by default)*: Enables TLS functionality provided by `native-tls`.
+//! - **rustls-tls**: Enables TLS functionality provided by `rustls`.
+//!
 //! # Getting started
 //!
 //! Add the `elasticsearch` crate and version to Cargo.toml. Choose the version that is compatible with
@@ -36,7 +43,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "7.6.0-alpha.1"
+//! elasticsearch = "7.6.1-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
