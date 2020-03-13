@@ -1226,6 +1226,7 @@ pub struct DeleteByQuery<'a, 'b, B> {
     _source_includes: Option<&'b [&'b str]>,
     allow_no_indices: Option<bool>,
     analyze_wildcard: Option<bool>,
+    analyzer: Option<&'b str>,
     body: Option<B>,
     conflicts: Option<Conflicts>,
     default_operator: Option<DefaultOperator>,
@@ -1276,6 +1277,7 @@ where
             _source_includes: None,
             allow_no_indices: None,
             analyze_wildcard: None,
+            analyzer: None,
             body: None,
             conflicts: None,
             default_operator: None,
@@ -1336,6 +1338,11 @@ where
         self.analyze_wildcard = Some(analyze_wildcard);
         self
     }
+    #[doc = "The analyzer to use for the query string"]
+    pub fn analyzer(mut self, analyzer: &'b str) -> Self {
+        self.analyzer = Some(analyzer);
+        self
+    }
     #[doc = "The body for the API call"]
     pub fn body<T>(self, body: T) -> DeleteByQuery<'a, 'b, JsonBody<T>>
     where
@@ -1350,6 +1357,7 @@ where
             _source_includes: self._source_includes,
             allow_no_indices: self.allow_no_indices,
             analyze_wildcard: self.analyze_wildcard,
+            analyzer: self.analyzer,
             conflicts: self.conflicts,
             default_operator: self.default_operator,
             df: self.df,
@@ -1578,6 +1586,8 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "analyze_wildcard")]
                 analyze_wildcard: Option<bool>,
+                #[serde(rename = "analyzer")]
+                analyzer: Option<&'b str>,
                 #[serde(rename = "conflicts")]
                 conflicts: Option<Conflicts>,
                 #[serde(rename = "default_operator")]
@@ -1655,6 +1665,7 @@ where
                 _source_includes: self._source_includes,
                 allow_no_indices: self.allow_no_indices,
                 analyze_wildcard: self.analyze_wildcard,
+                analyzer: self.analyzer,
                 conflicts: self.conflicts,
                 default_operator: self.default_operator,
                 df: self.df,
@@ -4469,6 +4480,7 @@ pub struct MsearchTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: MsearchTemplateParts<'b>,
     body: Option<B>,
+    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
     headers: HeaderMap,
@@ -4491,6 +4503,7 @@ where
             parts,
             headers: HeaderMap::new(),
             body: None,
+            ccs_minimize_roundtrips: None,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4511,6 +4524,7 @@ where
             client: self.client,
             parts: self.parts,
             body: Some(NdBody(body)),
+            ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
             headers: self.headers,
@@ -4522,6 +4536,11 @@ where
             source: self.source,
             typed_keys: self.typed_keys,
         }
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: bool) -> Self {
+        self.ccs_minimize_roundtrips = Some(ccs_minimize_roundtrips);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -4585,6 +4604,8 @@ where
             #[serde_with::skip_serializing_none]
             #[derive(Serialize)]
             struct QueryParams<'b> {
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(
@@ -4608,6 +4629,7 @@ where
                 typed_keys: Option<bool>,
             }
             let query_params = QueryParams {
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
                 human: self.human,
@@ -6786,6 +6808,7 @@ pub struct SearchTemplate<'a, 'b, B> {
     parts: SearchTemplateParts<'b>,
     allow_no_indices: Option<bool>,
     body: Option<B>,
+    ccs_minimize_roundtrips: Option<bool>,
     error_trace: Option<bool>,
     expand_wildcards: Option<ExpandWildcards>,
     explain: Option<bool>,
@@ -6816,6 +6839,7 @@ where
             headers: HeaderMap::new(),
             allow_no_indices: None,
             body: None,
+            ccs_minimize_roundtrips: None,
             error_trace: None,
             expand_wildcards: None,
             explain: None,
@@ -6849,6 +6873,7 @@ where
             parts: self.parts,
             body: Some(body.into()),
             allow_no_indices: self.allow_no_indices,
+            ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
             error_trace: self.error_trace,
             expand_wildcards: self.expand_wildcards,
             explain: self.explain,
@@ -6867,6 +6892,11 @@ where
             source: self.source,
             typed_keys: self.typed_keys,
         }
+    }
+    #[doc = "Indicates whether network round-trips should be minimized as part of cross-cluster search requests execution"]
+    pub fn ccs_minimize_roundtrips(mut self, ccs_minimize_roundtrips: bool) -> Self {
+        self.ccs_minimize_roundtrips = Some(ccs_minimize_roundtrips);
+        self
     }
     #[doc = "Include the stack trace of returned errors."]
     pub fn error_trace(mut self, error_trace: bool) -> Self {
@@ -6967,6 +6997,8 @@ where
             struct QueryParams<'b> {
                 #[serde(rename = "allow_no_indices")]
                 allow_no_indices: Option<bool>,
+                #[serde(rename = "ccs_minimize_roundtrips")]
+                ccs_minimize_roundtrips: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
                 #[serde(rename = "expand_wildcards")]
@@ -7008,6 +7040,7 @@ where
             }
             let query_params = QueryParams {
                 allow_no_indices: self.allow_no_indices,
+                ccs_minimize_roundtrips: self.ccs_minimize_roundtrips,
                 error_trace: self.error_trace,
                 expand_wildcards: self.expand_wildcards,
                 explain: self.explain,

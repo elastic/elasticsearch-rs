@@ -296,7 +296,7 @@ where
 #[doc = "API parts for the Enrich Get Policy API"]
 pub enum EnrichGetPolicyParts<'b> {
     #[doc = "Name"]
-    Name(&'b str),
+    Name(&'b [&'b str]),
     #[doc = "No parts"]
     None,
 }
@@ -305,9 +305,10 @@ impl<'b> EnrichGetPolicyParts<'b> {
     pub fn url(self) -> Cow<'static, str> {
         match self {
             EnrichGetPolicyParts::Name(ref name) => {
-                let mut p = String::with_capacity(16usize + name.len());
+                let name_str = name.join(",");
+                let mut p = String::with_capacity(16usize + name_str.len());
                 p.push_str("/_enrich/policy/");
-                p.push_str(name.as_ref());
+                p.push_str(name_str.as_ref());
                 p.into()
             }
             EnrichGetPolicyParts::None => "/_enrich/policy/".into(),
