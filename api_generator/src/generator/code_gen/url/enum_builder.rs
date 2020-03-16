@@ -298,6 +298,7 @@ mod tests {
         let endpoint = (
             "search".to_string(),
             ApiEndpoint {
+                full_name: Some("search".to_string()),
                 documentation: Documentation {
                     description: None,
                     url: None,
