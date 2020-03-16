@@ -15,14 +15,14 @@ use yaml_rust::{
 };
 
 /// The components of a test file, constructed from a yaml file
-struct YamlTest {
+struct YamlTests {
     namespaces: HashSet<String>,
     setup: Option<Tokens>,
     teardown: Option<Tokens>,
-    tests: Vec<(String, Tokens)>,
+    tests: Vec<YamlTestFn>,
 }
 
-impl YamlTest {
+impl YamlTests {
     pub fn new(len: usize) -> Self {
         Self {
             namespaces: HashSet::with_capacity(len),
@@ -30,6 +30,119 @@ impl YamlTest {
             teardown: None,
             tests: Vec::with_capacity(len),
         }
+    }
+
+    pub fn build(self) -> Tokens {
+        let (setup_fn, setup_call) = self.setup_impl();
+        let (teardown_fn, teardown_call) = self.teardown_impl();
+        let tests: Vec<Tokens> = self.fn_impls(setup_call, teardown_call);
+
+        let namespaces: Vec<Tokens> = self
+            .namespaces
+            .iter()
+            .map(|n| {
+                let ident = syn::Ident::from(n.as_str());
+                quote!(use elasticsearch::#ident::*;)
+            })
+            .collect();
+
+        quote! {
+            #[allow(unused_imports, unused_variables)]
+            #[cfg(test)]
+            pub mod tests {
+                use elasticsearch::*;
+                use elasticsearch::http::request::JsonBody;
+                use elasticsearch::params::*;
+                #(#namespaces)*
+                use crate::client;
+
+                #setup_fn
+                #teardown_fn
+                #(#tests)*
+            }
+        }
+    }
+
+    fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
+        let mut seen_method_names = HashSet::new();
+
+        self
+            .tests
+            .iter()
+            .map(|test_fn| {
+                // some function descriptions are the same in YAML tests, which would result in
+                // duplicate generated test function names. Deduplicate by appending incrementing number
+                let fn_name = {
+                    let mut fn_name = test_fn.fn_name();
+
+                    while !seen_method_names.insert(fn_name.clone()) {
+                        lazy_static! {
+                        static ref ENDING_DIGITS_REGEX: Regex =
+                            Regex::new(r"^(.*?)_(\d*?)$").unwrap();
+                    }
+                        if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
+                            let name = c.get(1).unwrap().as_str();
+                            let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
+                            fn_name = format!("{}_{}", name, n + 1);
+                        } else {
+                            fn_name.push_str("_2");
+                        }
+                    }
+                    syn::Ident::from(fn_name)
+                };
+
+                let body = &test_fn.body;
+
+                quote! {
+                    #[tokio::test]
+                    async fn #fn_name() -> Result<(), failure::Error> {
+                        let client = client::create();
+                        #setup_call
+                        #body
+                        #teardown_call
+                        Ok(())
+                    }
+                }
+            })
+            .collect()
+    }
+
+    fn setup_impl(&self) -> (Option<Tokens>, Option<Tokens>) {
+        Self::generate_fixture("setup", &self.setup)
+    }
+
+    fn teardown_impl(&self) -> (Option<Tokens>, Option<Tokens>) {
+        Self::generate_fixture("teardown", &self.teardown)
+    }
+
+    /// Generates the AST for the fixture fn and its invocation
+    fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Option<Tokens>) {
+        if let Some(t) = tokens {
+            let ident = syn::Ident::from(name);
+            (
+                Some(quote! {
+                async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
+                    #t
+                    Ok(())
+                }
+            }),
+                Some(quote! { #ident(&client).await?; }),
+            )
+        } else {
+            (None, None)
+        }
+    }
+}
+
+/// A test function
+struct YamlTestFn {
+    name: String,
+    body: Tokens,
+}
+
+impl YamlTestFn {
+    pub fn fn_name(&self) -> String {
+        self.name.replace(" ", "_").to_lowercase().to_snake_case()
     }
 }
 
@@ -204,7 +317,7 @@ impl<'a> ApiCall<'a> {
                                         .#param_ident(#f)
                                     });
                                 },
-                                TypeKind::Integer => {
+                                TypeKind::Integer | TypeKind::Number => {
                                     let i = s.parse::<i32>()?;
                                     tokens.append(quote! {
                                         .#param_ident(#i)
@@ -535,9 +648,11 @@ impl<'a> ApiCall<'a> {
                     Some(quote!(.body(vec![ #(#json),* ])))
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                    let json = serde_json::to_string(&value).unwrap();
-                    let ident = syn::Ident::from(json);
-                    Some(quote!(.body(json!(#ident))))
+                    let json = serde_json::to_string_pretty(&value).unwrap();
+
+                    //let ident = syn::Ident::from(json);
+
+                    Some(quote!(.body(#json)))
                 }
             }
         }
@@ -577,7 +692,7 @@ pub fn generate_tests_from_yaml(
                     }
 
                     let docs = result.unwrap();
-                    let mut test = YamlTest::new(docs.len());
+                    let mut test = YamlTests::new(docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
@@ -590,7 +705,13 @@ pub fn generate_tests_from_yaml(
                                         match name.as_str() {
                                             "setup" => test.setup = Some(tokens),
                                             "teardown" => test.teardown = Some(tokens),
-                                            name => test.tests.push((name.to_owned(), tokens)),
+                                            name => {
+                                                let test_fn = YamlTestFn {
+                                                    name: name.to_owned(),
+                                                    body: tokens
+                                                };
+                                                test.tests.push(test_fn)
+                                            },
                                         };
                                         Ok(())
                                     }
@@ -666,7 +787,7 @@ fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
 }
 
 fn write_test_file(
-    test: YamlTest,
+    test: YamlTests,
     path: &PathBuf,
     base_download_dir: &PathBuf,
     generated_dir: &PathBuf,
@@ -715,72 +836,7 @@ fn write_test_file(
         .as_bytes(),
     )?;
 
-    let (setup_fn, setup_call) = generate_fixture("setup", &test.setup);
-    let (teardown_fn, teardown_call) = generate_fixture("teardown", &test.teardown);
-    let mut seen_method_names = HashSet::new();
-
-    let tests: Vec<Tokens> = test
-        .tests
-        .iter()
-        .map(|(name, steps)| {
-            let method_name = {
-                let mut method_name = name.replace(" ", "_").to_lowercase().to_snake_case();
-
-                // some method descriptions are the same in YAML tests, which would result in
-                // duplicate generated test function names. Deduplicate by appending incrementing number
-                while !seen_method_names.insert(method_name.clone()) {
-                    lazy_static! {
-                        static ref ENDING_DIGITS_REGEX: Regex =
-                            Regex::new(r"^(.*?)_(\d*?)$").unwrap();
-                    }
-                    if let Some(c) = ENDING_DIGITS_REGEX.captures(&method_name) {
-                        let name = c.get(1).unwrap().as_str();
-                        let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
-                        method_name = format!("{}_{}", name, n + 1);
-                    } else {
-                        method_name.push_str("_2");
-                    }
-                }
-                syn::Ident::from(method_name)
-            };
-            quote! {
-                #[tokio::test]
-                async fn #method_name() -> Result<(), failure::Error> {
-                    let client = client::create();
-                    #setup_call
-                    #steps
-                    #teardown_call
-                    Ok(())
-                }
-            }
-        })
-        .collect();
-
-    let namespaces: Vec<Tokens> = test
-        .namespaces
-        .iter()
-        .map(|n| {
-            let ident = syn::Ident::from(n.as_str());
-            quote!(use elasticsearch::#ident::*;)
-        })
-        .collect();
-
-    let tokens = quote! {
-        #![allow(unused_imports)]
-        #[cfg(test)]
-        pub mod tests {
-            use elasticsearch::*;
-            use elasticsearch::http::request::JsonBody;
-            use elasticsearch::params::*;
-            #(#namespaces)*
-            use crate::client;
-
-            #setup_fn
-            #teardown_fn
-            #(#tests)*
-        }
-    };
-
+    let tokens = test.build();
     let generated = api_generator::generator::rust_fmt(tokens.to_string())?;
     let mut file = OpenOptions::new().append(true).open(&path)?;
     file.write_all(generated.as_bytes())?;
@@ -789,25 +845,7 @@ fn write_test_file(
     Ok(())
 }
 
-/// Generates the AST for the fixture fn and its invocation
-fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Option<Tokens>) {
-    if let Some(t) = tokens {
-        let ident = syn::Ident::from(name);
-        (
-            Some(quote! {
-                async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
-                    #t
-                    Ok(())
-                }
-            }),
-            Some(quote! { #ident(&client).await?; }),
-        )
-    } else {
-        (None, None)
-    }
-}
-
-fn parse_steps(api: &Api, test: &mut YamlTest, steps: &[Yaml]) -> Result<Tokens, failure::Error> {
+fn parse_steps(api: &Api, test: &mut YamlTests, steps: &[Yaml]) -> Result<Tokens, failure::Error> {
     let mut tokens = Tokens::new();
     for step in steps {
         if let Some(hash) = step.as_hash() {
@@ -923,7 +961,7 @@ fn parse_match(_api: &Api, _hash: &Hash, tokens: &mut Tokens) -> Result<(), fail
 
 fn parse_do(
     api: &Api,
-    test: &mut YamlTest,
+    test: &mut YamlTests,
     hash: &Hash,
     tokens: &mut Tokens,
 ) -> Result<(), failure::Error> {
