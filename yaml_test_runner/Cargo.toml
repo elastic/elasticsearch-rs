@@ -7,8 +7,8 @@ description = "Generates and runs tests from Elasticsearch's YAML test specs"
 repository = "https://github.com/elastic/elasticsearch-rs"
 
 [dependencies]
-elasticsearch = { version = "7.6.1-alpha.1", path = "../elasticsearch" }
-api_generator = { version = "7.6.1-alpha.1", path = "../api_generator" }
+elasticsearch = { path = "../elasticsearch" }
+api_generator = { path = "../api_generator" }
 
 clap = "~2"
 failure = "0.1.6"
@@ -21,7 +21,7 @@ reqwest = "~0.9"
 semver = "0.9.0"
 serde = "~1"
 serde_yaml = "0.8.11"
-serde_json = "~1"
+serde_json = { version = "~1", features = ["arbitrary_precision", "raw_value"] }
 syn = { version = "~0.11", features = ["full"] }
 sysinfo = "0.9.6"
 url = "2.1.1"
