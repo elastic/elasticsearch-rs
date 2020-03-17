@@ -42,7 +42,17 @@ impl Response {
         self.0.headers()
     }
 
+    /// Deprecation warning response headers
+    pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
+        self.headers()
+            .get_all("Warning")
+            .iter()
+            .map(|w| w.to_str().unwrap())
+    }
+
     /// Asynchronously read the response body
+    ///
+    /// Reading the response body consumes `self`
     pub async fn read_body<B>(self) -> Result<B, Error>
     where
         B: DeserializeOwned,
