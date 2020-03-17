@@ -244,6 +244,29 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
+async fn search_with_parts_using_from() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let _ = index_documents(&client).await?;
+    let response = client
+        .search(&[client::POSTS_INDEX][..])
+        .pretty(true)
+        .q("title:Elasticsearch")
+        .send()
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    assert_eq!(response.method(), elasticsearch::http::Method::Get);
+    let response_body = response.json::<Value>().await?;
+    assert!(response_body["took"].as_i64().is_some());
+
+    for hit in response_body["hits"]["hits"].as_array().unwrap() {
+        assert!(hit["_source"]["title"].as_str().is_some());
+    }
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn cat_health_format_json() -> Result<(), failure::Error> {
     let client = client::create_default();
     let response = client

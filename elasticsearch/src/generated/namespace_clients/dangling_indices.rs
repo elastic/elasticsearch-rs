@@ -59,6 +59,12 @@ impl<'b> DanglingIndicesDeleteDanglingIndexParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for DanglingIndicesDeleteDanglingIndexParts<'b> {
+    #[doc = "Builds a [DanglingIndicesDeleteDanglingIndexParts::IndexUuid] for the Dangling Indices Delete Dangling Index API"]
+    fn from(t: &'b str) -> DanglingIndicesDeleteDanglingIndexParts<'b> {
+        DanglingIndicesDeleteDanglingIndexParts::IndexUuid(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
 pub struct DanglingIndicesDeleteDanglingIndex<'a, 'b> {
@@ -76,14 +82,14 @@ pub struct DanglingIndicesDeleteDanglingIndex<'a, 'b> {
 }
 impl<'a, 'b> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
     #[doc = "Creates a new instance of [DanglingIndicesDeleteDanglingIndex] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
-    ) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<DanglingIndicesDeleteDanglingIndexParts<'b>>,
+    {
         let headers = HeaderMap::new();
         DanglingIndicesDeleteDanglingIndex {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             accept_data_loss: None,
             error_trace: None,
@@ -210,6 +216,12 @@ impl<'b> DanglingIndicesImportDanglingIndexParts<'b> {
         }
     }
 }
+impl<'b> From<&'b str> for DanglingIndicesImportDanglingIndexParts<'b> {
+    #[doc = "Builds a [DanglingIndicesImportDanglingIndexParts::IndexUuid] for the Dangling Indices Import Dangling Index API"]
+    fn from(t: &'b str) -> DanglingIndicesImportDanglingIndexParts<'b> {
+        DanglingIndicesImportDanglingIndexParts::IndexUuid(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
 pub struct DanglingIndicesImportDanglingIndex<'a, 'b, B> {
@@ -231,14 +243,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [DanglingIndicesImportDanglingIndex] with the specified API parts"]
-    pub fn new(
-        transport: &'a Transport,
-        parts: DanglingIndicesImportDanglingIndexParts<'b>,
-    ) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<DanglingIndicesImportDanglingIndexParts<'b>>,
+    {
         let headers = HeaderMap::new();
         DanglingIndicesImportDanglingIndex {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             accept_data_loss: None,
             body: None,
@@ -489,17 +501,23 @@ impl<'a> DanglingIndices<'a> {
         self.transport
     }
     #[doc = "[Dangling Indices Delete Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nDeletes the specified dangling index"]
-    pub fn delete_dangling_index<'b>(
+    pub fn delete_dangling_index<'b, P>(
         &'a self,
-        parts: DanglingIndicesDeleteDanglingIndexParts<'b>,
-    ) -> DanglingIndicesDeleteDanglingIndex<'a, 'b> {
+        parts: P,
+    ) -> DanglingIndicesDeleteDanglingIndex<'a, 'b>
+    where
+        P: Into<DanglingIndicesDeleteDanglingIndexParts<'b>>,
+    {
         DanglingIndicesDeleteDanglingIndex::new(self.transport(), parts)
     }
     #[doc = "[Dangling Indices Import Dangling Index API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nImports the specified dangling index"]
-    pub fn import_dangling_index<'b>(
+    pub fn import_dangling_index<'b, P>(
         &'a self,
-        parts: DanglingIndicesImportDanglingIndexParts<'b>,
-    ) -> DanglingIndicesImportDanglingIndex<'a, 'b, ()> {
+        parts: P,
+    ) -> DanglingIndicesImportDanglingIndex<'a, 'b, ()>
+    where
+        P: Into<DanglingIndicesImportDanglingIndexParts<'b>>,
+    {
         DanglingIndicesImportDanglingIndex::new(self.transport(), parts)
     }
     #[doc = "[Dangling Indices List Dangling Indices API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/modules-gateway-dangling-indices.html)\n\nReturns all dangling indices."]

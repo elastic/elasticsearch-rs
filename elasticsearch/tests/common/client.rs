@@ -33,6 +33,8 @@ use serde_json::json;
 use sysinfo::{RefreshKind, System, SystemExt};
 use url::Url;
 
+pub static POSTS_INDEX: &'static str = "posts";
+
 /// Gets the address to the Elasticsearch instance from environment variables
 /// and assumes an instance running locally on the default port otherwise
 pub fn cluster_addr() -> String {
@@ -96,10 +98,9 @@ pub fn create(mut builder: TransportBuilder) -> Elasticsearch {
 ///
 /// TODO: This is a temporary measure until https://github.com/elastic/elasticsearch-rs/issues/19 is implemented.
 pub async fn index_documents(client: &Elasticsearch) -> Result<Response, Error> {
-    let index = "posts";
     let exists_response = client
         .indices()
-        .exists(IndicesExistsParts::Index(&[index]))
+        .exists(IndicesExistsParts::Index(&[POSTS_INDEX]))
         .send()
         .await?;
 
@@ -113,7 +114,7 @@ pub async fn index_documents(client: &Elasticsearch) -> Result<Response, Error> 
         }
 
         client
-            .bulk(BulkParts::Index(index))
+            .bulk(BulkParts::Index(POSTS_INDEX))
             .body(body)
             .refresh(Refresh::WaitFor)
             .send()

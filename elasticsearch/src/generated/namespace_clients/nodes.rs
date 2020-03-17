@@ -64,6 +64,12 @@ impl<'b> NodesHotThreadsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for NodesHotThreadsParts<'b> {
+    #[doc = "Builds a [NodesHotThreadsParts::NodeId] for the Nodes Hot Threads API"]
+    fn from(t: &'b [&'b str]) -> NodesHotThreadsParts<'b> {
+        NodesHotThreadsParts::NodeId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 pub struct NodesHotThreads<'a, 'b> {
@@ -84,11 +90,14 @@ pub struct NodesHotThreads<'a, 'b> {
 }
 impl<'a, 'b> NodesHotThreads<'a, 'b> {
     #[doc = "Creates a new instance of [NodesHotThreads] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesHotThreadsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<NodesHotThreadsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         NodesHotThreads {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -274,6 +283,18 @@ impl<'b> NodesInfoParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for NodesInfoParts<'b> {
+    #[doc = "Builds a [NodesInfoParts::NodeId] for the Nodes Info API"]
+    fn from(t: &'b [&'b str]) -> NodesInfoParts<'b> {
+        NodesInfoParts::NodeId(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for NodesInfoParts<'b> {
+    #[doc = "Builds a [NodesInfoParts::NodeIdMetric] for the Nodes Info API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> NodesInfoParts<'b> {
+        NodesInfoParts::NodeIdMetric(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 pub struct NodesInfo<'a, 'b> {
@@ -290,11 +311,14 @@ pub struct NodesInfo<'a, 'b> {
 }
 impl<'a, 'b> NodesInfo<'a, 'b> {
     #[doc = "Creates a new instance of [NodesInfo] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesInfoParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<NodesInfoParts<'b>>,
+    {
         let headers = HeaderMap::new();
         NodesInfo {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -417,6 +441,12 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for NodesReloadSecureSettingsParts<'b> {
+    #[doc = "Builds a [NodesReloadSecureSettingsParts::NodeId] for the Nodes Reload Secure Settings API"]
+    fn from(t: &'b [&'b str]) -> NodesReloadSecureSettingsParts<'b> {
+        NodesReloadSecureSettingsParts::NodeId(t)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
@@ -436,11 +466,14 @@ where
     B: Body,
 {
     #[doc = "Creates a new instance of [NodesReloadSecureSettings] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesReloadSecureSettingsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<NodesReloadSecureSettingsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         NodesReloadSecureSettings {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             body: None,
             error_trace: None,
@@ -645,6 +678,24 @@ impl<'b> NodesStatsParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for NodesStatsParts<'b> {
+    #[doc = "Builds a [NodesStatsParts::NodeId] for the Nodes Stats API"]
+    fn from(t: &'b [&'b str]) -> NodesStatsParts<'b> {
+        NodesStatsParts::NodeId(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for NodesStatsParts<'b> {
+    #[doc = "Builds a [NodesStatsParts::NodeIdMetric] for the Nodes Stats API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> NodesStatsParts<'b> {
+        NodesStatsParts::NodeIdMetric(t.0, t.1)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str], &'b [&'b str])> for NodesStatsParts<'b> {
+    #[doc = "Builds a [NodesStatsParts::NodeIdMetricIndexMetric] for the Nodes Stats API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str], &'b [&'b str])) -> NodesStatsParts<'b> {
+        NodesStatsParts::NodeIdMetricIndexMetric(t.0, t.1, t.2)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 pub struct NodesStats<'a, 'b> {
@@ -667,11 +718,14 @@ pub struct NodesStats<'a, 'b> {
 }
 impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Creates a new instance of [NodesStats] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesStatsParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<NodesStatsParts<'b>>,
+    {
         let headers = HeaderMap::new();
         NodesStats {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             completion_fields: None,
             error_trace: None,
@@ -882,6 +936,18 @@ impl<'b> NodesUsageParts<'b> {
         }
     }
 }
+impl<'b> From<&'b [&'b str]> for NodesUsageParts<'b> {
+    #[doc = "Builds a [NodesUsageParts::NodeId] for the Nodes Usage API"]
+    fn from(t: &'b [&'b str]) -> NodesUsageParts<'b> {
+        NodesUsageParts::NodeId(t)
+    }
+}
+impl<'b> From<(&'b [&'b str], &'b [&'b str])> for NodesUsageParts<'b> {
+    #[doc = "Builds a [NodesUsageParts::NodeIdMetric] for the Nodes Usage API"]
+    fn from(t: (&'b [&'b str], &'b [&'b str])) -> NodesUsageParts<'b> {
+        NodesUsageParts::NodeIdMetric(t.0, t.1)
+    }
+}
 #[derive(Clone, Debug)]
 #[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 pub struct NodesUsage<'a, 'b> {
@@ -897,11 +963,14 @@ pub struct NodesUsage<'a, 'b> {
 }
 impl<'a, 'b> NodesUsage<'a, 'b> {
     #[doc = "Creates a new instance of [NodesUsage] with the specified API parts"]
-    pub fn new(transport: &'a Transport, parts: NodesUsageParts<'b>) -> Self {
+    pub fn new<P>(transport: &'a Transport, parts: P) -> Self
+    where
+        P: Into<NodesUsageParts<'b>>,
+    {
         let headers = HeaderMap::new();
         NodesUsage {
             transport,
-            parts,
+            parts: parts.into(),
             headers,
             error_trace: None,
             filter_path: None,
@@ -1002,26 +1071,41 @@ impl<'a> Nodes<'a> {
         self.transport
     }
     #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
-    pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
+    pub fn hot_threads<'b, P>(&'a self, parts: P) -> NodesHotThreads<'a, 'b>
+    where
+        P: Into<NodesHotThreadsParts<'b>>,
+    {
         NodesHotThreads::new(self.transport(), parts)
     }
     #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
-    pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
+    pub fn info<'b, P>(&'a self, parts: P) -> NodesInfo<'a, 'b>
+    where
+        P: Into<NodesInfoParts<'b>>,
+    {
         NodesInfo::new(self.transport(), parts)
     }
     #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
-    pub fn reload_secure_settings<'b>(
+    pub fn reload_secure_settings<'b, P>(
         &'a self,
-        parts: NodesReloadSecureSettingsParts<'b>,
-    ) -> NodesReloadSecureSettings<'a, 'b, ()> {
+        parts: P,
+    ) -> NodesReloadSecureSettings<'a, 'b, ()>
+    where
+        P: Into<NodesReloadSecureSettingsParts<'b>>,
+    {
         NodesReloadSecureSettings::new(self.transport(), parts)
     }
     #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
-    pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
+    pub fn stats<'b, P>(&'a self, parts: P) -> NodesStats<'a, 'b>
+    where
+        P: Into<NodesStatsParts<'b>>,
+    {
         NodesStats::new(self.transport(), parts)
     }
     #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/8.0/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
-    pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
+    pub fn usage<'b, P>(&'a self, parts: P) -> NodesUsage<'a, 'b>
+    where
+        P: Into<NodesUsageParts<'b>>,
+    {
         NodesUsage::new(self.transport(), parts)
     }
 }

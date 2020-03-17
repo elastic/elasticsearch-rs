@@ -198,6 +198,27 @@
 //! variants are modelled as an `enum`, such as [CatIndicesParts](cat::CatIndicesParts) in the above example, which models
 //! the variants of the [CatIndices](cat::CatIndices) API.
 //!
+//! An Url path `enum` variant can often be built from a value or tuple of values that form
+//! the arguments to the variant. Taking the previous cat indices API call as an example, it
+//! can be slightly shortened to
+//!
+//! ```rust,no_run
+//! # use elasticsearch;
+//! # use elasticsearch::{Elasticsearch, Error, cat::CatIndicesParts};
+//! # use url::Url;
+//! # use elasticsearch::auth::Credentials;
+//! # use serde_json::{json, Value};
+//! # async fn run() -> Result<(), Error> {
+//! # let client = Elasticsearch::default();
+//! let response = client
+//!     .cat()
+//!     .indices(&["*"][..])
+//!     .send()
+//!     .await?;
+//! # Ok(())
+//! # }
+//! ```
+//!
 //! ### Indexing
 //!
 //! Indexing a single document can be achieved with the index API
