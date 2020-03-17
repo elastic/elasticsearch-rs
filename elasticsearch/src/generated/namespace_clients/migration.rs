@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -66,10 +66,11 @@ pub struct MigrationDeprecations<'a, 'b> {
 impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MigrationDeprecationsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MigrationDeprecations {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,

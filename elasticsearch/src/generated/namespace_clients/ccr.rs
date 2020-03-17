@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -62,10 +62,11 @@ pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
 impl<'a, 'b> CcrDeleteAutoFollowPattern<'a, 'b> {
     #[doc = "Creates a new instance of [CcrDeleteAutoFollowPattern] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrDeleteAutoFollowPatternParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrDeleteAutoFollowPattern {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -183,10 +184,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrFollow] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrFollowParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrFollow {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -328,10 +330,11 @@ pub struct CcrFollowInfo<'a, 'b> {
 impl<'a, 'b> CcrFollowInfo<'a, 'b> {
     #[doc = "Creates a new instance of [CcrFollowInfo] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrFollowInfoParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrFollowInfo {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -445,10 +448,11 @@ pub struct CcrFollowStats<'a, 'b> {
 impl<'a, 'b> CcrFollowStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrFollowStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrFollowStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrFollowStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -565,10 +569,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrForgetFollower] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrForgetFollowerParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrForgetFollower {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -701,10 +706,11 @@ pub struct CcrGetAutoFollowPattern<'a, 'b> {
 impl<'a, 'b> CcrGetAutoFollowPattern<'a, 'b> {
     #[doc = "Creates a new instance of [CcrGetAutoFollowPattern] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrGetAutoFollowPatternParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrGetAutoFollowPattern {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -821,10 +827,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrPauseAutoFollowPattern] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrPauseAutoFollowPatternParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrPauseAutoFollowPattern {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -959,10 +966,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrPauseFollow] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrPauseFollowParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrPauseFollow {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1096,10 +1104,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrPutAutoFollowPattern] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrPutAutoFollowPatternParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrPutAutoFollowPattern {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1234,10 +1243,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrResumeAutoFollowPattern] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrResumeAutoFollowPatternParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrResumeAutoFollowPattern {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1372,10 +1382,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrResumeFollow] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrResumeFollowParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrResumeFollow {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1500,10 +1511,11 @@ pub struct CcrStats<'a, 'b> {
 impl<'a, 'b> CcrStats<'a, 'b> {
     #[doc = "Creates a new instance of [CcrStats]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         CcrStats {
             client,
             parts: CcrStatsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1620,10 +1632,11 @@ where
 {
     #[doc = "Creates a new instance of [CcrUnfollow] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CcrUnfollowParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         CcrUnfollow {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

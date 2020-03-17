@@ -8,7 +8,9 @@ use elasticsearch::{
 };
 
 use crate::common::client::index_documents;
-use http::{header::HeaderName, HeaderMap};
+use elasticsearch::http::headers::{
+    HeaderMap, HeaderName, ACCEPT, CONTENT_TYPE, DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE,
+};
 use hyper::Method;
 use reqwest::StatusCode;
 use serde_json::{json, Value};
@@ -118,7 +120,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
-async fn cat_health() -> Result<(), failure::Error> {
+async fn cat_health_format_json() -> Result<(), failure::Error> {
     let client = client::create_default();
     let response = client
         .cat()
@@ -129,7 +131,56 @@ async fn cat_health() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
+    assert!(response
+        .headers()
+        .get(CONTENT_TYPE)
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .starts_with(DEFAULT_CONTENT_TYPE));
     let _response_body = response.read_body::<Value>().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn cat_health_header_json() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let response = client
+        .cat()
+        .health()
+        .header(ACCEPT, HeaderValue::from_static(DEFAULT_ACCEPT))
+        .pretty(true)
+        .send()
+        .await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    assert!(response
+        .headers()
+        .get(CONTENT_TYPE)
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .starts_with(DEFAULT_CONTENT_TYPE));
+    let _response_body = response.read_body::<Value>().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn cat_health_text() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let response = client.cat().health().pretty(true).send().await?;
+
+    assert_eq!(response.status_code(), StatusCode::OK);
+    assert!(response
+        .headers()
+        .get(CONTENT_TYPE)
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .starts_with("text/plain"));
+    let _response_body = response.read_body_as_text().await?;
 
     Ok(())
 }

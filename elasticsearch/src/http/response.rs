@@ -42,12 +42,22 @@ impl Response {
         self.0.headers()
     }
 
-    /// Asynchronously read the response body
+    /// Asynchronously reads the response body as JSON
+    ///
+    /// Reading the response body consumes `self`
     pub async fn read_body<B>(self) -> Result<B, Error>
     where
         B: DeserializeOwned,
     {
         let body = self.0.json::<B>().await?;
+        Ok(body)
+    }
+
+    /// Asynchronously reads the response body as plain text
+    ///
+    /// Reading the response body consumes `self`
+    pub async fn read_body_as_text(self) -> Result<String, Error> {
+        let body = self.0.text().await?;
         Ok(body)
     }
 }

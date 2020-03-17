@@ -19,7 +19,9 @@ pub use reqwest::Certificate;
 /// With Elasticsearch running at `https://example.com`, configured to use a certificate generated
 /// with your own Certificate Authority (CA), and where the certificate contains a CommonName (CN)
 /// or Subject Alternative Name (SAN) that matches the hostname of Elasticsearch
-#[cfg_attr(any(feature = "native-tls", feature = "rustls-tls"), doc = r##"
+#[cfg_attr(
+    any(feature = "native-tls", feature = "rustls-tls"),
+    doc = r##"
 ```rust,norun
 # use elasticsearch::{
 #     auth::Credentials,
@@ -48,14 +50,17 @@ let _response = client.ping().send().await?;
 # Ok(())
 # }
 ```
-"##)]
+"##
+)]
 /// ## Certificate validation
 ///
 /// This requires the `native-tls` feature to be enabled.
 ///
 /// With Elasticsearch running at `https://example.com`, configured to use a certificate generated
 /// with your own Certificate Authority (CA)
-#[cfg_attr(feature = "native-tls", doc = r##"
+#[cfg_attr(
+    feature = "native-tls",
+    doc = r##"
 ```rust,norun
 # use elasticsearch::{
 #     auth::Credentials,
@@ -83,7 +88,8 @@ let _response = client.ping().send().await?;
 # Ok(())
 # }
 ```
-"##)]
+"##
+)]
 /// ## No validation
 ///
 /// No validation is performed on the certificate provided by the server.

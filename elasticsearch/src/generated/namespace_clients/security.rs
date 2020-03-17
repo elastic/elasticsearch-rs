@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -57,10 +57,11 @@ pub struct SecurityAuthenticate<'a, 'b> {
 impl<'a, 'b> SecurityAuthenticate<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityAuthenticate]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityAuthenticate {
             client,
             parts: SecurityAuthenticateParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -181,10 +182,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityChangePassword] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityChangePasswordParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityChangePassword {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -331,10 +333,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRealms] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRealmsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityClearCachedRealms {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -483,10 +486,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRoles] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRolesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityClearCachedRoles {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -616,10 +620,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityCreateApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityCreateApiKey {
             client,
             parts: SecurityCreateApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -762,10 +767,11 @@ pub struct SecurityDeletePrivileges<'a, 'b> {
 impl<'a, 'b> SecurityDeletePrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeletePrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeletePrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeletePrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -887,10 +893,11 @@ pub struct SecurityDeleteRole<'a, 'b> {
 impl<'a, 'b> SecurityDeleteRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1012,10 +1019,11 @@ pub struct SecurityDeleteRoleMapping<'a, 'b> {
 impl<'a, 'b> SecurityDeleteRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1137,10 +1145,11 @@ pub struct SecurityDeleteUser<'a, 'b> {
 impl<'a, 'b> SecurityDeleteUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1267,10 +1276,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityDisableUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDisableUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDisableUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1416,10 +1426,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityEnableUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityEnableUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityEnableUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1559,10 +1570,11 @@ pub struct SecurityGetApiKey<'a, 'b> {
 impl<'a, 'b> SecurityGetApiKey<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetApiKey {
             client,
             parts: SecurityGetApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1714,10 +1726,11 @@ pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetBuiltinPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetBuiltinPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetBuiltinPrivileges {
             client,
             parts: SecurityGetBuiltinPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1842,10 +1855,11 @@ pub struct SecurityGetPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetPrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetPrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetPrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1960,10 +1974,11 @@ pub struct SecurityGetRole<'a, 'b> {
 impl<'a, 'b> SecurityGetRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2078,10 +2093,11 @@ pub struct SecurityGetRoleMapping<'a, 'b> {
 impl<'a, 'b> SecurityGetRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2192,10 +2208,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityGetToken]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetToken {
             client,
             parts: SecurityGetTokenParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2329,10 +2346,11 @@ pub struct SecurityGetUser<'a, 'b> {
 impl<'a, 'b> SecurityGetUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2439,10 +2457,11 @@ pub struct SecurityGetUserPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUserPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetUserPrivileges {
             client,
             parts: SecurityGetUserPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2562,10 +2581,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityHasPrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityHasPrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityHasPrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2697,10 +2717,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityInvalidateApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityInvalidateApiKey {
             client,
             parts: SecurityInvalidateApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2829,10 +2850,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityInvalidateToken]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityInvalidateToken {
             client,
             parts: SecurityInvalidateTokenParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2962,10 +2984,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutPrivileges {
             client,
             parts: SecurityPutPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3110,10 +3133,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3258,10 +3282,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3406,10 +3431,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -58,10 +58,11 @@ pub struct XpackInfo<'a, 'b> {
 impl<'a, 'b> XpackInfo<'a, 'b> {
     #[doc = "Creates a new instance of [XpackInfo]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         XpackInfo {
             client,
             parts: XpackInfoParts::None,
-            headers: HeaderMap::new(),
+            headers,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -181,10 +182,11 @@ pub struct XpackUsage<'a, 'b> {
 impl<'a, 'b> XpackUsage<'a, 'b> {
     #[doc = "Creates a new instance of [XpackUsage]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         XpackUsage {
             client,
             parts: XpackUsageParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,

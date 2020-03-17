@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -62,10 +62,11 @@ pub struct EnrichDeletePolicy<'a, 'b> {
 impl<'a, 'b> EnrichDeletePolicy<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichDeletePolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: EnrichDeletePolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         EnrichDeletePolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -183,10 +184,11 @@ where
 {
     #[doc = "Creates a new instance of [EnrichExecutePolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: EnrichExecutePolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         EnrichExecutePolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -330,10 +332,11 @@ pub struct EnrichGetPolicy<'a, 'b> {
 impl<'a, 'b> EnrichGetPolicy<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichGetPolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: EnrichGetPolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         EnrichGetPolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -449,10 +452,11 @@ where
 {
     #[doc = "Creates a new instance of [EnrichPutPolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: EnrichPutPolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         EnrichPutPolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -577,10 +581,11 @@ pub struct EnrichStats<'a, 'b> {
 impl<'a, 'b> EnrichStats<'a, 'b> {
     #[doc = "Creates a new instance of [EnrichStats]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         EnrichStats {
             client,
             parts: EnrichStatsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,

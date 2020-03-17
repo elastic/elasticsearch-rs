@@ -18,7 +18,7 @@ pub fn use_declarations() -> Tokens {
             params::*,
             error::Error,
             http::{
-                headers::{HeaderName, HeaderMap, HeaderValue},
+                headers::{HeaderName, HeaderMap, HeaderValue, CONTENT_TYPE, ACCEPT},
                 Method,
                 request::{Body, NdBody, JsonBody},
                 response::Response,

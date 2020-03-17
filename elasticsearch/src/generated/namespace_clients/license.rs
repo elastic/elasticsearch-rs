@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -57,10 +57,11 @@ pub struct LicenseDelete<'a, 'b> {
 impl<'a, 'b> LicenseDelete<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseDelete]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicenseDelete {
             client,
             parts: LicenseDeleteParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -169,10 +170,11 @@ pub struct LicenseGet<'a, 'b> {
 impl<'a, 'b> LicenseGet<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGet]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicenseGet {
             client,
             parts: LicenseGetParts::None,
-            headers: HeaderMap::new(),
+            headers,
             accept_enterprise: None,
             error_trace: None,
             filter_path: None,
@@ -297,10 +299,11 @@ pub struct LicenseGetBasicStatus<'a, 'b> {
 impl<'a, 'b> LicenseGetBasicStatus<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGetBasicStatus]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicenseGetBasicStatus {
             client,
             parts: LicenseGetBasicStatusParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -407,10 +410,11 @@ pub struct LicenseGetTrialStatus<'a, 'b> {
 impl<'a, 'b> LicenseGetTrialStatus<'a, 'b> {
     #[doc = "Creates a new instance of [LicenseGetTrialStatus]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicenseGetTrialStatus {
             client,
             parts: LicenseGetTrialStatusParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -522,10 +526,11 @@ where
 {
     #[doc = "Creates a new instance of [LicensePost]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicensePost {
             client,
             parts: LicensePostParts::None,
-            headers: HeaderMap::new(),
+            headers,
             acknowledge: None,
             body: None,
             error_trace: None,
@@ -665,10 +670,11 @@ where
 {
     #[doc = "Creates a new instance of [LicensePostStartBasic]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicensePostStartBasic {
             client,
             parts: LicensePostStartBasicParts::None,
-            headers: HeaderMap::new(),
+            headers,
             acknowledge: None,
             body: None,
             error_trace: None,
@@ -809,10 +815,11 @@ where
 {
     #[doc = "Creates a new instance of [LicensePostStartTrial]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         LicensePostStartTrial {
             client,
             parts: LicensePostStartTrialParts::None,
-            headers: HeaderMap::new(),
+            headers,
             acknowledge: None,
             body: None,
             error_trace: None,

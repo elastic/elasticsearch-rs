@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -71,10 +71,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesAnalyze] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesAnalyzeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesAnalyze {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -234,10 +235,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesClearCache] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesClearCacheParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesClearCache {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -456,10 +458,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesClone] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesCloneParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesClone {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -631,10 +634,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesClose] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesCloseParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesClose {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -832,10 +836,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesCreate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesCreateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesCreate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1011,10 +1016,11 @@ pub struct IndicesDelete<'a, 'b> {
 impl<'a, 'b> IndicesDelete<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDelete] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesDelete {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1177,10 +1183,11 @@ pub struct IndicesDeleteAlias<'a, 'b> {
 impl<'a, 'b> IndicesDeleteAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteAlias] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteAliasParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesDeleteAlias {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1312,10 +1319,11 @@ pub struct IndicesDeleteTemplate<'a, 'b> {
 impl<'a, 'b> IndicesDeleteTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesDeleteTemplate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesDeleteTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesDeleteTemplate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1452,10 +1460,11 @@ pub struct IndicesExists<'a, 'b> {
 impl<'a, 'b> IndicesExists<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExists] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesExistsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesExists {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1638,10 +1647,11 @@ pub struct IndicesExistsAlias<'a, 'b> {
 impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsAlias] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesExistsAliasParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesExistsAlias {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1793,10 +1803,11 @@ pub struct IndicesExistsTemplate<'a, 'b> {
 impl<'a, 'b> IndicesExistsTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsTemplate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesExistsTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesExistsTemplate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -1943,10 +1954,11 @@ pub struct IndicesExistsType<'a, 'b> {
 impl<'a, 'b> IndicesExistsType<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesExistsType] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesExistsTypeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesExistsType {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -2108,10 +2120,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesFlush] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesFlushParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesFlush {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2306,10 +2319,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesFlushSynced] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesFlushSyncedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesFlushSynced {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2487,10 +2501,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesForcemerge] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesForcemergeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesForcemerge {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2691,10 +2706,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesFreeze] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesFreezeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesFreeze {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -2893,10 +2909,11 @@ pub struct IndicesGet<'a, 'b> {
 impl<'a, 'b> IndicesGet<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGet] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGet {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3110,10 +3127,11 @@ pub struct IndicesGetAlias<'a, 'b> {
 impl<'a, 'b> IndicesGetAlias<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetAlias] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetAliasParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetAlias {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3309,10 +3327,11 @@ pub struct IndicesGetFieldMapping<'a, 'b> {
 impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetFieldMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetFieldMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetFieldMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3510,10 +3529,11 @@ pub struct IndicesGetMapping<'a, 'b> {
 impl<'a, 'b> IndicesGetMapping<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3712,10 +3732,11 @@ pub struct IndicesGetSettings<'a, 'b> {
 impl<'a, 'b> IndicesGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetSettings] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetSettingsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetSettings {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -3898,10 +3919,11 @@ pub struct IndicesGetTemplate<'a, 'b> {
 impl<'a, 'b> IndicesGetTemplate<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetTemplate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetTemplate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -4057,10 +4079,11 @@ pub struct IndicesGetUpgrade<'a, 'b> {
 impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesGetUpgrade] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesGetUpgradeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesGetUpgrade {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -4211,10 +4234,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesOpen] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesOpenParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesOpen {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4413,10 +4437,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesPutAlias] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesPutAliasParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesPutAlias {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4598,10 +4623,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesPutMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesPutMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesPutMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -4807,10 +4833,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesPutSettings] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesPutSettingsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesPutSettings {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -5020,10 +5047,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesPutTemplate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesPutTemplateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesPutTemplate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             create: None,
             error_trace: None,
@@ -5220,10 +5248,11 @@ pub struct IndicesRecovery<'a, 'b> {
 impl<'a, 'b> IndicesRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesRecovery] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesRecoveryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesRecovery {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             active_only: None,
             detailed: None,
             error_trace: None,
@@ -5365,10 +5394,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesRefresh] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesRefreshParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesRefresh {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -5540,10 +5570,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesReloadSearchAnalyzers] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesReloadSearchAnalyzersParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesReloadSearchAnalyzers {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -5726,10 +5757,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesRollover] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesRolloverParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesRollover {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -5918,10 +5950,11 @@ pub struct IndicesSegments<'a, 'b> {
 impl<'a, 'b> IndicesSegments<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesSegments] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesSegmentsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesSegments {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -6078,10 +6111,11 @@ pub struct IndicesShardStores<'a, 'b> {
 impl<'a, 'b> IndicesShardStores<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesShardStores] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesShardStoresParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesShardStores {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -6239,10 +6273,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesShrink] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesShrinkParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesShrink {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -6422,10 +6457,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesSplit] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesSplitParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesSplit {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             copy_settings: None,
             error_trace: None,
@@ -6631,10 +6667,11 @@ pub struct IndicesStats<'a, 'b> {
 impl<'a, 'b> IndicesStats<'a, 'b> {
     #[doc = "Creates a new instance of [IndicesStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             completion_fields: None,
             error_trace: None,
             expand_wildcards: None,
@@ -6853,10 +6890,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesUnfreeze] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesUnfreezeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesUnfreeze {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -7047,10 +7085,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesUpdateAliases]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IndicesUpdateAliases {
             client,
             parts: IndicesUpdateAliasesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -7214,10 +7253,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesUpgrade] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesUpgradeParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesUpgrade {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             body: None,
             error_trace: None,
@@ -7431,10 +7471,11 @@ where
 {
     #[doc = "Creates a new instance of [IndicesValidateQuery] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IndicesValidateQueryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IndicesValidateQuery {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             all_shards: None,
             allow_no_indices: None,
             analyze_wildcard: None,

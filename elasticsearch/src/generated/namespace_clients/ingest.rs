@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -64,10 +64,11 @@ pub struct IngestDeletePipeline<'a, 'b> {
 impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestDeletePipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestDeletePipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -201,10 +202,11 @@ pub struct IngestGetPipeline<'a, 'b> {
 impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestGetPipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestGetPipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -320,10 +322,11 @@ pub struct IngestProcessorGrok<'a, 'b> {
 impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
     #[doc = "Creates a new instance of [IngestProcessorGrok]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IngestProcessorGrok {
             client,
             parts: IngestProcessorGrokParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -441,10 +444,11 @@ where
 {
     #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestPutPipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestPutPipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -603,10 +607,11 @@ where
 {
     #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestSimulateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestSimulate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

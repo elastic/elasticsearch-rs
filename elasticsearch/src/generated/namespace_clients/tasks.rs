@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -73,10 +73,11 @@ where
 {
     #[doc = "Creates a new instance of [TasksCancel] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: TasksCancelParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         TasksCancel {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             actions: None,
             body: None,
             error_trace: None,
@@ -241,10 +242,11 @@ pub struct TasksGet<'a, 'b> {
 impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: TasksGetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         TasksGet {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -376,10 +378,11 @@ pub struct TasksList<'a, 'b> {
 impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates a new instance of [TasksList]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         TasksList {
             client,
             parts: TasksListParts::None,
-            headers: HeaderMap::new(),
+            headers,
             actions: None,
             detailed: None,
             error_trace: None,

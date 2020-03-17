@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -73,10 +73,11 @@ pub struct NodesHotThreads<'a, 'b> {
 impl<'a, 'b> NodesHotThreads<'a, 'b> {
     #[doc = "Creates a new instance of [NodesHotThreads] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesHotThreadsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesHotThreads {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -269,10 +270,11 @@ pub struct NodesInfo<'a, 'b> {
 impl<'a, 'b> NodesInfo<'a, 'b> {
     #[doc = "Creates a new instance of [NodesInfo] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesInfoParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesInfo {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -412,10 +414,11 @@ where
 {
     #[doc = "Creates a new instance of [NodesReloadSecureSettings] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesReloadSecureSettingsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesReloadSecureSettings {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -619,10 +622,11 @@ pub struct NodesStats<'a, 'b> {
 impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Creates a new instance of [NodesStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             completion_fields: None,
             error_trace: None,
             fielddata_fields: None,
@@ -839,10 +843,11 @@ pub struct NodesUsage<'a, 'b> {
 impl<'a, 'b> NodesUsage<'a, 'b> {
     #[doc = "Creates a new instance of [NodesUsage] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesUsageParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesUsage {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,

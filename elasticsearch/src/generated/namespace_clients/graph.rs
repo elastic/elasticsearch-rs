@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -83,10 +83,11 @@ where
 {
     #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: GraphExploreParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         GraphExplore {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -62,10 +62,11 @@ pub struct IlmDeleteLifecycle<'a, 'b> {
 impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmDeleteLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmDeleteLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -180,10 +181,11 @@ pub struct IlmExplainLifecycle<'a, 'b> {
 impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmExplainLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmExplainLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmExplainLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -316,10 +318,11 @@ pub struct IlmGetLifecycle<'a, 'b> {
 impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmGetLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmGetLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -426,10 +429,11 @@ pub struct IlmGetStatus<'a, 'b> {
 impl<'a, 'b> IlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetStatus]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmGetStatus {
             client,
             parts: IlmGetStatusParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -545,10 +549,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmMoveToStep] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmMoveToStepParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmMoveToStep {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -682,10 +687,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmPutLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmPutLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmPutLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -820,10 +826,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmRemovePolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmRemovePolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmRemovePolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -958,10 +965,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmRetry] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmRetryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmRetry {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1090,10 +1098,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmStart]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmStart {
             client,
             parts: IlmStartParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1222,10 +1231,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmStop]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmStop {
             client,
             parts: IlmStopParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
