@@ -110,4 +110,3 @@ impl<'a> From<(Vec<&'a str>, Vec<&'a str>)> for SourceFilter {
         }
     }
 }
-

@@ -15,6 +15,7 @@ use crate::{
     },
 };
 
+use crate::auth::ClientCertificate;
 use base64::write::EncoderWriter as Base64Encoder;
 use bytes::BytesMut;
 use serde::Serialize;
@@ -23,7 +24,6 @@ use std::fmt;
 use std::fmt::Debug;
 use std::io::{self, Write};
 use url::Url;
-use crate::auth::ClientCertificate;
 
 /// Error that can occur when building a [Transport]
 #[derive(Debug)]
@@ -155,16 +155,16 @@ impl TransportBuilder {
                         ClientCertificate::Pkcs12(b, p) => {
                             let password = match p {
                                 Some(pass) => pass.as_str(),
-                                None => ""
+                                None => "",
                             };
                             let pkcs12 = reqwest::Identity::from_pkcs12_der(b, password)?;
                             client_builder.identity(pkcs12)
-                        },
+                        }
                         #[cfg(feature = "rustls-tls")]
                         ClientCertificate::Pem(b) => {
                             let pem = reqwest::Identity::from_pem(b)?;
                             client_builder.identity(pem)
-                        },
+                        }
                     }
                 }
             };
@@ -176,11 +176,9 @@ impl TransportBuilder {
                 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
                 CertificateValidation::Full(c) => client_builder.add_root_certificate(c),
                 #[cfg(feature = "native-tls")]
-                CertificateValidation::Certificate(c) => {
-                    client_builder
-                        .add_root_certificate(c)
-                        .danger_accept_invalid_hostnames(true)
-                }
+                CertificateValidation::Certificate(c) => client_builder
+                    .add_root_certificate(c)
+                    .danger_accept_invalid_hostnames(true),
                 CertificateValidation::None => client_builder.danger_accept_invalid_certs(true),
             }
         }

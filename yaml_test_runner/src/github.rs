@@ -38,7 +38,11 @@ struct GitHubContent {
 }
 
 /// Downloads the yaml tests if not already downloaded
-pub fn download_test_suites(token: &str, branch: &str, download_dir: &PathBuf) -> Result<(), failure::Error> {
+pub fn download_test_suites(
+    token: &str,
+    branch: &str,
+    download_dir: &PathBuf,
+) -> Result<(), failure::Error> {
     let mut last_downloaded_version = download_dir.clone();
     last_downloaded_version.push("last_downloaded_version");
     if last_downloaded_version.exists() {
@@ -154,7 +158,12 @@ fn download(
                 fs::create_dir_all(&content_path)?;
                 download(client, &content.url, &content_path)?;
             }
-            t => return Err(DownloadError::InvalidType(format!("Unexpected GitHub content type: {}", t))),
+            t => {
+                return Err(DownloadError::InvalidType(format!(
+                    "Unexpected GitHub content type: {}",
+                    t
+                )))
+            }
         }
     }
 
@@ -165,7 +174,7 @@ fn download(
 pub enum DownloadError {
     IoErr(io::Error),
     HttpError(reqwest::Error),
-    InvalidType(String)
+    InvalidType(String),
 }
 
 impl std::fmt::Display for DownloadError {
