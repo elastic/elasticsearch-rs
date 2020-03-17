@@ -5,14 +5,12 @@ use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::HashSet;
+use std::fmt::Write as FormatWrite;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::PathBuf;
-use yaml_rust::{
-    yaml::{Hash},
-    Yaml, YamlEmitter, YamlLoader,
-};
+use yaml_rust::{yaml::Hash, Yaml, YamlEmitter, YamlLoader};
 
 /// The components of a test file, constructed from a yaml file
 struct YamlTests {
@@ -54,6 +52,8 @@ impl YamlTests {
                 use elasticsearch::http::request::JsonBody;
                 use elasticsearch::params::*;
                 #(#namespaces)*
+                use regex;
+                use serde_json::Value;
                 use crate::client;
 
                 #setup_fn
@@ -66,8 +66,7 @@ impl YamlTests {
     fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
         let mut seen_method_names = HashSet::new();
 
-        self
-            .tests
+        self.tests
             .iter()
             .map(|test_fn| {
                 // some function descriptions are the same in YAML tests, which would result in
@@ -77,9 +76,9 @@ impl YamlTests {
 
                     while !seen_method_names.insert(fn_name.clone()) {
                         lazy_static! {
-                        static ref ENDING_DIGITS_REGEX: Regex =
-                            Regex::new(r"^(.*?)_(\d*?)$").unwrap();
-                    }
+                            static ref ENDING_DIGITS_REGEX: Regex =
+                                Regex::new(r"^(.*?)_(\d*?)$").unwrap();
+                        }
                         if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
                             let name = c.get(1).unwrap().as_str();
                             let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
@@ -121,11 +120,11 @@ impl YamlTests {
             let ident = syn::Ident::from(name);
             (
                 Some(quote! {
-                async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
-                    #t
-                    Ok(())
-                }
-            }),
+                    async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
+                        #t
+                        Ok(())
+                    }
+                }),
                 Some(quote! { #ident(&client).await?; }),
             )
         } else {
@@ -316,7 +315,7 @@ impl<'a> ApiCall<'a> {
                                     tokens.append(quote! {
                                         .#param_ident(#f)
                                     });
-                                },
+                                }
                                 TypeKind::Integer | TypeKind::Number => {
                                     let i = s.parse::<i32>()?;
                                     tokens.append(quote! {
@@ -443,13 +442,18 @@ impl<'a> ApiCall<'a> {
         // Enum variants containing no URL parts where there is only a single API URL,
         // are not required to be passed in the API
         if parts.is_empty() {
-            let param_counts = endpoint.url.paths
+            let param_counts = endpoint
+                .url
+                .paths
                 .iter()
                 .map(|p| p.path.params().len())
                 .collect::<Vec<usize>>();
 
             if !param_counts.contains(&0) {
-                return Err(failure::err_msg(format!("No path for '{}' API with no URL parts", api_call)));
+                return Err(failure::err_msg(format!(
+                    "No path for '{}' API with no URL parts",
+                    api_call
+                )));
             }
 
             return match endpoint.url.paths.len() {
@@ -466,7 +470,7 @@ impl<'a> ApiCall<'a> {
                 } else {
                     None
                 }
-            },
+            }
             _ => {
                 // get the matching path parts
                 let matching_path_parts = endpoint
@@ -648,7 +652,7 @@ impl<'a> ApiCall<'a> {
                     Some(quote!(.body(vec![ #(#json),* ])))
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                    let json = serde_json::to_string_pretty(&value).unwrap();
+                    let json = serde_json::to_string(&value).unwrap();
 
                     //let ident = syn::Ident::from(json);
 
@@ -862,11 +866,15 @@ fn parse_steps(api: &Api, test: &mut YamlTests, steps: &[Yaml]) -> Result<Tokens
                                     let reason = skip.reason.unwrap_or("");
 
                                     // TODO: Communicate this in a different way - Don't use an error. Probably need to push components of a test into its own struct
-                                    return Err(failure::err_msg(format!("Skipping test because skip version '{}' are met. {}", skip.version.unwrap(), reason)))
+                                    return Err(failure::err_msg(format!(
+                                        "Skipping test because skip version '{}' are met. {}",
+                                        skip.version.unwrap(),
+                                        reason
+                                    )));
                                 }
                             }
                         }
-                        Err(e) => return Err(failure::err_msg(e.to_string()))
+                        Err(e) => return Err(failure::err_msg(e.to_string())),
                     }
                 }
                 ("do", Yaml::Hash(h)) => parse_do(api, test, h, &mut tokens)?,
@@ -886,8 +894,6 @@ fn parse_steps(api: &Api, test: &mut YamlTests, steps: &[Yaml]) -> Result<Tokens
                 ("lt", Yaml::Hash(_h)) => {}
                 (op, _) => return Err(failure::err_msg(format!("unknown step operation: {}", op))),
             }
-
-
         } else {
             return Err(failure::err_msg(format!("{:?} is not a hash", &step)));
         }
@@ -907,37 +913,48 @@ impl<'a> Skip<'a> {
     pub fn matches(&self, version: &semver::Version) -> bool {
         match &self.version_requirements {
             Some(r) => r.matches(version),
-            None => false
+            None => false,
         }
     }
 }
 
 fn parse_skip(hash: &Hash) -> Result<Skip, failure::Error> {
-    let version = hash.get(&Yaml::from_str("version")).map_or_else(|| None,|y| y.as_str());
-    let reason = hash.get(&Yaml::from_str("reason")).map_or_else(|| None,|y| y.as_str());
-    let features = hash.get(&Yaml::from_str("features")).map_or_else(|| None,|y| y.as_str());
+    let version = hash
+        .get(&Yaml::from_str("version"))
+        .map_or_else(|| None, |y| y.as_str());
+    let reason = hash
+        .get(&Yaml::from_str("reason"))
+        .map_or_else(|| None, |y| y.as_str());
+    let features = hash
+        .get(&Yaml::from_str("features"))
+        .map_or_else(|| None, |y| y.as_str());
     let version_requirements = if let Some(v) = version {
-        lazy_static!{
-            static ref VERSION_REGEX: Regex = Regex::new(r"^([\w\.]+)?\s*?\-\s*?([\w\.]+)?$").unwrap();
-        }
-
-        if let Some(c) = VERSION_REGEX.captures(v) {
-            match (c.get(1), c.get(2)) {
-                (Some(start), Some(end)) => {
-                    Some(semver::VersionReq::parse(format!(">={},<={}", start.as_str(), end.as_str()).as_ref()).unwrap())
-                },
-                (Some(start), None) => {
-                    Some(semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref()).unwrap())
-                },
-                (None, Some(end)) => {
-                    Some(semver::VersionReq::parse(format!("<={}", end.as_str()).as_ref()).unwrap())
-                },
-                (None, None) => {
-                    None
-                }
-            }
+        if v.to_lowercase() == "all" {
+            Some(semver::VersionReq::any())
         } else {
-            None
+            lazy_static! {
+                static ref VERSION_REGEX: Regex =
+                    Regex::new(r"^([\w\.]+)?\s*?\-\s*?([\w\.]+)?$").unwrap();
+            }
+            if let Some(c) = VERSION_REGEX.captures(v) {
+                match (c.get(1), c.get(2)) {
+                    (Some(start), Some(end)) => Some(
+                        semver::VersionReq::parse(
+                            format!(">={},<={}", start.as_str(), end.as_str()).as_ref(),
+                        )
+                            .unwrap(),
+                    ),
+                    (Some(start), None) => Some(
+                        semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref()).unwrap(),
+                    ),
+                    (None, Some(end)) => {
+                        Some(semver::VersionReq::parse(format!("<={}", end.as_str()).as_ref()).unwrap())
+                    }
+                    (None, None) => None,
+                }
+            } else {
+                None
+            }
         }
     } else {
         None
@@ -947,14 +964,85 @@ fn parse_skip(hash: &Hash) -> Result<Skip, failure::Error> {
         version,
         version_requirements,
         reason,
-        features
+        features,
     })
 }
 
-fn parse_match(_api: &Api, _hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+fn parse_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
 
+    // match hashes only have one entry
+    let (k, v) = hash.iter().next().unwrap();
+    let key = k.as_str().unwrap().trim();
+    let expr = {
+        if key == "$body" {
+            key.into()
+        } else {
+            let mut values = Vec::new();
+            let mut value = String::new();
+            let mut chars = key.chars();
+            while let Some(ch) = chars.next() {
+                match ch {
+                    '\\' => {
+                        // consume the next character too
+                        if let Some(next) = chars.next() {
+                            value.push(next);
+                        }
+                    }
+                    '.' => {
+                        values.push(value);
+                        value = String::new();
+                    }
+                    _ => {
+                        value.push(ch);
+                    }
+                }
+            }
+            values.push(value);
+            let mut expr = String::new();
+            for s in values {
+                if s.chars().all(char::is_numeric) {
+                    write!(expr, "[{}]", s).unwrap();
+                } else {
+                    write!(expr, "[\"{}\"]", s).unwrap();
+                }
+            };
+            expr
+        }
+    };
 
-
+    match v {
+        Yaml::Real(_) => {},
+        Yaml::Integer(_) => {},
+        Yaml::String(s) => {
+            if s.starts_with('/') {
+                let s = s.trim().trim_matches('/');
+                if expr == "$body" {
+                    tokens.append(quote! {
+                        let string_response_body = serde_json::to_string(&response_body).unwrap();
+                        let regex = regex::Regex::new(#s)?;
+                        assert!(regex.is_match(&string_response_body), "expected:\n\n{}\n\nto match regex:\n\n{}", &string_response_body, #s);
+                    });
+                } else {
+                    let ident = syn::Ident::from(expr);
+                    tokens.append(quote! {
+                        let regex = regex::Regex::new(#s)?;
+                        assert!(regex.is_match(response_body#ident.as_str().unwrap()), "expected value at #ident:\n\n{}\n\nto match regex:\n\n{}", response_body#ident.as_str().unwrap(), #s);
+                    });
+                }
+            } else {
+                let ident = syn::Ident::from(expr);
+                tokens.append(quote! {
+                    assert_eq!(response_body#ident.as_str().unwrap(), #s, "expected value {} but was {}", #s, response_body#ident.as_str().unwrap());
+                })
+            }
+        },
+        Yaml::Boolean(_) => {},
+        Yaml::Array(_) => {},
+        Yaml::Hash(_) => {},
+        Yaml::Alias(_) => {},
+        Yaml::Null => {},
+        Yaml::BadValue => {},
+    }
 
     Ok(())
 }
@@ -1023,6 +1111,8 @@ fn parse_do(
                                     #body
                                     .send()
                                     .await?;
+
+                                let response_body = response.read_body::<Value>().await?;
                             });
                             Ok(())
                         }
