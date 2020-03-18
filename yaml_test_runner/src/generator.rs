@@ -1,33 +1,77 @@
 use inflector::Inflector;
-use quote::Tokens;
+use quote::{Tokens, ToTokens};
 
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use regex::Regex;
-use std::collections::HashSet;
+use std::collections::{HashSet, BTreeMap};
 use std::fmt::Write as FormatWrite;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::path::PathBuf;
 use yaml_rust::{yaml::Hash, Yaml, YamlEmitter, YamlLoader};
+use semver::Version;
 
 /// The components of a test file, constructed from a yaml file
 struct YamlTests {
-    namespaces: HashSet<String>,
-    setup: Option<Tokens>,
-    teardown: Option<Tokens>,
+    version: Option<Version>,
+    directives: HashSet<String>,
+    setup: Option<Vec<Step>>,
+    teardown: Option<Vec<Step>>,
     tests: Vec<YamlTestFn>,
 }
 
 impl YamlTests {
-    pub fn new(len: usize) -> Self {
+    pub fn new(version: Option<semver::Version>, len: usize) -> Self {
         Self {
-            namespaces: HashSet::with_capacity(len),
+            version,
+            directives: HashSet::with_capacity(len),
             setup: None,
             teardown: None,
             tests: Vec::with_capacity(len),
         }
+    }
+
+    /// Collects the use directives required for all steps in
+    /// the test
+    fn use_directives_from_steps(steps: &[Step]) -> Vec<String> {
+        steps
+        .iter()
+        .filter_map(Step::r#do)
+        .filter_map(|d| d.api_call.namespace.as_ref())
+        .map(|s| s.to_string())
+        .collect()
+    }
+
+    pub fn add_setup(&mut self, steps: Vec<Step>) -> &mut Self {
+        let directives = Self::use_directives_from_steps(&steps);
+        for directive in directives {
+            self.directives.insert(directive);
+        }
+
+        self.setup = Some(steps);
+        self
+    }
+
+    pub fn add_teardown(&mut self, steps: Vec<Step>) -> &mut Self {
+        let directives = Self::use_directives_from_steps(&steps);
+        for directive in directives {
+            self.directives.insert(directive);
+        }
+
+        self.teardown = Some(steps);
+        self
+    }
+
+    pub fn add_test_fn(&mut self, test_fn: YamlTestFn) -> &mut Self {
+        let directives = Self::use_directives_from_steps(&test_fn.steps);
+        for directive in directives {
+            self.directives.insert(directive);
+        }
+
+        self.tests.push(test_fn);
+        self
     }
 
     pub fn build(self) -> Tokens {
@@ -35,8 +79,8 @@ impl YamlTests {
         let (teardown_fn, teardown_call) = self.teardown_impl();
         let tests: Vec<Tokens> = self.fn_impls(setup_call, teardown_call);
 
-        let namespaces: Vec<Tokens> = self
-            .namespaces
+        let directives: Vec<Tokens> = self
+            .directives
             .iter()
             .map(|n| {
                 let ident = syn::Ident::from(n.as_str());
@@ -51,7 +95,7 @@ impl YamlTests {
                 use elasticsearch::*;
                 use elasticsearch::http::request::JsonBody;
                 use elasticsearch::params::*;
-                #(#namespaces)*
+                #(#directives)*
                 use regex;
                 use serde_json::Value;
                 use crate::client;
@@ -63,43 +107,86 @@ impl YamlTests {
         }
     }
 
+    /// some function descriptions are the same in YAML tests, which would result in
+    /// duplicate generated test function names. Deduplicate by appending incrementing number
+    fn unique_fn_name(name: &str, seen_method_names: &mut HashSet<String>) -> syn::Ident {
+        let mut fn_name = name.to_string();
+        while !seen_method_names.insert(fn_name.clone()) {
+            lazy_static! {
+                static ref ENDING_DIGITS_REGEX: Regex =
+                    Regex::new(r"^(.*?)_(\d*?)$").unwrap();
+            }
+            if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
+                let name = c.get(1).unwrap().as_str();
+                let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
+                fn_name = format!("{}_{}", name, n + 1);
+            } else {
+                fn_name.push_str("_2");
+            }
+        }
+        syn::Ident::from(fn_name)
+    }
+
     fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
         let mut seen_method_names = HashSet::new();
 
         self.tests
             .iter()
             .map(|test_fn| {
-                // some function descriptions are the same in YAML tests, which would result in
-                // duplicate generated test function names. Deduplicate by appending incrementing number
-                let fn_name = {
-                    let mut fn_name = test_fn.fn_name();
+                let fn_name =
+                    Self::unique_fn_name(test_fn.fn_name().as_ref(), &mut seen_method_names);
 
-                    while !seen_method_names.insert(fn_name.clone()) {
-                        lazy_static! {
-                            static ref ENDING_DIGITS_REGEX: Regex =
-                                Regex::new(r"^(.*?)_(\d*?)$").unwrap();
-                        }
-                        if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
-                            let name = c.get(1).unwrap().as_str();
-                            let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
-                            fn_name = format!("{}_{}", name, n + 1);
-                        } else {
-                            fn_name.push_str("_2");
+                let mut body = Tokens::new();
+                let mut skip = Option::<&Skip>::None;
+                let mut read_response = false;
+
+                for step in &test_fn.steps {
+                    match step {
+                        Step::Skip(s) => {
+                            skip = if let Some(v) = &self.version {
+                                if s.matches(v) {
+                                    let reason = match s.reason.as_ref() {
+                                        Some(s) => s.to_string(),
+                                        None => String::new()
+                                    };
+                                    println!(
+                                        "Skipping test because skip version '{}' are met. {}",
+                                        s.version.as_ref().unwrap(),
+                                        reason
+                                    );
+                                    Some(s)
+                                } else {
+                                    None
+                                }
+                            } else {
+                                None
+                            }
+                        },
+                        Step::Do(d) => d.to_tokens(&mut body),
+                        Step::Match(m) => {
+                            if !read_response {
+                                body.append(quote! {
+                                    let response_body = response.read_body::<Value>().await?;
+                                });
+                                read_response = true;
+                            }
+                            m.to_tokens(&mut body);
                         }
                     }
-                    syn::Ident::from(fn_name)
-                };
+                }
 
-                let body = &test_fn.body;
-
-                quote! {
-                    #[tokio::test]
-                    async fn #fn_name() -> Result<(), failure::Error> {
-                        let client = client::create();
-                        #setup_call
-                        #body
-                        #teardown_call
-                        Ok(())
+                // TODO: surface this some other way, other than returning empty tokens
+                match skip {
+                    Some(_) => Tokens::new(),
+                    None => quote! {
+                        #[tokio::test]
+                        async fn #fn_name() -> Result<(), failure::Error> {
+                            let client = client::create();
+                            #setup_call
+                            #body
+                            #teardown_call
+                            Ok(())
+                        }
                     }
                 }
             })
@@ -115,13 +202,25 @@ impl YamlTests {
     }
 
     /// Generates the AST for the fixture fn and its invocation
-    fn generate_fixture(name: &str, tokens: &Option<Tokens>) -> (Option<Tokens>, Option<Tokens>) {
-        if let Some(t) = tokens {
+    fn generate_fixture(name: &str, steps: &Option<Vec<Step>>) -> (Option<Tokens>, Option<Tokens>) {
+        if let Some(s) = steps {
             let ident = syn::Ident::from(name);
+
+            // TODO: collect up the do calls for now. We do also need to handle skip, etc.
+            let tokens = s
+                .iter()
+                .filter_map(Step::r#do)
+                .map(|d| {
+                    let mut tokens = Tokens::new();
+                    d.to_tokens(&mut tokens);
+                    tokens
+                })
+                .collect::<Vec<_>>();
+
             (
                 Some(quote! {
                     async fn #ident(client: &Elasticsearch) -> Result<(), failure::Error> {
-                        #t
+                        #(#tokens)*
                         Ok(())
                     }
                 }),
@@ -136,18 +235,25 @@ impl YamlTests {
 /// A test function
 struct YamlTestFn {
     name: String,
-    body: Tokens,
+    steps: Vec<Step>,
 }
 
 impl YamlTestFn {
+    pub fn new<S: Into<String>>(name: S, steps: Vec<Step>) -> Self {
+        Self {
+            name: name.into(),
+            steps
+        }
+    }
+
     pub fn fn_name(&self) -> String {
         self.name.replace(" ", "_").to_lowercase().to_snake_case()
     }
 }
 
 /// The components of an API call
-struct ApiCall<'a> {
-    namespace: Option<&'a str>,
+struct ApiCall {
+    namespace: Option<String>,
     function: syn::Ident,
     parts: Option<Tokens>,
     params: Option<Tokens>,
@@ -155,13 +261,30 @@ struct ApiCall<'a> {
     ignore: Option<i64>,
 }
 
-impl<'a> ApiCall<'a> {
+impl ToTokens for ApiCall {
+    fn to_tokens(&self, tokens: &mut Tokens) {
+        let function = &self.function;
+        let parts = &self.parts;
+        let params = &self.params;
+        let body = &self.body;
+
+        tokens.append(quote! {
+            let response = client.#function(#parts)
+                #params
+                #body
+                .send()
+                .await?;
+        });
+    }
+}
+
+impl ApiCall {
     /// Try to create an API call
     pub fn try_from(
-        api: &'a Api,
-        endpoint: &'a ApiEndpoint,
-        hash: &'a Hash,
-    ) -> Result<ApiCall<'a>, failure::Error> {
+        api: &Api,
+        endpoint: &ApiEndpoint,
+        hash: &Hash,
+    ) -> Result<ApiCall, failure::Error> {
         let mut parts: Vec<(&str, &Yaml)> = vec![];
         let mut params: Vec<(&str, &Yaml)> = vec![];
         let mut body: Option<Tokens> = None;
@@ -190,8 +313,9 @@ impl<'a> ApiCall<'a> {
         let parts = Self::generate_parts(api_call, endpoint, &parts)?;
         let params = Self::generate_params(api, endpoint, &params)?;
         let function = syn::Ident::from(api_call.replace(".", "()."));
-        let namespace: Option<&str> = if api_call.contains('.') {
-            Some(api_call.splitn(2, '.').collect::<Vec<_>>()[0])
+        let namespace: Option<String> = if api_call.contains('.') {
+            let namespaces: Vec<&str> = api_call.splitn(2, '.').collect();
+            Some(namespaces[0].to_string())
         } else {
             None
         };
@@ -696,7 +820,7 @@ pub fn generate_tests_from_yaml(
                     }
 
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(docs.len());
+                    let mut test = YamlTests::new(api.version(), docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
@@ -705,16 +829,13 @@ pub fn generate_tests_from_yaml(
                                 let (first_key, first_value) = hash.iter().next().unwrap();
                                 match (first_key, first_value) {
                                     (Yaml::String(name), Yaml::Array(steps)) => {
-                                        let tokens = parse_steps(api, &mut test, steps)?;
+                                        let steps = parse_steps(api, steps)?;
                                         match name.as_str() {
-                                            "setup" => test.setup = Some(tokens),
-                                            "teardown" => test.teardown = Some(tokens),
+                                            "setup" => test.add_setup(steps),
+                                            "teardown" => test.add_teardown(steps),
                                             name => {
-                                                let test_fn = YamlTestFn {
-                                                    name: name.to_owned(),
-                                                    body: tokens
-                                                };
-                                                test.tests.push(test_fn)
+                                                let test_fn = YamlTestFn::new(name, steps);
+                                                test.add_test_fn(test_fn)
                                             },
                                         };
                                         Ok(())
@@ -849,38 +970,30 @@ fn write_test_file(
     Ok(())
 }
 
-fn parse_steps(api: &Api, test: &mut YamlTests, steps: &[Yaml]) -> Result<Tokens, failure::Error> {
-    let mut tokens = Tokens::new();
+fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
+    let mut parsed_steps : Vec<Step> = Vec::new();
     for step in steps {
         if let Some(hash) = step.as_hash() {
             let (k, v) = hash.iter().next().unwrap();
 
             let key = k.as_str().unwrap();
 
+            // TODO: pass v directly to try_parse step and handle conversion to yaml type inside
             match (key, v) {
                 ("skip", Yaml::Hash(h)) => {
-                    match parse_skip(h) {
-                        Ok(skip) => {
-                            if let Some(api_version) = api.version() {
-                                if skip.matches(&api_version) {
-                                    let reason = skip.reason.unwrap_or("");
-
-                                    // TODO: Communicate this in a different way - Don't use an error. Probably need to push components of a test into its own struct
-                                    return Err(failure::err_msg(format!(
-                                        "Skipping test because skip version '{}' are met. {}",
-                                        skip.version.unwrap(),
-                                        reason
-                                    )));
-                                }
-                            }
-                        }
-                        Err(e) => return Err(failure::err_msg(e.to_string())),
-                    }
+                    let skip = Skip::try_parse(h)?;
+                    parsed_steps.push(skip.into());
                 }
-                ("do", Yaml::Hash(h)) => parse_do(api, test, h, &mut tokens)?,
+                ("do", Yaml::Hash(h)) => {
+                    let d = Do::try_parse(api, h)?;
+                    parsed_steps.push(d.into())
+                },
                 ("set", Yaml::Hash(_h)) => {}
                 ("transform_and_set", Yaml::Hash(_h)) => {}
-                ("match", Yaml::Hash(h)) => parse_match(api, h, &mut tokens)?,
+                ("match", Yaml::Hash(h)) => {
+                    let m = Match::try_parse(h)?;
+                    parsed_steps.push(m.into());
+                },
                 ("contains", Yaml::Hash(_h)) => {}
                 ("is_true", Yaml::Hash(_h)) => {}
                 ("is_true", Yaml::String(_s)) => {}
@@ -899,17 +1012,93 @@ fn parse_steps(api: &Api, test: &mut YamlTests, steps: &[Yaml]) -> Result<Tokens
         }
     }
 
-    Ok(tokens)
+    Ok(parsed_steps)
 }
 
-struct Skip<'a> {
+pub struct Skip {
     version_requirements: Option<semver::VersionReq>,
-    version: Option<&'a str>,
-    reason: Option<&'a str>,
-    features: Option<&'a str>,
+    version: Option<String>,
+    reason: Option<String>,
+    features: Option<Vec<String>>,
 }
 
-impl<'a> Skip<'a> {
+impl From<Skip> for Step {
+    fn from(skip: Skip) -> Self {
+        Step::Skip(skip)
+    }
+}
+
+impl Skip {
+    fn try_parse(hash: &Hash) -> Result<Skip, failure::Error> {
+
+        fn string_value(hash: &Hash, name: &str) -> Option<String> {
+            hash
+                .get(&Yaml::from_str(name))
+                .map_or_else(|| None, |y| {
+                    y.as_str().map(|s| s.to_string())
+                })
+        }
+
+        fn array_value(hash: &Hash, name: &str) -> Option<Vec<String>> {
+            hash
+                .get(&Yaml::from_str(name))
+                .map_or_else(|| None, |y| {
+                    match y.as_str() {
+                        Some(s) => Some(vec![s.to_string()]),
+                        None => y.as_vec().map(|arr|
+                            arr
+                            .iter()
+                            .map(|a| a.as_str().map(|s| s.to_string()).unwrap())
+                            .collect()
+                        )
+                    }
+
+                })
+        }
+
+        let version = string_value(hash, "version");
+        let reason = string_value(hash, "reason");
+        let features = array_value(hash, "features");
+
+        let version_requirements = if let Some(v) = &version {
+            if v.to_lowercase() == "all" {
+                Some(semver::VersionReq::any())
+            } else {
+                lazy_static! {
+                    static ref VERSION_REGEX: Regex =
+                        Regex::new(r"^([\w\.]+)?\s*?\-\s*?([\w\.]+)?$").unwrap();
+                }
+                if let Some(c) = VERSION_REGEX.captures(v) {
+                    match (c.get(1), c.get(2)) {
+                        (Some(start), Some(end)) => Some(
+                            semver::VersionReq::parse(
+                                format!(">={},<={}", start.as_str(), end.as_str()).as_ref(),
+                            ).unwrap(),
+                        ),
+                        (Some(start), None) => Some(
+                            semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref()).unwrap(),
+                        ),
+                        (None, Some(end)) => Some(
+                            semver::VersionReq::parse(format!("<={}", end.as_str()).as_ref()).unwrap()
+                        ),
+                        (None, None) => None,
+                    }
+                } else {
+                    None
+                }
+            }
+        } else {
+            None
+        };
+
+        Ok(Skip {
+            version,
+            version_requirements,
+            reason,
+            features,
+        })
+    }
+
     pub fn matches(&self, version: &semver::Version) -> bool {
         match &self.version_requirements {
             Some(r) => r.matches(version),
@@ -918,62 +1107,23 @@ impl<'a> Skip<'a> {
     }
 }
 
-fn parse_skip(hash: &Hash) -> Result<Skip, failure::Error> {
-    let version = hash
-        .get(&Yaml::from_str("version"))
-        .map_or_else(|| None, |y| y.as_str());
-    let reason = hash
-        .get(&Yaml::from_str("reason"))
-        .map_or_else(|| None, |y| y.as_str());
-    let features = hash
-        .get(&Yaml::from_str("features"))
-        .map_or_else(|| None, |y| y.as_str());
-    let version_requirements = if let Some(v) = version {
-        if v.to_lowercase() == "all" {
-            Some(semver::VersionReq::any())
-        } else {
-            lazy_static! {
-                static ref VERSION_REGEX: Regex =
-                    Regex::new(r"^([\w\.]+)?\s*?\-\s*?([\w\.]+)?$").unwrap();
-            }
-            if let Some(c) = VERSION_REGEX.captures(v) {
-                match (c.get(1), c.get(2)) {
-                    (Some(start), Some(end)) => Some(
-                        semver::VersionReq::parse(
-                            format!(">={},<={}", start.as_str(), end.as_str()).as_ref(),
-                        )
-                            .unwrap(),
-                    ),
-                    (Some(start), None) => Some(
-                        semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref()).unwrap(),
-                    ),
-                    (None, Some(end)) => {
-                        Some(semver::VersionReq::parse(format!("<={}", end.as_str()).as_ref()).unwrap())
-                    }
-                    (None, None) => None,
-                }
-            } else {
-                None
-            }
-        }
-    } else {
-        None
-    };
-
-    Ok(Skip {
-        version,
-        version_requirements,
-        reason,
-        features,
-    })
+pub struct Match {
+    hash: Hash
 }
 
-fn parse_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failure::Error> {
+impl From<Match> for Step {
+    fn from(m: Match) -> Self {
+        Step::Match(m)
+    }
+}
 
-    // match hashes only have one entry
-    let (k, v) = hash.iter().next().unwrap();
-    let key = k.as_str().unwrap().trim();
-    let expr = {
+impl Match {
+    pub fn try_parse(hash: &Hash) -> Result<Match, failure::Error> {
+        Ok(Match { hash: hash.clone() })
+    }
+
+    /// Builds an indexer expression from the match key
+    fn get_expr(key: &str) -> String {
         if key == "$body" {
             key.into()
         } else {
@@ -1008,125 +1158,200 @@ fn parse_match(api: &Api, hash: &Hash, tokens: &mut Tokens) -> Result<(), failur
             };
             expr
         }
-    };
-
-    match v {
-        Yaml::Real(_) => {},
-        Yaml::Integer(_) => {},
-        Yaml::String(s) => {
-            if s.starts_with('/') {
-                let s = s.trim().trim_matches('/');
-                if expr == "$body" {
-                    tokens.append(quote! {
-                        let string_response_body = serde_json::to_string(&response_body).unwrap();
-                        let regex = regex::Regex::new(#s)?;
-                        assert!(regex.is_match(&string_response_body), "expected:\n\n{}\n\nto match regex:\n\n{}", &string_response_body, #s);
-                    });
-                } else {
-                    let ident = syn::Ident::from(expr);
-                    tokens.append(quote! {
-                        let regex = regex::Regex::new(#s)?;
-                        assert!(regex.is_match(response_body#ident.as_str().unwrap()), "expected value at #ident:\n\n{}\n\nto match regex:\n\n{}", response_body#ident.as_str().unwrap(), #s);
-                    });
-                }
-            } else {
-                let ident = syn::Ident::from(expr);
-                tokens.append(quote! {
-                    assert_eq!(response_body#ident.as_str().unwrap(), #s, "expected value {} but was {}", #s, response_body#ident.as_str().unwrap());
-                })
-            }
-        },
-        Yaml::Boolean(_) => {},
-        Yaml::Array(_) => {},
-        Yaml::Hash(_) => {},
-        Yaml::Alias(_) => {},
-        Yaml::Null => {},
-        Yaml::BadValue => {},
     }
-
-    Ok(())
 }
 
-fn parse_do(
-    api: &Api,
-    test: &mut YamlTests,
-    hash: &Hash,
-    tokens: &mut Tokens,
-) -> Result<(), failure::Error> {
-    let results: Vec<Result<(), failure::Error>> = hash
-        .iter()
-        .map(|(k, v)| {
-            match k.as_str() {
-                Some(key) => {
-                    match key {
-                        "headers" => {
-                            // TODO: implement
-                            Ok(())
-                        }
-                        "catch" => {
-                            // TODO: implement
-                            Ok(())
-                        }
-                        "node_selector" => {
-                            // TODO: implement
-                            Ok(())
-                        }
-                        "warnings" => {
-                            // TODO: implement
-                            Ok(())
-                        }
-                        api_call => {
-                            let hash = v.as_hash();
-                            if hash.is_none() {
-                                return Err(failure::err_msg(format!(
-                                    "expected hash value for {} but found {:?}",
-                                    &api_call, v
-                                )));
-                            }
+impl ToTokens for Match {
+    // TODO: Move this parsing out into Match::try_parse
+    fn to_tokens(&self, tokens: &mut Tokens) {
+        let (k, v) = self.hash.iter().next().unwrap();
+        let key = k.as_str().unwrap().trim();
+        let expr = Self::get_expr(key);
 
-                            let endpoint = match api.endpoint_for_api_call(api_call) {
-                                Some(e) => Ok(e),
-                                None => {
-                                    Err(failure::err_msg(format!("no API found for {}", api_call)))
+        match v {
+            Yaml::String(s) => {
+                if s.starts_with('/') {
+                    let s = s.trim().trim_matches('/');
+                    if expr == "$body" {
+                        tokens.append(quote! {
+                            let string_response_body = serde_json::to_string(&response_body).unwrap();
+                            let regex = regex::Regex::new(#s)?;
+                            assert!(
+                                regex.is_match(&string_response_body),
+                                "expected $body:\n\n{}\n\nto match regex:\n\n{}",
+                                &string_response_body,
+                                #s
+                            );
+                        });
+                    } else {
+                        let ident = syn::Ident::from(expr.clone());
+                        tokens.append(quote! {
+                            let regex = regex::Regex::new(#s)?;
+                            assert!(
+                                regex.is_match(response_body#ident.as_str().unwrap()),
+                                "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
+                                #expr,
+                                response_body#ident.as_str().unwrap(),
+                                #s
+                            );
+                        });
+                    }
+                } else {
+                    let ident = syn::Ident::from(expr.clone());
+                    tokens.append(quote! {
+                        assert_eq!(
+                            response_body#ident.as_str().unwrap(),
+                            #s,
+                            "expected value at {} to be {} but was {}",
+                            #expr,
+                            #s,
+                            response_body#ident.as_str().unwrap()
+                        );
+                    })
+                }
+            },
+            Yaml::Integer(i) => {
+                if expr == "$body" {
+                    panic!("match on $body with integer");
+                } else {
+                    let ident = syn::Ident::from(expr.clone());
+                    tokens.append(quote! {
+                        assert_eq!(
+                            response_body#ident.as_i64().unwrap(),
+                            #i,
+                            "expected value at {} to be {} but was {}",
+                            #expr,
+                            #i,
+                            response_body#ident.as_i64().unwrap()
+                        );
+                    });
+                }
+            }
+            // TODO: handle hashes, etc.
+            _ => {}
+        }
+    }
+}
+
+pub enum Step {
+    Skip(Skip),
+    Do(Do),
+    Match(Match),
+}
+
+impl Step {
+    pub fn r#do(&self) -> Option<&Do> {
+        match self {
+            Step::Do(d) => Some(d),
+            _ => None
+        }
+    }
+}
+
+pub struct Do {
+    headers: BTreeMap<String, String>,
+    catch: Option<String>,
+    api_call: ApiCall,
+    warnings: Vec<String>,
+}
+
+impl ToTokens for Do {
+    fn to_tokens(&self, tokens: &mut Tokens) {
+
+        // TODO: Add in catch, headers, warnings
+        &self.api_call.to_tokens(tokens);
+    }
+}
+
+impl From<Do> for Step {
+    fn from(d: Do) -> Self {
+        Step::Do(d)
+    }
+}
+
+impl Do {
+    pub fn try_parse(
+        api: &Api,
+        hash: &Hash,
+    ) -> Result<Do, failure::Error> {
+        let mut api_call: Option<ApiCall> = None;
+        let mut headers = BTreeMap::new();
+        let mut warnings: Vec<String> = Vec::new();
+        let mut catch = None;
+
+        let results: Vec<Result<(), failure::Error>> = hash
+            .iter()
+            .map(|(k, v)| {
+                match k.as_str() {
+                    Some(key) => {
+                        match key {
+                            "headers" => {
+                                match v.as_hash() {
+                                    Some(h) => {
+                                        //for (k, v) in h.iter() {}
+
+
+                                        Ok(())
+                                    },
+                                    None => Err(failure::err_msg(format!(
+                                        "expected hash but found {:?}",
+                                        v
+                                    ))),
                                 }
-                            }?;
-
-                            let ApiCall {
-                                namespace,
-                                function,
-                                parts,
-                                params,
-                                body,
-                                ignore: _ignore,
-                            } = ApiCall::try_from(api, endpoint, hash.unwrap())?;
-
-                            // capture any namespaces used in the test
-                            if let Some(n) = namespace {
-                                test.namespaces.insert(n.to_owned());
                             }
+                            "catch" => {
+                                catch = v.as_str().map(|s| s.to_string());
+                                Ok(())
+                            }
+                            "node_selector" => {
+                                // TODO: implement
+                                Ok(())
+                            }
+                            "warnings" => {
+                                warnings = v
+                                    .as_vec()
+                                    .map(|a| a.iter().map(|y| y.as_str().unwrap().to_string()).collect())
+                                    .unwrap();
+                                Ok(())
+                            }
+                            call => {
+                                let hash = v.as_hash();
+                                if hash.is_none() {
+                                    return Err(failure::err_msg(format!(
+                                        "expected hash value for {} but found {:?}",
+                                        &call, v
+                                    )));
+                                }
 
-                            tokens.append(quote! {
-                                let response = client.#function(#parts)
-                                    #params
-                                    #body
-                                    .send()
-                                    .await?;
+                                let endpoint = match api.endpoint_for_api_call(call) {
+                                    Some(e) => Ok(e),
+                                    None => {
+                                        Err(failure::err_msg(format!("no API found for {}", call)))
+                                    }
+                                }?;
 
-                                let response_body = response.read_body::<Value>().await?;
-                            });
-                            Ok(())
+                                api_call = Some(ApiCall::try_from(api, endpoint, hash.unwrap())?);
+                                Ok(())
+                            }
                         }
                     }
+                    None => Err(failure::err_msg(format!(
+                        "expected string key but found {:?}",
+                        k
+                    ))),
                 }
-                None => Err(failure::err_msg(format!(
-                    "expected string key but found {:?}",
-                    k
-                ))),
-            }
-        })
-        .collect();
+            })
+            .collect();
 
-    ok_or_accumulate(&results, 0)
+        ok_or_accumulate(&results, 0)?;
+
+        Ok(Do {
+            api_call: api_call.unwrap(),
+            catch,
+            headers,
+            warnings,
+        })
+    }
 }
 
 /// Checks whether there are any Errs in the collection, and accumulates them into one
