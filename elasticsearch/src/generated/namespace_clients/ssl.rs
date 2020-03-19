@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -57,10 +57,11 @@ pub struct SslCertificates<'a, 'b> {
 impl<'a, 'b> SslCertificates<'a, 'b> {
     #[doc = "Creates a new instance of [SslCertificates]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SslCertificates {
             client,
             parts: SslCertificatesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,

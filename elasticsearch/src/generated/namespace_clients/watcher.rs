@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -78,10 +78,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherAckWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherAckWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherAckWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -216,10 +217,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherActivateWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherActivateWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherActivateWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -354,10 +356,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherDeactivateWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherDeactivateWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherDeactivateWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -487,10 +490,11 @@ pub struct WatcherDeleteWatch<'a, 'b> {
 impl<'a, 'b> WatcherDeleteWatch<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherDeleteWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherDeleteWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherDeleteWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -611,10 +615,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherExecuteWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherExecuteWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherExecuteWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             debug: None,
             error_trace: None,
@@ -754,10 +759,11 @@ pub struct WatcherGetWatch<'a, 'b> {
 impl<'a, 'b> WatcherGetWatch<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherGetWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherGetWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherGetWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -877,10 +883,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherPutWatch] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherPutWatchParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherPutWatch {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             active: None,
             body: None,
             error_trace: None,
@@ -1049,10 +1056,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherStart]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         WatcherStart {
             client,
             parts: WatcherStartParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1188,10 +1196,11 @@ pub struct WatcherStats<'a, 'b> {
 impl<'a, 'b> WatcherStats<'a, 'b> {
     #[doc = "Creates a new instance of [WatcherStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: WatcherStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         WatcherStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             emit_stacktraces: None,
             error_trace: None,
             filter_path: None,
@@ -1320,10 +1329,11 @@ where
 {
     #[doc = "Creates a new instance of [WatcherStop]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         WatcherStop {
             client,
             parts: WatcherStopParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

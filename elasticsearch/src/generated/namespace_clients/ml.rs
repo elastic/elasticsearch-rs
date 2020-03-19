@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -70,10 +70,11 @@ where
 {
     #[doc = "Creates a new instance of [MlCloseJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlCloseJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlCloseJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_jobs: None,
             body: None,
             error_trace: None,
@@ -233,10 +234,11 @@ pub struct MlDeleteCalendar<'a, 'b> {
 impl<'a, 'b> MlDeleteCalendar<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendar] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteCalendar {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -350,10 +352,11 @@ pub struct MlDeleteCalendarEvent<'a, 'b> {
 impl<'a, 'b> MlDeleteCalendarEvent<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendarEvent] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarEventParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteCalendarEvent {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -467,10 +470,11 @@ pub struct MlDeleteCalendarJob<'a, 'b> {
 impl<'a, 'b> MlDeleteCalendarJob<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteCalendarJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteCalendarJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteCalendarJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -583,10 +587,11 @@ pub struct MlDeleteDatafeed<'a, 'b> {
 impl<'a, 'b> MlDeleteDatafeed<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -702,10 +707,11 @@ pub struct MlDeleteExpiredData<'a, 'b> {
 impl<'a, 'b> MlDeleteExpiredData<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteExpiredData]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteExpiredData {
             client,
             parts: MlDeleteExpiredDataParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -817,10 +823,11 @@ pub struct MlDeleteFilter<'a, 'b> {
 impl<'a, 'b> MlDeleteFilter<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteFilter] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteFilterParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteFilter {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -945,10 +952,11 @@ pub struct MlDeleteForecast<'a, 'b> {
 impl<'a, 'b> MlDeleteForecast<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteForecast] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteForecastParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteForecast {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_forecasts: None,
             error_trace: None,
             filter_path: None,
@@ -1080,10 +1088,11 @@ pub struct MlDeleteJob<'a, 'b> {
 impl<'a, 'b> MlDeleteJob<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             force: None,
@@ -1215,10 +1224,11 @@ pub struct MlDeleteModelSnapshot<'a, 'b> {
 impl<'a, 'b> MlDeleteModelSnapshot<'a, 'b> {
     #[doc = "Creates a new instance of [MlDeleteModelSnapshot] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlDeleteModelSnapshotParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlDeleteModelSnapshot {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1340,10 +1350,11 @@ where
 {
     #[doc = "Creates a new instance of [MlFlushJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlFlushJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlFlushJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             advance_time: None,
             body: None,
             calc_interim: None,
@@ -1530,10 +1541,11 @@ where
 {
     #[doc = "Creates a new instance of [MlForecast] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlForecastParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlForecast {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             duration: None,
             error_trace: None,
@@ -1707,10 +1719,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetBuckets] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetBucketsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetBuckets {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             anomaly_score: None,
             body: None,
             desc: None,
@@ -1939,10 +1952,11 @@ pub struct MlGetCalendarEvents<'a, 'b> {
 impl<'a, 'b> MlGetCalendarEvents<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetCalendarEvents] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetCalendarEventsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetCalendarEvents {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             end: None,
             error_trace: None,
             filter_path: None,
@@ -2108,10 +2122,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetCalendars] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetCalendarsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetCalendars {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2282,10 +2297,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetCategories] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetCategoriesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetCategories {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2443,10 +2459,11 @@ pub struct MlGetDatafeedStats<'a, 'b> {
 impl<'a, 'b> MlGetDatafeedStats<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetDatafeedStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetDatafeedStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetDatafeedStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_datafeeds: None,
             error_trace: None,
             filter_path: None,
@@ -2571,10 +2588,11 @@ pub struct MlGetDatafeeds<'a, 'b> {
 impl<'a, 'b> MlGetDatafeeds<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetDatafeeds] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetDatafeedsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetDatafeeds {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_datafeeds: None,
             error_trace: None,
             filter_path: None,
@@ -2700,10 +2718,11 @@ pub struct MlGetFilters<'a, 'b> {
 impl<'a, 'b> MlGetFilters<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetFilters] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetFiltersParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetFilters {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             from: None,
@@ -2846,10 +2865,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetInfluencers] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetInfluencersParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetInfluencers {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             desc: None,
             end: None,
@@ -3067,10 +3087,11 @@ pub struct MlGetJobStats<'a, 'b> {
 impl<'a, 'b> MlGetJobStats<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetJobStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetJobStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetJobStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_jobs: None,
             error_trace: None,
             filter_path: None,
@@ -3195,10 +3216,11 @@ pub struct MlGetJobs<'a, 'b> {
 impl<'a, 'b> MlGetJobs<'a, 'b> {
     #[doc = "Creates a new instance of [MlGetJobs] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetJobsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetJobs {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_jobs: None,
             error_trace: None,
             filter_path: None,
@@ -3340,10 +3362,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetModelSnapshots] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetModelSnapshotsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetModelSnapshots {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             desc: None,
             end: None,
@@ -3548,10 +3571,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetOverallBuckets] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetOverallBucketsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetOverallBuckets {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_jobs: None,
             body: None,
             bucket_span: None,
@@ -3767,10 +3791,11 @@ where
 {
     #[doc = "Creates a new instance of [MlGetRecords] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlGetRecordsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlGetRecords {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             desc: None,
             end: None,
@@ -3977,10 +4002,11 @@ pub struct MlInfo<'a, 'b> {
 impl<'a, 'b> MlInfo<'a, 'b> {
     #[doc = "Creates a new instance of [MlInfo]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         MlInfo {
             client,
             parts: MlInfoParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4097,10 +4123,11 @@ where
 {
     #[doc = "Creates a new instance of [MlOpenJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlOpenJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlOpenJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4235,10 +4262,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPostCalendarEvents] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPostCalendarEventsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPostCalendarEvents {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4375,10 +4403,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPostData] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPostDataParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPostData {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4529,10 +4558,11 @@ pub struct MlPreviewDatafeed<'a, 'b> {
 impl<'a, 'b> MlPreviewDatafeed<'a, 'b> {
     #[doc = "Creates a new instance of [MlPreviewDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPreviewDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPreviewDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -4648,10 +4678,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPutCalendar] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPutCalendarParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPutCalendar {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4787,10 +4818,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPutCalendarJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPutCalendarJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPutCalendarJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -4924,10 +4956,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPutDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPutDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPutDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5061,10 +5094,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPutFilter] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPutFilterParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPutFilter {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5198,10 +5232,11 @@ where
 {
     #[doc = "Creates a new instance of [MlPutJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlPutJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlPutJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -5339,10 +5374,11 @@ where
 {
     #[doc = "Creates a new instance of [MlRevertModelSnapshot] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlRevertModelSnapshotParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlRevertModelSnapshot {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             delete_intervening_results: None,
             error_trace: None,
@@ -5483,10 +5519,11 @@ where
 {
     #[doc = "Creates a new instance of [MlSetUpgradeMode]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         MlSetUpgradeMode {
             client,
             parts: MlSetUpgradeModeParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             enabled: None,
             error_trace: None,
@@ -5644,10 +5681,11 @@ where
 {
     #[doc = "Creates a new instance of [MlStartDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlStartDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlStartDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             end: None,
             error_trace: None,
@@ -5815,10 +5853,11 @@ where
 {
     #[doc = "Creates a new instance of [MlStopDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlStopDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlStopDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_datafeeds: None,
             body: None,
             error_trace: None,
@@ -5983,10 +6022,11 @@ where
 {
     #[doc = "Creates a new instance of [MlUpdateDatafeed] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlUpdateDatafeedParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlUpdateDatafeed {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6121,10 +6161,11 @@ where
 {
     #[doc = "Creates a new instance of [MlUpdateFilter] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlUpdateFilterParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlUpdateFilter {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6259,10 +6300,11 @@ where
 {
     #[doc = "Creates a new instance of [MlUpdateJob] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlUpdateJobParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlUpdateJob {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6399,10 +6441,11 @@ where
 {
     #[doc = "Creates a new instance of [MlUpdateModelSnapshot] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MlUpdateModelSnapshotParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MlUpdateModelSnapshot {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6531,10 +6574,11 @@ where
 {
     #[doc = "Creates a new instance of [MlValidate]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         MlValidate {
             client,
             parts: MlValidateParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -6663,10 +6707,11 @@ where
 {
     #[doc = "Creates a new instance of [MlValidateDetector]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         MlValidateDetector {
             client,
             parts: MlValidateDetectorParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

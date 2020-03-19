@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -69,10 +69,11 @@ where
 {
     #[doc = "Creates a new instance of [SnapshotCleanupRepository] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotCleanupRepositoryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotCleanupRepository {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -230,10 +231,11 @@ where
 {
     #[doc = "Creates a new instance of [SnapshotCreate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotCreate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -390,10 +392,11 @@ where
 {
     #[doc = "Creates a new instance of [SnapshotCreateRepository] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotCreateRepositoryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotCreateRepository {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -556,10 +559,11 @@ pub struct SnapshotDelete<'a, 'b> {
 impl<'a, 'b> SnapshotDelete<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDelete] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotDelete {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -683,10 +687,11 @@ pub struct SnapshotDeleteRepository<'a, 'b> {
 impl<'a, 'b> SnapshotDeleteRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotDeleteRepository] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotDeleteRepositoryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotDeleteRepository {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -822,10 +827,11 @@ pub struct SnapshotGet<'a, 'b> {
 impl<'a, 'b> SnapshotGet<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGet] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotGetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotGet {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -970,10 +976,11 @@ pub struct SnapshotGetRepository<'a, 'b> {
 impl<'a, 'b> SnapshotGetRepository<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotGetRepository] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotGetRepositoryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotGetRepository {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1112,10 +1119,11 @@ where
 {
     #[doc = "Creates a new instance of [SnapshotRestore] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotRestoreParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotRestore {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1283,10 +1291,11 @@ pub struct SnapshotStatus<'a, 'b> {
 impl<'a, 'b> SnapshotStatus<'a, 'b> {
     #[doc = "Creates a new instance of [SnapshotStatus] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotStatusParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotStatus {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1423,10 +1432,11 @@ where
 {
     #[doc = "Creates a new instance of [SnapshotVerifyRepository] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SnapshotVerifyRepositoryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SnapshotVerifyRepository {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,

@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -72,10 +72,13 @@ pub struct CatAliases<'a, 'b> {
 impl<'a, 'b> CatAliases<'a, 'b> {
     #[doc = "Creates a new instance of [CatAliases] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatAliasesParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatAliases {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -253,10 +256,13 @@ pub struct CatAllocation<'a, 'b> {
 impl<'a, 'b> CatAllocation<'a, 'b> {
     #[doc = "Creates a new instance of [CatAllocation] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatAllocationParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatAllocation {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -449,10 +455,13 @@ pub struct CatCount<'a, 'b> {
 impl<'a, 'b> CatCount<'a, 'b> {
     #[doc = "Creates a new instance of [CatCount] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatCountParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatCount {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -620,10 +629,13 @@ pub struct CatFielddata<'a, 'b> {
 impl<'a, 'b> CatFielddata<'a, 'b> {
     #[doc = "Creates a new instance of [CatFielddata] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatFielddataParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatFielddata {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             fields: None,
@@ -800,10 +812,13 @@ pub struct CatHealth<'a, 'b> {
 impl<'a, 'b> CatHealth<'a, 'b> {
     #[doc = "Creates a new instance of [CatHealth]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatHealth {
             client,
             parts: CatHealthParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -975,10 +990,13 @@ pub struct CatHelp<'a, 'b> {
 impl<'a, 'b> CatHelp<'a, 'b> {
     #[doc = "Creates a new instance of [CatHelp]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatHelp {
             client,
             parts: CatHelpParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             help: None,
@@ -1124,10 +1142,13 @@ pub struct CatIndices<'a, 'b> {
 impl<'a, 'b> CatIndices<'a, 'b> {
     #[doc = "Creates a new instance of [CatIndices] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatIndicesParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatIndices {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1349,10 +1370,13 @@ pub struct CatMaster<'a, 'b> {
 impl<'a, 'b> CatMaster<'a, 'b> {
     #[doc = "Creates a new instance of [CatMaster]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatMaster {
             client,
             parts: CatMasterParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1529,10 +1553,13 @@ pub struct CatNodeattrs<'a, 'b> {
 impl<'a, 'b> CatNodeattrs<'a, 'b> {
     #[doc = "Creates a new instance of [CatNodeattrs]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatNodeattrs {
             client,
             parts: CatNodeattrsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -1712,10 +1739,13 @@ pub struct CatNodes<'a, 'b> {
 impl<'a, 'b> CatNodes<'a, 'b> {
     #[doc = "Creates a new instance of [CatNodes]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatNodes {
             client,
             parts: CatNodesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -1920,10 +1950,13 @@ pub struct CatPendingTasks<'a, 'b> {
 impl<'a, 'b> CatPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [CatPendingTasks]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatPendingTasks {
             client,
             parts: CatPendingTasksParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2109,10 +2142,13 @@ pub struct CatPlugins<'a, 'b> {
 impl<'a, 'b> CatPlugins<'a, 'b> {
     #[doc = "Creates a new instance of [CatPlugins]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatPlugins {
             client,
             parts: CatPluginsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2301,10 +2337,13 @@ pub struct CatRecovery<'a, 'b> {
 impl<'a, 'b> CatRecovery<'a, 'b> {
     #[doc = "Creates a new instance of [CatRecovery] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatRecoveryParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatRecovery {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             active_only: None,
             bytes: None,
             detailed: None,
@@ -2508,10 +2547,13 @@ pub struct CatRepositories<'a, 'b> {
 impl<'a, 'b> CatRepositories<'a, 'b> {
     #[doc = "Creates a new instance of [CatRepositories]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatRepositories {
             client,
             parts: CatRepositoriesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -2696,10 +2738,13 @@ pub struct CatSegments<'a, 'b> {
 impl<'a, 'b> CatSegments<'a, 'b> {
     #[doc = "Creates a new instance of [CatSegments] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatSegmentsParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatSegments {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -2878,10 +2923,13 @@ pub struct CatShards<'a, 'b> {
 impl<'a, 'b> CatShards<'a, 'b> {
     #[doc = "Creates a new instance of [CatShards] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatShardsParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatShards {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             bytes: None,
             error_trace: None,
             filter_path: None,
@@ -3086,10 +3134,13 @@ pub struct CatSnapshots<'a, 'b> {
 impl<'a, 'b> CatSnapshots<'a, 'b> {
     #[doc = "Creates a new instance of [CatSnapshots] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatSnapshotsParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatSnapshots {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3278,10 +3329,13 @@ pub struct CatTasks<'a, 'b> {
 impl<'a, 'b> CatTasks<'a, 'b> {
     #[doc = "Creates a new instance of [CatTasks]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatTasks {
             client,
             parts: CatTasksParts::None,
-            headers: HeaderMap::new(),
+            headers,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -3499,10 +3553,13 @@ pub struct CatTemplates<'a, 'b> {
 impl<'a, 'b> CatTemplates<'a, 'b> {
     #[doc = "Creates a new instance of [CatTemplates] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatTemplatesParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatTemplates {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,
@@ -3689,10 +3746,13 @@ pub struct CatThreadPool<'a, 'b> {
 impl<'a, 'b> CatThreadPool<'a, 'b> {
     #[doc = "Creates a new instance of [CatThreadPool] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: CatThreadPoolParts<'b>) -> Self {
+        let mut headers = HeaderMap::with_capacity(2);
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+        headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
         CatThreadPool {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             format: None,

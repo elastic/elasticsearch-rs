@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -63,10 +63,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterAllocationExplain]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterAllocationExplain {
             client,
             parts: ClusterAllocationExplainParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -218,10 +219,11 @@ pub struct ClusterGetSettings<'a, 'b> {
 impl<'a, 'b> ClusterGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterGetSettings]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterGetSettings {
             client,
             parts: ClusterGetSettingsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -384,10 +386,11 @@ pub struct ClusterHealth<'a, 'b> {
 impl<'a, 'b> ClusterHealth<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterHealthParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterHealth {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
@@ -598,10 +601,11 @@ pub struct ClusterPendingTasks<'a, 'b> {
 impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterPendingTasks]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterPendingTasks {
             client,
             parts: ClusterPendingTasksParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -733,10 +737,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterPutSettings]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterPutSettings {
             client,
             parts: ClusterPutSettingsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -891,10 +896,11 @@ pub struct ClusterRemoteInfo<'a, 'b> {
 impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterRemoteInfo]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterRemoteInfo {
             client,
             parts: ClusterRemoteInfoParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1011,10 +1017,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterReroute]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterReroute {
             client,
             parts: ClusterRerouteParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -1228,10 +1235,11 @@ pub struct ClusterState<'a, 'b> {
 impl<'a, 'b> ClusterState<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterStateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterState {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1421,10 +1429,11 @@ pub struct ClusterStats<'a, 'b> {
 impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,

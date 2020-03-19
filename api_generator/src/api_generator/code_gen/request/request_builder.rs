@@ -151,15 +151,34 @@ impl<'a> RequestBuilder<'a> {
     ) -> Tokens {
         let (enum_ty, _, _) = enum_builder.clone().build();
         let default_fields = Self::create_default_fields(default_fields);
+
+        // default cat APIs to using text/plain Content-Type and Accept headers. Not all
+        // headers are added here, but instead are added in Transport::send, because
+        // we want to apply default headers when send is called directly, which may
+        // be the case for experimental and beta APIs
+        let headers = {
+            if builder_name.starts_with("Cat") {
+                quote! {
+                    let mut headers = HeaderMap::with_capacity(2);
+                    headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+                    headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
+                }
+            } else {
+                quote! {let headers = HeaderMap::new();}
+            }
+        };
+
         if enum_builder.contains_single_parameterless_part() {
             let doc = doc(format!("Creates a new instance of [{}]", &builder_name));
             quote!(
                 #doc
                 pub fn new(client: &'a Elasticsearch) -> Self {
+                    #headers
+
                     #builder_ident {
                         client,
                         parts: #enum_ty::None,
-                        headers: HeaderMap::new(),
+                        headers,
                         #(#default_fields),*,
                     }
                 }
@@ -172,10 +191,12 @@ impl<'a> RequestBuilder<'a> {
             quote!(
                 #doc
                 pub fn new(client: &'a Elasticsearch, parts: #enum_ty) -> Self {
+                    #headers
+
                     #builder_ident {
                         client,
                         parts,
-                        headers: HeaderMap::new(),
+                        headers,
                         #(#default_fields),*,
                     }
                 }
