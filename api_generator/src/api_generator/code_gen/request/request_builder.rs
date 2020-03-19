@@ -5,11 +5,16 @@ use crate::api_generator::{
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
-use std::{collections::BTreeMap, str};
+use std::{collections::BTreeMap, str, fs};
 use syn::{Field, FieldValue, ImplItem};
+use std::path::PathBuf;
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
+    /// Path to markdown docs that may be combined with generated docs
+    docs_dir: &'a PathBuf,
+    /// The namespace of the API
+    namespace_name: &'a str,
     /// The name of the API to which the generated struct relates
     name: &'a str,
     /// The name of the generated struct
@@ -28,6 +33,8 @@ pub struct RequestBuilder<'a> {
 
 impl<'a> RequestBuilder<'a> {
     pub fn new(
+        docs_dir: &'a PathBuf,
+        namespace_name: &'a str,
         name: &'a str,
         builder_name: &'a str,
         common_params: &'a BTreeMap<String, Type>,
@@ -48,6 +55,8 @@ impl<'a> RequestBuilder<'a> {
         };
 
         RequestBuilder {
+            docs_dir,
+            namespace_name,
             name,
             builder_name,
             common_params,
@@ -536,6 +545,8 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a fn that returns a new instance of a builder struct
     /// from the root or namespace client
     fn create_builder_struct_ctor_fns(
+        docs_dir: &PathBuf,
+        namespace_name: &str,
         name: &str,
         builder_name: &str,
         endpoint: &ApiEndpoint,
@@ -557,18 +568,34 @@ impl<'a> RequestBuilder<'a> {
         };
 
         let api_name_for_docs = split_on_pascal_case(builder_name);
+
+        let markdown_doc = {
+            let mut path = docs_dir.clone();
+            path.push(format!("{}.fn.{}.md", namespace_name, name));
+            if path.exists() {
+                let mut s = fs::read_to_string(&path).expect(format!("Could not read file at {:?}", &path).as_str());
+                s = s.replace("\r\n", "\n");
+                if !s.starts_with("\n\n") {
+                    s.insert_str(0, "\n\n");
+                }
+                s
+            } else {
+                String::new()
+            }
+        };
+
         let method_doc = match (
             endpoint.documentation.description.as_ref(),
             endpoint.documentation.url.as_ref(),
         ) {
             (Some(d), Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({})\n\n{}", api_name_for_docs, u, d))
+                doc(format!("[{} API]({})\n\n{}{}", api_name_for_docs, u, d, markdown_doc))
             }
-            (Some(d), None) => doc(format!("{} API\n\n{}", api_name_for_docs, d)),
+            (Some(d), None) => doc(format!("{} API\n\n{}{}", api_name_for_docs, d, markdown_doc)),
             (None, Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({})", api_name_for_docs, u))
+                doc(format!("[{} API]({}){}", api_name_for_docs, u, markdown_doc))
             }
-            _ => doc(format!("{} API", api_name_for_docs)),
+            _ => doc(format!("{} API{}", api_name_for_docs, markdown_doc)),
         };
 
         let clone_expr = if is_root_method {
@@ -632,6 +659,8 @@ impl<'a> RequestBuilder<'a> {
         );
 
         let ctor_fn = Self::create_builder_struct_ctor_fns(
+            self.docs_dir,
+            self.namespace_name,
             self.name,
             self.builder_name,
             self.endpoint,
