@@ -4,9 +4,10 @@ use crate::api_generator::code_gen::request::request_builder::RequestBuilder;
 use crate::api_generator::code_gen::*;
 use inflector::Inflector;
 use quote::Tokens;
+use std::path::PathBuf;
 
 /// Generates the source code for the methods on the root of Elasticsearch
-pub fn generate(api: &Api) -> Result<String, failure::Error> {
+pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<String, failure::Error> {
     let mut tokens = Tokens::new();
     tokens.append(use_declarations());
 
@@ -16,7 +17,16 @@ pub fn generate(api: &Api) -> Result<String, failure::Error> {
         .iter()
         .map(|(name, endpoint)| {
             let builder_name = name.to_pascal_case();
-            RequestBuilder::new(name, &builder_name, &api.common_params, endpoint, true).build()
+            RequestBuilder::new(
+                docs_dir,
+                "Elasticsearch",
+                name,
+                &builder_name,
+                &api.common_params,
+                endpoint,
+                true,
+            )
+            .build()
         })
         .unzip();
 

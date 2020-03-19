@@ -7722,7 +7722,7 @@ impl<'a> Indices<'a> {
     pub fn close<'b>(&'a self, parts: IndicesCloseParts<'b>) -> IndicesClose<'a, 'b, ()> {
         IndicesClose::new(&self.client, parts)
     }
-    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
+    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(&self.client, parts)
     }
@@ -7842,7 +7842,7 @@ impl<'a> Indices<'a> {
     pub fn put_alias<'b>(&'a self, parts: IndicesPutAliasParts<'b>) -> IndicesPutAlias<'a, 'b, ()> {
         IndicesPutAlias::new(&self.client, parts)
     }
-    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-put-mapping.html)\n\nUpdates the index mappings."]
+    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn put_mapping<'b>(
         &'a self,
         parts: IndicesPutMappingParts<'b>,

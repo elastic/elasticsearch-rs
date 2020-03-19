@@ -340,12 +340,17 @@ pub fn generate(
     // read the Api from file
     let api = read_api(branch, download_dir)?;
 
+    let docs_dir = {
+        let d = generated_dir.clone();
+        d.parent().unwrap().parent().unwrap().join("docs")
+    };
+
     // generate param enums
     let params = code_gen::params::generate(&api)?;
     write_file(params, generated_dir, "params.rs")?;
 
     // generate namespace clients
-    let namespace_clients = code_gen::namespace_clients::generate(&api)?;
+    let namespace_clients = code_gen::namespace_clients::generate(&api, &docs_dir)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
     fs::create_dir_all(&namespace_clients_dir)?;
@@ -368,7 +373,7 @@ pub fn generate(
     }
 
     // generate functions on root of client
-    let root = code_gen::root::generate(&api)?;
+    let root = code_gen::root::generate(&api, &docs_dir)?;
     write_file(root, generated_dir, "root.rs")?;
 
     let generated_modules = fs::read_dir(generated_dir)?
