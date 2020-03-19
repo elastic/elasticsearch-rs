@@ -69,6 +69,6 @@ fn download_endpoints(spec: &GitHubSpec, download_dir: &PathBuf) {
     let response = client.get(&spec.url).send().unwrap();
     let rest_api_specs: Vec<RestApiSpec> = response.json().unwrap();
     println!("Downloading {} specs from {}", spec.dir, spec.branch);
-    download_specs_to_dir(client,rest_api_specs.as_slice(), download_dir).unwrap();
+    download_specs_to_dir(client, rest_api_specs.as_slice(), download_dir).unwrap();
     println!("Done downloading {} specs from {}", spec.dir, spec.branch);
 }

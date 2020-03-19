@@ -17,7 +17,16 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<String, failure::Error>
         .iter()
         .map(|(name, endpoint)| {
             let builder_name = name.to_pascal_case();
-            RequestBuilder::new(docs_dir,"Elasticsearch", name, &builder_name, &api.common_params, endpoint, true).build()
+            RequestBuilder::new(
+                docs_dir,
+                "Elasticsearch",
+                name,
+                &builder_name,
+                &api.common_params,
+                endpoint,
+                true,
+            )
+            .build()
         })
         .unzip();
 

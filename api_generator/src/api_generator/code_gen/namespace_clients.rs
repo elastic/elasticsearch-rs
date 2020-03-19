@@ -41,8 +41,16 @@ pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, 
             .iter()
             .map(|(name, endpoint)| {
                 let builder_name = format!("{}{}", &namespace_pascal_case, name.to_pascal_case());
-                RequestBuilder::new(docs_dir,&namespace_pascal_case, name, &builder_name, &api.common_params, &endpoint, false)
-                    .build()
+                RequestBuilder::new(
+                    docs_dir,
+                    &namespace_pascal_case,
+                    name,
+                    &builder_name,
+                    &api.common_params,
+                    &endpoint,
+                    false,
+                )
+                .build()
             })
             .unzip();
 

@@ -40,7 +40,7 @@ pub enum ClientCertificate {
     ///
     /// This requires the `rustls-tls` feature to be enabled.
     #[cfg(feature = "rustls-tls")]
-    Pem(Vec<u8>)
+    Pem(Vec<u8>),
 }
 
 #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]

@@ -5,9 +5,9 @@ use crate::api_generator::{
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
-use std::{collections::BTreeMap, str, fs};
-use syn::{Field, FieldValue, ImplItem};
 use std::path::PathBuf;
+use std::{collections::BTreeMap, fs, str};
+use syn::{Field, FieldValue, ImplItem};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
@@ -573,7 +573,8 @@ impl<'a> RequestBuilder<'a> {
             let mut path = docs_dir.clone();
             path.push(format!("{}.fn.{}.md", namespace_name, name));
             if path.exists() {
-                let mut s = fs::read_to_string(&path).expect(format!("Could not read file at {:?}", &path).as_str());
+                let mut s = fs::read_to_string(&path)
+                    .unwrap_or_else(|_| panic!("Could not read file at {:?}", &path));
                 s = s.replace("\r\n", "\n");
                 if !s.starts_with("\n\n") {
                     s.insert_str(0, "\n\n");
@@ -588,13 +589,18 @@ impl<'a> RequestBuilder<'a> {
             endpoint.documentation.description.as_ref(),
             endpoint.documentation.url.as_ref(),
         ) {
-            (Some(d), Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({})\n\n{}{}", api_name_for_docs, u, d, markdown_doc))
-            }
-            (Some(d), None) => doc(format!("{} API\n\n{}{}", api_name_for_docs, d, markdown_doc)),
-            (None, Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({}){}", api_name_for_docs, u, markdown_doc))
-            }
+            (Some(d), Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({})\n\n{}{}",
+                api_name_for_docs, u, d, markdown_doc
+            )),
+            (Some(d), None) => doc(format!(
+                "{} API\n\n{}{}",
+                api_name_for_docs, d, markdown_doc
+            )),
+            (None, Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({}){}",
+                api_name_for_docs, u, markdown_doc
+            )),
             _ => doc(format!("{} API{}", api_name_for_docs, markdown_doc)),
         };
 
