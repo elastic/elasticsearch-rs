@@ -5,18 +5,17 @@ use super::{ok_or_accumulate, Step};
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use std::collections::BTreeMap;
-use yaml_rust::{yaml::Hash, Yaml, YamlEmitter};
+use yaml_rust::{Yaml, YamlEmitter};
 
 pub struct Do {
-    headers: BTreeMap<String, String>,
-    catch: Option<String>,
-    pub api_call: ApiCall,
+    api_call: ApiCall,
     warnings: Vec<String>,
+    catch: Option<String>,
 }
 
 impl ToTokens for Do {
     fn to_tokens(&self, tokens: &mut Tokens) {
-        // TODO: Add in catch, headers, warnings
+        // TODO: Add in catch and warnings
         &self.api_call.to_tokens(tokens);
     }
 }
@@ -31,9 +30,9 @@ impl Do {
     pub fn try_parse(api: &Api, yaml: &Yaml) -> Result<Do, failure::Error> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("Expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
 
-        let mut api_call: Option<ApiCall> = None;
+        let mut call: Option<(&str, &Yaml)> = None;
         let mut headers = BTreeMap::new();
         let mut warnings: Vec<String> = Vec::new();
         let mut catch = None;
@@ -47,16 +46,16 @@ impl Do {
 
                 match key {
                     "headers" => {
-                        match v.as_hash() {
-                            Some(h) => {
-                                //for (k, v) in h.iter() {}
-
-                                Ok(())
-                            }
-                            None => {
-                                Err(failure::err_msg(format!("expected hash but found {:?}", v)))
-                            }
+                        let hash = v.as_hash()
+                            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", v)))?;
+                        for (hk, hv) in hash.iter() {
+                            let h = hk.as_str()
+                                .ok_or_else(|| failure::err_msg(format!("expected str but found {:?}", hk)))?;
+                            let v = hv.as_str()
+                                .ok_or_else(|| failure::err_msg(format!("expected str but found {:?}", hv)))?;
+                            headers.insert(h.into(), v.into());
                         }
+                        Ok(())
                     }
                     "catch" => {
                         catch = v.as_str().map(|s| s.to_string());
@@ -73,19 +72,8 @@ impl Do {
                             .unwrap();
                         Ok(())
                     }
-                    call => {
-                        let hash = v.as_hash().ok_or_else(|| {
-                            failure::err_msg(format!(
-                                "expected hash value for {} but found {:?}",
-                                &call, v
-                            ))
-                        })?;
-
-                        let endpoint = api.endpoint_for_api_call(call).ok_or_else(|| {
-                            failure::err_msg(format!("no API found for {}", call))
-                        })?;
-
-                        api_call = Some(ApiCall::try_from(api, endpoint, hash)?);
+                    api_call => {
+                        call = Some((api_call, v));
                         Ok(())
                     }
                 }
@@ -94,12 +82,20 @@ impl Do {
 
         ok_or_accumulate(&results, 0)?;
 
+        let (call, value) = call.ok_or_else(|| failure::err_msg("no API found in do"))?;
+        let endpoint = api.endpoint_for_api_call(call)
+            .ok_or_else(|| failure::err_msg(format!("no API found for '{}'", call)))?;
+        let api_call = ApiCall::try_from(api, endpoint, value, headers)?;
+
         Ok(Do {
-            api_call: api_call.unwrap(),
+            api_call,
             catch,
-            headers,
             warnings,
         })
+    }
+
+    pub fn namespace(&self) -> Option<&String> {
+        self.api_call.namespace.as_ref()
     }
 }
 
@@ -109,6 +105,7 @@ pub struct ApiCall {
     function: syn::Ident,
     parts: Option<Tokens>,
     params: Option<Tokens>,
+    headers: BTreeMap<String, String>,
     body: Option<Tokens>,
     ignore: Option<i64>,
 }
@@ -120,8 +117,17 @@ impl ToTokens for ApiCall {
         let params = &self.params;
         let body = &self.body;
 
+        // TODO: handle "set" values
+        let headers: Vec<Tokens> = self.headers
+            .iter()
+            .map(|(k,v)| quote! {
+                .header(HeaderName::from_static(#k), HeaderValue::from_static(#v))
+            })
+            .collect();
+
         tokens.append(quote! {
             let response = client.#function(#parts)
+                #(#headers)*
                 #params
                 #body
                 .send()
@@ -135,8 +141,12 @@ impl ApiCall {
     pub fn try_from(
         api: &Api,
         endpoint: &ApiEndpoint,
-        hash: &Hash,
+        yaml: &Yaml,
+        headers: BTreeMap<String, String>
     ) -> Result<ApiCall, failure::Error> {
+        let hash = yaml.as_hash()
+            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
+
         let mut parts: Vec<(&str, &Yaml)> = vec![];
         let mut params: Vec<(&str, &Yaml)> = vec![];
         let mut body: Option<Tokens> = None;
@@ -177,6 +187,7 @@ impl ApiCall {
             function,
             parts,
             params,
+            headers,
             body,
             ignore,
         })

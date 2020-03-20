@@ -38,7 +38,7 @@ impl YamlTests {
         steps
             .iter()
             .filter_map(Step::r#do)
-            .filter_map(|d| d.api_call.namespace.as_ref())
+            .filter_map(|d| d.namespace())
             .map(|s| s.to_string())
             .collect()
     }
@@ -92,7 +92,10 @@ impl YamlTests {
             #[cfg(test)]
             pub mod tests {
                 use elasticsearch::*;
-                use elasticsearch::http::request::JsonBody;
+                use elasticsearch::http::{
+                    headers::{HeaderName, HeaderValue},
+                    request::JsonBody
+                };
                 use elasticsearch::params::*;
                 #(#directives)*
                 use regex;
