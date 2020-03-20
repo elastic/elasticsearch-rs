@@ -13,6 +13,7 @@ use std::path::PathBuf;
 
 mod generator;
 mod github;
+pub mod step;
 
 #[cfg(test)]
 mod generated;
