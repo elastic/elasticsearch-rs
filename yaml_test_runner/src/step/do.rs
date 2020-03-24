@@ -486,16 +486,11 @@ impl ApiCall {
                     _ => Some(matching_path_parts[0]),
                 }
             }
-        };
+        }.ok_or_else(|| failure::err_msg(format!(
+            "No path for '{}' API with URL parts {:?}",
+            &api_call, parts
+        )))?;
 
-        if path.is_none() {
-            return Err(failure::err_msg(format!(
-                "No path for '{}' API with URL parts {:?}",
-                &api_call, parts
-            )));
-        }
-
-        let path = path.unwrap();
         let path_parts = path.path.params();
         let variant_name = {
             let v = path_parts
@@ -515,25 +510,37 @@ impl ApiCall {
                 f.cmp(&s)
             })
             .map(|(p, v)| {
-                let ty = match path.parts.get(*p) {
-                    Some(t) => Ok(t),
-                    None => Err(failure::err_msg(format!(
-                        "No URL part found for {} in {}",
-                        p, &path.path
-                    ))),
-                }?;
+                let ty = path.parts.get(*p)
+                    .ok_or_else(|| failure::err_msg(format!(
+                    "No URL part found for {} in {}",
+                    p, &path.path
+                )))?;
 
                 match v {
-                    Yaml::String(s) => match ty.ty {
-                        TypeKind::List => {
-                            let values: Vec<&str> = s.split(',').collect();
-                            Ok(quote! { &[#(#values),*] })
+                    Yaml::String(s) => {
+                        let is_set_value = s.starts_with('$');
+
+                        match ty.ty {
+                            TypeKind::List => {
+                                let values: Vec<&str> = s.split(',').collect();
+                                Ok(quote! { &[#(#values),*] })
+                            }
+                            TypeKind::Long => {
+                                let l = s.parse::<i64>().unwrap();
+                                Ok(quote! { #l })
+                            }
+                            _ => {
+                                if is_set_value {
+                                    let t = s.trim_start_matches('$')
+                                        .trim_start_matches('{')
+                                        .trim_end_matches('}');
+                                    let ident = syn::Ident::from(t);
+                                    Ok(quote! { #ident.as_str().unwrap() })
+                                } else {
+                                    Ok(quote! { #s })
+                                }
+                            },
                         }
-                        TypeKind::Long => {
-                            let l = s.parse::<i64>().unwrap();
-                            Ok(quote! { #l })
-                        }
-                        _ => Ok(quote! { #s }),
                     },
                     Yaml::Boolean(b) => {
                         let s = b.to_string();
