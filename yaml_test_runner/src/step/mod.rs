@@ -1,11 +1,14 @@
 use api_generator::generator::Api;
 use yaml_rust::Yaml;
+use std::fmt::Write;
 
 mod r#do;
 mod r#match;
+mod set;
 mod skip;
 pub use r#do::*;
 pub use r#match::*;
+pub use set::*;
 pub use skip::*;
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
@@ -33,7 +36,10 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
                 let d = Do::try_parse(api, value)?;
                 parsed_steps.push(d.into())
             }
-            "set" => {}
+            "set" => {
+                let s = Set::try_parse(value)?;
+                parsed_steps.push(s.into());
+            }
             "transform_and_set" => {}
             "match" => {
                 let m = Match::try_parse(value)?;
@@ -55,8 +61,49 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
     Ok(parsed_steps)
 }
 
+pub trait BodyExpr {
+    /// Builds an indexer expression from the match key
+    fn body_expr(&self, key: &str) -> String {
+        if key == "$body" {
+            key.into()
+        } else {
+            let mut values = Vec::new();
+            let mut value = String::new();
+            let mut chars = key.chars();
+            while let Some(ch) = chars.next() {
+                match ch {
+                    '\\' => {
+                        // consume the next character too
+                        if let Some(next) = chars.next() {
+                            value.push(next);
+                        }
+                    }
+                    '.' => {
+                        values.push(value);
+                        value = String::new();
+                    }
+                    _ => {
+                        value.push(ch);
+                    }
+                }
+            }
+            values.push(value);
+            let mut expr = String::new();
+            for s in values {
+                if s.chars().all(char::is_numeric) {
+                    write!(expr, "[{}]", s).unwrap();
+                } else {
+                    write!(expr, "[\"{}\"]", s).unwrap();
+                }
+            }
+            expr
+        }
+    }
+}
+
 pub enum Step {
     Skip(Skip),
+    Set(Set),
     Do(Do),
     Match(Match),
 }

@@ -4,8 +4,11 @@ use quote::{ToTokens, Tokens};
 use super::{ok_or_accumulate, Step};
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
+use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
+use syn::StrStyle;
+use syn::parse::ident;
 
 pub struct Do {
     api_call: ApiCall,
@@ -193,6 +196,41 @@ impl ApiCall {
         })
     }
 
+    fn generate_enum(
+        enum_name: &str,
+        variant: &str,
+        options: &[serde_json::Value],
+    ) -> Result<Tokens, failure::Error> {
+        if !variant.is_empty()
+            && !options.contains(&serde_json::Value::String(variant.to_owned()))
+        {
+            return Err(failure::err_msg(format!(
+                "options {:?} does not contain value {}",
+                &options, variant
+            )));
+        }
+
+        let e: String = enum_name.to_pascal_case();
+        let enum_name = syn::Ident::from(e.as_str());
+        let variant = if variant.is_empty() {
+            // TODO: Should we simply omit empty Refresh tests?
+            if e == "Refresh" {
+                syn::Ident::from("True")
+            } else if e == "Size" {
+                syn::Ident::from("Unspecified")
+            } else {
+                return Err(failure::err_msg(format!(
+                    "Unhandled empty value for {}",
+                    &e
+                )));
+            }
+        } else {
+            syn::Ident::from(variant.to_pascal_case())
+        };
+
+        Ok(quote!(#enum_name::#variant))
+    }
+
     fn generate_params(
         api: &Api,
         endpoint: &ApiEndpoint,
@@ -216,41 +254,6 @@ impl ApiCall {
 
                     let kind = ty.ty;
 
-                    fn create_enum(
-                        enum_name: &str,
-                        variant: &str,
-                        options: &[serde_json::Value],
-                    ) -> Result<Tokens, failure::Error> {
-                        if !variant.is_empty()
-                            && !options.contains(&serde_json::Value::String(variant.to_owned()))
-                        {
-                            return Err(failure::err_msg(format!(
-                                "options {:?} does not contain value {}",
-                                &options, variant
-                            )));
-                        }
-
-                        let e: String = enum_name.to_pascal_case();
-                        let enum_name = syn::Ident::from(e.as_str());
-                        let variant = if variant.is_empty() {
-                            // TODO: Should we simply omit empty Refresh tests?
-                            if e == "Refresh" {
-                                syn::Ident::from("True")
-                            } else if e == "Size" {
-                                syn::Ident::from("Unspecified")
-                            } else {
-                                return Err(failure::err_msg(format!(
-                                    "Unhandled empty value for {}",
-                                    &e
-                                )));
-                            }
-                        } else {
-                            syn::Ident::from(variant.to_pascal_case())
-                        };
-
-                        Ok(quote!(#enum_name::#variant))
-                    }
-
                     match v {
                         Yaml::String(ref s) => {
                             match kind {
@@ -262,7 +265,7 @@ impl ApiCall {
                                             .split(',')
                                             .collect::<Vec<_>>()
                                             .iter()
-                                            .map(|e| create_enum(n, e, &ty.options))
+                                            .map(|e| Self::generate_enum(n, e, &ty.options))
                                             .collect();
 
                                         match ok_or_accumulate(&idents, 0) {
@@ -279,7 +282,7 @@ impl ApiCall {
                                             Err(e) => return Err(failure::err_msg(e)),
                                         }
                                     } else {
-                                        let e = create_enum(n, s.as_str(), &ty.options)?;
+                                        let e = Self::generate_enum(n, s.as_str(), &ty.options)?;
                                         tokens.append(quote! {
                                             .#param_ident(#e)
                                         });
@@ -386,7 +389,7 @@ impl ApiCall {
                             if n == &"expand_wildcards" {
                                 let result: Vec<Result<Tokens, failure::Error>> = result
                                     .iter()
-                                    .map(|s| create_enum(n, s.as_str(), &ty.options))
+                                    .map(|s| Self::generate_enum(n, s.as_str(), &ty.options))
                                     .collect();
 
                                 match ok_or_accumulate(&result, 0) {
@@ -593,6 +596,21 @@ impl ApiCall {
         }
     }
 
+    fn replace_values(s: &str) -> String {
+        lazy_static! {
+            // replace usages of "$.*" with the captured value
+            static ref SET_REGEX: Regex =
+                Regex::new(r#""\$(.*?)""#).unwrap();
+
+            // include i64 suffix on whole numbers
+            static ref INT_REGEX: Regex =
+                regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
+        }
+
+        let c = SET_REGEX.replace_all(s, "$1").into_owned();
+        INT_REGEX.replace_all(&c, "${1}${2}i64${3}").into_owned()
+    }
+
     /// Creates the body function call from a YAML value.
     ///
     /// When reading a body from the YAML test, it'll be converted to a Yaml variant,
@@ -627,7 +645,8 @@ impl ApiCall {
                     let json: Vec<Tokens> = values
                         .iter()
                         .map(|value| {
-                            let json = serde_json::to_string(&value).unwrap();
+                            let mut json = serde_json::to_string(&value).unwrap();
+                            json = Self::replace_values(&json);
                             let ident = syn::Ident::from(json);
                             if value.is_string() {
                                 quote!(#ident)
@@ -639,11 +658,11 @@ impl ApiCall {
                     Some(quote!(.body(vec![ #(#json),* ])))
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
-                    let json = serde_json::to_string(&value).unwrap();
+                    let mut json = serde_json::to_string_pretty(&value).unwrap();
+                    json = Self::replace_values(&json);
+                    let ident = syn::Ident::from(json);
 
-                    //let ident = syn::Ident::from(json);
-
-                    Some(quote!(.body(#json)))
+                    Some(quote!(.body(json!{#ident})))
                 }
             }
         }

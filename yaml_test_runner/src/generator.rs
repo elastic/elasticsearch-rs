@@ -172,6 +172,15 @@ impl YamlTests {
                                 read_response = true;
                             }
                             m.to_tokens(&mut body);
+                        },
+                        Step::Set(s) => {
+                            if !read_response {
+                                body.append(quote! {
+                                    let response_body = response.read_body::<Value>().await?;
+                                });
+                                read_response = true;
+                            }
+                            s.to_tokens(&mut body);
                         }
                     }
                 }
