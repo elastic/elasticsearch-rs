@@ -163,7 +163,10 @@ impl YamlTests {
                                 None
                             }
                         }
-                        Step::Do(d) => d.to_tokens(&mut body),
+                        Step::Do(d) => {
+                            read_response = false;
+                            d.to_tokens(&mut body);
+                        },
                         Step::Match(m) => {
                             if !read_response {
                                 body.append(quote! {
