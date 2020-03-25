@@ -256,6 +256,8 @@ impl ApiCall {
 
                     match v {
                         Yaml::String(ref s) => {
+                            let is_set_value = s.starts_with('$');
+
                             match kind {
                                 TypeKind::Enum => {
                                     if n == &"expand_wildcards" {
@@ -307,14 +309,47 @@ impl ApiCall {
                                     });
                                 }
                                 TypeKind::Integer | TypeKind::Number => {
-                                    let i = s.parse::<i32>()?;
-                                    tokens.append(quote! {
-                                        .#param_ident(#i)
-                                    });
+                                    if is_set_value {
+                                        let t = Self::from_set_value(s);
+                                        let ident = syn::Ident::from(t);
+                                        tokens.append(quote! {
+                                           .#param_ident(#ident.as_i32().unwrap())
+                                        });
+                                    } else {
+                                        let i = s.parse::<i32>()?;
+                                        tokens.append(quote! {
+                                            .#param_ident(#i)
+                                        });
+                                    }
+                                },
+                                TypeKind::Long => {
+                                    if is_set_value {
+                                        let t = Self::from_set_value(s);
+                                        let ident = syn::Ident::from(t);
+                                        tokens.append(quote! {
+                                           .#param_ident(#ident.as_i64().unwrap())
+                                        });
+                                    } else {
+                                        let i = s.parse::<i64>()?;
+                                        tokens.append(quote! {
+                                            .#param_ident(#i)
+                                        });
+                                    }
                                 }
-                                _ => tokens.append(quote! {
-                                    .#param_ident(#s)
-                                }),
+                                _ => {
+                                    // handle set values
+                                    let t = if is_set_value {
+                                        let t = Self::from_set_value(s);
+                                        let ident = syn::Ident::from(t);
+                                        quote!{ #ident.as_str().unwrap() }
+                                    } else {
+                                        quote! { #s }
+                                    };
+
+                                    tokens.append(quote! {
+                                        .#param_ident(#t)
+                                    })
+                                },
                             }
                         }
                         Yaml::Boolean(ref b) => match kind {
@@ -416,6 +451,12 @@ impl ApiCall {
                 Ok(Some(tokens))
             }
         }
+    }
+
+    fn from_set_value(s: &str) -> &str {
+        s.trim_start_matches('$')
+            .trim_start_matches('{')
+            .trim_end_matches('}')
     }
 
     fn generate_parts(
@@ -522,18 +563,33 @@ impl ApiCall {
 
                         match ty.ty {
                             TypeKind::List => {
-                                let values: Vec<&str> = s.split(',').collect();
+                                let values: Vec<Tokens> = s
+                                    .split(',')
+                                    .map(|s| {
+                                        if is_set_value {
+                                            let t = Self::from_set_value(s);
+                                            let ident = syn::Ident::from(t);
+                                            quote! { #ident.as_str().unwrap() }
+                                        } else {
+                                            quote!{ #s }
+                                        }
+                                    })
+                                    .collect();
                                 Ok(quote! { &[#(#values),*] })
                             }
                             TypeKind::Long => {
-                                let l = s.parse::<i64>().unwrap();
-                                Ok(quote! { #l })
+                                if is_set_value {
+                                    let t = Self::from_set_value(s);
+                                    let ident = syn::Ident::from(t);
+                                    Ok(quote! { #ident.as_i64().unwrap() })
+                                } else {
+                                    let l = s.parse::<i64>().unwrap();
+                                    Ok(quote! { #l })
+                                }
                             }
                             _ => {
                                 if is_set_value {
-                                    let t = s.trim_start_matches('$')
-                                        .trim_start_matches('{')
-                                        .trim_end_matches('}');
+                                    let t = Self::from_set_value(s);
                                     let ident = syn::Ident::from(t);
                                     Ok(quote! { #ident.as_str().unwrap() })
                                 } else {
@@ -569,7 +625,10 @@ impl ApiCall {
                         match ok_or_accumulate(&result, 0) {
                             Ok(_) => {
                                 let result: Vec<_> =
-                                    result.into_iter().filter_map(Result::ok).collect();
+                                    result.into_iter()
+                                        .filter_map(Result::ok)
+
+                                        .collect();
 
                                 match ty.ty {
                                     // Some APIs specify a part is a string in the REST API spec

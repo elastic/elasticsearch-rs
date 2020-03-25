@@ -62,13 +62,25 @@ impl ToTokens for Match {
                     }
                 } else {
                     let ident = syn::Ident::from(expr.clone());
+
+                    // handle set values
+                    let t = if s.starts_with('$') {
+                        let t = s.trim_start_matches('$')
+                            .trim_start_matches('{')
+                            .trim_end_matches('}');
+                        let ident = syn::Ident::from(t);
+                        quote!{ #ident.as_str().unwrap() }
+                    } else {
+                        quote! { #s }
+                    };
+
                     tokens.append(quote! {
                         assert_eq!(
                             response_body#ident.as_str().unwrap(),
-                            #s,
+                            #t,
                             "expected value at {} to be {} but was {}",
                             #expr,
-                            #s,
+                            #t,
                             response_body#ident.as_str().unwrap()
                         );
                     })
