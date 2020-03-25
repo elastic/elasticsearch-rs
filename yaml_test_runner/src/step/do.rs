@@ -308,12 +308,12 @@ impl ApiCall {
                                         .#param_ident(#f)
                                     });
                                 }
-                                TypeKind::Integer | TypeKind::Number => {
+                                TypeKind::Integer => {
                                     if is_set_value {
                                         let t = Self::from_set_value(s);
                                         let ident = syn::Ident::from(t);
                                         tokens.append(quote! {
-                                           .#param_ident(#ident.as_i32().unwrap())
+                                           .#param_ident(#ident.as_i64().unwrap() as i32)
                                         });
                                     } else {
                                         let i = s.parse::<i32>()?;
@@ -322,7 +322,7 @@ impl ApiCall {
                                         });
                                     }
                                 },
-                                TypeKind::Long => {
+                                TypeKind::Number | TypeKind::Long => {
                                     if is_set_value {
                                         let t = Self::from_set_value(s);
                                         let ident = syn::Ident::from(t);
