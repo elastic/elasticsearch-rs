@@ -88,10 +88,23 @@ pub trait BodyExpr {
                 }
             }
             values.push(value);
+
+            // some APIs specify the response body as the first part of the path
+            // which should be removed.
+            if values[0] == "$body".to_string() {
+                values.remove(0);
+            }
+
             let mut expr = String::new();
             for s in values {
                 if s.chars().all(char::is_numeric) {
                     write!(expr, "[{}]", s).unwrap();
+                } else if s.starts_with('$') {
+                    // handle set values
+                    let t = s.trim_start_matches('$')
+                        .trim_start_matches('{')
+                        .trim_end_matches('}');
+                    write!(expr, "[{}.as_str().unwrap()]", t).unwrap();
                 } else {
                     write!(expr, "[\"{}\"]", s).unwrap();
                 }
