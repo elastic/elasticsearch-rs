@@ -693,10 +693,34 @@ impl ApiCall {
 
         match v {
             Yaml::String(s) => {
+                let json = Self::replace_values(s.as_str());
                 if accepts_nd_body {
-                    Some(quote!(.body(vec![#s])))
+                    // a newline delimited API body may be expressed
+                    // as a scalar string literal style where line breaks are significant (using |)
+                    // or where lines breaks are folded to an empty space unless it ends on an
+                    // empty or a more-indented line (using >)
+                    // see https://yaml.org/spec/1.2/spec.html#id2760844
+                    //
+                    // need to trim the trailing newline to differentiate...
+                    let contains_newlines = json.trim_end_matches('\n').contains('\n');
+                    let split = if contains_newlines {
+                        json.split('\n').collect::<Vec<_>>()
+                    } else {
+                        json.split(char::is_whitespace).collect::<Vec<_>>()
+                    };
+
+                    let values: Vec<Tokens> = split
+                        .into_iter()
+                        .filter(|s| !s.is_empty())
+                        .map(|s| {
+                            let ident = syn::Ident::from(s);
+                            quote! { JsonBody::from(json!(#ident)) }
+                        })
+                        .collect();
+                    Some(quote!(.body(vec![#(#values),*])))
                 } else {
-                    Some(quote!(.body(#s)))
+                    let ident = syn::Ident::from(json);
+                    Some(quote!(.body(json!{#ident})))
                 }
             }
             _ => {
@@ -713,6 +737,7 @@ impl ApiCall {
                         .map(|value| {
                             let mut json = serde_json::to_string(&value).unwrap();
                             json = Self::replace_values(&json);
+
                             let ident = syn::Ident::from(json);
                             if value.is_string() {
                                 quote!(#ident)
