@@ -52,7 +52,7 @@ impl<'b> IndicesAnalyzeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
+#[doc = "Builder for the [Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
 pub struct IndicesAnalyze<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesAnalyzeParts<'b>,
@@ -209,7 +209,7 @@ impl<'b> IndicesClearCacheParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
+#[doc = "Builder for the [Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
 pub struct IndicesClearCache<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesClearCacheParts<'b>,
@@ -437,7 +437,7 @@ impl<'b> IndicesCloneParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-clone-index.html)\n\nClones an index"]
+#[doc = "Builder for the [Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-clone-index.html)\n\nClones an index"]
 pub struct IndicesClone<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesCloneParts<'b>,
@@ -610,7 +610,7 @@ impl<'b> IndicesCloseParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-open-close.html)\n\nCloses an index."]
+#[doc = "Builder for the [Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-open-close.html)\n\nCloses an index."]
 pub struct IndicesClose<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesCloseParts<'b>,
@@ -814,7 +814,7 @@ impl<'b> IndicesCreateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
+#[doc = "Builder for the [Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-create-index.html)\n\nCreates an index with optional settings and mappings."]
 pub struct IndicesCreate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesCreateParts<'b>,
@@ -997,7 +997,7 @@ impl<'b> IndicesDeleteParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-delete-index.html)\n\nDeletes an index."]
+#[doc = "Builder for the [Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-delete-index.html)\n\nDeletes an index."]
 pub struct IndicesDelete<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesDeleteParts<'b>,
@@ -1167,7 +1167,7 @@ impl<'b> IndicesDeleteAliasParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nDeletes an alias."]
+#[doc = "Builder for the [Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nDeletes an alias."]
 pub struct IndicesDeleteAlias<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesDeleteAliasParts<'b>,
@@ -1303,7 +1303,7 @@ impl<'b> IndicesDeleteTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nDeletes an index template."]
+#[doc = "Builder for the [Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nDeletes an index template."]
 pub struct IndicesDeleteTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesDeleteTemplateParts<'b>,
@@ -1440,7 +1440,7 @@ impl<'b> IndicesExistsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-exists.html)\n\nReturns information about whether a particular index exists."]
+#[doc = "Builder for the [Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-exists.html)\n\nReturns information about whether a particular index exists."]
 pub struct IndicesExists<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesExistsParts<'b>,
@@ -1629,7 +1629,7 @@ impl<'b> IndicesExistsAliasParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
+#[doc = "Builder for the [Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
 pub struct IndicesExistsAlias<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesExistsAliasParts<'b>,
@@ -1786,7 +1786,7 @@ impl<'b> IndicesExistsTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+#[doc = "Builder for the [Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
 pub struct IndicesExistsTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesExistsTemplateParts<'b>,
@@ -1936,7 +1936,7 @@ impl<'b> IndicesExistsTypeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
+#[doc = "Builder for the [Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
 pub struct IndicesExistsType<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesExistsTypeParts<'b>,
@@ -2097,7 +2097,7 @@ impl<'b> IndicesFlushParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
+#[doc = "Builder for the [Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
 pub struct IndicesFlush<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesFlushParts<'b>,
@@ -2298,7 +2298,7 @@ impl<'b> IndicesFlushSyncedParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-synced-flush-api.html)\n\nPerforms a synced flush operation on one or more indices. Synced flush is deprecated and will be removed in 8.0. Use flush instead"]
+#[doc = "Builder for the [Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-synced-flush-api.html)\n\nPerforms a synced flush operation on one or more indices. Synced flush is deprecated and will be removed in 8.0. Use flush instead"]
 pub struct IndicesFlushSynced<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesFlushSyncedParts<'b>,
@@ -2477,7 +2477,7 @@ impl<'b> IndicesForcemergeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
+#[doc = "Builder for the [Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
 pub struct IndicesForcemerge<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesForcemergeParts<'b>,
@@ -2682,7 +2682,7 @@ impl<'b> IndicesFreezeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/frozen.html)"]
+#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
 pub struct IndicesFreeze<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesFreezeParts<'b>,
@@ -2887,7 +2887,7 @@ impl<'b> IndicesGetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-index.html)\n\nReturns information about one or more indices."]
+#[doc = "Builder for the [Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-index.html)\n\nReturns information about one or more indices."]
 pub struct IndicesGet<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetParts<'b>,
@@ -3109,7 +3109,7 @@ impl<'b> IndicesGetAliasParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nReturns an alias."]
+#[doc = "Builder for the [Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nReturns an alias."]
 pub struct IndicesGetAlias<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetAliasParts<'b>,
@@ -3307,7 +3307,7 @@ impl<'b> IndicesGetFieldMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
+#[doc = "Builder for the [Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
 pub struct IndicesGetFieldMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetFieldMappingParts<'b>,
@@ -3509,7 +3509,7 @@ impl<'b> IndicesGetMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
+#[doc = "Builder for the [Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
 pub struct IndicesGetMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetMappingParts<'b>,
@@ -3711,7 +3711,7 @@ impl<'b> IndicesGetSettingsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-settings.html)\n\nReturns settings for one or more indices."]
+#[doc = "Builder for the [Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-settings.html)\n\nReturns settings for one or more indices."]
 pub struct IndicesGetSettings<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetSettingsParts<'b>,
@@ -3901,7 +3901,7 @@ impl<'b> IndicesGetTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nReturns an index template."]
+#[doc = "Builder for the [Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nReturns an index template."]
 pub struct IndicesGetTemplate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetTemplateParts<'b>,
@@ -4062,7 +4062,7 @@ impl<'b> IndicesGetUpgradeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
+#[doc = "Builder for the [Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
 pub struct IndicesGetUpgrade<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesGetUpgradeParts<'b>,
@@ -4210,7 +4210,7 @@ impl<'b> IndicesOpenParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-open-close.html)\n\nOpens an index."]
+#[doc = "Builder for the [Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-open-close.html)\n\nOpens an index."]
 pub struct IndicesOpen<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesOpenParts<'b>,
@@ -4417,7 +4417,7 @@ impl<'b> IndicesPutAliasParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nCreates or updates an alias."]
+#[doc = "Builder for the [Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nCreates or updates an alias."]
 pub struct IndicesPutAlias<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesPutAliasParts<'b>,
@@ -4599,7 +4599,7 @@ impl<'b> IndicesPutMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-put-mapping.html)\n\nUpdates the index mappings."]
+#[doc = "Builder for the [Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-put-mapping.html)\n\nUpdates the index mappings."]
 pub struct IndicesPutMapping<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesPutMappingParts<'b>,
@@ -4808,7 +4808,7 @@ impl<'b> IndicesPutSettingsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-update-settings.html)\n\nUpdates the index settings."]
+#[doc = "Builder for the [Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-update-settings.html)\n\nUpdates the index settings."]
 pub struct IndicesPutSettings<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesPutSettingsParts<'b>,
@@ -5023,7 +5023,7 @@ impl<'b> IndicesPutTemplateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nCreates or updates an index template."]
+#[doc = "Builder for the [Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nCreates or updates an index template."]
 pub struct IndicesPutTemplate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesPutTemplateParts<'b>,
@@ -5031,7 +5031,6 @@ pub struct IndicesPutTemplate<'a, 'b, B> {
     create: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
-    flat_settings: Option<bool>,
     headers: HeaderMap,
     human: Option<bool>,
     include_type_name: Option<bool>,
@@ -5039,7 +5038,6 @@ pub struct IndicesPutTemplate<'a, 'b, B> {
     order: Option<i64>,
     pretty: Option<bool>,
     source: Option<&'b str>,
-    timeout: Option<&'b str>,
 }
 impl<'a, 'b, B> IndicesPutTemplate<'a, 'b, B>
 where
@@ -5056,14 +5054,12 @@ where
             create: None,
             error_trace: None,
             filter_path: None,
-            flat_settings: None,
             human: None,
             include_type_name: None,
             master_timeout: None,
             order: None,
             pretty: None,
             source: None,
-            timeout: None,
         }
     }
     #[doc = "The body for the API call"]
@@ -5078,7 +5074,6 @@ where
             create: self.create,
             error_trace: self.error_trace,
             filter_path: self.filter_path,
-            flat_settings: self.flat_settings,
             headers: self.headers,
             human: self.human,
             include_type_name: self.include_type_name,
@@ -5086,7 +5081,6 @@ where
             order: self.order,
             pretty: self.pretty,
             source: self.source,
-            timeout: self.timeout,
         }
     }
     #[doc = "Whether the index template should only be added if new or can also replace an existing one"]
@@ -5102,11 +5096,6 @@ where
     #[doc = "A comma-separated list of filters used to reduce the response."]
     pub fn filter_path(mut self, filter_path: &'b [&'b str]) -> Self {
         self.filter_path = Some(filter_path);
-        self
-    }
-    #[doc = "Return settings in flat format (default: false)"]
-    pub fn flat_settings(mut self, flat_settings: bool) -> Self {
-        self.flat_settings = Some(flat_settings);
         self
     }
     #[doc = "Adds a HTTP header"]
@@ -5144,11 +5133,6 @@ where
         self.source = Some(source);
         self
     }
-    #[doc = "Explicit operation timeout"]
-    pub fn timeout(mut self, timeout: &'b str) -> Self {
-        self.timeout = Some(timeout);
-        self
-    }
     #[doc = "Creates an asynchronous call to the Indices Put Template API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
@@ -5167,8 +5151,6 @@ where
                     serialize_with = "crate::client::serialize_coll_qs"
                 )]
                 filter_path: Option<&'b [&'b str]>,
-                #[serde(rename = "flat_settings")]
-                flat_settings: Option<bool>,
                 #[serde(rename = "human")]
                 human: Option<bool>,
                 #[serde(rename = "include_type_name")]
@@ -5181,21 +5163,17 @@ where
                 pretty: Option<bool>,
                 #[serde(rename = "source")]
                 source: Option<&'b str>,
-                #[serde(rename = "timeout")]
-                timeout: Option<&'b str>,
             }
             let query_params = QueryParams {
                 create: self.create,
                 error_trace: self.error_trace,
                 filter_path: self.filter_path,
-                flat_settings: self.flat_settings,
                 human: self.human,
                 include_type_name: self.include_type_name,
                 master_timeout: self.master_timeout,
                 order: self.order,
                 pretty: self.pretty,
                 source: self.source,
-                timeout: self.timeout,
             };
             Some(query_params)
         };
@@ -5232,7 +5210,7 @@ impl<'b> IndicesRecoveryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
+#[doc = "Builder for the [Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
 pub struct IndicesRecovery<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesRecoveryParts<'b>,
@@ -5373,7 +5351,7 @@ impl<'b> IndicesRefreshParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
+#[doc = "Builder for the [Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
 pub struct IndicesRefresh<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesRefreshParts<'b>,
@@ -5549,7 +5527,7 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-reload-analyzers.html)"]
+#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)"]
 pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesReloadSearchAnalyzersParts<'b>,
@@ -5734,7 +5712,7 @@ impl<'b> IndicesRolloverParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
+#[doc = "Builder for the [Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
 pub struct IndicesRollover<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesRolloverParts<'b>,
@@ -5932,7 +5910,7 @@ impl<'b> IndicesSegmentsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
+#[doc = "Builder for the [Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
 pub struct IndicesSegments<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesSegmentsParts<'b>,
@@ -6093,7 +6071,7 @@ impl<'b> IndicesShardStoresParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
+#[doc = "Builder for the [Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
 pub struct IndicesShardStores<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesShardStoresParts<'b>,
@@ -6251,7 +6229,7 @@ impl<'b> IndicesShrinkParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
+#[doc = "Builder for the [Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
 pub struct IndicesShrink<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesShrinkParts<'b>,
@@ -6435,7 +6413,7 @@ impl<'b> IndicesSplitParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
+#[doc = "Builder for the [Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
 pub struct IndicesSplit<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesSplitParts<'b>,
@@ -6643,7 +6621,7 @@ impl<'b> IndicesStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
+#[doc = "Builder for the [Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
 pub struct IndicesStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IndicesStatsParts<'b>,
@@ -6866,7 +6844,7 @@ impl<'b> IndicesUnfreezeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/frozen.html)"]
+#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
 pub struct IndicesUnfreeze<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesUnfreezeParts<'b>,
@@ -7065,7 +7043,7 @@ impl IndicesUpdateAliasesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nUpdates index aliases."]
+#[doc = "Builder for the [Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nUpdates index aliases."]
 pub struct IndicesUpdateAliases<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesUpdateAliasesParts,
@@ -7230,7 +7208,7 @@ impl<'b> IndicesUpgradeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
+#[doc = "Builder for the [Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
 pub struct IndicesUpgrade<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesUpgradeParts<'b>,
@@ -7441,7 +7419,7 @@ impl<'b> IndicesValidateQueryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
+#[doc = "Builder for the [Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
 pub struct IndicesValidateQuery<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesValidateQueryParts<'b>,
@@ -7703,221 +7681,221 @@ impl<'a> Indices<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
+    #[doc = "[Indices Analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-analyze.html)\n\nPerforms the analysis process on a text and return the tokens breakdown of the text."]
     pub fn analyze<'b>(&'a self, parts: IndicesAnalyzeParts<'b>) -> IndicesAnalyze<'a, 'b, ()> {
         IndicesAnalyze::new(&self.client, parts)
     }
-    #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
+    #[doc = "[Indices Clear Cache API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-clearcache.html)\n\nClears all or specific caches for one or more indices."]
     pub fn clear_cache<'b>(
         &'a self,
         parts: IndicesClearCacheParts<'b>,
     ) -> IndicesClearCache<'a, 'b, ()> {
         IndicesClearCache::new(&self.client, parts)
     }
-    #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-clone-index.html)\n\nClones an index"]
+    #[doc = "[Indices Clone API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-clone-index.html)\n\nClones an index"]
     pub fn clone<'b>(&'a self, parts: IndicesCloneParts<'b>) -> IndicesClone<'a, 'b, ()> {
         IndicesClone::new(&self.client, parts)
     }
-    #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-open-close.html)\n\nCloses an index."]
+    #[doc = "[Indices Close API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-open-close.html)\n\nCloses an index."]
     pub fn close<'b>(&'a self, parts: IndicesCloseParts<'b>) -> IndicesClose<'a, 'b, ()> {
         IndicesClose::new(&self.client, parts)
     }
-    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Indices Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-create-index.html)\n\nCreates an index with optional settings and mappings.\n\n# Examples\n\nCreate an index with a mapping\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesCreateParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .create(IndicesCreateParts::Index(\"test_index\"))\n    .body(json!({\n        \"mappings\" : {\n            \"properties\" : {\n                \"field1\" : { \"type\" : \"text\" }\n            }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn create<'b>(&'a self, parts: IndicesCreateParts<'b>) -> IndicesCreate<'a, 'b, ()> {
         IndicesCreate::new(&self.client, parts)
     }
-    #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-delete-index.html)\n\nDeletes an index."]
+    #[doc = "[Indices Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-delete-index.html)\n\nDeletes an index."]
     pub fn delete<'b>(&'a self, parts: IndicesDeleteParts<'b>) -> IndicesDelete<'a, 'b> {
         IndicesDelete::new(&self.client, parts)
     }
-    #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nDeletes an alias."]
+    #[doc = "[Indices Delete Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nDeletes an alias."]
     pub fn delete_alias<'b>(
         &'a self,
         parts: IndicesDeleteAliasParts<'b>,
     ) -> IndicesDeleteAlias<'a, 'b> {
         IndicesDeleteAlias::new(&self.client, parts)
     }
-    #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nDeletes an index template."]
+    #[doc = "[Indices Delete Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nDeletes an index template."]
     pub fn delete_template<'b>(
         &'a self,
         parts: IndicesDeleteTemplateParts<'b>,
     ) -> IndicesDeleteTemplate<'a, 'b> {
         IndicesDeleteTemplate::new(&self.client, parts)
     }
-    #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-exists.html)\n\nReturns information about whether a particular index exists."]
+    #[doc = "[Indices Exists API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-exists.html)\n\nReturns information about whether a particular index exists."]
     pub fn exists<'b>(&'a self, parts: IndicesExistsParts<'b>) -> IndicesExists<'a, 'b> {
         IndicesExists::new(&self.client, parts)
     }
-    #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
+    #[doc = "[Indices Exists Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nReturns information about whether a particular alias exists."]
     pub fn exists_alias<'b>(
         &'a self,
         parts: IndicesExistsAliasParts<'b>,
     ) -> IndicesExistsAlias<'a, 'b> {
         IndicesExistsAlias::new(&self.client, parts)
     }
-    #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
+    #[doc = "[Indices Exists Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nReturns information about whether a particular index template exists."]
     pub fn exists_template<'b>(
         &'a self,
         parts: IndicesExistsTemplateParts<'b>,
     ) -> IndicesExistsTemplate<'a, 'b> {
         IndicesExistsTemplate::new(&self.client, parts)
     }
-    #[doc = "[Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
+    #[doc = "[Indices Exists Type API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-types-exists.html)\n\nReturns information about whether a particular document type exists. (DEPRECATED)"]
     pub fn exists_type<'b>(
         &'a self,
         parts: IndicesExistsTypeParts<'b>,
     ) -> IndicesExistsType<'a, 'b> {
         IndicesExistsType::new(&self.client, parts)
     }
-    #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
+    #[doc = "[Indices Flush API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-flush.html)\n\nPerforms the flush operation on one or more indices."]
     pub fn flush<'b>(&'a self, parts: IndicesFlushParts<'b>) -> IndicesFlush<'a, 'b, ()> {
         IndicesFlush::new(&self.client, parts)
     }
-    #[doc = "[Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-synced-flush-api.html)\n\nPerforms a synced flush operation on one or more indices. Synced flush is deprecated and will be removed in 8.0. Use flush instead"]
+    #[doc = "[Indices Flush Synced API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-synced-flush-api.html)\n\nPerforms a synced flush operation on one or more indices. Synced flush is deprecated and will be removed in 8.0. Use flush instead"]
     pub fn flush_synced<'b>(
         &'a self,
         parts: IndicesFlushSyncedParts<'b>,
     ) -> IndicesFlushSynced<'a, 'b, ()> {
         IndicesFlushSynced::new(&self.client, parts)
     }
-    #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
+    #[doc = "[Indices Forcemerge API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-forcemerge.html)\n\nPerforms the force merge operation on one or more indices."]
     pub fn forcemerge<'b>(
         &'a self,
         parts: IndicesForcemergeParts<'b>,
     ) -> IndicesForcemerge<'a, 'b, ()> {
         IndicesForcemerge::new(&self.client, parts)
     }
-    #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/frozen.html)"]
+    #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
     pub fn freeze<'b>(&'a self, parts: IndicesFreezeParts<'b>) -> IndicesFreeze<'a, 'b, ()> {
         IndicesFreeze::new(&self.client, parts)
     }
-    #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-index.html)\n\nReturns information about one or more indices."]
+    #[doc = "[Indices Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-index.html)\n\nReturns information about one or more indices."]
     pub fn get<'b>(&'a self, parts: IndicesGetParts<'b>) -> IndicesGet<'a, 'b> {
         IndicesGet::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nReturns an alias."]
+    #[doc = "[Indices Get Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nReturns an alias."]
     pub fn get_alias<'b>(&'a self, parts: IndicesGetAliasParts<'b>) -> IndicesGetAlias<'a, 'b> {
         IndicesGetAlias::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
+    #[doc = "[Indices Get Field Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-field-mapping.html)\n\nReturns mapping for one or more fields."]
     pub fn get_field_mapping<'b>(
         &'a self,
         parts: IndicesGetFieldMappingParts<'b>,
     ) -> IndicesGetFieldMapping<'a, 'b> {
         IndicesGetFieldMapping::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
+    #[doc = "[Indices Get Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-mapping.html)\n\nReturns mappings for one or more indices."]
     pub fn get_mapping<'b>(
         &'a self,
         parts: IndicesGetMappingParts<'b>,
     ) -> IndicesGetMapping<'a, 'b> {
         IndicesGetMapping::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-get-settings.html)\n\nReturns settings for one or more indices."]
+    #[doc = "[Indices Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-get-settings.html)\n\nReturns settings for one or more indices."]
     pub fn get_settings<'b>(
         &'a self,
         parts: IndicesGetSettingsParts<'b>,
     ) -> IndicesGetSettings<'a, 'b> {
         IndicesGetSettings::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nReturns an index template."]
+    #[doc = "[Indices Get Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nReturns an index template."]
     pub fn get_template<'b>(
         &'a self,
         parts: IndicesGetTemplateParts<'b>,
     ) -> IndicesGetTemplate<'a, 'b> {
         IndicesGetTemplate::new(&self.client, parts)
     }
-    #[doc = "[Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
+    #[doc = "[Indices Get Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
     pub fn get_upgrade<'b>(
         &'a self,
         parts: IndicesGetUpgradeParts<'b>,
     ) -> IndicesGetUpgrade<'a, 'b> {
         IndicesGetUpgrade::new(&self.client, parts)
     }
-    #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-open-close.html)\n\nOpens an index."]
+    #[doc = "[Indices Open API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-open-close.html)\n\nOpens an index."]
     pub fn open<'b>(&'a self, parts: IndicesOpenParts<'b>) -> IndicesOpen<'a, 'b, ()> {
         IndicesOpen::new(&self.client, parts)
     }
-    #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nCreates or updates an alias."]
+    #[doc = "[Indices Put Alias API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nCreates or updates an alias."]
     pub fn put_alias<'b>(&'a self, parts: IndicesPutAliasParts<'b>) -> IndicesPutAlias<'a, 'b, ()> {
         IndicesPutAlias::new(&self.client, parts)
     }
-    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
+    #[doc = "[Indices Put Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-put-mapping.html)\n\nUpdates the index mappings.\n\n# Examples\n\nPut a mapping into an existing index, assuming the index does not have a mapping, \nor that any properties specified do not conflict with existing properties\n\n```rust,norun\n# use elasticsearch::{Elasticsearch, indices::IndicesPutMappingParts};\n# use serde_json::{json, Value};\n# async fn run() -> Result<(), Box<dyn std::error::Error>> { \n# let client = Elasticsearch::default();\nlet response = client\n    .indices()\n    .put_mapping(IndicesPutMappingParts::Index(&[\"test_index\"]))\n    .body(json!({\n        \"properties\" : {\n            \"field1\" : { \"type\" : \"text\" }\n        }\n    }))\n    .send()\n    .await?;\n    \n# Ok(())\n# }\n```"]
     pub fn put_mapping<'b>(
         &'a self,
         parts: IndicesPutMappingParts<'b>,
     ) -> IndicesPutMapping<'a, 'b, ()> {
         IndicesPutMapping::new(&self.client, parts)
     }
-    #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-update-settings.html)\n\nUpdates the index settings."]
+    #[doc = "[Indices Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-update-settings.html)\n\nUpdates the index settings."]
     pub fn put_settings<'b>(
         &'a self,
         parts: IndicesPutSettingsParts<'b>,
     ) -> IndicesPutSettings<'a, 'b, ()> {
         IndicesPutSettings::new(&self.client, parts)
     }
-    #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-templates.html)\n\nCreates or updates an index template."]
+    #[doc = "[Indices Put Template API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-templates.html)\n\nCreates or updates an index template."]
     pub fn put_template<'b>(
         &'a self,
         parts: IndicesPutTemplateParts<'b>,
     ) -> IndicesPutTemplate<'a, 'b, ()> {
         IndicesPutTemplate::new(&self.client, parts)
     }
-    #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
+    #[doc = "[Indices Recovery API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-recovery.html)\n\nReturns information about ongoing index shard recoveries."]
     pub fn recovery<'b>(&'a self, parts: IndicesRecoveryParts<'b>) -> IndicesRecovery<'a, 'b> {
         IndicesRecovery::new(&self.client, parts)
     }
-    #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
+    #[doc = "[Indices Refresh API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-refresh.html)\n\nPerforms the refresh operation in one or more indices."]
     pub fn refresh<'b>(&'a self, parts: IndicesRefreshParts<'b>) -> IndicesRefresh<'a, 'b, ()> {
         IndicesRefresh::new(&self.client, parts)
     }
-    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-reload-analyzers.html)"]
+    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)"]
     pub fn reload_search_analyzers<'b>(
         &'a self,
         parts: IndicesReloadSearchAnalyzersParts<'b>,
     ) -> IndicesReloadSearchAnalyzers<'a, 'b, ()> {
         IndicesReloadSearchAnalyzers::new(&self.client, parts)
     }
-    #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
+    #[doc = "[Indices Rollover API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-rollover-index.html)\n\nUpdates an alias to point to a new index when the existing index\nis considered to be too large or too old."]
     pub fn rollover<'b>(&'a self, parts: IndicesRolloverParts<'b>) -> IndicesRollover<'a, 'b, ()> {
         IndicesRollover::new(&self.client, parts)
     }
-    #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
+    #[doc = "[Indices Segments API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-segments.html)\n\nProvides low-level information about segments in a Lucene index."]
     pub fn segments<'b>(&'a self, parts: IndicesSegmentsParts<'b>) -> IndicesSegments<'a, 'b> {
         IndicesSegments::new(&self.client, parts)
     }
-    #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
+    #[doc = "[Indices Shard Stores API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-shards-stores.html)\n\nProvides store information for shard copies of indices."]
     pub fn shard_stores<'b>(
         &'a self,
         parts: IndicesShardStoresParts<'b>,
     ) -> IndicesShardStores<'a, 'b> {
         IndicesShardStores::new(&self.client, parts)
     }
-    #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
+    #[doc = "[Indices Shrink API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-shrink-index.html)\n\nAllow to shrink an existing index into a new index with fewer primary shards."]
     pub fn shrink<'b>(&'a self, parts: IndicesShrinkParts<'b>) -> IndicesShrink<'a, 'b, ()> {
         IndicesShrink::new(&self.client, parts)
     }
-    #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
+    #[doc = "[Indices Split API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-split-index.html)\n\nAllows you to split an existing index into a new index with more primary shards."]
     pub fn split<'b>(&'a self, parts: IndicesSplitParts<'b>) -> IndicesSplit<'a, 'b, ()> {
         IndicesSplit::new(&self.client, parts)
     }
-    #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
+    #[doc = "[Indices Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-stats.html)\n\nProvides statistics on operations happening in an index."]
     pub fn stats<'b>(&'a self, parts: IndicesStatsParts<'b>) -> IndicesStats<'a, 'b> {
         IndicesStats::new(&self.client, parts)
     }
-    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/frozen.html)"]
+    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
     pub fn unfreeze<'b>(&'a self, parts: IndicesUnfreezeParts<'b>) -> IndicesUnfreeze<'a, 'b, ()> {
         IndicesUnfreeze::new(&self.client, parts)
     }
-    #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-aliases.html)\n\nUpdates index aliases."]
+    #[doc = "[Indices Update Aliases API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-aliases.html)\n\nUpdates index aliases."]
     pub fn update_aliases<'b>(&'a self) -> IndicesUpdateAliases<'a, 'b, ()> {
         IndicesUpdateAliases::new(&self.client)
     }
-    #[doc = "[Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
+    #[doc = "[Indices Upgrade API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-upgrade.html)\n\nThe _upgrade API is no longer useful and will be removed."]
     pub fn upgrade<'b>(&'a self, parts: IndicesUpgradeParts<'b>) -> IndicesUpgrade<'a, 'b, ()> {
         IndicesUpgrade::new(&self.client, parts)
     }
-    #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
+    #[doc = "[Indices Validate Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/search-validate.html)\n\nAllows a user to validate a potentially expensive query without executing it."]
     pub fn validate_query<'b>(
         &'a self,
         parts: IndicesValidateQueryParts<'b>,

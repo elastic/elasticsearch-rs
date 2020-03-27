@@ -43,7 +43,7 @@ impl SecurityAuthenticateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-authenticate.html)"]
+#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-authenticate.html)"]
 pub struct SecurityAuthenticate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityAuthenticateParts,
@@ -163,7 +163,7 @@ impl<'b> SecurityChangePasswordParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-change-password.html)"]
+#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-change-password.html)"]
 pub struct SecurityChangePassword<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityChangePasswordParts<'b>,
@@ -314,7 +314,7 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-cache.html)"]
+#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-cache.html)"]
 pub struct SecurityClearCachedRealms<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityClearCachedRealmsParts<'b>,
@@ -468,7 +468,7 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-role-cache.html)"]
+#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-role-cache.html)"]
 pub struct SecurityClearCachedRoles<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityClearCachedRolesParts<'b>,
@@ -601,7 +601,7 @@ impl SecurityCreateApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-create-api-key.html)"]
+#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-create-api-key.html)"]
 pub struct SecurityCreateApiKey<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityCreateApiKeyParts,
@@ -752,7 +752,7 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Security Delete Privileges API"]
+#[doc = "Builder for the [Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-privilege.html)"]
 pub struct SecurityDeletePrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeletePrivilegesParts<'b>,
@@ -878,7 +878,7 @@ impl<'b> SecurityDeleteRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role.html)"]
+#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role.html)"]
 pub struct SecurityDeleteRole<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteRoleParts<'b>,
@@ -1004,7 +1004,7 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role-mapping.html)"]
+#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role-mapping.html)"]
 pub struct SecurityDeleteRoleMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteRoleMappingParts<'b>,
@@ -1130,7 +1130,7 @@ impl<'b> SecurityDeleteUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-user.html)"]
+#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-user.html)"]
 pub struct SecurityDeleteUser<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteUserParts<'b>,
@@ -1257,7 +1257,7 @@ impl<'b> SecurityDisableUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-disable-user.html)"]
+#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-disable-user.html)"]
 pub struct SecurityDisableUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityDisableUserParts<'b>,
@@ -1407,7 +1407,7 @@ impl<'b> SecurityEnableUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-enable-user.html)"]
+#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-enable-user.html)"]
 pub struct SecurityEnableUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityEnableUserParts<'b>,
@@ -1551,7 +1551,7 @@ impl SecurityGetApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-api-key.html)"]
+#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-api-key.html)"]
 pub struct SecurityGetApiKey<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetApiKeyParts,
@@ -1712,7 +1712,7 @@ impl SecurityGetBuiltinPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-builtin-privileges.html)"]
+#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-builtin-privileges.html)"]
 pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesParts,
@@ -1841,7 +1841,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)"]
 pub struct SecurityGetPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetPrivilegesParts<'b>,
@@ -1960,7 +1960,7 @@ impl<'b> SecurityGetRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role.html)"]
+#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role.html)"]
 pub struct SecurityGetRole<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetRoleParts<'b>,
@@ -2079,7 +2079,7 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role-mapping.html)"]
+#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role-mapping.html)"]
 pub struct SecurityGetRoleMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetRoleMappingParts<'b>,
@@ -2190,7 +2190,7 @@ impl SecurityGetTokenParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-token.html)"]
+#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-token.html)"]
 pub struct SecurityGetToken<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityGetTokenParts,
@@ -2332,7 +2332,7 @@ impl<'b> SecurityGetUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-user.html)"]
+#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-user.html)"]
 pub struct SecurityGetUser<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetUserParts<'b>,
@@ -2443,7 +2443,7 @@ impl SecurityGetUserPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)"]
 pub struct SecurityGetUserPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetUserPrivilegesParts,
@@ -2563,7 +2563,7 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-has-privileges.html)"]
+#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-has-privileges.html)"]
 pub struct SecurityHasPrivileges<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityHasPrivilegesParts<'b>,
@@ -2699,7 +2699,7 @@ impl SecurityInvalidateApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-api-key.html)"]
+#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-api-key.html)"]
 pub struct SecurityInvalidateApiKey<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityInvalidateApiKeyParts,
@@ -2832,7 +2832,7 @@ impl SecurityInvalidateTokenParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-token.html)"]
+#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-token.html)"]
 pub struct SecurityInvalidateToken<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityInvalidateTokenParts,
@@ -2965,7 +2965,7 @@ impl SecurityPutPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Security Put Privileges API"]
+#[doc = "Builder for the [Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-privileges.html)"]
 pub struct SecurityPutPrivileges<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutPrivilegesParts,
@@ -3114,7 +3114,7 @@ impl<'b> SecurityPutRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role.html)"]
+#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role.html)"]
 pub struct SecurityPutRole<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutRoleParts<'b>,
@@ -3263,7 +3263,7 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role-mapping.html)"]
+#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role-mapping.html)"]
 pub struct SecurityPutRoleMapping<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutRoleMappingParts<'b>,
@@ -3412,7 +3412,7 @@ impl<'b> SecurityPutUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-user.html)"]
+#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-user.html)"]
 pub struct SecurityPutUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutUserParts<'b>,
@@ -3550,146 +3550,146 @@ impl<'a> Security<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-authenticate.html)"]
+    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-authenticate.html)"]
     pub fn authenticate<'b>(&'a self) -> SecurityAuthenticate<'a, 'b> {
         SecurityAuthenticate::new(&self.client)
     }
-    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-change-password.html)"]
+    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-change-password.html)"]
     pub fn change_password<'b>(
         &'a self,
         parts: SecurityChangePasswordParts<'b>,
     ) -> SecurityChangePassword<'a, 'b, ()> {
         SecurityChangePassword::new(&self.client, parts)
     }
-    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-cache.html)"]
+    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-cache.html)"]
     pub fn clear_cached_realms<'b>(
         &'a self,
         parts: SecurityClearCachedRealmsParts<'b>,
     ) -> SecurityClearCachedRealms<'a, 'b, ()> {
         SecurityClearCachedRealms::new(&self.client, parts)
     }
-    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-role-cache.html)"]
+    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-role-cache.html)"]
     pub fn clear_cached_roles<'b>(
         &'a self,
         parts: SecurityClearCachedRolesParts<'b>,
     ) -> SecurityClearCachedRoles<'a, 'b, ()> {
         SecurityClearCachedRoles::new(&self.client, parts)
     }
-    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-create-api-key.html)"]
+    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-create-api-key.html)"]
     pub fn create_api_key<'b>(&'a self) -> SecurityCreateApiKey<'a, 'b, ()> {
         SecurityCreateApiKey::new(&self.client)
     }
-    #[doc = "Security Delete Privileges API"]
+    #[doc = "[Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-privilege.html)"]
     pub fn delete_privileges<'b>(
         &'a self,
         parts: SecurityDeletePrivilegesParts<'b>,
     ) -> SecurityDeletePrivileges<'a, 'b> {
         SecurityDeletePrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role.html)"]
+    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role.html)"]
     pub fn delete_role<'b>(
         &'a self,
         parts: SecurityDeleteRoleParts<'b>,
     ) -> SecurityDeleteRole<'a, 'b> {
         SecurityDeleteRole::new(&self.client, parts)
     }
-    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role-mapping.html)"]
+    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role-mapping.html)"]
     pub fn delete_role_mapping<'b>(
         &'a self,
         parts: SecurityDeleteRoleMappingParts<'b>,
     ) -> SecurityDeleteRoleMapping<'a, 'b> {
         SecurityDeleteRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-user.html)"]
+    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-user.html)"]
     pub fn delete_user<'b>(
         &'a self,
         parts: SecurityDeleteUserParts<'b>,
     ) -> SecurityDeleteUser<'a, 'b> {
         SecurityDeleteUser::new(&self.client, parts)
     }
-    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-disable-user.html)"]
+    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-disable-user.html)"]
     pub fn disable_user<'b>(
         &'a self,
         parts: SecurityDisableUserParts<'b>,
     ) -> SecurityDisableUser<'a, 'b, ()> {
         SecurityDisableUser::new(&self.client, parts)
     }
-    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-enable-user.html)"]
+    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-enable-user.html)"]
     pub fn enable_user<'b>(
         &'a self,
         parts: SecurityEnableUserParts<'b>,
     ) -> SecurityEnableUser<'a, 'b, ()> {
         SecurityEnableUser::new(&self.client, parts)
     }
-    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-api-key.html)"]
+    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-api-key.html)"]
     pub fn get_api_key<'b>(&'a self) -> SecurityGetApiKey<'a, 'b> {
         SecurityGetApiKey::new(&self.client)
     }
-    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-builtin-privileges.html)"]
+    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-builtin-privileges.html)"]
     pub fn get_builtin_privileges<'b>(&'a self) -> SecurityGetBuiltinPrivileges<'a, 'b> {
         SecurityGetBuiltinPrivileges::new(&self.client)
     }
-    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)"]
     pub fn get_privileges<'b>(
         &'a self,
         parts: SecurityGetPrivilegesParts<'b>,
     ) -> SecurityGetPrivileges<'a, 'b> {
         SecurityGetPrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role.html)"]
+    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role.html)"]
     pub fn get_role<'b>(&'a self, parts: SecurityGetRoleParts<'b>) -> SecurityGetRole<'a, 'b> {
         SecurityGetRole::new(&self.client, parts)
     }
-    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role-mapping.html)"]
+    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role-mapping.html)"]
     pub fn get_role_mapping<'b>(
         &'a self,
         parts: SecurityGetRoleMappingParts<'b>,
     ) -> SecurityGetRoleMapping<'a, 'b> {
         SecurityGetRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-token.html)"]
+    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-token.html)"]
     pub fn get_token<'b>(&'a self) -> SecurityGetToken<'a, 'b, ()> {
         SecurityGetToken::new(&self.client)
     }
-    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-user.html)"]
+    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-user.html)"]
     pub fn get_user<'b>(&'a self, parts: SecurityGetUserParts<'b>) -> SecurityGetUser<'a, 'b> {
         SecurityGetUser::new(&self.client, parts)
     }
-    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)"]
     pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
         SecurityGetUserPrivileges::new(&self.client)
     }
-    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-has-privileges.html)"]
+    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-has-privileges.html)"]
     pub fn has_privileges<'b>(
         &'a self,
         parts: SecurityHasPrivilegesParts<'b>,
     ) -> SecurityHasPrivileges<'a, 'b, ()> {
         SecurityHasPrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-api-key.html)"]
+    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-api-key.html)"]
     pub fn invalidate_api_key<'b>(&'a self) -> SecurityInvalidateApiKey<'a, 'b, ()> {
         SecurityInvalidateApiKey::new(&self.client)
     }
-    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-token.html)"]
+    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-token.html)"]
     pub fn invalidate_token<'b>(&'a self) -> SecurityInvalidateToken<'a, 'b, ()> {
         SecurityInvalidateToken::new(&self.client)
     }
-    #[doc = "Security Put Privileges API"]
+    #[doc = "[Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-privileges.html)"]
     pub fn put_privileges<'b>(&'a self) -> SecurityPutPrivileges<'a, 'b, ()> {
         SecurityPutPrivileges::new(&self.client)
     }
-    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role.html)"]
+    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role.html)"]
     pub fn put_role<'b>(&'a self, parts: SecurityPutRoleParts<'b>) -> SecurityPutRole<'a, 'b, ()> {
         SecurityPutRole::new(&self.client, parts)
     }
-    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role-mapping.html)"]
+    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role-mapping.html)"]
     pub fn put_role_mapping<'b>(
         &'a self,
         parts: SecurityPutRoleMappingParts<'b>,
     ) -> SecurityPutRoleMapping<'a, 'b, ()> {
         SecurityPutRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-user.html)"]
+    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-user.html)"]
     pub fn put_user<'b>(&'a self, parts: SecurityPutUserParts<'b>) -> SecurityPutUser<'a, 'b, ()> {
         SecurityPutUser::new(&self.client, parts)
     }

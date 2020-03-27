@@ -48,7 +48,7 @@ impl<'b> CcrDeleteAutoFollowPatternParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-delete-auto-follow-pattern.html)"]
+#[doc = "Builder for the [Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-delete-auto-follow-pattern.html)"]
 pub struct CcrDeleteAutoFollowPattern<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CcrDeleteAutoFollowPatternParts<'b>,
@@ -165,7 +165,7 @@ impl<'b> CcrFollowParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-put-follow.html)"]
+#[doc = "Builder for the [Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-put-follow.html)"]
 pub struct CcrFollow<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrFollowParts<'b>,
@@ -316,7 +316,7 @@ impl<'b> CcrFollowInfoParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-follow-info.html)"]
+#[doc = "Builder for the [Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-follow-info.html)"]
 pub struct CcrFollowInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CcrFollowInfoParts<'b>,
@@ -434,7 +434,7 @@ impl<'b> CcrFollowStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-follow-stats.html)"]
+#[doc = "Builder for the [Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-follow-stats.html)"]
 pub struct CcrFollowStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CcrFollowStatsParts<'b>,
@@ -551,7 +551,7 @@ impl<'b> CcrForgetFollowerParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6)"]
+#[doc = "Builder for the [Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-forget-follower.html)"]
 pub struct CcrForgetFollower<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrForgetFollowerParts<'b>,
@@ -692,7 +692,7 @@ impl<'b> CcrGetAutoFollowPatternParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-auto-follow-pattern.html)"]
+#[doc = "Builder for the [Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-auto-follow-pattern.html)"]
 pub struct CcrGetAutoFollowPattern<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CcrGetAutoFollowPatternParts<'b>,
@@ -809,7 +809,7 @@ impl<'b> CcrPauseAutoFollowPatternParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-pause-auto-follow-pattern.html)"]
+#[doc = "Builder for the [Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-pause-auto-follow-pattern.html)"]
 pub struct CcrPauseAutoFollowPattern<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrPauseAutoFollowPatternParts<'b>,
@@ -948,7 +948,7 @@ impl<'b> CcrPauseFollowParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-post-pause-follow.html)"]
+#[doc = "Builder for the [Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-pause-follow.html)"]
 pub struct CcrPauseFollow<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrPauseFollowParts<'b>,
@@ -1086,7 +1086,7 @@ impl<'b> CcrPutAutoFollowPatternParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-put-auto-follow-pattern.html)"]
+#[doc = "Builder for the [Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-put-auto-follow-pattern.html)"]
 pub struct CcrPutAutoFollowPattern<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrPutAutoFollowPatternParts<'b>,
@@ -1225,7 +1225,7 @@ impl<'b> CcrResumeAutoFollowPatternParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-resume-auto-follow-pattern.html)"]
+#[doc = "Builder for the [Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-resume-auto-follow-pattern.html)"]
 pub struct CcrResumeAutoFollowPattern<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrResumeAutoFollowPatternParts<'b>,
@@ -1364,7 +1364,7 @@ impl<'b> CcrResumeFollowParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-post-resume-follow.html)"]
+#[doc = "Builder for the [Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-resume-follow.html)"]
 pub struct CcrResumeFollow<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrResumeFollowParts<'b>,
@@ -1497,7 +1497,7 @@ impl CcrStatsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-stats.html)"]
+#[doc = "Builder for the [Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-stats.html)"]
 pub struct CcrStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CcrStatsParts,
@@ -1614,7 +1614,7 @@ impl<'b> CcrUnfollowParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6)"]
+#[doc = "Builder for the [Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-unfollow.html)"]
 pub struct CcrUnfollow<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: CcrUnfollowParts<'b>,
@@ -1741,79 +1741,79 @@ impl<'a> Ccr<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-delete-auto-follow-pattern.html)"]
+    #[doc = "[Ccr Delete Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-delete-auto-follow-pattern.html)"]
     pub fn delete_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrDeleteAutoFollowPatternParts<'b>,
     ) -> CcrDeleteAutoFollowPattern<'a, 'b> {
         CcrDeleteAutoFollowPattern::new(&self.client, parts)
     }
-    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-put-follow.html)"]
+    #[doc = "[Ccr Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-put-follow.html)"]
     pub fn follow<'b>(&'a self, parts: CcrFollowParts<'b>) -> CcrFollow<'a, 'b, ()> {
         CcrFollow::new(&self.client, parts)
     }
-    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-follow-info.html)"]
+    #[doc = "[Ccr Follow Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-follow-info.html)"]
     pub fn follow_info<'b>(&'a self, parts: CcrFollowInfoParts<'b>) -> CcrFollowInfo<'a, 'b> {
         CcrFollowInfo::new(&self.client, parts)
     }
-    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-follow-stats.html)"]
+    #[doc = "[Ccr Follow Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-follow-stats.html)"]
     pub fn follow_stats<'b>(&'a self, parts: CcrFollowStatsParts<'b>) -> CcrFollowStats<'a, 'b> {
         CcrFollowStats::new(&self.client, parts)
     }
-    #[doc = "[Ccr Forget Follower API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6)"]
+    #[doc = "[Ccr Forget Follower API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-forget-follower.html)"]
     pub fn forget_follower<'b>(
         &'a self,
         parts: CcrForgetFollowerParts<'b>,
     ) -> CcrForgetFollower<'a, 'b, ()> {
         CcrForgetFollower::new(&self.client, parts)
     }
-    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-auto-follow-pattern.html)"]
+    #[doc = "[Ccr Get Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-auto-follow-pattern.html)"]
     pub fn get_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrGetAutoFollowPatternParts<'b>,
     ) -> CcrGetAutoFollowPattern<'a, 'b> {
         CcrGetAutoFollowPattern::new(&self.client, parts)
     }
-    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-pause-auto-follow-pattern.html)"]
+    #[doc = "[Ccr Pause Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-pause-auto-follow-pattern.html)"]
     pub fn pause_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPauseAutoFollowPatternParts<'b>,
     ) -> CcrPauseAutoFollowPattern<'a, 'b, ()> {
         CcrPauseAutoFollowPattern::new(&self.client, parts)
     }
-    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-post-pause-follow.html)"]
+    #[doc = "[Ccr Pause Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-pause-follow.html)"]
     pub fn pause_follow<'b>(
         &'a self,
         parts: CcrPauseFollowParts<'b>,
     ) -> CcrPauseFollow<'a, 'b, ()> {
         CcrPauseFollow::new(&self.client, parts)
     }
-    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-put-auto-follow-pattern.html)"]
+    #[doc = "[Ccr Put Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-put-auto-follow-pattern.html)"]
     pub fn put_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrPutAutoFollowPatternParts<'b>,
     ) -> CcrPutAutoFollowPattern<'a, 'b, ()> {
         CcrPutAutoFollowPattern::new(&self.client, parts)
     }
-    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-resume-auto-follow-pattern.html)"]
+    #[doc = "[Ccr Resume Auto Follow Pattern API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-resume-auto-follow-pattern.html)"]
     pub fn resume_auto_follow_pattern<'b>(
         &'a self,
         parts: CcrResumeAutoFollowPatternParts<'b>,
     ) -> CcrResumeAutoFollowPattern<'a, 'b, ()> {
         CcrResumeAutoFollowPattern::new(&self.client, parts)
     }
-    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-post-resume-follow.html)"]
+    #[doc = "[Ccr Resume Follow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-resume-follow.html)"]
     pub fn resume_follow<'b>(
         &'a self,
         parts: CcrResumeFollowParts<'b>,
     ) -> CcrResumeFollow<'a, 'b, ()> {
         CcrResumeFollow::new(&self.client, parts)
     }
-    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ccr-get-stats.html)"]
+    #[doc = "[Ccr Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-get-stats.html)"]
     pub fn stats<'b>(&'a self) -> CcrStats<'a, 'b> {
         CcrStats::new(&self.client)
     }
-    #[doc = "[Ccr Unfollow API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6)"]
+    #[doc = "[Ccr Unfollow API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ccr-post-unfollow.html)"]
     pub fn unfollow<'b>(&'a self, parts: CcrUnfollowParts<'b>) -> CcrUnfollow<'a, 'b, ()> {
         CcrUnfollow::new(&self.client, parts)
     }

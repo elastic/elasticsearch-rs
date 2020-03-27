@@ -48,7 +48,7 @@ impl<'b> SlmDeleteLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-delete-policy.html)"]
+#[doc = "Builder for the [Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-delete-policy.html)"]
 pub struct SlmDeleteLifecycle<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SlmDeleteLifecycleParts<'b>,
@@ -165,7 +165,7 @@ impl<'b> SlmExecuteLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-execute-lifecycle.html)"]
+#[doc = "Builder for the [Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-execute-lifecycle.html)"]
 pub struct SlmExecuteLifecycle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SlmExecuteLifecycleParts<'b>,
@@ -298,7 +298,7 @@ impl SlmExecuteRetentionParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-execute-retention.html)"]
+#[doc = "Builder for the [Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-execute-retention.html)"]
 pub struct SlmExecuteRetention<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SlmExecuteRetentionParts,
@@ -440,7 +440,7 @@ impl<'b> SlmGetLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-policy.html)"]
+#[doc = "Builder for the [Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-policy.html)"]
 pub struct SlmGetLifecycle<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SlmGetLifecycleParts<'b>,
@@ -551,7 +551,7 @@ impl SlmGetStatsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-stats.html)"]
+#[doc = "Builder for the [Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-stats.html)"]
 pub struct SlmGetStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SlmGetStatsParts,
@@ -662,7 +662,7 @@ impl SlmGetStatusParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-status.html)"]
+#[doc = "Builder for the [Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-status.html)"]
 pub struct SlmGetStatus<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SlmGetStatusParts,
@@ -778,7 +778,7 @@ impl<'b> SlmPutLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-put-policy.html)"]
+#[doc = "Builder for the [Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-put-policy.html)"]
 pub struct SlmPutLifecycle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SlmPutLifecycleParts<'b>,
@@ -911,7 +911,7 @@ impl SlmStartParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-start.html)"]
+#[doc = "Builder for the [Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-start.html)"]
 pub struct SlmStart<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SlmStartParts,
@@ -1044,7 +1044,7 @@ impl SlmStopParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-stop.html)"]
+#[doc = "Builder for the [Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-stop.html)"]
 pub struct SlmStop<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SlmStopParts,
@@ -1171,48 +1171,48 @@ impl<'a> Slm<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-delete-policy.html)"]
+    #[doc = "[Slm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-delete-policy.html)"]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: SlmDeleteLifecycleParts<'b>,
     ) -> SlmDeleteLifecycle<'a, 'b> {
         SlmDeleteLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-execute-lifecycle.html)"]
+    #[doc = "[Slm Execute Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-execute-lifecycle.html)"]
     pub fn execute_lifecycle<'b>(
         &'a self,
         parts: SlmExecuteLifecycleParts<'b>,
     ) -> SlmExecuteLifecycle<'a, 'b, ()> {
         SlmExecuteLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-execute-retention.html)"]
+    #[doc = "[Slm Execute Retention API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-execute-retention.html)"]
     pub fn execute_retention<'b>(&'a self) -> SlmExecuteRetention<'a, 'b, ()> {
         SlmExecuteRetention::new(&self.client)
     }
-    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-policy.html)"]
+    #[doc = "[Slm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-policy.html)"]
     pub fn get_lifecycle<'b>(&'a self, parts: SlmGetLifecycleParts<'b>) -> SlmGetLifecycle<'a, 'b> {
         SlmGetLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-stats.html)"]
+    #[doc = "[Slm Get Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-stats.html)"]
     pub fn get_stats<'b>(&'a self) -> SlmGetStats<'a, 'b> {
         SlmGetStats::new(&self.client)
     }
-    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-get-status.html)"]
+    #[doc = "[Slm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-get-status.html)"]
     pub fn get_status<'b>(&'a self) -> SlmGetStatus<'a, 'b> {
         SlmGetStatus::new(&self.client)
     }
-    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-put-policy.html)"]
+    #[doc = "[Slm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-put-policy.html)"]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: SlmPutLifecycleParts<'b>,
     ) -> SlmPutLifecycle<'a, 'b, ()> {
         SlmPutLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-start.html)"]
+    #[doc = "[Slm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-start.html)"]
     pub fn start<'b>(&'a self) -> SlmStart<'a, 'b, ()> {
         SlmStart::new(&self.client)
     }
-    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/slm-api-stop.html)"]
+    #[doc = "[Slm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/slm-api-stop.html)"]
     pub fn stop<'b>(&'a self) -> SlmStop<'a, 'b, ()> {
         SlmStop::new(&self.client)
     }

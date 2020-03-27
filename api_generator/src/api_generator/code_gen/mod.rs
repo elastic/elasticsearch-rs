@@ -119,7 +119,7 @@ impl<T: GetPath> GetIdent for T {
 }
 
 /// Gets the Ty syntax token for a TypeKind
-fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
+fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool) -> syn::Ty {
     let mut v = String::new();
     if !required {
         v.push_str("Option<");
@@ -143,6 +143,10 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool) -> syn::Ty {
         TypeKind::Long => v.push_str("i64"),
         TypeKind::Date => v.push_str(str_type),
         TypeKind::Time => v.push_str(str_type),
+        TypeKind::Union(u) => match name {
+            "slices" => v.push_str("Slices"),
+            _ => panic!("unsupported union type: {:?}", u),
+        },
     };
 
     if !required {
