@@ -19,6 +19,7 @@ pub mod step;
 mod generated;
 
 pub mod client;
+pub mod util;
 
 fn main() -> Result<(), failure::Error> {
     let matches = App::new(env!("CARGO_PKG_NAME"))

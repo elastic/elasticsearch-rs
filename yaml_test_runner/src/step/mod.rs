@@ -6,10 +6,12 @@ mod r#do;
 mod r#match;
 mod set;
 mod skip;
+mod length;
 pub use r#do::*;
 pub use r#match::*;
 pub use set::*;
 pub use skip::*;
+pub use length::*;
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
     let mut parsed_steps: Vec<Step> = Vec::new();
@@ -48,7 +50,10 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
             "contains" => {}
             "is_true" => {}
             "is_false" => {}
-            "length" => {}
+            "length" => {
+                let l = Length::try_parse(value)?;
+                parsed_steps.push(l.into())
+            }
             "eq" => {}
             "gte" => {}
             "lte" => {}
@@ -62,9 +67,13 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
 }
 
 pub trait BodyExpr {
+    fn is_body_expr(&self, key: &str) -> bool {
+        key == "$body"
+    }
+
     /// Builds an indexer expression from the match key
     fn body_expr(&self, key: &str) -> String {
-        if key == "$body" {
+        if self.is_body_expr(key) {
             key.into()
         } else {
             let mut values = Vec::new();
@@ -91,7 +100,7 @@ pub trait BodyExpr {
 
             // some APIs specify the response body as the first part of the path
             // which should be removed.
-            if values[0] == "$body".to_string() {
+            if self.is_body_expr(values[0].as_ref()) {
                 values.remove(0);
             }
 
@@ -119,6 +128,7 @@ pub enum Step {
     Set(Set),
     Do(Do),
     Match(Match),
+    Length(Length),
 }
 
 impl Step {

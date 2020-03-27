@@ -1,10 +1,11 @@
 use super::Step;
 use quote::{ToTokens, Tokens};
-use yaml_rust::{yaml::Hash, Yaml};
+use yaml_rust::Yaml;
 use crate::step::BodyExpr;
 
 pub struct Match {
-    hash: Hash,
+    pub expr: String,
+    value: Yaml,
 }
 
 impl From<Match> for Step {
@@ -21,22 +22,26 @@ impl Match {
             .as_hash()
             .ok_or_else(|| failure::err_msg(format!("Expected hash but found {:?}", yaml)))?;
 
-        Ok(Match { hash: hash.clone() })
+        let (expr, value) = {
+            let (k, v) = hash.iter().next().unwrap();
+            let key = k.as_str().unwrap().trim().to_string();
+            (key, v.clone())
+        };
+
+        Ok(Match { expr, value })
     }
 }
 
 impl ToTokens for Match {
-    // TODO: Move this parsing out into Match::try_parse
     fn to_tokens(&self, tokens: &mut Tokens) {
-        let (k, v) = self.hash.iter().next().unwrap();
-        let key = k.as_str().unwrap().trim();
-        let expr = self.body_expr(key);
+        let expr = self.body_expr(&self.expr);
 
-        match v {
+        match &self.value {
             Yaml::String(s) => {
                 if s.starts_with('/') {
                     let s = s.trim().trim_matches('/');
-                    if expr == "$body" {
+                    if self.is_body_expr(&expr) {
+                        // TODO: string_response_body needs to use response.read_body_as_text()
                         tokens.append(quote! {
                             let string_response_body = serde_json::to_string(&response_body).unwrap();
                             let regex = regex::Regex::new(#s)?;
@@ -87,7 +92,7 @@ impl ToTokens for Match {
                 }
             }
             Yaml::Integer(i) => {
-                if expr == "$body" {
+                if self.is_body_expr(&expr) {
                     panic!("match on $body with integer");
                 } else {
                     let ident = syn::Ident::from(expr.clone());

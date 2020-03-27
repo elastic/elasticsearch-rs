@@ -1,4 +1,3 @@
-use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 
 use super::Step;

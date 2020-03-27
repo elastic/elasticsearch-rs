@@ -101,6 +101,7 @@ impl YamlTests {
                 use regex;
                 use serde_json::Value;
                 use crate::client;
+                use crate::util;
 
                 #setup_fn
                 #teardown_fn
@@ -126,6 +127,24 @@ impl YamlTests {
             }
         }
         syn::Ident::from(fn_name)
+    }
+
+    fn read_response(read_response: bool, is_body_expr: bool, body: &mut Tokens) -> bool {
+        if !read_response {
+            // TODO: string_response_body needs to use response.read_body_as_text()
+            if is_body_expr {
+                body.append(quote! {
+                    let response_body = response.read_body::<Value>().await?;
+                    let string_response_body = serde_json::to_string(&response_body).unwrap();
+                });
+            } else {
+                body.append(quote! {
+                    let response_body = response.read_body::<Value>().await?;
+                });
+            }
+        }
+
+        true
     }
 
     fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
@@ -168,22 +187,20 @@ impl YamlTests {
                             d.to_tokens(&mut body);
                         },
                         Step::Match(m) => {
-                            if !read_response {
-                                body.append(quote! {
-                                    let response_body = response.read_body::<Value>().await?;
-                                });
-                                read_response = true;
-                            }
+                            read_response =
+                                Self::read_response(read_response, m.is_body_expr(&m.expr), &mut body);
                             m.to_tokens(&mut body);
                         },
                         Step::Set(s) => {
-                            if !read_response {
-                                body.append(quote! {
-                                    let response_body = response.read_body::<Value>().await?;
-                                });
-                                read_response = true;
-                            }
+                            // TODO: is "set" ever is_body_expr?
+                            read_response =
+                                Self::read_response(read_response, false, &mut body);
                             s.to_tokens(&mut body);
+                        },
+                        Step::Length(l) => {
+                            read_response =
+                                Self::read_response(read_response, l.is_body_expr(&l.expr), &mut body);
+                            l.to_tokens(&mut body);
                         }
                     }
                 }

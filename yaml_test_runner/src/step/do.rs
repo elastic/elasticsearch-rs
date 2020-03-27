@@ -7,8 +7,6 @@ use itertools::Itertools;
 use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
-use syn::StrStyle;
-use syn::parse::ident;
 
 pub struct Do {
     api_call: ApiCall,

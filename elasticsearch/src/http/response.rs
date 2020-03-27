@@ -16,12 +16,23 @@ impl Response {
         Self(response)
     }
 
-    /// The HTTP status code of the response
+    /// Get the content-length of this response, if known.
+    ///
+    /// Reasons it may not be known:
+    ///
+    /// - The server didn't send a `content-length` header.
+    /// - The response is compressed and automatically decoded (thus changing
+    ///   the actual decoded length).
+    pub fn content_length(&self) -> Option<u64> {
+        self.0.content_length()
+    }
+
+    /// Get the HTTP status code of the response
     pub fn status_code(&self) -> StatusCode {
         self.0.status()
     }
 
-    /// Turn the response into an `Error` if Elasticsearch returned an error.
+    /// Turn the response into an [Error] if Elasticsearch returned an error.
     pub fn error_for_status_code(self) -> Result<Self, Error> {
         match self.0.error_for_status_ref() {
             Ok(_) => Ok(self),
@@ -29,7 +40,7 @@ impl Response {
         }
     }
 
-    /// Turn the response into an `Error` if Elasticsearch returned an error.
+    /// Turn the response into an [Error] if Elasticsearch returned an error.
     pub fn error_for_status_code_ref(&self) -> Result<&Self, Error> {
         match self.0.error_for_status_ref() {
             Ok(_) => Ok(self),
@@ -37,12 +48,12 @@ impl Response {
         }
     }
 
-    /// The response headers
+    /// Get the response headers
     pub fn headers(&self) -> &HeaderMap {
         self.0.headers()
     }
 
-    /// Deprecation warning response headers
+    /// Get the deprecation warning response headers
     pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
         self.headers()
             .get_all("Warning")
