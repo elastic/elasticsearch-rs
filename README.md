@@ -83,7 +83,7 @@ To create a client to make API calls to Elasticsearch running on `http://localho
 use elasticsearch::{Elasticsearch};
 
 fn main() {
-    let _client = Elasticsearch::default();
+    let client = Elasticsearch::default();
 }
 ```
 Alternatively, you can create a client to make API calls against Elasticsearch running on a specific url
@@ -96,7 +96,7 @@ use elasticsearch::{
 
 fn main() -> Result<(), Error> {
     let transport = Transport::single_node("https://example.com")?;
-    let _client = Elasticsearch::new(transport);
+    let client = Elasticsearch::new(transport);
     Ok(())
 }
 ```
@@ -117,7 +117,7 @@ fn main() -> Result<(), Error> {
     // can use other types of Credentials too, like Bearer or ApiKey
     let credentials = Credentials::Basic("<username>".into(), "<password>".into());
     let transport = Transport::cloud(cloud_id, credentials)?;
-    let _client = Elasticsearch::new(transport);
+    let client = Elasticsearch::new(transport);
     Ok(())
 }
 ```
@@ -137,7 +137,7 @@ fn main() -> Result<(), Error> {
     let url = Url::parse("https://example.com")?;
     let conn_pool = SingleNodeConnectionPool::new(url);
     let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
-    let _client = Elasticsearch::new(transport);
+    let client = Elasticsearch::new(transport);
     Ok(())
 }
 ```
