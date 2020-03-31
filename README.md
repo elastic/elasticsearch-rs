@@ -80,7 +80,7 @@ other transport related settings.
 To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 
 ```rust,no_run
-use elasticsearch::{Elasticsearch};
+use elasticsearch::Elasticsearch;
 
 fn main() {
     let client = Elasticsearch::default();
@@ -90,8 +90,8 @@ Alternatively, you can create a client to make API calls against Elasticsearch r
 
 ```rust,no_run
 use elasticsearch::{
-    Error, Elasticsearch,
-    http::transport::{Transport}
+    Elasticsearch, Error, 
+    http::transport::Transport
 };
 
 fn main() -> Result<(), Error> {
@@ -108,7 +108,7 @@ fn main() -> Result<(), Error> {
 ```rust,no_run
 use elasticsearch::{
     auth::Credentials,
-    Error, Elasticsearch,
+    Elasticsearch, Error,
     http::transport::Transport,
 };
 
