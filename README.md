@@ -80,9 +80,9 @@ other transport related settings.
 To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 
 ```rust,no_run
-use elasticsearch::{Error, Elasticsearch};
+use elasticsearch::Elasticsearch;
 
-fn run() {
+fn main() {
     let client = Elasticsearch::default();
 }
 ```
@@ -90,11 +90,11 @@ Alternatively, you can create a client to make API calls against Elasticsearch r
 
 ```rust,no_run
 use elasticsearch::{
-    Error, Elasticsearch, 
-    http::transport::{Transport, SingleNodeConnectionPool}
+    Elasticsearch, Error, 
+    http::transport::Transport
 };
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let transport = Transport::single_node("https://example.com")?;
     let client = Elasticsearch::new(transport);
     Ok(())
@@ -108,12 +108,11 @@ fn run() -> Result<(), Error> {
 ```rust,no_run
 use elasticsearch::{
     auth::Credentials,
-    Error, Elasticsearch, 
+    Elasticsearch, Error,
     http::transport::Transport,
 };
-use url::Url;
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
     // can use other types of Credentials too, like Bearer or ApiKey
     let credentials = Credentials::Basic("<username>".into(), "<password>".into());
@@ -128,14 +127,13 @@ fn run() -> Result<(), Error> {
  passing it to `Elasticsearch::new()` create a new instance of `Elasticsearch`
 
 ```rust,no_run
+use url::Url;
 use elasticsearch::{
-    auth::Credentials,
-    Error, Elasticsearch, 
+    Error, Elasticsearch,
     http::transport::{TransportBuilder,SingleNodeConnectionPool},
 };
-use url::Url;
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let url = Url::parse("https://example.com")?;
     let conn_pool = SingleNodeConnectionPool::new(url);
     let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
