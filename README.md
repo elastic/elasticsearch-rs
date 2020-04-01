@@ -89,6 +89,7 @@ and to attribute async main function with `#[tokio::main]`
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // your code ...
+    Ok(())
 }
 ```
 
@@ -98,6 +99,7 @@ and attribute test functions with `#[tokio::test]`
 #[tokio::test]
 async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
     // your code ...
+    Ok(())
 }
 ```
 
