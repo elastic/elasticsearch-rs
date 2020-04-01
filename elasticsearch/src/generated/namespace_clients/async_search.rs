@@ -591,7 +591,7 @@ where
         self.keep_alive = Some(keep_alive);
         self
     }
-    #[doc = "Control whether the response should be stored in the cluster if it completed within the provided [wait_for_completion] time (default: true)"]
+    #[doc = "Control whether the response should be stored in the cluster if it completed within the provided [wait_for_completion] time (default: false)"]
     pub fn keep_on_completion(mut self, keep_on_completion: bool) -> Self {
         self.keep_on_completion = Some(keep_on_completion);
         self
