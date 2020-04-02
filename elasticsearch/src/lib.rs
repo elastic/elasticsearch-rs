@@ -138,7 +138,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<Value>().await?;
+//! let response_body = response.json::<Value>().await?;
 //! for record in response_body.as_array().unwrap() {
 //!     // print the name of each index
 //!     println!("{}", record["index"].as_str().unwrap());
@@ -215,7 +215,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<Value>().await?;
+//! let response_body = response.json::<Value>().await?;
 //! let successful = response_body["errors"].as_bool().unwrap() == false;
 //! # Ok(())
 //! # }
@@ -247,7 +247,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<Value>().await?;
+//! let response_body = response.json::<Value>().await?;
 //! let took = response_body["took"].as_i64().unwrap();
 //! for hit in response_body["hits"]["hits"].as_array().unwrap() {
 //!     // print the source document

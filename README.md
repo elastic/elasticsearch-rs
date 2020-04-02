@@ -205,7 +205,7 @@ async fn run() -> Result<(), Error> {
     let status_code = search_response.status_code();
     
     // read the response body. Consumes search_response
-    let response_body = search_response.read_body::<Value>().await?; 
+    let response_body = search_response.json::<Value>().await?; 
     
     // read fields from the response body         
     let took = response_body["took"].as_i64().unwrap();
