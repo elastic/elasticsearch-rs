@@ -2682,7 +2682,7 @@ impl<'b> IndicesFreezeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
+#[doc = "Builder for the [Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
 pub struct IndicesFreeze<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesFreezeParts<'b>,
@@ -5527,7 +5527,7 @@ impl<'b> IndicesReloadSearchAnalyzersParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)"]
+#[doc = "Builder for the [Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
 pub struct IndicesReloadSearchAnalyzers<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesReloadSearchAnalyzersParts<'b>,
@@ -6844,7 +6844,7 @@ impl<'b> IndicesUnfreezeParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
+#[doc = "Builder for the [Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
 pub struct IndicesUnfreeze<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IndicesUnfreezeParts<'b>,
@@ -7765,7 +7765,7 @@ impl<'a> Indices<'a> {
     ) -> IndicesForcemerge<'a, 'b, ()> {
         IndicesForcemerge::new(&self.client, parts)
     }
-    #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
+    #[doc = "[Indices Freeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/freeze-index-api.html)\n\nFreezes an index. A frozen index has almost no overhead on the cluster (except for maintaining its metadata in memory) and is read-only."]
     pub fn freeze<'b>(&'a self, parts: IndicesFreezeParts<'b>) -> IndicesFreeze<'a, 'b, ()> {
         IndicesFreeze::new(&self.client, parts)
     }
@@ -7849,7 +7849,7 @@ impl<'a> Indices<'a> {
     pub fn refresh<'b>(&'a self, parts: IndicesRefreshParts<'b>) -> IndicesRefresh<'a, 'b, ()> {
         IndicesRefresh::new(&self.client, parts)
     }
-    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)"]
+    #[doc = "[Indices Reload Search Analyzers API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/indices-reload-analyzers.html)\n\nReloads an index's search analyzers and their resources."]
     pub fn reload_search_analyzers<'b>(
         &'a self,
         parts: IndicesReloadSearchAnalyzersParts<'b>,
@@ -7883,7 +7883,7 @@ impl<'a> Indices<'a> {
     pub fn stats<'b>(&'a self, parts: IndicesStatsParts<'b>) -> IndicesStats<'a, 'b> {
         IndicesStats::new(&self.client, parts)
     }
-    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/frozen.html)"]
+    #[doc = "[Indices Unfreeze API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/unfreeze-index-api.html)\n\nUnfreezes an index. When a frozen index is unfrozen, the index goes through the normal recovery process and becomes writeable again."]
     pub fn unfreeze<'b>(&'a self, parts: IndicesUnfreezeParts<'b>) -> IndicesUnfreeze<'a, 'b, ()> {
         IndicesUnfreeze::new(&self.client, parts)
     }

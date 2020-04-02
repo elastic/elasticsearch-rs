@@ -176,7 +176,7 @@ impl SqlQueryParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes an SQL request"]
+#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes a SQL request"]
 pub struct SqlQuery<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SqlQueryParts,
@@ -457,7 +457,7 @@ impl<'a> Sql<'a> {
     pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
         SqlClearCursor::new(&self.client)
     }
-    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes an SQL request"]
+    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes a SQL request"]
     pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
         SqlQuery::new(&self.client)
     }

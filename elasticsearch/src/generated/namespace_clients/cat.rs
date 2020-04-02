@@ -1560,7 +1560,7 @@ impl<'b> CatMlDataFrameAnalyticsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-dfanalytics.html)"]
+#[doc = "Builder for the [Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
 pub struct CatMlDataFrameAnalytics<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CatMlDataFrameAnalyticsParts<'b>,
@@ -1761,7 +1761,7 @@ impl<'b> CatMlDatafeedsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-datafeeds.html)"]
+#[doc = "Builder for the [Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
 pub struct CatMlDatafeeds<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CatMlDatafeedsParts<'b>,
@@ -1952,7 +1952,7 @@ impl<'b> CatMlJobsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-anomaly-detectors.html)"]
+#[doc = "Builder for the [Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
 pub struct CatMlJobs<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CatMlJobsParts<'b>,
@@ -2153,7 +2153,7 @@ impl<'b> CatMlTrainedModelsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-trained-model.html)"]
+#[doc = "Builder for the [Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
 pub struct CatMlTrainedModels<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CatMlTrainedModelsParts<'b>,
@@ -4759,7 +4759,7 @@ impl<'b> CatTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)"]
+#[doc = "Builder for the [Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
 pub struct CatTransform<'a, 'b> {
     client: &'a Elasticsearch,
     parts: CatTransformParts<'b>,
@@ -4988,22 +4988,22 @@ impl<'a> Cat<'a> {
     pub fn master<'b>(&'a self) -> CatMaster<'a, 'b> {
         CatMaster::new(&self.client)
     }
-    #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-dfanalytics.html)"]
+    #[doc = "[Cat Ml Data Frame Analytics API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-dfanalytics.html)\n\nGets configuration and usage information about data frame analytics jobs."]
     pub fn ml_data_frame_analytics<'b>(
         &'a self,
         parts: CatMlDataFrameAnalyticsParts<'b>,
     ) -> CatMlDataFrameAnalytics<'a, 'b> {
         CatMlDataFrameAnalytics::new(&self.client, parts)
     }
-    #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-datafeeds.html)"]
+    #[doc = "[Cat Ml Datafeeds API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-datafeeds.html)\n\nGets configuration and usage information about datafeeds."]
     pub fn ml_datafeeds<'b>(&'a self, parts: CatMlDatafeedsParts<'b>) -> CatMlDatafeeds<'a, 'b> {
         CatMlDatafeeds::new(&self.client, parts)
     }
-    #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-anomaly-detectors.html)"]
+    #[doc = "[Cat Ml Jobs API](http://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-anomaly-detectors.html)\n\nGets configuration and usage information about anomaly detection jobs."]
     pub fn ml_jobs<'b>(&'a self, parts: CatMlJobsParts<'b>) -> CatMlJobs<'a, 'b> {
         CatMlJobs::new(&self.client, parts)
     }
-    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-trained-model.html)"]
+    #[doc = "[Cat Ml Trained Models API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-trained-model.html)\n\nGets configuration and usage information about inference trained models."]
     pub fn ml_trained_models<'b>(
         &'a self,
         parts: CatMlTrainedModelsParts<'b>,
@@ -5058,7 +5058,7 @@ impl<'a> Cat<'a> {
     pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
         CatThreadPool::new(&self.client, parts)
     }
-    #[doc = "[Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)"]
+    #[doc = "[Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
     pub fn transform<'b>(&'a self, parts: CatTransformParts<'b>) -> CatTransform<'a, 'b> {
         CatTransform::new(&self.client, parts)
     }
