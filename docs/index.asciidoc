@@ -104,7 +104,7 @@ let response = client
     .send()
     .await?;
 
-let response_body = response.read_body::<Value>().await?;
+let response_body = response.json::<Value>().await?;
 let took = response_body["took"].as_i64().unwrap();
 for hit in response_body["hits"]["hits"].as_array().unwrap() {
     // print the source document

@@ -17,7 +17,7 @@ async fn bad_request_returns_response() -> Result<(), failure::Error> {
 
     assert_eq!(response.status_code(), StatusCode::BAD_REQUEST);
 
-    let error = response.read_body::<Value>().await?;
+    let error = response.json::<Value>().await?;
     assert_eq!(error["status"].as_i64(), Some(400));
     assert_eq!(
         error["error"]["type"].as_str(),
