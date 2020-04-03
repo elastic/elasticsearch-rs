@@ -23,7 +23,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body_as_text().await?;
+//! let response_body = response.text().await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -47,7 +47,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<Value>().await?;
+//! let response_body = response.json::<Value>().await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -69,7 +69,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<Value>().await?;
+//! let response_body = response.json::<Value>().await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -93,7 +93,7 @@
 //!     .send()
 //!     .await?;
 //!
-//! let response_body = response.read_body::<String>().await?;
+//! let response_body = response.json::<String>().await?;
 //! # Ok(())
 //! # }
 //! ```
