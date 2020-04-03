@@ -31,6 +31,43 @@ async fn default_user_agent_content_type_accept_headers() -> Result<(), failure:
 }
 
 #[tokio::test]
+async fn default_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["x-opaque-id"], "foo");
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("foo"));
+
+    let client = client::create(builder);
+    let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn override_default_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["x-opaque-id"], "bar");
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("foo"));
+
+    let client = client::create(builder);
+    let _response = client.ping()
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("bar"))
+        .send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn x_opaque_id_header() -> Result<(), failure::Error> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["x-opaque-id"], "foo");
