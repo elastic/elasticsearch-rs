@@ -37,7 +37,7 @@ let mut response = client
     .send()
     .await?;
 
-let mut response_body = response.read_body::<Value>().await?;
+let mut response_body = response.json::<Value>().await?;
 let mut scroll_id = response_body["_scroll_id"].as_str().unwrap();
 let mut hits = response_body["hits"]["hits"].as_array().unwrap();
 
@@ -53,7 +53,7 @@ while hits.len() > 0 {
         .send()
         .await?;
 
-    response_body = response.read_body::<Value>().await?;
+    response_body = response.json::<Value>().await?;
     scroll_id = response_body["_scroll_id"].as_str().unwrap();
     hits = response_body["hits"]["hits"].as_array().unwrap();
     print_hits(hits);

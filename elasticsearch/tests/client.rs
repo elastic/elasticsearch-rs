@@ -91,7 +91,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
     Ok(())
@@ -109,7 +109,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
     for hit in response_body["hits"]["hits"].as_array().unwrap() {
@@ -138,7 +138,7 @@ async fn cat_health_format_json() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with(DEFAULT_CONTENT_TYPE));
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }
@@ -162,7 +162,7 @@ async fn cat_health_header_json() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with(DEFAULT_CONTENT_TYPE));
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }
@@ -180,7 +180,7 @@ async fn cat_health_text() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with("text/plain"));
-    let _response_body = response.read_body_as_text().await?;
+    let _response_body = response.text().await?;
 
     Ok(())
 }
@@ -204,7 +204,7 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
     let response = request_clone.send().await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
 
     assert_eq!(response_body["hits"]["hits"].as_array().unwrap().len(), 1);
 
@@ -227,7 +227,7 @@ async fn byte_slice_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }
