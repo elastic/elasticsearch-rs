@@ -4737,19 +4737,19 @@ impl<'a, 'b> CatThreadPool<'a, 'b> {
     }
 }
 #[derive(Debug, Clone, PartialEq)]
-#[doc = "API parts for the Cat Transform API"]
-pub enum CatTransformParts<'b> {
+#[doc = "API parts for the Cat Transforms API"]
+pub enum CatTransformsParts<'b> {
     #[doc = "No parts"]
     None,
     #[doc = "TransformId"]
     TransformId(&'b str),
 }
-impl<'b> CatTransformParts<'b> {
-    #[doc = "Builds a relative URL path to the Cat Transform API"]
+impl<'b> CatTransformsParts<'b> {
+    #[doc = "Builds a relative URL path to the Cat Transforms API"]
     pub fn url(self) -> Cow<'static, str> {
         match self {
-            CatTransformParts::None => "/_cat/transforms".into(),
-            CatTransformParts::TransformId(ref transform_id) => {
+            CatTransformsParts::None => "/_cat/transforms".into(),
+            CatTransformsParts::TransformId(ref transform_id) => {
                 let mut p = String::with_capacity(17usize + transform_id.len());
                 p.push_str("/_cat/transforms/");
                 p.push_str(transform_id.as_ref());
@@ -4759,10 +4759,10 @@ impl<'b> CatTransformParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
-pub struct CatTransform<'a, 'b> {
+#[doc = "Builder for the [Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+pub struct CatTransforms<'a, 'b> {
     client: &'a Elasticsearch,
-    parts: CatTransformParts<'b>,
+    parts: CatTransformsParts<'b>,
     allow_no_match: Option<bool>,
     error_trace: Option<bool>,
     filter_path: Option<&'b [&'b str]>,
@@ -4779,13 +4779,13 @@ pub struct CatTransform<'a, 'b> {
     time: Option<Time>,
     v: Option<bool>,
 }
-impl<'a, 'b> CatTransform<'a, 'b> {
-    #[doc = "Creates a new instance of [CatTransform] with the specified API parts"]
-    pub fn new(client: &'a Elasticsearch, parts: CatTransformParts<'b>) -> Self {
+impl<'a, 'b> CatTransforms<'a, 'b> {
+    #[doc = "Creates a new instance of [CatTransforms] with the specified API parts"]
+    pub fn new(client: &'a Elasticsearch, parts: CatTransformsParts<'b>) -> Self {
         let mut headers = HeaderMap::with_capacity(2);
         headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
         headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
-        CatTransform {
+        CatTransforms {
             client,
             parts,
             headers,
@@ -4880,7 +4880,7 @@ impl<'a, 'b> CatTransform<'a, 'b> {
         self.v = Some(v);
         self
     }
-    #[doc = "Creates an asynchronous call to the Cat Transform API that can be awaited"]
+    #[doc = "Creates an asynchronous call to the Cat Transforms API that can be awaited"]
     pub async fn send(self) -> Result<Response, Error> {
         let path = self.parts.url();
         let method = Method::Get;
@@ -5058,9 +5058,9 @@ impl<'a> Cat<'a> {
     pub fn thread_pool<'b>(&'a self, parts: CatThreadPoolParts<'b>) -> CatThreadPool<'a, 'b> {
         CatThreadPool::new(&self.client, parts)
     }
-    #[doc = "[Cat Transform API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
-    pub fn transform<'b>(&'a self, parts: CatTransformParts<'b>) -> CatTransform<'a, 'b> {
-        CatTransform::new(&self.client, parts)
+    #[doc = "[Cat Transforms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cat-transforms.html)\n\nGets configuration and usage information about transforms."]
+    pub fn transforms<'b>(&'a self, parts: CatTransformsParts<'b>) -> CatTransforms<'a, 'b> {
+        CatTransforms::new(&self.client, parts)
     }
 }
 impl Elasticsearch {
