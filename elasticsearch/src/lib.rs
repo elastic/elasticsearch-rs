@@ -301,10 +301,10 @@
 // TODO: turn on before releasing :) Will require adding documentation within all REST API specs
 // #![deny(missing_docs)]
 
-// also test examples in README
-#![feature(external_doc)]
-#[doc(include = "../../README.md")]
-#[cfg(doctest)]
+// also test examples in README when using rust nightly.
+// required as external_doc feature requires nightly
+#![cfg_attr(RUSTC_IS_NIGHTLY, feature(external_doc))]
+#[cfg_attr(RUSTC_IS_NIGHTLY, doc(include = "../../README.md"), cfg(doctest))]
 type _DoctestReadme = ();
 
 #[macro_use]
