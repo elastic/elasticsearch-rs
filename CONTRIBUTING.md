@@ -71,20 +71,22 @@ The `quote` and `syn` crates help
 
 ### Current development setup
 
-Use Rust nightly for development for now:
+The required toolchain for packages in the workspace are controlled
+by a `rust-toolchain` file in the root of each package.
+
+`elasticsearch` package compiles and runs with rust stable. 
+
+`elasticsearch` tests incorporate testing the examples
+given in the README.md file, using the
+[`external_doc`](https://doc.rust-lang.org/unstable-book/language-features/external-doc.html)
+experimental feature. To run these tests too, run with cargo nightly,
+using the `+<toolchain>` command line override
 
 ```sh
-> rustup show
-...
-
-active toolchain
-----------------
-
-nightly-x86_64-pc-windows-msvc (default)
-rustc 1.41.0-nightly (a44774c3a 2019-11-25)
+ cargo +nightly test -p elasticsearch --doc
 ```
 
-It is expected to move to rust stable once dependencies compile on stable.
+`api_generator` package requires rust nightly.
 
 ### Coding style guide
 
