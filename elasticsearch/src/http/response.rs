@@ -40,6 +40,18 @@ impl Response {
         self.0.headers()
     }
 
+    /// Gets the Deprecation warning response headers
+    ///
+    /// Deprecation headers signal the use of Elasticsearch functionality
+    /// or features that are deprecated and will be removed in a future release.
+    pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
+        self.0
+            .headers()
+            .get_all("Warning")
+            .iter()
+            .map(|w| w.to_str().unwrap())
+    }
+
     /// Asynchronously reads the response body as JSON
     ///
     /// Reading the response body consumes `self`

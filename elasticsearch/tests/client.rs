@@ -88,6 +88,49 @@ async fn x_opaque_id_header() -> Result<(), failure::Error> {
 }
 
 #[tokio::test]
+async fn deprecation_warning_headers() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let _ = index_documents(&client).await?;
+    let response = client
+        .search(SearchParts::None)
+        .body(json!{
+            {
+              "aggs": {
+                "titles": {
+                  "terms": {
+                    "field": "title.keyword",
+                    "order": [{
+                      "_term": "asc"
+                    }]
+                  }
+                }
+              },
+              "query": {
+                "function_score": {
+                  "functions": [{
+                    "random_score": {
+                      "seed": 1337
+                    }
+                  }],
+                  "query": {
+                    "match_all": {}
+                  }
+                }
+              },
+              "size": 0
+            }
+        })
+        .send()
+        .await?;
+
+    let warnings = response.warning_headers().collect::<Vec<&str>>();
+    assert!(warnings.len() > 0);
+    assert!(warnings.iter().any(|&w| w.contains("Deprecated aggregation order key")));
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn serialize_querystring() -> Result<(), failure::Error> {
     let server = server::http(move |req| async move {
         assert_eq!(req.method(), Method::GET);
