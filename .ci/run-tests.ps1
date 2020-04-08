@@ -8,9 +8,9 @@ param (
     [ValidateSet("oss", "xpack")]
     $TEST_SUITE = "xpack",
 
-    # TODO: move to stable once elasticsearch-rs compiles on stable
     [string]
     [Parameter(Mandatory = $false)]
+    [ValidateSet("nightly", "stable")]
     $RUST_VERSION = "nightly",
 
     [string]
@@ -25,6 +25,11 @@ param (
 
 trap {
   cleanup
+}
+
+$toolchain = ""
+if ($RUST_VERSION -eq "nightly") {
+    $toolchain = "+nightly"
 }
 
 $NODE_NAME = "es1"
@@ -126,7 +131,7 @@ docker run `
   --name elasticsearch-rs `
   --rm `
 elastic/elasticsearch-rs `
-cargo test $CARGO_TEST_FLAGS
+cargo $toolchain test $CARGO_TEST_FLAGS
 
 $runExitCode = $LASTEXITCODE
 
