@@ -23,8 +23,8 @@ CLUSTER_NAME=${CLUSTER_NAME-${moniker}${suffix}}
 HTTP_PORT=${HTTP_PORT-9200}
 
 ELASTIC_PASSWORD=${ELASTIC_PASSWORD-changeme}
-SSL_CERT=${SSL_CERT-"${SCRIPT_PATH}/certs/testnode.crt"}
-SSL_KEY=${SSL_KEY-"${SCRIPT_PATH}/certs/testnode.key"}
+SSL_CERT=${SSL_CERT-"${SCRIPT_PATH}/certs/testnode_san.crt"}
+SSL_KEY=${SSL_KEY-"${SCRIPT_PATH}/certs/testnode_san.key"}
 SSL_CA=${SSL_CA-"${SCRIPT_PATH}/certs/ca.crt"}
 SSL_CA_PEM=${SSL_CA-"${SCRIPT_PATH}/certs/ca.pem"}
 
