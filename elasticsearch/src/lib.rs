@@ -51,6 +51,38 @@
 //! serde = "~1"
 //! serde_json = "~1"
 //! ```
+//!
+//! ### Async support with tokio
+//!
+//! The client uses [`reqwest`](https://crates.io/crates/reqwest) to make HTTP calls, which internally uses
+//! the [`tokio`](https://crates.io/crates/tokio) runtime for async support. As such, you may require
+//! to take a dependency on `tokio` in order to use the client. For example, in Cargo.toml, you may
+//! need the following dependency
+//!
+//! ```toml,norun
+//! tokio = { version = "*", features = ["full"] }
+//! ```
+//!
+//! and to attribute async main function with `#[tokio::main]`
+//!
+//! ```rust,norun
+//! #[tokio::main]
+//! async fn main() -> Result<(), Box<dyn std::error::Error>> {
+//!     // your code ...
+//!     Ok(())
+//! }
+//! ```
+//!
+//! and attribute test functions with `#[tokio::test]`
+//!
+//! ```rust,norun
+//! #[tokio::test]
+//! async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
+//!     // your code ...
+//!     Ok(())
+//! }
+//! ```
+//!
 //! ## Create a client
 //!
 //! To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
