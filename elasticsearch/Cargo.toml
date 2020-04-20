@@ -36,5 +36,6 @@ failure = "0.1.5"
 futures = "0.3.1"
 http = "0.2"
 hyper = { version = "0.13", default-features = false, features = ["tcp", "stream"] }
+os_type = "2.2"
 sysinfo = "0.12.0"
 tokio = { version = "0.2.0", default-features = false, features = ["macros", "tcp", "time"] }
