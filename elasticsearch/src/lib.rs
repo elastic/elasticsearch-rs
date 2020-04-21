@@ -43,7 +43,7 @@
 //!
 //! ```toml,no_run
 //! [dependencies]
-//! elasticsearch = "7.6.1-alpha.1"
+//! elasticsearch = "7.7.0-alpha.1"
 //! ```
 //! The following _optional_ dependencies may also be useful to create requests and read responses
 //!
@@ -334,6 +334,7 @@ type _DoctestReadme = ();
 #[macro_use]
 extern crate dyn_clone;
 
+pub mod async_search;
 pub mod auth;
 pub mod cat;
 pub mod ccr;
@@ -356,6 +357,7 @@ pub mod snapshot;
 pub mod sql;
 pub mod ssl;
 pub mod tasks;
+pub mod transform;
 pub mod watcher;
 pub mod xpack;
 
