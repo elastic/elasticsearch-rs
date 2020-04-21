@@ -166,7 +166,7 @@ impl TransportBuilder {
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
 
-        if self.headers.len() > 0 {
+        if !self.headers.is_empty() {
             client_builder = client_builder.default_headers(self.headers);
         }
 

@@ -64,6 +64,8 @@ pub enum ExpandWildcards {
     Open,
     #[serde(rename = "closed")]
     Closed,
+    #[serde(rename = "hidden")]
+    Hidden,
     #[serde(rename = "none")]
     None,
     #[serde(rename = "all")]
