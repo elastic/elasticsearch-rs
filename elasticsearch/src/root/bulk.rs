@@ -87,17 +87,12 @@ impl Serialize for BulkHeader {
 /// # use elasticsearch::{
 /// #     BulkOperation,
 /// #     BulkParts,
-/// #     auth::Credentials,
 /// #     Error, Elasticsearch,
-/// #     http::transport::{TransportBuilder,SingleNodeConnectionPool},
 /// # };
 /// # use url::Url;
 /// # use serde_json::{json, Value};
-/// # async fn run() -> Result<(), Error> {
-/// # let url = Url::parse("https://example.com")?;
-/// # let conn_pool = SingleNodeConnectionPool::new(url);
-/// # let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
-/// # let client = Elasticsearch::new(transport);
+/// # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
+/// # let client = Elasticsearch::default();
 /// let mut ops: Vec<BulkOperation<Value>> = Vec::with_capacity(4);
 /// ops.push(BulkOperation::index("1", json!({
 ///         "user": "kimchy",
@@ -553,18 +548,12 @@ impl<B> From<BulkUpdateOperation<B>> for BulkOperation<B> {
 /// #     BulkOperation,
 /// #     BulkOperations,
 /// #     BulkParts,
-/// #     auth::Credentials,
 /// #     Error, Elasticsearch,
-/// #     http::transport::{TransportBuilder,SingleNodeConnectionPool},
 /// # };
-/// # use url::Url;
 /// # use serde::Serialize;
 /// # use serde_json::{json, Value};
-/// # async fn run() -> Result<(), Error> {
-/// # let url = Url::parse("https://example.com")?;
-/// # let conn_pool = SingleNodeConnectionPool::new(url);
-/// # let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
-/// # let client = Elasticsearch::new(transport);
+/// # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
+/// # let client = Elasticsearch::default();
 /// #[derive(Serialize)]
 /// struct IndexDoc<'a> {
 ///     foo: &'a str,
