@@ -32,7 +32,7 @@ pub use reqwest::Certificate;
 # use std::fs::File;
 # use std::io::Read;
 # use url::Url;
-# async fn run() -> Result<(), Error> {
+# async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 let url = Url::parse("https://example.com")?;
 let conn_pool = SingleNodeConnectionPool::new(url);
 
@@ -71,7 +71,7 @@ let _response = client.ping().send().await?;
 # use std::fs::File;
 # use std::io::Read;
 # use url::Url;
-# async fn run() -> Result<(), Error> {
+# async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 let url = Url::parse("https://example.com")?;
 let conn_pool = SingleNodeConnectionPool::new(url);
 
@@ -105,7 +105,7 @@ let _response = client.ping().send().await?;
 /// # use std::fs::File;
 /// # use std::io::Read;
 /// # use url::Url;
-/// # async fn run() -> Result<(), Error> {
+/// # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 /// let url = Url::parse("https://example.com")?;
 /// let conn_pool = SingleNodeConnectionPool::new(url);
 /// let transport = TransportBuilder::new(conn_pool)

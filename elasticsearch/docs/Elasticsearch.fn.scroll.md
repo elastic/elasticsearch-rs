@@ -5,10 +5,11 @@ then fetch the next set of hits using the `_scroll_id` returned in
 the response. Once no more hits are returned, clear the scroll.
 
 ```rust,norun
-# use elasticsearch::{Elasticsearch, SearchParts, ScrollParts, ClearScrollParts};
+# use elasticsearch::{Elasticsearch, Error, SearchParts, ScrollParts, ClearScrollParts};
 # use serde_json::{json, Value};
-# async fn run() -> Result<(), Box<dyn std::error::Error>> { 
-# let client = Elasticsearch::default();
+# async fn doc() -> Result<(), Box<dyn std::error::Error>> {
+let client = Elasticsearch::default();
+
 fn print_hits(hits: &[Value]) {
     for hit in hits {
         println!(
@@ -37,7 +38,7 @@ let mut response = client
     .send()
     .await?;
 
-let mut response_body = response.read_body::<Value>().await?;
+let mut response_body = response.json::<Value>().await?;
 let mut scroll_id = response_body["_scroll_id"].as_str().unwrap();
 let mut hits = response_body["hits"]["hits"].as_array().unwrap();
 
@@ -53,7 +54,7 @@ while hits.len() > 0 {
         .send()
         .await?;
 
-    response_body = response.read_body::<Value>().await?;
+    response_body = response.json::<Value>().await?;
     scroll_id = response_body["_scroll_id"].as_str().unwrap();
     hits = response_body["hits"]["hits"].as_array().unwrap();
     print_hits(hits);

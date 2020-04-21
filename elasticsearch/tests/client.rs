@@ -31,6 +31,43 @@ async fn default_user_agent_content_type_accept_headers() -> Result<(), failure:
 }
 
 #[tokio::test]
+async fn default_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["x-opaque-id"], "foo");
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("foo"));
+
+    let client = client::create(builder);
+    let _response = client.ping().send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn override_default_header() -> Result<(), failure::Error> {
+    let server = server::http(move |req| async move {
+        assert_eq!(req.headers()["x-opaque-id"], "bar");
+        http::Response::default()
+    });
+
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("foo"));
+
+    let client = client::create(builder);
+    let _response = client.ping()
+        .header(HeaderName::from_static(X_OPAQUE_ID),
+                HeaderValue::from_static("bar"))
+        .send().await?;
+
+    Ok(())
+}
+
+#[tokio::test]
 async fn x_opaque_id_header() -> Result<(), failure::Error> {
     let server = server::http(move |req| async move {
         assert_eq!(req.headers()["x-opaque-id"], "foo");
@@ -46,6 +83,49 @@ async fn x_opaque_id_header() -> Result<(), failure::Error> {
         )
         .send()
         .await?;
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn deprecation_warning_headers() -> Result<(), failure::Error> {
+    let client = client::create_default();
+    let _ = index_documents(&client).await?;
+    let response = client
+        .search(SearchParts::None)
+        .body(json!{
+            {
+              "aggs": {
+                "titles": {
+                  "terms": {
+                    "field": "title.keyword",
+                    "order": [{
+                      "_term": "asc"
+                    }]
+                  }
+                }
+              },
+              "query": {
+                "function_score": {
+                  "functions": [{
+                    "random_score": {
+                      "seed": 1337
+                    }
+                  }],
+                  "query": {
+                    "match_all": {}
+                  }
+                }
+              },
+              "size": 0
+            }
+        })
+        .send()
+        .await?;
+
+    let warnings = response.warning_headers().collect::<Vec<&str>>();
+    assert!(warnings.len() > 0);
+    assert!(warnings.iter().any(|&w| w.contains("Deprecated aggregation order key")));
 
     Ok(())
 }
@@ -91,7 +171,7 @@ async fn search_with_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
     Ok(())
@@ -109,7 +189,7 @@ async fn search_with_no_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
     assert!(response_body["took"].as_i64().is_some());
 
     for hit in response_body["hits"]["hits"].as_array().unwrap() {
@@ -138,7 +218,7 @@ async fn cat_health_format_json() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with(DEFAULT_CONTENT_TYPE));
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }
@@ -162,7 +242,7 @@ async fn cat_health_header_json() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with(DEFAULT_CONTENT_TYPE));
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }
@@ -180,7 +260,7 @@ async fn cat_health_text() -> Result<(), failure::Error> {
         .to_str()
         .unwrap()
         .starts_with("text/plain"));
-    let _response_body = response.read_body_as_text().await?;
+    let _response_body = response.text().await?;
 
     Ok(())
 }
@@ -204,7 +284,7 @@ async fn clone_search_with_body() -> Result<(), failure::Error> {
     let response = request_clone.send().await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let response_body = response.read_body::<Value>().await?;
+    let response_body = response.json::<Value>().await?;
 
     assert_eq!(response_body["hits"]["hits"].as_array().unwrap().len(), 1);
 
@@ -227,7 +307,7 @@ async fn byte_slice_body() -> Result<(), failure::Error> {
         .await?;
 
     assert_eq!(response.status_code(), StatusCode::OK);
-    let _response_body = response.read_body::<Value>().await?;
+    let _response_body = response.json::<Value>().await?;
 
     Ok(())
 }

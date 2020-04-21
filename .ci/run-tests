@@ -6,8 +6,9 @@ if [[ -z $ELASTICSEARCH_VERSION ]]; then
 fi
 set -euxo pipefail
 
-TEST_SUITE=${TEST_SUITE-oss}
-NODE_NAME=instance
+TEST_SUITE=${TEST_SUITE-xpack}
+CARGO_TEST_FLAGS=${CARGO_TEST_FLAGS---all-features}
+NODE_NAME=es1
 
 elasticsearch_image=elasticsearch
 elasticsearch_url=https://elastic:changeme@${NODE_NAME}:9200
@@ -45,8 +46,12 @@ ELASTICSEARCH_VERSION=${elasticsearch_image}:${ELASTICSEARCH_VERSION} \
 
 echo -e "\033[1m>>>>> Build [elastic/elasticsearch-rs container] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>\033[0m"
 
-# TODO: move to stable once elasticsearch-rs compiles on stable
 RUST_VERSION=${RUST_VERSION-nightly}
+RUST_BACKTRACE=${RUST_BACKTRACE-}
+toolchain=""
+if [[ "${RUST_VERSION}" == "nightly" ]]; then
+  toolchain="+nightly"
+fi
 
 docker build --file .ci/DockerFile --tag elastic/elasticsearch-rs .
 
@@ -60,4 +65,4 @@ docker run \
   --name elasticsearch-rs \
   --rm \
   elastic/elasticsearch-rs \
-  cargo test
+  cargo ${toolchain} test "${CARGO_TEST_FLAGS}"

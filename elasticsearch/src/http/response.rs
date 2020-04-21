@@ -1,7 +1,5 @@
 //! HTTP response components
 
-extern crate reqwest;
-
 use crate::error::Error;
 use reqwest::header::HeaderMap;
 use reqwest::StatusCode;
@@ -42,10 +40,22 @@ impl Response {
         self.0.headers()
     }
 
+    /// Gets the Deprecation warning response headers
+    ///
+    /// Deprecation headers signal the use of Elasticsearch functionality
+    /// or features that are deprecated and will be removed in a future release.
+    pub fn warning_headers(&self) -> impl Iterator<Item = &str> {
+        self.0
+            .headers()
+            .get_all("Warning")
+            .iter()
+            .map(|w| w.to_str().unwrap())
+    }
+
     /// Asynchronously reads the response body as JSON
     ///
     /// Reading the response body consumes `self`
-    pub async fn read_body<B>(self) -> Result<B, Error>
+    pub async fn json<B>(self) -> Result<B, Error>
     where
         B: DeserializeOwned,
     {
@@ -56,7 +66,7 @@ impl Response {
     /// Asynchronously reads the response body as plain text
     ///
     /// Reading the response body consumes `self`
-    pub async fn read_body_as_text(self) -> Result<String, Error> {
+    pub async fn text(self) -> Result<String, Error> {
         let body = self.0.text().await?;
         Ok(body)
     }

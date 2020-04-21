@@ -6,7 +6,7 @@ use crate::{
     error::Error,
     http::{
         headers::{
-            HeaderMap, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, DEFAULT_ACCEPT,
+            HeaderMap, HeaderName, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, DEFAULT_ACCEPT,
             DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
         },
         request::Body,
@@ -86,6 +86,7 @@ pub struct TransportBuilder {
     proxy: Option<Url>,
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
+    headers: HeaderMap
 }
 
 impl TransportBuilder {
@@ -103,6 +104,7 @@ impl TransportBuilder {
             proxy: None,
             proxy_credentials: None,
             disable_proxy: false,
+            headers: HeaderMap::new()
         }
     }
 
@@ -142,9 +144,31 @@ impl TransportBuilder {
         self
     }
 
+    /// Adds a HTTP header that will be added to all client API calls.
+    ///
+    /// A default HTTP header can be overridden on a per API call basis.
+    pub fn header(mut self, key: HeaderName, value: HeaderValue) -> Self {
+        self.headers.insert(key, value);
+        self
+    }
+
+    /// Adds HTTP headers that will be added to all client API calls.
+    ///
+    /// Default HTTP headers can be overridden on a per API call basis.
+    pub fn headers(mut self, headers: HeaderMap) -> Self {
+        for (key, value) in headers.iter() {
+            self.headers.insert(key, value.clone());
+        }
+        self
+    }
+
     /// Builds a [Transport] to use to send API calls to Elasticsearch.
     pub fn build(self) -> Result<Transport, BuildError> {
         let mut client_builder = self.client_builder;
+
+        if self.headers.len() > 0 {
+            client_builder = client_builder.default_headers(self.headers);
+        }
 
         #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
         {

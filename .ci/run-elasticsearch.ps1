@@ -202,41 +202,41 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $environment = @(
-  "--env", "node.name=`"$NODE_NAME`"",
-  "--env", "cluster.name=`"$CLUSTER_NAME`"",
-  "--env", "cluster.initial_master_nodes=`"$MASTER_NODE_NAME`"",
-  "--env", "discovery.seed_hosts=`"$MASTER_NODE_NAME`"",
-  "--env", "cluster.routing.allocation.disk.threshold_enabled=false",
-  "--env", "bootstrap.memory_lock=true",
-  "--env", "node.attr.testattr=test",
-  "--env", "path.repo=/tmp",
-  "--env", "repositories.url.allowed_urls=http://snapshot.test*"
+"--env", "node.name=`"$NODE_NAME`"",
+"--env", "cluster.name=`"$CLUSTER_NAME`"",
+"--env", "cluster.initial_master_nodes=`"$MASTER_NODE_NAME`"",
+"--env", "discovery.seed_hosts=`"$MASTER_NODE_NAME`"",
+"--env", "cluster.routing.allocation.disk.threshold_enabled=false",
+"--env", "bootstrap.memory_lock=true",
+"--env", "node.attr.testattr=test",
+"--env", "path.repo=/tmp",
+"--env", "repositories.url.allowed_urls=http://snapshot.test*"
 )
 
 $volumes = @(
-  "--volume", "${volume_name}:/usr/share/elasticsearch/data"
+"--volume", "${volume_name}:/usr/share/elasticsearch/data"
 )
 
 if (-not ($version -contains "oss")) {
   $environment += @(
-    "--env", "ELASTIC_PASSWORD=`"$ELASTIC_PASSWORD`"",
-    "--env", "xpack.license.self_generated.type=trial",
-    "--env", "xpack.security.enabled=true",
-    "--env", "xpack.security.http.ssl.enabled=true",
-    "--env", "xpack.security.http.ssl.verification_mode=certificate",
-    "--env", "xpack.security.http.ssl.key=certs/testnode.key",
-    "--env", "xpack.security.http.ssl.certificate=certs/testnode.crt",
-    "--env", "xpack.security.http.ssl.certificate_authorities=certs/ca.crt",
-    "--env", "xpack.security.transport.ssl.enabled=true",
-    "--env", "xpack.security.transport.ssl.key=certs/testnode.key",
-    "--env", "xpack.security.transport.ssl.certificate=certs/testnode.crt",
-    "--env", "xpack.security.transport.ssl.certificate_authorities=certs/ca.crt"
+  "--env", "ELASTIC_PASSWORD=`"$ELASTIC_PASSWORD`"",
+  "--env", "xpack.license.self_generated.type=trial",
+  "--env", "xpack.security.enabled=true",
+  "--env", "xpack.security.http.ssl.enabled=true",
+  "--env", "xpack.security.http.ssl.verification_mode=certificate",
+  "--env", "xpack.security.http.ssl.key=certs/testnode.key",
+  "--env", "xpack.security.http.ssl.certificate=certs/testnode.crt",
+  "--env", "xpack.security.http.ssl.certificate_authorities=certs/ca.crt",
+  "--env", "xpack.security.transport.ssl.enabled=true",
+  "--env", "xpack.security.transport.ssl.key=certs/testnode.key",
+  "--env", "xpack.security.transport.ssl.certificate=certs/testnode.crt",
+  "--env", "xpack.security.transport.ssl.certificate_authorities=certs/ca.crt"
   )
 
   $volumes += @(
-    "--volume", "`"${SSL_CERT}:/usr/share/elasticsearch/config/certs/testnode.crt`"",
-    "--volume", "`"${SSL_KEY}:/usr/share/elasticsearch/config/certs/testnode.key`"",
-    "--volume", "`"${SSL_CA}:/usr/share/elasticsearch/config/certs/ca.crt`""
+  "--volume", "`"${SSL_CERT}:/usr/share/elasticsearch/config/certs/testnode.crt`"",
+  "--volume", "`"${SSL_KEY}:/usr/share/elasticsearch/config/certs/testnode.key`"",
+  "--volume", "`"${SSL_CA}:/usr/share/elasticsearch/config/certs/ca.crt`""
   )
 }
 
