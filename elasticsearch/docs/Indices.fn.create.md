@@ -3,10 +3,10 @@
 Create an index with a mapping
 
 ```rust,norun
-# use elasticsearch::{Elasticsearch, indices::IndicesCreateParts};
+# use elasticsearch::{Elasticsearch, Error, indices::IndicesCreateParts};
 # use serde_json::{json, Value};
-# async fn run() -> Result<(), Box<dyn std::error::Error>> { 
-# let client = Elasticsearch::default();
+# async fn doc() -> Result<(), Box<dyn std::error::Error>> {
+let client = Elasticsearch::default();
 let response = client
     .indices()
     .create(IndicesCreateParts::Index("test_index"))

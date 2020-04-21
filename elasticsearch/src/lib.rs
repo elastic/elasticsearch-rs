@@ -88,11 +88,10 @@
 //! To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 //!
 //! ```rust,no_run
-//! # use elasticsearch::{Error, Elasticsearch};
-//! # fn run() {
+//! # use elasticsearch::Elasticsearch;
 //! let client = Elasticsearch::default();
-//! # }
 //! ```
+//!
 //! Alternatively, you can create a client to make API calls against Elasticsearch running on a
 //! specific [url::Url]
 //!
@@ -101,7 +100,7 @@
 //! #     Error, Elasticsearch,
 //! #     http::transport::{Transport, SingleNodeConnectionPool}
 //! # };
-//! # fn run() -> Result<(), Error> {
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! let transport = Transport::single_node("https://example.com")?;
 //! let client = Elasticsearch::new(transport);
 //! # Ok(())
@@ -119,7 +118,7 @@
 //! #     http::transport::Transport,
 //! # };
 //! # use url::Url;
-//! # fn run() -> Result<(), Error> {
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
 //! let credentials = Credentials::Basic("<username>".into(), "<password>".into());
 //! let transport = Transport::cloud(cloud_id, credentials)?;
@@ -139,7 +138,7 @@
 //! #     http::transport::{TransportBuilder,SingleNodeConnectionPool},
 //! # };
 //! # use url::Url;
-//! # fn run() -> Result<(), Error> {
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! let url = Url::parse("https://example.com")?;
 //! let conn_pool = SingleNodeConnectionPool::new(url);
 //! let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
@@ -157,12 +156,11 @@
 //! The following makes an API call to the cat indices API
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::{Elasticsearch, Error, cat::CatIndicesParts};
+//! # use elasticsearch::{auth::Credentials, Elasticsearch, Error, cat::CatIndicesParts};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .cat()
@@ -187,12 +185,11 @@
 //! Indexing a single document can be achieved with the index API
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::{Elasticsearch, Error, SearchParts, IndexParts};
+//! # use elasticsearch::{auth::Credentials, Elasticsearch, Error, SearchParts, IndexParts};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .index(IndexParts::IndexId("tweets", "1"))
@@ -214,12 +211,11 @@
 //! to be sent in one API call
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::{Elasticsearch, Error, IndexParts, BulkParts, http::request::JsonBody};
+//! # use elasticsearch::{auth::Credentials, Elasticsearch, Error, IndexParts, BulkParts, http::request::JsonBody};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let mut body: Vec<JsonBody<_>> = Vec::with_capacity(4);
 //!
@@ -258,12 +254,11 @@
 //! `{"query":{"match":{"message":"Elasticsearch"}}}`
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::{Elasticsearch, Error, SearchParts};
+//! # use elasticsearch::{auth::Credentials, Elasticsearch, Error, SearchParts};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .search(SearchParts::Index(&["tweets"]))
@@ -306,14 +301,11 @@
 //! [Elasticsearch::send] can be used
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
-//! # use elasticsearch::{Elasticsearch, Error, SearchParts};
+//! # use elasticsearch::{auth::Credentials, http::{Method,headers::HeaderMap}, Elasticsearch, Error, SearchParts};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # use http::HeaderMap;
-//! # use elasticsearch::http::Method;
-//! # async fn run() -> Result<(), Error> {
+//! # #[tokio::main]
+//! # async fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let body = b"{\"query\":{\"match_all\":{}}}";
 //!

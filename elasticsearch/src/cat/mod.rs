@@ -10,12 +10,11 @@
 //! and accept headers, returning plain text responses
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
 //! # use elasticsearch::{Elasticsearch, Error, SearchParts};
 //! # use url::Url;
 //! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .cat()
@@ -33,12 +32,11 @@
 //! JSON responses can be returned from Cat APIs either by using `.format("json")`
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
 //! # use elasticsearch::{Elasticsearch, Error, SearchParts};
 //! # use url::Url;
 //! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .cat()
@@ -55,12 +53,10 @@
 //! Or by setting an accept header using `.headers()`
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
 //! # use elasticsearch::{Elasticsearch, Error, SearchParts, http::headers::{HeaderValue, DEFAULT_ACCEPT, ACCEPT}};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .cat()
@@ -79,12 +75,10 @@
 //! The column headers to return can be controlled with `.h()`
 //!
 //! ```rust,no_run
-//! # use elasticsearch;
 //! # use elasticsearch::{Elasticsearch, Error, SearchParts};
 //! # use url::Url;
-//! # use elasticsearch::auth::Credentials;
 //! # use serde_json::{json, Value};
-//! # async fn run() -> Result<(), Error> {
+//! # async fn doc() -> Result<(), Box<dyn std::error::Error>> {
 //! # let client = Elasticsearch::default();
 //! let response = client
 //!     .cat()
@@ -97,7 +91,6 @@
 //! # Ok(())
 //! # }
 //! ```
-//!
 //!
 
 pub use super::generated::namespace_clients::cat::*;
