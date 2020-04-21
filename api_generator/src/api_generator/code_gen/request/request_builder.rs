@@ -46,13 +46,7 @@ impl<'a> RequestBuilder<'a> {
             enum_builder = enum_builder.with_path(path);
         }
 
-        let accepts_nd_body = match &endpoint.body {
-            Some(b) => match &b.serialize {
-                Some(s) => s == "bulk",
-                _ => false,
-            },
-            None => false,
-        };
+        let accepts_nd_body = endpoint.supports_nd_body();
 
         RequestBuilder {
             docs_dir,
@@ -343,7 +337,7 @@ impl<'a> RequestBuilder<'a> {
         let impl_ident = ident(&name);
         let field_ident = ident(&name);
         let value_ident = ident(&name);
-        let ty = typekind_to_ty(&f.0, f.1.ty, true);
+        let ty = typekind_to_ty(&f.0, &f.1.ty, true);
         let doc_attr = match &f.1.description {
             Some(docs) => vec![doc(docs)],
             _ => vec![],
@@ -655,7 +649,7 @@ impl<'a> RequestBuilder<'a> {
             ident: Some(ident(valid_name(&f.0).to_lowercase())),
             vis: syn::Visibility::Inherited,
             attrs: vec![],
-            ty: typekind_to_ty(&f.0, f.1.ty, false),
+            ty: typekind_to_ty(&f.0, &f.1.ty, false),
         }
     }
 

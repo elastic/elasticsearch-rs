@@ -14,6 +14,7 @@
 // cargo run -p api_generator
 //
 // -----------------------------------------------
+pub mod async_search;
 pub mod cat;
 pub mod ccr;
 pub mod cluster;
@@ -32,5 +33,6 @@ pub mod snapshot;
 pub mod sql;
 pub mod ssl;
 pub mod tasks;
+pub mod transform;
 pub mod watcher;
 pub mod xpack;

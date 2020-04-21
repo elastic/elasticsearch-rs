@@ -49,7 +49,7 @@ impl<'b> SnapshotCleanupRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nRemoves stale data from repository."]
+#[doc = "Builder for the [Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRemoves stale data from repository."]
 pub struct SnapshotCleanupRepository<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotCleanupRepositoryParts<'b>,
@@ -211,7 +211,7 @@ impl<'b> SnapshotCreateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+#[doc = "Builder for the [Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
 pub struct SnapshotCreate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotCreateParts<'b>,
@@ -371,7 +371,7 @@ impl<'b> SnapshotCreateRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nCreates a repository."]
+#[doc = "Builder for the [Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nCreates a repository."]
 pub struct SnapshotCreateRepository<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotCreateRepositoryParts<'b>,
@@ -544,7 +544,7 @@ impl<'b> SnapshotDeleteParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nDeletes a snapshot."]
+#[doc = "Builder for the [Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nDeletes a snapshot."]
 pub struct SnapshotDelete<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotDeleteParts<'b>,
@@ -671,7 +671,7 @@ impl<'b> SnapshotDeleteRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nDeletes a repository."]
+#[doc = "Builder for the [Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nDeletes a repository."]
 pub struct SnapshotDeleteRepository<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotDeleteRepositoryParts<'b>,
@@ -810,7 +810,7 @@ impl<'b> SnapshotGetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about a snapshot."]
+#[doc = "Builder for the [Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about a snapshot."]
 pub struct SnapshotGet<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotGetParts<'b>,
@@ -960,7 +960,7 @@ impl<'b> SnapshotGetRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about a repository."]
+#[doc = "Builder for the [Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about a repository."]
 pub struct SnapshotGetRepository<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotGetRepositoryParts<'b>,
@@ -1099,7 +1099,7 @@ impl<'b> SnapshotRestoreParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nRestores a snapshot."]
+#[doc = "Builder for the [Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRestores a snapshot."]
 pub struct SnapshotRestore<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotRestoreParts<'b>,
@@ -1275,7 +1275,7 @@ impl<'b> SnapshotStatusParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+#[doc = "Builder for the [Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
 pub struct SnapshotStatus<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SnapshotStatusParts<'b>,
@@ -1412,7 +1412,7 @@ impl<'b> SnapshotVerifyRepositoryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nVerifies a repository."]
+#[doc = "Builder for the [Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nVerifies a repository."]
 pub struct SnapshotVerifyRepository<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SnapshotVerifyRepositoryParts<'b>,
@@ -1561,55 +1561,55 @@ impl<'a> Snapshot<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nRemoves stale data from repository."]
+    #[doc = "[Snapshot Cleanup Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRemoves stale data from repository."]
     pub fn cleanup_repository<'b>(
         &'a self,
         parts: SnapshotCleanupRepositoryParts<'b>,
     ) -> SnapshotCleanupRepository<'a, 'b, ()> {
         SnapshotCleanupRepository::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
+    #[doc = "[Snapshot Create API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nCreates a snapshot in a repository."]
     pub fn create<'b>(&'a self, parts: SnapshotCreateParts<'b>) -> SnapshotCreate<'a, 'b, ()> {
         SnapshotCreate::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nCreates a repository."]
+    #[doc = "[Snapshot Create Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nCreates a repository."]
     pub fn create_repository<'b>(
         &'a self,
         parts: SnapshotCreateRepositoryParts<'b>,
     ) -> SnapshotCreateRepository<'a, 'b, ()> {
         SnapshotCreateRepository::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nDeletes a snapshot."]
+    #[doc = "[Snapshot Delete API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nDeletes a snapshot."]
     pub fn delete<'b>(&'a self, parts: SnapshotDeleteParts<'b>) -> SnapshotDelete<'a, 'b> {
         SnapshotDelete::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nDeletes a repository."]
+    #[doc = "[Snapshot Delete Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nDeletes a repository."]
     pub fn delete_repository<'b>(
         &'a self,
         parts: SnapshotDeleteRepositoryParts<'b>,
     ) -> SnapshotDeleteRepository<'a, 'b> {
         SnapshotDeleteRepository::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about a snapshot."]
+    #[doc = "[Snapshot Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about a snapshot."]
     pub fn get<'b>(&'a self, parts: SnapshotGetParts<'b>) -> SnapshotGet<'a, 'b> {
         SnapshotGet::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about a repository."]
+    #[doc = "[Snapshot Get Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about a repository."]
     pub fn get_repository<'b>(
         &'a self,
         parts: SnapshotGetRepositoryParts<'b>,
     ) -> SnapshotGetRepository<'a, 'b> {
         SnapshotGetRepository::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nRestores a snapshot."]
+    #[doc = "[Snapshot Restore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nRestores a snapshot."]
     pub fn restore<'b>(&'a self, parts: SnapshotRestoreParts<'b>) -> SnapshotRestore<'a, 'b, ()> {
         SnapshotRestore::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
+    #[doc = "[Snapshot Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nReturns information about the status of a snapshot."]
     pub fn status<'b>(&'a self, parts: SnapshotStatusParts<'b>) -> SnapshotStatus<'a, 'b> {
         SnapshotStatus::new(&self.client, parts)
     }
-    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/modules-snapshots.html)\n\nVerifies a repository."]
+    #[doc = "[Snapshot Verify Repository API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/modules-snapshots.html)\n\nVerifies a repository."]
     pub fn verify_repository<'b>(
         &'a self,
         parts: SnapshotVerifyRepositoryParts<'b>,

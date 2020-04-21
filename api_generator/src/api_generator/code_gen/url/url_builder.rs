@@ -217,10 +217,10 @@ impl<'a> UrlBuilder<'a> {
                     let name = valid_name(p);
                     let name_ident = ident(&name);
                     let k = p.to_string();
-                    let ty = parts[&k].ty;
+                    let ty = &parts[&k].ty;
 
                     // don't generate an assignment expression for strings
-                    if ty == TypeKind::String {
+                    if ty == &TypeKind::String {
                         return None;
                     }
 

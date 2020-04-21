@@ -14,7 +14,7 @@ use std::{
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
 use semver::Version;
-use serde::de::{MapAccess, Visitor};
+use serde::de::{Error, MapAccess, Visitor};
 use std::marker::PhantomData;
 use std::str::FromStr;
 use void::Void;
@@ -81,33 +81,65 @@ pub struct Type {
 }
 
 /// The type of the param or part
-#[derive(Debug, PartialEq, Deserialize, Copy, Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum TypeKind {
     None,
-    #[serde(rename = "list")]
     List,
-    #[serde(rename = "enum")]
     Enum,
-    #[serde(rename = "string")]
     String,
-    #[serde(rename = "text")]
     Text,
-    #[serde(rename = "boolean")]
     Boolean,
-    #[serde(rename = "number")]
     Number,
-    #[serde(rename = "float")]
     Float,
-    #[serde(rename = "double")]
     Double,
-    #[serde(rename = "int")]
     Integer,
-    #[serde(rename = "long")]
     Long,
-    #[serde(rename = "date")]
     Date,
-    #[serde(rename = "time")]
     Time,
+    Union(Box<(TypeKind, TypeKind)>),
+}
+
+impl<'de> Deserialize<'de> for TypeKind {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        if value.contains('|') {
+            let values: Vec<&str> = value.split('|').collect();
+
+            if values.len() > 2 {
+                Err(D::Error::custom(
+                    "TypeKind union contains more than two values",
+                ))
+            } else {
+                let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
+                Ok(TypeKind::Union(union))
+            }
+        } else {
+            Ok(TypeKind::from(value.as_str()))
+        }
+    }
+}
+
+impl From<&str> for TypeKind {
+    fn from(s: &str) -> Self {
+        match s {
+            "list" => TypeKind::List,
+            "enum" => TypeKind::Enum,
+            "string" => TypeKind::String,
+            "text" => TypeKind::Text,
+            "boolean" => TypeKind::Boolean,
+            "number" => TypeKind::Number,
+            "float" => TypeKind::Float,
+            "double" => TypeKind::Double,
+            "int" => TypeKind::Integer,
+            "long" => TypeKind::Long,
+            "date" => TypeKind::Date,
+            "time" => TypeKind::Time,
+            n => panic!("unknown typekind {}", n),
+        }
+    }
 }
 
 impl Default for TypeKind {
@@ -298,6 +330,18 @@ impl ApiEndpoint {
             || self.url.paths.iter().any(|p| {
                 p.methods.contains(&HttpMethod::Post) || p.methods.contains(&HttpMethod::Put)
             })
+    }
+
+    /// Whether the endpoint supports sending a newline delimited body
+    pub fn supports_nd_body(&self) -> bool {
+        self.supports_body()
+            && match &self.body {
+                Some(b) => match &b.serialize {
+                    Some(s) => s == "bulk",
+                    _ => false,
+                },
+                None => false,
+            }
     }
 }
 
