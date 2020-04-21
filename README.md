@@ -185,10 +185,10 @@ a JSON body of `{"query":{"match_all":{}}}`
 use elasticsearch::{Elasticsearch, Error, SearchParts};
 use serde_json::{json, Value};
 
-async fn run() -> Result<(), Error> {
-
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
-    
+
     // make a search API call
     let search_response = client
         .search(SearchParts::None)
@@ -200,14 +200,14 @@ async fn run() -> Result<(), Error> {
         .allow_no_indices(true)
         .send()
         .await?;
-    
+
     // get the HTTP response status code
     let status_code = search_response.status_code();
-    
+
     // read the response body. Consumes search_response
-    let response_body = search_response.json::<Value>().await?; 
-    
-    // read fields from the response body         
+    let response_body = search_response.json::<Value>().await?;
+
+    // read fields from the response body
     let took = response_body["took"].as_i64().unwrap();
 
     Ok(())
@@ -225,18 +225,19 @@ and beta APIs
 ```rust,no_run
 use elasticsearch::{http::Method, Elasticsearch, Error, SearchParts};
 use http::HeaderMap;
-use serde_json::{json, Value};
-use url::Url;
+use serde_json::Value;
 
-async fn run() -> Result<(), Error> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
     let body = b"{\"query\":{\"match_all\":{}}}";
     let response = client
-        .send(Method::Post,
+        .send(
+            Method::Post,
             SearchParts::Index(&["tweets"]).url().as_ref(),
             HeaderMap::new(),
             Option::<&Value>::None,
-            Some(body.as_ref())
+            Some(body.as_ref()),
         )
         .await?;
     Ok(())
