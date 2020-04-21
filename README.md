@@ -186,7 +186,7 @@ use elasticsearch::{Elasticsearch, Error, SearchParts};
 use serde_json::{json, Value};
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
 
     // make a search API call
@@ -205,7 +205,7 @@ async fn main() -> Result<(), Error> {
     let status_code = search_response.status_code();
 
     // read the response body. Consumes search_response
-    let response_body = search_response.read_body::<Value>().await?;
+    let response_body = search_response.json::<Value>().await?;
 
     // read fields from the response body
     let took = response_body["took"].as_i64().unwrap();
@@ -228,7 +228,7 @@ use http::HeaderMap;
 use serde_json::Value;
 
 #[tokio::main]
-async fn main() -> Result<(), Error> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
     let body = b"{\"query\":{\"match_all\":{}}}";
     let response = client
