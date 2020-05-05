@@ -117,7 +117,7 @@ impl<'a> EnumBuilder<'a> {
                     .params()
                     .iter()
                     .map(|&p| {
-                        let ty = path.parts[p].ty;
+                        let ty = &path.parts[p].ty;
                         syn::Field {
                             ident: None,
                             vis: syn::Visibility::Inherited,

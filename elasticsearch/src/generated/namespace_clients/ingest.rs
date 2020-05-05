@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -48,7 +48,7 @@ impl<'b> IngestDeletePipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+#[doc = "Builder for the [Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
 pub struct IngestDeletePipeline<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestDeletePipelineParts<'b>,
@@ -64,10 +64,11 @@ pub struct IngestDeletePipeline<'a, 'b> {
 impl<'a, 'b> IngestDeletePipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestDeletePipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestDeletePipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestDeletePipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -186,7 +187,7 @@ impl<'b> IngestGetPipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/get-pipeline-api.html)\n\nReturns a pipeline."]
+#[doc = "Builder for the [Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-pipeline-api.html)\n\nReturns a pipeline."]
 pub struct IngestGetPipeline<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestGetPipelineParts<'b>,
@@ -201,10 +202,11 @@ pub struct IngestGetPipeline<'a, 'b> {
 impl<'a, 'b> IngestGetPipeline<'a, 'b> {
     #[doc = "Creates a new instance of [IngestGetPipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestGetPipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestGetPipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -306,7 +308,7 @@ impl IngestProcessorGrokParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+#[doc = "Builder for the [Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
 pub struct IngestProcessorGrok<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IngestProcessorGrokParts,
@@ -320,10 +322,11 @@ pub struct IngestProcessorGrok<'a, 'b> {
 impl<'a, 'b> IngestProcessorGrok<'a, 'b> {
     #[doc = "Creates a new instance of [IngestProcessorGrok]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IngestProcessorGrok {
             client,
             parts: IngestProcessorGrokParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -421,7 +424,7 @@ impl<'b> IngestPutPipelineParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+#[doc = "Builder for the [Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
 pub struct IngestPutPipeline<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IngestPutPipelineParts<'b>,
@@ -441,10 +444,11 @@ where
 {
     #[doc = "Creates a new instance of [IngestPutPipeline] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestPutPipelineParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestPutPipeline {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -584,7 +588,7 @@ impl<'b> IngestSimulateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+#[doc = "Builder for the [Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
 pub struct IngestSimulate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IngestSimulateParts<'b>,
@@ -603,10 +607,11 @@ where
 {
     #[doc = "Creates a new instance of [IngestSimulate] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IngestSimulateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IngestSimulate {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -724,32 +729,32 @@ impl<'a> Ingest<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/delete-pipeline-api.html)\n\nDeletes a pipeline."]
+    #[doc = "[Ingest Delete Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/delete-pipeline-api.html)\n\nDeletes a pipeline."]
     pub fn delete_pipeline<'b>(
         &'a self,
         parts: IngestDeletePipelineParts<'b>,
     ) -> IngestDeletePipeline<'a, 'b> {
         IngestDeletePipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/get-pipeline-api.html)\n\nReturns a pipeline."]
+    #[doc = "[Ingest Get Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/get-pipeline-api.html)\n\nReturns a pipeline."]
     pub fn get_pipeline<'b>(
         &'a self,
         parts: IngestGetPipelineParts<'b>,
     ) -> IngestGetPipeline<'a, 'b> {
         IngestGetPipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
+    #[doc = "[Ingest Processor Grok API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/grok-processor.html#grok-processor-rest-get)\n\nReturns a list of the built-in patterns."]
     pub fn processor_grok<'b>(&'a self) -> IngestProcessorGrok<'a, 'b> {
         IngestProcessorGrok::new(&self.client)
     }
-    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
+    #[doc = "[Ingest Put Pipeline API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/put-pipeline-api.html)\n\nCreates or updates a pipeline."]
     pub fn put_pipeline<'b>(
         &'a self,
         parts: IngestPutPipelineParts<'b>,
     ) -> IngestPutPipeline<'a, 'b, ()> {
         IngestPutPipeline::new(&self.client, parts)
     }
-    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
+    #[doc = "[Ingest Simulate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/simulate-pipeline-api.html)\n\nAllows to simulate a pipeline with example documents."]
     pub fn simulate<'b>(&'a self, parts: IngestSimulateParts<'b>) -> IngestSimulate<'a, 'b, ()> {
         IngestSimulate::new(&self.client, parts)
     }

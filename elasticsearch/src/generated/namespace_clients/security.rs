@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -43,7 +43,7 @@ impl SecurityAuthenticateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-authenticate.html)"]
+#[doc = "Builder for the [Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
 pub struct SecurityAuthenticate<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityAuthenticateParts,
@@ -57,10 +57,11 @@ pub struct SecurityAuthenticate<'a, 'b> {
 impl<'a, 'b> SecurityAuthenticate<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityAuthenticate]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityAuthenticate {
             client,
             parts: SecurityAuthenticateParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -162,7 +163,7 @@ impl<'b> SecurityChangePasswordParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-change-password.html)"]
+#[doc = "Builder for the [Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
 pub struct SecurityChangePassword<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityChangePasswordParts<'b>,
@@ -181,10 +182,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityChangePassword] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityChangePasswordParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityChangePassword {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -312,7 +314,7 @@ impl<'b> SecurityClearCachedRealmsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-cache.html)"]
+#[doc = "Builder for the [Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
 pub struct SecurityClearCachedRealms<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityClearCachedRealmsParts<'b>,
@@ -331,10 +333,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRealms] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRealmsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityClearCachedRealms {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -465,7 +468,7 @@ impl<'b> SecurityClearCachedRolesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-role-cache.html)"]
+#[doc = "Builder for the [Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
 pub struct SecurityClearCachedRoles<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityClearCachedRolesParts<'b>,
@@ -483,10 +486,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityClearCachedRoles] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityClearCachedRolesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityClearCachedRoles {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -597,7 +601,7 @@ impl SecurityCreateApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-create-api-key.html)"]
+#[doc = "Builder for the [Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
 pub struct SecurityCreateApiKey<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityCreateApiKeyParts,
@@ -616,10 +620,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityCreateApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityCreateApiKey {
             client,
             parts: SecurityCreateApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -747,7 +752,7 @@ impl<'b> SecurityDeletePrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Security Delete Privileges API"]
+#[doc = "Builder for the [Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-privilege.html)\n\nRemoves application privileges."]
 pub struct SecurityDeletePrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeletePrivilegesParts<'b>,
@@ -762,10 +767,11 @@ pub struct SecurityDeletePrivileges<'a, 'b> {
 impl<'a, 'b> SecurityDeletePrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeletePrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeletePrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeletePrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -872,7 +878,7 @@ impl<'b> SecurityDeleteRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role.html)"]
+#[doc = "Builder for the [Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
 pub struct SecurityDeleteRole<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteRoleParts<'b>,
@@ -887,10 +893,11 @@ pub struct SecurityDeleteRole<'a, 'b> {
 impl<'a, 'b> SecurityDeleteRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -997,7 +1004,7 @@ impl<'b> SecurityDeleteRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role-mapping.html)"]
+#[doc = "Builder for the [Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
 pub struct SecurityDeleteRoleMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteRoleMappingParts<'b>,
@@ -1012,10 +1019,11 @@ pub struct SecurityDeleteRoleMapping<'a, 'b> {
 impl<'a, 'b> SecurityDeleteRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1122,7 +1130,7 @@ impl<'b> SecurityDeleteUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-user.html)"]
+#[doc = "Builder for the [Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-user.html)\n\nDeletes users from the native realm."]
 pub struct SecurityDeleteUser<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityDeleteUserParts<'b>,
@@ -1137,10 +1145,11 @@ pub struct SecurityDeleteUser<'a, 'b> {
 impl<'a, 'b> SecurityDeleteUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityDeleteUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDeleteUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDeleteUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1248,7 +1257,7 @@ impl<'b> SecurityDisableUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-disable-user.html)"]
+#[doc = "Builder for the [Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-disable-user.html)\n\nDisables users in the native realm."]
 pub struct SecurityDisableUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityDisableUserParts<'b>,
@@ -1267,10 +1276,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityDisableUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityDisableUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityDisableUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1397,7 +1407,7 @@ impl<'b> SecurityEnableUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-enable-user.html)"]
+#[doc = "Builder for the [Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-enable-user.html)\n\nEnables users in the native realm."]
 pub struct SecurityEnableUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityEnableUserParts<'b>,
@@ -1416,10 +1426,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityEnableUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityEnableUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityEnableUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1540,7 +1551,7 @@ impl SecurityGetApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-api-key.html)"]
+#[doc = "Builder for the [Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
 pub struct SecurityGetApiKey<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetApiKeyParts,
@@ -1559,10 +1570,11 @@ pub struct SecurityGetApiKey<'a, 'b> {
 impl<'a, 'b> SecurityGetApiKey<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetApiKey {
             client,
             parts: SecurityGetApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1700,7 +1712,7 @@ impl SecurityGetBuiltinPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-builtin-privileges.html)"]
+#[doc = "Builder for the [Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
 pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetBuiltinPrivilegesParts,
@@ -1714,10 +1726,11 @@ pub struct SecurityGetBuiltinPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetBuiltinPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetBuiltinPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetBuiltinPrivileges {
             client,
             parts: SecurityGetBuiltinPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1828,7 +1841,7 @@ impl<'b> SecurityGetPrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+#[doc = "Builder for the [Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)\n\nRetrieves application privileges."]
 pub struct SecurityGetPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetPrivilegesParts<'b>,
@@ -1842,10 +1855,11 @@ pub struct SecurityGetPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetPrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetPrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetPrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -1946,7 +1960,7 @@ impl<'b> SecurityGetRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role.html)"]
+#[doc = "Builder for the [Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
 pub struct SecurityGetRole<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetRoleParts<'b>,
@@ -1960,10 +1974,11 @@ pub struct SecurityGetRole<'a, 'b> {
 impl<'a, 'b> SecurityGetRole<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2064,7 +2079,7 @@ impl<'b> SecurityGetRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role-mapping.html)"]
+#[doc = "Builder for the [Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
 pub struct SecurityGetRoleMapping<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetRoleMappingParts<'b>,
@@ -2078,10 +2093,11 @@ pub struct SecurityGetRoleMapping<'a, 'b> {
 impl<'a, 'b> SecurityGetRoleMapping<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2174,7 +2190,7 @@ impl SecurityGetTokenParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-token.html)"]
+#[doc = "Builder for the [Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
 pub struct SecurityGetToken<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityGetTokenParts,
@@ -2192,10 +2208,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityGetToken]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetToken {
             client,
             parts: SecurityGetTokenParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2315,7 +2332,7 @@ impl<'b> SecurityGetUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-user.html)"]
+#[doc = "Builder for the [Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
 pub struct SecurityGetUser<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetUserParts<'b>,
@@ -2329,10 +2346,11 @@ pub struct SecurityGetUser<'a, 'b> {
 impl<'a, 'b> SecurityGetUser<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityGetUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2425,7 +2443,7 @@ impl SecurityGetUserPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+#[doc = "Builder for the [Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)\n\nRetrieves application privileges."]
 pub struct SecurityGetUserPrivileges<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SecurityGetUserPrivilegesParts,
@@ -2439,10 +2457,11 @@ pub struct SecurityGetUserPrivileges<'a, 'b> {
 impl<'a, 'b> SecurityGetUserPrivileges<'a, 'b> {
     #[doc = "Creates a new instance of [SecurityGetUserPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityGetUserPrivileges {
             client,
             parts: SecurityGetUserPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -2544,7 +2563,7 @@ impl<'b> SecurityHasPrivilegesParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-has-privileges.html)"]
+#[doc = "Builder for the [Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
 pub struct SecurityHasPrivileges<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityHasPrivilegesParts<'b>,
@@ -2562,10 +2581,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityHasPrivileges] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityHasPrivilegesParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityHasPrivileges {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2679,7 +2699,7 @@ impl SecurityInvalidateApiKeyParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-api-key.html)"]
+#[doc = "Builder for the [Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
 pub struct SecurityInvalidateApiKey<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityInvalidateApiKeyParts,
@@ -2697,10 +2717,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityInvalidateApiKey]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityInvalidateApiKey {
             client,
             parts: SecurityInvalidateApiKeyParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2811,7 +2832,7 @@ impl SecurityInvalidateTokenParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-token.html)"]
+#[doc = "Builder for the [Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
 pub struct SecurityInvalidateToken<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityInvalidateTokenParts,
@@ -2829,10 +2850,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityInvalidateToken]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityInvalidateToken {
             client,
             parts: SecurityInvalidateTokenParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -2943,7 +2965,7 @@ impl SecurityPutPrivilegesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Security Put Privileges API"]
+#[doc = "Builder for the [Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
 pub struct SecurityPutPrivileges<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutPrivilegesParts,
@@ -2962,10 +2984,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutPrivileges]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutPrivileges {
             client,
             parts: SecurityPutPrivilegesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3091,7 +3114,7 @@ impl<'b> SecurityPutRoleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role.html)"]
+#[doc = "Builder for the [Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
 pub struct SecurityPutRole<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutRoleParts<'b>,
@@ -3110,10 +3133,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutRole] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutRole {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3239,7 +3263,7 @@ impl<'b> SecurityPutRoleMappingParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role-mapping.html)"]
+#[doc = "Builder for the [Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
 pub struct SecurityPutRoleMapping<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutRoleMappingParts<'b>,
@@ -3258,10 +3282,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutRoleMapping] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutRoleMappingParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutRoleMapping {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3387,7 +3412,7 @@ impl<'b> SecurityPutUserParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-user.html)"]
+#[doc = "Builder for the [Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
 pub struct SecurityPutUser<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SecurityPutUserParts<'b>,
@@ -3406,10 +3431,11 @@ where
 {
     #[doc = "Creates a new instance of [SecurityPutUser] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: SecurityPutUserParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         SecurityPutUser {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -3524,146 +3550,146 @@ impl<'a> Security<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-authenticate.html)"]
+    #[doc = "[Security Authenticate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-authenticate.html)\n\nEnables authentication as a user and retrieve information about the authenticated user."]
     pub fn authenticate<'b>(&'a self) -> SecurityAuthenticate<'a, 'b> {
         SecurityAuthenticate::new(&self.client)
     }
-    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-change-password.html)"]
+    #[doc = "[Security Change Password API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-change-password.html)\n\nChanges the passwords of users in the native realm and built-in users."]
     pub fn change_password<'b>(
         &'a self,
         parts: SecurityChangePasswordParts<'b>,
     ) -> SecurityChangePassword<'a, 'b, ()> {
         SecurityChangePassword::new(&self.client, parts)
     }
-    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-cache.html)"]
+    #[doc = "[Security Clear Cached Realms API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-cache.html)\n\nEvicts users from the user cache. Can completely clear the cache or evict specific users."]
     pub fn clear_cached_realms<'b>(
         &'a self,
         parts: SecurityClearCachedRealmsParts<'b>,
     ) -> SecurityClearCachedRealms<'a, 'b, ()> {
         SecurityClearCachedRealms::new(&self.client, parts)
     }
-    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-clear-role-cache.html)"]
+    #[doc = "[Security Clear Cached Roles API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-clear-role-cache.html)\n\nEvicts roles from the native role cache."]
     pub fn clear_cached_roles<'b>(
         &'a self,
         parts: SecurityClearCachedRolesParts<'b>,
     ) -> SecurityClearCachedRoles<'a, 'b, ()> {
         SecurityClearCachedRoles::new(&self.client, parts)
     }
-    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-create-api-key.html)"]
+    #[doc = "[Security Create Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-create-api-key.html)\n\nCreates an API key for access without requiring basic authentication."]
     pub fn create_api_key<'b>(&'a self) -> SecurityCreateApiKey<'a, 'b, ()> {
         SecurityCreateApiKey::new(&self.client)
     }
-    #[doc = "Security Delete Privileges API"]
+    #[doc = "[Security Delete Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-privilege.html)\n\nRemoves application privileges."]
     pub fn delete_privileges<'b>(
         &'a self,
         parts: SecurityDeletePrivilegesParts<'b>,
     ) -> SecurityDeletePrivileges<'a, 'b> {
         SecurityDeletePrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role.html)"]
+    #[doc = "[Security Delete Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role.html)\n\nRemoves roles in the native realm."]
     pub fn delete_role<'b>(
         &'a self,
         parts: SecurityDeleteRoleParts<'b>,
     ) -> SecurityDeleteRole<'a, 'b> {
         SecurityDeleteRole::new(&self.client, parts)
     }
-    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-role-mapping.html)"]
+    #[doc = "[Security Delete Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-role-mapping.html)\n\nRemoves role mappings."]
     pub fn delete_role_mapping<'b>(
         &'a self,
         parts: SecurityDeleteRoleMappingParts<'b>,
     ) -> SecurityDeleteRoleMapping<'a, 'b> {
         SecurityDeleteRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-delete-user.html)"]
+    #[doc = "[Security Delete User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-delete-user.html)\n\nDeletes users from the native realm."]
     pub fn delete_user<'b>(
         &'a self,
         parts: SecurityDeleteUserParts<'b>,
     ) -> SecurityDeleteUser<'a, 'b> {
         SecurityDeleteUser::new(&self.client, parts)
     }
-    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-disable-user.html)"]
+    #[doc = "[Security Disable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-disable-user.html)\n\nDisables users in the native realm."]
     pub fn disable_user<'b>(
         &'a self,
         parts: SecurityDisableUserParts<'b>,
     ) -> SecurityDisableUser<'a, 'b, ()> {
         SecurityDisableUser::new(&self.client, parts)
     }
-    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-enable-user.html)"]
+    #[doc = "[Security Enable User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-enable-user.html)\n\nEnables users in the native realm."]
     pub fn enable_user<'b>(
         &'a self,
         parts: SecurityEnableUserParts<'b>,
     ) -> SecurityEnableUser<'a, 'b, ()> {
         SecurityEnableUser::new(&self.client, parts)
     }
-    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-api-key.html)"]
+    #[doc = "[Security Get Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-api-key.html)\n\nRetrieves information for one or more API keys."]
     pub fn get_api_key<'b>(&'a self) -> SecurityGetApiKey<'a, 'b> {
         SecurityGetApiKey::new(&self.client)
     }
-    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-builtin-privileges.html)"]
+    #[doc = "[Security Get Builtin Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-builtin-privileges.html)\n\nRetrieves the list of cluster privileges and index privileges that are available in this version of Elasticsearch."]
     pub fn get_builtin_privileges<'b>(&'a self) -> SecurityGetBuiltinPrivileges<'a, 'b> {
         SecurityGetBuiltinPrivileges::new(&self.client)
     }
-    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+    #[doc = "[Security Get Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)\n\nRetrieves application privileges."]
     pub fn get_privileges<'b>(
         &'a self,
         parts: SecurityGetPrivilegesParts<'b>,
     ) -> SecurityGetPrivileges<'a, 'b> {
         SecurityGetPrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role.html)"]
+    #[doc = "[Security Get Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role.html)\n\nRetrieves roles in the native realm."]
     pub fn get_role<'b>(&'a self, parts: SecurityGetRoleParts<'b>) -> SecurityGetRole<'a, 'b> {
         SecurityGetRole::new(&self.client, parts)
     }
-    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-role-mapping.html)"]
+    #[doc = "[Security Get Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-role-mapping.html)\n\nRetrieves role mappings."]
     pub fn get_role_mapping<'b>(
         &'a self,
         parts: SecurityGetRoleMappingParts<'b>,
     ) -> SecurityGetRoleMapping<'a, 'b> {
         SecurityGetRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-token.html)"]
+    #[doc = "[Security Get Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-token.html)\n\nCreates a bearer token for access without requiring basic authentication."]
     pub fn get_token<'b>(&'a self) -> SecurityGetToken<'a, 'b, ()> {
         SecurityGetToken::new(&self.client)
     }
-    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-user.html)"]
+    #[doc = "[Security Get User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-user.html)\n\nRetrieves information about users in the native realm and built-in users."]
     pub fn get_user<'b>(&'a self, parts: SecurityGetUserParts<'b>) -> SecurityGetUser<'a, 'b> {
         SecurityGetUser::new(&self.client, parts)
     }
-    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-get-privileges.html)"]
+    #[doc = "[Security Get User Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-get-privileges.html)\n\nRetrieves application privileges."]
     pub fn get_user_privileges<'b>(&'a self) -> SecurityGetUserPrivileges<'a, 'b> {
         SecurityGetUserPrivileges::new(&self.client)
     }
-    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-has-privileges.html)"]
+    #[doc = "[Security Has Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-has-privileges.html)\n\nDetermines whether the specified user has a specified list of privileges."]
     pub fn has_privileges<'b>(
         &'a self,
         parts: SecurityHasPrivilegesParts<'b>,
     ) -> SecurityHasPrivileges<'a, 'b, ()> {
         SecurityHasPrivileges::new(&self.client, parts)
     }
-    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-api-key.html)"]
+    #[doc = "[Security Invalidate Api Key API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-api-key.html)\n\nInvalidates one or more API keys."]
     pub fn invalidate_api_key<'b>(&'a self) -> SecurityInvalidateApiKey<'a, 'b, ()> {
         SecurityInvalidateApiKey::new(&self.client)
     }
-    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-invalidate-token.html)"]
+    #[doc = "[Security Invalidate Token API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-invalidate-token.html)\n\nInvalidates one or more access tokens or refresh tokens."]
     pub fn invalidate_token<'b>(&'a self) -> SecurityInvalidateToken<'a, 'b, ()> {
         SecurityInvalidateToken::new(&self.client)
     }
-    #[doc = "Security Put Privileges API"]
+    #[doc = "[Security Put Privileges API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-privileges.html)\n\nAdds or updates application privileges."]
     pub fn put_privileges<'b>(&'a self) -> SecurityPutPrivileges<'a, 'b, ()> {
         SecurityPutPrivileges::new(&self.client)
     }
-    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role.html)"]
+    #[doc = "[Security Put Role API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role.html)\n\nAdds and updates roles in the native realm."]
     pub fn put_role<'b>(&'a self, parts: SecurityPutRoleParts<'b>) -> SecurityPutRole<'a, 'b, ()> {
         SecurityPutRole::new(&self.client, parts)
     }
-    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-role-mapping.html)"]
+    #[doc = "[Security Put Role Mapping API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-role-mapping.html)\n\nCreates and updates role mappings."]
     pub fn put_role_mapping<'b>(
         &'a self,
         parts: SecurityPutRoleMappingParts<'b>,
     ) -> SecurityPutRoleMapping<'a, 'b, ()> {
         SecurityPutRoleMapping::new(&self.client, parts)
     }
-    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-put-user.html)"]
+    #[doc = "[Security Put User API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-put-user.html)\n\nAdds and updates users in the native realm. These users are commonly referred to as native users."]
     pub fn put_user<'b>(&'a self, parts: SecurityPutUserParts<'b>) -> SecurityPutUser<'a, 'b, ()> {
         SecurityPutUser::new(&self.client, parts)
     }

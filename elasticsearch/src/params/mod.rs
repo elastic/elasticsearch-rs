@@ -1,7 +1,9 @@
 //! API parameters
 
 pub use super::generated::params::*;
-use serde::{Deserialize, Serialize};
+use core::fmt;
+use serde::de::Visitor;
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 
 /// Control how the total number of hits should be tracked.
 ///
@@ -108,5 +110,128 @@ impl<'a> From<(Vec<&'a str>, Vec<&'a str>)> for SourceFilter {
                 .map(|s| (*s).to_string())
                 .collect(),
         }
+    }
+}
+
+/// Control the number of slices a task should be divided into. Defaults to `Slices::Count(1)`,
+/// meaning the task is not sliced.
+///
+/// When set to `Auto`, a task is automatically divided into a reasonable number of slices
+///
+/// When set to `Count` with an integer value `n`, divides the task into that number of slices
+#[derive(Debug, Clone, PartialEq)]
+pub enum Slices {
+    /// Automatically divide the task into a reasonable number of slices
+    Auto,
+    /// Number of slices to divide a task into
+    Count(i32),
+}
+
+impl Serialize for Slices {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        match *self {
+            Slices::Auto => serializer.serialize_str("auto"),
+            Slices::Count(i) => serializer.serialize_i32(i),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for Slices {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        struct SlicesVisitor;
+
+        impl<'de> Visitor<'de> for SlicesVisitor {
+            type Value = Slices;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+                write!(formatter, "expected integer or string")
+            }
+
+            fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                if value <= i32::max_value() as i64 {
+                    Ok(Slices::Count(value as i32))
+                } else {
+                    Err(E::custom(format!("i32 out of range: {}", value)))
+                }
+            }
+
+            fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                if value <= i32::max_value() as u64 {
+                    Ok(Slices::Count(value as i32))
+                } else {
+                    Err(E::custom(format!("i32 out of range: {}", value)))
+                }
+            }
+
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                match value {
+                    "auto" => Ok(Slices::Auto),
+                    n => match n.parse::<i32>() {
+                        Ok(i) => Ok(Slices::Count(i)),
+                        Err(_) => Err(E::custom(format!(
+                            "expected 'auto' or i32 but received: {}",
+                            n
+                        ))),
+                    },
+                }
+            }
+
+            fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+            where
+                E: de::Error,
+            {
+                self.visit_str(&value)
+            }
+        }
+
+        deserializer.deserialize_any(SlicesVisitor)
+    }
+}
+
+impl Default for Slices {
+    fn default() -> Self {
+        Slices::Count(1)
+    }
+}
+
+impl From<i32> for Slices {
+    fn from(i: i32) -> Self {
+        Slices::Count(i)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::params::Slices;
+
+    #[test]
+    fn serialize_slices_auto() {
+        let json = serde_json::to_string(&Slices::Auto).unwrap();
+        assert_eq!("\"auto\"", &json);
+        let slices: Slices = serde_json::from_str(&json).unwrap();
+        assert_eq!(Slices::Auto, slices);
+    }
+
+    #[test]
+    fn serialize_slices_count() {
+        let json = serde_json::to_string(&Slices::Count(100)).unwrap();
+        assert_eq!("100", &json);
+        let slices: Slices = serde_json::from_str(&json).unwrap();
+        assert_eq!(Slices::Count(100), slices);
     }
 }

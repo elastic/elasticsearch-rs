@@ -4,9 +4,10 @@ use crate::generator::code_gen::request::request_builder::RequestBuilder;
 use crate::generator::code_gen::*;
 use inflector::Inflector;
 use quote::Tokens;
+use std::path::PathBuf;
 
 /// Generates the source code for a namespaced client
-pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
+pub fn generate(api: &Api, docs_dir: &PathBuf) -> Result<Vec<(String, String)>, failure::Error> {
     let mut output = Vec::new();
 
     for (namespace, namespace_methods) in &api.namespaces {
@@ -40,8 +41,16 @@ pub fn generate(api: &Api) -> Result<Vec<(String, String)>, failure::Error> {
             .iter()
             .map(|(name, endpoint)| {
                 let builder_name = format!("{}{}", &namespace_pascal_case, name.to_pascal_case());
-                RequestBuilder::new(name, &builder_name, &api.common_params, &endpoint, false)
-                    .build()
+                RequestBuilder::new(
+                    docs_dir,
+                    &namespace_pascal_case,
+                    name,
+                    &builder_name,
+                    &api.common_params,
+                    &endpoint,
+                    false,
+                )
+                .build()
             })
             .unzip();
 

@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -43,7 +43,7 @@ impl ClusterAllocationExplainParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+#[doc = "Builder for the [Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
 pub struct ClusterAllocationExplain<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterAllocationExplainParts,
@@ -63,10 +63,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterAllocationExplain]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterAllocationExplain {
             client,
             parts: ClusterAllocationExplainParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -200,7 +201,7 @@ impl ClusterGetSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-update-settings.html)\n\nReturns cluster settings."]
+#[doc = "Builder for the [Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
 pub struct ClusterGetSettings<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterGetSettingsParts,
@@ -218,10 +219,11 @@ pub struct ClusterGetSettings<'a, 'b> {
 impl<'a, 'b> ClusterGetSettings<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterGetSettings]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterGetSettings {
             client,
             parts: ClusterGetSettingsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -359,7 +361,7 @@ impl<'b> ClusterHealthParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+#[doc = "Builder for the [Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
 pub struct ClusterHealth<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterHealthParts<'b>,
@@ -384,10 +386,11 @@ pub struct ClusterHealth<'a, 'b> {
 impl<'a, 'b> ClusterHealth<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterHealth] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterHealthParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterHealth {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             expand_wildcards: None,
             filter_path: None,
@@ -582,7 +585,7 @@ impl ClusterPendingTasksParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+#[doc = "Builder for the [Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
 pub struct ClusterPendingTasks<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterPendingTasksParts,
@@ -598,10 +601,11 @@ pub struct ClusterPendingTasks<'a, 'b> {
 impl<'a, 'b> ClusterPendingTasks<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterPendingTasks]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterPendingTasks {
             client,
             parts: ClusterPendingTasksParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -712,7 +716,7 @@ impl ClusterPutSettingsParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+#[doc = "Builder for the [Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
 pub struct ClusterPutSettings<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterPutSettingsParts,
@@ -733,10 +737,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterPutSettings]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterPutSettings {
             client,
             parts: ClusterPutSettingsParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -877,7 +882,7 @@ impl ClusterRemoteInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+#[doc = "Builder for the [Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
 pub struct ClusterRemoteInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterRemoteInfoParts,
@@ -891,10 +896,11 @@ pub struct ClusterRemoteInfo<'a, 'b> {
 impl<'a, 'b> ClusterRemoteInfo<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterRemoteInfo]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterRemoteInfo {
             client,
             parts: ClusterRemoteInfoParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -987,7 +993,7 @@ impl ClusterRerouteParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+#[doc = "Builder for the [Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
 pub struct ClusterReroute<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: ClusterRerouteParts,
@@ -1011,10 +1017,11 @@ where
 {
     #[doc = "Creates a new instance of [ClusterReroute]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         ClusterReroute {
             client,
             parts: ClusterRerouteParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             dry_run: None,
             error_trace: None,
@@ -1206,7 +1213,7 @@ impl<'b> ClusterStateParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+#[doc = "Builder for the [Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
 pub struct ClusterState<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStateParts<'b>,
@@ -1228,10 +1235,11 @@ pub struct ClusterState<'a, 'b> {
 impl<'a, 'b> ClusterState<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterState] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterStateParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterState {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             allow_no_indices: None,
             error_trace: None,
             expand_wildcards: None,
@@ -1405,7 +1413,7 @@ impl<'b> ClusterStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+#[doc = "Builder for the [Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
 pub struct ClusterStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: ClusterStatsParts<'b>,
@@ -1421,10 +1429,11 @@ pub struct ClusterStats<'a, 'b> {
 impl<'a, 'b> ClusterStats<'a, 'b> {
     #[doc = "Creates a new instance of [ClusterStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: ClusterStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         ClusterStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -1529,39 +1538,39 @@ impl<'a> Cluster<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
+    #[doc = "[Cluster Allocation Explain API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-allocation-explain.html)\n\nProvides explanations for shard allocations in the cluster."]
     pub fn allocation_explain<'b>(&'a self) -> ClusterAllocationExplain<'a, 'b, ()> {
         ClusterAllocationExplain::new(&self.client)
     }
-    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-update-settings.html)\n\nReturns cluster settings."]
+    #[doc = "[Cluster Get Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nReturns cluster settings."]
     pub fn get_settings<'b>(&'a self) -> ClusterGetSettings<'a, 'b> {
         ClusterGetSettings::new(&self.client)
     }
-    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
+    #[doc = "[Cluster Health API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-health.html)\n\nReturns basic information about the health of the cluster."]
     pub fn health<'b>(&'a self, parts: ClusterHealthParts<'b>) -> ClusterHealth<'a, 'b> {
         ClusterHealth::new(&self.client, parts)
     }
-    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
+    #[doc = "[Cluster Pending Tasks API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-pending.html)\n\nReturns a list of any cluster-level changes (e.g. create index, update mapping,\nallocate or fail shard) which have not yet been executed."]
     pub fn pending_tasks<'b>(&'a self) -> ClusterPendingTasks<'a, 'b> {
         ClusterPendingTasks::new(&self.client)
     }
-    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-update-settings.html)\n\nUpdates the cluster settings."]
+    #[doc = "[Cluster Put Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-update-settings.html)\n\nUpdates the cluster settings."]
     pub fn put_settings<'b>(&'a self) -> ClusterPutSettings<'a, 'b, ()> {
         ClusterPutSettings::new(&self.client)
     }
-    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
+    #[doc = "[Cluster Remote Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-remote-info.html)\n\nReturns the information about configured remote clusters."]
     pub fn remote_info<'b>(&'a self) -> ClusterRemoteInfo<'a, 'b> {
         ClusterRemoteInfo::new(&self.client)
     }
-    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
+    #[doc = "[Cluster Reroute API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-reroute.html)\n\nAllows to manually change the allocation of individual shards in the cluster."]
     pub fn reroute<'b>(&'a self) -> ClusterReroute<'a, 'b, ()> {
         ClusterReroute::new(&self.client)
     }
-    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
+    #[doc = "[Cluster State API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-state.html)\n\nReturns a comprehensive information about the state of the cluster."]
     pub fn state<'b>(&'a self, parts: ClusterStateParts<'b>) -> ClusterState<'a, 'b> {
         ClusterState::new(&self.client, parts)
     }
-    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
+    #[doc = "[Cluster Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-stats.html)\n\nReturns high-level overview of cluster statistics."]
     pub fn stats<'b>(&'a self, parts: ClusterStatsParts<'b>) -> ClusterStats<'a, 'b> {
         ClusterStats::new(&self.client, parts)
     }

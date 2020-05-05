@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -52,7 +52,7 @@ impl<'b> TasksCancelParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+#[doc = "Builder for the [Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
 pub struct TasksCancel<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: TasksCancelParts<'b>,
@@ -73,10 +73,11 @@ where
 {
     #[doc = "Creates a new instance of [TasksCancel] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: TasksCancelParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         TasksCancel {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             actions: None,
             body: None,
             error_trace: None,
@@ -225,7 +226,7 @@ impl<'b> TasksGetParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nReturns information about a task."]
+#[doc = "Builder for the [Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns information about a task."]
 pub struct TasksGet<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TasksGetParts<'b>,
@@ -241,10 +242,11 @@ pub struct TasksGet<'a, 'b> {
 impl<'a, 'b> TasksGet<'a, 'b> {
     #[doc = "Creates a new instance of [TasksGet] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: TasksGetParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         TasksGet {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -355,7 +357,7 @@ impl TasksListParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nReturns a list of tasks."]
+#[doc = "Builder for the [Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns a list of tasks."]
 pub struct TasksList<'a, 'b> {
     client: &'a Elasticsearch,
     parts: TasksListParts,
@@ -376,10 +378,11 @@ pub struct TasksList<'a, 'b> {
 impl<'a, 'b> TasksList<'a, 'b> {
     #[doc = "Creates a new instance of [TasksList]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         TasksList {
             client,
             parts: TasksListParts::None,
-            headers: HeaderMap::new(),
+            headers,
             actions: None,
             detailed: None,
             error_trace: None,
@@ -532,15 +535,15 @@ impl<'a> Tasks<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
+    #[doc = "[Tasks Cancel API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nCancels a task, if it can be cancelled through an API."]
     pub fn cancel<'b>(&'a self, parts: TasksCancelParts<'b>) -> TasksCancel<'a, 'b, ()> {
         TasksCancel::new(&self.client, parts)
     }
-    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nReturns information about a task."]
+    #[doc = "[Tasks Get API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns information about a task."]
     pub fn get<'b>(&'a self, parts: TasksGetParts<'b>) -> TasksGet<'a, 'b> {
         TasksGet::new(&self.client, parts)
     }
-    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/tasks.html)\n\nReturns a list of tasks."]
+    #[doc = "[Tasks List API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/tasks.html)\n\nReturns a list of tasks."]
     pub fn list<'b>(&'a self) -> TasksList<'a, 'b> {
         TasksList::new(&self.client)
     }

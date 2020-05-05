@@ -8,7 +8,7 @@ use elasticsearch::cert::CertificateValidation;
 use elasticsearch::http::transport::SingleNodeConnectionPool;
 use reqwest::StatusCode;
 use serde_json::json;
-use sysinfo::SystemExt;
+use sysinfo::{RefreshKind, System, SystemExt};
 use url::Url;
 
 /// Gets the address to the Elasticsearch instance from environment variables
@@ -22,7 +22,7 @@ fn cluster_addr() -> String {
 
 /// Checks if Fiddler proxy process is running
 fn running_proxy() -> bool {
-    let system = sysinfo::System::new();
+    let system = System::new_with_specifics(RefreshKind::new().with_processes());
     !system.get_process_by_name("Fiddler").is_empty()
 }
 

@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -43,7 +43,7 @@ impl XpackInfoParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/info-api.html)"]
+#[doc = "Builder for the [Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
 pub struct XpackInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: XpackInfoParts,
@@ -58,10 +58,11 @@ pub struct XpackInfo<'a, 'b> {
 impl<'a, 'b> XpackInfo<'a, 'b> {
     #[doc = "Creates a new instance of [XpackInfo]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         XpackInfo {
             client,
             parts: XpackInfoParts::None,
-            headers: HeaderMap::new(),
+            headers,
             categories: None,
             error_trace: None,
             filter_path: None,
@@ -166,7 +167,7 @@ impl XpackUsageParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/usage-api.html)"]
+#[doc = "Builder for the [Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
 pub struct XpackUsage<'a, 'b> {
     client: &'a Elasticsearch,
     parts: XpackUsageParts,
@@ -181,10 +182,11 @@ pub struct XpackUsage<'a, 'b> {
 impl<'a, 'b> XpackUsage<'a, 'b> {
     #[doc = "Creates a new instance of [XpackUsage]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         XpackUsage {
             client,
             parts: XpackUsageParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -280,11 +282,11 @@ impl<'a> Xpack<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/info-api.html)"]
+    #[doc = "[Xpack Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/info-api.html)\n\nRetrieves information about the installed X-Pack features."]
     pub fn info<'b>(&'a self) -> XpackInfo<'a, 'b> {
         XpackInfo::new(&self.client)
     }
-    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/usage-api.html)"]
+    #[doc = "[Xpack Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/usage-api.html)\n\nRetrieves usage information about the installed X-Pack features."]
     pub fn usage<'b>(&'a self) -> XpackUsage<'a, 'b> {
         XpackUsage::new(&self.client)
     }

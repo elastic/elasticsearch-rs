@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -43,7 +43,7 @@ impl SslCertificatesParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-ssl.html)"]
+#[doc = "Builder for the [Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
 pub struct SslCertificates<'a, 'b> {
     client: &'a Elasticsearch,
     parts: SslCertificatesParts,
@@ -57,10 +57,11 @@ pub struct SslCertificates<'a, 'b> {
 impl<'a, 'b> SslCertificates<'a, 'b> {
     #[doc = "Creates a new instance of [SslCertificates]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SslCertificates {
             client,
             parts: SslCertificatesParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -147,7 +148,7 @@ impl<'a> Ssl<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/security-api-ssl.html)"]
+    #[doc = "[Ssl Certificates API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/security-api-ssl.html)\n\nRetrieves information about the X.509 certificates used to encrypt communications in the cluster."]
     pub fn certificates<'b>(&'a self) -> SslCertificates<'a, 'b> {
         SslCertificates::new(&self.client)
     }

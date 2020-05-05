@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -43,7 +43,7 @@ impl SqlClearCursorParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Sql Clear Cursor API"]
+#[doc = "Builder for the [Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-pagination.html)\n\nClears the SQL cursor"]
 pub struct SqlClearCursor<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SqlClearCursorParts,
@@ -61,10 +61,11 @@ where
 {
     #[doc = "Creates a new instance of [SqlClearCursor]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SqlClearCursor {
             client,
             parts: SqlClearCursorParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -175,7 +176,7 @@ impl SqlQueryParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Sql Query API"]
+#[doc = "Builder for the [Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes a SQL request"]
 pub struct SqlQuery<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SqlQueryParts,
@@ -194,10 +195,11 @@ where
 {
     #[doc = "Creates a new instance of [SqlQuery]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SqlQuery {
             client,
             parts: SqlQueryParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -321,7 +323,7 @@ impl SqlTranslateParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the Sql Translate API"]
+#[doc = "Builder for the [Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
 pub struct SqlTranslate<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: SqlTranslateParts,
@@ -339,10 +341,11 @@ where
 {
     #[doc = "Creates a new instance of [SqlTranslate]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         SqlTranslate {
             client,
             parts: SqlTranslateParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -450,15 +453,15 @@ impl<'a> Sql<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "Sql Clear Cursor API"]
+    #[doc = "[Sql Clear Cursor API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-pagination.html)\n\nClears the SQL cursor"]
     pub fn clear_cursor<'b>(&'a self) -> SqlClearCursor<'a, 'b, ()> {
         SqlClearCursor::new(&self.client)
     }
-    #[doc = "Sql Query API"]
+    #[doc = "[Sql Query API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-rest-overview.html)\n\nExecutes a SQL request"]
     pub fn query<'b>(&'a self) -> SqlQuery<'a, 'b, ()> {
         SqlQuery::new(&self.client)
     }
-    #[doc = "Sql Translate API"]
+    #[doc = "[Sql Translate API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/sql-translate.html)\n\nTranslates SQL into Elasticsearch queries"]
     pub fn translate<'b>(&'a self) -> SqlTranslate<'a, 'b, ()> {
         SqlTranslate::new(&self.client)
     }

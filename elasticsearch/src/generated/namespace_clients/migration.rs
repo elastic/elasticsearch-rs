@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -52,7 +52,7 @@ impl<'b> MigrationDeprecationsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6/migration-api-deprecation.html)"]
+#[doc = "Builder for the [Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
 pub struct MigrationDeprecations<'a, 'b> {
     client: &'a Elasticsearch,
     parts: MigrationDeprecationsParts<'b>,
@@ -66,10 +66,11 @@ pub struct MigrationDeprecations<'a, 'b> {
 impl<'a, 'b> MigrationDeprecations<'a, 'b> {
     #[doc = "Creates a new instance of [MigrationDeprecations] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: MigrationDeprecationsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         MigrationDeprecations {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -156,7 +157,7 @@ impl<'a> Migration<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Migration Deprecations API](http://www.elastic.co/guide/en/elasticsearch/reference/7.6/migration-api-deprecation.html)"]
+    #[doc = "[Migration Deprecations API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/migration-api-deprecation.html)\n\nRetrieves information about different cluster, node, and index level settings that use deprecated features that will be removed or changed in the next major version."]
     pub fn deprecations<'b>(
         &'a self,
         parts: MigrationDeprecationsParts<'b>,

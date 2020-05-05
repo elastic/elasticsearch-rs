@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -53,7 +53,7 @@ impl<'b> NodesHotThreadsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+#[doc = "Builder for the [Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
 pub struct NodesHotThreads<'a, 'b> {
     client: &'a Elasticsearch,
     parts: NodesHotThreadsParts<'b>,
@@ -73,10 +73,11 @@ pub struct NodesHotThreads<'a, 'b> {
 impl<'a, 'b> NodesHotThreads<'a, 'b> {
     #[doc = "Creates a new instance of [NodesHotThreads] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesHotThreadsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesHotThreads {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -253,7 +254,7 @@ impl<'b> NodesInfoParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
 pub struct NodesInfo<'a, 'b> {
     client: &'a Elasticsearch,
     parts: NodesInfoParts<'b>,
@@ -269,10 +270,11 @@ pub struct NodesInfo<'a, 'b> {
 impl<'a, 'b> NodesInfo<'a, 'b> {
     #[doc = "Creates a new instance of [NodesInfo] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesInfoParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesInfo {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             flat_settings: None,
@@ -393,7 +395,7 @@ impl<'b> NodesReloadSecureSettingsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+#[doc = "Builder for the [Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
 pub struct NodesReloadSecureSettings<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: NodesReloadSecureSettingsParts<'b>,
@@ -412,10 +414,11 @@ where
 {
     #[doc = "Creates a new instance of [NodesReloadSecureSettings] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesReloadSecureSettingsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesReloadSecureSettings {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -597,7 +600,7 @@ impl<'b> NodesStatsParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+#[doc = "Builder for the [Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
 pub struct NodesStats<'a, 'b> {
     client: &'a Elasticsearch,
     parts: NodesStatsParts<'b>,
@@ -619,10 +622,11 @@ pub struct NodesStats<'a, 'b> {
 impl<'a, 'b> NodesStats<'a, 'b> {
     #[doc = "Creates a new instance of [NodesStats] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesStatsParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesStats {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             completion_fields: None,
             error_trace: None,
             fielddata_fields: None,
@@ -824,7 +828,7 @@ impl<'b> NodesUsageParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+#[doc = "Builder for the [Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
 pub struct NodesUsage<'a, 'b> {
     client: &'a Elasticsearch,
     parts: NodesUsageParts<'b>,
@@ -839,10 +843,11 @@ pub struct NodesUsage<'a, 'b> {
 impl<'a, 'b> NodesUsage<'a, 'b> {
     #[doc = "Creates a new instance of [NodesUsage] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: NodesUsageParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         NodesUsage {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -938,26 +943,26 @@ impl<'a> Nodes<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
+    #[doc = "[Nodes Hot Threads API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-hot-threads.html)\n\nReturns information about hot threads on each node in the cluster."]
     pub fn hot_threads<'b>(&'a self, parts: NodesHotThreadsParts<'b>) -> NodesHotThreads<'a, 'b> {
         NodesHotThreads::new(&self.client, parts)
     }
-    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
+    #[doc = "[Nodes Info API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-info.html)\n\nReturns information about nodes in the cluster."]
     pub fn info<'b>(&'a self, parts: NodesInfoParts<'b>) -> NodesInfo<'a, 'b> {
         NodesInfo::new(&self.client, parts)
     }
-    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
+    #[doc = "[Nodes Reload Secure Settings API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/secure-settings.html#reloadable-secure-settings)\n\nReloads secure settings."]
     pub fn reload_secure_settings<'b>(
         &'a self,
         parts: NodesReloadSecureSettingsParts<'b>,
     ) -> NodesReloadSecureSettings<'a, 'b, ()> {
         NodesReloadSecureSettings::new(&self.client, parts)
     }
-    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
+    #[doc = "[Nodes Stats API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-stats.html)\n\nReturns statistical information about nodes in the cluster."]
     pub fn stats<'b>(&'a self, parts: NodesStatsParts<'b>) -> NodesStats<'a, 'b> {
         NodesStats::new(&self.client, parts)
     }
-    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
+    #[doc = "[Nodes Usage API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/cluster-nodes-usage.html)\n\nReturns low-level information about REST actions usage on nodes."]
     pub fn usage<'b>(&'a self, parts: NodesUsageParts<'b>) -> NodesUsage<'a, 'b> {
         NodesUsage::new(&self.client, parts)
     }

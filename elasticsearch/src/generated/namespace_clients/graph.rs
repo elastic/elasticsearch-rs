@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -63,7 +63,7 @@ impl<'b> GraphExploreParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/graph-explore-api.html)"]
+#[doc = "Builder for the [Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
 pub struct GraphExplore<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: GraphExploreParts<'b>,
@@ -83,10 +83,11 @@ where
 {
     #[doc = "Creates a new instance of [GraphExplore] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: GraphExploreParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         GraphExplore {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -214,7 +215,7 @@ impl<'a> Graph<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/graph-explore-api.html)"]
+    #[doc = "[Graph Explore API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/graph-explore-api.html)\n\nExplore extracted and summarized information about the documents and terms in an index."]
     pub fn explore<'b>(&'a self, parts: GraphExploreParts<'b>) -> GraphExplore<'a, 'b, ()> {
         GraphExplore::new(&self.client, parts)
     }

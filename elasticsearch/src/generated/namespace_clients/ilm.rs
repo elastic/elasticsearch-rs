@@ -19,7 +19,7 @@ use crate::{
     client::Elasticsearch,
     error::Error,
     http::{
-        headers::{HeaderMap, HeaderName, HeaderValue},
+        headers::{HeaderMap, HeaderName, HeaderValue, ACCEPT, CONTENT_TYPE},
         request::{Body, JsonBody, NdBody},
         response::Response,
         Method,
@@ -48,7 +48,7 @@ impl<'b> IlmDeleteLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-delete-lifecycle.html)"]
+#[doc = "Builder for the [Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
 pub struct IlmDeleteLifecycle<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IlmDeleteLifecycleParts<'b>,
@@ -62,10 +62,11 @@ pub struct IlmDeleteLifecycle<'a, 'b> {
 impl<'a, 'b> IlmDeleteLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmDeleteLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmDeleteLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmDeleteLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -164,7 +165,7 @@ impl<'b> IlmExplainLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-explain-lifecycle.html)"]
+#[doc = "Builder for the [Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
 pub struct IlmExplainLifecycle<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IlmExplainLifecycleParts<'b>,
@@ -180,10 +181,11 @@ pub struct IlmExplainLifecycle<'a, 'b> {
 impl<'a, 'b> IlmExplainLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmExplainLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmExplainLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmExplainLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -302,7 +304,7 @@ impl<'b> IlmGetLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-get-lifecycle.html)"]
+#[doc = "Builder for the [Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
 pub struct IlmGetLifecycle<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IlmGetLifecycleParts<'b>,
@@ -316,10 +318,11 @@ pub struct IlmGetLifecycle<'a, 'b> {
 impl<'a, 'b> IlmGetLifecycle<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmGetLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmGetLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -412,7 +415,7 @@ impl IlmGetStatusParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-get-status.html)"]
+#[doc = "Builder for the [Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
 pub struct IlmGetStatus<'a, 'b> {
     client: &'a Elasticsearch,
     parts: IlmGetStatusParts,
@@ -426,10 +429,11 @@ pub struct IlmGetStatus<'a, 'b> {
 impl<'a, 'b> IlmGetStatus<'a, 'b> {
     #[doc = "Creates a new instance of [IlmGetStatus]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmGetStatus {
             client,
             parts: IlmGetStatusParts::None,
-            headers: HeaderMap::new(),
+            headers,
             error_trace: None,
             filter_path: None,
             human: None,
@@ -527,7 +531,7 @@ impl<'b> IlmMoveToStepParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-move-to-step.html)"]
+#[doc = "Builder for the [Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
 pub struct IlmMoveToStep<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmMoveToStepParts<'b>,
@@ -545,10 +549,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmMoveToStep] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmMoveToStepParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmMoveToStep {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -664,7 +669,7 @@ impl<'b> IlmPutLifecycleParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-put-lifecycle.html)"]
+#[doc = "Builder for the [Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
 pub struct IlmPutLifecycle<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmPutLifecycleParts<'b>,
@@ -682,10 +687,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmPutLifecycle] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmPutLifecycleParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmPutLifecycle {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -802,7 +808,7 @@ impl<'b> IlmRemovePolicyParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-remove-policy.html)"]
+#[doc = "Builder for the [Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
 pub struct IlmRemovePolicy<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmRemovePolicyParts<'b>,
@@ -820,10 +826,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmRemovePolicy] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmRemovePolicyParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmRemovePolicy {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -940,7 +947,7 @@ impl<'b> IlmRetryParts<'b> {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-retry-policy.html)"]
+#[doc = "Builder for the [Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
 pub struct IlmRetry<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmRetryParts<'b>,
@@ -958,10 +965,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmRetry] with the specified API parts"]
     pub fn new(client: &'a Elasticsearch, parts: IlmRetryParts<'b>) -> Self {
+        let headers = HeaderMap::new();
         IlmRetry {
             client,
             parts,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1072,7 +1080,7 @@ impl IlmStartParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-start.html)"]
+#[doc = "Builder for the [Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
 pub struct IlmStart<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmStartParts,
@@ -1090,10 +1098,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmStart]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmStart {
             client,
             parts: IlmStartParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1204,7 +1213,7 @@ impl IlmStopParts {
     }
 }
 #[derive(Clone, Debug)]
-#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-stop.html)"]
+#[doc = "Builder for the [Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
 pub struct IlmStop<'a, 'b, B> {
     client: &'a Elasticsearch,
     parts: IlmStopParts,
@@ -1222,10 +1231,11 @@ where
 {
     #[doc = "Creates a new instance of [IlmStop]"]
     pub fn new(client: &'a Elasticsearch) -> Self {
+        let headers = HeaderMap::new();
         IlmStop {
             client,
             parts: IlmStopParts::None,
-            headers: HeaderMap::new(),
+            headers,
             body: None,
             error_trace: None,
             filter_path: None,
@@ -1330,55 +1340,55 @@ impl<'a> Ilm<'a> {
     pub fn new(client: &'a Elasticsearch) -> Self {
         Self { client }
     }
-    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-delete-lifecycle.html)"]
+    #[doc = "[Ilm Delete Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-delete-lifecycle.html)\n\nDeletes the specified lifecycle policy definition. A currently used policy cannot be deleted."]
     pub fn delete_lifecycle<'b>(
         &'a self,
         parts: IlmDeleteLifecycleParts<'b>,
     ) -> IlmDeleteLifecycle<'a, 'b> {
         IlmDeleteLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-explain-lifecycle.html)"]
+    #[doc = "[Ilm Explain Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-explain-lifecycle.html)\n\nRetrieves information about the index's current lifecycle state, such as the currently executing phase, action, and step."]
     pub fn explain_lifecycle<'b>(
         &'a self,
         parts: IlmExplainLifecycleParts<'b>,
     ) -> IlmExplainLifecycle<'a, 'b> {
         IlmExplainLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-get-lifecycle.html)"]
+    #[doc = "[Ilm Get Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-get-lifecycle.html)\n\nReturns the specified policy definition. Includes the policy version and last modified date."]
     pub fn get_lifecycle<'b>(&'a self, parts: IlmGetLifecycleParts<'b>) -> IlmGetLifecycle<'a, 'b> {
         IlmGetLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-get-status.html)"]
+    #[doc = "[Ilm Get Status API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-get-status.html)\n\nRetrieves the current index lifecycle management (ILM) status."]
     pub fn get_status<'b>(&'a self) -> IlmGetStatus<'a, 'b> {
         IlmGetStatus::new(&self.client)
     }
-    #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-move-to-step.html)"]
+    #[doc = "[Ilm Move To Step API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-move-to-step.html)\n\nManually moves an index into the specified step and executes that step."]
     pub fn move_to_step<'b>(&'a self, parts: IlmMoveToStepParts<'b>) -> IlmMoveToStep<'a, 'b, ()> {
         IlmMoveToStep::new(&self.client, parts)
     }
-    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-put-lifecycle.html)"]
+    #[doc = "[Ilm Put Lifecycle API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-put-lifecycle.html)\n\nCreates a lifecycle policy"]
     pub fn put_lifecycle<'b>(
         &'a self,
         parts: IlmPutLifecycleParts<'b>,
     ) -> IlmPutLifecycle<'a, 'b, ()> {
         IlmPutLifecycle::new(&self.client, parts)
     }
-    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-remove-policy.html)"]
+    #[doc = "[Ilm Remove Policy API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-remove-policy.html)\n\nRemoves the assigned lifecycle policy and stops managing the specified index"]
     pub fn remove_policy<'b>(
         &'a self,
         parts: IlmRemovePolicyParts<'b>,
     ) -> IlmRemovePolicy<'a, 'b, ()> {
         IlmRemovePolicy::new(&self.client, parts)
     }
-    #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-retry-policy.html)"]
+    #[doc = "[Ilm Retry API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-retry-policy.html)\n\nRetries executing the policy for an index that is in the ERROR step."]
     pub fn retry<'b>(&'a self, parts: IlmRetryParts<'b>) -> IlmRetry<'a, 'b, ()> {
         IlmRetry::new(&self.client, parts)
     }
-    #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-start.html)"]
+    #[doc = "[Ilm Start API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-start.html)\n\nStart the index lifecycle management (ILM) plugin."]
     pub fn start<'b>(&'a self) -> IlmStart<'a, 'b, ()> {
         IlmStart::new(&self.client)
     }
-    #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.6/ilm-stop.html)"]
+    #[doc = "[Ilm Stop API](https://www.elastic.co/guide/en/elasticsearch/reference/7.7/ilm-stop.html)\n\nHalts all lifecycle management operations and stops the index lifecycle management (ILM) plugin"]
     pub fn stop<'b>(&'a self) -> IlmStop<'a, 'b, ()> {
         IlmStop::new(&self.client)
     }

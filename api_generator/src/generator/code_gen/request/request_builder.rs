@@ -5,11 +5,16 @@ use crate::generator::{
 use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 use reqwest::Url;
-use std::{collections::BTreeMap, str};
+use std::path::PathBuf;
+use std::{collections::BTreeMap, fs, str};
 use syn::{Field, FieldValue, ImplItem, TraitBoundModifier, TyParamBound};
 
 /// Builder that generates the AST for a request builder struct
 pub struct RequestBuilder<'a> {
+    /// Path to markdown docs that may be combined with generated docs
+    docs_dir: &'a PathBuf,
+    /// The namespace of the API
+    namespace_name: &'a str,
     /// The name of the API to which the generated struct relates
     name: &'a str,
     /// The name of the generated struct
@@ -28,6 +33,8 @@ pub struct RequestBuilder<'a> {
 
 impl<'a> RequestBuilder<'a> {
     pub fn new(
+        docs_dir: &'a PathBuf,
+        namespace_name: &'a str,
         name: &'a str,
         builder_name: &'a str,
         common_params: &'a BTreeMap<String, Type>,
@@ -39,15 +46,11 @@ impl<'a> RequestBuilder<'a> {
             enum_builder = enum_builder.with_path(path);
         }
 
-        let accepts_nd_body = match &endpoint.body {
-            Some(b) => match &b.serialize {
-                Some(s) => s == "bulk",
-                _ => false,
-            },
-            None => false,
-        };
+        let accepts_nd_body = endpoint.supports_nd_body();
 
         RequestBuilder {
+            docs_dir,
+            namespace_name,
             name,
             builder_name,
             common_params,
@@ -151,15 +154,34 @@ impl<'a> RequestBuilder<'a> {
     ) -> Tokens {
         let (enum_ty, _, _) = enum_builder.clone().build();
         let default_fields = Self::create_default_fields(default_fields);
+
+        // default cat APIs to using text/plain Content-Type and Accept headers. Not all
+        // headers are added here, but instead are added in Transport::send, because
+        // we want to apply default headers when send is called directly, which may
+        // be the case for experimental and beta APIs
+        let headers = {
+            if builder_name.starts_with("Cat") {
+                quote! {
+                    let mut headers = HeaderMap::with_capacity(2);
+                    headers.insert(CONTENT_TYPE, HeaderValue::from_static("text/plain"));
+                    headers.insert(ACCEPT, HeaderValue::from_static("text/plain"));
+                }
+            } else {
+                quote! {let headers = HeaderMap::new();}
+            }
+        };
+
         if enum_builder.contains_single_parameterless_part() {
             let doc = doc(format!("Creates a new instance of [{}]", &builder_name));
             quote!(
                 #doc
                 pub fn new(client: &'a Elasticsearch) -> Self {
+                    #headers
+
                     #builder_ident {
                         client,
                         parts: #enum_ty::None,
-                        headers: HeaderMap::new(),
+                        headers,
                         #(#default_fields),*,
                     }
                 }
@@ -172,10 +194,12 @@ impl<'a> RequestBuilder<'a> {
             quote!(
                 #doc
                 pub fn new(client: &'a Elasticsearch, parts: #enum_ty) -> Self {
+                    #headers
+
                     #builder_ident {
                         client,
                         parts,
-                        headers: HeaderMap::new(),
+                        headers,
                         #(#default_fields),*,
                     }
                 }
@@ -311,7 +335,7 @@ impl<'a> RequestBuilder<'a> {
     fn create_impl_fn(f: (&String, &Type)) -> syn::ImplItem {
         let name = valid_name(&f.0).to_lowercase();
         let (ty, value_ident, fn_generics) = {
-            let ty = typekind_to_ty(&f.0, f.1.ty, true, true);
+            let ty = typekind_to_ty(&f.0, &f.1.ty, true, true);
             match ty {
                 syn::Ty::Path(ref _q, ref p) => {
                     if p.get_ident().as_ref() == "Into" {
@@ -560,6 +584,8 @@ impl<'a> RequestBuilder<'a> {
     /// Creates the AST for a fn that returns a new instance of a builder struct
     /// from the root or namespace client
     fn create_builder_struct_ctor_fns(
+        docs_dir: &PathBuf,
+        namespace_name: &str,
         name: &str,
         builder_name: &str,
         endpoint: &ApiEndpoint,
@@ -581,18 +607,40 @@ impl<'a> RequestBuilder<'a> {
         };
 
         let api_name_for_docs = split_on_pascal_case(builder_name);
+
+        let markdown_doc = {
+            let mut path = docs_dir.clone();
+            path.push(format!("{}.fn.{}.md", namespace_name, name));
+            if path.exists() {
+                let mut s = fs::read_to_string(&path)
+                    .unwrap_or_else(|_| panic!("Could not read file at {:?}", &path));
+                s = s.replace("\r\n", "\n");
+                if !s.starts_with("\n\n") {
+                    s.insert_str(0, "\n\n");
+                }
+                s
+            } else {
+                String::new()
+            }
+        };
+
         let method_doc = match (
             endpoint.documentation.description.as_ref(),
             endpoint.documentation.url.as_ref(),
         ) {
-            (Some(d), Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({})\n\n{}", api_name_for_docs, u, d))
-            }
-            (Some(d), None) => doc(format!("{} API\n\n{}", api_name_for_docs, d)),
-            (None, Some(u)) if Url::parse(u).is_ok() => {
-                doc(format!("[{} API]({})", api_name_for_docs, u))
-            }
-            _ => doc(format!("{} API", api_name_for_docs)),
+            (Some(d), Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({})\n\n{}{}",
+                api_name_for_docs, u, d, markdown_doc
+            )),
+            (Some(d), None) => doc(format!(
+                "{} API\n\n{}{}",
+                api_name_for_docs, d, markdown_doc
+            )),
+            (None, Some(u)) if Url::parse(u).is_ok() => doc(format!(
+                "[{} API]({}){}",
+                api_name_for_docs, u, markdown_doc
+            )),
+            _ => doc(format!("{} API{}", api_name_for_docs, markdown_doc)),
         };
 
         let clone_expr = if is_root_method {
@@ -625,7 +673,7 @@ impl<'a> RequestBuilder<'a> {
             ident: Some(ident(valid_name(&f.0).to_lowercase())),
             vis: syn::Visibility::Inherited,
             attrs: vec![],
-            ty: typekind_to_ty(&f.0, f.1.ty, false, false),
+            ty: typekind_to_ty(&f.0, &f.1.ty, false, false),
         }
     }
 
@@ -656,6 +704,8 @@ impl<'a> RequestBuilder<'a> {
         );
 
         let ctor_fn = Self::create_builder_struct_ctor_fns(
+            self.docs_dir,
+            self.namespace_name,
             self.name,
             self.builder_name,
             self.endpoint,

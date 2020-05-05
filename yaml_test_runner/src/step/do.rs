@@ -250,7 +250,7 @@ impl ApiCall {
                         },
                     }?;
 
-                    let kind = ty.ty;
+                    let kind = &ty.ty;
 
                     match v {
                         Yaml::String(ref s) => {

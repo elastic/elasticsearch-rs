@@ -61,7 +61,7 @@ that is compatible with the version of Elasticsearch you're using
 
 ```toml
 [dependencies]
-elasticsearch = "7.6.1-alpha.1"
+elasticsearch = "7.7.0-alpha.1"
 ```
 
 The following _optional_ dependencies may also be useful to create requests and read responses
@@ -70,6 +70,40 @@ The following _optional_ dependencies may also be useful to create requests and 
 serde = "~1"
 serde_json = "~1"
 ```
+
+----
+
+#### Async support with tokio
+
+The client uses [`reqwest`](https://crates.io/crates/reqwest) to make HTTP calls, which internally uses 
+the [`tokio`](https://crates.io/crates/tokio) runtime for async support. As such, you may require to take a dependency on `tokio`
+in order to use the client. For example, in Cargo.toml, you may need the following dependency,
+
+```toml
+tokio = { version = "*", features = ["full"] }
+```
+
+and to attribute async main function with `#[tokio::main]`
+
+```rust,norun
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // your code ...
+    Ok(())
+}
+```
+
+and attribute test functions with `#[tokio::test]`
+
+```rust,norun
+#[tokio::test]
+async fn my_test() -> Result<(), Box<dyn std::error::Error>> {
+    // your code ...
+    Ok(())
+}
+```
+
+----
 
 ### Create a client
 
@@ -80,9 +114,9 @@ other transport related settings.
 To create a client to make API calls to Elasticsearch running on `http://localhost:9200`
 
 ```rust,no_run
-use elasticsearch::{Error, Elasticsearch};
+use elasticsearch::Elasticsearch;
 
-fn run() {
+fn main() {
     let client = Elasticsearch::default();
 }
 ```
@@ -90,11 +124,11 @@ Alternatively, you can create a client to make API calls against Elasticsearch r
 
 ```rust,no_run
 use elasticsearch::{
-    Error, Elasticsearch, 
-    http::transport::{Transport, SingleNodeConnectionPool}
+    Elasticsearch, Error, 
+    http::transport::Transport
 };
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let transport = Transport::single_node("https://example.com")?;
     let client = Elasticsearch::new(transport);
     Ok(())
@@ -108,12 +142,11 @@ fn run() -> Result<(), Error> {
 ```rust,no_run
 use elasticsearch::{
     auth::Credentials,
-    Error, Elasticsearch, 
+    Elasticsearch, Error,
     http::transport::Transport,
 };
-use url::Url;
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let cloud_id = "cluster_name:Y2xvdWQtZW5kcG9pbnQuZXhhbXBsZSQzZGFkZjgyM2YwNTM4ODQ5N2VhNjg0MjM2ZDkxOGExYQ==";
     // can use other types of Credentials too, like Bearer or ApiKey
     let credentials = Credentials::Basic("<username>".into(), "<password>".into());
@@ -128,14 +161,13 @@ fn run() -> Result<(), Error> {
  passing it to `Elasticsearch::new()` create a new instance of `Elasticsearch`
 
 ```rust,no_run
+use url::Url;
 use elasticsearch::{
-    auth::Credentials,
-    Error, Elasticsearch, 
+    Error, Elasticsearch,
     http::transport::{TransportBuilder,SingleNodeConnectionPool},
 };
-use url::Url;
 
-fn run() -> Result<(), Error> {
+fn main() -> Result<(), Error> {
     let url = Url::parse("https://example.com")?;
     let conn_pool = SingleNodeConnectionPool::new(url);
     let transport = TransportBuilder::new(conn_pool).disable_proxy().build()?;
@@ -153,10 +185,10 @@ a JSON body of `{"query":{"match_all":{}}}`
 use elasticsearch::{Elasticsearch, Error, SearchParts};
 use serde_json::{json, Value};
 
-async fn run() -> Result<(), Error> {
-
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
-    
+
     // make a search API call
     let search_response = client
         .search(SearchParts::None)
@@ -168,14 +200,14 @@ async fn run() -> Result<(), Error> {
         .allow_no_indices(true)
         .send()
         .await?;
-    
+
     // get the HTTP response status code
     let status_code = search_response.status_code();
-    
+
     // read the response body. Consumes search_response
-    let response_body = search_response.read_body::<Value>().await?; 
-    
-    // read fields from the response body         
+    let response_body = search_response.json::<Value>().await?;
+
+    // read fields from the response body
     let took = response_body["took"].as_i64().unwrap();
 
     Ok(())
@@ -193,18 +225,19 @@ and beta APIs
 ```rust,no_run
 use elasticsearch::{http::Method, Elasticsearch, Error, SearchParts};
 use http::HeaderMap;
-use serde_json::{json, Value};
-use url::Url;
+use serde_json::Value;
 
-async fn run() -> Result<(), Error> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = Elasticsearch::default();
     let body = b"{\"query\":{\"match_all\":{}}}";
     let response = client
-        .send(Method::Post,
+        .send(
+            Method::Post,
             SearchParts::Index(&["tweets"]).url().as_ref(),
             HeaderMap::new(),
             Option::<&Value>::None,
-            Some(body.as_ref())
+            Some(body.as_ref()),
         )
         .await?;
     Ok(())

@@ -14,7 +14,7 @@ use std::{
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
 use semver::Version;
-use serde::de::{MapAccess, Visitor};
+use serde::de::{Error, MapAccess, Visitor};
 use std::marker::PhantomData;
 use std::str::FromStr;
 use void::Void;
@@ -106,33 +106,65 @@ pub struct Type {
 }
 
 /// The type of the param or part
-#[derive(Debug, PartialEq, Deserialize, Copy, Clone)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum TypeKind {
     None,
-    #[serde(rename = "list")]
     List,
-    #[serde(rename = "enum")]
     Enum,
-    #[serde(rename = "string")]
     String,
-    #[serde(rename = "text")]
     Text,
-    #[serde(rename = "boolean")]
     Boolean,
-    #[serde(rename = "number")]
     Number,
-    #[serde(rename = "float")]
     Float,
-    #[serde(rename = "double")]
     Double,
-    #[serde(rename = "int")]
     Integer,
-    #[serde(rename = "long")]
     Long,
-    #[serde(rename = "date")]
     Date,
-    #[serde(rename = "time")]
     Time,
+    Union(Box<(TypeKind, TypeKind)>),
+}
+
+impl<'de> Deserialize<'de> for TypeKind {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        if value.contains('|') {
+            let values: Vec<&str> = value.split('|').collect();
+
+            if values.len() > 2 {
+                Err(D::Error::custom(
+                    "TypeKind union contains more than two values",
+                ))
+            } else {
+                let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
+                Ok(TypeKind::Union(union))
+            }
+        } else {
+            Ok(TypeKind::from(value.as_str()))
+        }
+    }
+}
+
+impl From<&str> for TypeKind {
+    fn from(s: &str) -> Self {
+        match s {
+            "list" => TypeKind::List,
+            "enum" => TypeKind::Enum,
+            "string" => TypeKind::String,
+            "text" => TypeKind::Text,
+            "boolean" => TypeKind::Boolean,
+            "number" => TypeKind::Number,
+            "float" => TypeKind::Float,
+            "double" => TypeKind::Double,
+            "int" => TypeKind::Integer,
+            "long" => TypeKind::Long,
+            "date" => TypeKind::Date,
+            "time" => TypeKind::Time,
+            n => panic!("unknown typekind {}", n),
+        }
+    }
 }
 
 impl Default for TypeKind {
@@ -316,6 +348,18 @@ impl ApiEndpoint {
                 p.methods.contains(&HttpMethod::Post) || p.methods.contains(&HttpMethod::Put)
             })
     }
+
+    /// Whether the endpoint supports sending a newline delimited body
+    pub fn supports_nd_body(&self) -> bool {
+        self.supports_body()
+            && match &self.body {
+                Some(b) => match &b.serialize {
+                    Some(s) => s == "bulk",
+                    _ => false,
+                },
+                None => false,
+            }
+    }
 }
 
 /// Common parameters accepted by all API endpoints
@@ -357,12 +401,17 @@ pub fn generate(
     // read the Api from file
     let api = read_api(branch, download_dir)?;
 
+    let docs_dir = {
+        let d = generated_dir.clone();
+        d.parent().unwrap().parent().unwrap().join("docs")
+    };
+
     // generate param enums
     let params = code_gen::params::generate(&api)?;
     write_file(params, generated_dir, "params.rs")?;
 
     // generate namespace clients
-    let namespace_clients = code_gen::namespace_clients::generate(&api)?;
+    let namespace_clients = code_gen::namespace_clients::generate(&api, &docs_dir)?;
     let mut namespace_clients_dir = generated_dir.clone();
     namespace_clients_dir.push("namespace_clients");
     fs::create_dir_all(&namespace_clients_dir)?;
@@ -385,7 +434,7 @@ pub fn generate(
     }
 
     // generate functions on root of client
-    let root = code_gen::root::generate(&api)?;
+    let root = code_gen::root::generate(&api, &docs_dir)?;
     write_file(root, generated_dir, "root.rs")?;
 
     let generated_modules = fs::read_dir(generated_dir)?

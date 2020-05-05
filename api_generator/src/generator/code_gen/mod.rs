@@ -18,7 +18,7 @@ pub fn use_declarations() -> Tokens {
             params::*,
             error::Error,
             http::{
-                headers::{HeaderName, HeaderMap, HeaderValue},
+                headers::{HeaderName, HeaderMap, HeaderValue, CONTENT_TYPE, ACCEPT},
                 Method,
                 request::{Body, NdBody, JsonBody},
                 response::Response,
@@ -120,7 +120,7 @@ impl<T: GetPath> GetIdent for T {
 
 /// Gets the Ty syntax token for a TypeKind
 /// TODO: This function is serving too many purposes. Refactor it
-fn typekind_to_ty(name: &str, kind: TypeKind, required: bool, fn_arg: bool) -> syn::Ty {
+fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> syn::Ty {
     let mut v = String::new();
     if !required {
         v.push_str("Option<");
@@ -164,6 +164,10 @@ fn typekind_to_ty(name: &str, kind: TypeKind, required: bool, fn_arg: bool) -> s
         TypeKind::Long => v.push_str("i64"),
         TypeKind::Date => v.push_str(str_type),
         TypeKind::Time => v.push_str(str_type),
+        TypeKind::Union(u) => match name {
+            "slices" => v.push_str("Slices"),
+            _ => panic!("unsupported union type: {:?}", u),
+        },
     };
 
     if !required {
