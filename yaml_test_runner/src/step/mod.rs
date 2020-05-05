@@ -71,7 +71,8 @@ pub trait BodyExpr {
         key == "$body"
     }
 
-    /// Builds an indexer expression from the match key
+    /// Builds an indexer expression from the match key e.g.
+    /// match key `2.airline` is converted to `[2]["airline"]`
     fn body_expr(&self, key: &str) -> String {
         if self.is_body_expr(key) {
             key.into()

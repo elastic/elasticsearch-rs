@@ -131,15 +131,13 @@ impl YamlTests {
 
     fn read_response(read_response: bool, is_body_expr: bool, body: &mut Tokens) -> bool {
         if !read_response {
-            // TODO: string_response_body needs to use response.read_body_as_text()
             if is_body_expr {
                 body.append(quote! {
-                    let response_body = response.read_body::<Value>().await?;
-                    let string_response_body = serde_json::to_string(&response_body).unwrap();
+                    let string_response_body = response.text().await?;
                 });
             } else {
                 body.append(quote! {
-                    let response_body = response.read_body::<Value>().await?;
+                    let response_body = response.json::<Value>().await?;
                 });
             }
         }

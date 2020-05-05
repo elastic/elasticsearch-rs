@@ -15,7 +15,13 @@ impl From<Length> for Step {
     }
 }
 
-impl BodyExpr for Length {}
+impl BodyExpr for Length {
+    // a length step should never advertise itself as a body expression as it would
+    // cause the body of the preceding API call to be returned as text rather than serde::Value.
+    fn is_body_expr(&self, key: &str) -> bool {
+        false
+    }
+}
 
 impl Length {
     pub fn try_parse(yaml: &Yaml) -> Result<Length, failure::Error> {
@@ -46,14 +52,14 @@ impl Length {
 impl ToTokens for Length {
     fn to_tokens(&self, tokens: &mut Tokens) {
         let len = self.len;
-        let expr = self.body_expr(&self.expr);
 
-        if self.is_body_expr(&expr) {
+        if &self.expr == "$body" {
             tokens.append(quote!{
-                let len = string_response_body.len();
+                let len = util::len_from_value(&response_body)?;
                 assert_eq!(#len, len);
             });
         } else {
+            let expr = self.body_expr(&self.expr);
             let ident = syn::Ident::from(expr);
             tokens.append(quote!{
                 let len = util::len_from_value(&response_body#ident)?;

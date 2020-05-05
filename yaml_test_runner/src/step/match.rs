@@ -41,9 +41,7 @@ impl ToTokens for Match {
                 if s.starts_with('/') {
                     let s = s.trim().trim_matches('/');
                     if self.is_body_expr(&expr) {
-                        // TODO: string_response_body needs to use response.read_body_as_text()
                         tokens.append(quote! {
-                            let string_response_body = serde_json::to_string(&response_body).unwrap();
                             let regex = regex::Regex::new(#s)?;
                             assert!(
                                 regex.is_match(&string_response_body),
