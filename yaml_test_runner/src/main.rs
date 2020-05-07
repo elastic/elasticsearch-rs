@@ -59,12 +59,12 @@ fn main() -> Result<(), failure::Error> {
 
     github::download_test_suites(token, branch, &download_dir)?;
 
-    let mut last_downloaded_rest_spec_version = rest_specs_dir.clone();
-    last_downloaded_rest_spec_version.push("last_downloaded_version");
+    let mut last_downloaded_rest_spec_branch = rest_specs_dir.clone();
+    last_downloaded_rest_spec_branch.push("last_downloaded_version");
 
     let mut download_rest_specs = true;
-    if last_downloaded_rest_spec_version.exists() {
-        let version = fs::read_to_string(last_downloaded_rest_spec_version)
+    if last_downloaded_rest_spec_branch.exists() {
+        let version = fs::read_to_string(last_downloaded_rest_spec_branch)
             .expect("Could not read rest specs last_downloaded version into string");
 
         if version == branch {
