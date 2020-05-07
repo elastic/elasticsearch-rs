@@ -6,16 +6,19 @@ use elasticsearch::{
 };
 use sysinfo::SystemExt;
 use url::Url;
-use elasticsearch::indices::{IndicesDeleteParts, IndicesDeleteTemplateParts};
-use elasticsearch::params::ExpandWildcards;
+use elasticsearch::indices::{IndicesDeleteParts, IndicesDeleteTemplateParts, IndicesRefreshParts};
+use elasticsearch::params::{ExpandWildcards, WaitForStatus};
 use elasticsearch::cat::{CatTemplatesParts, CatSnapshotsParts};
 use elasticsearch::snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts};
 use elasticsearch::watcher::WatcherDeleteWatchParts;
-use serde_json::Value;
+use serde_json::{json, Value};
 use std::future::Future;
-use elasticsearch::security::{SecurityGetRoleParts, SecurityDeleteRoleParts, SecurityGetUserParts, SecurityDeleteUserParts, SecurityGetPrivilegesParts, SecurityDeletePrivilegesParts};
+use elasticsearch::security::{SecurityGetRoleParts, SecurityDeleteRoleParts, SecurityGetUserParts, SecurityDeleteUserParts, SecurityGetPrivilegesParts, SecurityDeletePrivilegesParts, SecurityPutUserParts};
 use elasticsearch::ml::{MlStopDatafeedParts, MlGetDatafeedsParts, MlDeleteDatafeedParts, MlCloseJobParts, MlGetJobsParts, MlDeleteJobParts};
 use elasticsearch::ilm::IlmRemovePolicyParts;
+use elasticsearch::tasks::TasksCancelParts;
+use elasticsearch::transform::{TransformGetTransformParts, TransformStopTransformParts, TransformDeleteTransformParts};
+use elasticsearch::cluster::ClusterHealthParts;
 
 fn cluster_addr() -> String {
     match std::env::var("ES_TEST_SERVER") {
@@ -49,39 +52,10 @@ pub fn create() -> Elasticsearch {
     Elasticsearch::new(transport)
 }
 
-async fn delete_all_templates(client: &Elasticsearch) -> Result<(), Error> {
-    let cat_template_response = client.cat()
-        .templates(CatTemplatesParts::Name("*"))
-        .h(&["name"])
-        .send()
-        .await?
-        .text()
-        .await?;
-
-    let all_templates: Vec<&str> = cat_template_response
-        .split('\n')
-        .filter(|s| !s.is_empty() && !s.starts_with('.') && s != &"security-audit-log")
-        .collect();
-
-    for template in all_templates {
-        let _delete_template_response = client.indices()
-            .delete_template(IndicesDeleteTemplateParts::Name(&template))
-            .send()
-            .await?;
-    }
-
-    Ok(())
-}
-
-/// general teardown step for an OSS yaml test
-pub async fn general_oss_teardown(client: &Elasticsearch) -> Result<(), Error> {
-    let _delete_response = client.indices()
-        .delete(IndicesDeleteParts::Index(&["*"]))
-        .expand_wildcards(&[ExpandWildcards::Open, ExpandWildcards::Closed, ExpandWildcards::Hidden])
-        .send()
-        .await?;
-
-    delete_all_templates(client).await?;
+/// general setup step for an OSS yaml test
+pub async fn general_oss_setup(client: &Elasticsearch) -> Result<(), Error> {
+    delete_indices(client).await?;
+    delete_templates(client).await?;
 
     let cat_snapshot_response = client.cat()
         .snapshots(CatSnapshotsParts::None)
@@ -118,32 +92,147 @@ pub async fn general_oss_teardown(client: &Elasticsearch) -> Result<(), Error> {
     Ok(())
 }
 
-pub async fn general_xpack_teardown(client: &Elasticsearch) -> Result<(), Error> {
-    delete_all_templates(client).await?;
+/// general setup step for an xpack yaml test
+pub async fn general_xpack_setup(client: &Elasticsearch) -> Result<(), Error> {
+    delete_templates(client).await?;
 
     let _delete_watch_response = client.watcher()
         .delete_watch(WatcherDeleteWatchParts::Id("my_watch"))
         .send()
         .await?;
 
-    let roles_response = client.security()
-        .get_role(SecurityGetRoleParts::None)
+    delete_roles(client).await?;
+    delete_users(client).await?;
+    delete_privileges(client).await?;
+    stop_and_delete_datafeeds(client).await?;
+
+    let _ = client.ilm()
+        .remove_policy(IlmRemovePolicyParts::Index("_all"))
+        .send()
+        .await?;
+
+    close_and_delete_jobs(client).await?;
+
+    // TODO: stop and delete rollup jobs once implemented in the client
+
+    cancel_tasks(client).await?;
+    stop_and_delete_transforms(client).await?;
+    wait_for_yellow_status(client).await?;
+    delete_indices(client).await?;
+
+    let _ = client.security()
+        .put_user(SecurityPutUserParts::Username("x_pack_rest_user"))
+        .body(json!({
+            "password": "x-pack-test-password",
+            "roles": ["superuser"]
+        }))
+        .send()
+        .await?;
+
+    let _ = client.indices()
+        .refresh(IndicesRefreshParts::Index(&["_all"]))
+        .expand_wildcards(&[ExpandWildcards::Open, ExpandWildcards::Closed, ExpandWildcards::Hidden])
+        .send()
+        .await?;
+
+    wait_for_yellow_status(client).await?;
+
+    Ok(())
+}
+
+async fn wait_for_yellow_status(client: &Elasticsearch) -> Result<(), Error> {
+    let _ = client.cluster()
+        .health(ClusterHealthParts::None)
+        .wait_for_status(WaitForStatus::Yellow)
+        .send()
+        .await?;
+
+    Ok(())
+}
+
+async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
+    let _delete_response = client.indices()
+        .delete(IndicesDeleteParts::Index(&["*"]))
+        .expand_wildcards(&[ExpandWildcards::Open, ExpandWildcards::Closed, ExpandWildcards::Hidden])
+        .send()
+        .await?;
+
+    Ok(())
+}
+
+async fn stop_and_delete_transforms(client: &Elasticsearch) -> Result<(), Error> {
+    let transforms_response = client.transform()
+        .get_transform(TransformGetTransformParts::TransformId("_all"))
         .send()
         .await?
         .json::<Value>()
         .await?;
 
-    for (k, v) in roles_response.as_object().unwrap() {
-        if let Some(b) = v["metadata"]["_reserved"].as_bool() {
-            if !b {
-                let _ = client.security()
-                    .delete_role(SecurityDeleteRoleParts::Name(k))
-                    .send()
-                    .await?;
+    for transform in transforms_response["transforms"].as_array().unwrap() {
+        let id = transform["id"].as_str().unwrap();
+        let _ = client.transform()
+            .stop_transform(TransformStopTransformParts::TransformId(id))
+            .send()
+            .await?;
+
+        let _ = client.transform()
+            .delete_transform(TransformDeleteTransformParts::TransformId(id))
+            .send()
+            .await?;
+    }
+
+    Ok(())
+}
+
+async fn cancel_tasks(client: &Elasticsearch) -> Result<(), Error> {
+    let rollup_response = client.tasks()
+        .list()
+        .send()
+        .await?
+        .json::<Value>()
+        .await?;
+
+    for (_node_id, nodes) in rollup_response["nodes"].as_object().unwrap() {
+        for (task_id, task) in nodes["tasks"].as_object().unwrap() {
+            if let Some(b) = task["cancellable"].as_bool() {
+                if b {
+                    let _ = client.tasks()
+                        .cancel(TasksCancelParts::TaskId(task_id))
+                        .send()
+                        .await?;
+                }
             }
         }
     }
 
+    Ok(())
+}
+
+async fn delete_templates(client: &Elasticsearch) -> Result<(), Error> {
+    let cat_template_response = client.cat()
+        .templates(CatTemplatesParts::Name("*"))
+        .h(&["name"])
+        .send()
+        .await?
+        .text()
+        .await?;
+
+    let all_templates: Vec<&str> = cat_template_response
+        .split('\n')
+        .filter(|s| !s.is_empty() && !s.starts_with('.') && s != &"security-audit-log")
+        .collect();
+
+    for template in all_templates {
+        let _delete_template_response = client.indices()
+            .delete_template(IndicesDeleteTemplateParts::Name(&template))
+            .send()
+            .await?;
+    }
+
+    Ok(())
+}
+
+async fn delete_users(client: &Elasticsearch) -> Result<(), Error> {
     let users_response = client.security()
         .get_user(SecurityGetUserParts::None)
         .send()
@@ -162,15 +251,27 @@ pub async fn general_xpack_teardown(client: &Elasticsearch) -> Result<(), Error>
         }
     }
 
-    delete_privileges(client).await?;
-    stop_and_delete_datafeeds(client).await?;
+    Ok(())
+}
 
-    let _ = client.ilm()
-        .remove_policy(IlmRemovePolicyParts::Index("_all"))
+async fn delete_roles(client: &Elasticsearch) -> Result<(), Error> {
+    let roles_response = client.security()
+        .get_role(SecurityGetRoleParts::None)
         .send()
+        .await?
+        .json::<Value>()
         .await?;
 
-    close_and_delete_jobs(client).await?;
+    for (k, v) in roles_response.as_object().unwrap() {
+        if let Some(b) = v["metadata"]["_reserved"].as_bool() {
+            if !b {
+                let _ = client.security()
+                    .delete_role(SecurityDeleteRoleParts::Name(k))
+                    .send()
+                    .await?;
+            }
+        }
+    }
 
     Ok(())
 }
