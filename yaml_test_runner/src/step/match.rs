@@ -39,7 +39,8 @@ impl ToTokens for Match {
         match &self.value {
             Yaml::String(s) => {
                 if s.starts_with('/') {
-                    let s = s.trim().trim_matches('/');
+                    // trim the enclosing forward slashes and replace escaped forward slashes
+                    let s = s.trim().trim_matches('/').replace("\\/", "/");
                     if self.is_body_expr(&expr) {
                         tokens.append(quote! {
                             let regex = regex::Regex::new(#s)?;
