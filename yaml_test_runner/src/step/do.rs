@@ -8,16 +8,67 @@ use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
 
+/// A catch expression on a do step
+pub struct Catch(String);
+
+impl Catch {
+    fn needs_response_body(&self) -> bool {
+        self.0.starts_with('/')
+    }
+}
+
+impl ToTokens for Catch {
+    fn to_tokens(&self, tokens: &mut Tokens) {
+        fn http_status_code(status_code: u16, tokens: &mut Tokens) {
+            tokens.append(quote! {
+               assert_eq!(response.status_code().as_u16(), #status_code);
+            });
+        }
+
+        match self.0.as_ref() {
+            "bad_request" => http_status_code(400, tokens),
+            "unauthorized" => http_status_code(401, tokens),
+            "forbidden" => http_status_code(403, tokens),
+            "missing" => http_status_code(404, tokens),
+            "request_timeout" => http_status_code(408, tokens),
+            "conflict" => http_status_code(409, tokens),
+            "request" => {
+                tokens.append(quote! {
+                   let status_code = response.status_code().as_u16();
+                   assert!(status_code >= 400 && status_code < 600);
+                });
+            },
+            "unavailable" => http_status_code(503, tokens),
+            "param" => {
+                // Not possible to pass a bad param to the client so ignore.
+            },
+            s => {
+                // trim the enclosing forward slashes and replace escaped forward slashes
+                let t = s.trim_matches('/').replace("\\/", "/");
+                tokens.append(quote!{
+                    let catch_regex = regex::Regex::new(#t)?;
+                    assert!(
+                        catch_regex.is_match(response_body["error"]["reason"].as_str().unwrap()),
+                        "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
+                        "[\"error\"][\"reason\"]",
+                        response_body["error"]["reason"].as_str().unwrap(),
+                        #s
+                    );
+                });
+            },
+        }
+    }
+}
+
 pub struct Do {
     api_call: ApiCall,
     warnings: Vec<String>,
-    catch: Option<String>,
+    catch: Option<Catch>,
 }
 
 impl ToTokens for Do {
     fn to_tokens(&self, tokens: &mut Tokens) {
-        // TODO: Add in catch and warnings
-        &self.api_call.to_tokens(tokens);
+        let _ = self.to_tokens(false, tokens);
     }
 }
 
@@ -28,6 +79,23 @@ impl From<Do> for Step {
 }
 
 impl Do {
+    pub fn to_tokens(&self, mut read_response: bool, tokens: &mut Tokens) -> bool {
+        // TODO: Add in warnings
+        &self.api_call.to_tokens(tokens);
+
+        if let Some(c) = &self.catch {
+            if !read_response && c.needs_response_body() {
+                read_response = true;
+                tokens.append(quote! {
+                    let response_body = response.json::<Value>().await?;
+                });
+            }
+            c.to_tokens(tokens);
+        }
+
+        read_response
+    }
+
     pub fn try_parse(api: &Api, yaml: &Yaml) -> Result<Do, failure::Error> {
         let hash = yaml
             .as_hash()
@@ -59,7 +127,7 @@ impl Do {
                         Ok(())
                     }
                     "catch" => {
-                        catch = v.as_str().map(|s| s.to_string());
+                        catch = v.as_str().map(|s| Catch(s.to_string()));
                         Ok(())
                     }
                     "node_selector" => {
@@ -119,10 +187,15 @@ impl ToTokens for ApiCall {
         let body = &self.body;
 
         // TODO: handle "set" values
+
         let headers: Vec<Tokens> = self.headers
             .iter()
-            .map(|(k,v)| quote! {
-                .header(HeaderName::from_static(#k), HeaderValue::from_static(#v))
+            .map(|(k,v)| {
+                // header names **must** be lowercase to satisfy Header lib
+                let k = k.to_lowercase();
+                quote! {
+                    .header(HeaderName::from_static(#k), HeaderValue::from_static(#v))
+                }
             })
             .collect();
 

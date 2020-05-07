@@ -129,14 +129,14 @@ impl YamlTests {
         syn::Ident::from(fn_name)
     }
 
-    fn read_response(read_response: bool, is_body_expr: bool, body: &mut Tokens) -> bool {
+    fn read_response(read_response: bool, is_body_expr: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
             if is_body_expr {
-                body.append(quote! {
+                tokens.append(quote! {
                     let string_response_body = response.text().await?;
                 });
             } else {
-                body.append(quote! {
+                tokens.append(quote! {
                     let response_body = response.json::<Value>().await?;
                 });
             }
@@ -181,8 +181,7 @@ impl YamlTests {
                             }
                         }
                         Step::Do(d) => {
-                            read_response = false;
-                            d.to_tokens(&mut body);
+                            read_response = d.to_tokens(false, &mut body);
                         },
                         Step::Match(m) => {
                             read_response =
@@ -233,7 +232,7 @@ impl YamlTests {
                 .filter_map(Step::r#do)
                 .map(|d| {
                     let mut tokens = Tokens::new();
-                    d.to_tokens(&mut tokens);
+                    ToTokens::to_tokens(d, &mut tokens);
                     tokens
                 })
                 .collect::<Vec<_>>();
