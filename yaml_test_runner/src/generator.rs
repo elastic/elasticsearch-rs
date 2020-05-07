@@ -9,12 +9,18 @@ use std::collections::HashSet;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::path::PathBuf;
+use std::path::{PathBuf, Component};
 use yaml_rust::{Yaml, YamlLoader};
+
+pub enum TestSuite {
+    Oss,
+    XPack
+}
 
 /// The components of a test file, constructed from a yaml file
 struct YamlTests {
     version: Option<Version>,
+    suite: TestSuite,
     directives: HashSet<String>,
     setup: Option<TestFn>,
     teardown: Option<TestFn>,
@@ -22,9 +28,10 @@ struct YamlTests {
 }
 
 impl YamlTests {
-    pub fn new(version: Option<semver::Version>, len: usize) -> Self {
+    pub fn new(version: Option<semver::Version>, suite: TestSuite, len: usize) -> Self {
         Self {
             version,
+            suite,
             directives: HashSet::with_capacity(len),
             setup: None,
             teardown: None,
@@ -76,10 +83,11 @@ impl YamlTests {
     pub fn build(self) -> Tokens {
         let (setup_fn, setup_call) = Self::generate_fixture(&self.setup);
         let (teardown_fn, teardown_call) = Self::generate_fixture(&self.teardown);
-        // TODO: create an x-pack teardown and call this when an x-pack test
-        let general_teardown_call = quote! {
-            client::general_oss_teardown(&client).await?;
+        let general_teardown_call = match self.suite {
+            TestSuite::Oss => quote!(client::general_oss_teardown(&client).await?;),
+            TestSuite::XPack => quote!(client::general_xpack_teardown(&client).await?;),
         };
+
         let tests: Vec<Tokens> = self.fn_impls(setup_call, teardown_call, general_teardown_call);
 
         let directives: Vec<Tokens> = self
@@ -308,8 +316,26 @@ pub fn generate_tests_from_yaml(
                         continue;
                     }
 
+                    let suite = {
+                        let path = entry.path().clone();
+                        let mut components = path.strip_prefix(&base_download_dir)?.components();
+                        let mut relative = "".to_string();
+                        while let Some(c) = components.next() {
+                            if c != Component::RootDir {
+                                relative = c.as_os_str().to_string_lossy().into_owned();
+                                break;
+                            }
+                        }
+
+                        match relative.as_str() {
+                            "oss" => TestSuite::Oss,
+                            "xpack" => TestSuite::XPack,
+                            _ => panic!("Unknown test suite")
+                        }
+                    };
+
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(api.version(), docs.len());
+                    let mut test = YamlTests::new(api.version(), suite, docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
