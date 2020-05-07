@@ -76,7 +76,11 @@ impl YamlTests {
     pub fn build(self) -> Tokens {
         let (setup_fn, setup_call) = Self::generate_fixture(&self.setup);
         let (teardown_fn, teardown_call) = Self::generate_fixture(&self.teardown);
-        let tests: Vec<Tokens> = self.fn_impls(setup_call, teardown_call);
+        // TODO: create an x-pack teardown and call this when an x-pack test
+        let general_teardown_call = quote! {
+            client::general_oss_teardown(&client).await?;
+        };
+        let tests: Vec<Tokens> = self.fn_impls(setup_call, teardown_call, general_teardown_call);
 
         let directives: Vec<Tokens> = self
             .directives
@@ -145,7 +149,7 @@ impl YamlTests {
         true
     }
 
-    fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
+    fn fn_impls(&self, setup_call: Option<Tokens>, teardown_call: Option<Tokens>, general_teardown_call: Tokens) -> Vec<Tokens> {
         let mut seen_method_names = HashSet::new();
 
         self.tests
@@ -212,6 +216,7 @@ impl YamlTests {
                             #setup_call
                             #body
                             #teardown_call
+                            #general_teardown_call
                             Ok(())
                         }
                     },
