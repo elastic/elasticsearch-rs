@@ -5,21 +5,34 @@ use crate::{
 
 use serde::{Serialize, Serializer};
 
-/// Serializes an `Option<&[&str]>` with
+/// Serializes an `Option<&[Serialize]>` with
 /// `Some(value)` to a comma separated string of values.
 /// Used to serialize values within the query string
-pub fn serialize_coll_qs<S>(
-    value: &Option<&[&str]>,
+pub(crate) fn serialize_coll_qs<S, T>(
+    value: &Option<&[T]>,
     serializer: S,
 ) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
 where
     S: Serializer,
+    T: Serialize
 {
     let vec = value
-        .as_ref()
         .expect("attempt to serialize Option::None value");
-    let joined = vec.join(",");
-    serializer.serialize_str(joined.as_ref())
+
+    // TODO: There must be a better way of serializing a Vec<Serialize> to a comma-separated url encoded string...
+    // (mis)use serde_json to_string and trim the surrounding quotes...
+    let serialized = vec
+        .iter()
+        .map(|v| serde_json::to_string(v).unwrap())
+        .collect::<Vec<_>>();
+
+    let target = serialized
+        .iter()
+        .map(|s| s.trim_matches('"'))
+        .collect::<Vec<_>>()
+        .join(",");
+
+    serializer.serialize_str(&target)
 }
 
 /// Root client for top level APIs

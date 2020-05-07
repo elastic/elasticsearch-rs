@@ -508,7 +508,10 @@ impl<'a, 'b> ClusterHealth<'a, 'b> {
             struct QueryParams<'b> {
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -1338,7 +1341,10 @@ impl<'a, 'b> ClusterState<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",

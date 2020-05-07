@@ -364,7 +364,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "fielddata")]
                 fielddata: Option<bool>,
@@ -749,7 +752,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -1101,7 +1107,10 @@ impl<'a, 'b> IndicesDelete<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -1551,7 +1560,10 @@ impl<'a, 'b> IndicesExists<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -1726,7 +1738,10 @@ impl<'a, 'b> IndicesExistsAlias<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -2033,7 +2048,10 @@ impl<'a, 'b> IndicesExistsType<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -2231,7 +2249,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -2416,7 +2437,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -2616,7 +2640,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -2821,7 +2848,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -3012,7 +3042,10 @@ impl<'a, 'b> IndicesGet<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -3206,7 +3239,10 @@ impl<'a, 'b> IndicesGetAlias<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -3418,7 +3454,10 @@ impl<'a, 'b> IndicesGetFieldMapping<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -3620,7 +3659,10 @@ impl<'a, 'b> IndicesGetMapping<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -3829,7 +3871,10 @@ impl<'a, 'b> IndicesGetSettings<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -4152,7 +4197,10 @@ impl<'a, 'b> IndicesGetUpgrade<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -4349,7 +4397,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -4738,7 +4789,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -4955,7 +5009,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -5469,7 +5526,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -5645,7 +5705,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -6007,7 +6070,10 @@ impl<'a, 'b> IndicesSegments<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -6168,7 +6234,10 @@ impl<'a, 'b> IndicesShardStores<'a, 'b> {
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -6763,7 +6832,10 @@ impl<'a, 'b> IndicesStats<'a, 'b> {
                 completion_fields: Option<&'b [&'b str]>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "fielddata_fields",
@@ -6983,7 +7055,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -7339,7 +7414,10 @@ where
                 allow_no_indices: Option<bool>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(
                     rename = "filter_path",
@@ -7619,7 +7697,10 @@ where
                 df: Option<&'b str>,
                 #[serde(rename = "error_trace")]
                 error_trace: Option<bool>,
-                #[serde(rename = "expand_wildcards")]
+                #[serde(
+                    rename = "expand_wildcards",
+                    serialize_with = "crate::client::serialize_coll_qs"
+                )]
                 expand_wildcards: Option<&'b [ExpandWildcards]>,
                 #[serde(rename = "explain")]
                 explain: Option<bool>,

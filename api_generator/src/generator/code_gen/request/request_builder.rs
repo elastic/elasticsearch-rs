@@ -108,7 +108,8 @@ impl<'a> RequestBuilder<'a> {
             let struct_fields = endpoint_params.iter().map(|(param_name, param_type)| {
                 let field = Self::create_struct_field((param_name, param_type));
                 let field_rename = lit(param_name);
-                if param_type.ty == TypeKind::List {
+                // TODO: we special case expand_wildcards here to be a list, but this should be fixed upstream
+                if param_type.ty == TypeKind::List || param_name == "expand_wildcards" {
                     let serialize_with = lit("crate::client::serialize_coll_qs");
                     quote! {
                         #[serde(rename = #field_rename, serialize_with = #serialize_with)]
