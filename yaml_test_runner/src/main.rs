@@ -86,7 +86,24 @@ fn main() -> Result<(), failure::Error> {
     if generated_dir.exists() {
         fs::remove_dir_all(&generated_dir)?;
     }
-    generator::generate_tests_from_yaml(&api, &download_dir, &download_dir, &generated_dir)?;
+
+    // try to get the version from ELASTICSEARCH_VERSION environment variable, if set.
+    // any prerelease part needs to be trimmed because the semver crate only allows
+    // a version with a prerelease to match against predicates, if at least one predicate
+    // has a prerelease. See
+    // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
+    let version = match std::env::var("ELASTICSEARCH_VERSION") {
+        Ok(v) => {
+            let v = v
+                .trim_start_matches("elasticsearch:")
+                .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
+            semver::Version::parse(v).ok()
+        },
+        Err(_) => None
+    };
+
+    println!("Using version {:?} to compile tests", &version);
+    generator::generate_tests_from_yaml(&api, &version, &download_dir, &download_dir, &generated_dir)?;
 
     Ok(())
 }

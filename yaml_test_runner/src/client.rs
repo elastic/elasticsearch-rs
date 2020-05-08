@@ -32,6 +32,7 @@ fn running_proxy() -> bool {
     !system.get_process_by_name("Fiddler").is_empty()
 }
 
+/// create a client to use in tests
 pub fn create() -> Elasticsearch {
     let url = Url::parse(cluster_addr().as_ref()).unwrap();
     let conn_pool = SingleNodeConnectionPool::new(url.clone());

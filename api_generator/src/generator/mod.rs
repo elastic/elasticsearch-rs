@@ -35,13 +35,6 @@ pub struct Api {
 }
 
 impl Api {
-    /// Attempt to parse the version from the commit tag, which typically
-    /// will be of the form e.g. v7.6.1
-    pub fn version(&self) -> Option<semver::Version> {
-        let v = self.commit.trim_start_matches('v');
-        semver::Version::parse(v).ok()
-    }
-
     /// Find the right ApiEndpoint from the REST API specs for the API call
     /// defined in the YAML test.
     ///

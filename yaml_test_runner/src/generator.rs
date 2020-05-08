@@ -18,8 +18,8 @@ pub enum TestSuite {
 }
 
 /// The components of a test file, constructed from a yaml file
-struct YamlTests {
-    version: Option<Version>,
+struct YamlTests<'a> {
+    version: &'a Option<Version>,
     suite: TestSuite,
     directives: HashSet<String>,
     setup: Option<TestFn>,
@@ -27,8 +27,8 @@ struct YamlTests {
     tests: Vec<TestFn>,
 }
 
-impl YamlTests {
-    pub fn new(version: Option<semver::Version>, suite: TestSuite, len: usize) -> Self {
+impl<'a> YamlTests<'a> {
+    pub fn new(version: &'a Option<semver::Version>, suite: TestSuite, len: usize) -> Self {
         Self {
             version,
             suite,
@@ -287,6 +287,7 @@ impl TestFn {
 
 pub fn generate_tests_from_yaml(
     api: &Api,
+    version: &Option<semver::Version>,
     base_download_dir: &PathBuf,
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
@@ -296,7 +297,7 @@ pub fn generate_tests_from_yaml(
         if let Ok(entry) = entry {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {
-                    generate_tests_from_yaml(api, base_download_dir, &entry.path(), generated_dir)?;
+                    generate_tests_from_yaml(api, version, base_download_dir, &entry.path(), generated_dir)?;
                 } else if file_type.is_file() {
                     let file_name = entry.file_name().to_string_lossy().into_owned();
 
@@ -336,7 +337,7 @@ pub fn generate_tests_from_yaml(
                     };
 
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(api.version(), suite, docs.len());
+                    let mut test = YamlTests::new(version, suite, docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
