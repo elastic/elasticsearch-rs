@@ -2,6 +2,7 @@ use super::Step;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 use crate::step::BodyExpr;
+use regex::Regex;
 
 pub struct Match {
     pub expr: String,
@@ -43,7 +44,9 @@ impl ToTokens for Match {
                     let s = s.trim().trim_matches('/').replace("\\/", "/");
                     if self.is_body_expr(&expr) {
                         tokens.append(quote! {
-                            let regex = regex::Regex::new(#s)?;
+                            let regex = regex::RegexBuilder::new(#s)
+                                .ignore_whitespace(true)
+                                .build()?;
                             assert!(
                                 regex.is_match(&string_response_body),
                                 "expected $body:\n\n{}\n\nto match regex:\n\n{}",
