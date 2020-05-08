@@ -2,7 +2,6 @@ use super::Step;
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 use crate::step::BodyExpr;
-use regex::Regex;
 
 pub struct Match {
     pub expr: String,

@@ -1,4 +1,7 @@
 #[macro_use]
+extern crate log;
+extern crate simple_logger;
+#[macro_use]
 extern crate lazy_static;
 #[macro_use]
 extern crate quote;
@@ -10,6 +13,7 @@ extern crate serde_json;
 use clap::{App, Arg};
 use std::fs;
 use std::path::PathBuf;
+use log::Level;
 
 mod generator;
 mod github;
@@ -22,6 +26,8 @@ pub mod client;
 pub mod util;
 
 fn main() -> Result<(), failure::Error> {
+    simple_logger::init_with_level(Level::Info).unwrap();
+
     let matches = App::new(env!("CARGO_PKG_NAME"))
         .about(env!("CARGO_PKG_DESCRIPTION"))
         .arg(Arg::with_name("branch")
@@ -68,7 +74,7 @@ fn main() -> Result<(), failure::Error> {
             .expect("Could not read rest specs last_downloaded version into string");
 
         if version == branch {
-            println!(
+            info!(
                 "rest specs for branch {} already downloaded in {:?}",
                 branch, &rest_specs_dir
             );
@@ -98,11 +104,11 @@ fn main() -> Result<(), failure::Error> {
                 .trim_start_matches("elasticsearch:")
                 .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
             semver::Version::parse(v).ok()
-        },
+        }
         Err(_) => None
     };
 
-    println!("Using version {:?} to compile tests", &version);
+    info!("Using version {:?} to compile tests", &version);
     generator::generate_tests_from_yaml(&api, &version, &download_dir, &download_dir, &generated_dir)?;
 
     Ok(())

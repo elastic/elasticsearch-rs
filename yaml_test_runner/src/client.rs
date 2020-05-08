@@ -12,7 +12,6 @@ use elasticsearch::cat::{CatTemplatesParts, CatSnapshotsParts};
 use elasticsearch::snapshot::{SnapshotDeleteParts, SnapshotDeleteRepositoryParts};
 use elasticsearch::watcher::WatcherDeleteWatchParts;
 use serde_json::{json, Value};
-use std::future::Future;
 use elasticsearch::security::{SecurityGetRoleParts, SecurityDeleteRoleParts, SecurityGetUserParts, SecurityDeleteUserParts, SecurityGetPrivilegesParts, SecurityDeletePrivilegesParts, SecurityPutUserParts};
 use elasticsearch::ml::{MlStopDatafeedParts, MlGetDatafeedsParts, MlDeleteDatafeedParts, MlCloseJobParts, MlGetJobsParts, MlDeleteJobParts};
 use elasticsearch::ilm::IlmRemovePolicyParts;
