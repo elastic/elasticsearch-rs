@@ -1,5 +1,5 @@
 use super::Step;
-use crate::step::{BodyExpr, clean_regex};
+use crate::step::{clean_regex, BodyExpr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 

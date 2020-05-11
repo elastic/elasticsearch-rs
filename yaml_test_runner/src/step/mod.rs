@@ -157,7 +157,7 @@ pub fn ok_or_accumulate<T>(
     } else {
         let msg = errs
             .iter()
-            .map(|e| format!("{}{}", "\t".to_string().repeat(indent), e.to_string()))
+            .map(|e| format!("{}{}", "  ".to_string().repeat(indent), e.to_string()))
             .collect::<Vec<_>>()
             .join("\n");
 

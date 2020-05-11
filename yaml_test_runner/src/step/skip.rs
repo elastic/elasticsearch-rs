@@ -16,7 +16,6 @@ impl From<Skip> for Step {
 }
 
 impl Skip {
-
     pub fn version(&self) -> String {
         self.version.clone().unwrap_or_else(|| "".into())
     }
@@ -28,7 +27,7 @@ impl Skip {
     pub fn features(&self) -> &[String] {
         match &self.features {
             Some(v) => v,
-            None => &[]
+            None => &[],
         }
     }
 
@@ -48,7 +47,7 @@ impl Skip {
                             semver::VersionReq::parse(
                                 format!(">={},<={}", start.as_str(), end.as_str()).as_ref(),
                             )
-                                .unwrap(),
+                            .unwrap(),
                         ),
                         (Some(start), None) => Some(
                             semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref())

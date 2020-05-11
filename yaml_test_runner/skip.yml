@@ -1,6 +1,10 @@
+# features not yet implemented
 features:
   - transform_and_set
   - node_selector
   - arbitrary_key
 
+# tests to skip generating and compiling a test for.
+# Take the form of the generated path e.g.
+# generated::xpack::security::hidden_index::_13_security_tokens_read::tests::test_get_security_tokens_index_metadata
 tests: []

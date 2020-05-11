@@ -10,9 +10,10 @@ use std::collections::HashSet;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::path::{Component, PathBuf, Path};
+use std::path::{Component, Path, PathBuf};
 use yaml_rust::{Yaml, YamlLoader};
 
+/// The test suite to compile
 #[derive(Debug, PartialEq)]
 pub enum TestSuite {
     Oss,
@@ -32,7 +33,13 @@ struct YamlTests<'a> {
 }
 
 impl<'a> YamlTests<'a> {
-    pub fn new(path: &'a Path, version: &'a semver::Version, skips: &'a Skips, suite: TestSuite, len: usize) -> Self {
+    pub fn new(
+        path: &'a Path,
+        version: &'a semver::Version,
+        skips: &'a Skips,
+        suite: TestSuite,
+        len: usize,
+    ) -> Self {
         Self {
             path,
             version,
@@ -45,8 +52,7 @@ impl<'a> YamlTests<'a> {
         }
     }
 
-    /// Collects the use directives required for all steps in
-    /// the test
+    /// Collects the use directives required for all steps and tests
     fn use_directives_from_steps(steps: &[Step]) -> Vec<String> {
         steps
             .iter()
@@ -56,6 +62,7 @@ impl<'a> YamlTests<'a> {
             .collect()
     }
 
+    /// Adds a specific setup function
     pub fn add_setup(&mut self, setup: TestFn) -> &mut Self {
         let directives = Self::use_directives_from_steps(&setup.steps);
         for directive in directives {
@@ -66,6 +73,7 @@ impl<'a> YamlTests<'a> {
         self
     }
 
+    /// Adds a specific teardown function
     pub fn add_teardown(&mut self, teardown: TestFn) -> &mut Self {
         let directives = Self::use_directives_from_steps(&teardown.steps);
         for directive in directives {
@@ -76,6 +84,7 @@ impl<'a> YamlTests<'a> {
         self
     }
 
+    /// Adds a test to the collection of tests
     pub fn add_test_fn(&mut self, test_fn: TestFn) -> &mut Self {
         let directives = Self::use_directives_from_steps(&test_fn.steps);
         for directive in directives {
@@ -95,7 +104,7 @@ impl<'a> YamlTests<'a> {
             TestSuite::XPack => quote!(client::general_xpack_setup(&client).await?;),
         };
 
-        let tests: Vec<Tokens> = self.fn_impls(general_setup_call, setup_call, teardown_call);
+        let tests = self.fn_impls(general_setup_call, setup_call, teardown_call);
 
         let directives: Vec<Tokens> = self
             .directives
@@ -164,12 +173,36 @@ impl<'a> YamlTests<'a> {
         true
     }
 
+    fn generated_full_name(&self, name: &str) -> String {
+        let mut test_file_path = test_file_path(self.path).unwrap();
+        test_file_path.set_extension("");
+
+        let mut components = test_file_path
+            .components()
+            .into_iter()
+            .filter_map(|c| match c {
+                Component::Prefix(_) => None,
+                Component::RootDir => None,
+                Component::CurDir => None,
+                Component::ParentDir => None,
+                Component::Normal(n) => Some(n.to_string_lossy().into_owned()),
+            })
+            .collect::<Vec<String>>();
+
+        format!("generated::{}::tests::{}", components.join("::"), name)
+    }
+
+    fn skip_test(&self, name: &str) -> bool {
+        let generated_name = self.generated_full_name(&name);
+        self.skips.tests.contains(&generated_name)
+    }
+
     fn fn_impls(
         &self,
         general_setup_call: Tokens,
         setup_call: Option<Tokens>,
         teardown_call: Option<Tokens>,
-    ) -> Vec<Tokens> {
+    ) -> Vec<Option<Tokens>> {
         let mut seen_method_names = HashSet::new();
 
         self.tests
@@ -177,8 +210,17 @@ impl<'a> YamlTests<'a> {
             .map(|test_fn| {
                 let name =
                     Self::unique_fn_name(test_fn.fn_name().as_ref(), &mut seen_method_names);
-                let fn_name = syn::Ident::from(name.as_str());
 
+                if self.skip_test(&name) {
+                    info!(
+                        "skipping '{}' in {:?} because included in skip.yml",
+                        &name,
+                        self.path,
+                    );
+                    return None;
+                }
+
+                let fn_name = syn::Ident::from(name.as_str());
                 let mut body = Tokens::new();
                 let mut skip = Option::<&Skip>::None;
                 let mut read_response = false;
@@ -188,7 +230,7 @@ impl<'a> YamlTests<'a> {
                         Step::Skip(s) => {
                             skip = if s.version_matches(self.version) {
                                 info!(
-                                    "skipping {} in {:?} because version '{}' is met. {}",
+                                    "skipping '{}' in {:?} because version '{}' is met. {}",
                                     &name,
                                     self.path,
                                     s.version(),
@@ -197,7 +239,7 @@ impl<'a> YamlTests<'a> {
                                 Some(s)
                             } else if s.skip_features(&self.skips.features) {
                                 info!(
-                                    "skipping {} in {:?} because it uses features '{:?}' which are currently not implemented",
+                                    "skipping '{}' in {:?} because it needs features '{:?}' which are currently not implemented",
                                     &name,
                                     self.path,
                                     s.features()
@@ -234,10 +276,9 @@ impl<'a> YamlTests<'a> {
                     }
                 }
 
-                // TODO: surface this some other way, other than returning empty tokens
                 match skip {
-                    Some(_) => Tokens::new(),
-                    None => quote! {
+                    Some(_) => None,
+                    None => Some(quote! {
                         #[tokio::test]
                         async fn #fn_name() -> Result<(), failure::Error> {
                             let client = client::create();
@@ -247,7 +288,7 @@ impl<'a> YamlTests<'a> {
                             #teardown_call
                             Ok(())
                         }
-                    },
+                    }),
                 }
             })
             .collect()
@@ -318,7 +359,6 @@ pub fn generate_tests_from_yaml(
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
 ) -> Result<(), failure::Error> {
-
     let skips = serde_yaml::from_str::<Skips>(include_str!("./../skip.yml"))?;
     let paths = fs::read_dir(download_dir)?;
     for entry in paths {
@@ -381,7 +421,8 @@ pub fn generate_tests_from_yaml(
                     }
 
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
+                    let mut test =
+                        YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
@@ -408,7 +449,7 @@ pub fn generate_tests_from_yaml(
                                 (k, v) => {
                                     Err(failure::err_msg(format!(
                                         "expected string key and array value in {:?}, but found {:?} and {:?}",
-                                        &entry.path(),
+                                        relative_path,
                                         &k,
                                         &v,
                                     )))
@@ -419,12 +460,8 @@ pub fn generate_tests_from_yaml(
 
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
                     match ok_or_accumulate(&results, 1) {
-                        Ok(_) => write_test_file(test, &path, base_download_dir, generated_dir)?,
-                        Err(e) => info!(
-                            "error creating test file for {:?}. skipping:\n{}",
-                            &entry.path(),
-                            e
-                        ),
+                        Ok(_) => write_test_file(test, relative_path, generated_dir)?,
+                        Err(e) => info!("skipping test file for {:?}\n{}", relative_path, e),
                     }
                 }
             }
@@ -470,32 +507,34 @@ fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
     Ok(())
 }
 
+fn test_file_path(relative_path: &Path) -> Result<PathBuf, failure::Error> {
+    let mut relative = relative_path.to_path_buf();
+    relative.set_extension("");
+    // directories and files will form the module names so ensure they're valid module names
+    let clean: String = relative
+        .to_string_lossy()
+        .into_owned()
+        .replace(".", "_")
+        .replace("-", "_");
+
+    relative = PathBuf::from(clean);
+    // modules can't start with a number so prefix with underscore
+    relative.set_file_name(format!(
+        "_{}",
+        &relative.file_name().unwrap().to_string_lossy().into_owned()
+    ));
+
+    Ok(relative)
+}
+
 fn write_test_file(
     test: YamlTests,
-    path: &PathBuf,
-    base_download_dir: &PathBuf,
+    relative_path: &Path,
     generated_dir: &PathBuf,
 ) -> Result<(), failure::Error> {
-    let path = {
-        let mut relative = path.strip_prefix(&base_download_dir)?.to_path_buf();
-        relative.set_extension("");
-        // directories and files will form the module names so ensure they're valid module names
-        let clean: String = relative
-            .to_string_lossy()
-            .into_owned()
-            .replace(".", "_")
-            .replace("-", "_");
-        relative = PathBuf::from(clean);
-
-        let mut path = generated_dir.join(relative);
-        path.set_extension("rs");
-        // modules can't start with a number so prefix with underscore
-        path.set_file_name(format!(
-            "_{}",
-            &path.file_name().unwrap().to_string_lossy().into_owned()
-        ));
-        path
-    };
+    let mut path = test_file_path(relative_path)?;
+    path = generated_dir.join(path);
+    path.set_extension("rs");
 
     fs::create_dir_all(&path.parent().unwrap())?;
     let mut file = File::create(&path)?;

@@ -58,8 +58,8 @@ pub fn create() -> Elasticsearch {
                 let pass = p.to_string();
                 url.set_password(None).unwrap();
                 pass
-            },
-            None => "changeme".into()
+            }
+            None => "changeme".into(),
         };
 
         Some(Credentials::Basic(username, password))
@@ -71,12 +71,8 @@ pub fn create() -> Elasticsearch {
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
-        Some(c) => {
-            builder
-                .auth(c)
-                .cert_validation(CertificateValidation::None)
-        },
-        None => builder
+        Some(c) => builder.auth(c).cert_validation(CertificateValidation::None),
+        None => builder,
     };
 
     if running_proxy() {

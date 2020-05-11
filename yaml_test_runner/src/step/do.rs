@@ -2,12 +2,12 @@ use inflector::Inflector;
 use quote::{ToTokens, Tokens};
 
 use super::{ok_or_accumulate, Step};
+use crate::step::clean_regex;
 use api_generator::generator::{Api, ApiEndpoint, TypeKind};
 use itertools::Itertools;
 use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
-use crate::step::clean_regex;
 
 lazy_static! {
     // replace usages of "$.*" with the captured value
@@ -553,12 +553,21 @@ impl ApiCall {
 
     fn from_set_value(s: &str) -> Tokens {
         if s.starts_with('$') {
-            let ident = syn::Ident::from(s.trim_start_matches('$')
-                .trim_start_matches('{')
-                .trim_end_matches('}'));
+            let ident = syn::Ident::from(
+                s.trim_start_matches('$')
+                    .trim_start_matches('{')
+                    .trim_end_matches('}'),
+            );
             quote! { #ident }
         } else {
-            let token = syn::Ident::from(SET_DELIMITED_REGEX.captures(s).unwrap().get(1).unwrap().as_str());
+            let token = syn::Ident::from(
+                SET_DELIMITED_REGEX
+                    .captures(s)
+                    .unwrap()
+                    .get(1)
+                    .unwrap()
+                    .as_str(),
+            );
             let replacement = SET_DELIMITED_REGEX.replace_all(s, "{}");
             // wrap in Value::String so that generated .as_str().unwrap() logic works the same for both branches
             quote! { Value::String(format!(#replacement, #token.as_str().unwrap())) }
