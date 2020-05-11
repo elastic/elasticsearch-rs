@@ -49,7 +49,7 @@ pub fn download_test_suites(
         let version = fs::read_to_string(&last_downloaded_version)
             .expect("Unable to read last_downloaded_version of yaml tests");
         if version == branch {
-            println!("yaml tests for branch {} already downloaded", branch);
+            info!("yaml tests for branch {} already downloaded", branch);
             return Ok(());
         }
     }
@@ -72,7 +72,7 @@ pub fn download_test_suites(
 
     let mut headers = HeaderMap::new();
     let token_value = format!("token {}", token);
-    headers.append(AUTHORIZATION, HeaderValue::from_str(&token_value).unwrap());
+    headers.append(AUTHORIZATION, HeaderValue::from_str(&token_value)?);
     let client = reqwest::ClientBuilder::new()
         .default_headers(headers)
         .build()
@@ -109,9 +109,9 @@ fn download_tests(
     };
 
     fs::create_dir_all(&suite_dir)?;
-    println!("Downloading {} tests from {}", &suite.dir, &suite.branch);
+    info!("Downloading {} tests from {}", &suite.dir, &suite.branch);
     download(client, &suite.url, &suite_dir)?;
-    println!(
+    info!(
         "Done downloading {} tests from {}",
         &suite.dir, &suite.branch
     );
@@ -136,7 +136,7 @@ fn download(
         .unwrap();
 
     if remaining_rate_limit < 10 {
-        println!("Remaining rate limit: {}", remaining_rate_limit);
+        warn!("Remaining rate limit: {}", remaining_rate_limit);
     }
 
     let contents: Vec<GitHubContent> = response.json()?;
