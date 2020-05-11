@@ -41,15 +41,43 @@ fn running_proxy() -> bool {
 
 /// create a client to use in tests
 pub fn create() -> Elasticsearch {
-    let url = Url::parse(cluster_addr().as_ref()).unwrap();
+    let mut url = Url::parse(cluster_addr().as_ref()).unwrap();
+
+    // if the url is https and specifies a username and password, remove from the url and set credentials
+    let credentials = if url.scheme() == "https" {
+        let username = if !url.username().is_empty() {
+            let u = url.username().to_string();
+            url.set_username("").unwrap();
+            u
+        } else {
+            "elastic".into()
+        };
+
+        let password = match url.password() {
+            Some(p) => {
+                let pass = p.to_string();
+                url.set_password(None).unwrap();
+                pass
+            },
+            None => "changeme".into()
+        };
+
+        Some(Credentials::Basic(username, password))
+    } else {
+        None
+    };
+
     let conn_pool = SingleNodeConnectionPool::new(url.clone());
     let mut builder = TransportBuilder::new(conn_pool);
 
-    if url.scheme() == "https" {
-        builder = builder
-            .auth(Credentials::Basic("elastic".into(), "changeme".into()))
-            .cert_validation(CertificateValidation::None)
-    }
+    builder = match credentials {
+        Some(c) => {
+            builder
+                .auth(c)
+                .cert_validation(CertificateValidation::None)
+        },
+        None => builder
+    };
 
     if running_proxy() {
         let proxy_url = Url::parse("http://localhost:8888").unwrap();

@@ -322,6 +322,30 @@ impl Transport {
         let reqwest_method = self.method(method);
         let mut request_builder = self.client.request(reqwest_method, url);
 
+        // set credentials before any headers, as credentials append to existing headers in reqwest,
+        // whilst setting headers() overwrites, so if an Authorization header has been specified
+        // on a specific request, we want it to overwrite.
+        if let Some(c) = &self.credentials {
+            request_builder = match c {
+                Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
+                Credentials::Bearer(t) => request_builder.bearer_auth(t),
+                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
+                Credentials::Certificate(_) => request_builder,
+                Credentials::ApiKey(i, k) => {
+                    let mut header_value = b"ApiKey ".to_vec();
+                    {
+                        let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
+                        write!(encoder, "{}:", i).unwrap();
+                        write!(encoder, "{}", k).unwrap();
+                    }
+                    request_builder.header(
+                        AUTHORIZATION,
+                        HeaderValue::from_bytes(&header_value).unwrap(),
+                    )
+                }
+            }
+        }
+
         // default headers first, overwrite with any provided
         let mut request_headers = HeaderMap::with_capacity(3 + headers.len());
         request_headers.insert(CONTENT_TYPE, HeaderValue::from_static(DEFAULT_CONTENT_TYPE));
@@ -347,27 +371,6 @@ impl Transport {
 
         if let Some(q) = query_string {
             request_builder = request_builder.query(q);
-        }
-
-        if let Some(c) = &self.credentials {
-            request_builder = match c {
-                Credentials::Basic(u, p) => request_builder.basic_auth(u, Some(p)),
-                Credentials::Bearer(t) => request_builder.bearer_auth(t),
-                #[cfg(any(feature = "native-tls", feature = "rustls-tls"))]
-                Credentials::Certificate(_) => request_builder,
-                Credentials::ApiKey(i, k) => {
-                    let mut header_value = b"ApiKey ".to_vec();
-                    {
-                        let mut encoder = Base64Encoder::new(&mut header_value, base64::STANDARD);
-                        write!(encoder, "{}:", i).unwrap();
-                        write!(encoder, "{}", k).unwrap();
-                    }
-                    request_builder.header(
-                        AUTHORIZATION,
-                        HeaderValue::from_bytes(&header_value).unwrap(),
-                    )
-                }
-            }
         }
 
         let response = request_builder.send().await;
