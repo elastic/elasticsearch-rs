@@ -7,6 +7,20 @@ use itertools::Itertools;
 use regex::Regex;
 use std::collections::BTreeMap;
 use yaml_rust::{Yaml, YamlEmitter};
+use crate::step::clean_regex;
+
+lazy_static! {
+    // replace usages of "$.*" with the captured value
+    static ref SET_REGEX: Regex =
+        Regex::new(r#""\$(.*?)""#).unwrap();
+
+    static ref SET_DELIMITED_REGEX: Regex =
+        Regex::new(r#"\$\{(.*?)\}"#).unwrap();
+
+    // include i64 suffix on whole numbers
+    static ref INT_REGEX: Regex =
+        regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
+}
 
 /// A catch expression on a do step
 pub struct Catch(String);
@@ -43,15 +57,15 @@ impl ToTokens for Catch {
                 // Not possible to pass a bad param to the client so ignore.
             }
             s => {
-                // trim the enclosing forward slashes and replace escaped forward slashes
-                let t = s.trim_matches('/').replace("\\/", "/");
+                let t = clean_regex(s);
                 tokens.append(quote! {
                     let catch_regex = regex::Regex::new(#t)?;
+                    let error = response_body["error"].to_string();
                     assert!(
-                        catch_regex.is_match(response_body["error"]["reason"].as_str().unwrap()),
-                        "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
-                        "[\"error\"][\"reason\"]",
-                        response_body["error"]["reason"].as_str().unwrap(),
+                        catch_regex.is_match(&error),
+                        "expected json value at {}:\n\n{}\n\nto match regex:\n\n{}",
+                        "[\"error\"]",
+                        &error,
                         #s
                     );
                 });
@@ -190,16 +204,26 @@ impl ToTokens for ApiCall {
         let params = &self.params;
         let body = &self.body;
 
-        // TODO: handle "set" values
-
         let headers: Vec<Tokens> = self
             .headers
             .iter()
             .map(|(k, v)| {
                 // header names **must** be lowercase to satisfy Header lib
                 let k = k.to_lowercase();
-                quote! {
-                    .header(HeaderName::from_static(#k), HeaderValue::from_static(#v))
+
+                // handle "set" value in headers
+                if let Some(c) = SET_DELIMITED_REGEX.captures(v) {
+                    let token = syn::Ident::from(c.get(1).unwrap().as_str());
+                    let replacement = SET_DELIMITED_REGEX.replace_all(v, "{}");
+                    quote! { .header(
+                        HeaderName::from_static(#k),
+                        HeaderValue::from_str(format!(#replacement, #token).as_ref())?)
+                    }
+                } else {
+                    quote! { .header(
+                        HeaderName::from_static(#k),
+                        HeaderValue::from_static(#v))
+                    }
                 }
             })
             .collect();
@@ -213,16 +237,6 @@ impl ToTokens for ApiCall {
                 .await?;
         });
     }
-}
-
-lazy_static! {
-    // replace usages of "$.*" with the captured value
-    static ref SET_REGEX: Regex =
-        Regex::new(r#""\$(.*?)""#).unwrap();
-
-    // include i64 suffix on whole numbers
-    static ref INT_REGEX: Regex =
-        regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
 }
 
 impl ApiCall {
