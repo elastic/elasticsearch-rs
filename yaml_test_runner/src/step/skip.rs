@@ -16,24 +16,25 @@ impl From<Skip> for Step {
 }
 
 impl Skip {
-    pub fn try_parse(yaml: &Yaml) -> Result<Skip, failure::Error> {
-        let version = yaml["version"]
-            .as_str()
-            .map_or_else(|| None, |y| Some(y.to_string()));
-        let reason = yaml["reason"]
-            .as_str()
-            .map_or_else(|| None, |y| Some(y.to_string()));
-        let features = match &yaml["features"] {
-            Yaml::String(s) => Some(vec![s.to_string()]),
-            Yaml::Array(a) => Some(
-                a.iter()
-                    .map(|y| y.as_str().map(|s| s.to_string()).unwrap())
-                    .collect(),
-            ),
-            _ => None,
-        };
 
-        let version_requirements = if let Some(v) = &version {
+    pub fn version(&self) -> String {
+        self.version.clone().unwrap_or_else(|| "".into())
+    }
+
+    pub fn reason(&self) -> String {
+        self.reason.clone().unwrap_or_else(|| "".into())
+    }
+
+    pub fn features(&self) -> &[String] {
+        match &self.features {
+            Some(v) => v,
+            None => &[]
+        }
+    }
+
+    /// Converts the version range specified in the yaml test into a [semver::VersionReq]
+    fn parse_version_requirements(version: &Option<String>) -> Option<semver::VersionReq> {
+        if let Some(v) = version {
             if v.to_lowercase() == "all" {
                 Some(semver::VersionReq::any())
             } else {
@@ -47,7 +48,7 @@ impl Skip {
                             semver::VersionReq::parse(
                                 format!(">={},<={}", start.as_str(), end.as_str()).as_ref(),
                             )
-                            .unwrap(),
+                                .unwrap(),
                         ),
                         (Some(start), None) => Some(
                             semver::VersionReq::parse(format!(">={}", start.as_str()).as_ref())
@@ -65,7 +66,27 @@ impl Skip {
             }
         } else {
             None
+        }
+    }
+
+    pub fn try_parse(yaml: &Yaml) -> Result<Skip, failure::Error> {
+        let version = yaml["version"]
+            .as_str()
+            .map_or_else(|| None, |y| Some(y.to_string()));
+        let reason = yaml["reason"]
+            .as_str()
+            .map_or_else(|| None, |y| Some(y.to_string()));
+        let features = match &yaml["features"] {
+            Yaml::String(s) => Some(vec![s.to_string()]),
+            Yaml::Array(a) => Some(
+                a.iter()
+                    .map(|y| y.as_str().map(|s| s.to_string()).unwrap())
+                    .collect(),
+            ),
+            _ => None,
         };
+
+        let version_requirements = Self::parse_version_requirements(&version);
 
         Ok(Skip {
             version,
@@ -75,9 +96,18 @@ impl Skip {
         })
     }
 
-    pub fn matches(&self, version: &semver::Version) -> bool {
+    /// Determines if this instance matches the version
+    pub fn version_matches(&self, version: &semver::Version) -> bool {
         match &self.version_requirements {
             Some(r) => r.matches(version),
+            None => false,
+        }
+    }
+
+    /// Determines if this instance matches the version
+    pub fn skip_features(&self, features: &Vec<String>) -> bool {
+        match &self.features {
+            Some(test_features) => test_features.iter().any(|f| features.contains(f)),
             None => false,
         }
     }

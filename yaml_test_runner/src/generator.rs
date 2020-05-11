@@ -5,11 +5,12 @@ use crate::step::*;
 use api_generator::generator::Api;
 use regex::Regex;
 use semver::Version;
+use serde::Deserialize;
 use std::collections::HashSet;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::path::{Component, PathBuf};
+use std::path::{Component, PathBuf, Path};
 use yaml_rust::{Yaml, YamlLoader};
 
 #[derive(Debug, PartialEq)]
@@ -20,7 +21,9 @@ pub enum TestSuite {
 
 /// The components of a test file, constructed from a yaml file
 struct YamlTests<'a> {
+    path: &'a Path,
     version: &'a Version,
+    skips: &'a Skips,
     suite: TestSuite,
     directives: HashSet<String>,
     setup: Option<TestFn>,
@@ -29,9 +32,11 @@ struct YamlTests<'a> {
 }
 
 impl<'a> YamlTests<'a> {
-    pub fn new(version: &'a semver::Version, suite: TestSuite, len: usize) -> Self {
+    pub fn new(path: &'a Path, version: &'a semver::Version, skips: &'a Skips, suite: TestSuite, len: usize) -> Self {
         Self {
+            path,
             version,
+            skips,
             suite,
             directives: HashSet::with_capacity(len),
             setup: None,
@@ -126,7 +131,7 @@ impl<'a> YamlTests<'a> {
 
     /// some function descriptions are the same in YAML tests, which would result in
     /// duplicate generated test function names. Deduplicate by appending incrementing number
-    fn unique_fn_name(name: &str, seen_method_names: &mut HashSet<String>) -> syn::Ident {
+    fn unique_fn_name(name: &str, seen_method_names: &mut HashSet<String>) -> String {
         let mut fn_name = name.to_string();
         while !seen_method_names.insert(fn_name.clone()) {
             lazy_static! {
@@ -140,7 +145,7 @@ impl<'a> YamlTests<'a> {
                 fn_name.push_str("_2");
             }
         }
-        syn::Ident::from(fn_name)
+        fn_name
     }
 
     fn read_response(read_response: bool, is_body_expr: bool, tokens: &mut Tokens) -> bool {
@@ -170,8 +175,9 @@ impl<'a> YamlTests<'a> {
         self.tests
             .iter()
             .map(|test_fn| {
-                let fn_name =
+                let name =
                     Self::unique_fn_name(test_fn.fn_name().as_ref(), &mut seen_method_names);
+                let fn_name = syn::Ident::from(name.as_str());
 
                 let mut body = Tokens::new();
                 let mut skip = Option::<&Skip>::None;
@@ -180,15 +186,21 @@ impl<'a> YamlTests<'a> {
                 for step in &test_fn.steps {
                     match step {
                         Step::Skip(s) => {
-                            skip = if s.matches(self.version) {
-                                let reason = match s.reason.as_ref() {
-                                    Some(s) => s.to_string(),
-                                    None => String::new(),
-                                };
+                            skip = if s.version_matches(self.version) {
                                 info!(
-                                    "Skipping test because skip version '{}' are met. {}",
-                                    s.version.as_ref().unwrap(),
-                                    reason
+                                    "skipping {} in {:?} because version '{}' is met. {}",
+                                    &name,
+                                    self.path,
+                                    s.version(),
+                                    s.reason()
+                                );
+                                Some(s)
+                            } else if s.skip_features(&self.skips.features) {
+                                info!(
+                                    "skipping {} in {:?} because it uses features '{:?}' which are currently not implemented",
+                                    &name,
+                                    self.path,
+                                    s.features()
                                 );
                                 Some(s)
                             } else {
@@ -292,6 +304,12 @@ impl TestFn {
     }
 }
 
+#[derive(Deserialize)]
+struct Skips {
+    features: Vec<String>,
+    tests: Vec<String>,
+}
+
 pub fn generate_tests_from_yaml(
     api: &Api,
     suite: &TestSuite,
@@ -300,6 +318,8 @@ pub fn generate_tests_from_yaml(
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
 ) -> Result<(), failure::Error> {
+
+    let skips = serde_yaml::from_str::<Skips>(include_str!("./../skip.yml"))?;
     let paths = fs::read_dir(download_dir)?;
     for entry in paths {
         if let Ok(entry) = entry {
@@ -349,7 +369,7 @@ pub fn generate_tests_from_yaml(
 
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
 
-                    // a yaml test can contain multiple yaml docs
+                    // a yaml test can contain multiple yaml docs, so use yaml_rust to parse
                     let result = YamlLoader::load_from_str(&yaml);
                     if result.is_err() {
                         info!(
@@ -361,7 +381,7 @@ pub fn generate_tests_from_yaml(
                     }
 
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(version, test_suite, docs.len());
+                    let mut test = YamlTests::new(relative_path, version, &skips, test_suite, docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
@@ -400,8 +420,8 @@ pub fn generate_tests_from_yaml(
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
                     match ok_or_accumulate(&results, 1) {
                         Ok(_) => write_test_file(test, &path, base_download_dir, generated_dir)?,
-                        Err(e) => println!(
-                            "Error creating test file for {:?}. skipping:\n{}",
+                        Err(e) => info!(
+                            "error creating test file for {:?}. skipping:\n{}",
                             &entry.path(),
                             e
                         ),

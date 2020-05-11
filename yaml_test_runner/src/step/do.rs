@@ -14,6 +14,7 @@ lazy_static! {
     static ref SET_REGEX: Regex =
         Regex::new(r#""\$(.*?)""#).unwrap();
 
+    // replace usages of ${.*} with the captured value
     static ref SET_DELIMITED_REGEX: Regex =
         Regex::new(r#"\$\{(.*?)\}"#).unwrap();
 
@@ -217,7 +218,7 @@ impl ToTokens for ApiCall {
                     let replacement = SET_DELIMITED_REGEX.replace_all(v, "{}");
                     quote! { .header(
                         HeaderName::from_static(#k),
-                        HeaderValue::from_str(format!(#replacement, #token).as_ref())?)
+                        HeaderValue::from_str(format!(#replacement, #token.as_str().unwrap()).as_ref())?)
                     }
                 } else {
                     quote! { .header(
@@ -410,10 +411,9 @@ impl ApiCall {
                                 }
                                 TypeKind::Integer => {
                                     if is_set_value {
-                                        let t = Self::from_set_value(s);
-                                        let ident = syn::Ident::from(t);
+                                        let set_value = Self::from_set_value(s);
                                         tokens.append(quote! {
-                                           .#param_ident(#ident.as_i64().unwrap() as i32)
+                                           .#param_ident(#set_value.as_i64().unwrap() as i32)
                                         });
                                     } else {
                                         let i = s.parse::<i32>()?;
@@ -424,10 +424,9 @@ impl ApiCall {
                                 }
                                 TypeKind::Number | TypeKind::Long => {
                                     if is_set_value {
-                                        let t = Self::from_set_value(s);
-                                        let ident = syn::Ident::from(t);
+                                        let set_value = Self::from_set_value(s);
                                         tokens.append(quote! {
-                                           .#param_ident(#ident.as_i64().unwrap())
+                                           .#param_ident(#set_value.as_i64().unwrap())
                                         });
                                     } else {
                                         let i = s.parse::<i64>()?;
@@ -439,9 +438,8 @@ impl ApiCall {
                                 _ => {
                                     // handle set values
                                     let t = if is_set_value {
-                                        let t = Self::from_set_value(s);
-                                        let ident = syn::Ident::from(t);
-                                        quote! { #ident.as_str().unwrap() }
+                                        let set_value = Self::from_set_value(s);
+                                        quote! { #set_value.as_str().unwrap() }
                                     } else {
                                         quote! { #s }
                                     };
@@ -553,10 +551,18 @@ impl ApiCall {
         }
     }
 
-    fn from_set_value(s: &str) -> &str {
-        s.trim_start_matches('$')
-            .trim_start_matches('{')
-            .trim_end_matches('}')
+    fn from_set_value(s: &str) -> Tokens {
+        if s.starts_with('$') {
+            let ident = syn::Ident::from(s.trim_start_matches('$')
+                .trim_start_matches('{')
+                .trim_end_matches('}'));
+            quote! { #ident }
+        } else {
+            let token = syn::Ident::from(SET_DELIMITED_REGEX.captures(s).unwrap().get(1).unwrap().as_str());
+            let replacement = SET_DELIMITED_REGEX.replace_all(s, "{}");
+            // wrap in Value::String so that generated .as_str().unwrap() logic works the same for both branches
+            quote! { Value::String(format!(#replacement, #token.as_str().unwrap())) }
+        }
     }
 
     fn generate_parts(
@@ -660,7 +666,7 @@ impl ApiCall {
 
                 match v {
                     Yaml::String(s) => {
-                        let is_set_value = s.starts_with('$');
+                        let is_set_value = s.starts_with('$') || s.contains("${");
 
                         match ty.ty {
                             TypeKind::List => {
@@ -668,9 +674,8 @@ impl ApiCall {
                                     .split(',')
                                     .map(|s| {
                                         if is_set_value {
-                                            let t = Self::from_set_value(s);
-                                            let ident = syn::Ident::from(t);
-                                            quote! { #ident.as_str().unwrap() }
+                                            let set_value = Self::from_set_value(s);
+                                            quote! { #set_value.as_str().unwrap() }
                                         } else {
                                             quote! { #s }
                                         }
@@ -680,9 +685,8 @@ impl ApiCall {
                             }
                             TypeKind::Long => {
                                 if is_set_value {
-                                    let t = Self::from_set_value(s);
-                                    let ident = syn::Ident::from(t);
-                                    Ok(quote! { #ident.as_i64().unwrap() })
+                                    let set_value = Self::from_set_value(s);
+                                    Ok(quote! { #set_value.as_i64().unwrap() })
                                 } else {
                                     let l = s.parse::<i64>().unwrap();
                                     Ok(quote! { #l })
@@ -690,9 +694,8 @@ impl ApiCall {
                             }
                             _ => {
                                 if is_set_value {
-                                    let t = Self::from_set_value(s);
-                                    let ident = syn::Ident::from(t);
-                                    Ok(quote! { #ident.as_str().unwrap() })
+                                    let set_value = Self::from_set_value(s);
+                                    Ok(quote! { #set_value.as_str().unwrap() })
                                 } else {
                                     Ok(quote! { #s })
                                 }
