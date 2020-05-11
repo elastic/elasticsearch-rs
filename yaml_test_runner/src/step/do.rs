@@ -96,7 +96,7 @@ impl From<Do> for Step {
 impl Do {
     pub fn to_tokens(&self, mut read_response: bool, tokens: &mut Tokens) -> bool {
         // TODO: Add in warnings
-        &self.api_call.to_tokens(tokens);
+        self.api_call.to_tokens(tokens);
 
         if let Some(c) = &self.catch {
             if !read_response && c.needs_response_body() {

@@ -138,25 +138,7 @@ impl<'a> YamlTests<'a> {
         }
     }
 
-    /// some function descriptions are the same in YAML tests, which would result in
-    /// duplicate generated test function names. Deduplicate by appending incrementing number
-    fn unique_fn_name(name: &str, seen_method_names: &mut HashSet<String>) -> String {
-        let mut fn_name = name.to_string();
-        while !seen_method_names.insert(fn_name.clone()) {
-            lazy_static! {
-                static ref ENDING_DIGITS_REGEX: Regex = Regex::new(r"^(.*?)_(\d*?)$").unwrap();
-            }
-            if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
-                let name = c.get(1).unwrap().as_str();
-                let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
-                fn_name = format!("{}_{}", name, n + 1);
-            } else {
-                fn_name.push_str("_2");
-            }
-        }
-        fn_name
-    }
-
+    /// Whether to emit code to read the last response, either as json or text
     fn read_response(read_response: bool, is_body_expr: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
             if is_body_expr {
@@ -173,27 +155,24 @@ impl<'a> YamlTests<'a> {
         true
     }
 
-    fn generated_full_name(&self, name: &str) -> String {
-        let mut test_file_path = test_file_path(self.path).unwrap();
-        test_file_path.set_extension("");
-
-        let mut components = test_file_path
-            .components()
-            .into_iter()
-            .filter_map(|c| match c {
-                Component::Prefix(_) => None,
-                Component::RootDir => None,
-                Component::CurDir => None,
-                Component::ParentDir => None,
-                Component::Normal(n) => Some(n.to_string_lossy().into_owned()),
-            })
-            .collect::<Vec<String>>();
-
-        format!("generated::{}::tests::{}", components.join("::"), name)
-    }
-
+    /// Whether the test should be skipped
     fn skip_test(&self, name: &str) -> bool {
-        let generated_name = self.generated_full_name(&name);
+        let generated_name = {
+            let mut test_file_path = test_file_path(self.path).unwrap();
+            test_file_path.set_extension("");
+            let components = test_file_path
+                .components()
+                .filter_map(|c| match c {
+                    Component::Prefix(_) => None,
+                    Component::RootDir => None,
+                    Component::CurDir => None,
+                    Component::ParentDir => None,
+                    Component::Normal(n) => Some(n.to_string_lossy().into_owned()),
+                })
+                .collect::<Vec<String>>();
+
+            format!("generated::{}::tests::{}", components.join("::"), name)
+        };
         self.skips.tests.contains(&generated_name)
     }
 
@@ -203,14 +182,12 @@ impl<'a> YamlTests<'a> {
         setup_call: Option<Tokens>,
         teardown_call: Option<Tokens>,
     ) -> Vec<Option<Tokens>> {
-        let mut seen_method_names = HashSet::new();
+        let mut seen_names = HashSet::new();
 
         self.tests
             .iter()
             .map(|test_fn| {
-                let name =
-                    Self::unique_fn_name(test_fn.fn_name().as_ref(), &mut seen_method_names);
-
+                let name = test_fn.unique_name(&mut seen_names);
                 if self.skip_test(&name) {
                     info!(
                         "skipping '{}' in {:?} because included in skip.yml",
@@ -340,8 +317,23 @@ impl TestFn {
         }
     }
 
-    pub fn fn_name(&self) -> String {
-        self.name.replace(" ", "_").to_lowercase().to_snake_case()
+    /// some function descriptions are the same in YAML tests, which would result in
+    /// duplicate generated test function names. Deduplicate by appending incrementing number
+    pub fn unique_name(&self, seen_names: &mut HashSet<String>) -> String {
+        let mut fn_name = self.name.replace(" ", "_").to_lowercase().to_snake_case();
+        while !seen_names.insert(fn_name.clone()) {
+            lazy_static! {
+                static ref ENDING_DIGITS_REGEX: Regex = Regex::new(r"^(.*?)_(\d*?)$").unwrap();
+            }
+            if let Some(c) = ENDING_DIGITS_REGEX.captures(&fn_name) {
+                let name = c.get(1).unwrap().as_str();
+                let n = c.get(2).unwrap().as_str().parse::<i32>().unwrap();
+                fn_name = format!("{}_{}", name, n + 1);
+            } else {
+                fn_name.push_str("_2");
+            }
+        }
+        fn_name
     }
 }
 
@@ -376,7 +368,7 @@ pub fn generate_tests_from_yaml(
                 } else if file_type.is_file() {
                     let path = entry.path();
                     // skip non-yaml files
-                    let extension = path.extension().unwrap_or("".as_ref());
+                    let extension = path.extension().unwrap_or_else(||"".as_ref());
                     if extension != "yml" && extension != "yaml" {
                         continue;
                     }
@@ -385,7 +377,7 @@ pub fn generate_tests_from_yaml(
                     let test_suite = {
                         let mut components = relative_path.components();
                         let mut top_dir = "".to_string();
-                        while let Some(c) = components.next() {
+                        for c in components {
                             if c != Component::RootDir {
                                 top_dir = c.as_os_str().to_string_lossy().into_owned();
                                 break;

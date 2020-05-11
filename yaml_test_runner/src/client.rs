@@ -67,7 +67,7 @@ pub fn create() -> Elasticsearch {
         None
     };
 
-    let conn_pool = SingleNodeConnectionPool::new(url.clone());
+    let conn_pool = SingleNodeConnectionPool::new(url);
     let mut builder = TransportBuilder::new(conn_pool);
 
     builder = match credentials {
@@ -101,7 +101,7 @@ pub async fn general_oss_setup(client: &Elasticsearch) -> Result<(), Error> {
 
         let all_snapshots: Vec<(&str, &str)> = cat_snapshot_text
             .split('\n')
-            .map(|s| s.split(" ").collect::<Vec<&str>>())
+            .map(|s| s.split(' ').collect::<Vec<&str>>())
             .filter(|s| s.len() == 2)
             .map(|s| (s[0].trim(), s[1].trim()))
             .filter(|(id, repo)| !id.is_empty() && !repo.is_empty())

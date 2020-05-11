@@ -104,7 +104,7 @@ impl Skip {
     }
 
     /// Determines if this instance matches the version
-    pub fn skip_features(&self, features: &Vec<String>) -> bool {
+    pub fn skip_features(&self, features: &[String]) -> bool {
         match &self.features {
             Some(test_features) => test_features.iter().any(|f| features.contains(f)),
             None => false,
