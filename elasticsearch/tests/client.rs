@@ -37,9 +37,10 @@ async fn default_header() -> Result<(), failure::Error> {
         http::Response::default()
     });
 
-    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("foo"));
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref()).header(
+        HeaderName::from_static(X_OPAQUE_ID),
+        HeaderValue::from_static("foo"),
+    );
 
     let client = client::create(builder);
     let _response = client.ping().send().await?;
@@ -54,15 +55,20 @@ async fn override_default_header() -> Result<(), failure::Error> {
         http::Response::default()
     });
 
-    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref())
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("foo"));
+    let builder = client::create_builder(format!("http://{}", server.addr()).as_ref()).header(
+        HeaderName::from_static(X_OPAQUE_ID),
+        HeaderValue::from_static("foo"),
+    );
 
     let client = client::create(builder);
-    let _response = client.ping()
-        .header(HeaderName::from_static(X_OPAQUE_ID),
-                HeaderValue::from_static("bar"))
-        .send().await?;
+    let _response = client
+        .ping()
+        .header(
+            HeaderName::from_static(X_OPAQUE_ID),
+            HeaderValue::from_static("bar"),
+        )
+        .send()
+        .await?;
 
     Ok(())
 }
@@ -93,7 +99,7 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
     let _ = index_documents(&client).await?;
     let response = client
         .search(SearchParts::None)
-        .body(json!{
+        .body(json! {
             {
               "aggs": {
                 "titles": {
@@ -125,7 +131,9 @@ async fn deprecation_warning_headers() -> Result<(), failure::Error> {
 
     let warnings = response.warning_headers().collect::<Vec<&str>>();
     assert!(warnings.len() > 0);
-    assert!(warnings.iter().any(|&w| w.contains("Deprecated aggregation order key")));
+    assert!(warnings
+        .iter()
+        .any(|&w| w.contains("Deprecated aggregation order key")));
 
     Ok(())
 }

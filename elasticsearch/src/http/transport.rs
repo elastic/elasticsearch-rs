@@ -6,8 +6,8 @@ use crate::{
     error::Error,
     http::{
         headers::{
-            HeaderMap, HeaderName, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE, DEFAULT_ACCEPT,
-            DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
+            HeaderMap, HeaderName, HeaderValue, ACCEPT, AUTHORIZATION, CONTENT_TYPE,
+            DEFAULT_ACCEPT, DEFAULT_CONTENT_TYPE, DEFAULT_USER_AGENT, USER_AGENT,
         },
         request::Body,
         response::Response,
@@ -86,7 +86,7 @@ pub struct TransportBuilder {
     proxy: Option<Url>,
     proxy_credentials: Option<Credentials>,
     disable_proxy: bool,
-    headers: HeaderMap
+    headers: HeaderMap,
 }
 
 impl TransportBuilder {
@@ -104,7 +104,7 @@ impl TransportBuilder {
             proxy: None,
             proxy_credentials: None,
             disable_proxy: false,
-            headers: HeaderMap::new()
+            headers: HeaderMap::new(),
         }
     }
 

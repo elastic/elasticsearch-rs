@@ -1,8 +1,8 @@
 use quote::{ToTokens, Tokens};
 
 use super::Step;
-use yaml_rust::Yaml;
 use crate::step::BodyExpr;
+use yaml_rust::Yaml;
 
 pub struct Length {
     len: usize,
@@ -18,7 +18,8 @@ impl From<Length> for Step {
 impl BodyExpr for Length {
     // a length step should never advertise itself as a body expression as it would
     // cause the body of the preceding API call to be returned as text rather than serde::Value.
-    fn is_body_expr(&self, key: &str) -> bool {
+    // a serde::Value is needed as a length step on $body means counting object keys or array length.
+    fn is_body_expr(&self, _key: &str) -> bool {
         false
     }
 }
@@ -35,16 +36,16 @@ impl Length {
                 failure::err_msg(format!("expected string key but found {:?}", k))
             })?;
 
-            let len = v.as_i64().ok_or_else(|| {
-                failure::err_msg(format!("expected i64 but found {:?}", v))
-            })?;
+            let len = v
+                .as_i64()
+                .ok_or_else(|| failure::err_msg(format!("expected i64 but found {:?}", v)))?;
 
             (key, len)
         };
 
         Ok(Length {
             len: len as usize,
-            expr: expr.into()
+            expr: expr.into(),
         })
     }
 }
@@ -54,14 +55,14 @@ impl ToTokens for Length {
         let len = self.len;
 
         if &self.expr == "$body" {
-            tokens.append(quote!{
+            tokens.append(quote! {
                 let len = util::len_from_value(&response_body)?;
                 assert_eq!(#len, len);
             });
         } else {
             let expr = self.body_expr(&self.expr);
             let ident = syn::Ident::from(expr);
-            tokens.append(quote!{
+            tokens.append(quote! {
                 let len = util::len_from_value(&response_body#ident)?;
                 assert_eq!(#len, len);
             });

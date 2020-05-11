@@ -1,7 +1,7 @@
 use super::Step;
+use crate::step::{BodyExpr, clean_regex};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
-use crate::step::BodyExpr;
 
 pub struct Match {
     pub expr: String,
@@ -39,8 +39,8 @@ impl ToTokens for Match {
         match &self.value {
             Yaml::String(s) => {
                 if s.starts_with('/') {
-                    // trim the enclosing forward slashes and replace escaped forward slashes
-                    let s = s.trim().trim_matches('/').replace("\\/", "/");
+                    let s = clean_regex(s);
+
                     if self.is_body_expr(&expr) {
                         tokens.append(quote! {
                             let regex = regex::RegexBuilder::new(#s)
@@ -56,7 +56,9 @@ impl ToTokens for Match {
                     } else {
                         let ident = syn::Ident::from(expr.clone());
                         tokens.append(quote! {
-                            let regex = regex::Regex::new(#s)?;
+                            let regex = regex::RegexBuilder::new(#s)
+                                .ignore_whitespace(true)
+                                .build()?;
                             assert!(
                                 regex.is_match(response_body#ident.as_str().unwrap()),
                                 "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
@@ -71,11 +73,12 @@ impl ToTokens for Match {
 
                     // handle set values
                     let t = if s.starts_with('$') {
-                        let t = s.trim_start_matches('$')
+                        let t = s
+                            .trim_start_matches('$')
                             .trim_start_matches('{')
                             .trim_end_matches('}');
                         let ident = syn::Ident::from(t);
-                        quote!{ #ident.as_str().unwrap() }
+                        quote! { #ident.as_str().unwrap() }
                     } else {
                         quote! { #s }
                     };

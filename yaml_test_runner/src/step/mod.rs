@@ -1,17 +1,17 @@
 use api_generator::generator::Api;
-use yaml_rust::Yaml;
 use std::fmt::Write;
+use yaml_rust::Yaml;
 
 mod r#do;
+mod length;
 mod r#match;
 mod set;
 mod skip;
-mod length;
+pub use length::*;
 pub use r#do::*;
 pub use r#match::*;
 pub use set::*;
 pub use skip::*;
-pub use length::*;
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
     let mut parsed_steps: Vec<Step> = Vec::new();
@@ -111,7 +111,8 @@ pub trait BodyExpr {
                     write!(expr, "[{}]", s).unwrap();
                 } else if s.starts_with('$') {
                     // handle set values
-                    let t = s.trim_start_matches('$')
+                    let t = s
+                        .trim_start_matches('$')
                         .trim_start_matches('{')
                         .trim_end_matches('}');
                     write!(expr, "[{}.as_str().unwrap()]", t).unwrap();
@@ -162,4 +163,16 @@ pub fn ok_or_accumulate<T>(
 
         Err(failure::err_msg(msg))
     }
+}
+
+// trim the enclosing forward slashes and
+// 1. replace escaped forward slashes (not needed after trimming forward slashes)
+// 2. replace escaped colons (not supported by regex crate)
+pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
+    s.as_ref()
+        .trim()
+        .trim_matches('/')
+        .replace("\\/", "/")
+        .replace("\\:", ":")
+        .replace("\\#", "#")
 }

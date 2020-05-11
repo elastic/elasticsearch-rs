@@ -1,8 +1,8 @@
 use quote::{ToTokens, Tokens};
 
 use super::Step;
-use yaml_rust::Yaml;
 use crate::step::BodyExpr;
+use yaml_rust::Yaml;
 
 pub struct Set {
     ident: syn::Ident,
@@ -38,7 +38,7 @@ impl Set {
 
         Ok(Set {
             ident: syn::Ident::from(id),
-            expr: expr.into()
+            expr: expr.into(),
         })
     }
 }
@@ -49,7 +49,7 @@ impl ToTokens for Set {
         let expr = syn::Ident::from(self.body_expr(&self.expr));
 
         // TODO: Unwrap serde_json value here, or in the usage?
-        tokens.append(quote!{
+        tokens.append(quote! {
             let #ident = response_body#expr.clone();
         });
     }

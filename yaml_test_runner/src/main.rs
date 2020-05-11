@@ -1,3 +1,6 @@
+// TODO: remove when implementation is more complete.
+#![allow(dead_code)]
+
 #[macro_use]
 extern crate log;
 extern crate simple_logger;
@@ -10,10 +13,12 @@ extern crate api_generator;
 #[cfg(test)]
 extern crate serde_json;
 
+use crate::generator::TestSuite;
 use clap::{App, Arg};
+use log::Level;
 use std::fs;
 use std::path::PathBuf;
-use log::Level;
+use std::process::exit;
 
 mod generator;
 mod github;
@@ -54,6 +59,33 @@ fn main() -> Result<(), failure::Error> {
             .takes_value(true))
         .get_matches();
 
+    // Get the version from ELASTICSEARCH_VERSION environment variable, if set.
+    // any prerelease part needs to be trimmed because the semver crate only allows
+    // a version with a prerelease to match against predicates, if at least one predicate
+    // has a prerelease. See
+    // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
+    let (suite, version) = match std::env::var("ELASTICSEARCH_VERSION") {
+        Ok(v) => {
+            let suite = if v.contains("oss") {
+                TestSuite::Oss
+            } else {
+                TestSuite::XPack
+            };
+
+            let v = v
+                .trim_start_matches("elasticsearch:")
+                .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
+
+            (suite, semver::Version::parse(v)?)
+        }
+        Err(_) => {
+            error!("ELASTICSEARCH_VERSION environment variable must be set to compile tests");
+            exit(1);
+        }
+    };
+
+    info!("Using version {:?} to compile tests", &version);
+
     let branch = matches
         .value_of("branch")
         .expect("missing 'branch' argument");
@@ -93,23 +125,14 @@ fn main() -> Result<(), failure::Error> {
         fs::remove_dir_all(&generated_dir)?;
     }
 
-    // try to get the version from ELASTICSEARCH_VERSION environment variable, if set.
-    // any prerelease part needs to be trimmed because the semver crate only allows
-    // a version with a prerelease to match against predicates, if at least one predicate
-    // has a prerelease. See
-    // https://github.com/steveklabnik/semver/blob/afa5fc853cb4d6d2b1329579e5528f86f3b550f9/src/version_req.rs#L319-L331
-    let version = match std::env::var("ELASTICSEARCH_VERSION") {
-        Ok(v) => {
-            let v = v
-                .trim_start_matches("elasticsearch:")
-                .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
-            semver::Version::parse(v).ok()
-        }
-        Err(_) => None
-    };
-
-    info!("Using version {:?} to compile tests", &version);
-    generator::generate_tests_from_yaml(&api, &version, &download_dir, &download_dir, &generated_dir)?;
+    generator::generate_tests_from_yaml(
+        &api,
+        &suite,
+        &version,
+        &download_dir,
+        &download_dir,
+        &generated_dir,
+    )?;
 
     Ok(())
 }

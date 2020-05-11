@@ -80,5 +80,5 @@ impl Response {
     pub async fn text(self) -> Result<String, Error> {
         let body = self.0.text().await?;
         Ok(body)
-	}
+    }
 }

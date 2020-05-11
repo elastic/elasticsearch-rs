@@ -37,15 +37,15 @@ impl ToTokens for Catch {
                    let status_code = response.status_code().as_u16();
                    assert!(status_code >= 400 && status_code < 600);
                 });
-            },
+            }
             "unavailable" => http_status_code(503, tokens),
             "param" => {
                 // Not possible to pass a bad param to the client so ignore.
-            },
+            }
             s => {
                 // trim the enclosing forward slashes and replace escaped forward slashes
                 let t = s.trim_matches('/').replace("\\/", "/");
-                tokens.append(quote!{
+                tokens.append(quote! {
                     let catch_regex = regex::Regex::new(#t)?;
                     assert!(
                         catch_regex.is_match(response_body["error"]["reason"].as_str().unwrap()),
@@ -55,7 +55,7 @@ impl ToTokens for Catch {
                         #s
                     );
                 });
-            },
+            }
         }
     }
 }
@@ -115,13 +115,16 @@ impl Do {
 
                 match key {
                     "headers" => {
-                        let hash = v.as_hash()
-                            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", v)))?;
+                        let hash = v.as_hash().ok_or_else(|| {
+                            failure::err_msg(format!("expected hash but found {:?}", v))
+                        })?;
                         for (hk, hv) in hash.iter() {
-                            let h = hk.as_str()
-                                .ok_or_else(|| failure::err_msg(format!("expected str but found {:?}", hk)))?;
-                            let v = hv.as_str()
-                                .ok_or_else(|| failure::err_msg(format!("expected str but found {:?}", hv)))?;
+                            let h = hk.as_str().ok_or_else(|| {
+                                failure::err_msg(format!("expected str but found {:?}", hk))
+                            })?;
+                            let v = hv.as_str().ok_or_else(|| {
+                                failure::err_msg(format!("expected str but found {:?}", hv))
+                            })?;
                             headers.insert(h.into(), v.into());
                         }
                         Ok(())
@@ -152,7 +155,8 @@ impl Do {
         ok_or_accumulate(&results, 0)?;
 
         let (call, value) = call.ok_or_else(|| failure::err_msg("no API found in do"))?;
-        let endpoint = api.endpoint_for_api_call(call)
+        let endpoint = api
+            .endpoint_for_api_call(call)
             .ok_or_else(|| failure::err_msg(format!("no API found for '{}'", call)))?;
         let api_call = ApiCall::try_from(api, endpoint, value, headers)?;
 
@@ -188,9 +192,10 @@ impl ToTokens for ApiCall {
 
         // TODO: handle "set" values
 
-        let headers: Vec<Tokens> = self.headers
+        let headers: Vec<Tokens> = self
+            .headers
             .iter()
-            .map(|(k,v)| {
+            .map(|(k, v)| {
                 // header names **must** be lowercase to satisfy Header lib
                 let k = k.to_lowercase();
                 quote! {
@@ -210,15 +215,26 @@ impl ToTokens for ApiCall {
     }
 }
 
+lazy_static! {
+    // replace usages of "$.*" with the captured value
+    static ref SET_REGEX: Regex =
+        Regex::new(r#""\$(.*?)""#).unwrap();
+
+    // include i64 suffix on whole numbers
+    static ref INT_REGEX: Regex =
+        regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
+}
+
 impl ApiCall {
     /// Try to create an API call
     pub fn try_from(
         api: &Api,
         endpoint: &ApiEndpoint,
         yaml: &Yaml,
-        headers: BTreeMap<String, String>
+        headers: BTreeMap<String, String>,
     ) -> Result<ApiCall, failure::Error> {
-        let hash = yaml.as_hash()
+        let hash = yaml
+            .as_hash()
             .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
 
         let mut parts: Vec<(&str, &Yaml)> = vec![];
@@ -272,8 +288,7 @@ impl ApiCall {
         variant: &str,
         options: &[serde_json::Value],
     ) -> Result<Tokens, failure::Error> {
-        if !variant.is_empty()
-            && !options.contains(&serde_json::Value::String(variant.to_owned()))
+        if !variant.is_empty() && !options.contains(&serde_json::Value::String(variant.to_owned()))
         {
             return Err(failure::err_msg(format!(
                 "options {:?} does not contain value {}",
@@ -392,7 +407,7 @@ impl ApiCall {
                                             .#param_ident(#i)
                                         });
                                     }
-                                },
+                                }
                                 TypeKind::Number | TypeKind::Long => {
                                     if is_set_value {
                                         let t = Self::from_set_value(s);
@@ -412,7 +427,7 @@ impl ApiCall {
                                     let t = if is_set_value {
                                         let t = Self::from_set_value(s);
                                         let ident = syn::Ident::from(t);
-                                        quote!{ #ident.as_str().unwrap() }
+                                        quote! { #ident.as_str().unwrap() }
                                     } else {
                                         quote! { #s }
                                     };
@@ -420,7 +435,7 @@ impl ApiCall {
                                     tokens.append(quote! {
                                         .#param_ident(#t)
                                     })
-                                },
+                                }
                             }
                         }
                         Yaml::Boolean(ref b) => match kind {
@@ -598,10 +613,13 @@ impl ApiCall {
                     _ => Some(matching_path_parts[0]),
                 }
             }
-        }.ok_or_else(|| failure::err_msg(format!(
-            "No path for '{}' API with URL parts {:?}",
-            &api_call, parts
-        )))?;
+        }
+        .ok_or_else(|| {
+            failure::err_msg(format!(
+                "No path for '{}' API with URL parts {:?}",
+                &api_call, parts
+            ))
+        })?;
 
         let path_parts = path.path.params();
         let variant_name = {
@@ -622,11 +640,9 @@ impl ApiCall {
                 f.cmp(&s)
             })
             .map(|(p, v)| {
-                let ty = path.parts.get(*p)
-                    .ok_or_else(|| failure::err_msg(format!(
-                    "No URL part found for {} in {}",
-                    p, &path.path
-                )))?;
+                let ty = path.parts.get(*p).ok_or_else(|| {
+                    failure::err_msg(format!("No URL part found for {} in {}", p, &path.path))
+                })?;
 
                 match v {
                     Yaml::String(s) => {
@@ -642,7 +658,7 @@ impl ApiCall {
                                             let ident = syn::Ident::from(t);
                                             quote! { #ident.as_str().unwrap() }
                                         } else {
-                                            quote!{ #s }
+                                            quote! { #s }
                                         }
                                     })
                                     .collect();
@@ -666,9 +682,9 @@ impl ApiCall {
                                 } else {
                                     Ok(quote! { #s })
                                 }
-                            },
+                            }
                         }
-                    },
+                    }
                     Yaml::Boolean(b) => {
                         let s = b.to_string();
                         Ok(quote! { #s })
@@ -696,10 +712,7 @@ impl ApiCall {
                         match ok_or_accumulate(&result, 0) {
                             Ok(_) => {
                                 let result: Vec<_> =
-                                    result.into_iter()
-                                        .filter_map(Result::ok)
-
-                                        .collect();
+                                    result.into_iter().filter_map(Result::ok).collect();
 
                                 match ty.ty {
                                     // Some APIs specify a part is a string in the REST API spec
@@ -733,19 +746,17 @@ impl ApiCall {
         }
     }
 
-    fn replace_values(s: &str) -> String {
-        lazy_static! {
-            // replace usages of "$.*" with the captured value
-            static ref SET_REGEX: Regex =
-                Regex::new(r#""\$(.*?)""#).unwrap();
+    /// Replaces a "set" step value with a variable
+    fn replace_set<S: AsRef<str>>(s: S) -> String {
+        SET_REGEX.replace_all(s.as_ref(), "$1").into_owned()
+    }
 
-            // include i64 suffix on whole numbers
-            static ref INT_REGEX: Regex =
-                regex::Regex::new(r"(:\s?)(\d+?)([,\s?|\s*?}])").unwrap();
-        }
-
-        let c = SET_REGEX.replace_all(s, "$1").into_owned();
-        INT_REGEX.replace_all(&c, "${1}${2}i64${3}").into_owned()
+    /// Replaces all integers in a string to suffix with i64, to ensure that numbers
+    /// larger than i32 will be handled correctly when passed to json! macro
+    fn replace_i64<S: AsRef<str>>(s: S) -> String {
+        INT_REGEX
+            .replace_all(s.as_ref(), "${1}${2}i64${3}")
+            .into_owned()
     }
 
     /// Creates the body function call from a YAML value.
@@ -754,18 +765,13 @@ impl ApiCall {
     /// usually a Hash. To get the JSON representation back requires converting
     /// back to JSON
     fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
-        let accepts_nd_body = match &endpoint.body {
-            Some(b) => match &b.serialize {
-                Some(s) => s == "bulk",
-                _ => false,
-            },
-            None => false,
-        };
-
         match v {
             Yaml::String(s) => {
-                let json = Self::replace_values(s.as_str());
-                if accepts_nd_body {
+                let json = {
+                    let s = Self::replace_set(s);
+                    Self::replace_i64(s)
+                };
+                if endpoint.supports_nd_body() {
                     // a newline delimited API body may be expressed
                     // as a scalar string literal style where line breaks are significant (using |)
                     // or where lines breaks are folded to an empty space unless it ends on an
@@ -801,18 +807,20 @@ impl ApiCall {
                     emitter.dump(v).unwrap();
                 }
 
-                if accepts_nd_body {
+                if endpoint.supports_nd_body() {
                     let values: Vec<serde_json::Value> = serde_yaml::from_str(&s).unwrap();
                     let json: Vec<Tokens> = values
                         .iter()
                         .map(|value| {
                             let mut json = serde_json::to_string(&value).unwrap();
-                            json = Self::replace_values(&json);
-
-                            let ident = syn::Ident::from(json);
                             if value.is_string() {
+                                json = Self::replace_set(&json);
+                                let ident = syn::Ident::from(json);
                                 quote!(#ident)
                             } else {
+                                json = Self::replace_set(json);
+                                json = Self::replace_i64(json);
+                                let ident = syn::Ident::from(json);
                                 quote!(JsonBody::from(json!(#ident)))
                             }
                         })
@@ -821,7 +829,8 @@ impl ApiCall {
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
                     let mut json = serde_json::to_string_pretty(&value).unwrap();
-                    json = Self::replace_values(&json);
+                    json = Self::replace_set(json);
+                    json = Self::replace_i64(json);
                     let ident = syn::Ident::from(json);
 
                     Some(quote!(.body(json!{#ident})))

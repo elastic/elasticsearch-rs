@@ -14,10 +14,9 @@ pub(crate) fn serialize_coll_qs<S, T>(
 ) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
 where
     S: Serializer,
-    T: Serialize
+    T: Serialize,
 {
-    let vec = value
-        .expect("attempt to serialize Option::None value");
+    let vec = value.expect("attempt to serialize Option::None value");
 
     // TODO: There must be a better way of serializing a Vec<Serialize> to a comma-separated url encoded string...
     // (mis)use serde_json to_string and trim the surrounding quotes...

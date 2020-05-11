@@ -9,17 +9,18 @@ use std::collections::HashSet;
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
-use std::path::{PathBuf, Component};
+use std::path::{Component, PathBuf};
 use yaml_rust::{Yaml, YamlLoader};
 
+#[derive(Debug, PartialEq)]
 pub enum TestSuite {
     Oss,
-    XPack
+    XPack,
 }
 
 /// The components of a test file, constructed from a yaml file
 struct YamlTests<'a> {
-    version: &'a Option<Version>,
+    version: &'a Version,
     suite: TestSuite,
     directives: HashSet<String>,
     setup: Option<TestFn>,
@@ -28,7 +29,7 @@ struct YamlTests<'a> {
 }
 
 impl<'a> YamlTests<'a> {
-    pub fn new(version: &'a Option<semver::Version>, suite: TestSuite, len: usize) -> Self {
+    pub fn new(version: &'a semver::Version, suite: TestSuite, len: usize) -> Self {
         Self {
             version,
             suite,
@@ -89,7 +90,7 @@ impl<'a> YamlTests<'a> {
             TestSuite::XPack => quote!(client::general_xpack_setup(&client).await?;),
         };
 
-        let tests: Vec<Tokens> = self.fn_impls(general_setup_call, setup_call, teardown_call, );
+        let tests: Vec<Tokens> = self.fn_impls(general_setup_call, setup_call, teardown_call);
 
         let directives: Vec<Tokens> = self
             .directives
@@ -158,7 +159,12 @@ impl<'a> YamlTests<'a> {
         true
     }
 
-    fn fn_impls(&self, general_setup_call: Tokens, setup_call: Option<Tokens>, teardown_call: Option<Tokens>) -> Vec<Tokens> {
+    fn fn_impls(
+        &self,
+        general_setup_call: Tokens,
+        setup_call: Option<Tokens>,
+        teardown_call: Option<Tokens>,
+    ) -> Vec<Tokens> {
         let mut seen_method_names = HashSet::new();
 
         self.tests
@@ -174,42 +180,43 @@ impl<'a> YamlTests<'a> {
                 for step in &test_fn.steps {
                     match step {
                         Step::Skip(s) => {
-                            skip = if let Some(v) = &self.version {
-                                if s.matches(v) {
-                                    let reason = match s.reason.as_ref() {
-                                        Some(s) => s.to_string(),
-                                        None => String::new(),
-                                    };
-                                    println!(
-                                        "Skipping test because skip version '{}' are met. {}",
-                                        s.version.as_ref().unwrap(),
-                                        reason
-                                    );
-                                    Some(s)
-                                } else {
-                                    None
-                                }
+                            skip = if s.matches(self.version) {
+                                let reason = match s.reason.as_ref() {
+                                    Some(s) => s.to_string(),
+                                    None => String::new(),
+                                };
+                                info!(
+                                    "Skipping test because skip version '{}' are met. {}",
+                                    s.version.as_ref().unwrap(),
+                                    reason
+                                );
+                                Some(s)
                             } else {
                                 None
                             }
                         }
                         Step::Do(d) => {
                             read_response = d.to_tokens(false, &mut body);
-                        },
+                        }
                         Step::Match(m) => {
-                            read_response =
-                                Self::read_response(read_response, m.is_body_expr(&m.expr), &mut body);
+                            read_response = Self::read_response(
+                                read_response,
+                                m.is_body_expr(&m.expr),
+                                &mut body,
+                            );
                             m.to_tokens(&mut body);
-                        },
+                        }
                         Step::Set(s) => {
                             // TODO: is "set" ever is_body_expr?
-                            read_response =
-                                Self::read_response(read_response, false, &mut body);
+                            read_response = Self::read_response(read_response, false, &mut body);
                             s.to_tokens(&mut body);
-                        },
+                        }
                         Step::Length(l) => {
-                            read_response =
-                                Self::read_response(read_response, l.is_body_expr(&l.expr), &mut body);
+                            read_response = Self::read_response(
+                                read_response,
+                                l.is_body_expr(&l.expr),
+                                &mut body,
+                            );
                             l.to_tokens(&mut body);
                         }
                     }
@@ -287,7 +294,8 @@ impl TestFn {
 
 pub fn generate_tests_from_yaml(
     api: &Api,
-    version: &Option<semver::Version>,
+    suite: &TestSuite,
+    version: &semver::Version,
     base_download_dir: &PathBuf,
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
@@ -297,47 +305,63 @@ pub fn generate_tests_from_yaml(
         if let Ok(entry) = entry {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {
-                    generate_tests_from_yaml(api, version, base_download_dir, &entry.path(), generated_dir)?;
+                    generate_tests_from_yaml(
+                        api,
+                        suite,
+                        version,
+                        base_download_dir,
+                        &entry.path(),
+                        generated_dir,
+                    )?;
                 } else if file_type.is_file() {
-                    let file_name = entry.file_name().to_string_lossy().into_owned();
-
+                    let path = entry.path();
                     // skip non-yaml files
-                    if !file_name.ends_with(".yml") && !file_name.ends_with(".yaml") {
+                    let extension = path.extension().unwrap_or("".as_ref());
+                    if extension != "yml" && extension != "yaml" {
+                        continue;
+                    }
+
+                    let relative_path = path.strip_prefix(&base_download_dir)?;
+                    let test_suite = {
+                        let mut components = relative_path.components();
+                        let mut top_dir = "".to_string();
+                        while let Some(c) = components.next() {
+                            if c != Component::RootDir {
+                                top_dir = c.as_os_str().to_string_lossy().into_owned();
+                                break;
+                            }
+                        }
+
+                        match top_dir.as_str() {
+                            "oss" => TestSuite::Oss,
+                            "xpack" => TestSuite::XPack,
+                            _ => panic!("Unknown test suite"),
+                        }
+                    };
+
+                    if &test_suite != suite {
+                        info!(
+                            "skipping {:?}. compiling tests for {:?}",
+                            relative_path, suite
+                        );
                         continue;
                     }
 
                     let yaml = fs::read_to_string(&entry.path()).unwrap();
+
                     // a yaml test can contain multiple yaml docs
                     let result = YamlLoader::load_from_str(&yaml);
                     if result.is_err() {
-                        println!(
-                            "Error reading {:?}. skipping:\n\t{}",
-                            &entry.path(),
+                        info!(
+                            "skipping {:?}. cannot read as Yaml: {}",
+                            relative_path,
                             result.err().unwrap().to_string()
                         );
                         continue;
                     }
 
-                    let suite = {
-                        let path = entry.path().clone();
-                        let mut components = path.strip_prefix(&base_download_dir)?.components();
-                        let mut relative = "".to_string();
-                        while let Some(c) = components.next() {
-                            if c != Component::RootDir {
-                                relative = c.as_os_str().to_string_lossy().into_owned();
-                                break;
-                            }
-                        }
-
-                        match relative.as_str() {
-                            "oss" => TestSuite::Oss,
-                            "xpack" => TestSuite::XPack,
-                            _ => panic!("Unknown test suite")
-                        }
-                    };
-
                     let docs = result.unwrap();
-                    let mut test = YamlTests::new(version, suite, docs.len());
+                    let mut test = YamlTests::new(version, test_suite, docs.len());
 
                     let results : Vec<Result<(), failure::Error>> = docs
                         .iter()
@@ -375,9 +399,7 @@ pub fn generate_tests_from_yaml(
 
                     //if there has been an Err in any step of the yaml test file, don't create a test for it
                     match ok_or_accumulate(&results, 1) {
-                        Ok(_) => {
-                            write_test_file(test, &entry.path(), base_download_dir, generated_dir)?
-                        }
+                        Ok(_) => write_test_file(test, &path, base_download_dir, generated_dir)?,
                         Err(e) => println!(
                             "Error creating test file for {:?}. skipping:\n{}",
                             &entry.path(),
@@ -396,7 +418,11 @@ pub fn generate_tests_from_yaml(
 
 /// Writes a mod.rs file in each generated directory
 fn write_mod_files(generated_dir: &PathBuf) -> Result<(), failure::Error> {
-    let paths = fs::read_dir(generated_dir).unwrap();
+    if !generated_dir.exists() {
+        fs::create_dir(generated_dir)?;
+    }
+
+    let paths = fs::read_dir(generated_dir)?;
     let mut mods = vec![];
     for path in paths {
         if let Ok(entry) = path {
