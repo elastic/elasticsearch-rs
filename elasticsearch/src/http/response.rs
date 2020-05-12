@@ -25,6 +25,15 @@ impl Response {
         self.0.content_length()
     }
 
+    /// Gets the content-type of this response.
+    pub fn content_type(&self) -> &str {
+        self.0
+            .headers()
+            .get(crate::http::headers::CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .unwrap()
+    }
+
     /// Get the HTTP status code of the response
     pub fn status_code(&self) -> StatusCode {
         self.0.status()
