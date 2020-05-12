@@ -76,7 +76,38 @@ impl ToTokens for Comparison {
             Some(i) => self.assert(i, &expr, op, tokens),
             None => match self.value.as_f64() {
                 Some(f) => self.assert(f, &expr, op, tokens),
-                None => panic!("Expected i64 or f64 but found {:?}", &self.value),
+                None => {
+                    match self.value.as_str() {
+                        Some(s) if s.starts_with('$') => {
+                            let s = s.trim_start_matches('$')
+                                .trim_start_matches('{')
+                                .trim_end_matches('}');
+                            let expr_ident = syn::Ident::from(expr.as_str());
+                            let ident = syn::Ident::from(s);
+                            let op_ident = syn::Ident::from(op);
+                            let message = "Expected value at {} to be numeric but is {}";
+                            let comparison_message = "Expected value at {} to be {:?} {}, but is {}";
+                            tokens.append(quote! {
+                                match &json#expr_ident {
+                                    Value::Number(n) => {
+                                        match n.as_i64() {
+                                            Some(i) => assert!(i #op_ident #ident.as_i64().unwrap(), #comparison_message, #expr, #op, #ident.as_i64().unwrap(), i),
+                                            None => match n.as_f64() {
+                                                Some(f) => assert!(f #op_ident #ident.as_f64().unwrap(), #comparison_message, #expr, #op, #ident.as_f64().unwrap(), f),
+                                                None => match n.as_u64() {
+                                                    Some(u) => assert!(u #op_ident #ident.as_u64().unwrap(), #comparison_message, #expr, #op, #ident.as_u64().unwrap(), u),
+                                                    None => assert!(false, #message, #expr, &n)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    v => assert!(false, #message, #expr, &v),
+                                }
+                            });
+                        }
+                        _ => panic!("Expected i64 or f64 but found {:?}", &self.value),
+                    }
+                }
             }
         }
     }
