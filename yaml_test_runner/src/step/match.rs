@@ -1,10 +1,10 @@
 use super::Step;
-use crate::step::{clean_regex, BodyExpr};
+use crate::step::{clean_regex, Expr};
 use quote::{ToTokens, Tokens};
 use yaml_rust::Yaml;
 
 pub struct Match {
-    pub expr: String,
+    pub expr: Expr,
     value: Yaml,
 }
 
@@ -14,34 +14,28 @@ impl From<Match> for Step {
     }
 }
 
-impl BodyExpr for Match {}
-
 impl Match {
     pub fn try_parse(yaml: &Yaml) -> Result<Match, failure::Error> {
         let hash = yaml
             .as_hash()
-            .ok_or_else(|| failure::err_msg(format!("Expected hash but found {:?}", yaml)))?;
+            .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
 
-        let (expr, value) = {
-            let (k, v) = hash.iter().next().unwrap();
-            let key = k.as_str().unwrap().trim().to_string();
-            (key, v.clone())
-        };
-
-        Ok(Match { expr, value })
+        let (k, v) = hash.iter().next().unwrap();
+        let expr = k.as_str().unwrap().trim();
+        Ok(Match { expr: expr.into(), value: v.clone() })
     }
 }
 
 impl ToTokens for Match {
     fn to_tokens(&self, tokens: &mut Tokens) {
-        let expr = self.body_expr(&self.expr);
+        let expr = self.expr.expression();
 
         match &self.value {
             Yaml::String(s) => {
                 if s.starts_with('/') {
                     let s = clean_regex(s);
 
-                    if self.is_body_expr(&expr) {
+                    if self.expr.is_body() {
                         tokens.append(quote! {
                             let regex = regex::RegexBuilder::new(#s)
                                 .ignore_whitespace(true)
@@ -54,7 +48,7 @@ impl ToTokens for Match {
                             );
                         });
                     } else {
-                        let ident = syn::Ident::from(expr.clone());
+                        let ident = syn::Ident::from(expr.as_str());
                         tokens.append(quote! {
                             let regex = regex::RegexBuilder::new(#s)
                                 .ignore_whitespace(true)
@@ -69,7 +63,7 @@ impl ToTokens for Match {
                         });
                     }
                 } else {
-                    let ident = syn::Ident::from(expr.clone());
+                    let ident = syn::Ident::from(expr.as_str());
 
                     // handle set values
                     let t = if s.starts_with('$') {
@@ -96,10 +90,10 @@ impl ToTokens for Match {
                 }
             }
             Yaml::Integer(i) => {
-                if self.is_body_expr(&expr) {
+                if self.expr.is_body() {
                     panic!("match on $body with integer");
                 } else {
-                    let ident = syn::Ident::from(expr.clone());
+                    let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
                         assert_eq!(
                             response_body#ident.as_i64().unwrap(),

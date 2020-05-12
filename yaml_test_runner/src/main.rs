@@ -73,7 +73,9 @@ fn main() -> Result<(), failure::Error> {
             };
 
             let v = v
-                .trim_start_matches("elasticsearch:")
+                .split(':')
+                .next_back()
+                .unwrap()
                 .trim_end_matches(|c: char| c.is_alphabetic() || c == '-');
 
             (suite, semver::Version::parse(v)?)

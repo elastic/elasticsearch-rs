@@ -4,8 +4,8 @@ use yaml_rust::Yaml;
 
 pub struct Skip {
     version_requirements: Option<semver::VersionReq>,
-    pub version: Option<String>,
-    pub reason: Option<String>,
+    version: Option<String>,
+    reason: Option<String>,
     features: Option<Vec<String>>,
 }
 
@@ -96,7 +96,7 @@ impl Skip {
     }
 
     /// Determines if this instance matches the version
-    pub fn version_matches(&self, version: &semver::Version) -> bool {
+    pub fn skip_version(&self, version: &semver::Version) -> bool {
         match &self.version_requirements {
             Some(r) => r.matches(version),
             None => false,

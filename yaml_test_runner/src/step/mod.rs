@@ -7,11 +7,17 @@ mod length;
 mod r#match;
 mod set;
 mod skip;
+mod is_true;
+mod is_false;
+mod comparison;
 pub use length::*;
 pub use r#do::*;
 pub use r#match::*;
 pub use set::*;
 pub use skip::*;
+pub use is_true::*;
+pub use is_false::*;
+pub use comparison::{Comparison, OPERATORS};
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
     let mut parsed_steps: Vec<Step> = Vec::new();
@@ -48,17 +54,22 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
                 parsed_steps.push(m.into());
             }
             "contains" => {}
-            "is_true" => {}
-            "is_false" => {}
+            "is_true" => {
+                let e = IsTrue::try_parse(value)?;
+                parsed_steps.push(e.into())
+            }
+            "is_false" => {
+                let e = IsFalse::try_parse(value)?;
+                parsed_steps.push(e.into())
+            }
             "length" => {
                 let l = Length::try_parse(value)?;
                 parsed_steps.push(l.into())
             }
-            "eq" => {}
-            "gte" => {}
-            "lte" => {}
-            "gt" => {}
-            "lt" => {}
+            op if OPERATORS.contains(&op) => {
+                let comp = Comparison::try_parse(value, op)?;
+                parsed_steps.push(comp.into())
+            }
             op => return Err(failure::err_msg(format!("unknown step operation: {}", op))),
         }
     }
@@ -66,20 +77,45 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
     Ok(parsed_steps)
 }
 
-pub trait BodyExpr {
-    fn is_body_expr(&self, key: &str) -> bool {
-        key == "$body"
+/// An expression to apply to the response. Can be the whole body ($body) or an
+/// indexer expression into a JSON response.
+pub struct Expr {
+    expr: String
+}
+
+impl From<&str> for Expr {
+    fn from(s: &str) -> Self {
+        Expr::new(s)
+    }
+}
+
+impl Expr {
+    pub fn new<S: Into<String>>(expr: S) -> Self {
+        Self { expr: expr.into() }
     }
 
-    /// Builds an indexer expression from the match key e.g.
-    /// match key `2.airline` is converted to `[2]["airline"]`
-    fn body_expr(&self, key: &str) -> String {
-        if self.is_body_expr(key) {
-            key.into()
+    /// Whether the expression is empty. Used in is_true and is_false
+    /// to represent the body
+    pub fn is_empty(&self) -> bool {
+        self.expr.is_empty()
+    }
+
+    /// Whether the expression is "$body"
+    pub fn is_body(&self) -> bool {
+        Self::is_string_body(&self.expr)
+    }
+
+    fn is_string_body(s: &str) -> bool {
+        s == "$body"
+    }
+
+    pub fn expression(&self) -> String {
+        if self.is_body() {
+            self.expr.clone()
         } else {
             let mut values = Vec::new();
             let mut value = String::new();
-            let mut chars = key.chars();
+            let mut chars = self.expr.chars();
             while let Some(ch) = chars.next() {
                 match ch {
                     '\\' => {
@@ -101,13 +137,15 @@ pub trait BodyExpr {
 
             // some APIs specify the response body as the first part of the path
             // which should be removed.
-            if self.is_body_expr(values[0].as_ref()) {
+            if Self::is_string_body(values[0].as_ref()) {
                 values.remove(0);
             }
 
             let mut expr = String::new();
             for s in values {
-                if s.chars().all(char::is_numeric) {
+                if s.is_empty() {
+                    write!(expr, "[\"\"]").unwrap();
+                } else if s.chars().all(char::is_numeric) {
                     write!(expr, "[{}]", s).unwrap();
                 } else if s.starts_with('$') {
                     // handle set values
@@ -125,12 +163,16 @@ pub trait BodyExpr {
     }
 }
 
+/// Steps defined in a yaml test
 pub enum Step {
     Skip(Skip),
     Set(Set),
     Do(Do),
     Match(Match),
     Length(Length),
+    IsTrue(IsTrue),
+    IsFalse(IsFalse),
+    Comparison(Comparison),
 }
 
 impl Step {
@@ -167,7 +209,7 @@ pub fn ok_or_accumulate<T>(
 
 // trim the enclosing forward slashes and
 // 1. replace escaped forward slashes (not needed after trimming forward slashes)
-// 2. replace escaped colons (not supported by regex crate)
+// 2. replace escaped colons and hashes (not supported by regex crate)
 pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
     s.as_ref()
         .trim()
@@ -175,4 +217,5 @@ pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
         .replace("\\/", "/")
         .replace("\\:", ":")
         .replace("\\#", "#")
+        .replace("\\%", "%")
 }

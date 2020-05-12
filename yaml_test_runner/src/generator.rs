@@ -24,7 +24,7 @@ pub enum TestSuite {
 struct YamlTests<'a> {
     path: &'a Path,
     version: &'a Version,
-    skips: &'a Skips,
+    skip: &'a GlobalSkip,
     suite: TestSuite,
     directives: HashSet<String>,
     setup: Option<TestFn>,
@@ -36,14 +36,14 @@ impl<'a> YamlTests<'a> {
     pub fn new(
         path: &'a Path,
         version: &'a semver::Version,
-        skips: &'a Skips,
+        skip: &'a GlobalSkip,
         suite: TestSuite,
         len: usize,
     ) -> Self {
         Self {
             path,
             version,
-            skips,
+            skip,
             suite,
             directives: HashSet::with_capacity(len),
             setup: None,
@@ -173,7 +173,7 @@ impl<'a> YamlTests<'a> {
 
             format!("generated::{}::tests::{}", components.join("::"), name)
         };
-        self.skips.tests.contains(&generated_name)
+        self.skip.tests.contains(&generated_name)
     }
 
     fn fn_impls(
@@ -205,7 +205,7 @@ impl<'a> YamlTests<'a> {
                 for step in &test_fn.steps {
                     match step {
                         Step::Skip(s) => {
-                            skip = if s.version_matches(self.version) {
+                            skip = if s.skip_version(self.version) {
                                 info!(
                                     "skipping '{}' in {:?} because version '{}' is met. {}",
                                     &name,
@@ -214,7 +214,7 @@ impl<'a> YamlTests<'a> {
                                     s.reason()
                                 );
                                 Some(s)
-                            } else if s.skip_features(&self.skips.features) {
+                            } else if s.skip_features(&self.skip.features) {
                                 info!(
                                     "skipping '{}' in {:?} because it needs features '{:?}' which are currently not implemented",
                                     &name,
@@ -232,7 +232,7 @@ impl<'a> YamlTests<'a> {
                         Step::Match(m) => {
                             read_response = Self::read_response(
                                 read_response,
-                                m.is_body_expr(&m.expr),
+                                m.expr.is_body(),
                                 &mut body,
                             );
                             m.to_tokens(&mut body);
@@ -245,10 +245,34 @@ impl<'a> YamlTests<'a> {
                         Step::Length(l) => {
                             read_response = Self::read_response(
                                 read_response,
-                                l.is_body_expr(&l.expr),
+                                false,
                                 &mut body,
                             );
                             l.to_tokens(&mut body);
+                        },
+                        Step::IsTrue(t) => {
+                            read_response = Self::read_response(
+                                read_response,
+                                t.expr.is_body(),
+                                &mut body,
+                            );
+                            t.to_tokens(&mut body);
+                        },
+                        Step::IsFalse(f) => {
+                            read_response = Self::read_response(
+                                read_response,
+                                f.expr.is_body(),
+                                &mut body,
+                            );
+                            f.to_tokens(&mut body);
+                        },
+                        Step::Comparison(c) => {
+                            read_response = Self::read_response(
+                                read_response,
+                                c.expr.is_body(),
+                                &mut body,
+                            );
+                            c.to_tokens(&mut body);
                         }
                     }
                 }
@@ -337,8 +361,9 @@ impl TestFn {
     }
 }
 
+/// Items to globally skip
 #[derive(Deserialize)]
-struct Skips {
+struct GlobalSkip {
     features: Vec<String>,
     tests: Vec<String>,
 }
@@ -351,7 +376,7 @@ pub fn generate_tests_from_yaml(
     download_dir: &PathBuf,
     generated_dir: &PathBuf,
 ) -> Result<(), failure::Error> {
-    let skips = serde_yaml::from_str::<Skips>(include_str!("./../skip.yml"))?;
+    let skips = serde_yaml::from_str::<GlobalSkip>(include_str!("./../skip.yml"))?;
     let paths = fs::read_dir(download_dir)?;
     for entry in paths {
         if let Ok(entry) = entry {
@@ -375,7 +400,7 @@ pub fn generate_tests_from_yaml(
 
                     let relative_path = path.strip_prefix(&base_download_dir)?;
                     let test_suite = {
-                        let mut components = relative_path.components();
+                        let components = relative_path.components();
                         let mut top_dir = "".to_string();
                         for c in components {
                             if c != Component::RootDir {

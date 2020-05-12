@@ -1,26 +1,17 @@
 use quote::{ToTokens, Tokens};
 
 use super::Step;
-use crate::step::BodyExpr;
+use crate::step::Expr;
 use yaml_rust::Yaml;
 
 pub struct Length {
+    pub(crate) expr: Expr,
     len: usize,
-    pub(crate) expr: String,
 }
 
 impl From<Length> for Step {
     fn from(length: Length) -> Self {
         Step::Length(length)
-    }
-}
-
-impl BodyExpr for Length {
-    // a length step should never advertise itself as a body expression as it would
-    // cause the body of the preceding API call to be returned as text rather than serde::Value.
-    // a serde::Value is needed as a length step on $body means counting object keys or array length.
-    fn is_body_expr(&self, _key: &str) -> bool {
-        false
     }
 }
 
@@ -30,18 +21,15 @@ impl Length {
             .as_hash()
             .ok_or_else(|| failure::err_msg(format!("expected hash but found {:?}", yaml)))?;
 
-        let (expr, len) = {
-            let (k, v) = hash.iter().next().unwrap();
-            let key = k.as_str().ok_or_else(|| {
-                failure::err_msg(format!("expected string key but found {:?}", k))
-            })?;
+        let (k, v) = hash.iter().next().unwrap();
 
-            let len = v
-                .as_i64()
-                .ok_or_else(|| failure::err_msg(format!("expected i64 but found {:?}", v)))?;
+        let expr = k
+            .as_str()
+            .ok_or_else(|| failure::err_msg(format!("expected string key but found {:?}", k)))?;
 
-            (key, len)
-        };
+        let len = v
+            .as_i64()
+            .ok_or_else(|| failure::err_msg(format!("expected i64 but found {:?}", v)))?;
 
         Ok(Length {
             len: len as usize,
@@ -54,13 +42,13 @@ impl ToTokens for Length {
     fn to_tokens(&self, tokens: &mut Tokens) {
         let len = self.len;
 
-        if &self.expr == "$body" {
+        if self.expr.is_body() {
             tokens.append(quote! {
                 let len = util::len_from_value(&response_body)?;
                 assert_eq!(#len, len);
             });
         } else {
-            let expr = self.body_expr(&self.expr);
+            let expr = self.expr.expression();
             let ident = syn::Ident::from(expr);
             tokens.append(quote! {
                 let len = util::len_from_value(&response_body#ident)?;
