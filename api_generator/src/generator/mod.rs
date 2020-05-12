@@ -1,6 +1,9 @@
 use crate::generator::code_gen::url::url_builder::PathString;
 use rustfmt_nightly::{Config, Edition, EmitMode, Input, Session};
-use serde::{Deserialize, Deserializer};
+use serde::{
+    de::{MapAccess, Visitor},
+    Deserialize, Deserializer,
+};
 use serde_json::Value;
 use std::{
     collections::{BTreeMap, HashSet},
@@ -8,18 +11,21 @@ use std::{
     fs::{self, File, OpenOptions},
     hash::{Hash, Hasher},
     io::{prelude::*, Read},
+    marker::PhantomData,
     path::PathBuf,
+    str::FromStr,
 };
 
 #[cfg(test)]
 use quote::{ToTokens, Tokens};
 use semver::Version;
-use serde::de::{Error, MapAccess, Visitor};
-use std::marker::PhantomData;
-use std::str::FromStr;
 use void::Void;
 
 pub mod code_gen;
+
+lazy_static! {
+    static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
+}
 
 /// A complete API specification parsed from the REST API specs
 pub struct Api {
@@ -101,7 +107,7 @@ pub struct Type {
 /// The type of the param or part
 #[derive(Debug, PartialEq, Clone)]
 pub enum TypeKind {
-    None,
+    Unknown(String),
     List,
     Enum,
     String,
@@ -123,20 +129,7 @@ impl<'de> Deserialize<'de> for TypeKind {
         D: Deserializer<'de>,
     {
         let value = String::deserialize(deserializer)?;
-        if value.contains('|') {
-            let values: Vec<&str> = value.split('|').collect();
-
-            if values.len() > 2 {
-                Err(D::Error::custom(
-                    "TypeKind union contains more than two values",
-                ))
-            } else {
-                let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
-                Ok(TypeKind::Union(union))
-            }
-        } else {
-            Ok(TypeKind::from(value.as_str()))
-        }
+        Ok(TypeKind::from(value.as_str()))
     }
 }
 
@@ -155,14 +148,22 @@ impl From<&str> for TypeKind {
             "long" => TypeKind::Long,
             "date" => TypeKind::Date,
             "time" => TypeKind::Time,
-            n => panic!("unknown typekind {}", n),
+            n => {
+                let values: Vec<&str> = n.split('|').collect();
+                if values.len() != 2 {
+                    TypeKind::Unknown(n.to_string())
+                } else {
+                    let union = Box::new((TypeKind::from(values[0]), TypeKind::from(values[1])));
+                    TypeKind::Union(union)
+                }
+            }
         }
     }
 }
 
 impl Default for TypeKind {
     fn default() -> Self {
-        TypeKind::None
+        TypeKind::Unknown("".to_string())
     }
 }
 
@@ -195,10 +196,6 @@ pub struct Body {
     pub description: Option<String>,
     pub required: Option<bool>,
     pub serialize: Option<String>,
-}
-
-lazy_static! {
-    static ref VERSION: Version = semver::Version::parse(env!("CARGO_PKG_VERSION")).unwrap();
 }
 
 /// Wraps the URL string to replace master or current in URL path with the

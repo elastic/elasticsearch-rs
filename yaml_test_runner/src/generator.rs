@@ -368,7 +368,7 @@ pub fn generate_tests_from_yaml(
                 } else if file_type.is_file() {
                     let path = entry.path();
                     // skip non-yaml files
-                    let extension = path.extension().unwrap_or_else(||"".as_ref());
+                    let extension = path.extension().unwrap_or_else(|| "".as_ref());
                     if extension != "yml" && extension != "yaml" {
                         continue;
                     }

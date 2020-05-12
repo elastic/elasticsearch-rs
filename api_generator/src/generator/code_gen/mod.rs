@@ -128,7 +128,7 @@ fn typekind_to_ty(name: &str, kind: &TypeKind, required: bool, fn_arg: bool) -> 
 
     let str_type = "&'b str";
     match kind {
-        TypeKind::None => v.push_str(str_type),
+        TypeKind::Unknown(_) => v.push_str(str_type),
         TypeKind::List => {
             v.push_str("&'b [");
             v.push_str(str_type);
