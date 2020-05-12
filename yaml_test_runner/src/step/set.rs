@@ -42,7 +42,7 @@ impl ToTokens for Set {
         let ident = &self.ident;
         let expr = syn::Ident::from(self.expr.expression().as_str());
         tokens.append(quote! {
-            let #ident = response_body#expr.clone();
+            let #ident = json#expr.clone();
         });
     }
 }

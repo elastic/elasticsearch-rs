@@ -30,13 +30,13 @@ impl ToTokens for IsFalse {
     fn to_tokens(&self, tokens: &mut Tokens) {
         if self.expr.is_empty() {
             tokens.append(quote! {
-                assert!(response_body.is_null() || response_body == json!(""));
+                assert!(text.is_empty());
             });
         } else {
             let expr = self.expr.expression();
             let ident = syn::Ident::from(expr.as_str());
             tokens.append(quote! {
-                match &response_body#ident {
+                match &json#ident {
                     Value::Null => assert!(true, "Expected value at {} to be false but is null", #expr),
                     Value::Bool(b) => assert_eq!(*b, false, "Expected value at {} to be false but is {}", #expr, b),
                     Value::Number(n) => assert!(n.as_f64().unwrap() == 0.0, "Expected value at {} to be false but is {}", #expr, n.as_f64().unwrap()),

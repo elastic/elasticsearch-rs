@@ -41,9 +41,9 @@ impl ToTokens for Match {
                                 .ignore_whitespace(true)
                                 .build()?;
                             assert!(
-                                regex.is_match(&string_response_body),
+                                regex.is_match(&text),
                                 "expected $body:\n\n{}\n\nto match regex:\n\n{}",
-                                &string_response_body,
+                                &text,
                                 #s
                             );
                         });
@@ -54,10 +54,10 @@ impl ToTokens for Match {
                                 .ignore_whitespace(true)
                                 .build()?;
                             assert!(
-                                regex.is_match(response_body#ident.as_str().unwrap()),
+                                regex.is_match(json#ident.as_str().unwrap()),
                                 "expected value at {}:\n\n{}\n\nto match regex:\n\n{}",
                                 #expr,
-                                response_body#ident.as_str().unwrap(),
+                                json#ident.as_str().unwrap(),
                                 #s
                             );
                         });
@@ -79,12 +79,12 @@ impl ToTokens for Match {
 
                     tokens.append(quote! {
                         assert_eq!(
-                            response_body#ident.as_str().unwrap(),
+                            json#ident.as_str().unwrap(),
                             #t,
                             "expected value at {} to be {} but was {}",
                             #expr,
                             #t,
-                            response_body#ident.as_str().unwrap()
+                            json#ident.as_str().unwrap()
                         );
                     })
                 }
@@ -96,12 +96,12 @@ impl ToTokens for Match {
                     let ident = syn::Ident::from(expr.as_str());
                     tokens.append(quote! {
                         assert_eq!(
-                            response_body#ident.as_i64().unwrap(),
+                            json#ident.as_i64().unwrap(),
                             #i,
                             "expected value at {} to be {} but was {}",
                             #expr,
                             #i,
-                            response_body#ident.as_i64().unwrap()
+                            json#ident.as_i64().unwrap()
                         );
                     });
                 }

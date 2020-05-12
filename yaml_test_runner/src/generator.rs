@@ -139,17 +139,17 @@ impl<'a> YamlTests<'a> {
     }
 
     /// Whether to emit code to read the last response, either as json or text
-    fn read_response(read_response: bool, is_body_expr: bool, tokens: &mut Tokens) -> bool {
+    pub fn read_response(read_response: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
-            if is_body_expr {
-                tokens.append(quote! {
-                    let string_response_body = response.text().await?;
-                });
-            } else {
-                tokens.append(quote! {
-                    let response_body = response.json::<Value>().await?;
-                });
-            }
+            tokens.append(quote! {
+                let is_json = response.content_type().starts_with("application/json");
+                let text = response.text().await?;
+                let json : Value = if is_json {
+                    serde_json::from_slice(text.as_ref())?
+                } else {
+                    Value::Null
+                };
+            });
         }
 
         true
@@ -230,48 +230,28 @@ impl<'a> YamlTests<'a> {
                             read_response = d.to_tokens(false, &mut body);
                         }
                         Step::Match(m) => {
-                            read_response = Self::read_response(
-                                read_response,
-                                m.expr.is_body(),
-                                &mut body,
-                            );
+                            read_response = Self::read_response(read_response,&mut body);
                             m.to_tokens(&mut body);
                         }
                         Step::Set(s) => {
                             // TODO: is "set" ever is_body_expr?
-                            read_response = Self::read_response(read_response, false, &mut body);
+                            read_response = Self::read_response(read_response, &mut body);
                             s.to_tokens(&mut body);
                         }
                         Step::Length(l) => {
-                            read_response = Self::read_response(
-                                read_response,
-                                false,
-                                &mut body,
-                            );
+                            read_response = Self::read_response(read_response,&mut body);
                             l.to_tokens(&mut body);
                         },
                         Step::IsTrue(t) => {
-                            read_response = Self::read_response(
-                                read_response,
-                                t.expr.is_body(),
-                                &mut body,
-                            );
+                            read_response = Self::read_response(read_response,&mut body);
                             t.to_tokens(&mut body);
                         },
                         Step::IsFalse(f) => {
-                            read_response = Self::read_response(
-                                read_response,
-                                f.expr.is_body(),
-                                &mut body,
-                            );
+                            read_response = Self::read_response(read_response, &mut body);
                             f.to_tokens(&mut body);
                         },
                         Step::Comparison(c) => {
-                            read_response = Self::read_response(
-                                read_response,
-                                c.expr.is_body(),
-                                &mut body,
-                            );
+                            read_response = Self::read_response(read_response,&mut body);
                             c.to_tokens(&mut body);
                         }
                     }

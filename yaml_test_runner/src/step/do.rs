@@ -61,7 +61,7 @@ impl ToTokens for Catch {
                 let t = clean_regex(s);
                 tokens.append(quote! {
                     let catch_regex = regex::Regex::new(#t)?;
-                    let error = response_body["error"].to_string();
+                    let error = json["error"].to_string();
                     assert!(
                         catch_regex.is_match(&error),
                         "expected json value at {}:\n\n{}\n\nto match regex:\n\n{}",
@@ -102,7 +102,13 @@ impl Do {
             if !read_response && c.needs_response_body() {
                 read_response = true;
                 tokens.append(quote! {
-                    let response_body = response.json::<Value>().await?;
+                    let is_json = response.content_type().starts_with("application/json");
+                    let text = response.text().await?;
+                    let json : Value = if is_json {
+                        serde_json::from_slice(text.as_ref())?
+                    } else {
+                        Value::Null
+                    };
                 });
             }
             c.to_tokens(tokens);

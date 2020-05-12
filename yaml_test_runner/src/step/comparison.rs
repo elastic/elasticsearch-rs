@@ -42,7 +42,7 @@ impl Comparison {
         let message = "Expected value at {} to be numeric but is {}";
         let comparison_message = "Expected value at {} to be {:?} {}, but is {}";
         tokens.append(quote! {
-            match &response_body#ident {
+            match &json#ident {
                 Value::Number(n) => {
                     match n.as_i64() {
                         Some(i) => assert!(i #op_ident #t as i64, #comparison_message, #expr, #op, #t, i),
