@@ -182,18 +182,22 @@ pub async fn general_xpack_setup(client: &Elasticsearch) -> Result<(), Error> {
 }
 
 async fn wait_for_yellow_status(client: &Elasticsearch) -> Result<(), Error> {
-    let _ = client
+    let cluster_health = client
         .cluster()
         .health(ClusterHealthParts::None)
         .wait_for_status(WaitForStatus::Yellow)
         .send()
         .await?;
 
+    assert!(
+        cluster_health.status_code().is_success(),
+        "cluster health returned {}", cluster_health.status_code().as_u16());
+
     Ok(())
 }
 
 async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
-    let _delete_response = client
+    let delete_response = client
         .indices()
         .delete(IndicesDeleteParts::Index(&["*"]))
         .expand_wildcards(&[
@@ -203,6 +207,10 @@ async fn delete_indices(client: &Elasticsearch) -> Result<(), Error> {
         ])
         .send()
         .await?;
+
+    assert!(
+        delete_response.status_code().is_success(),
+        "deleting indices returned {}", delete_response.status_code().as_u16());
 
     Ok(())
 }
