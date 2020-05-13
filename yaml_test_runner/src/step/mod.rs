@@ -154,6 +154,10 @@ impl Expr {
                         .trim_start_matches('{')
                         .trim_end_matches('}');
                     write!(expr, "[{}.as_str().unwrap()]", t).unwrap();
+                } else if s.as_str() == "_arbitrary_key_" {
+                    // handle _arbitrary_key_.
+                    // wrap in Value::String to allow uniform unwrapping in subsequent steps
+                    write!(expr, ".as_object().unwrap().iter().next().map(|(k, _)| json!(k)).unwrap()").unwrap();
                 } else {
                     write!(expr, "[\"{}\"]", s).unwrap();
                 }
