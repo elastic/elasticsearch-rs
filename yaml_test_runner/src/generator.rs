@@ -129,6 +129,7 @@ impl<'a> YamlTests<'a> {
                 use regex;
                 use serde_json::Value;
                 use crate::client;
+                use crate::transform;
                 use crate::util;
 
                 #setup_fn
@@ -138,16 +139,20 @@ impl<'a> YamlTests<'a> {
         }
     }
 
-    /// Whether to emit code to read the last response, either as json or text
+    /// Whether to emit code to read the last response, as text and optionally json
     pub fn read_response(read_response: bool, tokens: &mut Tokens) -> bool {
         if !read_response {
             tokens.append(quote! {
-                let is_json = response.content_type().starts_with("application/json");
-                let text = response.text().await?;
-                let json : Value = if is_json {
-                    serde_json::from_slice(text.as_ref())?
-                } else {
-                    Value::Null
+                let (text, json) = {
+                    let is_json = response.content_type().starts_with("application/json");
+                    let text = response.text().await?;
+                    let json = if is_json {
+                        serde_json::from_slice::<Value>(text.as_ref())?
+                    } else {
+                        Value::Null
+                    };
+
+                    (text, json)
                 };
             });
         }
@@ -234,7 +239,6 @@ impl<'a> YamlTests<'a> {
                             m.to_tokens(&mut body);
                         }
                         Step::Set(s) => {
-                            // TODO: is "set" ever is_body_expr?
                             read_response = Self::read_response(read_response, &mut body);
                             s.to_tokens(&mut body);
                         }
@@ -253,6 +257,10 @@ impl<'a> YamlTests<'a> {
                         Step::Comparison(c) => {
                             read_response = Self::read_response(read_response,&mut body);
                             c.to_tokens(&mut body);
+                        },
+                        Step::TransformAndSet(t) => {
+                            read_response = Self::read_response(read_response,&mut body);
+                            t.to_tokens(&mut body);
                         }
                     }
                 }

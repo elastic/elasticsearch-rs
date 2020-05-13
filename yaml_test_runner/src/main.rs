@@ -29,6 +29,7 @@ mod generated;
 
 pub mod client;
 pub mod util;
+pub mod transform;
 
 fn main() -> Result<(), failure::Error> {
     simple_logger::init_with_level(Level::Info).unwrap();

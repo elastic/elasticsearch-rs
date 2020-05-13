@@ -7,6 +7,7 @@ mod length;
 mod r#match;
 mod set;
 mod skip;
+mod transform_and_set;
 mod is_true;
 mod is_false;
 mod comparison;
@@ -18,6 +19,7 @@ pub use skip::*;
 pub use is_true::*;
 pub use is_false::*;
 pub use comparison::{Comparison, OPERATORS};
+pub use transform_and_set::*;
 
 pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Error> {
     let mut parsed_steps: Vec<Step> = Vec::new();
@@ -48,7 +50,10 @@ pub fn parse_steps(api: &Api, steps: &[Yaml]) -> Result<Vec<Step>, failure::Erro
                 let s = Set::try_parse(value)?;
                 parsed_steps.push(s.into());
             }
-            "transform_and_set" => {}
+            "transform_and_set" => {
+                let t = TransformAndSet::try_parse(value)?;
+                parsed_steps.push(t.into());
+            }
             "match" => {
                 let m = Match::try_parse(value)?;
                 parsed_steps.push(m.into());
@@ -177,9 +182,11 @@ pub enum Step {
     IsTrue(IsTrue),
     IsFalse(IsFalse),
     Comparison(Comparison),
+    TransformAndSet(TransformAndSet),
 }
 
 impl Step {
+    /// Gets a Do step
     pub fn r#do(&self) -> Option<&Do> {
         match self {
             Step::Do(d) => Some(d),
@@ -214,6 +221,7 @@ pub fn ok_or_accumulate<T>(
 // trim the enclosing forward slashes and
 // 1. replace escaped forward slashes (not needed after trimming forward slashes)
 // 2. replace escaped colons and hashes (not supported by regex crate)
+// TODO: create wrapper struct
 pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
     s.as_ref()
         .trim()
@@ -222,4 +230,5 @@ pub fn clean_regex<S: AsRef<str>>(s: S) -> String {
         .replace("\\:", ":")
         .replace("\\#", "#")
         .replace("\\%", "%")
+        .replace("\\'", "'")
 }

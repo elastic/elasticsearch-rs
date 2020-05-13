@@ -15,6 +15,10 @@ lazy_static! {
         Regex::new(r#""\$(.*?)""#).unwrap();
 
     // replace usages of ${.*} with the captured value
+    static ref SET_QUOTED_DELIMITED_REGEX: Regex =
+        Regex::new(r#""\$\{(.*?)\}""#).unwrap();
+
+    // replace usages of ${.*} with the captured value
     static ref SET_DELIMITED_REGEX: Regex =
         Regex::new(r#"\$\{(.*?)\}"#).unwrap();
 
@@ -36,7 +40,10 @@ impl ToTokens for Catch {
     fn to_tokens(&self, tokens: &mut Tokens) {
         fn http_status_code(status_code: u16, tokens: &mut Tokens) {
             tokens.append(quote! {
-               assert_eq!(response.status_code().as_u16(), #status_code);
+                assert_eq!(
+                    response.status_code().as_u16(),
+                    #status_code,
+                    "Expected status code {} but was {}", #status_code, response.status_code().as_u16());
             });
         }
 
@@ -49,8 +56,10 @@ impl ToTokens for Catch {
             "conflict" => http_status_code(409, tokens),
             "request" => {
                 tokens.append(quote! {
-                   let status_code = response.status_code().as_u16();
-                   assert!(status_code >= 400 && status_code < 600);
+                    let status_code = response.status_code().as_u16();
+                    assert!(
+                        status_code >= 400 && status_code < 600,
+                        "Expected status code 400-599 but was {}", response.status_code().as_u16());
                 });
             }
             "unavailable" => http_status_code(503, tokens),
@@ -61,12 +70,10 @@ impl ToTokens for Catch {
                 let t = clean_regex(s);
                 tokens.append(quote! {
                     let catch_regex = regex::Regex::new(#t)?;
-                    let error = json["error"].to_string();
                     assert!(
-                        catch_regex.is_match(&error),
-                        "expected json value at {}:\n\n{}\n\nto match regex:\n\n{}",
-                        "[\"error\"]",
-                        &error,
+                        catch_regex.is_match(&text),
+                        "expected text:\n\n{}\n\nto match regex:\n\n{}",
+                        &text,
                         #s
                     );
                 });
@@ -558,6 +565,7 @@ impl ApiCall {
     }
 
     fn from_set_value(s: &str) -> Tokens {
+        // check if the entire string is a token
         if s.starts_with('$') {
             let ident = syn::Ident::from(
                 s.trim_start_matches('$')
@@ -566,6 +574,7 @@ impl ApiCall {
             );
             quote! { #ident }
         } else {
+            // only part of the string is a token, so substitute
             let token = syn::Ident::from(
                 SET_DELIMITED_REGEX
                     .captures(s)
@@ -592,8 +601,13 @@ impl ApiCall {
         };
 
         // Enum variants containing no URL parts where there is only a single API URL,
-        // are not required to be passed in the API
-        if parts.is_empty() {
+        // are not required to be passed in the API.
+        //
+        // Also, short circuit for tests where the only parts specified are null
+        // e.g. security API test. It seems these should simply omit the value though...
+        if parts.is_empty() || parts
+            .iter()
+            .all(|(_, v)| v.is_null()) {
             let param_counts = endpoint
                 .url
                 .paths
@@ -601,6 +615,7 @@ impl ApiCall {
                 .map(|p| p.path.params().len())
                 .collect::<Vec<usize>>();
 
+            // check there's actually a None value
             if !param_counts.contains(&0) {
                 return Err(failure::err_msg(format!(
                     "No path for '{}' API with no URL parts",
@@ -712,6 +727,8 @@ impl ApiCall {
                                     let set_value = Self::from_set_value(s);
                                     Ok(quote! { #set_value.as_str().unwrap() })
                                 } else {
+
+
                                     Ok(quote! { #s })
                                 }
                             }
@@ -779,6 +796,16 @@ impl ApiCall {
     }
 
     /// Replaces a "set" step value with a variable
+    fn replace_set_quoted_delimited<S: AsRef<str>>(s: S) -> String {
+        SET_QUOTED_DELIMITED_REGEX.replace_all(s.as_ref(), "$1").into_owned()
+    }
+
+    /// Replaces a "set" step value with a variable
+    fn replace_set_delimited<S: AsRef<str>>(s: S) -> String {
+        SET_DELIMITED_REGEX.replace_all(s.as_ref(), "$1").into_owned()
+    }
+
+    /// Replaces a "set" step value with a variable
     fn replace_set<S: AsRef<str>>(s: S) -> String {
         SET_REGEX.replace_all(s.as_ref(), "$1").into_owned()
     }
@@ -800,8 +827,10 @@ impl ApiCall {
         match v {
             Yaml::String(s) => {
                 let json = {
-                    let s = Self::replace_set(s);
-                    Self::replace_i64(s)
+                    let mut json = Self::replace_set_quoted_delimited(s);
+                    json = Self::replace_set_delimited(json);
+                    json = Self::replace_set(json);
+                    Self::replace_i64(json)
                 };
                 if endpoint.supports_nd_body() {
                     // a newline delimited API body may be expressed
@@ -846,10 +875,14 @@ impl ApiCall {
                         .map(|value| {
                             let mut json = serde_json::to_string(&value).unwrap();
                             if value.is_string() {
+                                json = Self::replace_set_quoted_delimited(json);
+                                json = Self::replace_set_delimited(json);
                                 json = Self::replace_set(&json);
                                 let ident = syn::Ident::from(json);
                                 quote!(#ident)
                             } else {
+                                json = Self::replace_set_quoted_delimited(json);
+                                json = Self::replace_set_delimited(json);
                                 json = Self::replace_set(json);
                                 json = Self::replace_i64(json);
                                 let ident = syn::Ident::from(json);
@@ -861,6 +894,8 @@ impl ApiCall {
                 } else {
                     let value: serde_json::Value = serde_yaml::from_str(&s).unwrap();
                     let mut json = serde_json::to_string_pretty(&value).unwrap();
+                    json = Self::replace_set_quoted_delimited(json);
+                    json = Self::replace_set_delimited(json);
                     json = Self::replace_set(json);
                     json = Self::replace_i64(json);
                     let ident = syn::Ident::from(json);

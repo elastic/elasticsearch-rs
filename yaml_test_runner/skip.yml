@@ -1,8 +1,6 @@
 # features not yet implemented
 features:
-  - transform_and_set
   - node_selector
-  - arbitrary_key
 
 # tests to skip generating and compiling a test for.
 # Take the form of the generated path e.g.
