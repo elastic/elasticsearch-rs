@@ -39,7 +39,7 @@ impl ToTokens for IsTrue {
                 match &json#ident {
                     Value::Null => assert!(false, "Expected value at {} to be true but is null", #expr),
                     Value::Bool(b) => assert!(*b, "Expected value at {} to be true but is {}", #expr, b),
-                    Value::Number(n) => assert!(n.as_f64().unwrap() != 0.0, "Expected value at {} to be true but is {}", #expr, n.as_f64().unwrap()),
+                    Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "Expected value at {} to be true but is {}", #expr, n.as_f64().unwrap()),
                     Value::String(s) => assert!(!s.is_empty(), "Expected value at {} to be true but is {}", #expr, &s),
                     v => assert!(true, "Expected value at {} to be true but is {:?}", #expr, &v),
                 }

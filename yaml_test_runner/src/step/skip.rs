@@ -16,14 +16,17 @@ impl From<Skip> for Step {
 }
 
 impl Skip {
+    /// Gets the version. Returns empty if no version
     pub fn version(&self) -> String {
         self.version.clone().unwrap_or_else(|| "".into())
     }
 
+    /// Gets the reason. Returns empty string if no reason
     pub fn reason(&self) -> String {
         self.reason.clone().unwrap_or_else(|| "".into())
     }
 
+    /// Gets the features. Returns empty slice if no features
     pub fn features(&self) -> &[String] {
         match &self.features {
             Some(v) => v,

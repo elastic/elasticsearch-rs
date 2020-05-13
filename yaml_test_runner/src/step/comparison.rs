@@ -78,6 +78,7 @@ impl ToTokens for Comparison {
                 Some(f) => self.assert(f, &expr, op, tokens),
                 None => {
                     match self.value.as_str() {
+                        // handle "set" values
                         Some(s) if s.starts_with('$') => {
                             let s = s.trim_start_matches('$')
                                 .trim_start_matches('{')
