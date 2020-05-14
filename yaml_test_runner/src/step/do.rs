@@ -784,6 +784,7 @@ impl ApiCall {
     /// back to JSON
     fn generate_body(endpoint: &ApiEndpoint, v: &Yaml) -> Option<Tokens> {
         match v {
+            Yaml::Null => None,
             Yaml::String(s) => {
                 let json = {
                     let mut json = replace_set_quoted_delimited(s);
