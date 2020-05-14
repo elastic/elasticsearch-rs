@@ -29,19 +29,23 @@ impl IsTrue {
 impl ToTokens for IsTrue {
     fn to_tokens(&self, tokens: &mut Tokens) {
         if self.expr.is_empty() {
+            // for a HEAD request, the body is expected to be empty, so check the status code instead.
             tokens.append(quote! {
-                assert!(!text.is_empty());
+                match method {
+                    Method::Head => assert!(status_code.is_success(), "expected successful response for HEAD request but was {}", status_code.as_u16()),
+                    _ => assert!(!text.is_empty(), "expected value to be true (not empty) but was {}", &text),
+                }
             });
         } else {
             let expr = self.expr.expression();
             let ident = syn::Ident::from(expr.as_str());
             tokens.append(quote! {
                 match &json#ident {
-                    Value::Null => assert!(false, "Expected value at {} to be true but is null", #expr),
-                    Value::Bool(b) => assert!(*b, "Expected value at {} to be true but is {}", #expr, b),
-                    Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "Expected value at {} to be true but is {}", #expr, n.as_f64().unwrap()),
-                    Value::String(s) => assert!(!s.is_empty(), "Expected value at {} to be true but is {}", #expr, &s),
-                    v => assert!(true, "Expected value at {} to be true but is {:?}", #expr, &v),
+                    Value::Null => assert!(false, "expected value at {} to be true (not null) but was null", #expr),
+                    Value::Bool(b) => assert!(*b, "expected value at {} to be true but was false", #expr),
+                    Value::Number(n) => assert_ne!(n.as_f64().unwrap(), 0.0, "expected value at {} to be true (not 0) but was {}", #expr, n.as_f64().unwrap()),
+                    Value::String(s) => assert!(!s.is_empty(), "expected value at {} to be true (not empty) but was {}", #expr, &s),
+                    v => {},
                 }
             });
         }

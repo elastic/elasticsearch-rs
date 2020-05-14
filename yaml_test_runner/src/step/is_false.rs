@@ -30,18 +30,18 @@ impl ToTokens for IsFalse {
     fn to_tokens(&self, tokens: &mut Tokens) {
         if self.expr.is_empty() {
             tokens.append(quote! {
-                assert!(text.is_empty());
+                assert!(text.is_empty(), "expected value to be empty but was {}", &text);
             });
         } else {
             let expr = self.expr.expression();
             let ident = syn::Ident::from(expr.as_str());
             tokens.append(quote! {
                 match &json#ident {
-                    Value::Null => assert!(true, "Expected value at {} to be false but is null", #expr),
-                    Value::Bool(b) => assert_eq!(*b, false, "Expected value at {} to be false but is {}", #expr, b),
-                    Value::Number(n) => assert_eq!(n.as_f64().unwrap(), 0.0, "Expected value at {} to be false but is {}", #expr, n.as_f64().unwrap()),
-                    Value::String(s) => assert!(s.is_empty(), "Expected value at {} to be false but is {}", #expr, &s),
-                    v => assert!(false, "Expected value at {} to be false but is {:?}", #expr, &v),
+                    Value::Null => {},
+                    Value::Bool(b) => assert_eq!(*b, false, "expected value at {} to be false but was {}", #expr, b),
+                    Value::Number(n) => assert_eq!(n.as_f64().unwrap(), 0.0, "expected value at {} to be false (0) but was {}", #expr, n.as_f64().unwrap()),
+                    Value::String(s) => assert!(s.is_empty(), "expected value at {} to be false (empty) but was {}", #expr, &s),
+                    v => assert!(false, "expected value at {} to be false but was {:?}", #expr, &v),
                 }
             });
         }
